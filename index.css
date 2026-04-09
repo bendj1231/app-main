@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles if needed */
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@layer base {
+  :root {
+    --radius: 0.625rem;
+    --background: #ffffff;
+    --foreground: #1a1a1a;
+    --card: #ffffff;
+    --card-foreground: #1a1a1a;
+    --popover: #ffffff;
+    --popover-foreground: #1a1a1a;
+    --primary: #1a1a1a;
+    --primary-foreground: #ffffff;
+    --secondary: #f8f9fa;
+    --secondary-foreground: #1a1a1a;
+    --muted: #f8f9fa;
+    --muted-foreground: #666666;
+    --accent: #f8f9fa;
+    --accent-foreground: #1a1a1a;
+    --destructive: #ef4444;
+    --border: #e5e5e5;
+    --input: #e5e5e5;
+    --ring: #1a1a1a;
+    --chart-1: #3b82f6;
+    --chart-2: #22c55e;
+    --chart-3: #f59e0b;
+    --chart-4: #ef4444;
+    --chart-5: #8b5cf6;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #1a1a1a;
+    --sidebar-primary: #1a1a1a;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f8f9fa;
+    --sidebar-accent-foreground: #1a1a1a;
+    --sidebar-border: #e5e5e5;
+    --sidebar-ring: #1a1a1a;
+    
+    /* Fluid sizing CSS variables for better zoom responsiveness */
+    --font-size-base: clamp(14px, 1vw + 12px, 16px);
+    --space-xs: clamp(0.25rem, 0.5vw, 0.5rem);
+    --space-sm: clamp(0.5rem, 1vw, 0.75rem);
+    --space-md: clamp(1rem, 2vw, 1.5rem);
+    --space-lg: clamp(1.5rem, 3vw, 2.5rem);
+    --space-xl: clamp(2rem, 4vw, 4rem);
+    --container-max: clamp(320px, 90vw, 1400px);
+  }
+  .dark {
+    --background: #1a1a1a;
+    --foreground: #ffffff;
+    --card: #1a1a1a;
+    --card-foreground: #ffffff;
+    --popover: #1a1a1a;
+    --popover-foreground: #ffffff;
+    --primary: #ffffff;
+    --primary-foreground: #1a1a1a;
+    --secondary: #333333;
+    --secondary-foreground: #ffffff;
+    --muted: #333333;
+    --muted-foreground: #999999;
+    --accent: #333333;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --border: #333333;
+    --input: #333333;
+    --ring: #ffffff;
+  }
+}
+
+/* Set fluid base font size */
+html {
+  font-size: var(--font-size-base);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+/* Utility classes for fluid sizing */
+@layer utilities {
+  .fluid-text-xs { font-size: clamp(0.625rem, 0.8vw, 0.75rem); }
+  .fluid-text-sm { font-size: clamp(0.75rem, 0.9vw, 0.875rem); }
+  .fluid-text-base { font-size: clamp(0.875rem, 1vw, 1rem); }
+  .fluid-text-lg { font-size: clamp(1rem, 1.2vw, 1.125rem); }
+  .fluid-text-xl { font-size: clamp(1.125rem, 1.5vw, 1.25rem); }
+  .fluid-text-2xl { font-size: clamp(1.25rem, 2vw, 1.5rem); }
+  .fluid-text-3xl { font-size: clamp(1.5rem, 3vw, 2rem); }
+  .fluid-text-4xl { font-size: clamp(2rem, 4vw, 2.5rem); }
+  .fluid-text-5xl { font-size: clamp(2.5rem, 5vw, 3.5rem); }
+  
+  .fluid-p-xs { padding: clamp(0.25rem, 0.5vw, 0.5rem); }
+  .fluid-p-sm { padding: clamp(0.5rem, 1vw, 0.75rem); }
+  .fluid-p-md { padding: clamp(1rem, 2vw, 1.5rem); }
+  .fluid-p-lg { padding: clamp(1.5rem, 3vw, 2.5rem); }
+  .fluid-p-xl { padding: clamp(2rem, 4vw, 4rem); }
+  
+  .fluid-m-xs { margin: clamp(0.25rem, 0.5vw, 0.5rem); }
+  .fluid-m-sm { margin: clamp(0.5rem, 1vw, 0.75rem); }
+  .fluid-m-md { margin: clamp(1rem, 2vw, 1.5rem); }
+  .fluid-m-lg { margin: clamp(1.5rem, 3vw, 2.5rem); }
+  .fluid-m-xl { margin: clamp(2rem, 4vw, 4rem); }
+  
+  .fluid-gap-xs { gap: clamp(0.25rem, 0.5vw, 0.5rem); }
+  .fluid-gap-sm { gap: clamp(0.5rem, 1vw, 0.75rem); }
+  .fluid-gap-md { gap: clamp(1rem, 2vw, 1.5rem); }
+  .fluid-gap-lg { gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .fluid-gap-xl { gap: clamp(2rem, 4vw, 4rem); }
+  
+  .fluid-rounded-sm { border-radius: clamp(0.5rem, 1vw, 0.75rem); }
+  .fluid-rounded-md { border-radius: clamp(0.75rem, 1.5vw, 1rem); }
+  .fluid-rounded-lg { border-radius: clamp(1rem, 2vw, 1.5rem); }
+  .fluid-rounded-xl { border-radius: clamp(1.5rem, 3vw, 2rem); }
+}
