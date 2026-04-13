@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
+import { supabase } from '../lib/supabase';
 
 interface AuthContextType {
     currentUser: User | null;
@@ -94,6 +95,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Create user document in Firestore
         await setDoc(doc(db, 'users', user.uid), structuredData);
+
+        // Sync to Supabase for portal app access
+        try {
+            const { error: supabaseError } = await supabase
+                .from('pilot_licensure_experience')
+                .upsert({
+                    user_id: user.uid,
+                    pilot_id: userData.pilotId,
+                    full_legal_name: userData.fullName,
+                    first_name: userData.fullName?.split(' ')[0] || '',
+                    last_name: userData.fullName?.split(' ').slice(1).join(' ') || '',
+                    date_of_birth: userData.dob,
+                    nationality: userData.nationality,
+                    residing_country: userData.residingCountry,
+                    flight_school_address: userData.flightSchoolAddress,
+                    contact_number: userData.contactNumber,
+                    license_number: userData.licenseId,
+                    country_of_license: userData.countryOfLicense,
+                    current_flight_hours: userData.currentFlightHours,
+                    aircraft_ratings: userData.aircraftRatedOn ? [{ type: userData.aircraftRatedOn }] : [],
+                    experience_description: userData.experienceDescription,
+                    ratings: userData.ratings || [],
+                    aviation_pathways_interests: userData.pathwayInterests || [],
+                    pilot_job_positions_interests: userData.insightInterests || [],
+                    program_interests: userData.programInterests || [],
+                    insight_interests: userData.insightInterests || [],
+                    current_license: userData.ratings || [],
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'user_id' });
+
+            if (supabaseError) {
+                console.error('Supabase sync error:', supabaseError);
+            } else {
+                console.log('Pilot data synced to Supabase successfully');
+            }
+        } catch (syncError) {
+            console.error('Error syncing to Supabase:', syncError);
+            // Non-critical: Firebase user is still created
+        }
 
         // Send email verification
         try {

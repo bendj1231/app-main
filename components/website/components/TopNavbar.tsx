@@ -168,13 +168,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 className={`${isLight ? 'text-slate-900' : 'text-white'
                                     } text-xs font-bold tracking-[0.4em] uppercase leading-none mb-1 group-hover:text-blue-400 transition-colors`}
                             >
-                                Pilot Database
+                                Pilot Recognition
                             </span>
                             <span
                                 className={`${isLight ? 'text-slate-600' : 'text-white/60'
                                     } text-[8px] font-medium tracking-[0.2em] uppercase leading-none group-hover:text-white transition-colors`}
                             >
-                                PROGRAMS & APPLICATIONS
+                                PROGRAMS & PATHWAYS
                             </span>
                         </div>
                     </div>

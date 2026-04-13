@@ -30,6 +30,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [signupSuccess, setSignupSuccess] = useState(false);
 
     const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
     const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
@@ -132,12 +133,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         <div className="space-y-4">
-                            <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-600">
-                                Memberships & Pilot Recognition through Pathways , Programs , Applications & ATLAS CV recognized AI screening Database
-                            </p>
-                            <h1 className="text-5xl md:text-7xl font-serif text-slate-900 tracking-tight leading-none mb-8">
-                                Become a Member
+                            <h1 className="text-3xl md:text-5xl font-serif text-slate-900 tracking-tight leading-none mb-2">
+                                First Step Towards Pilot Recognition
                             </h1>
+                            <p className="text-sm md:text-base mb-8" style={{ color: '#DAA520' }}>
+                                Programs | Pilot Recognition | Pathways
+                            </p>
 
                             <div className="flex justify-center">
                                 <div className="px-6 py-4 bg-white/80 backdrop-blur-md border border-blue-200/50 rounded-3xl shadow-sm max-w-2xl mx-auto">
@@ -152,7 +153,46 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
                     </div>
 
-                    {/* Main Form Card */}
+                    {/* Success Confirmation Screen */}
+                    {signupSuccess ? (
+                        <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden p-12 md:p-20 text-center">
+                            <div className="max-w-2xl mx-auto">
+                                <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-8">
+                                    <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+                                </div>
+                                
+                                <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                    Welcome to WingMentor
+                                </h2>
+                                
+                                <p className="text-lg text-slate-600 mb-6">
+                                    Thank you for successfully creating your account!
+                                </p>
+                                
+                                <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
+                                    <p className="text-sm text-slate-700 mb-2">
+                                        <strong>Verification email sent</strong>
+                                    </p>
+                                    <p className="text-sm text-slate-600">
+                                        Please check your inbox at <span className="font-semibold text-blue-900">{email}</span> and click the verification link to activate your account.
+                                    </p>
+                                </div>
+                                
+                                <div className="space-y-4">
+                                    <p className="text-sm text-slate-500">
+                                        Once verified, you can access your Pilot Recognition Profile and begin your journey.
+                                    </p>
+                                    
+                                    <button
+                                        onClick={onLogin}
+                                        className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
+                                    >
+                                        Continue to Login
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
                     <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden">
                         {/* Page Progress Indicator (Visual) */}
                         <div className="h-1.5 w-full bg-slate-100 flex">
@@ -200,7 +240,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         pathwayInterests: selectedPathways,
                                         insightInterests: selectedInsights
                                     });
-                                    onLogin(); // Navigate to login or dashboard after successful signup
+                                    setSignupSuccess(true);
                                 } catch (err: any) {
                                     console.error("Signup failed", err);
                                     setError(err.message || "Failed to create account");
@@ -632,6 +672,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             </form>
                         </div>
                     </div>
+                    )}
                 </div>
             </div>
         </div>

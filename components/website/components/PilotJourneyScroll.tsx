@@ -21,13 +21,17 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
   const [showLowTimerPage, setShowLowTimerPage] = useState(false);
   const [showPilotGapPage, setShowPilotGapPage] = useState(false);
   const [showExaminationPortal, setShowExaminationPortal] = useState(false);
+  const [showLicenseSelection, setShowLicenseSelection] = useState(false);
+  const [showExaminationInProgress, setShowExaminationInProgress] = useState(false);
   const [showExaminationResults, setShowExaminationResults] = useState(false);
+  const [showDigitalLogbook, setShowDigitalLogbook] = useState(false);
   const [showPilotRecognition, setShowPilotRecognition] = useState(false);
   const [showPilotRecognition2, setShowPilotRecognition2] = useState(false);
   const [modulesScrollY, setModulesScrollY] = useState(0);
   const [lowTimerScrollY, setLowTimerScrollY] = useState(0);
   const [examPortalScrollY, setExamPortalScrollY] = useState(0);
   const [examResultsScrollY, setExamResultsScrollY] = useState(0);
+  const [pilotRecognitionScrollY, setPilotRecognitionScrollY] = useState(0);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [buttonPressed, setButtonPressed] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -71,7 +75,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
       setTypingField('email');
       
       // Type email
-      const email = "wingmentorporgram@gmail.com";
+      const email = "wingmentorprogram@gmail.com";
       for (let i = 0; i <= email.length; i++) {
         setEmailText(email.slice(0, i));
         await new Promise(r => setTimeout(r, 40));
@@ -192,10 +196,27 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
       setModulesScrollY(800);
       await new Promise(r => setTimeout(r, 4000)); // Wait for scroll to complete
       
-      // Transition to next page
+      // Hide cursor
+      setCursorVisible(false);
+      
+      // Wait briefly then transition to Pilot Gap page
+      await new Promise(r => setTimeout(r, 500));
+      
+      // Transition to Pilot Gap page (moved up in sequence)
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 200));
+      setShowModulesPage(false);
+      setShowPilotGapPage(true);
+      await new Promise(r => setTimeout(r, 200));
+      setIsTransitioning(false);
+
+      // Wait for Pilot Gap page to display so users can read it
+      await new Promise(r => setTimeout(r, 2000));
+
+      // Transition to Low-Timer page
       setIsTransitioning(true);
       await new Promise(r => setTimeout(r, 250));
-      setShowModulesPage(false);
+      setShowPilotGapPage(false);
       setShowLowTimerPage(true);
       await new Promise(r => setTimeout(r, 250));
       setIsTransitioning(false);
@@ -217,27 +238,16 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
       // Hide cursor
       setCursorVisible(false);
       
-      // Wait briefly then transition to Pilot Gap page
+      // Wait briefly then transition to Examination Portal
       await new Promise(r => setTimeout(r, 500));
-      
-      // Transition with zoom pop effect
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 200));
-      setShowLowTimerPage(false);
-      setShowPilotGapPage(true);
-      await new Promise(r => setTimeout(r, 200));
-      setIsTransitioning(false);
-
-      // Wait for Pilot Gap page to display so users can read it
-      await new Promise(r => setTimeout(r, 4000));
 
       // Wait for Examination Portal to render
-      await new Promise(r => setTimeout(r, 1000));
+      await new Promise(r => setTimeout(r, 500));
 
       // Transition to Examination Portal with warp zoom effect
       setIsTransitioning(true);
       await new Promise(r => setTimeout(r, 200));
-      setShowPilotGapPage(false);
+      setShowLowTimerPage(false);
       setShowExaminationPortal(true);
       await new Promise(r => setTimeout(r, 200));
       setIsTransitioning(false);
@@ -245,25 +255,60 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
       // Wait for Examination Portal to render
       await new Promise(r => setTimeout(r, 1000));
 
-      // Show cursor for scrolling
+      // Show cursor for clicking Pilot Licensure Examination
       setCursorVisible(true);
-      setCursorPosition({ x: 50, y: 60 });
+      setCursorPosition({ x: 72, y: 58 }); // Position on "Select License & Start" button
+      await new Promise(r => setTimeout(r, 1000));
+      
+      // Click animation
+      setButtonPressed(true);
+      await new Promise(r => setTimeout(r, 200));
+      setButtonPressed(false);
       await new Promise(r => setTimeout(r, 400));
-
-      // Scroll down through Examination Portal - single CSS transition for smoothness
-      setExamPortalScrollY(1100);
-      await new Promise(r => setTimeout(r, 5000)); // Wait for scroll to complete
       
       // Hide cursor
       setCursorVisible(false);
       
-      // Wait then transition to Examination Results
-      await new Promise(r => setTimeout(r, 500));
-      
-      // Transition with blur zoom effect
+      // Transition to License Selection page
       setIsTransitioning(true);
       await new Promise(r => setTimeout(r, 250));
       setShowExaminationPortal(false);
+      setShowLicenseSelection(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for License Selection to render
+      await new Promise(r => setTimeout(r, 800));
+      
+      // Show cursor for selecting CPL
+      setCursorVisible(true);
+      setCursorPosition({ x: 25, y: 50 }); // Position on CPL card
+      await new Promise(r => setTimeout(r, 600));
+      
+      // Click on CPL
+      setButtonPressed(true);
+      await new Promise(r => setTimeout(r, 150));
+      setButtonPressed(false);
+      await new Promise(r => setTimeout(r, 200));
+      
+      // Hide cursor
+      setCursorVisible(false);
+      
+      // Transition to Examination In Progress
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowLicenseSelection(false);
+      setShowExaminationInProgress(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for exam to display
+      await new Promise(r => setTimeout(r, 2000));
+      
+      // Transition to Examination Results
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowExaminationInProgress(false);
       setShowExaminationResults(true);
       await new Promise(r => setTimeout(r, 250));
       setIsTransitioning(false);
@@ -286,29 +331,53 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
       // Wait then transition to Pilot Recognition page
       await new Promise(r => setTimeout(r, 500));
 
-      // Transition with warp zoom effect
+      // Transition to Pilot Recognition page with ATLAS CV
       setIsTransitioning(true);
       await new Promise(r => setTimeout(r, 250));
       setShowExaminationResults(false);
-      setShowPilotRecognition(true);
-      await new Promise(r => setTimeout(r, 250));
-      setIsTransitioning(false);
-
-      // Wait for Pilot Recognition page to render
-      await new Promise(r => setTimeout(r, 1500));
-
-      // Transition to second Pilot Recognition page
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 250));
-      setShowPilotRecognition(false);
       setShowPilotRecognition2(true);
       await new Promise(r => setTimeout(r, 250));
       setIsTransitioning(false);
 
-      // Wait for second Pilot Recognition page to render
+      // Wait for Pilot Recognition page to render
+      await new Promise(r => setTimeout(r, 1000));
+
+      // Show cursor for scrolling
+      setCursorVisible(true);
+      setCursorPosition({ x: 50, y: 60 });
+      await new Promise(r => setTimeout(r, 400));
+
+      // Scroll down to reveal the ATLAS CV card (red header component)
+      setPilotRecognitionScrollY(800);
+      await new Promise(r => setTimeout(r, 3000)); // Wait for scroll to complete
+
+      // Move cursor to "View Flight Digital Logbook" button
+      setCursorPosition({ x: 25, y: 72 });
+      await new Promise(r => setTimeout(r, 800));
+      
+      // Click the button
+      setButtonPressed(true);
+      await new Promise(r => setTimeout(r, 150));
+      setButtonPressed(false);
+      await new Promise(r => setTimeout(r, 200));
+      
+      // Hide cursor after click
+      await new Promise(r => setTimeout(r, 300));
+      setCursorVisible(false);
+      await new Promise(r => setTimeout(r, 300));
+
+      // Transition to Digital Flight Logbook
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowPilotRecognition2(false);
+      setShowDigitalLogbook(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for Digital Logbook to render
       await new Promise(r => setTimeout(r, 1500));
 
-      // Animation is now complete - enable user interaction
+      // Animation ends on the Digital Flight Logbook page
       setAnimationComplete(true);
   };
 
@@ -320,35 +389,33 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
             <img
               src={IMAGES.LOGO}
               alt="WingMentor Logo"
-              className="mx-auto w-32 md:w-48 h-auto object-contain mb-6 opacity-90"
+              className="mx-auto w-48 md:w-64 h-auto object-contain mb-6 opacity-90"
             />
-            <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
-              Your Aviation Career
-            </p>
             <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
-              From Pilot Recognition
+              The Pilot Portal.
               <br />
-              <span className="text-4xl md:text-[5rem] mt-1 leading-none" style={{ color: '#DAA520' }}>
-                To Pathways
+              <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520' }}>
+                Programs | Pilot Recognition | Pathways
               </span>
             </h1>
+            <p className="text-sm md:text-base text-slate-600 max-w-xl mx-auto mt-4 mb-3">
+              <span className="font-bold text-slate-800">The first step towards your Pilot recognition.</span> Join WingMentor network to gain access to the programs, pathways, and pilot recognition.
+            </p>
+            <a 
+              href="#" 
+              className="text-blue-600 hover:text-blue-800 font-semibold text-sm md:text-base underline cursor-pointer"
+            >
+              Create Account
+            </a>
           </>
         }
       >
-        {/* Click to interact text - positioned above iPad */}
-        {showDashboard && animationComplete && (
-          <div className="absolute -top-8 left-0 right-0 z-50 flex justify-center">
-            <span className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-full shadow-lg animate-pulse">
-              Click to interact
-            </span>
-          </div>
-        )}
 
         {/* Screen Content Inside iPad Frame */}
         <div className={`relative w-full h-full rounded-[20px] overflow-hidden transition-all duration-500 ease-in-out ${
           isTransitioning ? 'scale-95 blur-md opacity-50' : 'scale-100 blur-0 opacity-100'
         }`}>
-          {!showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && (
+          {!showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
             /* Login Screen */
             <div className={`relative w-full h-full flex items-center justify-center p-8 ${animationComplete ? '' : 'pointer-events-none'}`}>
               {/* Background Shader - Cloud/Sky */}
@@ -455,7 +522,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && (
+          {showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
         /* Dashboard View Inside iPad - Full Dashboard Layout */
         <div className={`w-full h-full bg-[#f0f4f8] flex relative ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Mouse Cursor */}
@@ -703,7 +770,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && (
+          {showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
         /* Foundation Program Platform View Inside iPad */
         <div className={`w-full h-full bg-white flex flex-col overflow-hidden relative ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Mouse Cursor */}
@@ -763,36 +830,36 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
             </p>
 
             {/* Three Cards */}
-            <div className="grid grid-cols-3 gap-2 mb-3">
+            <div className="grid grid-cols-3 gap-2 mb-3 items-stretch">
               {/* Modules Card */}
-              <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm h-full flex flex-col">
                 <h3 className="text-[10px] font-bold text-slate-900 mb-1">Modules</h3>
-                <p className="text-[8px] text-slate-500 mb-2 leading-relaxed">
+                <p className="text-[8px] text-slate-500 mb-2 leading-relaxed flex-1">
                   Access the Foundation syllabus modules including Pilot Gap Module and Pilot Gap Module 2. Continue your mentorship journey.
                 </p>
-                <button className={`w-full py-1 text-white text-[8px] font-medium rounded transition-all ${buttonPressed ? 'bg-blue-800 scale-95' : 'bg-blue-600 hover:bg-blue-700'}`}>
+                <button className={`w-full py-1.5 text-white text-[8px] font-medium rounded transition-all mt-auto ${buttonPressed ? 'bg-blue-800 scale-95' : 'bg-blue-600 hover:bg-blue-700'}`}>
                   View Details
                 </button>
               </div>
 
               {/* Progress Card */}
-              <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm h-full flex flex-col">
                 <h3 className="text-[10px] font-bold text-slate-900 mb-1">Progress & Examination Board</h3>
-                <p className="text-[8px] text-slate-500 mb-2 leading-relaxed">
+                <p className="text-[8px] text-slate-500 mb-2 leading-relaxed flex-1">
                   Track your journey through the Foundation Program. View completed modules, upcoming milestones, and your overall advancement.
                 </p>
-                <button className="w-full py-1 bg-blue-600 text-white text-[8px] font-medium rounded hover:bg-blue-700 transition-colors">
+                <button className="w-full py-1.5 bg-blue-600 text-white text-[8px] font-medium rounded hover:bg-blue-700 transition-colors mt-auto">
                   View Progress
                 </button>
               </div>
 
               {/* Logbook Card */}
-              <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm h-full flex flex-col">
                 <h3 className="text-[10px] font-bold text-slate-900 mb-1">Mentorship Logbook</h3>
-                <p className="text-[8px] text-slate-500 mb-2 leading-relaxed">
+                <p className="text-[8px] text-slate-500 mb-2 leading-relaxed flex-1">
                   Record and track your mentorship sessions, hours, 50hrs certification progress tracking, and program milestones.
                 </p>
-                <button className="w-full py-1 bg-blue-600 text-white text-[8px] font-medium rounded hover:bg-blue-700 transition-colors">
+                <button className="w-full py-1.5 bg-blue-600 text-white text-[8px] font-medium rounded hover:bg-blue-700 transition-colors mt-auto">
                   Open Logbook
                 </button>
               </div>
@@ -824,7 +891,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && (
+          {showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
         /* Modules Page View Inside iPad - Welcome Aboard */
         <div className={`w-full h-full bg-white flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Simple Header */}
@@ -1004,7 +1071,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && (
+          {showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
         /* Low-Timer Pilot Page View Inside iPad */
         <div className={`w-full h-full bg-white flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Simple Header */}
@@ -1061,7 +1128,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
             {/* Hourglass Image */}
             <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm mb-6 max-w-md mx-auto">
               <img 
-                src="https://pilotnetwork.vercel.app/hourglass-pilot-gap.png" 
+                src="/images/low-timer/hourglass-pilot-gap.png" 
                 alt="Pilot Gap Hourglass" 
                 className="w-full h-auto rounded-lg"
               />
@@ -1080,7 +1147,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
             {/* Candidates Image */}
             <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm mb-6 max-w-md mx-auto">
               <img 
-                src="https://pilotnetwork.vercel.app/candidates-pilot-gap.png" 
+                src="/images/low-timer/candidates-pilot-gap.png" 
                 alt="Pilot Candidates" 
                 className="w-full h-auto rounded-lg"
               />
@@ -1176,7 +1243,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showPilotGapPage && !showExaminationPortal && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && (
+          {showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
         /* Pilot Gap Page - Simple White Page */
         <div className={`w-full h-full bg-white flex flex-col items-center justify-center p-8 ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Title - Georgian/Serif Font */}
@@ -1190,7 +1257,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </p>
         </div>
           )}
-          {showExaminationPortal && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && (
+          {showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
         /* Examination Portal Page */
         <div className={`w-full h-full bg-[#f0f4f8] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Header */}
@@ -1245,18 +1312,13 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
                 <div className="grid grid-cols-2 gap-3">
                   {/* Foundational Knowledge Examination */}
                   <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[10px]">📋</span>
-                      </div>
-                    </div>
                     <h3 className="text-[10px] font-bold text-slate-900 mb-1">Foundational Knowledge Examination</h3>
                     <p className="text-[8px] text-slate-500 mb-3 leading-relaxed">
                       Demonstrate your understanding of core WingMentor concepts and aviation mentorship fundamentals.
                     </p>
                     <a href="#" className="text-[8px] text-blue-600 hover:underline block mb-2">Module 1: Industry Familiarization →</a>
                     <div className="flex items-center gap-2 text-[7px] text-slate-400 mb-3">
-                      <span>⏱ 45 min</span>
+                      <span>45 min</span>
                       <span>•</span>
                       <span>25 questions</span>
                       <span>•</span>
@@ -1269,18 +1331,13 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
 
                   {/* Pilot Licensure Examination */}
                   <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[10px]">👤</span>
-                      </div>
-                    </div>
                     <h3 className="text-[10px] font-bold text-slate-900 mb-1">Pilot Licensure Examination</h3>
                     <p className="text-[8px] text-slate-500 mb-3 leading-relaxed">
                       Select your current license rating and take the corresponding examination to test your technical knowledge.
                     </p>
                     <a href="#" className="text-[8px] text-blue-600 hover:underline block mb-2">W1000 Application, Examination Practice Terminal →</a>
                     <div className="flex items-center gap-2 text-[7px] text-slate-400 mb-3">
-                      <span>⏱ 90 min</span>
+                      <span>90 min</span>
                       <span>•</span>
                       <span>60 questions</span>
                       <span>•</span>
@@ -1301,17 +1358,12 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
                 <div className="grid grid-cols-2 gap-3">
                   {/* Pilot Risk Management & Pathways Examination */}
                   <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[10px]">🎯</span>
-                      </div>
-                    </div>
                     <h3 className="text-[10px] font-bold text-slate-900 mb-1">Pilot Risk Management & Pathways Examination</h3>
                     <p className="text-[8px] text-slate-500 mb-3 leading-relaxed">
                       Assessment of pilot risk management principles and career pathway selection. Evaluate your understanding of aviation risk assessment and pathway planning.
                     </p>
                     <div className="flex items-center gap-2 text-[7px] text-slate-400 mb-3">
-                      <span>⏱ 60 min</span>
+                      <span>60 min</span>
                       <span>•</span>
                       <span>35 questions</span>
                       <span>•</span>
@@ -1324,17 +1376,12 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
 
                   {/* Ongoing Learning & Development Assessment */}
                   <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[10px]">📚</span>
-                      </div>
-                    </div>
                     <h3 className="text-[10px] font-bold text-slate-900 mb-1">Ongoing Learning & Development Assessment</h3>
                     <p className="text-[8px] text-slate-500 mb-3 leading-relaxed">
                       Continuous assessment designed for mentors who are also learners. Tests your ability to integrate mentorship with ongoing professional development.
                     </p>
                     <div className="flex items-center gap-2 text-[7px] text-slate-400 mb-3">
-                      <span>⏱ 45 min</span>
+                      <span>45 min</span>
                       <span>•</span>
                       <span>25 questions</span>
                       <span>•</span>
@@ -1355,11 +1402,6 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
                 <div className="grid grid-cols-3 gap-3">
                   {/* Mentorship Knowledge Examination */}
                   <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-5 h-5 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[8px]">📖</span>
-                      </div>
-                    </div>
                     <h3 className="text-[9px] font-bold text-slate-900 mb-1">Mentorship Knowledge Examination</h3>
                     <p className="text-[7px] text-slate-500 mb-2 leading-relaxed">
                       Test your understanding of mentorship principles, psychology, and best practices.
@@ -1378,11 +1420,6 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
 
                   {/* Interview Assessment */}
                   <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-5 h-5 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[8px]">💬</span>
-                      </div>
-                    </div>
                     <h3 className="text-[9px] font-bold text-slate-900 mb-1">Interview Assessment</h3>
                     <p className="text-[7px] text-slate-500 mb-2 leading-relaxed">
                       Comprehensive interview evaluating your readiness for mentorship responsibilities.
@@ -1401,11 +1438,6 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
 
                   {/* Mentorship Practical Examination */}
                   <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-5 h-5 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[8px]">✓</span>
-                      </div>
-                    </div>
                     <h3 className="text-[9px] font-bold text-slate-900 mb-1">Mentorship Practical Examination</h3>
                     <p className="text-[7px] text-slate-500 mb-2 leading-relaxed">
                       Practical scenario-based assessment of your mentorship capabilities.
@@ -1432,11 +1464,6 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
                 <div className="grid grid-cols-2 gap-3">
                   {/* Airbus EBT CBTA Interview */}
                   <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[10px]">✈️</span>
-                      </div>
-                    </div>
                     <h3 className="text-[10px] font-bold text-slate-900 mb-1">Airbus EBT CBTA Interview</h3>
                     <p className="text-[8px] text-slate-500 mb-3 leading-relaxed">
                       Advanced interview assessment aligned with AIRBUS Evidence-Based Training principles.
@@ -1445,11 +1472,6 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
 
                   {/* EBT CBTA Competency Practical Scenario Examination */}
                   <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-blue-50 rounded flex items-center justify-center">
-                        <span className="text-blue-600 text-[10px]">🎓</span>
-                      </div>
-                    </div>
                     <h3 className="text-[10px] font-bold text-slate-900 mb-1">EBT CBTA Competency Practical Scenario Examination</h3>
                     <p className="text-[8px] text-slate-500 mb-3 leading-relaxed">
                       Practical examination based on mentorship competencies and constructivism principles.
@@ -1461,7 +1483,226 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && (
+          {showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+        /* License Selection Page */
+        <div className={`w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
+          {/* Header */}
+          <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3">
+            <button 
+              onClick={() => setShowLicenseSelection(false)}
+              className="text-[10px] text-blue-600 hover:text-blue-800 flex items-center gap-1"
+            >
+              <span>←</span>
+              Back to Examination Portal
+            </button>
+            <div className="flex-1"></div>
+            <img src={IMAGES.LOGO} alt="WingMentor" className="w-8 h-auto" />
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-6">
+            {/* Logo */}
+            <div className="flex justify-center mb-4">
+              <img src={IMAGES.LOGO} alt="WingMentor" className="w-16 h-auto" />
+            </div>
+
+            {/* Title */}
+            <div className="text-center mb-6">
+              <p className="text-[8px] font-bold tracking-[0.3em] uppercase text-blue-600 mb-2">
+                FAA / CAAP GLEIMS
+              </p>
+              <h1 className="text-2xl font-serif text-slate-900 mb-2">
+                Select Your License Rating
+              </h1>
+              <p className="text-[9px] text-blue-600 mb-4">
+                Welcome back, benjamintigerbowler
+              </p>
+              <p className="text-[9px] text-slate-600 max-w-md mx-auto leading-relaxed">
+                Choose your current license rating to begin the Gleims examination. The exam will test your technical knowledge specific to your certification level.
+              </p>
+            </div>
+
+            {/* License Options Grid */}
+            <div className="max-w-2xl mx-auto grid grid-cols-2 gap-4">
+              {/* CPL Card */}
+              <div className={`bg-white rounded-xl p-4 border-2 shadow-sm cursor-pointer transition-all ${buttonPressed ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:border-blue-300'}`}>
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-blue-600 text-lg">📈</span>
+                  </div>
+                  <div>
+                    <h3 className="text-[11px] font-bold text-slate-900 mb-1">Commercial Pilot License (CPL)</h3>
+                    <p className="text-[8px] text-slate-500 leading-relaxed">
+                      For pilots pursuing commercial aviation careers. Covers advanced aerodynamics, flight planning, and commercial regulations.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-[8px] text-slate-400">
+                  <span>60 questions</span>
+                  <span>•</span>
+                  <span>90 min</span>
+                </div>
+              </div>
+
+              {/* IR Card */}
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm opacity-75">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-purple-600 text-lg">🧭</span>
+                  </div>
+                  <div>
+                    <h3 className="text-[11px] font-bold text-slate-900 mb-1">Instrument Rating (IR)</h3>
+                    <p className="text-[8px] text-slate-500 leading-relaxed">
+                      Focuses on instrument flight rules, navigation systems, and procedures for flying in IFR conditions.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-[8px] text-slate-400">
+                  <span>50 questions</span>
+                  <span>•</span>
+                  <span>75 min</span>
+                </div>
+              </div>
+
+              {/* ME Card */}
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm opacity-75">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-sky-600 text-lg">🚁</span>
+                  </div>
+                  <div>
+                    <h3 className="text-[11px] font-bold text-slate-900 mb-1">Multi-Engine Rating (ME)</h3>
+                    <p className="text-[8px] text-slate-500 leading-relaxed">
+                      Covers multi-engine aircraft systems, engine-out procedures, and performance calculations.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-[8px] text-slate-400">
+                  <span>40 questions</span>
+                  <span>•</span>
+                  <span>60 min</span>
+                </div>
+              </div>
+
+              {/* PPL Card */}
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm opacity-75">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-emerald-600 text-lg">🪪</span>
+                  </div>
+                  <div>
+                    <h3 className="text-[11px] font-bold text-slate-900 mb-1">Private Pilot License (PPL)</h3>
+                    <p className="text-[8px] text-slate-500 leading-relaxed">
+                      Fundamental aviation knowledge for private pilots including basic aerodynamics and VFR regulations.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-[8px] text-slate-400">
+                  <span>40 questions</span>
+                  <span>•</span>
+                  <span>60 min</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="mt-6 pt-4 border-t border-slate-200 max-w-2xl mx-auto">
+              <p className="text-[8px] text-slate-500 text-center">
+                All Gleims examinations are standardized tests based on FAA and CAAP regulations. Select the rating that matches your current certification.
+              </p>
+            </div>
+          </div>
+        </div>
+          )}
+          {showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+        /* Examination In Progress - CPL Questions */
+        <div className={`w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
+          {/* Header */}
+          <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button className="text-[10px] text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                <span>←</span>
+                Back to Examination Portal
+              </button>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-[9px] text-slate-500">Question 1 of 5</span>
+              <div className="w-24 bg-slate-200 rounded-full h-1.5">
+                <div className="bg-blue-600 h-1.5 rounded-full" style={{width: '20%'}}></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-6">
+            <div className="max-w-xl mx-auto">
+              {/* Question Card */}
+              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                <h2 className="text-lg font-serif text-slate-900 mb-6">
+                  Foundational Knowledge Exam
+                </h2>
+                
+                <p className="text-sm text-slate-800 mb-6 leading-relaxed">
+                  When calculating the center of gravity for a commercial flight, which of the following factors must be considered to ensure the aircraft remains within its safe operating envelope?
+                </p>
+
+                {/* Answer Options */}
+                <div className="space-y-3">
+                  {/* Option A */}
+                  <div className="flex items-start gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                      <span className="text-blue-600 text-xs font-semibold">A</span>
+                    </div>
+                    <p className="text-sm text-slate-700">Only the weight of passengers and cargo</p>
+                  </div>
+
+                  {/* Option B - Selected */}
+                  <div className="flex items-start gap-3 p-3 rounded-lg border-2 border-blue-500 bg-blue-50 cursor-pointer">
+                    <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xs font-semibold">B</span>
+                    </div>
+                    <p className="text-sm text-slate-800 font-medium">Weight, balance, fuel distribution, and equipment</p>
+                  </div>
+
+                  {/* Option C */}
+                  <div className="flex items-start gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                    <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+                      <span className="text-slate-500 text-xs font-semibold">C</span>
+                    </div>
+                    <p className="text-sm text-slate-700">Only the empty weight and fuel</p>
+                  </div>
+
+                  {/* Option D */}
+                  <div className="flex items-start gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                    <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+                      <span className="text-slate-500 text-xs font-semibold">D</span>
+                    </div>
+                    <p className="text-sm text-slate-700">Only the pilot's weight and baggage</p>
+                  </div>
+                </div>
+
+                {/* Navigation */}
+                <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-100">
+                  <button className="px-4 py-2 border border-slate-300 text-slate-600 text-xs font-medium rounded-lg hover:bg-slate-50 transition-colors">
+                    Previous
+                  </button>
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+                    <div className="w-2 h-2 rounded-full bg-slate-300"></div>
+                    <div className="w-2 h-2 rounded-full bg-slate-300"></div>
+                    <div className="w-2 h-2 rounded-full bg-slate-300"></div>
+                    <div className="w-2 h-2 rounded-full bg-slate-300"></div>
+                  </div>
+                  <button className="px-4 py-2 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    Next
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          )}
+          {showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
         /* Examination Results Page */
         <div className={`w-full h-full bg-white flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Header */}
@@ -1690,24 +1931,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showPilotRecognition && (
-        /* Pilot Recognition Page - Simple Text Page */
-        <div className={`w-full h-full bg-white flex flex-col items-center justify-center p-8 ${animationComplete ? '' : 'pointer-events-none'}`}>
-          {/* Logo */}
-          <img src={IMAGES.LOGO} alt="WingMentor" className="w-32 h-auto mb-8" />
-          
-          {/* Title - Georgian/Serif Font */}
-          <h1 className="text-5xl md:text-6xl font-serif text-slate-900 mb-6 text-center leading-tight">
-            Examination <span className="text-red-600">Results</span> → Pilot <span className="text-blue-600">Recognition</span>
-          </h1>
-          
-          {/* Blue Subtitle */}
-          <p className="text-sm md:text-base text-blue-600 uppercase tracking-[0.3em] font-semibold text-center">
-            transforming your Raw pilot data into <span className="text-blue-600">Recognition</span>
-          </p>
-        </div>
-          )}
-          {showPilotRecognition2 && (
+          {showPilotRecognition2 && !showDigitalLogbook && (
         /* Pilot Recognition & Achievements Full Page */
         <div className={`w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Header */}
@@ -1721,7 +1945,15 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-hidden">
+            <div
+              className="p-4 transition-transform ease-linear"
+              style={{ 
+                transform: `translateY(-${pilotRecognitionScrollY}px)`,
+                paddingBottom: `${pilotRecognitionScrollY + 24}px`,
+                transitionDuration: '3s'
+              }}
+            >
             {/* Title Section */}
             <div className="text-center mb-6">
               <p className="text-[8px] font-bold tracking-[0.3em] uppercase text-blue-600 mb-2">
@@ -1814,136 +2046,183 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
                 <p className="text-[8px] text-slate-400 uppercase tracking-wide">ATLAS RESUME DIRECTORY</p>
               </div>
 
-              {/* Atlas Resume Section */}
-              <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm mb-3">
-                <h2 className="text-lg font-serif text-slate-900 mb-2">Atlas Resume</h2>
-                <p className="text-[8px] font-bold text-blue-600 uppercase tracking-wide mb-2">ATS - (AI SCREENING) ATLAS CV FORMAT</p>
-                <p className="text-[8px] text-slate-500 mb-4 leading-relaxed">
-                  The Atlas CV format is the industry-standard resume format used across aviation. Airlines and recruiters use AI-powered ATS (Applicant Tracking Systems) to screen candidates automatically—your experience matters, but if your CV isn't ATS-optimized, you may never be seen.
-                </p>
+              {/* ATLAS Resume Header */}
+              <div className="text-center mb-4">
+                <p className="text-[8px] font-bold tracking-[0.3em] uppercase text-blue-600 mb-1">ATLAS Resume System</p>
+                <h3 className="text-sm font-serif text-slate-900">ATS-Approved ATLAS CV Formatting</h3>
+              </div>
 
-                {/* Candidate Card */}
-                <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 mb-3">
-                  <div className="flex justify-between items-start">
+              {/* ATLAS Resume Example */}
+              <div className="bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden mb-3">
+                {/* Header Card */}
+                <div className="bg-red-600 px-4 py-3 border-b border-red-700">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-[7px] text-slate-400 uppercase tracking-wide mb-1">CANDIDATE</p>
-                      <h3 className="text-sm font-bold text-slate-900">benjamintigerbowler Bowler</h3>
-                      <p className="text-[8px] text-slate-500">WingMentor Recognition Portfolio</p>
+                      <p className="text-[7px] text-red-200 uppercase tracking-[0.2em] mb-0.5">Pilot Recognition Profile</p>
+                      <h4 className="text-base font-bold text-white">Pete Mitchell</h4>
+                      <p className="text-[9px] text-red-100">WingMentor Recognition Portfolio</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[7px] text-slate-400 uppercase tracking-wide mb-1">SHARE LINK</p>
-                      <button className="px-3 py-1 border border-slate-300 text-slate-700 text-[7px] rounded hover:bg-slate-100 transition-colors">
+                      <p className="text-[7px] text-red-200 uppercase tracking-[0.2em] mb-1">SHARE LINK</p>
+                      <button className="px-2 py-1 bg-white border border-red-400 rounded text-[7px] font-medium text-red-700 hover:bg-red-50 transition-colors">
                         Copy shareable resume URL
                       </button>
                     </div>
                   </div>
                 </div>
 
-                {/* Three Column Cards */}
-                <div className="grid grid-cols-3 gap-3 mb-3">
-                  {/* Pilot Credentials */}
-                  <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
-                    <h4 className="text-[9px] font-bold text-slate-900 mb-1">Pilot Credentials</h4>
-                    <p className="text-[7px] text-slate-500 mb-2">Licensing, hours, and access pass</p>
-                    <div className="grid grid-cols-2 gap-2 mb-2">
-                      <div className="bg-white rounded p-2 text-center">
-                        <p className="text-[7px] text-slate-400">Dual XC hrs</p>
-                        <p className="text-sm font-bold text-slate-900">0</p>
+                <div className="p-3">
+                  <div className="grid grid-cols-3 gap-2">
+                    {/* Pilot Credentials */}
+                    <div className="bg-white rounded-lg p-2 border border-slate-200">
+                      <h5 className="text-[9px] font-bold text-slate-900 mb-0.5 text-center">Pilot Credentials</h5>
+                      <p className="text-[7px] text-slate-500 mb-2 text-center">Licensing, hours, and access pass</p>
+                      
+                      <div className="grid grid-cols-2 gap-1 mb-2">
+                        <div className="bg-slate-50 rounded p-1 text-center">
+                          <p className="text-[6px] text-slate-500 mb-0.5">Dual XC hrs</p>
+                          <p className="text-sm font-bold text-slate-900">85</p>
+                        </div>
+                        <div className="bg-slate-50 rounded p-1 text-center">
+                          <p className="text-[6px] text-slate-500 mb-0.5">Dual LOC</p>
+                          <p className="text-sm font-bold text-slate-900">42</p>
+                        </div>
+                        <div className="bg-slate-50 rounded p-1 text-center">
+                          <p className="text-[6px] text-slate-500 mb-0.5">PIC LOC</p>
+                          <p className="text-sm font-bold text-slate-900">156</p>
+                        </div>
+                        <div className="bg-slate-50 rounded p-1 text-center">
+                          <p className="text-[6px] text-slate-500 mb-0.5">LOC XC</p>
+                          <p className="text-sm font-bold text-slate-900">78</p>
+                        </div>
                       </div>
-                      <div className="bg-white rounded p-2 text-center">
-                        <p className="text-[7px] text-slate-400">Dual LOC</p>
-                        <p className="text-sm font-bold text-slate-900">0</p>
+
+                      <div className="bg-slate-50 rounded p-1.5 mb-2">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[7px] text-slate-500">Type</span>
+                          <span className="text-[7px] font-bold text-slate-900">Commercial Pilot</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">Status</span>
+                          <span className="text-[7px] font-bold text-emerald-600">Verified</span>
+                        </div>
                       </div>
-                      <div className="bg-white rounded p-2 text-center">
-                        <p className="text-[7px] text-slate-400">PIC LOC</p>
-                        <p className="text-sm font-bold text-slate-900">0</p>
-                      </div>
-                      <div className="bg-white rounded p-2 text-center">
-                        <p className="text-[7px] text-slate-400">LOC XC</p>
-                        <p className="text-sm font-bold text-slate-900">0</p>
+
+                      <a href="#" className="text-[7px] text-blue-600 font-medium hover:underline flex items-center gap-0.5">
+                        View Flight Digital Logbook <span>→</span>
+                      </a>
+                    </div>
+
+                    {/* Training */}
+                    <div className="bg-white rounded-lg p-2 border border-slate-200">
+                      <h5 className="text-[9px] font-bold text-slate-900 mb-2 text-center">Training</h5>
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">License</span>
+                          <span className="text-[7px] font-bold text-slate-900">CPL (A)</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">Medical</span>
+                          <span className="text-[7px] font-bold text-emerald-600">Class 1 Valid</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">Type Ratings</span>
+                          <span className="text-[7px] font-bold text-slate-900">A320 (SEP)</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">English Proficiency</span>
+                          <span className="text-[7px] font-bold text-slate-900">Level 6 (Expert)</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">Languages</span>
+                          <span className="text-[7px] font-bold text-slate-900">English, Spanish</span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex justify-between text-[7px] mb-1">
-                      <span className="text-slate-400">Type</span>
-                      <span className="font-bold text-slate-900">Student Pilot</span>
+
+                    {/* Readiness Snapshot */}
+                    <div className="bg-white rounded-lg p-2 border border-slate-200">
+                      <h5 className="text-[7px] font-bold text-slate-400 uppercase tracking-widest mb-2 text-center">READINESS SNAPSHOT</h5>
+                      <h6 className="text-[9px] font-bold text-slate-900 mb-2 text-center">Resource & Availability</h6>
+                      
+                      <div className="space-y-1.5">
+                        <div className="bg-slate-50 rounded p-1.5 flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">Medical Certificate</span>
+                          <span className="text-[7px] font-bold text-emerald-600">Valid Until Aug 2026</span>
+                        </div>
+                        <div className="bg-slate-50 rounded p-1.5 flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">Radio License</span>
+                          <span className="text-[7px] font-bold text-slate-900">G-RT12345</span>
+                        </div>
+                        <div className="bg-slate-50 rounded p-1.5 flex justify-between items-center">
+                          <span className="text-[7px] text-slate-500">License Expiry</span>
+                          <span className="text-[7px] font-bold text-slate-900">Mar 2028</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-[7px]">
-                      <span className="text-slate-400">Status</span>
-                      <span className="font-bold text-slate-900">Pending Verification</span>
-                    </div>
-                    <a href="#" className="text-[7px] text-blue-600 hover:underline mt-2 block">View Flight Digital Logbook →</a>
                   </div>
 
-                  {/* Training */}
-                  <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
-                    <h4 className="text-[9px] font-bold text-slate-900 mb-2">Training</h4>
-                    <div className="space-y-1 text-[7px]">
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">License</span>
-                        <span className="font-bold text-slate-900">Not specified</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">Medical</span>
-                        <span className="font-bold text-slate-900">Not specified</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">Type Ratings</span>
-                        <span className="font-bold text-slate-900">None added</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">English Proficiency</span>
-                        <span className="font-bold text-slate-900">Not specified</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">Languages</span>
-                        <span className="font-bold text-slate-900">Not specified</span>
-                      </div>
+                  {/* Job Experience Section */}
+                  <div className="mt-2 bg-white rounded-lg p-3 border border-slate-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <h5 className="text-[9px] font-bold text-slate-900">Recent Job Experience & Industry Aligned Accredited Programs</h5>
+                      <a href="#" className="text-[7px] text-blue-600 font-medium hover:underline flex items-center gap-0.5">
+                        Edit Experience <span>→</span>
+                      </a>
                     </div>
-                  </div>
-
-                  {/* Readiness Snapshot */}
-                  <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
-                    <h4 className="text-[9px] font-bold text-slate-400 uppercase tracking-wide mb-2">READINESS SNAPSHOT</h4>
-                    <p className="text-[8px] font-bold text-slate-900 mb-2">Resource & Availability</p>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center text-[7px]">
-                        <span className="text-slate-500">Medical Certificate</span>
-                        <span className="font-bold text-slate-900">Not specified</span>
+                    
+                    {/* Job Experience Entry */}
+                    <div className="mb-2 pb-2 border-b border-slate-100">
+                      <div className="flex items-start justify-between mb-1">
+                        <div>
+                          <h6 className="text-[9px] font-semibold text-slate-900">Flight Instructor</h6>
+                          <p className="text-[7px] text-slate-500">Skyway Aviation Academy</p>
+                        </div>
+                        <span className="text-[6px] text-slate-400">Jan 2024 - Present</span>
                       </div>
-                      <div className="flex justify-between items-center text-[7px]">
-                        <span className="text-slate-500">Radio License</span>
-                        <span className="font-bold text-slate-900">Not specified</span>
-                      </div>
-                      <div className="flex justify-between items-center text-[7px]">
-                        <span className="text-slate-500">License Expiry</span>
-                        <span className="font-bold text-slate-900">Not specified</span>
-                      </div>
+                      <p className="text-[7px] text-slate-600 leading-relaxed">
+                        Providing flight instruction for PPL and CPL students. Specializing in instrument training and multi-engine operations. Logged 350+ instructional hours with 92% student pass rate.
+                      </p>
                     </div>
+                    
+                    {/* Second Job Experience Entry */}
+                    <div className="mb-2">
+                      <div className="flex items-start justify-between mb-1">
+                        <div>
+                          <h6 className="text-[9px] font-semibold text-slate-900">First Officer (A320)</h6>
+                          <p className="text-[7px] text-slate-500">Regional Air Charter Ltd</p>
+                        </div>
+                        <span className="text-[6px] text-slate-400">Jun 2023 - Dec 2023</span>
+                      </div>
+                      <p className="text-[7px] text-slate-600 leading-relaxed">
+                        Operated A320 aircraft on European routes. Completed 450+ flight hours including 120+ IFR sectors. Participated in EBT/CBTA assessment program with Competent rating.
+                      </p>
+                    </div>
+                    
+                    <a href="#" className="text-[7px] text-blue-600 font-medium hover:underline flex items-center gap-0.5">
+                      Add your job experience <span>→</span>
+                    </a>
                   </div>
                 </div>
 
-                {/* Recent Job Experience */}
-                <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 mb-3">
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="text-[9px] font-bold text-slate-900">Recent Job Experience & Industry Aligned Accredited Programs</h4>
-                    <a href="#" className="text-[7px] text-blue-600 hover:underline">Edit Experience →</a>
-                  </div>
-                  <p className="text-[8px] text-slate-500 mb-2">No job experience data added yet.</p>
-                  <a href="#" className="text-[7px] text-blue-600 hover:underline">Add your job experience →</a>
+                <div className="bg-slate-50 px-3 py-2 border-t border-slate-200">
+                  <p className="text-[7px] text-slate-500 text-center">
+                    This ATLAS-formatted CV is machine-readable by airline ATS systems and includes verified competency data from the WingMentor Foundation Program.
+                  </p>
                 </div>
+              </div>
 
-                {/* Export & Verification */}
-                <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 mb-3">
-                  <h4 className="text-[9px] font-bold text-slate-900 mb-2">Export & Verification</h4>
-                  <p className="text-[8px] text-slate-500 mb-3">Download a PDF copy of your Atlas-formatted resume or share the verification link directly with airline recruiters.</p>
-                  <div className="flex gap-2">
-                    <button className="px-4 py-2 bg-[#0ea5e9] text-white text-[8px] font-medium rounded-lg hover:bg-[#0284c7] transition-colors">
-                      Access Full ATLAS Resume
-                    </button>
-                    <button className="px-4 py-2 border border-slate-300 text-slate-700 text-[8px] font-medium rounded-lg hover:bg-slate-100 transition-colors">
-                      Share verification
-                    </button>
-                  </div>
+              {/* Export & Verification */}
+              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 mb-3">
+                <h4 className="text-[9px] font-bold text-slate-900 mb-2">Export & Verification</h4>
+                <p className="text-[8px] text-slate-500 mb-3">Download a PDF copy of your Atlas-formatted resume or share the verification link directly with airline recruiters.</p>
+                <div className="flex gap-2">
+                  <button className="px-4 py-2 bg-[#0ea5e9] text-white text-[8px] font-medium rounded-lg hover:bg-[#0284c7] transition-colors">
+                    Access Full ATLAS Resume
+                  </button>
+                  <button className="px-4 py-2 border border-slate-300 text-slate-700 text-[8px] font-medium rounded-lg hover:bg-slate-100 transition-colors">
+                    Share verification
+                  </button>
                 </div>
               </div>
 
@@ -1968,9 +2247,156 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
               </div>
             </div>
           </div>
+          </div>
         </div>
           )}
-    </div>
+          {showDigitalLogbook && (
+        /* Digital Flight Logbook Page */
+        <div className={`w-full h-full bg-[#f0f4f8] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
+          {/* Header */}
+          <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+            <button 
+              onClick={() => setShowDigitalLogbook(false)}
+              className="text-[10px] text-blue-600 hover:text-blue-800 flex items-center gap-1"
+            >
+              <span>←</span>
+              BACK TO PROFILE
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+              <span className="text-[10px] text-slate-600 uppercase tracking-wide">Verified Identity</span>
+            </div>
+          </div>
+
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto p-4">
+            {/* Profile Header Card */}
+            <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm mb-4">
+              <div className="flex items-center gap-3 mb-3">
+                <img src={IMAGES.LOGO} alt="WingMentor" className="w-10 h-auto" />
+              </div>
+              <div className="text-center">
+                <p className="text-[8px] font-bold tracking-[0.3em] uppercase text-blue-600 mb-2">Pilot Recognition Profile</p>
+                <h1 className="text-xl font-serif text-slate-900 mb-1">Pilot Profile</h1>
+              </div>
+            </div>
+
+            {/* Digital Logbook Card */}
+            <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-base font-serif text-slate-900 mb-1">Digital Logbook</h2>
+                  <p className="text-[8px] font-bold text-emerald-600 uppercase tracking-wide">Verified Flight Record Registry</p>
+                </div>
+                <button className="px-4 py-2 bg-[#0ea5e9] text-white text-[9px] font-medium rounded-full hover:bg-[#0284c7] transition-colors">
+                  ADD FLIGHT ENTRY
+                </button>
+              </div>
+
+              {/* Table Header */}
+              <div className="grid grid-cols-9 gap-2 py-2 border-b border-slate-200 text-[7px] font-bold text-slate-500 uppercase tracking-wide">
+                <div>DATE</div>
+                <div>TYPE</div>
+                <div>IDENT</div>
+                <div>ROUTE</div>
+                <div>CATEGORY</div>
+                <div className="col-span-2">DESCRIPTION</div>
+                <div>TIME</div>
+                <div>TOTAL</div>
+              </div>
+
+              {/* Mock Flight Entries */}
+              <div className="space-y-2">
+                {/* Entry 1 */}
+                <div className="grid grid-cols-9 gap-2 py-3 border-b border-slate-100 text-[8px] text-slate-700 items-center hover:bg-slate-50 rounded">
+                  <div className="font-medium">Jan 15, 2025</div>
+                  <div>A320</div>
+                  <div>ABC-123</div>
+                  <div className="truncate">JFK-LHR</div>
+                  <div className="text-emerald-600 font-medium">Dual</div>
+                  <div className="col-span-2 truncate">Commercial flight instruction - Cross country training</div>
+                  <div className="font-bold">7.2</div>
+                  <div className="font-bold text-slate-900">7.2</div>
+                </div>
+
+                {/* Entry 2 */}
+                <div className="grid grid-cols-9 gap-2 py-3 border-b border-slate-100 text-[8px] text-slate-700 items-center hover:bg-slate-50 rounded">
+                  <div className="font-medium">Jan 12, 2025</div>
+                  <div>C172</div>
+                  <div>N456DF</div>
+                  <div className="truncate">LAX-SFO</div>
+                  <div className="text-blue-600 font-medium">PIC</div>
+                  <div className="col-span-2 truncate">Solo flight - IFR practice approaches</div>
+                  <div className="font-bold">3.5</div>
+                  <div className="font-bold text-slate-900">3.5</div>
+                </div>
+
+                {/* Entry 3 */}
+                <div className="grid grid-cols-9 gap-2 py-3 border-b border-slate-100 text-[8px] text-slate-700 items-center hover:bg-slate-50 rounded">
+                  <div className="font-medium">Jan 08, 2025</div>
+                  <div>PA28</div>
+                  <div>N789GH</div>
+                  <div className="truncate">MIA-NAS</div>
+                  <div className="text-purple-600 font-medium">Dual XC</div>
+                  <div className="col-span-2 truncate">Night cross country - International procedures</div>
+                  <div className="font-bold">4.1</div>
+                  <div className="font-bold text-slate-900">4.1</div>
+                </div>
+
+                {/* Entry 4 */}
+                <div className="grid grid-cols-9 gap-2 py-3 border-b border-slate-100 text-[8px] text-slate-700 items-center hover:bg-slate-50 rounded">
+                  <div className="font-medium">Jan 05, 2025</div>
+                  <div>C152</div>
+                  <div>N321JK</div>
+                  <div className="truncate">Local</div>
+                  <div className="text-emerald-600 font-medium">Dual</div>
+                  <div className="col-span-2 truncate">Pattern work - Touch and go landings</div>
+                  <div className="font-bold">2.3</div>
+                  <div className="font-bold text-slate-900">2.3</div>
+                </div>
+
+                {/* Entry 5 */}
+                <div className="grid grid-cols-9 gap-2 py-3 text-[8px] text-slate-700 items-center hover:bg-slate-50 rounded">
+                  <div className="font-medium">Jan 02, 2025</div>
+                  <div>BE76</div>
+                  <div>N654LM</div>
+                  <div className="truncate">ORD-DTW</div>
+                  <div className="text-orange-600 font-medium">Multi</div>
+                  <div className="col-span-2 truncate">Multi-engine instruction - Engine-out procedures</div>
+                  <div className="font-bold">5.7</div>
+                  <div className="font-bold text-slate-900">5.7</div>
+                </div>
+              </div>
+
+              {/* Total Hours Summary */}
+              <div className="mt-4 pt-4 border-t border-slate-200">
+                <div className="flex items-center justify-between text-[9px]">
+                  <div className="flex gap-4">
+                    <div>
+                      <span className="text-slate-500">Dual:</span>
+                      <span className="ml-1 font-bold text-slate-900">14.6 hrs</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-500">PIC:</span>
+                      <span className="ml-1 font-bold text-slate-900">8.8 hrs</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-500">Cross Country:</span>
+                      <span className="ml-1 font-bold text-slate-900">12.9 hrs</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-slate-500">Total Logged:</span>
+                    <span className="ml-2 text-base font-bold text-slate-900">22.8 hrs</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          )}
+        </div>
       </ContainerScroll>
     </div>
   );

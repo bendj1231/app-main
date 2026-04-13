@@ -36,7 +36,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onNavigate, on
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">
       {/* Left Sidebar */}
-      <aside className="w-56 md:w-72 bg-white border-r border-slate-200 flex flex-col fixed h-full overflow-y-auto">
+      <aside className="w-56 md:w-60 bg-white border-r border-slate-200 flex flex-col fixed h-full overflow-y-auto">
         {/* Logo Section */}
         <div className="p-4 md:p-6 border-b border-slate-100">
           <img src={IMAGES.LOGO} alt="WingMentor" className="w-12 md:w-16 h-auto mb-2" />
@@ -111,7 +111,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onNavigate, on
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 ml-56 md:ml-72">
+      <main className="flex-1 ml-56 md:ml-60">
         {/* Top Navbar */}
         <header className="bg-white border-b border-slate-200 px-[clamp(1rem,1.5vw,1.5rem)] py-[clamp(0.5rem,0.75vw,0.75rem)] flex items-center justify-between">
           <div className="text-[clamp(0.65rem,0.75vw,0.75rem)] text-slate-500">
