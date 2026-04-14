@@ -1,8 +1,14 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { IMAGES } from '../../../src/lib/website-constants';
+import { useAuth } from '../../../src/contexts/AuthContext';
+
+interface AirlineExpectationsCarouselProps {
+  onNavigate?: (page: string) => void;
+  onLogin?: () => void;
+}
 
 const fadeInStyles = `
   @keyframes fadeIn {
@@ -753,7 +759,7 @@ const airlines: Airline[] = [
     salaryRange: '$25,000 - $45,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Dhaka Hub', 'National Carrier', 'Gulf Routes'],
-    image: '/images/airline-expectations/biman.jpg',
+    image: '/images/airline-expectations/biman-bangladesh.jpg',
     description: 'Biman Bangladesh is the national carrier of Bangladesh. Operating from Dhaka with focus on Middle East and Asian routes.'
   },
   {
@@ -1253,15 +1259,45 @@ const airlines: Airline[] = [
   }
 ];
 
-export const AirlineExpectationsCarousel: React.FC = () => {
+export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselProps> = ({ onNavigate, onLogin }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
   const [isFading, setIsFading] = useState(false);
   const [contentVisible, setContentVisible] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { currentUser } = useAuth();
+
+  // Calculate dynamic match score based on airline
+  const getMatchScore = (airline: Airline) => {
+    const scoreMap: { [key: string]: number } = {
+      'qatar': 87,
+      'singapore': 92,
+      'cathay': 85,
+      'emirates': 89,
+      'etihad': 84,
+      'lufthansa': 88,
+      'british': 86,
+      'airfrance': 83,
+      'klm': 81,
+      'qantas': 90,
+      'ana': 91,
+      'delta': 82,
+      'united': 80,
+      'american': 79,
+      'fiji': 75,
+      'airnz': 93,
+      'real-tonga': 70,
+      'vanuatu': 72,
+      'solomons': 68,
+      'air-niugini': 74,
+      'nauru': 71
+    };
+    return scoreMap[airline.id] || 85;
+  };
 
   // Fade effect when currentIndex changes
   useEffect(() => {
@@ -1573,6 +1609,15 @@ export const AirlineExpectationsCarousel: React.FC = () => {
 
       {/* Main Content Area - Full Width Marquee Carousel */}
       <div className="w-full overflow-hidden animate-fadeIn py-8">
+        {/* Percentage Match Notice */}
+        <div className="px-8 mb-4 flex justify-end">
+          <div className="bg-slate-100 px-4 py-2 rounded-lg border border-slate-200">
+            <p className="text-xs text-slate-600">
+              <span className="font-semibold">Note:</span> Percentage match is based on your Pilot Recognition Profile
+            </p>
+          </div>
+        </div>
+
         {/* Scroll Carousel - Full Width with Snap Points */}
         <div className="relative w-full overflow-hidden">
           {/* Scrollable Track */}
@@ -1608,6 +1653,12 @@ export const AirlineExpectationsCarousel: React.FC = () => {
                           <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-blue-300">
                             AIRLINE — MAJOR AIRLINE
                           </span>
+                          {/* Percentage Match Badge */}
+                          <div className={`bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 ${
+                            isActive ? 'opacity-100' : 'opacity-50'
+                          }`}>
+                            {getMatchScore(airline)}%
+                          </div>
                         </div>
 
                         {/* Middle Content */}
@@ -1639,7 +1690,10 @@ export const AirlineExpectationsCarousel: React.FC = () => {
 
                         {/* Bottom Row - Button and Tags */}
                         <div className="flex items-center justify-between gap-3">
-                          <button className="px-5 py-2.5 bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white text-[11px] font-semibold rounded-full transition-all duration-300 flex items-center gap-2 group">
+                          <button 
+                            onClick={() => goToCard(index)}
+                            className="px-5 py-2.5 bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white text-[11px] font-semibold rounded-full transition-all duration-300 flex items-center gap-2 group"
+                          >
                             Discover Expectations
                             <span className="group-hover:translate-x-1 transition-transform">→</span>
                           </button>
@@ -1726,7 +1780,17 @@ export const AirlineExpectationsCarousel: React.FC = () => {
           </div>
 
           {/* Discover Pathways Button */}
-          <button className="px-8 py-3 bg-white border border-slate-200 text-slate-800 font-semibold rounded-full shadow-sm hover:bg-slate-50 hover:shadow-md transition-all duration-300 flex items-center gap-2 mx-auto group">
+          <button
+            onClick={() => {
+              if (currentUser) {
+                // Pass the current airline data to the page
+                onNavigate?.('airline-expectations', currentAirline);
+              } else {
+                setShowModal(true);
+              }
+            }}
+            className="px-8 py-3 bg-white border border-slate-200 text-slate-800 font-semibold rounded-full shadow-sm hover:bg-slate-50 hover:shadow-md transition-all duration-300 flex items-center gap-2 mx-auto group"
+          >
             Discover Airline Expectations
             <span className="group-hover:translate-x-1 transition-transform">→</span>
           </button>
@@ -1743,6 +1807,52 @@ export const AirlineExpectationsCarousel: React.FC = () => {
         </p>
       </div>
     </div>
+
+    {/* Newsletter Modal for Non-Logged In Users */}
+    {showModal && (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fadeIn">
+        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full relative">
+          <button
+            onClick={() => setShowModal(false)}
+            className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+          >
+            <X size={20} />
+          </button>
+
+          <div className="text-center">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+
+            <h3 className="text-2xl font-bold text-slate-800 mb-2">
+              Member Access Required
+            </h3>
+            <p className="text-slate-600 mb-6 leading-relaxed">
+              Become a member to access Airline Expectations and unlock detailed insights into carrier requirements, salary ranges, and career progression opportunities.
+            </p>
+
+            <button
+              onClick={() => {
+                setShowModal(false);
+                onLogin?.();
+              }}
+              className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all mb-3"
+            >
+              Become a Member
+            </button>
+
+            <button
+              onClick={() => setShowModal(false)}
+              className="w-full bg-slate-100 text-slate-700 font-semibold py-3 rounded-xl hover:bg-slate-200 transition-all"
+            >
+              Maybe Later
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     </>
   );
 };

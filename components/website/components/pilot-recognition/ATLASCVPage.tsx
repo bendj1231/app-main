@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft, Globe, Zap, Target } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { TopNavbar } from '../TopNavbar';
 
 interface ATLASCVPageProps {
     onBack: () => void;

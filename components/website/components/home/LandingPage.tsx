@@ -8,6 +8,7 @@ import { RevealOnScroll } from './RevealOnScroll';
 import { EpauletBars } from './EpauletBars'; // Import EpauletBars
 import { MindMap } from './MindMap'; // Import the new MindMap component
 import { PilotsStory } from './PilotsStory'; // Import the new PilotsStory component
+import { ThreeDCarousel } from './ThreeDCarousel';
 
 interface LandingPageProps {
     isVideoWarm?: boolean;
@@ -592,14 +593,46 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                             />
                         </div>
 
-                        {/* Mobile/iPad Image */}
-                        {/* Collision Awareness: Added a clear black border and crisp shadow to the overlapping iPad to clearly define its volume */}
-                        <div className="relative transform transition-transform duration-700 hover:scale-[1.05] z-20 w-3/4 md:w-1/4 mt-4 md:mt-0 md:-ml-12 md:mb-2 border-[6px] border-zinc-900 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,1)] bg-black overflow-hidden">
-                            <img
-                                src={images.IPAD_APPS_IMG}
-                                alt="WingMentor Mobile Interface"
-                                className="w-full h-auto object-contain rounded-[2rem]"
-                            />
+                        {/* Mobile/iPad - 3D Carousel */}
+                        <div className="relative z-20 w-3/4 md:w-1/3 mt-4 md:mt-0 md:-ml-12 md:mb-2">
+                            <ThreeDCarousel items={[
+                                {
+                                    icon: <img src={images.IPAD_APPS_IMG} alt="Apps" className="w-16 h-16 object-contain" />,
+                                    title: "Pilot Apps",
+                                    value: "Full suite of aviation applications",
+                                    index: 0
+                                },
+                                {
+                                    icon: <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center">
+                                        <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>,
+                                    title: "Examination",
+                                    value: "Interactive test preparation",
+                                    index: 1
+                                },
+                                {
+                                    icon: <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center">
+                                        <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>,
+                                    title: "Analytics",
+                                    value: "Performance tracking & insights",
+                                    index: 2
+                                },
+                                {
+                                    icon: <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center">
+                                        <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>,
+                                    title: "Handbook",
+                                    value: "Program operating procedures",
+                                    index: 3
+                                }
+                            ]} />
                         </div>
                     </div>
 
@@ -945,118 +978,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                         </p>
                     </RevealOnScroll>
 
-                    {/* NEW CAROUSEL SECTION - With Updated Content & Layout */}
+                    {/* NEW CAROUSEL SECTION - 3D Carousel */}
                     <RevealOnScroll className="w-full mt-24 px-4 overflow-hidden relative" id="pilot-apps-ecosystem">
-                        <div className="max-w-7xl mx-auto relative">
-                            <h3 className={`text-2xl font-bold brand-font uppercase tracking-widest text-center mb-16 ${isDarkMode ? 'text-white' : 'text-zinc-900'}`}>
+                        <div className="max-w-7xl mx-auto">
+                            <h3 className={`text-2xl font-bold brand-font uppercase tracking-widest text-center mb-8 ${isDarkMode ? 'text-white' : 'text-zinc-900'}`}>
                                 Pilot App Ecosystem
                             </h3>
-
-                            {/* Left Arrow */}
-                            <button
-                                onClick={handlePrevCard}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full backdrop-blur-md bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition-all shadow-lg hidden md:flex"
-                            >
-                                <i className="fas fa-chevron-left text-lg"></i>
-                            </button>
-
-                            {/* Right Arrow */}
-                            <button
-                                onClick={handleNextCard}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full backdrop-blur-md bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition-all shadow-lg hidden md:flex"
-                            >
-                                <i className="fas fa-chevron-right text-lg"></i>
-                            </button>
-
-                            {/* Carousel Container */}
-                            <div className="flex justify-center items-center h-[550px] perspective-1000">
-                                {CAROUSEL_APPS.map((app, index) => {
-                                    // Calculate relative position based on current index
-                                    // We want 3 visible: -1 (left), 0 (center), 1 (right)
-                                    let offset = (index - carouselIndex + CAROUSEL_APPS.length) % CAROUSEL_APPS.length;
-                                    // Adjust for wrapping to center the active card logic
-                                    if (offset > CAROUSEL_APPS.length / 2) offset -= CAROUSEL_APPS.length;
-
-                                    const isActive = offset === 0;
-                                    const isVisible = Math.abs(offset) <= 1; // Only show center and immediate neighbors on desktop
-
-                                    // Mobile Logic: Only show active
-                                    // Desktop Logic: Show 3
-                                    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-                                    if (isMobile && !isActive) return null;
-                                    if (!isMobile && !isVisible) return null;
-
-                                    return (
-                                        <div
-                                            key={index}
-                                            className={`absolute w-80 md:w-96 h-[500px] rounded-3xl p-6 flex flex-col border-2 shadow-2xl transition-all duration-500 ease-out transform
-                                                  ${isActive
-                                                    ? `z-20 scale-100 opacity-100 ${app.color} ${app.borderColor}`
-                                                    : `z-10 scale-90 opacity-50 blur-[1px] translate-x-[${offset * 120}%] bg-zinc-900 border-zinc-800`}`}
-                                            style={{
-                                                // Manual transform for positioning if not using Tailwind translate classes directly for dynamic values
-                                                transform: !isMobile
-                                                    ? `translateX(${offset * 110}%) scale(${isActive ? 1 : 0.9}) rotateY(${offset * -5}deg)`
-                                                    : `scale(1)`
-                                            }}
-                                        >
-                                            {/* Top Section: App Image */}
-                                            <div className="flex flex-col items-center mb-6 relative">
-                                                {/* App Image Container - Clean, no overlays */}
-                                                <div className="relative w-28 h-28 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 mb-4 group cursor-pointer transition-transform duration-300 hover:scale-105">
-                                                    {/* Background Image */}
-                                                    <img
-                                                        src={app.img}
-                                                        alt={app.title}
-                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                                    />
-                                                </div>
-
-                                                {/* Title */}
-                                                <h4 className="text-2xl font-bold brand-font text-white uppercase tracking-wider text-center leading-none mt-2">
-                                                    {app.title}
-                                                </h4>
-                                            </div>
-
-                                            {/* Middle Section: Description */}
-                                            <div className="mb-6 flex-grow border-b border-white/10 pb-4">
-                                                <p className="text-xs text-zinc-300 font-sans leading-relaxed text-center">
-                                                    {app.desc}
-                                                </p>
-                                            </div>
-
-                                            {/* Bottom Section: Bullet Points & Action */}
-                                            <div className="mt-auto">
-                                                <p className="text-[9px] font-bold uppercase text-white/50 mb-3 tracking-widest">Key Features</p>
-                                                <ul className="space-y-2 mb-6">
-                                                    {app.bullets.map((bullet, idx) => (
-                                                        <li key={idx} className="flex items-start text-xs text-zinc-200">
-                                                            <i className="fas fa-check text-green-500 mr-2 mt-0.5 text-[10px]"></i>
-                                                            <span className="font-medium tracking-tight">{bullet}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <button
-                                                    onClick={() => setLaunchSelectionApp(app)}
-                                                    className="w-full py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-bold uppercase tracking-widest text-white transition-all flex justify-center items-center group shadow-lg"
-                                                >
-                                                    Launch Application <i className="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform text-[10px]"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Mobile Dots */}
-                            <div className="flex justify-center space-x-2 mt-8 md:hidden">
-                                {CAROUSEL_APPS.map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className={`w-2 h-2 rounded-full transition-colors ${i === carouselIndex ? 'bg-blue-500' : 'bg-zinc-600'}`}
-                                    />
-                                ))}
-                            </div>
+                            <ThreeDCarousel items={CAROUSEL_APPS.map((app, idx) => ({
+                                icon: <img src={app.img} alt={app.title} className="w-16 h-16 object-cover rounded-xl" />,
+                                title: app.title,
+                                value: app.desc.substring(0, 80) + '...',
+                                index: idx
+                            }))} />
                         </div>
                     </RevealOnScroll>
 

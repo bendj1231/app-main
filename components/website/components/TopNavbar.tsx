@@ -205,12 +205,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
                                 {/* Dropdown Menu */}
                                 {item.subItems && (
-                                    <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 ${activeDropdown === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
-                                        <div className="bg-[#050A30]/95 backdrop-blur-xl border border-white/10 rounded-xl p-3 min-w-[280px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col gap-1 overflow-hidden">
+                                    <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-300 ${activeDropdown === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
+                                        <div className="bg-[#050A30]/95 backdrop-blur-xl border border-white/10 rounded-lg p-2 min-w-[200px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col gap-0.5 overflow-hidden">
                                             {item.subItems.map((subItem, idx) => (
                                                 <React.Fragment key={`${item.name}-${subItem.name}-${idx}`}>
                                                     {subItem.category && (
-                                                        <div className={`px-4 pt-4 pb-2 text-[clamp(1rem,1vw,1.2rem)] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-400' : 'text-blue-400/60'} border-b border-white/5 mb-1 mt-1 first:mt-0`}>
+                                                        <div className={`px-3 pt-2 pb-1 text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-400' : 'text-blue-400/60'} border-b border-white/5 mb-0.5 mt-0.5 first:mt-0`}>
                                                             {subItem.category}
                                                         </div>
                                                     )}
@@ -225,25 +225,25 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                 onNavigate(subItem.target);
                                                                 setActiveDropdown(null);
                                                             }}
-                                                            className={`w-full text-left px-4 py-3 rounded-lg transition-all flex flex-col gap-1 ${activeSubItem === subItem.name
+                                                            className={`w-full text-left px-3 py-1.5 rounded transition-all flex flex-col gap-0.5 ${activeSubItem === subItem.name
                                                                 ? subItem.isYellow ? 'bg-yellow-500/10 text-yellow-400 translate-x-1' : 'bg-blue-600/20 text-white translate-x-1'
                                                                 : subItem.isYellow ? 'text-yellow-400/80 hover:text-yellow-400 hover:bg-yellow-500/5' : 'text-white/70 hover:text-white hover:bg-white/5'
                                                                 }`}
                                                         >
-                                                            <div className="flex items-center gap-2">
-                                                                {subItem.isYellow && <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></div>}
-                                                                <span className={`text-[clamp(1rem,1vw,1.2rem)] font-bold uppercase tracking-wider whitespace-nowrap ${subItem.isYellow ? 'text-yellow-400' : ''}`}>
+                                                            <div className="flex items-center gap-1.5">
+                                                                {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
+                                                                <span className={`text-[0.7rem] font-bold uppercase tracking-wider whitespace-nowrap ${subItem.isYellow ? 'text-yellow-400' : ''}`}>
                                                                     {subItem.name}
                                                                 </span>
                                                             </div>
 
                                                             {/* Expanded Core Components */}
                                                             {subItem.bullets && (
-                                                                <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeSubItem === subItem.name ? 'max-h-48 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
-                                                                    <ul className="space-y-1.5">
+                                                                <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeSubItem === subItem.name ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+                                                                    <ul className="space-y-0.5">
                                                                         {subItem.bullets.map((bullet, idx) => (
-                                                                            <li key={idx} className="flex items-center gap-2 text-[clamp(0.8rem,1vw,1rem)] text-blue-300/80 font-medium tracking-wide">
-                                                                                <div className="w-1 h-1 rounded-full bg-blue-400"></div>
+                                                                            <li key={idx} className="flex items-center gap-1.5 text-[0.6rem] text-blue-300/80 font-medium tracking-wide">
+                                                                                <div className="w-0.5 h-0.5 rounded-full bg-blue-400"></div>
                                                                                 {bullet}
                                                                             </li>
                                                                         ))}
@@ -277,7 +277,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             onClick={currentUser ? () => onNavigate('download') : onLogin}
                             className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
                         >
-                            {currentUser ? 'Download Portal' : 'Login'}
+                            {currentUser ? 'Access Portal' : 'Login'}
                         </button>
                     </div>
 

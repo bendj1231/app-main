@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {
-    User, MapPin, School, Phone, Clock, Award, Upload, Plus, Trash2, Plane, FileText
+    User, MapPin, School, Phone, Clock, Award, Upload, Plus, Trash2, Plane, FileText, CheckCircle2
 } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { TopNavbar } from '../TopNavbar';
 
 interface FoundationalVerificationPageProps {
     onBack: () => void;

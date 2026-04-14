@@ -1,8 +1,8 @@
 import React from 'react';
 import { Database, Award, Shield, ChevronRight, CheckCircle2, ShieldCheck, Zap, Globe, Lock, BarChart3, Search, UserCheck } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
-import { IMAGES } from '../../../src/lib/website-constants';
+import { IMAGES } from '../../../../src/lib/website-constants';
 
 interface PilotRecognitionPageProps {
     onBack: () => void;

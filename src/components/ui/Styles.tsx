@@ -407,21 +407,19 @@ export const Styles = () => (
     }
 
     .accreditation-logo {
-      height: clamp(1.5rem, 2vw, 2rem);
+      height: clamp(2.5rem, 3vw, 3.5rem);
       width: auto;
-      filter: grayscale(1);
-      opacity: 0.5;
+      filter: grayscale(0);
+      opacity: 1;
       transition: all 0.4s ease;
     }
 
     .accreditation-logo:last-child {
-      height: clamp(2rem, 2.5vw, 2.5rem);
+      height: clamp(3rem, 3.5vw, 4rem);
     }
 
     .accreditation-logo:hover {
-      filter: grayscale(0);
-      opacity: 1;
-      transform: scale(1.05);
+      transform: scale(1.1);
     }
 
     /* Mobile Responsive Adjustments */
@@ -492,10 +490,10 @@ export const Styles = () => (
       }
 
       .accreditation-logo {
-        height: clamp(1.25rem, 1.5vw, 1.5rem);
+        height: clamp(2rem, 2.5vw, 3rem);
       }
       .accreditation-logo:last-child {
-        height: clamp(1.5rem, 2vw, 2rem);
+        height: clamp(2.5rem, 3vw, 3.5rem);
       }
     }
 

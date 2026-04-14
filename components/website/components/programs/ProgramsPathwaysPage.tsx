@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shield, Target, GraduationCap, Plane, Cpu, Briefcase, Award, FileText, LayoutGrid, ChevronRight, Globe, Layers, Navigation, Zap } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
 interface ProgramsPathwaysPageProps {

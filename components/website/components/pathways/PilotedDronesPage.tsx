@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft, Mail, Users, Shield, Cpu, Radio, Map, Target } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { TopNavbar } from '../TopNavbar';
 
 interface PilotedDronesPageProps {
     onBack: () => void;

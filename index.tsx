@@ -43,7 +43,6 @@ import MentorTools from './components/MentorTools';
 import WelcomeGuide from './components/WelcomeGuide';
 import Dashboard from './components/Dashboard';
 import WebBrowser from './components/WebBrowser';
-import LoginScreen from './components/LoginScreen';
 import { Sidebar } from '@/src/components/ui/Sidebar';
 import { Handbook } from '@/src/components/ui/Handbook';
 import { AuthProvider } from '@/src/contexts/AuthContext';
@@ -58,23 +57,23 @@ import { DashboardPage } from './components/website/components/DashboardPage';
 import { DashboardLayout } from './components/website/components/DashboardLayout';
 import { WeatherMonitor } from './components/website/components/WeatherMonitor';
 import { WebsitePage } from './components/website/WebsitePage';
-import { HomePage } from './components/website/components/HomePage';
+import { HomePage } from './components/website/components/home/HomePage';
 import { ContactSupportPage } from './components/website/components/ContactSupportPage';
 import { AboutPage } from './components/website/components/AboutPage';
 import { BecomeMemberPage } from './components/website/components/BecomeMemberPage';
 import { AccreditationPage } from './components/website/components/AccreditationPage';
-import { EmiratesAtplPage } from './components/website/components/EmiratesAtplPage';
-import { EmergingAirTaxiPage } from './components/website/components/EmergingAirTaxiPage';
-import { PilotedDronesPage } from './components/website/components/PilotedDronesPage';
+import { EmiratesAtplPage } from './components/website/components/pathways/EmiratesAtplPage';
+import { EmergingAirTaxiPage } from './components/website/components/pathways/EmergingAirTaxiPage';
+import { PilotedDronesPage } from './components/website/components/pathways/PilotedDronesPage';
 import { PilotGapInfoPage } from './components/website/components/PilotGapInfoPage';
-import { PilotRecognitionPage } from './components/website/components/PilotRecognitionPage';
-import { AirTaxiPathwaysPage } from './components/website/components/AirTaxiPathwaysPage';
-import { PrivateCharterPathwaysPage } from './components/website/components/PrivateCharterPathwaysPage';
+import { PilotRecognitionPage } from './components/website/components/pilot-recognition/PilotRecognitionPage';
+import { AirTaxiPathwaysPage } from './components/website/components/pathways/AirTaxiPathwaysPage';
+import { PrivateCharterPathwaysPage } from './components/website/components/pathways/PrivateCharterPathwaysPage';
 import { EBTCBTAPage } from './components/website/components/EBTCBTAPage';
 import { AirlineExpectationsPage } from './components/website/components/AirlineExpectationsPage';
-import { ATLASCVPage } from './components/website/components/ATLASCVDirectoryPage';
-import { FoundationalProgramApplicationPage } from './components/website/components/FoundationalProgramApplicationDirectoryPage';
-import { TransitionProgramApplicationPage } from './components/website/components/TransitionProgramApplicationDirectoryPage';
+import { ATLASCVPage } from './components/website/components/pilot-recognition/ATLASCVDirectoryPage';
+import { FoundationalProgramApplicationPage } from './components/website/components/programs/FoundationalProgramApplicationDirectoryPage';
+import { TransitionProgramApplicationPage } from './components/website/components/programs/TransitionProgramApplicationDirectoryPage';
 
 import { BoardPage } from './components/website/components/BoardPage';
 import { GovernancePage } from './components/website/components/GovernancePage';
@@ -83,16 +82,16 @@ import { FAQPage } from './components/website/components/FAQPage';
 import { MissionVisionPage } from './components/website/components/MissionVisionPage';
 import { CoreValuesPage } from './components/website/components/CoreValuesPage';
 import { IndustryStewardshipPage } from './components/website/components/IndustryStewardshipPage';
-import { FoundationalProgramPage } from './components/website/components/FoundationalProgramPage';
-import { PlatformFoundationalProgramPage } from './components/website/components/PlatformFoundationalProgramPage';
-import { PlatformTransitionProgramPage } from './components/website/components/PlatformTransitionProgramPage';
-import { FoundationalVerificationPage } from './components/website/components/FoundationalVerificationPage';
-import { PlatformEmiratesAtplPage } from './components/website/components/PlatformEmiratesAtplPage';
-import { PlatformAirTaxiPage } from './components/website/components/PlatformAirTaxiPage';
-import { PlatformPrivateCharterPage } from './components/website/components/PlatformPrivateCharterPage';
-import { PlatformPilotedDronesPage } from './components/website/components/PlatformPilotedDronesPage';
-import { TransitionProgramPage } from './components/website/components/TransitionProgramPage';
-import { ProgramsPathwaysPage } from './components/website/components/ProgramsPathwaysPage';
+import { FoundationalProgramPage } from './components/website/components/programs/FoundationalProgramPage';
+import { PlatformFoundationalProgramPage } from './components/website/components/programs/PlatformFoundationalProgramPage';
+import { PlatformTransitionProgramPage } from './components/website/components/programs/PlatformTransitionProgramPage';
+import { FoundationalVerificationPage } from './components/website/components/programs/FoundationalVerificationPage';
+import { PlatformEmiratesAtplPage } from './components/website/components/pathways/PlatformEmiratesAtplPage';
+import { PlatformAirTaxiPage } from './components/website/components/pathways/PlatformAirTaxiPage';
+import { PlatformPrivateCharterPage } from './components/website/components/pathways/PlatformPrivateCharterPage';
+import { PlatformPilotedDronesPage } from './components/website/components/pathways/PlatformPilotedDronesPage';
+import { TransitionProgramPage } from './components/website/components/programs/TransitionProgramPage';
+import { ProgramsPathwaysPage } from './components/website/components/programs/ProgramsPathwaysPage';
 import { AviationInsightsDirectoryPage } from './components/website/components/AviationInsightsDirectoryPage';
 import { ApplicationsSystemsDirectoryPage } from './components/website/components/ApplicationsSystemsDirectoryPage';
 import { MembershipDirectoryPage } from './components/website/components/MembershipDirectoryPage';
@@ -165,17 +164,6 @@ const InnovationHubPage = ({ onBack }: { onBack: () => void }) => (
   </div>
 );
 
-const PortalSignIn = ({ onBack, onLogin }: { onBack: () => void, onLogin: (user: string) => void }) => {
-  return (
-    <div className="fade-in-up">
-      <LoginScreen onLogin={onLogin} logoUrl={LOGO_URL} />
-      <div style={{ position: 'fixed', top: '20px', left: '20px', zIndex: 10000 }}>
-        <button className="back-btn" onClick={onBack}>← Back</button>
-      </div>
-    </div>
-  );
-};
-
 // ProgramProgress moved to src/features/dashboard/ProgramProgress.tsx
 // ProgramLogsEmbed moved to src/features/dashboard/ProgramLogsEmbed.tsx
 // BusinessPlanPage moved to src/features/website/BusinessPlanPage.tsx
@@ -199,6 +187,8 @@ const App = () => {
   const [scrollToSection, setScrollToSection] = useState<string | null>(null);
   const [isBlurring, setIsBlurring] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedAirline, setSelectedAirline] = useState<any>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const { currentUser } = useAuth(); // Get current user
 
   useEffect(() => {
@@ -206,9 +196,16 @@ const App = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const navigateTo = (page: any) => {
+  const navigateTo = (page: any, data?: any) => {
     const [basePage, hash] = String(page).includes('#') ? String(page).split('#') : [page, null];
     setScrollToSection(hash || null);
+
+    // Store selected airline if provided
+    if (data && basePage === 'airline-expectations') {
+      setSelectedAirline(data);
+    } else if (basePage !== 'airline-expectations') {
+      setSelectedAirline(null);
+    }
 
     setIsBlurring(true);
     setTimeout(() => {
@@ -216,6 +213,14 @@ const App = () => {
       setCurrentPage(basePage);
       setIsBlurring(false);
     }, 600);
+  };
+
+  const navigateToPortal = () => {
+    setIsRedirecting(true);
+    setTimeout(() => {
+      window.open('https://pilotnetwork.vercel.app', '_blank');
+      setIsRedirecting(false);
+    }, 3000);
   };
 
   return (
@@ -254,7 +259,7 @@ const App = () => {
         {currentPage === 'home' && (
           <HomePage
             onJoinUs={() => navigateTo('become-member')}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
             onNavigate={navigateTo}
             onGoToProgramDetail={(slide) => {
               if (slide?.title === 'Emirates ATPL Pilot Pathways') {
@@ -291,7 +296,7 @@ const App = () => {
             onGoToOperatingHandbook={() => navigateTo('handbook')}
             onGoToBlackBox={() => navigateTo('pilot_tools')}
             onGoToExaminationTerminal={() => navigateTo('pilot_apps')}
-            onGoToEnrollment={() => navigateTo('sign_in')}
+            onGoToEnrollment={navigateToPortal}
             onGoToHub={() => navigateTo('dashboard')}
           />
         )}
@@ -300,7 +305,7 @@ const App = () => {
           <ProgramsPathwaysPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -308,7 +313,7 @@ const App = () => {
           <AviationInsightsDirectoryPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -316,7 +321,7 @@ const App = () => {
           <ApplicationsSystemsDirectoryPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -324,7 +329,7 @@ const App = () => {
           <MembershipDirectoryPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -332,7 +337,7 @@ const App = () => {
           <AboutPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
             scrollToSection={scrollToSection}
           />
         )}
@@ -340,19 +345,19 @@ const App = () => {
           <PilotGapInfoPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
         {currentPage === 'accreditation' && (
-          <AccreditationPage onBack={() => navigateTo('home')} onNavigate={navigateTo} onLogin={() => navigateTo('sign_in')} />
+          <AccreditationPage onBack={() => navigateTo('home')} onNavigate={navigateTo} onLogin={navigateToPortal} />
         )}
 
         {currentPage === 'emirates-atpl' && (
           <EmiratesAtplPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -360,7 +365,7 @@ const App = () => {
           <EmergingAirTaxiPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -368,14 +373,14 @@ const App = () => {
           <TransitionProgramPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'piloted-drones' && (
           <PilotedDronesPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -383,7 +388,7 @@ const App = () => {
           <PilotRecognitionPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -391,7 +396,7 @@ const App = () => {
           <AirTaxiPathwaysPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -399,7 +404,7 @@ const App = () => {
           <PrivateCharterPathwaysPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -407,7 +412,7 @@ const App = () => {
           <EBTCBTAPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -415,7 +420,8 @@ const App = () => {
           <AirlineExpectationsPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
+            selectedAirline={selectedAirline}
           />
         )}
 
@@ -423,7 +429,7 @@ const App = () => {
           <ATLASCVPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -431,7 +437,7 @@ const App = () => {
           <FoundationalProgramPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -439,122 +445,112 @@ const App = () => {
           <DownloadPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
 
-        {currentPage === 'sign_in' && (
-          <PortalSignIn
-            onBack={() => navigateTo('home')}
-            onLogin={(user) => {
-              // Instead of going to dashboard, go to home
-              // The navbar will update to show "Download Portal"
-              setCurrentPage('home');
-            }}
-          />
-        )}
         {currentPage === 'faq' && (
           <FAQPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'board' && (
           <BoardPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'governance' && (
           <GovernancePage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'committees' && (
           <CommitteesPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'mission-vision' && (
           <MissionVisionPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'core-values' && (
           <CoreValuesPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'industry-stewardship' && (
           <IndustryStewardshipPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'w1000-suite' && (
           <W1000SuitePage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'hinfact' && (
           <HinfactPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'membership-benefits' && (
           <MembershipBenefitsPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'become-member' && (
           <BecomeMemberPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'contact-support' && (
           <ContactSupportPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'foundational-application' && (
           <FoundationalProgramApplicationPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
         {currentPage === 'transition-application' && (
           <TransitionProgramApplicationPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
-            onLogin={() => navigateTo('sign_in')}
+            onLogin={navigateToPortal}
           />
         )}
       </div>
 
       {![
-        'home', 'about', 'accreditation', 'sign_in', 'faq', 'board', 'governance',
+        'home', 'about', 'accreditation', 'faq', 'board', 'governance',
         'committees', 'w1000-suite', 'hinfact', 'membership-benefits', 'become-member',
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
         'pilot-recognition', 'air-taxi-pathways', 'private-charter-pathways', 'ebt-cbta',
@@ -602,9 +598,9 @@ const App = () => {
                         color: '#1a1a1a',
                         cursor: 'pointer'
                       }}
-                      onClick={currentUser ? () => navigateTo('download') : () => navigateTo('sign_in')}
+                      onClick={currentUser ? () => navigateTo('download') : navigateToPortal}
                     >
-                      {currentUser ? 'Download Portal' : 'Sign In'}
+                      {currentUser ? 'Access Portal' : 'Sign In'}
                     </span>
 
                     {/* Profile Icon - Light Cyan Blue Square */}
@@ -681,15 +677,15 @@ const App = () => {
                       <FoundationalVerificationPage
                         onBack={() => navigateTo('foundational-platform')}
                         onNavigate={navigateTo}
-                        onLogin={() => navigateTo('sign_in')}
+                        onLogin={navigateToPortal}
                       />
                     )}
-                    {currentPage === 'transition' && <TransitionProgramPage onBack={() => navigateTo('dashboard')} onNavigate={navigateTo} onLogin={() => navigateTo('sign_in')} />}
+                    {currentPage === 'transition' && <TransitionProgramPage onBack={() => navigateTo('dashboard')} onNavigate={navigateTo} onLogin={navigateToPortal} />}
                     {currentPage === 'transition-program' && (
                       <TransitionProgramPage
                         onBack={() => navigateTo('transition-platform')}
                         onNavigate={(page) => page === 'home' ? navigateTo('dashboard') : navigateTo(page)}
-                        onLogin={() => navigateTo('sign_in')}
+                        onLogin={navigateToPortal}
                       />
                     )}
                     {currentPage === 'transition-platform' && (
@@ -750,6 +746,17 @@ const App = () => {
             )}
           </div>
         )}
+
+      {/* Portal Redirect Loading Modal */}
+      {isRedirecting && (
+        <div className="fixed inset-0 bg-white flex items-center justify-center z-[9999]">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">Redirecting you to the portal</h2>
+            <p className="text-slate-600">Please wait while we connect you to the portal...</p>
+          </div>
+        </div>
+      )}
     </>
   );
 

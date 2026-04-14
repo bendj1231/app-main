@@ -1,47 +1,47 @@
 import React from 'react';
-import { ArrowLeft, Rocket, Shield, Award, Zap, CheckCircle2, ChevronRight, GraduationCap, Users, Target, Globe, BookOpen } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { ArrowLeft, Rocket, Shield, Award, Zap, CheckCircle2, ChevronRight, Briefcase, Users, Target, BarChart3, Globe } from 'lucide-react';
+import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
-interface EmiratesAtplPageProps {
+interface TransitionProgramApplicationPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
     onLogin: () => void;
 }
 
-export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNavigate, onLogin }) => {
-    const pathwayFeatures = [
+export const TransitionProgramApplicationPage: React.FC<TransitionProgramApplicationPageProps> = ({ onBack, onNavigate, onLogin }) => {
+    const mainFeatures = [
         {
-            title: "Global Strategic Positioning",
-            desc: "Passing GCAA exams in the UAE clears the hardest conversion hurdle for international pilots seeking GCC roles.",
-            icon: Globe,
-            bullets: ["Regional Authority", "Conversion Advantage", "UAE Ready"]
+            title: "Airline Readiness",
+            desc: "Bridge the gap between general aviation and the flight deck of a flagship carrier with specialized preparation.",
+            icon: Rocket,
+            bullets: ["EBT/CBTA Prep", "SOP Alignment", "CRM Excellence"]
         },
         {
-            title: "Frozen ATPL Credits",
-            desc: "Credits that signal to airlines worldwide that you can handle rigorous, international-standard theoretical training.",
-            icon: Award,
-            bullets: ["Emirates Standard", "Worldwide Trust", "Career Utility"]
+            title: "Advanced ATLAS Profiling",
+            desc: "Full AI optimization of your career data for direct injection into airline recruitment databases.",
+            icon: Target,
+            bullets: ["AI Screening", "Data Portability", "Recruiter Priority"]
         },
         {
-            title: "Accelerated Earning Power",
-            desc: "Theory completed early ensures you move faster through seniority lists and command upgrades when hours are met.",
-            icon: TrendingUp => <Zap className="w-7 h-7 text-blue-600 group-hover:text-white" />,
-            bullets: ["Command Track", "Seniority Advantage", "Faster ROI"]
+            title: "Broker & Operator Links",
+            desc: "Direct referrals to private jet brokers and corporate flight departments looking for transition-ready pilots.",
+            icon: Users,
+            bullets: ["Network Access", "Direct Messaging", "Career Placement"]
         },
         {
-            title: "Gold-Standard Delivery",
-            desc: "Powered by Fujairah Aviation Academy and Bristol Ground School, the global benchmark for ATPL materials.",
-            icon: BookOpen,
-            bullets: ["Bristol Materials", "FAA/GCAA Audit", "Security Cleared"]
+            title: "Verified Excellence",
+            desc: "Your advanced training and milestones are audited and legalized through our global recognition systems.",
+            icon: Shield,
+            bullets: ["Security Audits", "Verified Experience", "Universal Credibility"]
         }
     ];
 
     const pipelineSteps = [
-        { title: "Theory Enrollment", value: "Secure your place in the Fujairah Aviation Academy (approx. AED 18,000).", icon: CheckCircle2 },
-        { title: "Material Mastery", value: "Study using the premium Bristol Ground School distance-learning system.", icon: BookOpen },
-        { title: "GCAA Assessment", value: "Sit and pass the official UAE GCAA theoretical exams in person.", icon: Shield },
-        { title: "Global Recognition", value: "Earn theoretical credits benchmarked against Emirates hiring standards.", icon: Globe }
+        { title: "Experience Audit", value: "A comprehensive review of your flight hours and training history by our expert panel.", icon: BarChart3 },
+        { title: "Skill Analytics", value: "Direct mapping of your competencies against airline-specific entry requirements.", icon: Zap },
+        { title: "Profile Optimization", value: "Conversion of your career history into the premium ATLAS CV recognition format.", icon: Globe },
+        { title: "Placement Strategy", value: "Deployment of your profile to our network of partner airlines and jet operators.", icon: Briefcase }
     ];
 
     return (
@@ -52,30 +52,28 @@ export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNa
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <div className="flex justify-center items-center gap-4 mb-8">
-                            <Rocket className="w-12 h-12 text-blue-600" />
-                        </div>
+                        <Briefcase className="mx-auto w-12 h-12 text-blue-600 mb-8" />
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
-                            Global GCAA Theoretical Credits
+                            Advanced Career Pathway
                         </p>
                         <h1 className="text-4xl md:text-7xl font-serif text-slate-900 leading-tight mb-8">
-                            Emirates <br />ATPL Pathway
+                            Transition Program <br />Application
                         </h1>
                         <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
-                            A strategic theoretical upgrade for pilots worldwide. Secure the GCAA ATPL credits
-                            recognized by regulators and airlines as the global benchmark for professional excellence.
+                            Accelerate your evolution from flight training to the professional flight deck.
+                            Our transition program provides the legalization of recognition for advanced pilots.
                         </p>
                     </RevealOnScroll>
                 </div>
             </div>
 
-            {/* Core Features Grid */}
+            {/* Core Advantages Grid */}
             <div className="py-24 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {pathwayFeatures.map((item, idx) => (
+                    {mainFeatures.map((item, idx) => (
                         <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start">
                             <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
-                                {typeof item.icon === 'function' ? item.icon({}) : <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />}
+                                <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
                             </div>
                             <h3 className="text-2xl font-serif text-slate-900 mb-4">{item.title}</h3>
                             <p className="text-slate-600 mb-8 leading-relaxed text-sm font-sans">{item.desc}</p>
@@ -98,26 +96,26 @@ export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNa
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                         <div>
                             <RevealOnScroll>
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">UAE Strategic Hurdle</p>
+                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">Advanced Recognition</p>
                                 <h2 className="text-3xl md:text-5xl font-serif mb-8 leading-tight">
-                                    Theory First: Clearing <br />the GCC Hurdle
+                                    Bridging the Gap to <br />Flagship Careers
                                 </h2>
                                 <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
-                                    "A CPL alone keeps you competing in local markets. GCAA ATPL theoretical credits globalize your profile."
+                                    "We make the connection between pilot performance and airline expectations easier than ever before."
                                 </p>
                                 <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
-                                    Because many regional licenses cannot be directly converted, passing GCAA exams early is the
-                                    ultimate differentiator. WingMentor and Fujairah Aviation Academy provide the infrastructure
-                                    to secure these credits while you continue your training or work abroad.
+                                    The Transition Program is our most advanced recognition tier. It is designed to take pilots
+                                    approaching professional minimums and provide the data-driven credibility required by
+                                    modern airline HR systems.
                                 </p>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
                                         <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                                        <span className="text-slate-300 text-sm font-sans">Bristol Ground School Material Access</span>
+                                        <span className="text-slate-300 text-sm font-sans">Direct Registry with Partner Carriers</span>
                                     </div>
                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
                                         <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                                        <span className="text-slate-300 text-sm font-sans">UAE Security Clearance Support</span>
+                                        <span className="text-slate-300 text-sm font-sans">Universal ATLAS CV Certification</span>
                                     </div>
                                 </div>
                             </RevealOnScroll>
@@ -125,21 +123,14 @@ export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNa
                         <div className="relative">
                             <div className="aspect-square bg-slate-100 rounded-[3rem] overflow-hidden shadow-2xl relative">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1Ars9ou0JcoloGv-W18gvJ1G0eWrdFNAu"
-                                    alt="Global ATPL Pathways"
-                                    className="w-full h-full object-cover opacity-80"
+                                    src="https://images.unsplash.com/photo-1540910419842-dfdfdf617811?q=80&w=2832&auto-format&fit=crop"
+                                    alt="Advanced Flight Deck Transition"
+                                    className="w-full h-full object-cover"
                                 />
                                 <div className="absolute inset-0 bg-blue-900/40 mix-blend-overlay"></div>
-                                <div className="absolute bottom-6 left-6 right-6 p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-                                            <Globe className="w-5 h-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-blue-200 tracking-wider uppercase">Region</p>
-                                            <p className="text-white font-bold">UAE / Global Credits</p>
-                                        </div>
-                                    </div>
+                                <div className="absolute top-6 right-6 p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-right">
+                                    <p className="text-xs font-bold text-blue-200 tracking-wider uppercase">Program Tier</p>
+                                    <p className="text-white font-bold">Transition Ready</p>
                                 </div>
                             </div>
                         </div>
@@ -147,9 +138,9 @@ export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNa
                 </div>
             </div>
 
-            {/* Pathway Pipeline */}
+            {/* Pipeline Steps */}
             <div className="py-24 px-6 max-w-7xl mx-auto">
-                <h2 className="text-3xl font-serif text-slate-900 mb-16 text-center">Pathway Pipeline</h2>
+                <h2 className="text-3xl font-serif text-slate-900 mb-16 text-center">Transition Pipeline</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {pipelineSteps.map((item, idx) => (
                         <div key={idx} className="p-10 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group relative">
@@ -162,27 +153,27 @@ export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNa
                 </div>
             </div>
 
-            {/* Footer CTA */}
+            {/* Footer / Application Start */}
             <div className="py-24 px-6 bg-slate-50 border-t border-slate-200">
                 <div className="max-w-4xl mx-auto text-center">
                     <RevealOnScroll>
-                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">Secure Your Global Future</h2>
+                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">Apply for Transition Status</h2>
                         <p className="text-lg text-slate-600 mb-10 font-sans max-w-2xl mx-auto">
-                            Don't wait for your license to expire or your local market to saturate. Clear the GCAA
-                            theoretical hurdles today and globalize your career recognition.
+                            Ensure your career experience is legalized and recognized. Start the transition audit
+                            today and gain the visibility your hard work deserves.
                         </p>
                         <div className="flex flex-wrap justify-center gap-6">
                             <button
                                 onClick={() => onNavigate('become-member')}
                                 className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-5 rounded-full font-bold text-lg transition-all shadow-xl hover:shadow-blue-500/20 font-sans"
                             >
-                                Enroll in Pathway
+                                Start Transition Audit
                             </button>
                             <button
                                 onClick={onBack}
                                 className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-900 px-12 py-5 rounded-full font-bold text-lg transition-all font-sans"
                             >
-                                Return to Insight
+                                Return to Home
                             </button>
                         </div>
                     </RevealOnScroll>

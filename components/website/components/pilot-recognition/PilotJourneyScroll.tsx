@@ -15,7 +15,9 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
   const [cursorVisible, setCursorVisible] = useState(false);
   const [typingField, setTypingField] = useState<null | 'email' | 'password'>(null);
   const [loginPressed, setLoginPressed] = useState(false);
-  const [showDashboard, setShowDashboard] = useState(false);
+  const [showHomeScreen, setShowHomeScreen] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(true);
+  const [selectedNavItem, setSelectedNavItem] = useState<null | 'programs' | 'recognition' | 'pathways'>(null);
   const [showFoundationPlatform, setShowFoundationPlatform] = useState(false);
   const [showModulesPage, setShowModulesPage] = useState(false);
   const [showLowTimerPage, setShowLowTimerPage] = useState(false);
@@ -61,323 +63,15 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
   const runAnimation = async () => {
     // Small delay after component is visible
     await new Promise(r => setTimeout(r, 150));
-      
-      // Show cursor
-      setCursorVisible(true);
-      
-      // Move cursor to email field (right side, ~60% from left, ~45% from top)
-      setCursorPosition({ x: 58, y: 42 });
-      await new Promise(r => setTimeout(r, 400));
-      
-      // Click email field
-      setCursorPosition({ x: 58, y: 42 });
+
+      // Show home screen
       await new Promise(r => setTimeout(r, 200));
-      setTypingField('email');
-      
-      // Type email
-      const email = "wingmentorprogram@gmail.com";
-      for (let i = 0; i <= email.length; i++) {
-        setEmailText(email.slice(0, i));
-        await new Promise(r => setTimeout(r, 40));
-      }
-      
-      // Finish typing email, pause
-      setTypingField(null);
-      await new Promise(r => setTimeout(r, 200));
-      
-      // Move mouse to password field
-      setCursorPosition({ x: 58, y: 52 });
-      await new Promise(r => setTimeout(r, 250));
-      
-      // Click on password field
-      await new Promise(r => setTimeout(r, 100));
-      setTypingField('password');
-      await new Promise(r => setTimeout(r, 200));
-      
-      // Type password (dots)
-      const passwordLength = 12;
-      for (let i = 0; i <= passwordLength; i++) {
-        setPasswordText("•".repeat(i));
-        await new Promise(r => setTimeout(r, 40));
-      }
-      
-      setTypingField(null);
-      await new Promise(r => setTimeout(r, 250));
-      
-      // Pause before moving to login
-      await new Promise(r => setTimeout(r, 150));
-      
-      // Move mouse to login button (positioned on the button in right panel)
-      setCursorPosition({ x: 62, y: 66 });
-      await new Promise(r => setTimeout(r, 450));
-      
-      // Hover over login button briefly
-      await new Promise(r => setTimeout(r, 100));
-      
-      // Press login button
-      setLoginPressed(true);
-      await new Promise(r => setTimeout(r, 125));
-      setLoginPressed(false);
-      await new Promise(r => setTimeout(r, 250));
-      
-      // Hide cursor
-      setCursorVisible(false);
-      
-      // Show dashboard inside iPad after login
-      await new Promise(r => setTimeout(r, 200));
-      setShowDashboard(true);
+      setShowHomeScreen(true);
 
-      // Wait for dashboard to render
-      await new Promise(r => setTimeout(r, 1000));
+      // Animation stops here - waits for user to click a card
+      // Dashboard transition happens when user clicks a card
 
-      // Show cursor again for dashboard interaction
-      setCursorVisible(true);
-
-      // Move cursor to the "Access Platform" button on Foundational Program card
-      setCursorPosition({ x: 42, y: 65 });
-      await new Promise(r => setTimeout(r, 400));
-
-      // Hover effect on the button
-      await new Promise(r => setTimeout(r, 150));
-
-      // Press the button
-      setButtonPressed(true);
-      await new Promise(r => setTimeout(r, 100));
-      setButtonPressed(false);
-      await new Promise(r => setTimeout(r, 75));
-
-      // Hide cursor before transition
-      setCursorVisible(false);
-      await new Promise(r => setTimeout(r, 150));
-
-      // Transition to Foundation Program Platform page with warp effect
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 200));
-      setShowFoundationPlatform(true);
-      await new Promise(r => setTimeout(r, 200));
-      setIsTransitioning(false);
-
-      // Wait for platform page to render
-      await new Promise(r => setTimeout(r, 1000));
-
-      // Show cursor again for platform interaction
-      setCursorVisible(true);
-
-      // Move cursor to the "View Details" button on Modules card
-      setCursorPosition({ x: 18, y: 58 });
-      await new Promise(r => setTimeout(r, 400));
-
-      // Hover effect on the button
-      await new Promise(r => setTimeout(r, 150));
-
-      // Press the button
-      setButtonPressed(true);
-      await new Promise(r => setTimeout(r, 100));
-      setButtonPressed(false);
-      await new Promise(r => setTimeout(r, 75));
-
-      // Hide cursor
-      setCursorVisible(false);
-
-      // Show modules page
-      setShowModulesPage(true);
-
-      // Wait for modules page to render
-      await new Promise(r => setTimeout(r, 800));
-
-      // Show cursor for scrolling
-      setCursorVisible(true);
-
-      // Move cursor to scroll position
-      setCursorPosition({ x: 50, y: 60 });
-      await new Promise(r => setTimeout(r, 400));
-
-      // Animate scrolling down on modules page - single CSS transition for smoothness
-      setModulesScrollY(800);
-      await new Promise(r => setTimeout(r, 4000)); // Wait for scroll to complete
-      
-      // Hide cursor
-      setCursorVisible(false);
-      
-      // Wait briefly then transition to Pilot Gap page
-      await new Promise(r => setTimeout(r, 500));
-      
-      // Transition to Pilot Gap page (moved up in sequence)
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 200));
-      setShowModulesPage(false);
-      setShowPilotGapPage(true);
-      await new Promise(r => setTimeout(r, 200));
-      setIsTransitioning(false);
-
-      // Wait for Pilot Gap page to display so users can read it
-      await new Promise(r => setTimeout(r, 2000));
-
-      // Transition to Low-Timer page
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 250));
-      setShowPilotGapPage(false);
-      setShowLowTimerPage(true);
-      await new Promise(r => setTimeout(r, 250));
-      setIsTransitioning(false);
-
-      // Wait for Low-Timer page to render
-      await new Promise(r => setTimeout(r, 800));
-
-      // Show cursor for scrolling on Low-Timer page
-      setCursorVisible(true);
-
-      // Move cursor to scroll position
-      setCursorPosition({ x: 50, y: 60 });
-      await new Promise(r => setTimeout(r, 400));
-
-      // Animate scrolling down on Low-Timer page - single CSS transition for smoothness
-      setLowTimerScrollY(1500);
-      await new Promise(r => setTimeout(r, 5000)); // Wait for scroll to complete
-      
-      // Hide cursor
-      setCursorVisible(false);
-      
-      // Wait briefly then transition to Examination Portal
-      await new Promise(r => setTimeout(r, 500));
-
-      // Wait for Examination Portal to render
-      await new Promise(r => setTimeout(r, 500));
-
-      // Transition to Examination Portal with warp zoom effect
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 200));
-      setShowLowTimerPage(false);
-      setShowExaminationPortal(true);
-      await new Promise(r => setTimeout(r, 200));
-      setIsTransitioning(false);
-
-      // Wait for Examination Portal to render
-      await new Promise(r => setTimeout(r, 1000));
-
-      // Show cursor for clicking Pilot Licensure Examination
-      setCursorVisible(true);
-      setCursorPosition({ x: 72, y: 58 }); // Position on "Select License & Start" button
-      await new Promise(r => setTimeout(r, 1000));
-      
-      // Click animation
-      setButtonPressed(true);
-      await new Promise(r => setTimeout(r, 200));
-      setButtonPressed(false);
-      await new Promise(r => setTimeout(r, 400));
-      
-      // Hide cursor
-      setCursorVisible(false);
-      
-      // Transition to License Selection page
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 250));
-      setShowExaminationPortal(false);
-      setShowLicenseSelection(true);
-      await new Promise(r => setTimeout(r, 250));
-      setIsTransitioning(false);
-
-      // Wait for License Selection to render
-      await new Promise(r => setTimeout(r, 800));
-      
-      // Show cursor for selecting CPL
-      setCursorVisible(true);
-      setCursorPosition({ x: 25, y: 50 }); // Position on CPL card
-      await new Promise(r => setTimeout(r, 600));
-      
-      // Click on CPL
-      setButtonPressed(true);
-      await new Promise(r => setTimeout(r, 150));
-      setButtonPressed(false);
-      await new Promise(r => setTimeout(r, 200));
-      
-      // Hide cursor
-      setCursorVisible(false);
-      
-      // Transition to Examination In Progress
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 250));
-      setShowLicenseSelection(false);
-      setShowExaminationInProgress(true);
-      await new Promise(r => setTimeout(r, 250));
-      setIsTransitioning(false);
-
-      // Wait for exam to display
-      await new Promise(r => setTimeout(r, 2000));
-      
-      // Transition to Examination Results
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 250));
-      setShowExaminationInProgress(false);
-      setShowExaminationResults(true);
-      await new Promise(r => setTimeout(r, 250));
-      setIsTransitioning(false);
-
-      // Wait for Examination Results to render
-      await new Promise(r => setTimeout(r, 800));
-
-      // Show cursor for scrolling
-      setCursorVisible(true);
-      setCursorPosition({ x: 50, y: 60 });
-      await new Promise(r => setTimeout(r, 400));
-
-      // Scroll down through Examination Results - single CSS transition for smoothness
-      setExamResultsScrollY(700);
-      await new Promise(r => setTimeout(r, 4000)); // Wait for scroll to complete
-      
-      // Hide cursor
-      setCursorVisible(false);
-
-      // Wait then transition to Pilot Recognition page
-      await new Promise(r => setTimeout(r, 500));
-
-      // Transition to Pilot Recognition page with ATLAS CV
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 250));
-      setShowExaminationResults(false);
-      setShowPilotRecognition2(true);
-      await new Promise(r => setTimeout(r, 250));
-      setIsTransitioning(false);
-
-      // Wait for Pilot Recognition page to render
-      await new Promise(r => setTimeout(r, 1000));
-
-      // Show cursor for scrolling
-      setCursorVisible(true);
-      setCursorPosition({ x: 50, y: 60 });
-      await new Promise(r => setTimeout(r, 400));
-
-      // Scroll down to reveal the ATLAS CV card (red header component)
-      setPilotRecognitionScrollY(800);
-      await new Promise(r => setTimeout(r, 3000)); // Wait for scroll to complete
-
-      // Move cursor to "View Flight Digital Logbook" button
-      setCursorPosition({ x: 25, y: 72 });
-      await new Promise(r => setTimeout(r, 800));
-      
-      // Click the button
-      setButtonPressed(true);
-      await new Promise(r => setTimeout(r, 150));
-      setButtonPressed(false);
-      await new Promise(r => setTimeout(r, 200));
-      
-      // Hide cursor after click
-      await new Promise(r => setTimeout(r, 300));
-      setCursorVisible(false);
-      await new Promise(r => setTimeout(r, 300));
-
-      // Transition to Digital Flight Logbook
-      setIsTransitioning(true);
-      await new Promise(r => setTimeout(r, 250));
-      setShowPilotRecognition2(false);
-      setShowDigitalLogbook(true);
-      await new Promise(r => setTimeout(r, 250));
-      setIsTransitioning(false);
-
-      // Wait for Digital Logbook to render
-      await new Promise(r => setTimeout(r, 1500));
-
-      // Animation ends on the Digital Flight Logbook page
+      // Mark animation as complete to enable user interaction
       setAnimationComplete(true);
   };
 
@@ -416,111 +110,34 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           isTransitioning ? 'scale-95 blur-md opacity-50' : 'scale-100 blur-0 opacity-100'
         }`}>
           {!showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
-            /* Login Screen */
-            <div className={`relative w-full h-full flex items-center justify-center p-8 ${animationComplete ? '' : 'pointer-events-none'}`}>
-              {/* Background Shader - Cloud/Sky */}
-              <div className="absolute inset-0 z-0">
+            /* Home Screen - Carousel */
+            <div className={`relative w-full h-full ${animationComplete ? '' : 'pointer-events-none'}`}>
+              {/* Background */}
+              <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
                 <img
                   src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2000&auto=format&fit=crop"
-                  alt="Cloud background"
-                  className="w-full h-full object-cover"
+                  alt="Background"
+                  className="w-full h-full object-cover opacity-20"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/30 via-blue-300/20 to-white/40 backdrop-blur-[2px]" />
               </div>
-              
-              {/* Login Card - Smaller and more square */}
-              <div className="relative z-10 w-[75%] h-[65%] rounded-[12px] overflow-hidden shadow-2xl flex pointer-events-none">
-                {/* Mouse Cursor */}
-                <div
-                  className={`absolute z-50 pointer-events-none transition-all duration-700 ease-in-out ${cursorVisible ? 'opacity-100' : 'opacity-0'}`}
-                  style={{
-                    left: `${cursorPosition.x}%`,
-                    top: `${cursorPosition.y}%`,
-                    transform: 'translate(-100%, -20%)',
-                    transitionProperty: 'left, top, opacity',
-                  }}
-                >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="drop-shadow-lg">
-                <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.45 0 .67-.53.35-.85L6.35 2.86a.5.5 0 0 0-.85.35Z" fill="white" stroke="#1a1a2e" strokeWidth="1"/>
-              </svg>
-              {/* Click ripple effect */}
-              <div className={`absolute inset-0 flex items-center justify-center ${typingField ? 'scale-0' : 'scale-100'} transition-transform duration-150`}>
-                <div className="w-4 h-4 rounded-full bg-blue-400/30 animate-ping" />
-              </div>
-            </div>
 
-            {/* Left Side - Dark Blue */}
-            <div className="w-1/2 bg-gradient-to-br from-[#0d1f35] to-[#051020] flex flex-col items-center justify-center p-5 text-center">
-              <img
-                src={IMAGES.LOGO}
-                alt="WingMentor Logo"
-                className="w-16 h-auto object-contain mb-3 opacity-90"
-              />
-              <p className="text-[8px] font-bold tracking-[0.25em] uppercase text-white/50 mb-1.5">
-                Mentor Network
-              </p>
-              <h3 className="text-white font-semibold text-base mb-3">Pilot Portal</h3>
-              <p className="text-white/70 text-[9px] leading-relaxed max-w-[180px] mb-3">
-                Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies.
-              </p>
-              <div className="px-4 py-1.5 bg-white/10 text-white text-[9px] rounded-full border border-white/20">
-                Learn more
+              {/* Content */}
+              <div className="relative z-10 w-full h-full flex flex-col p-6">
+                {/* Header */}
+                <div className="flex items-center gap-3 mb-6">
+                  <img
+                    src={IMAGES.LOGO}
+                    alt="WingMentor Logo"
+                    className="w-10 h-auto object-contain"
+                  />
+                  <div>
+                    <p className="text-white font-bold text-xs">WingMentor</p>
+                    <p className="text-white/60 text-[7px] uppercase tracking-wider">Pilot Mentor Network</p>
+                  </div>
+                </div>
+
               </div>
             </div>
-            
-            {/* Right Side - Light */}
-            <div className="w-1/2 bg-[#eef2f6] flex flex-col justify-center p-5">
-              <h2 className="text-slate-800 font-medium text-xs mb-0.5">Connecting pilots to the aviation industry</h2>
-              <p className="text-slate-500 text-[9px] mb-2">Sign in with your WingMentor credentials.</p>
-              
-              {/* Badge - Blue pill style */}
-              <div className="mb-2">
-                <span className="inline-block px-2 py-0.5 bg-blue-100/80 text-blue-600 text-[8px] rounded-md font-medium">Change Optimization</span>
-              </div>
-              
-              <p className="text-[7px] font-bold tracking-[0.15em] uppercase text-slate-400 mb-1.5">WingMentor Account</p>
-              
-              {/* Form Fields */}
-              <div className="space-y-1.5">
-                <div className={`flex items-center gap-2 px-2.5 py-1.5 bg-white border rounded-lg text-[10px] transition-all ${typingField === 'email' ? 'border-blue-400 ring-2 ring-blue-100' : 'border-slate-200'}`}>
-                  <Mail className="w-3 h-3 text-slate-400" />
-                  <span className={emailText ? 'text-slate-700' : 'text-slate-400'}>
-                    {emailText || 'Email'}
-                  </span>
-                  {typingField === 'email' && (
-                    <span className="w-0.5 h-3 bg-blue-500 animate-pulse ml-0.5" />
-                  )}
-                </div>
-                <div className={`flex items-center gap-2 px-2.5 py-1.5 bg-white border rounded-lg text-[10px] transition-all ${typingField === 'password' ? 'border-blue-400 ring-2 ring-blue-100' : 'border-slate-200'}`}>
-                  <Lock className="w-3 h-3 text-slate-400" />
-                  <span className={passwordText ? 'text-slate-700' : 'text-slate-400'}>
-                    {passwordText || 'Password'}
-                  </span>
-                  {typingField === 'password' && (
-                    <span className="w-0.5 h-3 bg-blue-500 animate-pulse ml-0.5" />
-                  )}
-                </div>
-              </div>
-              
-              <div className="flex justify-end mt-1">
-                <span className="text-blue-500 text-[9px]">Forgot Password?</span>
-              </div>
-              
-              <div className={`w-full mt-1.5 py-1.5 text-white text-[10px] font-medium rounded-lg text-center flex items-center justify-center gap-1 transition-all duration-100 ${loginPressed ? 'bg-slate-600 scale-95' : 'bg-slate-800'}`}>
-                Login <span>→</span>
-              </div>
-              
-              <div className="flex items-center gap-1 mt-2">
-                <div className="w-3 h-3 rounded border border-slate-300 bg-white" />
-                <span className="text-slate-500 text-[9px]">Remember me</span>
-              </div>
-              
-              <p className="text-slate-400 text-[8px] mt-2">
-                Not a member? <span className="text-blue-500">Create an account</span> • <span className="text-blue-500">Visit Pilot Network</span>
-              </p>
-            </div>
-          </div>
-        </div>
           )}
           {showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
         /* Dashboard View Inside iPad - Full Dashboard Layout */

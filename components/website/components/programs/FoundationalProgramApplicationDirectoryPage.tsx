@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft, UserPlus, Shield, Award, Zap, CheckCircle2, ChevronRight, GraduationCap, Users, Target, Search } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
 interface FoundationalProgramApplicationPageProps {

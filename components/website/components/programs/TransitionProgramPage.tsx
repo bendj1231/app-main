@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { TopNavbar } from '../TopNavbar';
 
 interface TransitionProgramPageProps {
     onBack: () => void;

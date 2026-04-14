@@ -8,7 +8,7 @@ export const IMAGES = {
     HUB_VIDEO: "https://www.dropbox.com/scl/fi/4gk5uoxr0vxxwstazfh6y/videoSharingFinalOutput.mov?rlkey=qy8y8bj2y88egy9njrremglom&st=oj65v4py&raw=1",
     HUB_INTERFACE: "https://lh3.googleusercontent.com/d/1LMBTc0Qr0MamUdoJt01lEclzMlNt71DQ",
     CUT_SCENE_VIDEO: "https://www.dropbox.com/scl/fi/4gk5uoxr0vxxwstazfh6y/videoSharingFinalOutput.MOV?rlkey=qy8y8bj2y88egy9njrremglom&st=3i9ip49x&raw=1",
-    QUOTE_BG: "https://lh3.googleusercontent.com/d/1zZq7vcdQ_2SilrWsZgnJ77p8XrDP9Qbs",
+    QUOTE_BG: "https://lh3.googleusercontent.com/d/1zZq7vcdQ_2SilrWsZgnJ77p8XrDP9bs",
     HERO_POSTER: "https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=3000&auto-format&fit=crop",
     PROGRAM_BG: "https://lh3.googleusercontent.com/d/1ePNiHj2v3W-bqFZfx8loTeJZUhXfLd5U",
     ABOUT_BG: "https://lh3.googleusercontent.com/d/1xZ5rv7k6fhS5Mhx_Db1TlDUkWyZDjMVb",

@@ -1,47 +1,47 @@
 import React from 'react';
-import { ArrowLeft, Rocket, Shield, Award, Zap, CheckCircle2, ChevronRight, Briefcase, Users, Target, Globe, Plane, Building2, Cpu } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { ArrowLeft, Rocket, Shield, Award, Zap, CheckCircle2, ChevronRight, GraduationCap, Users, Target, Globe, BookOpen } from 'lucide-react';
+import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
-interface AirTaxiPathwaysPageProps {
+interface EmiratesAtplPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
     onLogin: () => void;
 }
 
-export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack, onNavigate, onLogin }) => {
-    const industryElements = [
+export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNavigate, onLogin }) => {
+    const pathwayFeatures = [
         {
-            title: "eVTOL Revolution",
-            desc: "Direct involvement with Archer and Joby Aviation to define the next generation of urban pilot requirements.",
-            icon: Rocket,
-            bullets: ["Electric Propulsion", "Vertical Ops", "Simplified Control"]
-        },
-        {
-            title: "Drone Logistics (MLG)",
-            desc: "Pathway into high-value cargo and logistics drone operations through our partnership with MLG leadership.",
-            icon: Building2,
-            bullets: ["Remote Pilotage", "Autonomous Systems", "Strategic Delivery"]
-        },
-        {
-            title: "Urban Air Mobility",
-            desc: "Specialized training in the high-density, low-altitude airspace management required for city-center hubs.",
+            title: "Global Strategic Positioning",
+            desc: "Passing GCAA exams in the UAE clears the hardest conversion hurdle for international pilots seeking GCC roles.",
             icon: Globe,
-            bullets: ["UAM Corridors", "Vertiport SOPs", "Urban Navigation"]
+            bullets: ["Regional Authority", "Conversion Advantage", "UAE Ready"]
         },
         {
-            title: "Direct Recruitment",
-            desc: "WingMentor serves as a primary verification layer for air taxi operators looking for ready-to-deploy pilots.",
-            icon: Target,
-            bullets: ["Partner Referrals", "Verified Profiles", "Early Access"]
+            title: "Frozen ATPL Credits",
+            desc: "Credits that signal to airlines worldwide that you can handle rigorous, international-standard theoretical training.",
+            icon: Award,
+            bullets: ["Emirates Standard", "Worldwide Trust", "Career Utility"]
+        },
+        {
+            title: "Accelerated Earning Power",
+            desc: "Theory completed early ensures you move faster through seniority lists and command upgrades when hours are met.",
+            icon: TrendingUp => <Zap className="w-7 h-7 text-blue-600 group-hover:text-white" />,
+            bullets: ["Command Track", "Seniority Advantage", "Faster ROI"]
+        },
+        {
+            title: "Gold-Standard Delivery",
+            desc: "Powered by Fujairah Aviation Academy and Bristol Ground School, the global benchmark for ATPL materials.",
+            icon: BookOpen,
+            bullets: ["Bristol Materials", "FAA/GCAA Audit", "Security Cleared"]
         }
     ];
 
     const pipelineSteps = [
-        { title: "Sector Audit", value: "A review of your current ratings against emerging air mobility requirements.", icon: Shield },
-        { title: "Competency Mapping", value: "Aligning your flight experience with eVTOL and remote-pilot behaviors.", icon: Cpu },
-        { title: "Partner Referral", value: "Deployment of your profile to our network of air taxi and logistics operators.", icon: Briefcase },
-        { title: "Fleet Activation", value: "Final selection and training for next-generation aircraft operations.", icon: Plane }
+        { title: "Theory Enrollment", value: "Secure your place in the Fujairah Aviation Academy (approx. AED 18,000).", icon: CheckCircle2 },
+        { title: "Material Mastery", value: "Study using the premium Bristol Ground School distance-learning system.", icon: BookOpen },
+        { title: "GCAA Assessment", value: "Sit and pass the official UAE GCAA theoretical exams in person.", icon: Shield },
+        { title: "Global Recognition", value: "Earn theoretical credits benchmarked against Emirates hiring standards.", icon: Globe }
     ];
 
     return (
@@ -53,29 +53,29 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
                         <div className="flex justify-center items-center gap-4 mb-8">
-                            <Zap className="w-10 h-10 text-blue-600" />
+                            <Rocket className="w-12 h-12 text-blue-600" />
                         </div>
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
-                            Emerging Air Mobility
+                            Global GCAA Theoretical Credits
                         </p>
                         <h1 className="text-4xl md:text-7xl font-serif text-slate-900 leading-tight mb-8">
-                            Air Taxi <br />Pathways
+                            Emirates <br />ATPL Pathway
                         </h1>
                         <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
-                            Urban air mobility is no longer science fiction. WingMentor provides the bridge to careers
-                            with Archer, MLG, and Joby Aviation—the titans of the eVTOL revolution.
+                            A strategic theoretical upgrade for pilots worldwide. Secure the GCAA ATPL credits
+                            recognized by regulators and airlines as the global benchmark for professional excellence.
                         </p>
                     </RevealOnScroll>
                 </div>
             </div>
 
-            {/* Industry Features Grid */}
+            {/* Core Features Grid */}
             <div className="py-24 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {industryElements.map((item, idx) => (
+                    {pathwayFeatures.map((item, idx) => (
                         <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start">
                             <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
-                                <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
+                                {typeof item.icon === 'function' ? item.icon({}) : <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />}
                             </div>
                             <h3 className="text-2xl font-serif text-slate-900 mb-4">{item.title}</h3>
                             <p className="text-slate-600 mb-8 leading-relaxed text-sm font-sans">{item.desc}</p>
@@ -98,26 +98,26 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                         <div>
                             <RevealOnScroll>
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">Vertical Integration</p>
+                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">UAE Strategic Hurdle</p>
                                 <h2 className="text-3xl md:text-5xl font-serif mb-8 leading-tight">
-                                    The Future of Flight <br />is Sustainable
+                                    Theory First: Clearing <br />the GCC Hurdle
                                 </h2>
                                 <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
-                                    "We are connecting traditional pilot skills with the future of electric vertical mobility."
+                                    "A CPL alone keeps you competing in local markets. GCAA ATPL theoretical credits globalize your profile."
                                 </p>
                                 <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
-                                    The air taxi sector requires a new kind of professional. It's about systems management,
-                                    urban situational awareness, and extreme precision. WingMentor is the only platform
-                                    legally recognized for its contribution to next-generation pilot recognition.
+                                    Because many regional licenses cannot be directly converted, passing GCAA exams early is the
+                                    ultimate differentiator. WingMentor and Fujairah Aviation Academy provide the infrastructure
+                                    to secure these credits while you continue your training or work abroad.
                                 </p>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
                                         <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                                        <span className="text-slate-300 text-sm font-sans">Direct Registry with eVTOL Partners</span>
+                                        <span className="text-slate-300 text-sm font-sans">Bristol Ground School Material Access</span>
                                     </div>
                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
                                         <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                                        <span className="text-slate-300 text-sm font-sans">Specialized UAM Competency Training</span>
+                                        <span className="text-slate-300 text-sm font-sans">UAE Security Clearance Support</span>
                                     </div>
                                 </div>
                             </RevealOnScroll>
@@ -125,14 +125,21 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                         <div className="relative">
                             <div className="aspect-square bg-slate-100 rounded-[3rem] overflow-hidden shadow-2xl relative">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1rZLzWxCpouDAIoNRFxeli5GDa3lhGyr2"
-                                    alt="Air Taxi Pathway"
-                                    className="w-full h-full object-cover"
+                                    src="https://lh3.googleusercontent.com/d/1Ars9ou0JcoloGv-W18gvJ1G0eWrdFNAu"
+                                    alt="Global ATPL Pathways"
+                                    className="w-full h-full object-cover opacity-80"
                                 />
                                 <div className="absolute inset-0 bg-blue-900/40 mix-blend-overlay"></div>
-                                <div className="absolute top-6 right-6 p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-right">
-                                    <p className="text-xs font-bold text-blue-200 tracking-wider uppercase">Active Fleet</p>
-                                    <p className="text-white font-bold">Archer Midnight</p>
+                                <div className="absolute bottom-6 left-6 right-6 p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                                            <Globe className="w-5 h-5 text-white" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-bold text-blue-200 tracking-wider uppercase">Region</p>
+                                            <p className="text-white font-bold">UAE / Global Credits</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -140,9 +147,9 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                 </div>
             </div>
 
-            {/* Pipeline Steps */}
+            {/* Pathway Pipeline */}
             <div className="py-24 px-6 max-w-7xl mx-auto">
-                <h2 className="text-3xl font-serif text-slate-900 mb-16 text-center">UAM Pathway Pipeline</h2>
+                <h2 className="text-3xl font-serif text-slate-900 mb-16 text-center">Pathway Pipeline</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {pipelineSteps.map((item, idx) => (
                         <div key={idx} className="p-10 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group relative">
@@ -159,17 +166,17 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
             <div className="py-24 px-6 bg-slate-50 border-t border-slate-200">
                 <div className="max-w-4xl mx-auto text-center">
                     <RevealOnScroll>
-                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">Join the Revolution</h2>
-                        <p className="text-lg text-slate-600 mb-10 font-sans max-w-2xl mx-auto leading-relaxed">
-                            Be part of the specialized cohort that will lead the urban skies. Your career in
-                            emerging air mobility starts with a verified WingMentor profile.
+                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">Secure Your Global Future</h2>
+                        <p className="text-lg text-slate-600 mb-10 font-sans max-w-2xl mx-auto">
+                            Don't wait for your license to expire or your local market to saturate. Clear the GCAA
+                            theoretical hurdles today and globalize your career recognition.
                         </p>
                         <div className="flex flex-wrap justify-center gap-6">
                             <button
                                 onClick={() => onNavigate('become-member')}
                                 className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-5 rounded-full font-bold text-lg transition-all shadow-xl hover:shadow-blue-500/20 font-sans"
                             >
-                                Apply for Pathway
+                                Enroll in Pathway
                             </button>
                             <button
                                 onClick={onBack}

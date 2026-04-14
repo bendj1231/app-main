@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2 } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
-import { RevealOnScroll } from './RevealOnScroll';
-import { AirlineExpectationsCarousel } from './AirlineExpectationsCarousel';
-import { PilotJourneyScroll } from './PilotJourneyScroll';
-import { IMAGES } from '../../../src/lib/website-constants';
+import { TopNavbar } from '../TopNavbar';
+import { RevealOnScroll } from '../RevealOnScroll';
+import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
+import { PilotJourneyScroll } from '../pilot-recognition/PilotJourneyScroll';
+import { IMAGES } from '../../../../src/lib/website-constants';
 
 interface HomePageProps {
     onJoinUs: () => void;
@@ -856,7 +856,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
             </div>
 
             {/* Airline Expectations 3D Carousel */}
-            <AirlineExpectationsCarousel />
+            <AirlineExpectationsCarousel onNavigate={onNavigate} onLogin={onLogin} />
 
             {/* Pilot Journey Scroll Animation - Between Video and Content */}
             <PilotJourneyScroll onNavigate={onNavigate} />
