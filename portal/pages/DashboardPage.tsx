@@ -1463,7 +1463,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </p>
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', alignItems: 'stretch' }}>
                 {/* Foundational Program Card - Clickable */}
                 <div
                   onClick={() => {
