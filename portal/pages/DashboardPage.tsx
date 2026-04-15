@@ -1317,7 +1317,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       display: 'flex',
                       alignItems: 'center',
                       gap: '1rem',
-                      fontSize: '0.9rem',
+                      fontSize: '0.8rem',
                       color: '#475569',
                       padding: '0.5rem 0'
                     }}
@@ -1479,8 +1479,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     background: isDarkMode
                       ? (isFoundationalEnrolled === null ? 'linear-gradient(135deg, rgba(71,85,105,0.6), rgba(51,65,85,0.5))' : 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))')
                       : (isFoundationalEnrolled === null ? 'rgba(148, 163, 184, 0.3)' : 'rgba(255, 255, 255, 0.7)'),
-                    borderRadius: '16px',
-                    padding: '1rem',
+                    borderRadius: '12px',
+                    padding: '0.75rem',
                     boxShadow: isDarkMode 
                       ? '0 20px 45px rgba(0,0,0,0.3)'
                       : '0 20px 45px rgba(15,23,42,0.08)',
@@ -1516,24 +1516,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: '0.65rem', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Core Training</span>
-                    <h3 style={{ margin: '0.15rem 0 0', fontSize: '1rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Foundational Program</h3>
+                    <span style={{ fontSize: '0.6rem', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Core Training</span>
+                    <h3 style={{ margin: '0.1rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Foundational Program</h3>
                   </div>
 
-                  <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '0.8rem', lineHeight: 1.4, flex: 1 }}>
+                  <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '0.75rem', lineHeight: 1.3, flex: 1 }}>
                     Master core aviation fundamentals, instrument procedures, and CRM techniques through structured simulator training.
                   </p>
 
                   <div
                     style={{
                       marginTop: 'auto',
-                      padding: '0.5rem 1rem',
+                      padding: '0.4rem 0.85rem',
                       borderRadius: '12px',
                       border: 'none',
                       background: isFoundationalEnrolled === null ? '#94a3b8' : isFoundationalEnrolled ? 'rgba(14, 165, 233, 0.9)' : '#10b981',
                       color: '#fff',
                       fontWeight: 600,
-                      fontSize: '0.9rem',
+                      fontSize: '0.8rem',
                       textAlign: 'center',
                       backdropFilter: 'blur(10px)',
                       cursor: isFoundationalEnrolled === null ? 'wait' : 'pointer'
@@ -1551,15 +1551,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }
                   }}
                   style={{
-                    background: isDarkMode 
-                      ? isFoundationalEnrolled 
+                    background: isDarkMode
+                      ? isFoundationalEnrolled
                         ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
                         : 'linear-gradient(135deg, rgba(30,41,59,0.4), rgba(15,23,42,0.3))'
                       : isFoundationalEnrolled
                         ? 'rgba(255, 255, 255, 0.7)'
                         : 'rgba(255, 255, 255, 0.3)',
-                    borderRadius: '24px',
-                    padding: '1.75rem',
+                    borderRadius: '12px',
+                    padding: '0.75rem',
                     boxShadow: isDarkMode 
                       ? isFoundationalEnrolled
                         ? '0 20px 45px rgba(0,0,0,0.3)'
@@ -1599,24 +1599,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>AIRBUS Aligned</span>
-                    <h3 style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>EBT CBTA Initial Pilot Recognition Interview</h3>
+                    <span style={{ fontSize: '0.6rem', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>AIRBUS Aligned</span>
+                    <h3 style={{ margin: '0.1rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>EBT CBTA Initial Pilot Recognition Interview</h3>
                   </div>
-                  
-                  <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '0.9rem', lineHeight: 1.5, flex: 1 }}>
+
+                  <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '0.75rem', lineHeight: 1.3, flex: 1 }}>
                     AIRBUS-aligned Evidence-Based Training and Competency-Based Training & Assessment interview for initial pilot recognition and industry placement readiness.
                   </p>
-                  
+
                   <div
                     style={{
                       marginTop: 'auto',
-                      padding: '0.75rem 1.5rem',
+                      padding: '0.4rem 0.85rem',
                       borderRadius: '12px',
                       border: 'none',
                       background: 'rgba(14, 165, 233, 0.9)',
                       color: '#fff',
                       fontWeight: 600,
-                      fontSize: '0.9rem',
+                      fontSize: '0.8rem',
                       textAlign: 'center',
                       backdropFilter: 'blur(10px)'
                     }}
@@ -1633,8 +1633,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                   style={{
                     background: 'rgba(15, 23, 42, 0.95)',
-                    borderRadius: '24px',
-                    padding: '1.75rem',
+                    borderRadius: '12px',
+                    padding: '0.75rem',
                     boxShadow: '0 20px 45px rgba(15,23,42,0.2)',
                     border: '1px solid rgba(51, 65, 85, 0.8)',
                     backdropFilter: 'blur(20px)',
@@ -1654,29 +1654,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <img src="/examinationterminalapp.png" alt="Examination Portal" style={{ width: '64px', height: '64px', borderRadius: '12px', objectFit: 'cover' }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <img src="/examinationterminalapp.png" alt="Examination Portal" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }} />
                     <div>
-                      <span style={{ fontSize: '0.75rem', color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Assessments</span>
-                      <h3 style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#f8fafc' }}>Examination Portal</h3>
+                      <span style={{ fontSize: '0.6rem', color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Assessments</span>
+                      <h3 style={{ margin: '0.1rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#f8fafc' }}>Examination Portal</h3>
                     </div>
                   </div>
-                  
-                  <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.9rem', lineHeight: 1.5, flex: 1 }}>
+
+                  <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.75rem', lineHeight: 1.3, flex: 1 }}>
                     Access your examination portal, view results, and track your assessment progress across all modules.
                   </p>
-                  
+
                   <button
                     style={{
                       marginTop: 'auto',
-                      padding: '0.75rem 1.5rem',
+                      padding: '0.4rem 0.85rem',
                       borderRadius: '12px',
                       border: '1px solid rgba(148, 163, 184, 0.3)',
                       background: 'transparent',
                       color: '#f8fafc',
                       fontWeight: 600,
                       cursor: 'pointer',
-                      fontSize: '0.9rem',
+                      fontSize: '0.8rem',
                       transition: 'all 0.2s ease'
                     }}
                     onClick={(e) => {
@@ -1830,7 +1830,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           color: isFoundationalEnrolled ? (isDarkMode ? '#f8fafc' : '#0f172a') : (isDarkMode ? '#94a3b8' : '#64748b'),
                           fontWeight: 600,
                           cursor: 'pointer',
-                          fontSize: '0.9rem',
+                          fontSize: '0.8rem',
                           transition: 'all 0.2s ease'
                         }}
                         onMouseEnter={(e) => {
@@ -1898,7 +1898,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           color: isDarkMode ? '#60a5fa' : '#2563eb',
                           fontWeight: 600,
                           cursor: 'pointer',
-                          fontSize: '0.9rem',
+                          fontSize: '0.8rem',
                           transition: 'all 0.2s ease'
                         }}
                         onMouseEnter={(e) => {
@@ -2334,7 +2334,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         background: 'transparent',
                         border: 'none',
                         color: '#2563eb',
-                        fontSize: '0.9rem',
+                        fontSize: '0.8rem',
                         fontWeight: 600,
                         cursor: 'pointer',
                         textDecoration: 'underline',
