@@ -1,6 +1,30 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, collection as firestoreCollection, doc as firestoreDoc, query as firestoreQuery, where as firestoreWhere, getDocs as firestoreGetDocs, getDoc as firestoreGetDoc, addDoc as firestoreAddDoc, updateDoc as firestoreUpdateDoc, deleteDoc as firestoreDeleteDoc, setDoc as firestoreSetDoc, onSnapshot as firestoreOnSnapshot, orderBy as firestoreOrderBy, limit as firestoreLimit } from 'firebase/firestore';
+
+// Create a mock Firestore instance for when db is null
+const createMockFirestore = () => ({
+  collection: (path: string) => ({
+    id: path,
+    path: path,
+    parent: null,
+    type: 'collection' as const,
+    onSnapshot: () => () => {},
+    getDocs: () => Promise.resolve({ docs: [] }),
+    addDoc: () => Promise.resolve({ id: 'mock-id' })
+  }),
+  doc: (path: string) => ({
+    id: path,
+    path: path,
+    parent: null,
+    type: 'document' as const,
+    onSnapshot: () => () => {},
+    getDoc: () => Promise.resolve({ exists: false, data: () => ({}) }),
+    setDoc: () => Promise.resolve(),
+    updateDoc: () => Promise.resolve(),
+    deleteDoc: () => Promise.resolve()
+  })
+});
 
 // Firebase configuration
 const firebaseConfig = {
@@ -113,7 +137,7 @@ try {
                 });
             }
         };
-        db = null;
+        db = createMockFirestore();
         
     } else {
         // Use real Firebase
@@ -171,7 +195,7 @@ try {
             });
         }
     };
-    db = null;
+    db = createMockFirestore();
 }
 
 export { auth, db };
