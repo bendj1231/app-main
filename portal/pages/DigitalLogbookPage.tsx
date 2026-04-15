@@ -166,7 +166,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
       <div style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '1400px',
+        maxWidth: '1200px',
         margin: '0 auto',
         padding: '2rem clamp(1.5rem, 4vw, 3rem)'
       }}>

@@ -244,7 +244,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
   };
 
   return (
-    <div className="w-full h-full bg-slate-50 overflow-y-auto" style={{ padding: '0.4rem 0.75rem', maxWidth: '800px', margin: '0 auto', minHeight: 'auto' }}>
+    <div className="w-full h-full bg-slate-50 overflow-y-auto" style={{ padding: '0.4rem', maxWidth: '1200px', margin: '0 auto', minHeight: 'auto' }}>
       <main className="w-full max-w-5xl mx-auto min-h-full bg-white shadow-sm" style={{ position: 'relative', padding: '1rem' }}>
         <button
           onClick={onBack}
