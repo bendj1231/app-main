@@ -17,31 +17,24 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
 
   const targetText = 'pilotrecognition.com';
 
-  // Auto-start animation and loop
+  // Auto-start animation on mount
   useEffect(() => {
-    const startAnimation = () => {
-      // Clear any existing intervals/timeouts
-      if (typingIntervalRef.current) {
-        clearInterval(typingIntervalRef.current);
-        typingIntervalRef.current = null;
-      }
-      if (warpTimeoutRef.current) {
-        clearTimeout(warpTimeoutRef.current);
-        warpTimeoutRef.current = null;
-      }
-      
-      setScene('search');
-      setTypedText('');
-      hasStartedTypingRef.current = false;
-      isCompleteRef.current = false;
-    };
-
-    // Start immediately and loop every 8.5 seconds
-    startAnimation();
-    const loopInterval = setInterval(startAnimation, 8500);
+    // Clear any existing intervals/timeouts
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
+    if (warpTimeoutRef.current) {
+      clearTimeout(warpTimeoutRef.current);
+      warpTimeoutRef.current = null;
+    }
+    
+    setScene('search');
+    setTypedText('');
+    hasStartedTypingRef.current = false;
+    isCompleteRef.current = false;
 
     return () => {
-      clearInterval(loopInterval);
       if (typingIntervalRef.current) {
         clearInterval(typingIntervalRef.current);
       }
