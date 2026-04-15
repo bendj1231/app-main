@@ -439,8 +439,8 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 )}
 
-                {/* Text Overlay - Directly on Image (for large cards only) */}
-                {isLargeCard && (
+                {/* Text Overlay - Directly on Image (for large cards without animation) */}
+                {isLargeCard && !card.hasAnimation && (
                     <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 md:p-6 flex flex-col justify-end">
                         <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2">
                             {card.dynamicTitles ? (
