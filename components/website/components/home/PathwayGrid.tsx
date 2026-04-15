@@ -44,11 +44,12 @@ const dummyCards = [
     {
         id: 'discover',
         images: [
+            '/images/w1000.png',
             'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=1000&auto=format&fit=crop',
         ],
-        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop',
+        image: '/images/w1000.png',
         title: 'Discover',
         subtitle: 'Explore W1000 application, Airline Expectations, and Examination Terminal',
         icon: Map,
