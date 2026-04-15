@@ -60,6 +60,10 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
     
     try {
       // Query Firestore for existing enquiries from this user for this program
+      if (!db) {
+        console.error('Firestore not initialized');
+        return;
+      }
       const enquiriesRef = collection(db, 'supportEnquiries');
       const q = query(
         enquiriesRef,
@@ -166,6 +170,10 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
       };
 
       // Store in Firestore
+      if (!db) {
+        console.error('Firestore not initialized');
+        return;
+      }
       const enquiriesRef = collection(db, 'supportEnquiries');
       await addDoc(enquiriesRef, enquiryData);
 
@@ -176,6 +184,10 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
         timestamp: new Date().toISOString() // Keep string format for notifications
       };
       
+      if (!db) {
+        console.error('Firestore not initialized');
+        return;
+      }
       const notificationsRef = collection(db, 'notifications');
       await addDoc(notificationsRef, notificationData);
 

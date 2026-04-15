@@ -117,6 +117,10 @@ export const RestrictionPage: React.FC<RestrictionPageProps> = ({
   // Check if user has cooldown active
   const checkCooldown = async () => {
     try {
+      if (!db) {
+        console.error('Firestore not initialized');
+        return;
+      }
       // Query Firestore for existing enquiries from this user for this program
       const enquiriesRef = collection(db, 'supportEnquiries');
       const q = query(

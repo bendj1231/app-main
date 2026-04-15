@@ -87,6 +87,10 @@ export const MentorLogbookPage: React.FC<MentorLogbookPageProps> = ({ onBack, us
     }
 
     try {
+      if (!db) {
+        console.error('Firestore not initialized');
+        return;
+      }
       await addDoc(collection(db, 'mentorLogs'), {
         userId: userProfile.uid,
         date: formData.date,

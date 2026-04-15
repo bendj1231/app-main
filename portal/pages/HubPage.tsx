@@ -25,6 +25,10 @@ const PilotPortfolioCard: React.FC<{ onClick: () => void; userProfile?: UserProf
             }
 
             try {
+                if (!db) {
+                    console.error('Firestore not initialized');
+                    return;
+                }
                 const logsQuery = query(
                     collection(db, 'flightLogs'),
                     where('userId', '==', userProfile.id)

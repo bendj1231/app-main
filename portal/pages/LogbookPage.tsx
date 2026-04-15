@@ -33,6 +33,10 @@ const LogbookPage: React.FC<LogbookPageProps> = ({ onBack, userProfile }) => {
       }
 
       try {
+        if (!db) {
+          console.error('Firestore not initialized');
+          return;
+        }
         const flightLogsQuery = query(
           collection(db, 'flightLogs'),
           where('userId', '==', userProfile.uid)
