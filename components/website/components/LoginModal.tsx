@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, ArrowRight, Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '@/src/contexts/AuthContext';
+import { supabase } from '../../../portal/lib/supabase-auth';
 
 interface LoginModalProps {
     isOpen: boolean;
@@ -13,25 +13,36 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     onClose,
     onNavigate
 }) => {
-    const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     if (!isOpen) return null;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
         try {
-            await login(email, password);
-            onNavigate('home'); // Navigate to home instead of portal
+            const { data, error: signInError } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (signInError) {
+                throw signInError;
+            }
+
+            onNavigate('home');
             onClose();
         } catch (err: any) {
             console.error('Login failed:', err);
             setError(err.message || 'Login failed. Please check your credentials and try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -176,10 +187,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                             {/* Login Button */}
                             <button
                                 type="submit"
-                                className="w-full py-4 bg-[#1a1f36] hover:bg-[#252b4a] text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                                disabled={loading}
+                                className="w-full py-4 bg-[#1a1f36] hover:bg-[#252b4a] text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                Login
-                                <ArrowRight className="w-4 h-4" />
+                                {loading ? 'Logging in...' : 'Login'}
+                                {!loading && <ArrowRight className="w-4 h-4" />}
                             </button>
 
                             {/* Remember Me */}
