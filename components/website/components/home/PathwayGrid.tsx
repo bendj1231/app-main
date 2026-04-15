@@ -185,8 +185,10 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                 onHover={() => setHoveredCard(card.id)}
                                 onLeave={() => setHoveredCard(null)}
                                 onClick={() => {
-                                    if (isLoggedIn && card.id === 'member') {
+                                    if (card.id === 'member' && isLoggedIn) {
                                         onNavigate('dashboard');
+                                    } else if (card.id === 'member' && !isLoggedIn) {
+                                        onNavigate('become-member');
                                     } else {
                                         onGoToProgramDetail({
                                             image: isLoggedIn && card.loggedInImage ? card.loggedInImage : card.image,
