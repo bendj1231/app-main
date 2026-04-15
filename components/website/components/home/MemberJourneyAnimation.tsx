@@ -374,14 +374,14 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             </div>
 
             {/* Right Side - Login Form */}
-            <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-2 md:p-3 flex flex-col justify-center">
+            <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-2 md:p-3 flex flex-col">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
               >
                 {/* Header */}
-                <div className="mb-1 md:mb-2">
+                <div className="mb-1 md:mb-2 mt-0">
                   <h2 className="text-[8px] md:text-[10px] font-serif text-slate-800 mb-0.5 leading-tight">
                     Connecting pilots to the aviation industry
                   </h2>
