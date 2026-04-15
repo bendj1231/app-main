@@ -67,6 +67,10 @@ export const getEnrollmentStatus = async (uid: string): Promise<string[]> => {
  * Submit a new mentorship log and check for dual-verification matches
  */
 export const submitMentorshipLog = async (logData: Omit<MentorshipLog, 'status' | 'createdAt'>) => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        throw new Error('Firestore not initialized');
+    }
     // 1. Submit the new log as pending
     const logsRef = collection(db, 'mentorship_logs');
     const newLog = {
@@ -87,6 +91,10 @@ export const submitMentorshipLog = async (logData: Omit<MentorshipLog, 'status' 
  * Internal helper to find matching logs and verify them
  */
 const checkAndVerifyLogs = async (mentorId: string, menteeId: string, hours: number) => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return;
+    }
     const logsRef = collection(db, 'mentorship_logs');
 
     // Look for all pending logs between these two for these hours
@@ -116,6 +124,10 @@ const checkAndVerifyLogs = async (mentorId: string, menteeId: string, hours: num
  * Fetch logs for a specific user (either as mentor or mentee)
  */
 export const getUserLogs = async (uid: string) => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return [];
+    }
     const logsRef = collection(db, 'mentorship_logs');
 
     // In a real app, you'd probably use a composite index or just fetch twice
@@ -155,6 +167,10 @@ export const searchUsers = async (
     flightSchoolFilter: string,
     searchQuery: string
 ): Promise<WingMentorUser[]> => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return [];
+    }
     const usersRef = collection(db, 'users');
     let q = query(usersRef);
 
@@ -254,6 +270,10 @@ export const getOrCreateChat = async (userAId: string, userBId: string) => {
  * Send a message within a chat
  */
 export const sendMessage = async (chatId: string, senderId: string, text: string) => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return;
+    }
     const messagesRef = collection(db, `chats/${chatId}/messages`);
 
     // Add the new message
@@ -275,6 +295,10 @@ export const sendMessage = async (chatId: string, senderId: string, text: string
  * Subscribe to messages in a chat (Real-time)
  */
 export const subscribeToMessages = (chatId: string, callback: (messages: ChatMessage[]) => void) => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return () => {};
+    }
     const messagesRef = collection(db, `chats/${chatId}/messages`);
     const q = query(messagesRef, orderBy('timestamp', 'asc'), limit(50));
 

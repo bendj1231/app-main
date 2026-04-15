@@ -234,6 +234,10 @@ export const usePilotData = (uid?: string): UsePilotDataReturn => {
     // ── One-time fetch for achievements ──
     const fetchAchievements = async () => {
       try {
+        if (!db) {
+          console.error('Firestore not initialized');
+          return;
+        }
         const achQuery = query(
           collection(db, 'achievements'),
           where('userId', '==', resolvedUid),
