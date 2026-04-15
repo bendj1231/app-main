@@ -53,15 +53,18 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
                 <div className="flex flex-col md:flex-row min-h-[550px]">
                     {/* Left Side - Dark Blue with Info */}
-                    <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-8 md:p-10 flex flex-col justify-center relative">
-                        {/* Logo */}
-                        <div className="mb-8">
+                    <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-8 md:p-10 flex flex-col relative">
+                        {/* Logo - Positioned at top */}
+                        <div className="mb-6 pt-2">
                             <img
                                 src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
                                 alt="WingMentor Logo"
-                                className="w-32 h-auto object-contain mx-auto md:mx-0"
+                                className="w-28 h-auto object-contain mx-auto md:mx-0"
                             />
                         </div>
+
+                        {/* Content - Centered in remaining space */}
+                        <div className="flex-1 flex flex-col justify-center">
 
                         {/* Mentor Network Label */}
                         <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-400 mb-3 text-center md:text-left">
@@ -88,6 +91,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                         >
                             Learn more
                         </button>
+                        </div>
                     </div>
 
                     {/* Right Side - Login Form */}

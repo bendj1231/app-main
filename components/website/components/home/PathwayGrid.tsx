@@ -32,6 +32,7 @@ const dummyCards = [
             'https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=1000&auto=format&fit=crop',
         ],
         image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1000&auto=format&fit=crop',
+        loggedInImage: '/images/accessportal.png',
         title: 'Become a Member',
         loggedInTitle: 'Access Portal',
         subtitle: 'Join our aviation community and unlock exclusive benefits',
@@ -43,12 +44,20 @@ const dummyCards = [
     },
     {
         id: 'discover',
-        image: '/images/airlinesexpectations.png',
+        images: [
+            '/images/w1000.png',
+            '/images/airlinesexpectations.png',
+            '/images/atlascv.png',
+        ],
+        image: '/images/w1000.png',
         title: 'Discover',
+        dynamicTitles: ['W1000', 'Airline Expectations', 'ATLAS-CV Formatting'],
         subtitle: 'Explore W1000 application, Airline Expectations, and Examination Terminal',
         icon: Map,
         badge: null,
         accentColor: 'from-emerald-500/80 to-teal-400/80',
+        isCarousel: true,
+        hasArrows: true,
     },
     {
         id: 'programs',
@@ -80,6 +89,7 @@ const dummyCards = [
 ];
 
 export const PathwayGrid: React.FC<PathwayGridProps> = ({
+    onNavigate,
     onGoToProgramDetail,
     isLoggedIn = false,
 }) => {
@@ -168,18 +178,24 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             variants={cardVariants}
                             className="md:col-span-3 h-[260px] md:h-[340px]"
                         >
-                            <GridCard 
+                            <GridCard
                                 card={card}
                                 isHovered={hoveredCard === card.id}
                                 onHover={() => setHoveredCard(card.id)}
                                 onLeave={() => setHoveredCard(null)}
-                                onClick={() => onGoToProgramDetail({
-                                    image: card.image,
-                                    title: isLoggedIn && card.loggedInTitle ? card.loggedInTitle : card.title,
-                                    category: 'program',
-                                    subtitle: isLoggedIn && card.loggedInSubtitle ? card.loggedInSubtitle : card.subtitle,
-                                    isDarkCard: true,
-                                })}
+                                onClick={() => {
+                                    if (isLoggedIn && card.id === 'member') {
+                                        onNavigate('dashboard');
+                                    } else {
+                                        onGoToProgramDetail({
+                                            image: isLoggedIn && card.loggedInImage ? card.loggedInImage : card.image,
+                                            title: isLoggedIn && card.loggedInTitle ? card.loggedInTitle : card.title,
+                                            category: 'program',
+                                            subtitle: isLoggedIn && card.loggedInSubtitle ? card.loggedInSubtitle : card.subtitle,
+                                            isDarkCard: true,
+                                        });
+                                    }
+                                }}
                                 className="w-full h-full"
                                 isLoggedIn={isLoggedIn}
                                 isLargeCard={true}
@@ -280,6 +296,9 @@ const GridCard: React.FC<GridCardProps> = ({
     const displayTitle = isLoggedIn && card.loggedInTitle ? card.loggedInTitle : card.title;
     const displaySubtitle = isLoggedIn && card.loggedInSubtitle ? card.loggedInSubtitle : card.subtitle;
     
+    // Get current dynamic title for discover card
+    const currentDynamicTitle = card.dynamicTitles ? card.dynamicTitles[currentImageIndex] : null;
+    
     // Auto-rotate carousel images
     useEffect(() => {
         if (!card.isCarousel || !card.images || card.images.length <= 1) return;
@@ -291,9 +310,11 @@ const GridCard: React.FC<GridCardProps> = ({
         return () => clearInterval(interval);
     }, [card.isCarousel, card.images]);
     
-    const currentImage = card.isCarousel && card.images 
-        ? card.images[currentImageIndex] 
-        : card.image;
+    const currentImage = isLoggedIn && card.loggedInImage
+        ? card.loggedInImage
+        : card.isCarousel && card.images
+            ? card.images[currentImageIndex]
+            : card.image;
     
     return (
         <div 
@@ -370,13 +391,46 @@ const GridCard: React.FC<GridCardProps> = ({
                 {/* Text Overlay - Directly on Image (for large cards only) */}
                 {isLargeCard && (
                     <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 md:p-6 flex flex-col justify-end">
-                        <h3 className="font-serif font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2">
-                            {displayTitle}
+                        <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2">
+                            {card.dynamicTitles ? (
+                                <>
+                                    {card.title}{' '}
+                                    <span className="text-yellow-400">{currentDynamicTitle}</span>
+                                </>
+                            ) : (
+                                displayTitle
+                            )}
                         </h3>
                         <p className="text-white/90 text-xs md:text-sm truncate">
                             {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
                         </p>
                     </div>
+                )}
+
+                {/* Glassy Arrows for carousel cards */}
+                {card.hasArrows && card.images && card.images.length > 1 && (
+                    <>
+                        {/* Left Arrow */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentImageIndex((prev) => (prev === 0 ? card.images.length - 1 : prev - 1));
+                            }}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+                        >
+                            <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        {/* Right Arrow */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentImageIndex((prev) => (prev + 1) % card.images.length);
+                            }}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+                        >
+                            <ChevronRight className="w-5 h-5" />
+                        </button>
+                    </>
                 )}
 
                 {/* Airy Glassy Strip - Bottom (for small cards only) */}

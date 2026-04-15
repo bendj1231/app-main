@@ -14,6 +14,7 @@ interface HomePageProps {
     onLogin: () => void;
     onNavigate: (page: string) => void;
     onGoToProgramDetail: (slide?: Slide) => void;
+    isLoggedIn?: boolean;
 }
 
 interface Slide {
@@ -429,7 +430,7 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = ({ onJoinUs }) => {
     );
 };
 
-export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigate, onGoToProgramDetail }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigate, onGoToProgramDetail, isLoggedIn = false }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [scrolled, setScrolled] = useState(false);
     const [activeCategory, setActiveCategory] = useState<
@@ -692,7 +693,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                 <SmokeShader />
                 
                 {/* Flight Simulator Style Grid */}
-                <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={false} />
+                <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} />
             </div>
             
             {/* Gradient Fade Below Shader - After Discover More */}

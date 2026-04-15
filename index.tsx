@@ -261,6 +261,7 @@ const App = () => {
             onJoinUs={() => navigateTo('become-member')}
             onLogin={navigateToPortal}
             onNavigate={navigateTo}
+            isLoggedIn={!!currentUser}
             onGoToProgramDetail={(slide) => {
               if (slide?.title === 'Emirates ATPL Pilot Pathways') {
                 navigateTo('emirates-atpl');

@@ -171,39 +171,61 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function login(email: string, password: string) {
         try {
-            const result = await signInWithEmailAndPassword(auth, email, password);
-            console.log("User signed in:", result.user.uid);
+            // Sign in with Supabase
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
 
-            // Fetch user profile on login
+            if (error) {
+                console.error("Supabase login error:", error);
+                throw new Error(error.message);
+            }
+
+            if (!data.user) {
+                throw new Error("No user returned from Supabase");
+            }
+
+            console.log("User signed in via Supabase:", data.user.id);
+
+            // Also sign in to Firebase to maintain compatibility
             try {
-                console.log("Fetching user profile for:", result.user.uid);
-                const docRef = doc(db, 'users', result.user.uid);
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (firebaseError) {
+                console.log("Firebase sign-in (compatibility):", firebaseError);
+                // Non-critical - Supabase is the primary auth
+            }
 
-                // Add timeout for Firestore fetch
-                const fetchPromise = getDoc(docRef);
-                const timeoutPromise = new Promise<any>((_, reject) =>
-                    setTimeout(() => reject(new Error('Profile fetch timed out')), 5000)
-                );
+            // Fetch user profile from Supabase
+            try {
+                console.log("Fetching user profile from Supabase for:", data.user.id);
+                const { data: profileData, error: profileError } = await supabase
+                    .from('pilot_licensure_experience')
+                    .select('*')
+                    .eq('user_id', data.user.id)
+                    .single();
 
-                const docSnap = await Promise.race([fetchPromise, timeoutPromise]);
+                if (profileError) {
+                    console.log("Supabase profile fetch error:", profileError);
+                }
 
-                if (docSnap && docSnap.exists()) {
-                    console.log("User profile found via login");
-                    setUserProfile(docSnap.data());
+                if (profileData) {
+                    console.log("User profile found via Supabase");
+                    setUserProfile(profileData);
                 } else {
-                    console.log("No user profile found in Firestore for:", result.user.uid, "- Creating default profile");
+                    console.log("No user profile found in Supabase for:", data.user.id);
+                    // Create minimal profile from auth data
                     const newProfile = {
-                        uid: result.user.uid,
+                        uid: data.user.id,
                         email: email,
-                        createdAt: result.user.metadata.creationTime || new Date().toISOString(),
+                        createdAt: data.user.created_at || new Date().toISOString(),
                         lastLogin: new Date().toISOString()
                     };
-                    await setDoc(docRef, newProfile);
                     setUserProfile(newProfile);
                 }
-            } catch (firestoreError) {
-                console.error("Error fetching user profile:", firestoreError);
-                // Non-critical error, proceed
+            } catch (profileError) {
+                console.error("Error fetching user profile from Supabase:", profileError);
+                // Non-critical error, proceed with auth only
             }
         } catch (error) {
             console.error("Login failed:", error);
@@ -211,8 +233,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }
 
-    function logout() {
-        return signOut(auth);
+    async function logout() {
+        // Sign out from Supabase
+        await supabase.auth.signOut();
+        // Sign out from Firebase
+        await signOut(auth);
     }
 
     function resetPassword(email: string) {
