@@ -13,6 +13,7 @@ import { TransitionProgramPage } from './TransitionProgramPage';
 import ContactPage from './ContactPage';
 import { ATPLPathwayPage } from './ATPLPathwayPage';
 import { PrivateSectorPathwayPage } from './PrivateSectorPathwayPage';
+import { PathwaysPage } from './PathwaysPage';
 import LogbookPage from './LogbookPage';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import AtlasResumePage from './AtlasResumePage';
@@ -3825,11 +3826,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       case 'programs':
         return <ProgramsView />;
       case 'pathways':
-        return (
-          <div style={{ transform: 'scale(1.15)', transformOrigin: 'top center' }}>
-            <PathwaysView />
-          </div>
-        );
+        return <PathwaysPage onBack={() => setMainView('dashboard')} isDarkMode={isDarkMode} />;
       case 'pilot-gap-module':
         return (
           <PilotGapModulePage 
