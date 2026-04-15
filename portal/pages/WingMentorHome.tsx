@@ -512,7 +512,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             </button>
 
             {/* News Detail Header */}
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
               <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
                 <span style={{
@@ -1157,7 +1157,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           {/* Industry News & Updates Section - PilotGapModulePage Style */}
           <section style={{ marginBottom: '4rem' }}>
             {/* Section header — matches main page title style */}
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
               <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                 Industry Intelligence
@@ -1301,7 +1301,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           {/* Program News & Updates Section - PilotGapModulePage Style */}
           <section style={{ marginBottom: '4rem' }}>
             {/* Section header — matches main page title style */}
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
               <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                 Latest Announcements
