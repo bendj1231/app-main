@@ -27,6 +27,7 @@
     "react-dom": "^19.2.4",
     "react-pageflip": "^2.0.3",
     "recharts": "^2.15.0",
+    "resend": "^6.11.0",
     "shadcn": "^4.2.0",
     "tailwind-merge": "^3.5.0",
     "three": "^0.183.2",
