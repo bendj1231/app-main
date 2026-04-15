@@ -51,7 +51,7 @@ const dummyCards = [
         ],
         image: '/images/w1000.png',
         title: 'Discover',
-        dynamicTitles: ['W1000', 'Expectations', 'ATLAS-CV Formatting'],
+        dynamicTitles: ['W1000', 'Expectations', 'ATS-Formatting'],
         subtitle: 'Explore W1000 application, Expectations, and Examination Terminal',
         icon: Map,
         badge: null,
