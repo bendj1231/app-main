@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense, useRef, useCallback } from 'react';
-import './App.css';
+// CSS import disabled for integration to prevent MIME type errors
+// import './App.css';
 
 // Mentor Management System Imports
 import { onAuthStateChange, type AuthState, SUPER_ADMIN_EMAIL, signOut, supabase } from './lib/supabase-auth';
