@@ -573,12 +573,13 @@ function App() {
     | 'pilot-profile'
     | 'recognition'
     | 'verification'
-    | 'job-database';
+    | 'job-database'
+    | 'become-member';
 
   const VIEW_WHITELIST: ViewName[] = [
     'login','hub','dashboard','programs','pathways','applications','foundational','atpl','airtaxi','privatesector',
     'foundational-onboarding','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
-    'reset-password','module-01','module-02','module-03','pilot-profile','recognition','verification','job-database'
+    'reset-password','module-01','module-02','module-03','pilot-profile','recognition','verification','job-database','become-member'
   ];
 
   const [currentView, setCurrentView] = useState<ViewName>('login');
@@ -1048,7 +1049,7 @@ function App() {
           onConfirm={handleConfirmGraphicsPreset}
         />
       ) : currentView === 'login' ? (
-        <LoginPage onLogin={handleLogin} blurred={loginBlurred} onChangeOptimization={handleReopenGraphicsPreset} />
+        <LoginPage onLogin={handleLogin} onNavigate={setCurrentView} blurred={loginBlurred} onChangeOptimization={handleReopenGraphicsPreset} />
       ) : currentView === 'reset-password' ? (
         <ResetPasswordPage />
       ) : currentView === 'hub' ? (

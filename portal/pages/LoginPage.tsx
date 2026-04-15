@@ -9,11 +9,12 @@ const REMEMBER_FLAG_KEY = 'wm-remember-active';
 
 interface LoginPageProps {
     onLogin: (email: string) => void;
+    onNavigate?: (view: 'become-member') => void;
     blurred?: boolean;
     onChangeOptimization?: () => void;
 }
 
-export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, blurred = false, onChangeOptimization }) => {
+export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, blurred = false, onChangeOptimization }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -214,15 +215,15 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, blurred = false, 
                             </div>
 
                             <div className={styles.signupContainer}>
-                                Not a member? <a href="https://wmpilotnetwork.vercel.app" target="_blank" rel="noopener" className={styles.signupLink}>Create an account</a>
+                                Not a member? <button onClick={() => onNavigate?.('become-member')} className={styles.signupLink}>Create an account</button>
                                 <span className={styles.separator} aria-hidden="true">•</span>
                                 <button
                                     type="button"
-                                    onClick={() => window.open('https://wmpilotnetwork.vercel.app', '_blank', 'noopener')}
-                                    aria-label="Visit WingMentor Pilot Network website"
+                                    onClick={() => window.open('https://pilotrecognition.com', '_blank', 'noopener')}
+                                    aria-label="Visit pilotrecognition.com website"
                                     className={styles.pilotNetworkButton}
                                 >
-                                    Visit Pilot Network
+                                    Visit pilotrecognition.com
                                 </button>
                             </div>
                         </form>
