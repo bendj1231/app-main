@@ -321,12 +321,12 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
               />
             </div>
             
-            {/* Portal Modal - Scaled to fit card */}
+            {/* Portal Modal - Compact square/rectangular */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="relative w-[90%] max-w-[380px] bg-white rounded-2xl overflow-hidden shadow-2xl z-10 flex flex-col md:flex-row scale-[0.85]"
+              className="relative w-[80%] max-w-[280px] aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-2xl z-10 flex flex-col md:flex-row scale-[0.8]"
           >
             {/* Left Side - Dark Blue with Info */}
             <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-6 md:p-8 flex flex-col relative">
