@@ -273,6 +273,11 @@ const AtlasCVGenerator: React.FC<AtlasCVGeneratorProps> = ({ onBack, userProfile
 
   useEffect(() => {
     const fetchCVData = async () => {
+      if (!db) {
+        console.error('Firestore not initialized');
+        setUserData(DEFAULT_DATA);
+        return;
+      }
       // Start from defaults, then overlay Firebase data
       const base: UserData = {
         ...DEFAULT_DATA,

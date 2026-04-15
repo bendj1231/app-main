@@ -125,6 +125,12 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
       if (!userProfile?.uid) return;
       
       try {
+        if (!db) {
+          console.error('Firestore not initialized');
+          setLoading(false);
+          return;
+        }
+        const achievementsRef = collection(db, 'achievements');
         const { data, error } = await supabase
           .from('program_progress')
           .select('*')
