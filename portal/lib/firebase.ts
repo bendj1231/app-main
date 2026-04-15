@@ -113,7 +113,16 @@ try {
                 });
             }
         };
-        db = null;
+        db = {
+            collection: () => {
+                console.warn('Mock Firestore: collection() called but Firebase is not configured');
+                return { onSnapshot: () => () => {}, getDocs: () => Promise.resolve({ docs: [] }) };
+            },
+            doc: () => {
+                console.warn('Mock Firestore: doc() called but Firebase is not configured');
+                return { onSnapshot: () => () => {}, getDoc: () => Promise.resolve({ exists: false }) };
+            }
+        };
         
     } else {
         // Use real Firebase
@@ -171,7 +180,16 @@ try {
             });
         }
     };
-    db = null;
+    db = {
+        collection: () => {
+            console.warn('Mock Firestore: collection() called but Firebase is not configured');
+            return { onSnapshot: () => () => {}, getDocs: () => Promise.resolve({ docs: [] }) };
+        },
+        doc: () => {
+            console.warn('Mock Firestore: doc() called but Firebase is not configured');
+            return { onSnapshot: () => () => {}, getDoc: () => Promise.resolve({ exists: false }) };
+        }
+    };
 }
 
 export { auth, db };
