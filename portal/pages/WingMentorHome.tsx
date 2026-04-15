@@ -3,6 +3,7 @@ import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
 import { RecognitionAchievementPage } from './RecognitionAchievementPage';
 import { PilotProfilePage } from './PilotProfilePage';
+import { DashboardPage } from './DashboardPage';
 import FoundationalProgramPage from './FoundationalProgramPage';
 import FoundationalProgramLogbookPage from './FoundationalProgramLogbookPage';
 import { EnrollmentOnboardingPage } from './EnrollmentOnboardingPage';
@@ -3884,7 +3885,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         return <ExaminationResultsPage onBack={() => setMainView('recognition')} userProfile={userProfile} />;
       case 'pilot-portfolio':
         return (
-          <PilotProfilePage 
+          <DashboardPage 
             onBack={() => setMainView('dashboard')} 
             onViewLogbook={() => setMainView('logbook')}
             onViewDigitalLogbook={() => setMainView('digital-logbook')}
