@@ -117,7 +117,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'Unmanned Systems', target: 'about_programs', bullets: ['BVLOS Operations', 'Data Intelligence', 'Remote Fleet Mgmt'] },
                 { category: 'Operational Intelligence', name: 'Float & Amphibious Ops', target: 'insights', bullets: ['Water Runways', 'Corrosion Management', 'Tidal Navigation'] },
                 { name: 'Flight Instruction', target: 'insights', bullets: ['Student Psychology', 'Marketing Your School', 'Regulatory Compliance'] },
-                { name: 'Specialized Aerial Work', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] }
+                { name: 'Specialized Aerial Work', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] },
+                { category: 'Innovation & Ownership', name: 'Aircraft Mgmt & Ownership', target: 'insights', bullets: ['Registration Options', 'Maintenance Costs', 'Hangarage Strategy'] },
+                { name: 'Precision Agriculture', target: 'insights', bullets: ['Hyperspectral Imaging', 'Crop Yield Analysis', 'Autonomy in Ag'] }
             ]
         },
         {
@@ -137,9 +139,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Sector Insights', name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Flagship Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
                 { name: 'Corporate & VIP Jet', target: 'private-charter-pathways', bullets: ['Elite Service Standards', 'Executive Travel Trends', 'Non‑Scheduled Ops'] },
                 { name: 'UAM & Air Taxis', target: 'air-taxi-pathways', bullets: ['Urban Air Mobility', 'Infrastructure Layout', 'Battery Technology'] },
-                { name: 'Global Cargo Logistics', target: 'insights', bullets: ['Supply Chain Resilience', 'Hub Operations', 'Automation in Cargo'] },
-                { category: 'Innovation & Ownership', name: 'Aircraft Mgmt & Ownership', target: 'insights', bullets: ['Registration Options', 'Maintenance Costs', 'Hangarage Strategy'] },
-                { name: 'Precision Agriculture', target: 'insights', bullets: ['Hyperspectral Imaging', 'Crop Yield Analysis', 'Autonomy in Ag'] }
+                { name: 'Global Cargo Logistics', target: 'insights', bullets: ['Supply Chain Resilience', 'Hub Operations', 'Automation in Cargo'] }
             ]
         },
         {
