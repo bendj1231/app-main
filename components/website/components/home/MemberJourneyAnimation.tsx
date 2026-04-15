@@ -81,7 +81,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
       return () => clearTimeout(warpTimeout);
     } else if (scene === 'portal') {
       // Give more time for the login form animation to complete
-      const portalTimeout = setTimeout(() => setScene('member'), 2800);
+      const portalTimeout = setTimeout(() => setScene('member'), 4000);
       return () => clearTimeout(portalTimeout);
     }
   }, [scene]);
@@ -262,7 +262,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: '100%' }}
                     transition={{ delay: 0.5, duration: 0.4 }}
-                    className="h-8 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-2 overflow-hidden"
+                    className="h-8 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-2 overflow-hidden relative"
                   >
                     <User className="w-3 h-3 text-slate-400 mr-2" />
                     <motion.span
@@ -273,24 +273,42 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
                     >
                       demo@pilot.com
                     </motion.span>
+                    {/* Mouse click on email field */}
+                    <motion.div
+                      className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: [0, 1, 1, 0], x: [0, 0, 0, 0] }}
+                      transition={{ delay: 0.6, duration: 0.5 }}
+                    >
+                      <MousePointer2 className="w-4 h-4 text-slate-600 fill-slate-600" />
+                    </motion.div>
                   </motion.div>
                   
                   {/* Password Input */}
                   <motion.div
                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: '100%' }}
-                    transition={{ delay: 1.0, duration: 0.4 }}
-                    className="h-8 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-2 overflow-hidden"
+                    transition={{ delay: 1.2, duration: 0.4 }}
+                    className="h-8 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-2 overflow-hidden relative"
                   >
                     <Lock className="w-3 h-3 text-slate-400 mr-2" />
                     <motion.span
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: 1.4, duration: 0.2 }}
+                      transition={{ delay: 1.6, duration: 0.3 }}
                       className="text-slate-400 text-xs tracking-widest"
                     >
                       ••••••••
                     </motion.span>
+                    {/* Mouse click on password field */}
+                    <motion.div
+                      className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: [0, 1, 1, 0], x: [0, 0, 0, 0] }}
+                      transition={{ delay: 1.3, duration: 0.5 }}
+                    >
+                      <MousePointer2 className="w-4 h-4 text-slate-600 fill-slate-600" />
+                    </motion.div>
                   </motion.div>
 
                   {/* Login Button */}

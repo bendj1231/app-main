@@ -22,18 +22,18 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
       setCurrentSection(0);
       
       // Section 1: Header (0px) - show header only
-      // Section 2: Netflix Hero (scroll to ~80px) - show hero section
-      // Section 3: Pilot Requirements (scroll to ~280px) - show requirements section
+      // Section 2: Netflix Hero (scroll to ~70px) - show hero section
+      // Section 3: Pilot Requirements (scroll to ~220px) - show requirements section
       
       const section1Timeout = setTimeout(() => {
         setCurrentSection(1);
-        setScrollY(80);
+        setScrollY(70);
       }, 2000); // Show header for 2 seconds
       timeoutsRef.current.push(section1Timeout);
       
       const section2Timeout = setTimeout(() => {
         setCurrentSection(2);
-        setScrollY(280);
+        setScrollY(220);
       }, 5000); // Show hero for 3 seconds, then scroll to requirements
       timeoutsRef.current.push(section2Timeout);
       
@@ -88,62 +88,95 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
         </div>
 
         {/* Section 2: Netflix-style Hero */}
-        <div className="relative h-[25%] min-h-[80px]">
+        <div className="relative h-[35%] min-h-[120px]">
           <img
             src={etihadData.image}
             alt={etihadData.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-          <div className="absolute bottom-2 left-2 right-2">
-            <div className="flex items-center gap-1.5 mb-1">
-              <span className="text-[5px] font-bold tracking-[0.1em] uppercase text-blue-400 bg-blue-500/20 px-1.5 py-0.5 rounded border border-blue-400/30">
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
+          <div className="absolute bottom-3 left-3 right-3">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[6px] font-bold tracking-[0.15em] uppercase text-blue-400 bg-blue-500/20 px-2 py-1 rounded-full border border-blue-400/30 backdrop-blur-sm">
                 SELECTED AIRLINE
               </span>
-              <div className="flex items-center gap-0.5 text-[6px] text-white/80">
-                <MapPin className="w-2 h-2" />
+              <div className="flex items-center gap-1 text-[8px] text-white/80">
+                <MapPin className="w-3 h-3" />
                 {etihadData.location}
               </div>
             </div>
-            <h1 className="text-sm font-serif text-white font-bold leading-tight">
+            <h1 className="text-lg font-serif text-white font-bold mb-2 leading-tight">
               {etihadData.name}
             </h1>
+            <p className="text-[8px] text-white/90 leading-relaxed mb-2 max-w-xs">
+              {etihadData.description}
+            </p>
+            <div className="mb-2">
+              <p className="text-[6px] text-white/70">
+                <span className="font-semibold text-white">Fleet:</span> {etihadData.fleet}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-2">
+              <div className="flex items-center gap-1 bg-emerald-500/30 backdrop-blur-sm px-2 py-1 rounded border border-emerald-400/30">
+                <span className="text-[6px] text-emerald-300 font-semibold">{etihadData.salaryRange}</span>
+              </div>
+              <div className="flex items-center gap-1 bg-blue-500/30 backdrop-blur-sm px-2 py-1 rounded border border-blue-400/30">
+                <span className="text-[6px] text-blue-300 font-semibold">{etihadData.flightHours}</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {etihadData.tags.slice(0, 4).map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="text-[5px] font-medium text-white/80 bg-white/10 backdrop-blur-sm px-2 py-0.5 rounded-full border border-white/20"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Section 3: Pilot Requirements and other content */}
-        <div>
-          {/* Description */}
-          <div className="p-2">
-            <p className="text-[6px] text-slate-600 leading-relaxed">
-              {etihadData.description}
-            </p>
-          </div>
-
-          {/* Stats */}
-          <div className="px-2 pb-2 flex gap-1.5">
-            <div className="flex-1 bg-emerald-50 rounded p-1.5 border border-emerald-200">
-              <p className="text-[5px] font-semibold text-emerald-700">{etihadData.salaryRange}</p>
+        {/* Section 3: Pilot Requirements */}
+        <div className="bg-slate-50 px-2 py-2">
+          <h2 className="text-[8px] font-bold text-slate-900 mb-2 pb-1 border-b-2 border-slate-200">Pilot Requirements</h2>
+          <div className="bg-white rounded p-2 border border-slate-200 shadow-sm">
+            <div className="mb-2 p-1.5 bg-amber-50 rounded border border-amber-200">
+              <div className="flex items-start gap-1">
+                <span className="text-amber-600 font-bold text-[8px] mt-0.5">!</span>
+                <div>
+                  <p className="text-[6px] font-semibold text-slate-800 mb-0.5">Last Updated Notice</p>
+                  <p className="text-[5px] text-slate-600">Requirements last updated January 15, 2026</p>
+                </div>
+              </div>
             </div>
-            <div className="flex-1 bg-blue-50 rounded p-1.5 border border-blue-200">
-              <p className="text-[5px] font-semibold text-blue-700">{etihadData.flightHours}</p>
+            <div className="space-y-1">
+              <div className="flex items-start gap-1">
+                <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                <span className="text-[5px] text-slate-700"><strong>2,500+ hrs</strong> Total Flight Time</span>
+              </div>
+              <div className="flex items-start gap-1">
+                <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                <span className="text-[5px] text-slate-700">Valid ATPL or CPL License</span>
+              </div>
+              <div className="flex items-start gap-1">
+                <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                <span className="text-[5px] text-slate-700">ICAO English Level 4+</span>
+              </div>
+              <div className="flex items-start gap-1">
+                <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                <span className="text-[5px] text-slate-700">Class 1 Medical Certificate</span>
+              </div>
+              <div className="flex items-start gap-1">
+                <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                <span className="text-[5px] text-slate-700">Multi-Engine Instrument Rating</span>
+              </div>
             </div>
-          </div>
-
-          {/* Tags */}
-          <div className="px-2 pb-2 flex flex-wrap gap-0.5">
-            {etihadData.tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className="text-[5px] font-medium text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded"
-              >
-                {tag}
-              </span>
-            ))}
           </div>
 
           {/* Core Expectations */}
-          <div className="px-2 pb-2">
+          <div className="mt-2 px-0 pb-2">
             <h2 className="text-[7px] font-bold text-slate-900 mb-1">Core Expectations</h2>
             <div className="space-y-1">
               <div className="bg-white rounded p-1.5 border border-slate-200 shadow-sm">
