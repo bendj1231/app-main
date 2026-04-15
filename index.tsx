@@ -213,12 +213,31 @@ const App = () => {
   // Global error handler
   useEffect(() => {
     const handleError = (event: ErrorEvent) => {
-      console.error('Global error:', event.error);
-      setAppError(event.error?.message || 'Unknown error');
+      console.error('Global error:', event);
+      console.error('Error details:', {
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error
+      });
+      const errorMessage = event.error?.message || event.message || 'Unknown error';
+      setAppError(errorMessage);
+    };
+
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      console.error('Unhandled promise rejection:', event);
+      const errorMessage = event.reason?.message || event.reason || 'Unknown promise rejection';
+      setAppError(errorMessage);
     };
 
     window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
   }, []);
 
   const navigateTo = (page: any, data?: any) => {
