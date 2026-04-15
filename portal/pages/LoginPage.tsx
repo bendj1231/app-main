@@ -10,11 +10,12 @@ const REMEMBER_FLAG_KEY = 'wm-remember-active';
 interface LoginPageProps {
     onLogin: (email: string) => void;
     onNavigate?: (view: 'become-member') => void;
+    onNavigateToMainApp?: (page: string) => void;
     blurred?: boolean;
     onChangeOptimization?: () => void;
 }
 
-export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, blurred = false, onChangeOptimization }) => {
+export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNavigateToMainApp, blurred = false, onChangeOptimization }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -215,7 +216,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, blurr
                             </div>
 
                             <div className={styles.signupContainer}>
-                                Not a member? <button onClick={() => onNavigate?.('become-member')} className={styles.signupLink}>Create an account</button>
+                                Not a member? <button onClick={() => onNavigateToMainApp?.('home')} className={styles.signupLink}>Create an account</button>
                                 <span className={styles.separator} aria-hidden="true">•</span>
                                 <button
                                     type="button"

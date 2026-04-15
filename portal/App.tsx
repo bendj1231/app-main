@@ -527,7 +527,7 @@ const detectGraphicsPreset = (): DetectionResult => {
   };
 };
 
-function App() {
+function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => void }) {
   const [isMobile, setIsMobile] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [loginBlurred, setLoginBlurred] = useState(false);
@@ -1049,7 +1049,7 @@ function App() {
           onConfirm={handleConfirmGraphicsPreset}
         />
       ) : currentView === 'login' ? (
-        <LoginPage onLogin={handleLogin} onNavigate={setCurrentView} blurred={loginBlurred} onChangeOptimization={handleReopenGraphicsPreset} />
+        <LoginPage onLogin={handleLogin} onNavigate={setCurrentView} onNavigateToMainApp={onNavigateToMainApp} blurred={loginBlurred} onChangeOptimization={handleReopenGraphicsPreset} />
       ) : currentView === 'reset-password' ? (
         <ResetPasswordPage />
       ) : currentView === 'hub' ? (

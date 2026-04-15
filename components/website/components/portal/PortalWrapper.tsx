@@ -95,7 +95,7 @@ export const PortalWrapper: React.FC<PortalWrapperProps> = ({ onNavigate, onBack
         <ErrorBoundary>
             <AuthBridge>
                 <div className="portal-container">
-                    <PortalApp />
+                    <PortalApp onNavigateToMainApp={onNavigate} />
                 </div>
             </AuthBridge>
         </ErrorBoundary>
