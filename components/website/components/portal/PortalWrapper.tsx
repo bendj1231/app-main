@@ -51,26 +51,27 @@ export const PortalWrapper: React.FC<PortalWrapperProps> = ({ onNavigate, onBack
     useEffect(() => {
         setIsLoaded(true);
 
-        // Load portal CSS
-        const loadPortalCSS = () => {
-            try {
-                const appCSS = document.createElement('link');
-                appCSS.rel = 'stylesheet';
-                appCSS.href = '/portal/App.css';
-                appCSS.id = 'portal-app-css';
-                document.head.appendChild(appCSS);
+        // CSS loading disabled due to MIME type errors
+        // The portal CSS is causing conflicts with the main app
+        // const loadPortalCSS = () => {
+        //     try {
+        //         const appCSS = document.createElement('link');
+        //         appCSS.rel = 'stylesheet';
+        //         appCSS.href = '/portal/App.css';
+        //         appCSS.id = 'portal-app-css';
+        //         document.head.appendChild(appCSS);
 
-                const indexCSS = document.createElement('link');
-                indexCSS.rel = 'stylesheet';
-                indexCSS.href = '/portal/index.css';
-                indexCSS.id = 'portal-index-css';
-                document.head.appendChild(indexCSS);
-            } catch (error) {
-                console.error('Error loading portal CSS:', error);
-            }
-        };
+        //         const indexCSS = document.createElement('link');
+        //         indexCSS.rel = 'stylesheet';
+        //         indexCSS.href = '/portal/index.css';
+        //         indexCSS.id = 'portal-index-css';
+        //         document.head.appendChild(indexCSS);
+        //     } catch (error) {
+        //         console.error('Error loading portal CSS:', error);
+        //     }
+        // };
 
-        loadPortalCSS();
+        // loadPortalCSS();
 
         // Cleanup function to remove portal CSS when unmounting
         return () => {
