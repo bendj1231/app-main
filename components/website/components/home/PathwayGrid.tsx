@@ -214,18 +214,29 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             variants={cardVariants}
                             className="md:col-span-2 h-[180px] md:h-[220px]"
                         >
-                            <GridCard 
+                            <GridCard
                                 card={card}
                                 isHovered={hoveredCard === card.id}
                                 onHover={() => setHoveredCard(card.id)}
                                 onLeave={() => setHoveredCard(null)}
-                                onClick={() => onGoToProgramDetail({
-                                    image: card.image,
-                                    title: card.title,
-                                    category: 'program',
-                                    subtitle: card.subtitle,
-                                    isDarkCard: true,
-                                })}
+                                onClick={() => {
+                                    if (card.id === 'programs') {
+                                        onNavigate('foundational-program');
+                                    } else if (card.id === 'pilot-recognition') {
+                                        onNavigate('pilot-recognition');
+                                    } else if (card.id === 'pathways') {
+                                        onNavigate('programs-pathways');
+                                    } else {
+                                        onGoToProgramDetail({
+                                            image: card.image,
+                                            title: card.title,
+                                            category: 'program',
+                                            subtitle: card.subtitle,
+                                            isDarkCard: true,
+                                        });
+                                    }
+                                }}
+                                onNavigate={onNavigate}
                                 className="w-full h-full"
                                 isLargeCard={false}
                             />
