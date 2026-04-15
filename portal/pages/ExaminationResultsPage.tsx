@@ -41,8 +41,8 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
   const fullName = `${userProfile?.firstName || 'Benjamin'} ${userProfile?.lastName || 'Bowler'}`.trim();
 
   return (
-    <div className="dashboard-container animate-fade-in">
-      <main className="dashboard-card" style={{ position: 'relative' }}>
+    <div className="dashboard-container animate-fade-in" style={{ overflowY: 'auto', height: '100vh' }}>
+      <main className="dashboard-card" style={{ position: 'relative', textAlign: 'center' }}>
         <button
           onClick={onBack}
           style={{
