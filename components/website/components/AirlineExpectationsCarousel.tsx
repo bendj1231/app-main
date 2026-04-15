@@ -84,7 +84,7 @@ const airlines: Airline[] = [
     location: 'UAE',
     salaryRange: '$115,000 - $200,000/year',
     flightHours: '2,500+ hrs TT',
-    image: '/images/airline-expectations/etihad-airways.png',
+    image: '/images/airline-expectations/etihad-airways-new.jpg',
     tags: ['Premium Airline', 'Abu Dhabi Hub', 'Modern Fleet'],
     description: 'Etihad Airways provides competitive tax-free packages from its Abu Dhabi base. The airline features a modern fleet and growing global network with focus on premium service standards.',
     fleet: 'Boeing 787, 777, Airbus A350, A380 - Modern fuel-efficient fleet with state-of-the-art cabins and sustainable aviation focus'
