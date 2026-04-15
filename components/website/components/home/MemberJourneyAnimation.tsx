@@ -36,9 +36,9 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
       isCompleteRef.current = false;
     };
 
-    // Start immediately and loop every 8 seconds
+    // Start immediately and loop every 8.5 seconds
     startAnimation();
-    const loopInterval = setInterval(startAnimation, 8000);
+    const loopInterval = setInterval(startAnimation, 8500);
 
     return () => {
       clearInterval(loopInterval);
@@ -68,11 +68,11 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
           }
           if (!isCompleteRef.current) {
             isCompleteRef.current = true;
-            // Go to registration page after typing completes
-            warpTimeoutRef.current = setTimeout(() => setScene('registration'), 500);
+            // Go to registration page immediately after typing
+            warpTimeoutRef.current = setTimeout(() => setScene('registration'), 200);
           }
         }
-      }, 50);
+      }, 25);
 
       return () => {
         if (typingIntervalRef.current) {
@@ -98,13 +98,22 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
   // Scene transitions
   useEffect(() => {
     if (scene === 'registration') {
-      // Show registration page for 4 seconds then go to portal
-      const registrationTimeout = setTimeout(() => setScene('portal'), 4000);
+      // Show registration page for 2.5 seconds then go to portal
+      const registrationTimeout = setTimeout(() => setScene('portal'), 2500);
       return () => clearTimeout(registrationTimeout);
     } else if (scene === 'portal') {
       // Give time for login animation + loading + pathways display
-      const portalTimeout = setTimeout(() => setScene('member'), 6000);
+      const portalTimeout = setTimeout(() => setScene('member'), 4000);
       return () => clearTimeout(portalTimeout);
+    } else if (scene === 'member') {
+      // Show member scene briefly then loop
+      const memberTimeout = setTimeout(() => {
+        setScene('search');
+        setTypedText('');
+        hasStartedTypingRef.current = false;
+        isCompleteRef.current = false;
+      }, 2000);
+      return () => clearTimeout(memberTimeout);
     }
   }, [scene]);
 
@@ -588,11 +597,11 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
 
       {/* Progress indicator */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-        {['search', 'portal', 'member'].map((s, i) => (
+        {['search', 'registration', 'portal', 'member'].map((s, i) => (
           <motion.div
             key={s}
             className={`w-2 h-2 rounded-full transition-colors ${
-              ['search', 'portal', 'member'].indexOf(scene) >= i
+              ['search', 'registration', 'portal', 'member'].indexOf(scene) >= i
                 ? 'bg-white'
                 : 'bg-white/30'
             }`}
