@@ -4057,7 +4057,8 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           right: 0, 
           bottom: 0, 
           zIndex: 1000,
-          backgroundColor: isDarkMode ? '#0B0F19' : '#f8fafc'
+          backgroundColor: isDarkMode ? '#0B0F19' : '#f8fafc',
+          overflowY: 'auto'
         }}>
           <PathwaysPage onBack={() => setMainView('dashboard')} isDarkMode={isDarkMode} />
         </div>
