@@ -488,6 +488,45 @@ const GridCard: React.FC<GridCardProps> = ({
                                     Discover
                                 </button>
                             )}
+                            {/* Glassy button for programs card */}
+                            {card.id === 'programs' && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate('programs-pathways');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    Explore
+                                </button>
+                            )}
+                            {/* Glassy button for pilot-recognition card */}
+                            {card.id === 'pilot-recognition' && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate('pilot-recognition');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    View
+                                </button>
+                            )}
+                            {/* Glassy button for pathways card */}
+                            {card.id === 'pathways' && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate('programs-pathways');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    View
+                                </button>
+                            )}
                         </div>
                         <p className="text-white/90 text-xs md:text-sm truncate">
                             {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
