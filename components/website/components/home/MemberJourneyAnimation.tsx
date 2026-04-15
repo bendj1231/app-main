@@ -99,8 +99,8 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
       const portalTimeout = setTimeout(() => setScene('programs'), 3500);
       return () => clearTimeout(portalTimeout);
     } else if (scene === 'programs') {
-      // Show programs scene for 5 seconds then go to member
-      const programsTimeout = setTimeout(() => setScene('member'), 5000);
+      // Show programs scene for 6 seconds then go to member
+      const programsTimeout = setTimeout(() => setScene('member'), 6000);
       return () => clearTimeout(programsTimeout);
     } else if (scene === 'member') {
       // Show member scene briefly then loop
@@ -564,18 +564,18 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
               className="absolute inset-0 flex flex-col items-center justify-center bg-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 2.8, duration: 1.2 }}
+              transition={{ delay: 3.0, duration: 1.5 }}
             >
               <img
                 src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
                 alt="WingMentor Logo"
-                className="w-20 md:w-28 h-auto object-contain mb-2"
+                className="w-28 md:w-36 h-auto object-contain mb-3"
               />
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 3.5, duration: 0.6 }}
-                className="font-serif text-slate-700 text-sm md:text-base tracking-wide"
+                transition={{ delay: 4.0, duration: 0.8 }}
+                className="font-serif text-slate-700 text-base md:text-lg tracking-wide"
               >
                 Bridging the pilot gap
               </motion.p>
