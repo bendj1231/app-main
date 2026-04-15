@@ -520,85 +520,65 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             className="absolute inset-0 bg-white flex flex-col items-center justify-center p-8 text-center"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Container for all text elements */}
+            {/* Three words centered - fade out as logo fades in */}
             <motion.div
-              className="relative flex items-center justify-center gap-2 md:gap-4"
-              initial={{ scale: 1 }}
-              animate={{ scale: 0.8 }}
-              transition={{ delay: 2.5, duration: 0.5 }}
+              className="flex flex-col items-center justify-center gap-3"
+              initial={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 0, scale: 0.9 }}
+              transition={{ delay: 2.5, duration: 0.8, ease: "easeInOut" }}
             >
-              {/* Access Programs - Step 1 */}
+              {/* Programs */}
               <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
                 className="flex items-center gap-2"
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
               >
-                <motion.span
-                  className="font-serif text-slate-900 text-lg md:text-2xl tracking-wide"
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 0 }}
-                  transition={{ delay: 1.2, duration: 0.3 }}
-                >
-                  Access
-                </motion.span>
-                <motion.span className="font-serif text-slate-900 text-lg md:text-2xl tracking-wide">
-                  Programs
-                </motion.span>
-                {/* Arrow */}
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.0, duration: 0.3 }}
-                >
-                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-slate-400" />
-                </motion.div>
+                <span className="font-serif text-slate-900 text-xl md:text-3xl tracking-wide">Programs</span>
+                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
               </motion.div>
 
-              {/* Pilot Recognition - Step 2 */}
+              {/* Pilot Recognition */}
               <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
                 className="flex items-center gap-2"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.5, duration: 0.5 }}
               >
-                <motion.span className="font-serif text-slate-900 text-lg md:text-2xl tracking-wide">
-                  Pilot Recognition
-                </motion.span>
-                {/* Arrow */}
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 2.0, duration: 0.3 }}
-                >
-                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-slate-400" />
-                </motion.div>
+                <span className="font-serif text-slate-900 text-xl md:text-3xl tracking-wide">Pilot Recognition</span>
+                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
               </motion.div>
 
-              {/* Pathways - Step 3 */}
+              {/* Pathways */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 2.2, duration: 0.5 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.3, duration: 0.6 }}
               >
-                <span className="font-serif text-slate-900 text-lg md:text-2xl tracking-wide">
-                  Pathways
-                </span>
+                <span className="font-serif text-slate-900 text-xl md:text-3xl tracking-wide">Pathways</span>
               </motion.div>
+            </motion.div>
 
-              {/* Morph to Logo - Step 4 */}
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center bg-white"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 3.5, duration: 0.8 }}
+            {/* Logo with slogan - fades in as text fades out */}
+            <motion.div
+              className="absolute inset-0 flex flex-col items-center justify-center bg-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.8, duration: 1.2 }}
+            >
+              <img
+                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                alt="WingMentor Logo"
+                className="w-20 md:w-28 h-auto object-contain mb-2"
+              />
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 3.5, duration: 0.6 }}
+                className="font-serif text-slate-700 text-sm md:text-base tracking-wide"
               >
-                <img
-                  src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                  alt="WingMentor Logo"
-                  className="w-24 md:w-32 h-auto object-contain"
-                />
-              </motion.div>
+                Bridging the pilot gap
+              </motion.p>
             </motion.div>
           </motion.div>
         )}
