@@ -377,27 +377,15 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 )}
 
-                {/* Airy Glassy Strip - Bottom */}
-                <div className="absolute bottom-0 left-0 right-0">
-                    <div className={`
-                        relative bg-slate-400/20 backdrop-blur-xl border-t border-white/25 
-                        px-4 py-2 md:px-5 md:py-2.5 transition-all duration-300
-                        ${isHovered ? 'bg-slate-300/25 border-white/35' : ''}
-                    `}>
-                        <div className="flex items-center">
-                            {/* Title & Subtitle - Full width */}
-                            <div className="flex-1 min-w-0">
-                                <h3 className="font-medium text-white text-sm md:text-base truncate tracking-wide">
-                                    {displayTitle}
-                                </h3>
-                                <p className="text-white/80 text-[10px] md:text-xs truncate hidden md:block">
-                                    {displaySubtitle.length > 45 ? displaySubtitle.slice(0, 42) + '...' : displaySubtitle}
-                                </p>
-                            </div>
-                        </div>
-                        
-                        {/* Soft glow line on top */}
-                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                {/* Text Overlay - Directly on Image */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+                    <div className="relative">
+                        <h3 className="font-bold text-white text-sm md:text-lg tracking-wide mb-1 drop-shadow-lg">
+                            {displayTitle}
+                        </h3>
+                        <p className="text-white/90 text-[10px] md:text-xs truncate drop-shadow-md">
+                            {displaySubtitle.length > 45 ? displaySubtitle.slice(0, 42) + '...' : displaySubtitle}
+                        </p>
                     </div>
                 </div>
 
