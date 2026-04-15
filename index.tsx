@@ -198,9 +198,17 @@ const App = () => {
   const { currentUser } = useAuth(); // Get current user
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 3500);
+    const timer = setTimeout(() => {
+      console.log('Loading timer fired, setting loading to false');
+      setLoading(false);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('App state:', { loading, currentPage, appError });
+  }, [loading, currentPage, appError]);
 
   // Global error handler
   useEffect(() => {
