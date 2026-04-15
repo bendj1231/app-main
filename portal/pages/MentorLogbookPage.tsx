@@ -125,6 +125,10 @@ export const MentorLogbookPage: React.FC<MentorLogbookPageProps> = ({ onBack, us
     if (!confirm('Are you sure you want to delete this entry?')) return;
 
     try {
+      if (!db) {
+        console.error('Firestore not initialized');
+        return;
+      }
       await deleteDoc(doc(db, 'mentorLogs', entryId));
       fetchMentorLogs();
     } catch (error) {

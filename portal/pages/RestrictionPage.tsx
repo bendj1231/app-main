@@ -86,6 +86,10 @@ export const RestrictionPage: React.FC<RestrictionPageProps> = ({
         return;
       }
 
+      if (!db) {
+        console.error('Firestore not initialized');
+        return;
+      }
       const userRef = doc(db, 'users', userProfile.id);
       const snapshot = await getDoc(userRef);
 
