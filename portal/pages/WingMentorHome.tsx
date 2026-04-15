@@ -3529,9 +3529,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
   // Main content panel
   const MainPanel = () => {
-    const marginLeft = SIDEBAR_BASE_WIDTH * sidebarScale;
-    const mainPanelScale = (mainView === 'programs' || mainView === 'pathways') ? 1 : 1.25;
-    const inverseScalePercent = `${(100 / mainPanelScale).toFixed(4)}%`;
+    const marginLeft = SIDEBAR_BASE_WIDTH;
     return (
       <div style={{
         marginLeft: `${marginLeft}px`,
@@ -3551,16 +3549,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           onAccessWebsite={handleAccessWebsite}
         />
 
-        <div
-          style={{
-            transform: `scale(${mainPanelScale})`,
-            transformOrigin: 'top left',
-            width: inverseScalePercent,
-            minWidth: inverseScalePercent,
-            height: inverseScalePercent,
-            minHeight: inverseScalePercent
-          }}
-        >
+        <div style={{ padding: '2rem' }}>
           {renderMainContent()}
         </div>
       </div>
