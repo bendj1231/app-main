@@ -36,15 +36,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center">
-            {/* Blur Backdrop */}
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+            {/* Backdrop */}
             <div 
-                className="absolute inset-0 bg-black/40 backdrop-blur-xl transition-all duration-300"
+                className="absolute inset-0 bg-black/60 backdrop-blur-xl transition-all duration-300"
                 onClick={onClose}
             />
             
             {/* Modal Container */}
-            <div className="relative w-full max-w-[900px] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+            <div className="relative z-10 w-full max-w-[900px] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl">
                 {/* Glassy X Button - Top Right */}
                 <button
                     onClick={onClose}

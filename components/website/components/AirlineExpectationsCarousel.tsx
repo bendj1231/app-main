@@ -1817,8 +1817,9 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
 
     {/* Newsletter Modal for Non-Logged In Users */}
     {showModal && (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fadeIn">
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full relative">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+        <div className="absolute inset-0 bg-black/50" onClick={() => setShowModal(false)} />
+        <div className="relative z-10 bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
           <button
             onClick={() => setShowModal(false)}
             className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"

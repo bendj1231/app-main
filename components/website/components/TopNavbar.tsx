@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronLeft, ChevronDown } from 'lucide-react';
-import { LoginModal } from './LoginModal';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -9,6 +8,7 @@ interface TopNavbarProps {
     isDark?: boolean;
     forceScrolled?: boolean;
     isLight?: boolean;
+    onLoginModalOpen?: () => void;
 }
 
 interface NavSubItem {
@@ -33,6 +33,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     isDark = false,
     forceScrolled = false,
     isLight = false,
+    onLoginModalOpen,
 }) => {
     const { currentUser, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,8 +41,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const handleLogout = async () => {
         try {
@@ -277,7 +276,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         </button>
 
                         <button
-                            onClick={currentUser ? () => onNavigate('download') : () => setIsLoginModalOpen(true)}
+                            onClick={currentUser ? () => onNavigate('download') : onLoginModalOpen || (() => {})}
                             className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
                         >
                             {currentUser ? 'Access Portal' : 'Login'}
@@ -336,7 +335,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             </button>
 
                             <button
-                                onClick={() => setIsLoginModalOpen(true)}
+                                onClick={onLoginModalOpen || (() => {})}
                                 className="bg-blue-600 text-white w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-4 shadow-xl"
                             >
                                 Login
@@ -346,13 +345,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 </div>
             </div>
 
-            {/* Login Modal */}
-            <LoginModal
-                isOpen={isLoginModalOpen}
-                onClose={() => setIsLoginModalOpen(false)}
-                onLogin={onLogin}
-                onNavigate={onNavigate}
-            />
+            {/* Login Modal - moved to root level */}
         </>
     );
 };

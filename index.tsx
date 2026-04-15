@@ -100,6 +100,7 @@ import { W1000SuitePage } from './components/website/components/W1000SuiteDirect
 import { MembershipBenefitsPage } from './components/website/components/MembershipBenefitsDirectoryPage';
 import { DownloadPage } from './components/website/components/DownloadPage'; // New Import
 import { useAuth } from './src/contexts/AuthContext'; // New Import
+import { LoginModal } from './components/website/components/LoginModal';
 
 
 
@@ -186,6 +187,7 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState<any>('home');
   const [scrollToSection, setScrollToSection] = useState<string | null>(null);
   const [isBlurring, setIsBlurring] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedAirline, setSelectedAirline] = useState<any>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -262,6 +264,7 @@ const App = () => {
             onLogin={navigateToPortal}
             onNavigate={navigateTo}
             isLoggedIn={!!currentUser}
+            onLoginModalOpen={() => setIsLoginModalOpen(true)}
             onGoToProgramDetail={(slide) => {
               if (slide?.title === 'Emirates ATPL Pilot Pathways') {
                 navigateTo('emirates-atpl');
@@ -758,6 +761,14 @@ const App = () => {
           </div>
         </div>
       )}
+
+      {/* Login Modal - at root level to avoid overflow-x-hidden issue */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onLogin={navigateToPortal}
+        onNavigate={navigateTo}
+      />
     </>
   );
 

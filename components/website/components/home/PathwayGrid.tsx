@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { MemberJourneyAnimation } from './MemberJourneyAnimation';
 
 interface Slide {
     image: string;
@@ -26,12 +27,8 @@ interface PathwayGridProps {
 const dummyCards = [
     {
         id: 'member',
-        images: [
-            'https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1000&auto=format&fit=crop',
-            'https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g',
-            'https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=1000&auto=format&fit=crop',
-        ],
-        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1000&auto=format&fit=crop',
+        images: [],
+        image: '',
         loggedInImage: '/images/accessportal.png',
         title: 'Become a Member',
         loggedInTitle: 'Access Portal',
@@ -40,7 +37,7 @@ const dummyCards = [
         icon: Play,
         badge: null,
         accentColor: 'from-blue-500/80 to-cyan-400/80',
-        isCarousel: true,
+        hasAnimation: true,
     },
     {
         id: 'discover',
@@ -331,9 +328,12 @@ const GridCard: React.FC<GridCardProps> = ({
                 transition-all duration-300 ease-out
                 ${isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}
             `}>
-                {/* Background Image / Carousel */}
+                {/* Background Image / Carousel / Animation */}
                 <div className="absolute inset-0">
-                    {card.isCarousel && card.images ? (
+                    {card.hasAnimation ? (
+                        // Member Journey Animation
+                        <MemberJourneyAnimation isHovered={isHovered} />
+                    ) : card.isCarousel && card.images ? (
                         // Carousel with multiple images
                         <div className="relative w-full h-full">
                             {card.images.map((img, idx) => (

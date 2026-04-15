@@ -15,6 +15,7 @@ interface HomePageProps {
     onNavigate: (page: string) => void;
     onGoToProgramDetail: (slide?: Slide) => void;
     isLoggedIn?: boolean;
+    onLoginModalOpen?: () => void;
 }
 
 interface Slide {
@@ -430,7 +431,7 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = ({ onJoinUs }) => {
     );
 };
 
-export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigate, onGoToProgramDetail, isLoggedIn = false }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigate, onGoToProgramDetail, isLoggedIn = false, onLoginModalOpen }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [scrolled, setScrolled] = useState(false);
     const [activeCategory, setActiveCategory] = useState<
@@ -686,6 +687,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                 onLogin={onLogin}
                 isLight={isOverWhite}
                 isDark={!isOverWhite}
+                onLoginModalOpen={onLoginModalOpen}
             />
 
             {/* Smoke Shader Section with Glassy Card */}
