@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronLeft, ChevronDown } from 'lucide-react';
+import { LoginModal } from './LoginModal';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -39,6 +40,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const handleLogout = async () => {
         try {
@@ -152,9 +155,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isLight
                     ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
                     : isDark
-                        ? 'bg-gradient-to-b from-black/90 to-transparent py-3 shadow-none'
+                        ? 'bg-[#2a3f5a]/80 py-3 shadow-none'
                         : scrolled
-                            ? 'bg-gradient-to-b from-black/95 to-transparent backdrop-blur-sm py-3 shadow-2xl'
+                            ? 'bg-gradient-to-b from-black/95 via-black/60 to-transparent backdrop-blur-sm py-3 shadow-2xl'
                             : 'bg-transparent py-6'
                     }`}>
                 <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
@@ -274,7 +277,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         </button>
 
                         <button
-                            onClick={currentUser ? () => onNavigate('download') : onLogin}
+                            onClick={currentUser ? () => onNavigate('download') : () => setIsLoginModalOpen(true)}
                             className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
                         >
                             {currentUser ? 'Access Portal' : 'Login'}
@@ -333,7 +336,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             </button>
 
                             <button
-                                onClick={onLogin}
+                                onClick={() => setIsLoginModalOpen(true)}
                                 className="bg-blue-600 text-white w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-4 shadow-xl"
                             >
                                 Login
@@ -342,6 +345,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     </div>
                 </div>
             </div>
+
+            {/* Login Modal */}
+            <LoginModal
+                isOpen={isLoginModalOpen}
+                onClose={() => setIsLoginModalOpen(false)}
+                onLogin={onLogin}
+                onNavigate={onNavigate}
+            />
         </>
     );
 };

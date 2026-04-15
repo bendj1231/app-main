@@ -6,6 +6,8 @@ import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 import { PilotJourneyScroll } from '../pilot-recognition/PilotJourneyScroll';
 import { IMAGES } from '../../../../src/lib/website-constants';
+import { SmokeShader } from '../../../ui/smoke-shader';
+import { PathwayGrid } from './PathwayGrid';
 
 interface HomePageProps {
     onJoinUs: () => void;
@@ -662,8 +664,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                 isDark={true}
             />
 
+            {/* Smoke Shader Section with Glassy Card */}
+            <div className="relative w-full h-screen">
+                <SmokeShader />
+                
+                {/* Flight Simulator Style Grid */}
+                <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={false} />
+            </div>
+            
+            {/* Gradient Fade Below Shader - After Discover More */}
+            <div className="relative w-full h-32 bg-gradient-to-b from-transparent via-slate-200/50 to-white z-40 pointer-events-none -mt-32"></div>
+
+            {/* Pilot Journey Scroll Animation - iPad/Tablet Section */}
+            <PilotJourneyScroll onNavigate={onNavigate} />
+
+            {/* Airline Expectations 3D Carousel */}
+            <AirlineExpectationsCarousel onNavigate={onNavigate} onLogin={onLogin} />
+
             {/* Hero Section - Carousel */}
             <div ref={carouselRef} className="relative h-screen w-full flex items-center pt-20 overflow-hidden">
+                {/* Top Gradient Fade - Transition from Airline Expectations */}
+                <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white via-white/80 to-transparent z-50 pointer-events-none"></div>
+                
                 {/* Background Images Layer */}
                 {slides.map((slide, index) => (
                     <div
@@ -854,12 +876,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                 {/* Additional White Fade for Smooth Transition to Next Section */}
                 <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/40 to-transparent z-30 pointer-events-none"></div>
             </div>
-
-            {/* Airline Expectations 3D Carousel */}
-            <AirlineExpectationsCarousel onNavigate={onNavigate} onLogin={onLogin} />
-
-            {/* Pilot Journey Scroll Animation - Between Video and Content */}
-            <PilotJourneyScroll onNavigate={onNavigate} />
 
             {/* Main Content Area (Separated from Hero for Scrolling) */}
             <div className="relative bg-white">

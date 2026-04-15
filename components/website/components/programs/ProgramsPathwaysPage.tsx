@@ -115,8 +115,18 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
-            {/* Header Section */}
-            <div className="pt-32 pb-20 px-6 bg-slate-50/50">
+            {/* Header Section with Hero Image */}
+            <div className="relative pt-32 pb-20 px-6">
+                {/* Background Image - Foundational Program */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g"
+                        alt="Foundational Program"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/60" />
+                </div>
+                
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
                         <img
@@ -124,13 +134,13 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
                             alt="WingMentor Logo"
                             className="mx-auto w-64 h-auto object-contain mb-6"
                         />
-                        <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
+                        <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-400 mb-6 font-sans">
                             Directory
                         </p>
-                        <h1 className="text-4xl md:text-7xl font-serif text-slate-900 leading-tight mb-8">
+                        <h1 className="text-4xl md:text-7xl font-serif text-white leading-tight mb-8">
                             Programs & Pathways
                         </h1>
-                        <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
+                        <p className="max-w-3xl mx-auto text-lg md:text-xl text-white/80 leading-relaxed font-sans">
                             A comprehensive ecosystem designed to bridge the pilot gap. Explore our core foundational training,
                             specialized career pathways, and industry-leading recognition systems.
                         </p>

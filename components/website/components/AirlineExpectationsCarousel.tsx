@@ -1262,7 +1262,7 @@ const airlines: Airline[] = [
 export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselProps> = ({ onNavigate, onLogin }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-  const [selectedRegion, setSelectedRegion] = useState<string>('All');
+  const [selectedRegion, setSelectedRegion] = useState<string>('Asia');
   const [isFading, setIsFading] = useState(false);
   const [contentVisible, setContentVisible] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -1331,6 +1331,13 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
       }
     });
   }, [selectedRegion]);
+
+  // Scroll to left on mount and when filtered airlines change
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ left: 0, behavior: 'instant' });
+    }
+  }, [filteredAirlines]);
 
   const goToPrev = () => {
     setIsAutoScrolling(false); // Stop auto-scroll on button click
