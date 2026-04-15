@@ -179,7 +179,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             variants={cardVariants}
                             className="md:col-span-3 h-[260px] md:h-[340px]"
                         >
-                            <GridCard
+                            <GridCard 
                                 card={card}
                                 isHovered={hoveredCard === card.id}
                                 onHover={() => setHoveredCard(card.id)}
@@ -197,6 +197,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                         });
                                     }
                                 }}
+                                onNavigate={onNavigate}
                                 className="w-full h-full"
                                 isLoggedIn={isLoggedIn}
                                 isLargeCard={true}
@@ -278,6 +279,7 @@ interface GridCardProps {
     onHover: () => void;
     onLeave: () => void;
     onClick: () => void;
+    onNavigate: (page: string) => void;
     className?: string;
     isLoggedIn?: boolean;
     isLargeCard?: boolean;
@@ -289,6 +291,7 @@ const GridCard: React.FC<GridCardProps> = ({
     onHover,
     onLeave,
     onClick,
+    onNavigate,
     className = '',
     isLoggedIn = false,
     isLargeCard = false
@@ -455,7 +458,13 @@ const GridCard: React.FC<GridCardProps> = ({
                             </h3>
                             {/* Glassy Join Now button for member card only */}
                             {card.id === 'member' && (
-                                <button className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg">
+                                <button 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onNavigate('become-member');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
                                     Join Now
                                 </button>
                             )}
