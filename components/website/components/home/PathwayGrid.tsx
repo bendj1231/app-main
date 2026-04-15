@@ -491,11 +491,15 @@ const GridCard: React.FC<GridCardProps> = ({
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        onNavigate('become-member');
+                                        if (isLoggedIn) {
+                                            onNavigate('portal');
+                                        } else {
+                                            onNavigate('become-member');
+                                        }
                                     }}
                                     className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                                 >
-                                    Join Now
+                                    {isLoggedIn ? 'Access Portal' : 'Join Now'}
                                 </button>
                             )}
                             {/* Glassy Discover button for discover card only */}
