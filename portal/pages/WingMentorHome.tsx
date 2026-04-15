@@ -53,8 +53,12 @@ const FoundationalEnrollmentCheck: React.FC<{
     const checkEnrollment = async () => {
       console.log('🔍 FoundationalEnrollmentCheck: Starting check', { userId, hasPreloadedPrograms: !!preloadedPrograms, hasPreloadedEnrollment: !!preloadedEnrollment });
       
-      if (!userId) {
-        console.log('⚠️ FoundationalEnrollmentCheck: No userId, routing to foundational (not enrolled)');
+      // Try both Supabase ID and Firebase UID
+      const supabaseId = userProfile?.id || userId;
+      const firebaseUid = userProfile?.firebase_uid || userProfile?.uid || userId;
+      
+      if (!supabaseId && !firebaseUid) {
+        console.log('⚠️ FoundationalEnrollmentCheck: No userId available, routing to foundational (not enrolled)');
         onResult(false);
         setIsLoading(false);
         return;
@@ -92,7 +96,16 @@ const FoundationalEnrollmentCheck: React.FC<{
 
       try {
         console.log('🌐 FoundationalEnrollmentCheck: Fetching enrollment status from API');
-        const enrolledPrograms = await getEnrollmentStatus(userId);
+        // Try Supabase ID first, then Firebase UID
+        let enrolledPrograms = [];
+        if (supabaseId) {
+          enrolledPrograms = await getEnrollmentStatus(supabaseId);
+        }
+        // If no results with Supabase ID, try Firebase UID
+        if (enrolledPrograms.length === 0 && firebaseUid && firebaseUid !== supabaseId) {
+          console.log('🌐 FoundationalEnrollmentCheck: Trying Firebase UID');
+          enrolledPrograms = await getEnrollmentStatus(firebaseUid);
+        }
         const isEnrolled = enrolledPrograms.includes('Foundational');
         console.log('✅ FoundationalEnrollmentCheck: API result, isEnrolled:', isEnrolled);
         onResult(isEnrolled);
@@ -114,7 +127,7 @@ const FoundationalEnrollmentCheck: React.FC<{
     }, 5000);
 
     return () => clearTimeout(timeout);
-  }, [userId, onResult, preloadedEnrollment, preloadedPrograms]);
+  }, [userId, onResult, preloadedEnrollment, preloadedPrograms, userProfile]);
 
   if (isLoading) {
     return (

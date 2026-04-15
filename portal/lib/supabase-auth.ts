@@ -452,11 +452,29 @@ export const completeEnrollment = async (uid: string, onboardingData: {
  */
 export const getEnrollmentStatus = async (uid: string): Promise<string[]> => {
   try {
-    const { data: profile, error } = await supabase
+    // First try with Supabase ID
+    let { data: profile, error } = await supabase
       .from('profiles')
       .select('enrolled_programs')
       .eq('id', uid)
       .single();
+
+    // If that fails, try with Firebase UID
+    if (error || !profile) {
+      console.log('⚠️ getEnrollmentStatus: No profile found with Supabase ID, trying Firebase UID');
+      const { data: firebaseProfile, error: firebaseError } = await supabase
+        .from('profiles')
+        .select('enrolled_programs')
+        .eq('firebase_uid', uid)
+        .single();
+
+      if (firebaseError) {
+        console.error('Error fetching enrollment status with Firebase UID:', firebaseError);
+        return [];
+      }
+
+      return firebaseProfile?.enrolled_programs || [];
+    }
 
     if (error) {
       console.error('Error fetching enrollment status:', error);
