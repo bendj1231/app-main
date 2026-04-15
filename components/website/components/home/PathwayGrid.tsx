@@ -355,12 +355,28 @@ const GridCard: React.FC<GridCardProps> = ({
             ? card.images[currentImageIndex]
             : card.image;
     
+    // Handle card click - for discover card, navigate based on current image index
+    const handleCardClick = (e: React.MouseEvent) => {
+        if (card.id === 'discover') {
+            e.preventDefault();
+            e.stopPropagation();
+            const pageMap: Record<number, string> = {
+                0: 'w1000-suite',      // W1000
+                1: 'airline-expectations',  // Expectations
+                2: 'pilot-recognition',    // Digital Logbook
+            };
+            onNavigate(pageMap[currentImageIndex] || 'airline-expectations');
+        } else {
+            onClick();
+        }
+    };
+
     return (
-        <div 
+        <div
             className={`relative group cursor-pointer ${className}`}
             onMouseEnter={onHover}
             onMouseLeave={onLeave}
-            onClick={onClick}
+            onClick={handleCardClick}
         >
             {/* Main Card Container - Glassy UI */}
             <div className={`
