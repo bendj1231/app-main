@@ -893,7 +893,18 @@ const App = () => {
 
 };
 
-const root = createRoot(document.getElementById('root')!);
+// Check if root already exists to prevent duplicate createRoot calls
+const rootElement = document.getElementById('root');
+let root;
+if (rootElement && !(rootElement as any)._reactRoot) {
+  root = createRoot(rootElement);
+  (rootElement as any)._reactRoot = root;
+} else if (rootElement && (rootElement as any)._reactRoot) {
+  root = (rootElement as any)._reactRoot;
+} else {
+  root = createRoot(document.getElementById('root')!);
+}
+
 root.render(
   <AuthProvider>
     <App />
