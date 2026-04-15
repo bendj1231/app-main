@@ -12,43 +12,48 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
   useEffect(() => {
-    if (isHovered) {
-      // Clear any existing timeouts
-      timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
-      timeoutsRef.current = [];
-      
-      // Reset animation state to beginning
-      setScrollY(0);
-      setCurrentSection(0);
-      
+    // Clear any existing timeouts
+    timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+    timeoutsRef.current = [];
+    
+    // Reset animation state to beginning
+    setScrollY(0);
+    setCurrentSection(0);
+    
+    // Animation loop function
+    const runAnimation = () => {
       // Section 1: Header (0px) - show header only
-      // Section 2: Netflix Hero (scroll to ~70px) - show hero section
-      // Section 3: Pilot Requirements (scroll to ~220px) - show requirements section
+      // Section 2: Netflix Hero (scroll to ~120px) - show hero section
+      // Section 3: Pilot Requirements (scroll to ~300px) - show requirements section
       
       const section1Timeout = setTimeout(() => {
         setCurrentSection(1);
-        setScrollY(70);
+        setScrollY(120);
       }, 2000); // Show header for 2 seconds
       timeoutsRef.current.push(section1Timeout);
       
       const section2Timeout = setTimeout(() => {
         setCurrentSection(2);
-        setScrollY(220);
+        setScrollY(300);
       }, 5000); // Show hero for 3 seconds, then scroll to requirements
       timeoutsRef.current.push(section2Timeout);
       
-      return () => {
-        timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
-        timeoutsRef.current = [];
-      };
-    } else {
-      // Reset to beginning when not hovering
-      setScrollY(0);
-      setCurrentSection(0);
+      // Loop back to beginning after showing requirements
+      const loopTimeout = setTimeout(() => {
+        setScrollY(0);
+        setCurrentSection(0);
+        runAnimation(); // Restart the loop
+      }, 8000); // Show requirements for 3 seconds, then loop
+      timeoutsRef.current.push(loopTimeout);
+    };
+    
+    runAnimation();
+    
+    return () => {
       timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
       timeoutsRef.current = [];
-    }
-  }, [isHovered]);
+    };
+  }, []);
 
   const etihadData = {
     name: 'Etihad Airways',
@@ -69,26 +74,31 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
         style={{ 
           transform: `translateY(-${scrollY}px)`,
           paddingBottom: `${scrollY + 20}px`,
-          transitionDuration: '1s'
+          transitionDuration: '1.5s'
         }}
       >
         {/* Section 1: Header */}
         <div className="bg-white px-2 py-2 border-b border-slate-200">
           <div className="text-center">
-            <p className="text-[5px] font-bold tracking-[0.15em] uppercase text-blue-700 mb-0.5">
+            <img
+              src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+              alt="WingMentor Logo"
+              className="mx-auto w-16 h-auto object-contain mb-1"
+            />
+            <p className="text-[5px] font-bold tracking-[0.3em] uppercase text-blue-700 mb-1">
               Strategic Career Guidance
             </p>
-            <h1 className="text-[8px] font-serif text-slate-900 leading-tight mb-0.5">
+            <h1 className="text-[8px] font-serif text-slate-900 leading-tight mb-1">
               Airline Expectations
             </h1>
-            <p className="text-[5px] text-slate-600 leading-relaxed">
-              Understanding what airlines really look for in pilot candidates
+            <p className="text-[5px] text-slate-600 leading-relaxed max-w-xs mx-auto">
+              Understanding what airlines really look for in pilot candidates—beyond the 1,500-hour requirement. We bridge the gap between "having the hours" and "being the right candidate."
             </p>
           </div>
         </div>
 
         {/* Section 2: Netflix-style Hero */}
-        <div className="relative h-[35%] min-h-[120px]">
+        <div className="relative h-[25%] min-h-[100px]">
           <img
             src={etihadData.image}
             alt={etihadData.name}

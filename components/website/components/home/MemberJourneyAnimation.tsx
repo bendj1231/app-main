@@ -54,14 +54,21 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
           }
           if (!isCompleteRef.current) {
             isCompleteRef.current = true;
-            // Quick click effect then transition to warp
-            warpTimeoutRef.current = setTimeout(() => setScene('warp'), 300);
+            // Go directly to portal after typing completes
+            warpTimeoutRef.current = setTimeout(() => setScene('portal'), 500);
           }
         }
       }, 50);
 
       return () => {
-        // Don't clear on re-render, only clear on unmount or scene change
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+        }
+        if (warpTimeoutRef.current) {
+          clearTimeout(warpTimeoutRef.current);
+          warpTimeoutRef.current = null;
+        }
       };
     }
   }, [scene, isHovered, targetText]);
@@ -76,12 +83,9 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
 
   // Scene transitions
   useEffect(() => {
-    if (scene === 'warp') {
-      const warpTimeout = setTimeout(() => setScene('portal'), 800);
-      return () => clearTimeout(warpTimeout);
-    } else if (scene === 'portal') {
-      // Give more time for the login form animation to complete
-      const portalTimeout = setTimeout(() => setScene('member'), 4000);
+    if (scene === 'portal') {
+      // Give time for login animation + loading + pathways display
+      const portalTimeout = setTimeout(() => setScene('member'), 6000);
       return () => clearTimeout(portalTimeout);
     }
   }, [scene]);
@@ -149,45 +153,49 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
           </motion.div>
         )}
 
-        {/* Scene 2: Warp Transition */}
-        {scene === 'warp' && (
-          <motion.div
-            key="warp"
-            className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800"
-          >
-            <motion.div
-              className="w-full h-full relative"
-              initial={{ scale: 1, opacity: 1 }}
-              animate={{ scale: [1, 0.1, 10], opacity: [1, 1, 0] }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
-            >
-              {[...Array(20)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute top-1/2 left-1/2 w-2 h-2 bg-white rounded-full"
-                  initial={{ x: '-50%', y: '-50%', scale: 0 }}
-                  animate={{
-                    x: `${Math.cos(i * 18 * Math.PI / 180) * 200 - 50}%`,
-                    y: `${Math.sin(i * 18 * Math.PI / 180) * 200 - 50}%`,
-                    scale: [0, 1, 0],
-                    opacity: [0, 1, 0]
-                  }}
-                  transition={{ duration: 0.6, delay: i * 0.02 }}
-                />
-              ))}
-            </motion.div>
-          </motion.div>
-        )}
-
-        {/* Scene 3: Portal Login Page */}
+        {/* Scene 3: Portal Login Page with Blue Cloud Shader Background */}
         {scene === 'portal' && (
           <motion.div
             key="portal"
-            initial={{ opacity: 0, scale: 1.2 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-4 bg-white flex flex-col md:flex-row rounded-xl overflow-hidden shadow-2xl"
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            {/* Blue Cloud Shader Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600">
+              {/* Animated cloud layers */}
+              <motion.div
+                className="absolute inset-0 opacity-30"
+                animate={{ 
+                  background: [
+                    'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
+                    'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
+                    'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)'
+                  ]
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+              />
+              <motion.div
+                className="absolute inset-0"
+                animate={{ 
+                  background: [
+                    'radial-gradient(circle at 50% 20%, rgba(147,197,253,0.4) 0%, transparent 40%)',
+                    'radial-gradient(circle at 50% 80%, rgba(147,197,253,0.4) 0%, transparent 40%)',
+                    'radial-gradient(circle at 50% 20%, rgba(147,197,253,0.4) 0%, transparent 40%)'
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              />
+            </div>
+            
+            {/* Small Portal Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="relative w-[85%] max-w-[340px] bg-white rounded-2xl overflow-hidden shadow-2xl z-10"
           >
             {/* Left Side - Dark Blue with Info */}
             <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-6 md:p-8 flex flex-col relative">
@@ -338,6 +346,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
                 </motion.div>
               </motion.div>
             </div>
+            </motion.div>
           </motion.div>
         )}
 
@@ -419,11 +428,11 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
 
       {/* Progress indicator */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-        {['search', 'warp', 'portal', 'member'].map((s, i) => (
+        {['search', 'portal', 'member'].map((s, i) => (
           <motion.div
             key={s}
             className={`w-2 h-2 rounded-full transition-colors ${
-              ['search', 'warp', 'portal', 'member'].indexOf(scene) >= i
+              ['search', 'portal', 'member'].indexOf(scene) >= i
                 ? 'bg-white'
                 : 'bg-white/30'
             }`}
