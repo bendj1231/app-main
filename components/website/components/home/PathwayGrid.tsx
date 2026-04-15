@@ -376,16 +376,20 @@ const GridCard: React.FC<GridCardProps> = ({
 
                 {/* Text Overlay - Directly on Image (for large cards only) */}
                 {isLargeCard && (
-                    <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                        <div className="relative">
-                            <h3 className="font-serif font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2 drop-shadow-lg">
-                                {displayTitle}
-                            </h3>
-                            <p className="text-white/90 text-xs md:text-sm truncate drop-shadow-md">
-                                {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
-                            </p>
+                    <>
+                        {/* Blur Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent backdrop-blur-[2px]" />
+                        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 relative z-10">
+                            <div className="relative">
+                                <h3 className="font-serif font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2 drop-shadow-lg">
+                                    {displayTitle}
+                                </h3>
+                                <p className="text-white/90 text-xs md:text-sm truncate drop-shadow-md">
+                                    {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    </>
                 )}
 
                 {/* Airy Glassy Strip - Bottom (for small cards only) */}
