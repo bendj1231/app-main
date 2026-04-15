@@ -294,32 +294,8 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             className="absolute inset-0 flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Blue Cloud Shader Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600">
-              {/* Animated cloud layers */}
-              <motion.div
-                className="absolute inset-0 opacity-30"
-                animate={{ 
-                  background: [
-                    'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-                    'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-                    'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)'
-                  ]
-                }}
-                transition={{ duration: 4, repeat: Infinity }}
-              />
-              <motion.div
-                className="absolute inset-0"
-                animate={{ 
-                  background: [
-                    'radial-gradient(circle at 50% 20%, rgba(147,197,253,0.4) 0%, transparent 40%)',
-                    'radial-gradient(circle at 50% 80%, rgba(147,197,253,0.4) 0%, transparent 40%)',
-                    'radial-gradient(circle at 50% 20%, rgba(147,197,253,0.4) 0%, transparent 40%)'
-                  ]
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-            </div>
+            {/* Simple Blue Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600" />
             
             {/* Portal Modal - Compact square/rectangular */}
             <motion.div
