@@ -3,7 +3,7 @@
  * Stabilized and Recovered UI Foundation
  */
 
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { View } from './types';
@@ -94,7 +94,7 @@ import { TransitionProgramPage } from './components/website/components/programs/
 import { ProgramsPathwaysPage } from './components/website/components/programs/ProgramsPathwaysPage';
 import { ProgramsPage } from './components/website/components/programs/ProgramsPage';
 import { PathwaysPage } from './components/website/components/pathways/PathwaysPage';
-import { PortalWrapper } from './components/website/components/portal/PortalWrapper';
+const PortalWrapper = lazy(() => import('./components/website/components/portal/PortalWrapper').then(m => ({ default: m.PortalWrapper })));
 import { AviationInsightsDirectoryPage } from './components/website/components/AviationInsightsDirectoryPage';
 import { ApplicationsSystemsDirectoryPage } from './components/website/components/ApplicationsSystemsDirectoryPage';
 import { MembershipDirectoryPage } from './components/website/components/MembershipDirectoryPage';
@@ -640,13 +640,14 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
-        {/* Temporarily disabled portal routing to debug blank page issue */}
-        {/* {currentPage === 'portal' && (
-          <PortalWrapper
-            onNavigate={navigateTo}
-            onBack={() => navigateTo('home')}
-          />
-        )} */}
+        {currentPage === 'portal' && (
+          <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Portal...</div>}>
+            <PortalWrapper
+              onNavigate={navigateTo}
+              onBack={() => navigateTo('home')}
+            />
+          </Suspense>
+        )}
       </div>
 
       {![
