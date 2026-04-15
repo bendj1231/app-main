@@ -378,12 +378,12 @@ const GridCard: React.FC<GridCardProps> = ({
                 {isLargeCard && (
                     <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                         <div className="relative">
-                            {/* Blur Gradient Backdrop */}
-                            <div className="absolute inset-0 -left-2 -right-2 -top-2 -bottom-2 bg-gradient-to-t from-black/80 via-black/50 to-transparent backdrop-blur-sm rounded-lg -z-10" />
-                            <h3 className="font-serif font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2 drop-shadow-lg relative z-10">
+                            {/* Blur Gradient Background */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent backdrop-blur-md rounded-lg" />
+                            <h3 className="font-serif font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2 relative z-10">
                                 {displayTitle}
                             </h3>
-                            <p className="text-white/90 text-xs md:text-sm truncate drop-shadow-md relative z-10">
+                            <p className="text-white/90 text-xs md:text-sm truncate relative z-10">
                                 {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
                             </p>
                         </div>
