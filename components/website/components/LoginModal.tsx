@@ -54,30 +54,30 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 <div className="flex flex-col md:flex-row min-h-[550px]">
                     {/* Left Side - Dark Blue with Info */}
                     <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-8 md:p-10 flex flex-col relative">
-                        {/* Logo - Positioned at top */}
-                        <div className="mb-6 pt-2">
+                        {/* Logo - Centered and larger */}
+                        <div className="mb-8 flex justify-center">
                             <img
                                 src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
                                 alt="WingMentor Logo"
-                                className="w-28 h-auto object-contain mx-auto md:mx-0"
+                                className="w-40 h-auto object-contain"
                             />
                         </div>
 
                         {/* Content - Centered in remaining space */}
-                        <div className="flex-1 flex flex-col justify-center">
+                        <div className="flex-1 flex flex-col justify-center items-center">
 
                         {/* Mentor Network Label */}
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-400 mb-3 text-center md:text-left">
+                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-400 mb-3 text-center">
                             Mentor Network
                         </p>
 
                         {/* Title */}
-                        <h2 className="text-3xl md:text-4xl font-serif mb-4 text-center md:text-left">
+                        <h2 className="text-3xl md:text-4xl font-serif mb-4 text-center">
                             Pilot Portal
                         </h2>
 
                         {/* Description */}
-                        <p className="text-white/70 text-sm leading-relaxed mb-6 text-center md:text-left">
+                        <p className="text-white/70 text-sm leading-relaxed mb-6 text-center max-w-sm">
                             Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies. Explore the pilot network search for type-rating intel, airline requirements, and aircraft references.
                         </p>
 
@@ -87,7 +87,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                 onNavigate('pilot-recognition');
                                 onClose();
                             }}
-                            className="px-6 py-2.5 border border-white/30 rounded-full text-sm font-medium hover:bg-white/10 transition-all duration-300 w-fit mx-auto md:mx-0"
+                            className="px-6 py-2.5 border border-white/30 rounded-full text-sm font-medium hover:bg-white/10 transition-all duration-300"
                         >
                             Learn more
                         </button>

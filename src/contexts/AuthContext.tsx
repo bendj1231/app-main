@@ -245,11 +245,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     useEffect(() => {
+        // Firebase auth state listener
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setCurrentUser(user);
 
             if (user) {
-                // Fetch user profile
+                // Fetch user profile from Firebase
                 try {
                     const docRef = doc(db, 'users', user.uid);
                     const docSnap = await getDoc(docRef);
@@ -266,7 +267,61 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setLoading(false);
         });
 
-        return unsubscribe;
+        // Supabase auth state listener
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log("Supabase auth state changed:", event, session?.user?.id);
+
+            if (session?.user) {
+                // Create a minimal User-like object for compatibility
+                const supabaseUser = {
+                    uid: session.user.id,
+                    email: session.user.email || '',
+                    emailVerified: session.user.email_confirmed_at ? true : false,
+                    isAnonymous: false,
+                    metadata: { creationTime: session.user.created_at, lastSignInTime: session.user.last_sign_in_at },
+                    providerData: [],
+                    refreshToken: session.refresh_token || '',
+                    tenantId: null,
+                    delete: async () => { },
+                    getIdToken: async () => session.access_token || '',
+                    getIdTokenResult: async () => ({}) as any,
+                    reload: async () => { },
+                    toJSON: () => ({ uid: session.user.id, email: session.user.email }),
+                    displayName: session.user.user_metadata?.full_name || null,
+                    phoneNumber: session.user.phone || null,
+                    photoURL: session.user.user_metadata?.avatar_url || null,
+                    providerId: 'supabase'
+                } as unknown as User;
+
+                setCurrentUser(supabaseUser);
+
+                // Fetch profile from Supabase
+                try {
+                    const { data: profileData, error } = await supabase
+                        .from('pilot_licensure_experience')
+                        .select('*')
+                        .eq('user_id', session.user.id)
+                        .single();
+
+                    if (profileData && !error) {
+                        setUserProfile(profileData);
+                    }
+                } catch (err) {
+                    console.error("Error fetching Supabase profile:", err);
+                }
+            } else if (event === 'SIGNED_OUT') {
+                // Only clear if Firebase is also not signed in
+                if (!auth.currentUser) {
+                    setCurrentUser(null);
+                    setUserProfile(null);
+                }
+            }
+        });
+
+        return () => {
+            unsubscribe();
+            subscription.unsubscribe();
+        };
     }, []);
 
     const value = {
