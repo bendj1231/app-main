@@ -49,19 +49,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                                     <Icons.ArrowRight />
                                 </div>
                             </div>
+                            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="News & Updates" className={styles.hubCardBgImage} />
                         </div>
 
                         <div 
-                            className={`${styles.horizontalCard} ${mainView === 'dashboard' ? styles.active : ''}`}
-                            onClick={() => onNavigate('dashboard')}
+                            className={`${styles.horizontalCard} ${mainView === 'applications' ? styles.active : ''}`}
+                            onClick={() => onNavigate('applications')}
                         >
                             <div className={styles.horizontalCardContentWrapper}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '65%' }}>
                                     <div style={{ fontSize: '1rem', color: '#000000', fontWeight: 'bold' }}>•</div>
                                     <div className={styles.horizontalCardContent}>
-                                        <h3 className={styles.horizontalCardTitle}>Dashboard</h3>
+                                        <h3 className={styles.horizontalCardTitle}>Pilot Portfolio</h3>
                                         <p className={styles.horizontalCardDesc}>
-                                            Your personalized training dashboard
+                                            Flight logs and training records
                                         </p>
                                     </div>
                                 </div>
@@ -69,6 +70,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                                     <Icons.ArrowRight />
                                 </div>
                             </div>
+                            <img src="/Captain-Paperwork-Medium.jpg" alt="Pilot Portfolio" className={styles.hubCardBgImage} />
                         </div>
 
                         <div 
@@ -89,6 +91,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                                     <Icons.ArrowRight />
                                 </div>
                             </div>
+                            <img src="/Gemini_Generated_Image_7awns87awns87awn.png" alt="Programs" className={styles.hubCardBgImage} />
                         </div>
 
                         <div 
@@ -101,7 +104,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                                     <div className={styles.horizontalCardContent}>
                                         <h3 className={styles.horizontalCardTitle}>Pathways</h3>
                                         <p className={styles.horizontalCardDesc}>
-                                            Airline pathway programs
+                                            Structured career roadmaps
                                         </p>
                                     </div>
                                 </div>
@@ -109,6 +112,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                                     <Icons.ArrowRight />
                                 </div>
                             </div>
+                            <img src="/shutterstock_1698112222.jpg" alt="Pathways" className={styles.hubCardBgImage} />
+                        </div>
+
+                        <div 
+                            className={`${styles.horizontalCard} ${mainView === 'recognition' ? styles.active : ''}`}
+                            onClick={() => onNavigate('recognition')}
+                        >
+                            <div className={styles.horizontalCardContentWrapper}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '65%' }}>
+                                    <div style={{ fontSize: '1rem', color: '#000000', fontWeight: 'bold' }}>•</div>
+                                    <div className={styles.horizontalCardContent}>
+                                        <h3 className={styles.horizontalCardTitle}>Recognition</h3>
+                                        <p className={styles.horizontalCardDesc}>
+                                            Awards and certifications
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className={styles.hubCardArrow}>
+                                    <Icons.ArrowRight />
+                                </div>
+                            </div>
+                            <img src="/Gemini_Generated_Image_tka3njtka3njtka3.png" alt="Recognition & Achievements" className={styles.hubCardBgImage} />
                         </div>
 
                         <div 
