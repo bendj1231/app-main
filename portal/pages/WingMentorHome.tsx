@@ -4049,7 +4049,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       <Sidebar mainView={mainView} onLogout={onLogout} onNavigate={setMainView} isDarkMode={isDarkMode} />
       
       {/* Main Content Area */}
-      {mainView === 'pathways' ? (
+      {mainView === 'pathways' || mainView === 'wingmentor-network' ? (
         <div style={{ 
           position: 'fixed', 
           top: 0, 
@@ -4060,7 +4060,11 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           backgroundColor: isDarkMode ? '#0B0F19' : '#f8fafc',
           overflowY: 'auto'
         }}>
-          <PathwaysPage onBack={() => setMainView('dashboard')} isDarkMode={isDarkMode} />
+          {mainView === 'pathways' ? (
+            <PathwaysPage onBack={() => setMainView('dashboard')} isDarkMode={isDarkMode} />
+          ) : (
+            <WingMentorNetworkView onBack={() => setMainView('dashboard')} onViewChange={onViewChange} />
+          )}
         </div>
       ) : (
         <MainPanel />
