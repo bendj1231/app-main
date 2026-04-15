@@ -194,11 +194,23 @@ const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedAirline, setSelectedAirline] = useState<any>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [appError, setAppError] = useState<string | null>(null);
   const { currentUser } = useAuth(); // Get current user
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 3500);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Global error handler
+  useEffect(() => {
+    const handleError = (event: ErrorEvent) => {
+      console.error('Global error:', event.error);
+      setAppError(event.error?.message || 'Unknown error');
+    };
+
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
   }, []);
 
   const navigateTo = (page: any, data?: any) => {
@@ -231,6 +243,51 @@ const App = () => {
   return (
     <>
       <Styles />
+
+      {/* Error Display */}
+      {appError && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: '#1e293b',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 99999,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: '#334155',
+            padding: '40px',
+            borderRadius: '20px',
+            maxWidth: '600px',
+            textAlign: 'center'
+          }}>
+            <h2 style={{ color: '#ef4444', marginBottom: '20px', fontSize: '24px' }}>Application Error</h2>
+            <p style={{ color: '#cbd5e1', marginBottom: '20px', lineHeight: '1.6' }}>
+              {appError}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                background: '#3b82f6',
+                color: 'white',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '16px',
+                fontWeight: 600
+              }}
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Global Loading Overlay */}
       <div className={`loading-overlay ${!loading ? 'hidden' : ''}`}>
