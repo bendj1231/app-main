@@ -371,13 +371,13 @@ const GridCard: React.FC<GridCardProps> = ({
                 )}
 
                 {/* Text Overlay - Directly on Image */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                     <div className="relative">
-                        <h3 className="font-bold text-white text-sm md:text-lg tracking-wide mb-1 drop-shadow-lg">
+                        <h3 className="font-serif font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2 drop-shadow-lg">
                             {displayTitle}
                         </h3>
-                        <p className="text-white/90 text-[10px] md:text-xs truncate drop-shadow-md">
-                            {displaySubtitle.length > 45 ? displaySubtitle.slice(0, 42) + '...' : displaySubtitle}
+                        <p className="text-white/90 text-xs md:text-sm truncate drop-shadow-md">
+                            {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
                         </p>
                     </div>
                 </div>
