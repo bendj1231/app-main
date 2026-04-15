@@ -3542,7 +3542,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           onAccessWebsite={handleAccessWebsite}
         />
 
-        <div style={{ padding: '1rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ padding: '0.75rem', maxWidth: '1000px', margin: '0 auto' }}>
           {renderMainContent()}
         </div>
       </div>
