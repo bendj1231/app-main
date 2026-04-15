@@ -1208,7 +1208,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   }, [userProfile?.uid]);
 
   return (
-    <div className="dashboard-container animate-fade-in pilot-profile-page" style={{ backgroundColor: '#eef4fb', paddingBottom: '1rem', padding: '0.25rem 0.35rem', maxWidth: '1000px', margin: '0 auto', minHeight: 'auto' }}>
+    <div className="dashboard-container animate-fade-in pilot-profile-page" style={{ backgroundColor: '#eef4fb', paddingBottom: '1rem', padding: '0.25rem 0.35rem', maxWidth: '1200px', margin: '0 auto', minHeight: 'auto' }}>
       <main
         style={{
           position: 'relative',
