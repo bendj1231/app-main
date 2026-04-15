@@ -458,8 +458,9 @@ const GridCard: React.FC<GridCardProps> = ({
                             </h3>
                             {/* Glassy Join Now button for member card only */}
                             {card.id === 'member' && (
-                                <button 
+                                <button
                                     onClick={(e) => {
+                                        e.preventDefault();
                                         e.stopPropagation();
                                         onNavigate('become-member');
                                     }}
