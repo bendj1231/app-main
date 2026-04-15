@@ -27,9 +27,9 @@ export const DigitalLogbookAnimation: React.FC<DigitalLogbookAnimationProps> = (
             clearInterval(scrollInterval);
             return 100;
           }
-          return prev + 0.5;
+          return prev + 2; // Increased from 0.5 to 2 for faster scrolling
         });
-      }, 30);
+      }, 20); // Reduced from 30ms to 20ms for faster scrolling
       
       // Store the interval ref for cleanup
       const intervalRef = { current: scrollInterval } as any;
@@ -40,7 +40,7 @@ export const DigitalLogbookAnimation: React.FC<DigitalLogbookAnimationProps> = (
         clearInterval(scrollInterval);
         setScrollY(0);
         runAnimation(); // Restart the loop
-      }, 6000); // Complete scroll takes ~6 seconds, then loop
+      }, 2000); // Complete scroll now takes ~1 second, then loop
       timeoutsRef.current.push(loopTimeout);
     };
     

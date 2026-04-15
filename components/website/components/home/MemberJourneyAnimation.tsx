@@ -114,6 +114,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
             exit={{ opacity: 0, scale: 1.5, filter: 'blur(20px)' }}
             transition={{ duration: 0.5 }}
             className="absolute inset-0 bg-white flex flex-col items-center justify-center p-6"
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Search Bar */}
             <div className="relative w-full max-w-md">
@@ -162,6 +163,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
             className="absolute inset-0 flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Blue Cloud Shader Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600">
@@ -388,6 +390,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             className="absolute inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-cyan-900 flex flex-col items-center justify-center p-8 text-center"
+            onClick={(e) => e.stopPropagation()}
           >
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
