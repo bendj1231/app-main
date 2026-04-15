@@ -3892,6 +3892,19 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onViewMentorLogbook={() => setMainView('mentor-logbook')}
             onViewAtlas={() => setMainView('atlas-resume')}
             onViewRecognition={() => setMainView('recognition')}
+            onViewPrograms={() => setMainView('programs')}
+            onViewPathways={() => setMainView('pathways')}
+            onViewExamination={() => setMainView('examination-results')}
+            onViewExaminationPortal={() => setMainView('examination-portal')}
+            onViewFoundationalProgram={() => setMainView('foundational')}
+            onViewFoundationalPlatform={() => setMainView('foundational-enrolled')}
+            onViewFoundationalEnrollment={() => setMainView('foundational-enrollment-check')}
+            onViewLicensureExperience={() => setMainView('license-selection')}
+            onViewModule01={() => setMainView('pilot-gap-module')}
+            onViewModule02={() => setMainView('pilot-gap-module-2')}
+            onViewModule03={() => setMainView('module-3')}
+            onViewWingMentorConnect={() => setMainView('wingmentor-network')}
+            onViewEBTCBTAInterview={() => setMainView('interview-evaluation')}
             userProfile={userProfile ?? undefined} 
           />
         );
