@@ -3,6 +3,7 @@ import { Icons } from '../icons';
 import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
 import { supabase } from '../lib/supabase-auth';
+import { db } from '../lib/firebase';
 import PilotLicensureExperiencePage from './PilotLicensureExperiencePage';
 import { PathwaysCarousel } from '../components/PathwaysCarousel';
 import { PathwayStrategyCarousel } from '../components/PathwayStrategyCarousel';
@@ -44,10 +45,10 @@ interface DashboardPageProps {
 }
 
 const CategorySection: React.FC<{ title: string; description?: string; children: React.ReactNode; isDarkMode?: boolean }> = ({ title, description, children, isDarkMode = false }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
     <div>
-      <p style={{ margin: 0, fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: isDarkMode ? '#94a3b8' : '#94a3b8', fontWeight: 600 }}>{title}</p>
-      {description && <p style={{ margin: '0.25rem 0 0', color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.9rem' }}>{description}</p>}
+      <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: isDarkMode ? '#94a3b8' : '#94a3b8', fontWeight: 600 }}>{title}</p>
+      {description && <p style={{ margin: '0.2rem 0 0', color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.8rem' }}>{description}</p>}
     </div>
     {children}
   </div>
@@ -65,35 +66,35 @@ const renderCard = (card: {
     background: isDarkMode 
       ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
       : 'rgba(255, 255, 255, 0.9)',
-    borderRadius: '24px',
-    padding: '1.75rem',
+    borderRadius: '20px',
+    padding: '1.25rem',
     boxShadow: isDarkMode 
       ? '0 20px 45px rgba(0,0,0,0.3)'
       : '0 20px 45px rgba(15, 23, 42, 0.08)',
     border: isDarkMode 
       ? '1px solid rgba(71,85,105,0.5)'
-      : '1px solid rgba(255,255,255,0.45)',
+      : '1px solid rgba(226,232,240,0.8)',
     display: 'grid',
     gridTemplateColumns: '1fr auto',
-    gap: '1.5rem',
+    gap: '1rem',
     alignItems: 'center'
   }}>
     <div>
-      <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{card.title}</h3>
-      <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.95rem', lineHeight: 1.5 }}>{card.description}</p>
+      <h3 style={{ margin: '0 0 0.4rem', fontWeight: 700, fontSize: '1.1rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{card.title}</h3>
+      <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.85rem', lineHeight: 1.5 }}>{card.description}</p>
       {card.progress !== undefined && (
-        <div style={{ marginTop: '1rem' }}>
-          <div style={{ height: '6px', borderRadius: '999px', background: isDarkMode ? 'rgba(255,255,255,0.1)' : '#e2e8f0', overflow: 'hidden' }}>
+        <div style={{ marginTop: '0.75rem' }}>
+          <div style={{ height: '5px', borderRadius: '999px', background: isDarkMode ? 'rgba(255,255,255,0.1)' : '#e2e8f0', overflow: 'hidden' }}>
             <div style={{ width: `${card.progress}%`, height: '100%', background: 'linear-gradient(90deg, #34d399, #0ea5e9)' }} />
           </div>
-          <p style={{ margin: '0.4rem 0 0', fontSize: '0.8rem', color: isDarkMode ? '#94a3b8' : '#475569', fontWeight: 600 }}>{card.progress}% complete</p>
+          <p style={{ margin: '0.3rem 0 0', fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#475569', fontWeight: 600 }}>{card.progress}% complete</p>
         </div>
       )}
     </div>
     {card.cta && (
       <button
         style={{
-          padding: '0.65rem 1.75rem',
+          padding: '0.5rem 1.25rem',
           borderRadius: '999px',
           border: card.filled ? 'none' : isDarkMode ? '1px solid rgba(71,85,105,0.8)' : '1px solid #cbd5e1',
           background: card.filled ? '#0ea5e9' : 'transparent',
@@ -1207,12 +1208,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   }, [userProfile?.uid]);
 
   return (
-    <div className="dashboard-container animate-fade-in pilot-profile-page" style={{ backgroundColor: '#eef4fb', paddingBottom: '4rem', padding: '0.4rem 0.75rem', maxWidth: '800px', margin: '0 auto', minHeight: 'auto' }}>
+    <div className="dashboard-container animate-fade-in pilot-profile-page" style={{ backgroundColor: '#eef4fb', paddingBottom: '2rem', padding: '0.4rem 0.5rem', maxWidth: '850px', margin: '0 auto', minHeight: 'auto' }}>
       <main
         style={{
           position: 'relative',
           width: '100%',
-          maxWidth: '1200px',
+          maxWidth: '100%',
           margin: '0 auto',
           minHeight: 'auto'
         }}
