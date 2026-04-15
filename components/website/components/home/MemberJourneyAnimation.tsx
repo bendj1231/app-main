@@ -578,38 +578,15 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             </motion.div>
           </motion.div>
         )}
-            {/* Decorative elements */}
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-white/30 rounded-full"
-                initial={{ 
-                  x: Math.random() * 400 - 200, 
-                  y: Math.random() * 300 - 150,
-                  opacity: 0 
-                }}
-                animate={{ 
-                  opacity: [0, 1, 0],
-                  scale: [0, 1, 0]
-                }}
-                transition={{ 
-                  duration: 2, 
-                  delay: 0.8 + i * 0.2,
-                  repeat: Infinity
-                }}
-              />
-            ))}
-          </motion.div>
-        )}
       </AnimatePresence>
 
       {/* Progress indicator */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-        {['search', 'registration', 'portal', 'member'].map((s, i) => (
+        {['search', 'registration', 'portal', 'programs'].map((s, i) => (
           <motion.div
             key={s}
             className={`w-2 h-2 rounded-full transition-colors ${
-              ['search', 'registration', 'portal', 'member'].indexOf(scene) >= i
+              ['search', 'registration', 'portal', 'programs'].indexOf(scene) >= i
                 ? 'bg-white'
                 : 'bg-white/30'
             }`}
