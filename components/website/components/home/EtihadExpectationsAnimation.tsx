@@ -53,7 +53,7 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
       timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
       timeoutsRef.current = [];
     };
-  }, []);
+  }, [isHovered]); // Add isHovered dependency to restart when returning to component
 
   const etihadData = {
     name: 'Etihad Airways',

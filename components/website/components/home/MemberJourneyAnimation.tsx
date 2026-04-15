@@ -135,19 +135,22 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
                 />
               </motion.div>
 
-              {/* Animated Mouse */}
+              {/* Animated Mouse - moves in and clicks at end of typing */}
               <motion.div
-                className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none z-10"
-                initial={{ x: -100, y: 0 }}
-                animate={{ x: 0, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5, ease: 'easeOut' }}
+                className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none z-10"
+                initial={{ x: -80, y: 0, opacity: 0 }}
+                animate={typedText.length === targetText.length ? 
+                  { x: 0, y: 0, opacity: [0, 1, 1, 1, 0] } : 
+                  { x: -80, y: 0, opacity: 0 }
+                }
+                transition={{ delay: 0, duration: 0.8, times: [0, 0.2, 0.5, 0.8, 1] }}
               >
-                <MousePointer2 className="w-6 h-6 text-slate-700 fill-slate-700" />
+                <MousePointer2 className="w-5 h-5 text-slate-700 fill-slate-700" />
                 <motion.div
                   initial={{ scale: 0 }}
-                  animate={{ scale: [0, 1, 0] }}
-                  transition={{ delay: 0.8, duration: 0.3 }}
-                  className="absolute top-0 left-0 w-6 h-6 rounded-full bg-blue-500/30"
+                  animate={typedText.length === targetText.length ? { scale: [0, 0, 1, 0, 0] } : { scale: 0 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                  className="absolute top-0 left-0 w-5 h-5 rounded-full bg-blue-500/30"
                 />
               </motion.div>
             </div>

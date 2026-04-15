@@ -56,7 +56,7 @@ export const DigitalLogbookAnimation: React.FC<DigitalLogbookAnimationProps> = (
       });
       timeoutsRef.current = [];
     };
-  }, []);
+  }, [isHovered]); // Add isHovered dependency to restart when returning to component
 
   return (
     <div className="absolute inset-0 bg-[#f0f4f8] flex flex-col overflow-hidden">
