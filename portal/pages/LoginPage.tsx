@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Icons } from '../icons';
 import { signIn } from '../lib/supabase-auth';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
-import { SmokeShader } from '../../components/ui/smoke-shader';
 import styles from './LoginPage.module.css';
 
 const REMEMBER_STORAGE_KEY = 'wm-remember-email';
@@ -69,11 +68,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, blurred = false, 
 
     return (
         <div className={`${styles.loginContainer} ${blurred ? styles.loginContainerBlurred : ''} animate-fade-in`}>
-            <SmokeShader className="absolute inset-0" />
             {showForgotPassword ? (
                 <ForgotPasswordPage onBack={() => setShowForgotPassword(false)} />
             ) : (
                 <>
+                <div className={styles.backgroundGradient1} />
+                <div className={styles.backgroundGradient2} />
                 <div className={styles.loginCard}>
                     {/* Left Side (Dark Info Panel) */}
                     <div className={styles.loginInfoPanel}>

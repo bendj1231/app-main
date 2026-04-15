@@ -22,7 +22,7 @@ export const LoadingCard: React.FC = () => {
     return (
         <div className="dashboard-container animate-fade-in">
             <main className="dashboard-card" style={{
-                minHeight: '450px',
+                minHeight: '337.5px',
                 display: 'flex',
                 flexDirection: 'column',
                 background: 'rgba(248, 250, 252, 0.95)',
@@ -30,32 +30,32 @@ export const LoadingCard: React.FC = () => {
                 WebkitBackdropFilter: 'blur(10px)'
             }}>
                 <div className="dashboard-header" style={{ borderBottom: 'none', background: 'transparent', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '240px' }} />
+                    <div className="dashboard-logo" style={{ marginBottom: '1.13rem', display: 'flex', justifyContent: 'center' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '180px' }} />
                     </div>
 
-                    <div className="dashboard-subtitle" style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+                    <div className="dashboard-subtitle" style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                         SYSTEM LOADING
                     </div>
 
                     <div style={{ textAlign: 'center' }}>
                         <p style={{
-                            fontSize: '1.25rem',
+                            fontSize: '1rem',
                             color: '#64748b',
                             fontWeight: 500,
-                            minHeight: '2rem',
+                            minHeight: '1.5rem',
                             transition: 'all 0.3s ease',
                             margin: '0 auto',
-                            maxWidth: '600px'
+                            maxWidth: '450px'
                         }}>
                             {LOADING_MESSAGES[messageIndex]}
                         </p>
                     </div>
 
-                    <div className="loading-spinner-container" style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
+                    <div className="loading-spinner-container" style={{ marginTop: '1.88rem', display: 'flex', justifyContent: 'center' }}>
                         <div className="outer-ring" style={{
-                            width: '40px',
-                            height: '40px',
+                            width: '30px',
+                            height: '30px',
                             borderRadius: '50%',
                             border: '2px solid #e2e8f0',
                             borderTopColor: '#2563eb',
@@ -65,11 +65,11 @@ export const LoadingCard: React.FC = () => {
                 </div>
 
                 <div className="dashboard-footer" style={{
-                    padding: '2rem',
+                    padding: '1.5rem',
                     background: '#f8fafc',
                     borderTop: '1px solid #e2e8f0',
                     textAlign: 'center',
-                    fontSize: '0.75rem',
+                    fontSize: '0.7rem',
                     color: '#94a3b8',
                     letterSpacing: '0.1em'
                 }}>
