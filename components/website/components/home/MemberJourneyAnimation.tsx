@@ -382,11 +382,11 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
               >
                 {/* Header */}
                 <div className="mb-1 md:mb-2">
-                  <h2 className="text-[10px] md:text-xs font-serif text-slate-800 mb-0.5">
-                    Connecting pilots
+                  <h2 className="text-[8px] md:text-[10px] font-serif text-slate-800 mb-0.5 leading-tight">
+                    Connecting pilots to the aviation industry
                   </h2>
                   <p className="text-slate-500 text-[6px] md:text-[8px]">
-                    Sign in.
+                    Sign in with credentials.
                   </p>
                 </div>
 
