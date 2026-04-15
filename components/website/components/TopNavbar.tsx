@@ -62,7 +62,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     }, [forceScrolled]);
 
     const navItems: NavItem[] = [
-        { name: 'Home', target: 'home' },
+        {
+            name: 'Home',
+            target: 'home',
+            subItems: [
+                { category: 'Overview', name: 'Hero Section', target: 'home', bullets: ['Welcome', 'Get Started', 'Learn More'] },
+                { name: 'Features', target: 'home', bullets: ['Program Highlights', 'Pathway Options', 'Recognition System'] },
+                { name: 'Membership Benefits', target: 'home', bullets: ['Global Registry', 'Mentorship', 'Career Support'] },
+                { name: 'Get Started', target: 'home', bullets: ['Create Account', 'Join Network', 'Begin Journey'] }
+            ]
+        },
         {
             name: 'About',
             target: 'about',
