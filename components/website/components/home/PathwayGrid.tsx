@@ -469,6 +469,19 @@ const GridCard: React.FC<GridCardProps> = ({
                                     Join Now
                                 </button>
                             )}
+                            {/* Glassy Discover button for discover card only */}
+                            {card.id === 'discover' && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate('airline-expectations');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    Discover
+                                </button>
+                            )}
                         </div>
                         <p className="text-white/90 text-xs md:text-sm truncate">
                             {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
