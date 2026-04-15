@@ -13,6 +13,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const warpTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hasStartedTypingRef = useRef(false);
+  const isCompleteRef = useRef(false);
 
   const targetText = 'pilotrecognition.com';
 
@@ -32,17 +33,18 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
       setScene('search');
       setTypedText('');
       hasStartedTypingRef.current = false;
+      isCompleteRef.current = false;
     }
   }, [isHovered]);
 
   // Typing animation
   useEffect(() => {
-    if (scene === 'search' && isHovered && !hasStartedTypingRef.current) {
+    if (scene === 'search' && isHovered && !hasStartedTypingRef.current && !isCompleteRef.current) {
       hasStartedTypingRef.current = true;
       let index = 0;
       
       typingIntervalRef.current = setInterval(() => {
-        if (index <= targetText.length) {
+        if (index <= targetText.length && !isCompleteRef.current) {
           setTypedText(targetText.slice(0, index));
           index++;
         } else {
@@ -50,20 +52,16 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
             clearInterval(typingIntervalRef.current);
             typingIntervalRef.current = null;
           }
-          // Wait a moment then transition to warp
-          warpTimeoutRef.current = setTimeout(() => setScene('warp'), 500);
+          if (!isCompleteRef.current) {
+            isCompleteRef.current = true;
+            // Quick click effect then transition to warp
+            warpTimeoutRef.current = setTimeout(() => setScene('warp'), 300);
+          }
         }
-      }, 100);
+      }, 50);
 
       return () => {
-        if (typingIntervalRef.current) {
-          clearInterval(typingIntervalRef.current);
-          typingIntervalRef.current = null;
-        }
-        if (warpTimeoutRef.current) {
-          clearTimeout(warpTimeoutRef.current);
-          warpTimeoutRef.current = null;
-        }
+        // Don't clear on re-render, only clear on unmount or scene change
       };
     }
   }, [scene, isHovered, targetText]);
@@ -117,17 +115,19 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                 <Search className="w-5 h-5" />
               </div>
-              <div 
-                className={`w-full pl-12 pr-4 py-4 bg-slate-100 rounded-full text-slate-700 font-mono text-base transition-colors ${
-                  typedText.length > 0 ? 'border-2 border-blue-500' : 'border-2 border-transparent'
+              <motion.div 
+                className={`w-full pl-12 pr-4 py-4 bg-slate-100 rounded-full text-slate-700 font-mono text-base transition-all ${
+                  typedText.length > 0 ? 'border-2 border-blue-500 shadow-lg shadow-blue-500/20' : 'border-2 border-transparent'
                 }`}
+                animate={typedText.length === targetText.length ? { scale: [1, 0.98, 1] } : {}}
+                transition={{ duration: 0.2 }}
               >
                 {typedText}
                 <motion.span
                   animate={{ opacity: showCursor ? 1 : 0 }}
                   className="inline-block w-0.5 h-5 bg-blue-500 ml-0.5"
                 />
-              </div>
+              </motion.div>
 
               {/* Animated Mouse */}
               <motion.div

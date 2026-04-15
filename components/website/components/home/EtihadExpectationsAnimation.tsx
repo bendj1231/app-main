@@ -15,9 +15,9 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
       
       const scrollInterval = setInterval(() => {
         setScrollY(prev => {
-          if (prev >= 600) {
+          if (prev >= 500) {
             clearInterval(scrollInterval);
-            return 600;
+            return 500;
           }
           return prev + 1;
         });
@@ -40,7 +40,22 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
 
   return (
     <div className="absolute inset-0 bg-white flex flex-col overflow-hidden">
-      {/* Hero Section */}
+      {/* Header Section */}
+      <div className="bg-white px-2 py-2 border-b border-slate-200 flex-shrink-0">
+        <div className="text-center">
+          <p className="text-[5px] font-bold tracking-[0.15em] uppercase text-blue-700 mb-0.5">
+            Strategic Career Guidance
+          </p>
+          <h1 className="text-[8px] font-serif text-slate-900 leading-tight mb-0.5">
+            Airline Expectations
+          </h1>
+          <p className="text-[5px] text-slate-600 leading-relaxed">
+            Understanding what airlines really look for in pilot candidates
+          </p>
+        </div>
+      </div>
+
+      {/* Netflix-style Hero Section */}
       <div className="relative h-[25%] min-h-[80px] flex-shrink-0">
         <img
           src={etihadData.image}

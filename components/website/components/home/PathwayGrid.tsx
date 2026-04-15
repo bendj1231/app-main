@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MemberJourneyAnimation } from './MemberJourneyAnimation';
@@ -294,6 +294,8 @@ const GridCard: React.FC<GridCardProps> = ({
     isLargeCard = false
 }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+    const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const displayTitle = isLoggedIn && card.loggedInTitle ? card.loggedInTitle : card.title;
     const displaySubtitle = isLoggedIn && card.loggedInSubtitle ? card.loggedInSubtitle : card.subtitle;
     
@@ -302,14 +304,45 @@ const GridCard: React.FC<GridCardProps> = ({
     
     // Auto-rotate carousel images
     useEffect(() => {
-        if (!card.isCarousel || !card.images || card.images.length <= 1) return;
+        if (!card.isCarousel || !card.images || card.images.length <= 1 || isPaused) return;
         
         const interval = setInterval(() => {
             setCurrentImageIndex((prev) => (prev + 1) % card.images.length);
         }, 5000); // Change every 5 seconds
         
         return () => clearInterval(interval);
-    }, [card.isCarousel, card.images]);
+    }, [card.isCarousel, card.images, isPaused]);
+    
+    // Cleanup pause timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (pauseTimeoutRef.current) {
+                clearTimeout(pauseTimeoutRef.current);
+            }
+        };
+    }, []);
+    
+    // Handle manual navigation (pause for 10 seconds)
+    const handleManualNavigation = (direction: 'next' | 'prev') => {
+        setIsPaused(true);
+        
+        // Clear existing timeout
+        if (pauseTimeoutRef.current) {
+            clearTimeout(pauseTimeoutRef.current);
+        }
+        
+        // Navigate
+        if (direction === 'next') {
+            setCurrentImageIndex((prev) => (prev + 1) % card.images.length);
+        } else {
+            setCurrentImageIndex((prev) => (prev === 0 ? card.images.length - 1 : prev - 1));
+        }
+        
+        // Resume after 10 seconds
+        pauseTimeoutRef.current = setTimeout(() => {
+            setIsPaused(false);
+        }, 10000);
+    };
     
     const currentImage = isLoggedIn && card.loggedInImage
         ? card.loggedInImage
@@ -432,7 +465,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                setCurrentImageIndex((prev) => (prev === 0 ? card.images.length - 1 : prev - 1));
+                                handleManualNavigation('prev');
                             }}
                             className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
                         >
@@ -442,7 +475,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                setCurrentImageIndex((prev) => (prev + 1) % card.images.length);
+                                handleManualNavigation('next');
                             }}
                             className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
                         >
