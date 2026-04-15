@@ -12,6 +12,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
   const [showCursor, setShowCursor] = useState(true);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const warpTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hasStartedTypingRef = useRef(false);
 
   const targetText = 'pilotrecognition.com';
 
@@ -30,12 +31,14 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
       
       setScene('search');
       setTypedText('');
+      hasStartedTypingRef.current = false;
     }
   }, [isHovered]);
 
   // Typing animation
   useEffect(() => {
-    if (scene === 'search' && isHovered && typedText === '') {
+    if (scene === 'search' && isHovered && !hasStartedTypingRef.current) {
+      hasStartedTypingRef.current = true;
       let index = 0;
       
       typingIntervalRef.current = setInterval(() => {
@@ -63,7 +66,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
         }
       };
     }
-  }, [scene, isHovered, typedText, targetText]);
+  }, [scene, isHovered, targetText]);
 
   // Cursor blink
   useEffect(() => {

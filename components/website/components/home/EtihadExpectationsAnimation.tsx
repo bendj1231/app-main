@@ -41,24 +41,24 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
   return (
     <div className="absolute inset-0 bg-white flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <div className="relative h-[35%] min-h-[120px] flex-shrink-0">
+      <div className="relative h-[25%] min-h-[80px] flex-shrink-0">
         <img
           src={etihadData.image}
           alt={etihadData.name}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-        <div className="absolute bottom-3 left-3 right-3">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[6px] font-bold tracking-[0.1em] uppercase text-blue-400 bg-blue-500/20 px-2 py-0.5 rounded border border-blue-400/30">
+        <div className="absolute bottom-2 left-2 right-2">
+          <div className="flex items-center gap-1.5 mb-1">
+            <span className="text-[5px] font-bold tracking-[0.1em] uppercase text-blue-400 bg-blue-500/20 px-1.5 py-0.5 rounded border border-blue-400/30">
               SELECTED AIRLINE
             </span>
-            <div className="flex items-center gap-1 text-[8px] text-white/80">
-              <MapPin className="w-3 h-3" />
+            <div className="flex items-center gap-0.5 text-[6px] text-white/80">
+              <MapPin className="w-2 h-2" />
               {etihadData.location}
             </div>
           </div>
-          <h1 className="text-lg md:text-xl font-serif text-white font-bold leading-tight">
+          <h1 className="text-sm font-serif text-white font-bold leading-tight">
             {etihadData.name}
           </h1>
         </div>
@@ -71,32 +71,32 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
           style={{ 
             transform: `translateY(-${scrollY}px)`,
             paddingBottom: `${scrollY + 20}px`,
-            transitionDuration: '4s'
+            transitionDuration: '5s'
           }}
         >
           {/* Description */}
-          <div className="p-3">
-            <p className="text-[8px] text-slate-600 leading-relaxed">
+          <div className="p-2">
+            <p className="text-[6px] text-slate-600 leading-relaxed">
               {etihadData.description}
             </p>
           </div>
 
           {/* Stats */}
-          <div className="px-3 pb-3 flex gap-2">
-            <div className="flex-1 bg-emerald-50 rounded-lg p-2 border border-emerald-200">
-              <p className="text-[7px] font-semibold text-emerald-700">{etihadData.salaryRange}</p>
+          <div className="px-2 pb-2 flex gap-1.5">
+            <div className="flex-1 bg-emerald-50 rounded p-1.5 border border-emerald-200">
+              <p className="text-[5px] font-semibold text-emerald-700">{etihadData.salaryRange}</p>
             </div>
-            <div className="flex-1 bg-blue-50 rounded-lg p-2 border border-blue-200">
-              <p className="text-[7px] font-semibold text-blue-700">{etihadData.flightHours}</p>
+            <div className="flex-1 bg-blue-50 rounded p-1.5 border border-blue-200">
+              <p className="text-[5px] font-semibold text-blue-700">{etihadData.flightHours}</p>
             </div>
           </div>
 
           {/* Tags */}
-          <div className="px-3 pb-3 flex flex-wrap gap-1">
+          <div className="px-2 pb-2 flex flex-wrap gap-0.5">
             {etihadData.tags.map((tag, idx) => (
               <span
                 key={idx}
-                className="text-[6px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded"
+                className="text-[5px] font-medium text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded"
               >
                 {tag}
               </span>
@@ -104,33 +104,33 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
           </div>
 
           {/* Core Expectations */}
-          <div className="px-3 pb-3">
-            <h2 className="text-[9px] font-bold text-slate-900 mb-2">Core Expectations</h2>
-            <div className="space-y-2">
-              <div className="bg-white rounded-lg p-2 border border-slate-200 shadow-sm">
-                <div className="flex items-start gap-2">
-                  <Cpu className="w-3 h-3 text-blue-600 mt-0.5 flex-shrink-0" />
+          <div className="px-2 pb-2">
+            <h2 className="text-[7px] font-bold text-slate-900 mb-1">Core Expectations</h2>
+            <div className="space-y-1">
+              <div className="bg-white rounded p-1.5 border border-slate-200 shadow-sm">
+                <div className="flex items-start gap-1">
+                  <Cpu className="w-2 h-2 text-blue-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="text-[8px] font-semibold text-slate-800">Technical Mastery</h3>
-                    <p className="text-[6px] text-slate-500">Automation logic, manual precision, systems mastery</p>
+                    <h3 className="text-[6px] font-semibold text-slate-800">Technical Mastery</h3>
+                    <p className="text-[5px] text-slate-500">Automation, precision, systems</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white rounded-lg p-2 border border-slate-200 shadow-sm">
-                <div className="flex items-start gap-2">
-                  <Users className="w-3 h-3 text-emerald-600 mt-0.5 flex-shrink-0" />
+              <div className="bg-white rounded p-1.5 border border-slate-200 shadow-sm">
+                <div className="flex items-start gap-1">
+                  <Users className="w-2 h-2 text-emerald-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="text-[8px] font-semibold text-slate-800">Behavioral Competency</h3>
-                    <p className="text-[6px] text-slate-500">CRM excellence, decision making, leadership</p>
+                    <h3 className="text-[6px] font-semibold text-slate-800">Behavioral Competency</h3>
+                    <p className="text-[5px] text-slate-500">CRM, decisions, leadership</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white rounded-lg p-2 border border-slate-200 shadow-sm">
-                <div className="flex items-start gap-2">
-                  <Brain className="w-3 h-3 text-purple-600 mt-0.5 flex-shrink-0" />
+              <div className="bg-white rounded p-1.5 border border-slate-200 shadow-sm">
+                <div className="flex items-start gap-1">
+                  <Brain className="w-2 h-2 text-purple-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="text-[8px] font-semibold text-slate-800">Cognitive Resilience</h3>
-                    <p className="text-[6px] text-slate-500">Situational awareness, workload management</p>
+                    <h3 className="text-[6px] font-semibold text-slate-800">Cognitive Resilience</h3>
+                    <p className="text-[5px] text-slate-500">Awareness, workload mgmt</p>
                   </div>
                 </div>
               </div>
@@ -138,49 +138,74 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
           </div>
 
           {/* Assessment Pipeline */}
-          <div className="px-3 pb-3">
-            <h2 className="text-[9px] font-bold text-slate-900 mb-2">Assessment Pipeline</h2>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 bg-slate-50 rounded p-1.5">
-                <Search className="w-3 h-3 text-slate-600" />
-                <span className="text-[7px] text-slate-700">Screening - Digital audit</span>
+          <div className="px-2 pb-2">
+            <h2 className="text-[7px] font-bold text-slate-900 mb-1">Assessment Pipeline</h2>
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-1 bg-slate-50 rounded p-1">
+                <Search className="w-2 h-2 text-slate-600" />
+                <span className="text-[5px] text-slate-700">Screening - Digital audit</span>
               </div>
-              <div className="flex items-center gap-2 bg-slate-50 rounded p-1.5">
-                <Target className="w-3 h-3 text-blue-600" />
-                <span className="text-[7px] text-slate-700">Psychometrics - Cognitive testing</span>
+              <div className="flex items-center gap-1 bg-slate-50 rounded p-1">
+                <Target className="w-2 h-2 text-blue-600" />
+                <span className="text-[5px] text-slate-700">Psychometrics - Cognitive testing</span>
               </div>
-              <div className="flex items-center gap-2 bg-slate-50 rounded p-1.5">
-                <Briefcase className="w-3 h-3 text-slate-600" />
-                <span className="text-[7px] text-slate-700">Technical/HR - Competency interviews</span>
+              <div className="flex items-center gap-1 bg-slate-50 rounded p-1">
+                <Briefcase className="w-2 h-2 text-slate-600" />
+                <span className="text-[5px] text-slate-700">Technical/HR - Interviews</span>
               </div>
-              <div className="flex items-center gap-2 bg-slate-50 rounded p-1.5">
-                <Zap className="w-3 h-3 text-amber-600" />
-                <span className="text-[7px] text-slate-700">Simulator Audit - EBT/CBTA demo</span>
+              <div className="flex items-center gap-1 bg-slate-50 rounded p-1">
+                <Zap className="w-2 h-2 text-amber-600" />
+                <span className="text-[5px] text-slate-700">Simulator Audit - EBT/CBTA</span>
               </div>
             </div>
           </div>
 
           {/* Fleet */}
-          <div className="px-3 pb-3">
-            <h2 className="text-[9px] font-bold text-slate-900 mb-2">Aircraft Fleet</h2>
-            <div className="bg-white rounded-lg p-2 border border-slate-200 shadow-sm">
-              <p className="text-[7px] text-slate-600 leading-relaxed">
+          <div className="px-2 pb-2">
+            <h2 className="text-[7px] font-bold text-slate-900 mb-1">Aircraft Fleet</h2>
+            <div className="bg-white rounded p-1.5 border border-slate-200 shadow-sm">
+              <p className="text-[5px] text-slate-600 leading-relaxed">
                 {etihadData.fleet}
               </p>
             </div>
           </div>
 
+          {/* Requirements Section */}
+          <div className="px-2 pb-2">
+            <h2 className="text-[7px] font-bold text-slate-900 mb-1">Pilot Requirements</h2>
+            <div className="bg-white rounded p-1.5 border border-slate-200 shadow-sm">
+              <div className="space-y-1">
+                <div className="flex items-start gap-1">
+                  <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                  <span className="text-[5px] text-slate-700"><strong>2,500+ hrs</strong> Total Flight Time</span>
+                </div>
+                <div className="flex items-start gap-1">
+                  <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                  <span className="text-[5px] text-slate-700">Valid ATPL or CPL License</span>
+                </div>
+                <div className="flex items-start gap-1">
+                  <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                  <span className="text-[5px] text-slate-700">ICAO English Level 4+</span>
+                </div>
+                <div className="flex items-start gap-1">
+                  <span className="text-[5px] text-slate-400 mt-0.5">•</span>
+                  <span className="text-[5px] text-slate-700">Class 1 Medical Certificate</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Match Score */}
-          <div className="px-3 pb-3">
-            <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3 text-white">
+          <div className="px-2 pb-2">
+            <div className="bg-gradient-to-r from-red-600 to-red-700 rounded p-2 text-white">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[6px] text-red-200 uppercase tracking-wider mb-1">MATCH SCORE</p>
-                  <p className="text-2xl font-bold">84%</p>
+                  <p className="text-[5px] text-red-200 uppercase tracking-wider mb-0.5">MATCH SCORE</p>
+                  <p className="text-lg font-bold">84%</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[6px] text-red-200 uppercase tracking-wider mb-1">PILOT</p>
-                  <p className="text-[8px] font-semibold">Pete Mitchell</p>
+                  <p className="text-[5px] text-red-200 uppercase tracking-wider mb-0.5">PILOT</p>
+                  <p className="text-[6px] font-semibold">Pete Mitchell</p>
                 </div>
               </div>
             </div>
