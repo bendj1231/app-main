@@ -301,16 +301,16 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
+              transition={{ duration: 0.3 }}
               className="relative w-[95%] max-w-[400px] aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-2xl z-10 flex flex-col md:flex-row scale-[0.75]"
           >
             {/* Left Side - Dark Blue with Info */}
             <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-2 md:p-3 flex flex-col relative">
               {/* Logo - Centered */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
                 className="mt-1 mb-1 flex justify-center"
               >
                 <img
@@ -322,9 +322,9 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
 
               {/* Content */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
                 className="flex-1 flex flex-col justify-center items-center"
               >
                 {/* Mentor Network Label */}
@@ -352,9 +352,9 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             {/* Right Side - Login Form */}
             <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-2 md:p-3 flex flex-col">
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
               >
                 {/* Header */}
                 <div className="mb-1 md:mb-2 mt-0">
@@ -372,10 +372,8 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                 </p>
                 
                 <div className="space-y-1.5 md:space-y-2">
-                  {/* Email Input */}
-                  <motion.div
-                    className="h-5 md:h-6 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-1.5 md:px-2 overflow-hidden relative"
-                  >
+                  {/* Email Input - visible immediately, typing starts after */}
+                  <div className="h-5 md:h-6 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-1.5 md:px-2 overflow-hidden relative">
                     <svg className="w-2.5 h-2.5 md:w-3 md:h-3 text-slate-400 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
@@ -385,7 +383,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                           key={i}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          transition={{ delay: 0.8 + i * 0.06 }}
+                          transition={{ delay: 0.5 + i * 0.05 }}
                         >
                           {char}
                         </motion.span>
@@ -396,22 +394,20 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                       className="absolute left-14 md:left-16 top-1/2 -translate-y-1/2 pointer-events-none z-10"
                       initial={{ opacity: 0, x: 50, y: -15 }}
                       animate={{ opacity: [0, 1, 1, 1, 0], x: [50, 0, 0, 0, 0], y: [-15, 0, 0, 0, 0] }}
-                      transition={{ delay: 0.5, duration: 1.2, times: [0, 0.3, 0.5, 0.8, 1] }}
+                      transition={{ delay: 0.3, duration: 1.0, times: [0, 0.3, 0.5, 0.8, 1] }}
                     >
                       <MousePointer2 className="w-2.5 h-2.5 text-slate-700 fill-slate-700" />
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: [0, 0, 1, 0, 0] }}
-                        transition={{ delay: 0.8, duration: 0.4 }}
+                        transition={{ delay: 0.5, duration: 0.3 }}
                         className="absolute top-0 left-0 w-2.5 h-2.5 rounded-full bg-blue-500/30"
                       />
                     </motion.div>
-                  </motion.div>
+                  </div>
                   
-                  {/* Password Input */}
-                  <motion.div
-                    className="h-5 md:h-6 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-1.5 md:px-2 overflow-hidden relative"
-                  >
+                  {/* Password Input - visible immediately, typing starts after */}
+                  <div className="h-5 md:h-6 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-1.5 md:px-2 overflow-hidden relative">
                     <svg className="w-2.5 h-2.5 md:w-3 md:h-3 text-slate-400 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
@@ -421,7 +417,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                           key={i}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          transition={{ delay: 2.0 + i * 0.05 }}
+                          transition={{ delay: 1.5 + i * 0.04 }}
                         >
                           {char}
                         </motion.span>
@@ -437,17 +433,17 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                       className="absolute left-14 md:left-16 top-1/2 -translate-y-1/2 pointer-events-none z-10"
                       initial={{ opacity: 0, x: -30, y: -30 }}
                       animate={{ opacity: [0, 1, 1, 1, 0], x: [-30, 0, 0, 0, 0], y: [-30, 0, 0, 0, 0] }}
-                      transition={{ delay: 1.7, duration: 1.2, times: [0, 0.3, 0.5, 0.8, 1] }}
+                      transition={{ delay: 1.3, duration: 1.0, times: [0, 0.3, 0.5, 0.8, 1] }}
                     >
                       <MousePointer2 className="w-2.5 h-2.5 text-slate-700 fill-slate-700" />
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: [0, 0, 1, 0, 0] }}
-                        transition={{ delay: 2.0, duration: 0.4 }}
+                        transition={{ delay: 1.5, duration: 0.3 }}
                         className="absolute top-0 left-0 w-2.5 h-2.5 rounded-full bg-blue-500/30"
                       />
                     </motion.div>
-                  </motion.div>
+                  </div>
 
                   {/* Remember Me & Forgot Password */}
                   <motion.div
