@@ -92,6 +92,8 @@ import { PlatformPrivateCharterPage } from './components/website/components/path
 import { PlatformPilotedDronesPage } from './components/website/components/pathways/PlatformPilotedDronesPage';
 import { TransitionProgramPage } from './components/website/components/programs/TransitionProgramPage';
 import { ProgramsPathwaysPage } from './components/website/components/programs/ProgramsPathwaysPage';
+import { ProgramsPage } from './components/website/components/programs/ProgramsPage';
+import { PathwaysPage } from './components/website/components/pathways/PathwaysPage';
 import { AviationInsightsDirectoryPage } from './components/website/components/AviationInsightsDirectoryPage';
 import { ApplicationsSystemsDirectoryPage } from './components/website/components/ApplicationsSystemsDirectoryPage';
 import { MembershipDirectoryPage } from './components/website/components/MembershipDirectoryPage';
@@ -558,6 +560,20 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
+        {currentPage === 'programs' && (
+          <ProgramsPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+        {currentPage === 'pathways' && (
+          <PathwaysPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
       </div>
 
       {![
@@ -565,7 +581,7 @@ const App = () => {
         'committees', 'w1000-suite', 'hinfact', 'membership-benefits', 'become-member',
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
         'pilot-recognition', 'air-taxi-pathways', 'private-charter-pathways', 'ebt-cbta',
-        'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
+        'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
         'pilot-gap', 'website'
       ].includes(currentPage) && (
           <div className={`layout-wrapper ${loading ? 'content-loading' : 'content-ready'}`}>

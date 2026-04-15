@@ -221,11 +221,11 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                 onLeave={() => setHoveredCard(null)}
                                 onClick={() => {
                                     if (card.id === 'programs') {
-                                        onNavigate('foundational-program');
+                                        onNavigate('programs');
                                     } else if (card.id === 'pilot-recognition') {
                                         onNavigate('pilot-recognition');
                                     } else if (card.id === 'pathways') {
-                                        onNavigate('programs-pathways');
+                                        onNavigate('pathways');
                                     } else {
                                         onGoToProgramDetail({
                                             image: card.image,
@@ -523,7 +523,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        onNavigate('foundational-program');
+                                        onNavigate('programs');
                                     }}
                                     className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                                 >
@@ -549,7 +549,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        onNavigate('programs-pathways');
+                                        onNavigate('pathways');
                                     }}
                                     className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                                 >
