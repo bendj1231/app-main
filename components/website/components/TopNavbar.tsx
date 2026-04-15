@@ -155,7 +155,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isLight
                     ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
                     : isDark
-                        ? 'bg-[#2a3f5a]/80 py-3 shadow-none'
+                        ? scrolled
+                            ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
+                            : 'bg-transparent py-3 shadow-none'
                         : scrolled
                             ? 'bg-gradient-to-b from-black/95 via-black/60 to-transparent backdrop-blur-sm py-3 shadow-2xl'
                             : 'bg-transparent py-6'
@@ -168,13 +170,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         </div>
                         <div className="flex flex-col items-center">
                             <span
-                                className={`${isLight ? 'text-slate-900' : 'text-white'
+                                className={`${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'
                                     } text-xs font-bold tracking-[0.4em] uppercase leading-none mb-1 group-hover:text-blue-400 transition-colors`}
                             >
                                 Pilot Recognition
                             </span>
                             <span
-                                className={`${isLight ? 'text-slate-600' : 'text-white/60'
+                                className={`${isLight || (isDark && scrolled) ? 'text-slate-600' : 'text-white/60'
                                     } text-[8px] font-medium tracking-[0.2em] uppercase leading-none group-hover:text-white transition-colors`}
                             >
                                 PROGRAMS & PATHWAYS
@@ -194,10 +196,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <button
                                     onClick={() => onNavigate(item.target)}
                                     className={`text-[0.6rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${item.target === 'home' && !forceScrolled
-                                        ? isLight
+                                        ? isLight || (isDark && scrolled)
                                             ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
                                             : 'text-blue-400 border-b-2 border-blue-400 pb-1 font-black'
-                                        : isLight
+                                        : isLight || (isDark && scrolled)
                                             ? 'text-slate-900'
                                             : 'text-white/80'
                                         }`}
@@ -285,7 +287,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button className="lg:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    <button className={`lg:hidden ${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
                     </button>
                 </div>

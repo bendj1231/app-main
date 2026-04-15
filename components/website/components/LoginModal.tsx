@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { X, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '@/src/contexts/AuthContext';
 
 interface LoginModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onLogin: () => void;
     onNavigate: (page: string) => void;
 }
 
 export const LoginModal: React.FC<LoginModalProps> = ({
     isOpen,
     onClose,
-    onLogin,
     onNavigate
 }) => {
+    const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -21,10 +21,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onLogin();
-        onClose();
+        try {
+            await login(email, password);
+            onNavigate('home'); // Navigate to home instead of portal
+            onClose();
+        } catch (error) {
+            console.error('Login failed:', error);
+            // Handle login error (show error message to user)
+        }
     };
 
     return (

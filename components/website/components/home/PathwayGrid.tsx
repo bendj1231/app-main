@@ -67,7 +67,7 @@ const dummyCards = [
     },
     {
         id: 'pilot-recognition',
-        image: 'https://images.unsplash.com/photo-1508614589041-895b8c9d7ef5?q=80&w=1000&auto=format&fit=crop',
+        image: '/images/pilotrecognitioncompoennt.png',
         title: 'Pilot Recognition',
         subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
         icon: Compass,

@@ -650,10 +650,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
 
 
     const carouselRef = useRef<HTMLDivElement>(null);
+    const [isOverWhite, setIsOverWhite] = useState(false);
 
     const scrollToCarousel = () => {
         carouselRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
+
+    // Detect when scrolling over white sections
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            // The first section (smoke shader) is h-screen, so after that we're over white content
+            // Smoke shader is at scroll 0 to windowHeight
+            if (scrollY > windowHeight * 0.7) {
+                setIsOverWhite(true);
+            } else {
+                setIsOverWhite(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Initial check
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
         <div className="relative min-h-screen font-sans bg-black overflow-x-hidden">
@@ -661,7 +683,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
             <TopNavbar
                 onNavigate={onNavigate}
                 onLogin={onLogin}
-                isDark={true}
+                isLight={isOverWhite}
+                isDark={!isOverWhite}
             />
 
             {/* Smoke Shader Section with Glassy Card */}
