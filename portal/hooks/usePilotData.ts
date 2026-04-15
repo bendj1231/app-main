@@ -191,6 +191,10 @@ export const usePilotData = (uid?: string): UsePilotDataReturn => {
     setError(null);
 
     // ── Real-time listener on pilotProfiles/{uid} ──
+    if (!db) {
+      console.error('Firestore not initialized');
+      return;
+    }
     const profileRef = doc(db, 'pilotProfiles', resolvedUid);
 
     const unsubProfile = onSnapshot(
@@ -200,6 +204,12 @@ export const usePilotData = (uid?: string): UsePilotDataReturn => {
           setPilotData(snap.data() as PilotProfile);
         } else {
           // Fallback: try the 'users' collection
+          if (!db) {
+            console.error('Firestore not initialized');
+            setPilotData(DEFAULT_PILOT);
+            setLoading(false);
+            return;
+          }
           const userRef = doc(db, 'users', resolvedUid);
           onSnapshot(
             userRef,

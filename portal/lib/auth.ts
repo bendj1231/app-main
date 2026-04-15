@@ -40,6 +40,10 @@ export const createUserProfile = async (user: User, role: UserRole['type'] = 'me
   }
 
   // Real Firebase operations
+  if (!db) {
+    console.error('Firestore not initialized');
+    return;
+  }
   const userRef = doc(db, 'users', user.uid);
   
   const defaultAppAccess = AVAILABLE_APPS.map(app => ({
@@ -101,6 +105,19 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
 
   // Real Firebase operations
   try {
+    if (!db) {
+      console.error('Firestore not initialized');
+      return {
+        id: uid,
+        email: '',
+        role: 'mentee',
+        enrolledPrograms: [],
+        appAccess: [],
+        createdAt: new Date(),
+        lastLogin: new Date(),
+        status: 'active'
+      } as unknown as UserProfile;
+    }
     const userRef = doc(db, 'users', uid);
     const userSnap = await getDoc(userRef);
 

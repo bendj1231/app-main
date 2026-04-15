@@ -33,6 +33,10 @@ export interface MentorshipLog {
  * Enroll a user in the Foundational Program
  */
 export const enrollInProgram = async (uid: string, programName: string = 'Foundational') => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return;
+    }
     const userRef = doc(db, 'users', uid);
     await setDoc(userRef, {
         enrolledPrograms: arrayUnion(programName)
@@ -43,6 +47,10 @@ export const enrollInProgram = async (uid: string, programName: string = 'Founda
  * Complete enrollment with onboarding data
  */
 export const completeEnrollment = async (uid: string, onboardingData: any) => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return;
+    }
     const userRef = doc(db, 'users', uid);
     await setDoc(userRef, {
         enrolledPrograms: arrayUnion('Foundational'),
@@ -55,6 +63,10 @@ export const completeEnrollment = async (uid: string, onboardingData: any) => {
  * Fetch current user enrollment status
  */
 export const getEnrollmentStatus = async (uid: string): Promise<string[]> => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return [];
+    }
     const userRef = doc(db, 'users', uid);
     const userSnap = await getDoc(userRef);
     if (userSnap.exists()) {
@@ -110,6 +122,10 @@ const checkAndVerifyLogs = async (mentorId: string, menteeId: string, hours: num
 
     // If we have at least 2 logs, it means both parties have submitted
     if (querySnapshot.size >= 2) {
+        if (!db) {
+            console.error('Firestore not initialized');
+            return false;
+        }
         const batchUpdates = querySnapshot.docs.map(logDoc =>
             updateDoc(doc(db, 'mentorship_logs', logDoc.id), { status: 'verified' })
         );
@@ -220,6 +236,10 @@ export const searchUsers = async (
  * Fetch a single user's profile from Firestore
  */
 export const getUserProfile = async (uid: string): Promise<WingMentorUser | null> => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return null;
+    }
     const userRef = doc(db, 'users', uid);
     const userSnap = await getDoc(userRef);
 
@@ -250,6 +270,10 @@ export const getUserProfile = async (uid: string): Promise<WingMentorUser | null
  * Get or Create a chat document deterministically
  */
 export const getOrCreateChat = async (userAId: string, userBId: string) => {
+    if (!db) {
+        console.error('Firestore not initialized');
+        return '';
+    }
     const chatId = [userAId, userBId].sort().join('_');
     const chatRef = doc(db, 'chats', chatId);
     const chatSnap = await getDoc(chatRef);
@@ -284,6 +308,10 @@ export const sendMessage = async (chatId: string, senderId: string, text: string
     });
 
     // Update the parent chat metadata
+    if (!db) {
+        console.error('Firestore not initialized');
+        return;
+    }
     const chatRef = doc(db, 'chats', chatId);
     await updateDoc(chatRef, {
         lastMessage: text,

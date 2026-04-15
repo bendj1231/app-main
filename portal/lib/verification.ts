@@ -39,6 +39,10 @@ export const verifyProgramAccess = async (
   let latestProfile = userProfile;
 
   try {
+    if (!db) {
+      console.error('Firestore not initialized');
+      return userProfile;
+    }
     const userRef = doc(db, 'users', userProfile.id);
     const snapshot = await getDoc(userRef);
     if (snapshot.exists()) {
