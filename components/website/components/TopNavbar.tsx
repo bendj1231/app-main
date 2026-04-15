@@ -115,6 +115,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'Aerial Tours & Skydive', target: 'about_programs', bullets: ['Sightseeing Ops', 'Jump Pilot Standards', 'Safety Protocols'] },
                 { name: 'Land Survey & Ag', target: 'about_programs', bullets: ['Precision Agriculture', 'Aerial Mapping', 'Utility Missions'] },
                 { name: 'Unmanned Systems', target: 'about_programs', bullets: ['BVLOS Operations', 'Data Intelligence', 'Remote Fleet Mgmt'] },
+                { category: 'Sector Insights', name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Flagship Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
+                { name: 'Corporate & VIP Jet', target: 'private-charter-pathways', bullets: ['Elite Service Standards', 'Executive Travel Trends', 'Non‑Scheduled Ops'] },
+                { name: 'UAM & Air Taxis', target: 'air-taxi-pathways', bullets: ['Urban Air Mobility', 'Infrastructure Layout', 'Battery Technology'] },
+                { name: 'Global Cargo Logistics', target: 'insights', bullets: ['Supply Chain Resilience', 'Hub Operations', 'Automation in Cargo'] },
                 { category: 'Operational Intelligence', name: 'Float & Amphibious Ops', target: 'insights', bullets: ['Water Runways', 'Corrosion Management', 'Tidal Navigation'] },
                 { name: 'Flight Instruction', target: 'insights', bullets: ['Student Psychology', 'Marketing Your School', 'Regulatory Compliance'] },
                 { name: 'Specialized Aerial Work', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] },
@@ -130,16 +134,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'Pilot Recognition Profile', target: 'pilot-recognition', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
                 { name: 'Examination Results', target: 'examination-results', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
                 { name: 'Digital Logbook', target: 'digital-logbook', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
-            ]
-        },
-        {
-            name: 'Aviation Insight',
-            target: 'insights',
-            subItems: [
-                { category: 'Sector Insights', name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Flagship Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
-                { name: 'Corporate & VIP Jet', target: 'private-charter-pathways', bullets: ['Elite Service Standards', 'Executive Travel Trends', 'Non‑Scheduled Ops'] },
-                { name: 'UAM & Air Taxis', target: 'air-taxi-pathways', bullets: ['Urban Air Mobility', 'Infrastructure Layout', 'Battery Technology'] },
-                { name: 'Global Cargo Logistics', target: 'insights', bullets: ['Supply Chain Resilience', 'Hub Operations', 'Automation in Cargo'] }
             ]
         },
         {
