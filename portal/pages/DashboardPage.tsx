@@ -1812,13 +1812,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
                       <button
                         onClick={() => {
-                          if (isFoundationalEnrolled) {
-                            // Navigate to mentorship logbook page
-                            onViewMentorLogbook?.();
-                          } else {
-                            // Navigate to foundational enrollment page
-                            onViewFoundationalEnrollment?.();
-                          }
+                          // Navigate to mentorship logbook page
+                          onViewMentorLogbook?.();
                         }}
                         style={{
                           padding: '0.75rem 1.5rem',
