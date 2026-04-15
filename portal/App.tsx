@@ -11,9 +11,10 @@ import { RecognitionAchievementPage } from './pages/RecognitionAchievementPage';
 import { LoginPage } from './pages/LoginPage';
 import { GraphicsPresetSelector, type DetectionResult, type GraphicsPreset } from './components/GraphicsPresetSelector';
 
-// Declare the remote module for TypeScript
-// @ts-ignore
-const RemoteSegment = React.lazy(() => import('remote_segment/Segment'));
+// Remote segment disabled for integration
+// // Declare the remote module for TypeScript
+// // @ts-ignore
+// const RemoteSegment = React.lazy(() => import('remote_segment/Segment'));
 
 import { Icons } from './icons';
 type CardItem = {
@@ -1176,14 +1177,18 @@ function App() {
             </div>
 
             <div style={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Suspense fallback={
+              {/* Remote segment disabled for integration */}
+              {/* <Suspense fallback={
                 <div style={{ textAlign: 'center' }}>
                   <div className="loading-spinner" style={{ margin: '0 auto 1rem' }}></div>
                   <p style={{ color: '#64748b' }}>Fetching remote segment from internal server...</p>
                 </div>
               }>
                 <RemoteSegment />
-              </Suspense>
+              </Suspense> */}
+              <div style={{ textAlign: 'center', color: '#64748b' }}>
+                <p>Remote segment disabled for integration</p>
+              </div>
             </div>
           </main>
         </div>
