@@ -99,18 +99,14 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
       const portalTimeout = setTimeout(() => setScene('programs'), 3500);
       return () => clearTimeout(portalTimeout);
     } else if (scene === 'programs') {
-      // Show programs scene for 6 seconds then go to member
-      const programsTimeout = setTimeout(() => setScene('member'), 6000);
-      return () => clearTimeout(programsTimeout);
-    } else if (scene === 'member') {
-      // Show member scene briefly then loop
-      const memberTimeout = setTimeout(() => {
+      // Show programs scene for 6 seconds then loop back to search
+      const programsTimeout = setTimeout(() => {
         setScene('search');
         setTypedText('');
         hasStartedTypingRef.current = false;
         isCompleteRef.current = false;
-      }, 2000);
-      return () => clearTimeout(memberTimeout);
+      }, 6000);
+      return () => clearTimeout(programsTimeout);
     }
   }, [scene]);
 
@@ -582,59 +578,6 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             </motion.div>
           </motion.div>
         )}
-
-        {/* Scene 5: Become a Member */}
-        {scene === 'member' && (
-          <motion.div
-            key="member"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-cyan-900 flex flex-col items-center justify-center p-8 text-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-              className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center mb-6 shadow-2xl"
-            >
-              <ChevronRight className="w-12 h-12 text-white" />
-            </motion.div>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-3xl md:text-4xl font-serif text-white mb-4"
-            >
-              Become a Member
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="text-white/80 text-sm md:text-base max-w-xs"
-            >
-              Join our aviation community and unlock exclusive benefits
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="mt-8 flex items-center gap-2 text-cyan-400"
-            >
-              <span className="text-sm font-medium">Click to get started</span>
-              <motion.div
-                animate={{ x: [0, 5, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </motion.div>
-            </motion.div>
-
             {/* Decorative elements */}
             {[...Array(6)].map((_, i) => (
               <motion.div
