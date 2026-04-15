@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
 import { supabase } from '../lib/supabase-auth';
+import styles from './SupabaseVerificationLoader.module.css';
 
 interface SupabaseVerificationLoaderProps {
   onComplete: () => void;
@@ -53,133 +54,82 @@ export const SupabaseVerificationLoader: React.FC<SupabaseVerificationLoaderProp
     verifyConnection();
   }, [onComplete]);
 
+  const getStatusTitle = () => {
+    switch (status) {
+      case 'connecting': return 'Connecting to Database';
+      case 'verifying': return 'Verifying Credentials';
+      case 'success': return 'Connection Successful';
+      case 'error': return 'Connection Failed';
+    }
+  };
+
+  const getStatusClass = () => {
+    return status;
+  };
+
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 9999,
-      color: 'white'
-    }}>
-      <div style={{
-        textAlign: 'center',
-        maxWidth: '400px',
-        padding: '2rem'
-      }}>
-        {/* Logo */}
-        <div style={{ marginBottom: '2rem' }}>
-          <img 
-            src="/logo.png" 
-            alt="WingMentor Logo" 
-            style={{ 
-              width: '180px', 
-              height: 'auto', 
-              opacity: 0.9,
-              filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))'
-            }} 
-          />
-        </div>
-
-        {/* Status Icon */}
-        <div style={{ marginBottom: '1.5rem' }}>
-          {status === 'connecting' && (
-            <Icons.Loader style={{ width: 48, height: 48, animation: 'spin 1s linear infinite' }} />
-          )}
-          {status === 'verifying' && (
-            <Icons.Loader style={{ width: 48, height: 48, animation: 'spin 1s linear infinite' }} />
-          )}
-          {status === 'success' && (
-            <Icons.CheckCircle style={{ width: 48, height: 48, color: '#10b981' }} />
-          )}
-          {status === 'error' && (
-            <Icons.AlertTriangle style={{ width: 48, height: 48, color: '#ef4444' }} />
-          )}
-        </div>
-
-        {/* Status Message */}
-        <div style={{ marginBottom: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '1.2rem', 
-            fontWeight: 600, 
-            marginBottom: '0.5rem',
-            color: status === 'error' ? '#ef4444' : status === 'success' ? '#10b981' : '#ffffff'
-          }}>
-            {status === 'connecting' && 'Connecting to Database'}
-            {status === 'verifying' && 'Verifying Credentials'}
-            {status === 'success' && 'Connection Successful'}
-            {status === 'error' && 'Connection Failed'}
-          </h2>
-          <p style={{ 
-            fontSize: '0.9rem', 
-            color: '#94a3b8',
-            lineHeight: 1.5
-          }}>
-            {message}
+    <div className={styles.verificationLoaderContainer}>
+      <div className={styles.verificationCard}>
+        {/* Left Side (Dark Info Panel) */}
+        <div className={styles.infoPanel}>
+          <div className={styles.infoPanelGradient1} />
+          <div className={styles.infoPanelGradient2} />
+          <div className={styles.logo}>
+            <img src="/logo.png" alt="WingMentor Logo" />
+          </div>
+          <div className={styles.pageLabel}>BRIDGING THE GAP</div>
+          <h2 className={styles.panelTitle}>Loading Portal</h2>
+          <p className={styles.panelDescription}>
+            <strong>Please wait while we prepare your WingMentor experience.</strong> We're loading your personalized dashboard and training materials.
           </p>
         </div>
+        
+        {/* Right Side (Verification Panel) */}
+        <div className={styles.verificationPanel}>
+          <div className={styles.verificationHeader}>
+            <h2 className={styles.verificationTitle}>System Verification</h2>
+            <p className={styles.verificationSubtitle}>
+              Please wait while we verify your credentials
+            </p>
+          </div>
 
-        {/* Progress Bar */}
-        <div style={{ 
-          width: '100%', 
-          height: '4px', 
-          backgroundColor: 'rgba(255,255,255,0.1)', 
-          borderRadius: '2px',
-          overflow: 'hidden',
-          marginBottom: '2rem'
-        }}>
-          <div style={{
-            width: status === 'connecting' ? '30%' : status === 'verifying' ? '70%' : status === 'success' ? '100%' : '0%',
-            height: '100%',
-            backgroundColor: status === 'error' ? '#ef4444' : status === 'success' ? '#10b981' : '#3b82f6',
-            transition: 'width 0.5s ease',
-            borderRadius: '2px'
-          }} />
+          <div className={styles.statusSection}>
+            <div className={`${styles.statusIcon} ${styles[getStatusClass()]}`}>
+              {status === 'connecting' && <Icons.Loader />}
+              {status === 'verifying' && <Icons.Loader />}
+              {status === 'success' && <Icons.CheckCircle />}
+              {status === 'error' && <Icons.AlertTriangle />}
+            </div>
+
+            <div className={styles.statusMessage}>
+              <h2 className={`${styles.statusTitle} ${styles[getStatusClass()]}`}>
+                {getStatusTitle()}
+              </h2>
+              <p className={styles.statusDescription}>
+                {message}
+              </p>
+            </div>
+
+            <div className={styles.progressBarContainer}>
+              <div className={`${styles.progressBar} ${styles[getStatusClass()]}`} />
+            </div>
+
+            <div className={styles.additionalInfo}>
+              <p>Powered by Supabase Database</p>
+              <p>WingMentor Foundation Program</p>
+            </div>
+
+            {status === 'error' && (
+              <button
+                onClick={() => window.location.reload()}
+                className={styles.retryButton}
+              >
+                Retry Connection
+              </button>
+            )}
+          </div>
         </div>
-
-        {/* Additional Info */}
-        <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-          <p>Powered by Supabase Database</p>
-          <p style={{ marginTop: '0.5rem' }}>WingMentor Foundation Program</p>
-        </div>
-
-        {/* Error Retry Button */}
-        {status === 'error' && (
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              marginTop: '1.5rem',
-              padding: '0.75rem 1.5rem',
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '0.9rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'background-color 0.2s ease'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#2563eb';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#3b82f6';
-            }}
-          >
-            Retry Connection
-          </button>
-        )}
       </div>
-
-      {/* Add CSS animation */}
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 };

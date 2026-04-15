@@ -1,0 +1,253 @@
+/* Verification Loader Container */
+.verificationLoaderContainer {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    color: white;
+}
+
+/* Verification Card */
+.verificationCard {
+    width: 100%;
+    max-width: 900px;
+    min-height: 371px;
+    background: rgba(255,255,255,0.92);
+    border-radius: 24px;
+    box-shadow: 0 40px 120px rgba(15,23,42,0.25);
+    border: 1px solid rgba(255,255,255,0.65);
+    overflow: hidden;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    display: flex;
+}
+
+/* Left Side - Dark Info Panel */
+.infoPanel {
+    flex: 0 0 44%;
+    background: radial-gradient(circle at top, rgba(59,130,246,0.35), transparent 60%),
+                linear-gradient(145deg, #020817 0%, #04182b 60%, #032130 100%);
+    padding: 1.95rem 1.58rem 1.69rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-align: center;
+    padding-bottom: 1.69rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.infoPanelGradient1 {
+    position: absolute;
+    inset: 20% 10% auto;
+    height: 220px;
+    background: radial-gradient(circle, rgba(9,132,227,0.25), transparent 70%);
+    filter: blur(60px);
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.infoPanelGradient2 {
+    position: absolute;
+    inset: auto 15% 5%;
+    height: 120px;
+    background: radial-gradient(circle, rgba(14,165,233,0.15), transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+}
+
+.logo {
+    margin-bottom: 2rem;
+}
+
+.logo img {
+    width: 135px;
+    height: auto;
+    object-fit: contain;
+}
+
+.pageLabel {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: #cbd5f5;
+    margin-bottom: 0.42rem;
+}
+
+.panelTitle {
+    font-size: 0.956rem;
+    font-weight: 600;
+    margin-bottom: 0.56rem;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+}
+
+.panelDescription {
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    line-height: 1.65;
+    margin-bottom: 0.71rem;
+    max-width: 247.5px;
+    padding: 0 0.56rem;
+}
+
+/* Right Side - Verification Panel */
+.verificationPanel {
+    flex: 1;
+    padding: 2.25rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.verificationHeader {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.verificationTitle {
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-family: Georgia, serif;
+    color: #0f172a;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.verificationSubtitle {
+    color: #64748b;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* Status Section */
+.statusSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.statusIcon {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statusIcon svg {
+    width: 48px;
+    height: 48px;
+}
+
+.statusIcon.connecting svg,
+.statusIcon.verifying svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.statusMessage {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.statusTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.statusTitle.connecting,
+.statusTitle.verifying {
+    color: #3b82f6;
+}
+
+.statusTitle.success {
+    color: #10b981;
+}
+
+.statusTitle.error {
+    color: #ef4444;
+}
+
+.statusDescription {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+/* Progress Bar */
+.progressBarContainer {
+    width: 100%;
+    height: 4px;
+    background-color: rgba(15,23,42,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.progressBar {
+    height: 100%;
+    background-color: #3b82f6;
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+
+.progressBar.connecting {
+    width: 30%;
+}
+
+.progressBar.verifying {
+    width: 70%;
+}
+
+.progressBar.success {
+    width: 100%;
+    background-color: #10b981;
+}
+
+.progressBar.error {
+    width: 0%;
+    background-color: #ef4444;
+}
+
+/* Additional Info */
+.additionalInfo {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.additionalInfo p {
+    margin: 0.5rem 0;
+}
+
+/* Retry Button */
+.retryButton {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.retryButton:hover {
+    background-color: #2563eb;
+}
