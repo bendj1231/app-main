@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface DigitalLogbookAnimationProps {
@@ -8,12 +8,19 @@ interface DigitalLogbookAnimationProps {
 export const DigitalLogbookAnimation: React.FC<DigitalLogbookAnimationProps> = ({ isHovered }) => {
   const [scrollY, setScrollY] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
+  const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
   useEffect(() => {
-    if (isHovered) {
-      setScrollY(0);
-      setIsTyping(true);
-      
+    // Clear any existing timeouts
+    timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+    timeoutsRef.current = [];
+    
+    // Reset animation state to beginning
+    setScrollY(0);
+    setIsTyping(true);
+    
+    // Animation loop function
+    const runAnimation = () => {
       const scrollInterval = setInterval(() => {
         setScrollY(prev => {
           if (prev >= 100) {
@@ -23,10 +30,33 @@ export const DigitalLogbookAnimation: React.FC<DigitalLogbookAnimationProps> = (
           return prev + 0.5;
         });
       }, 30);
-
-      return () => clearInterval(scrollInterval);
-    }
-  }, [isHovered]);
+      
+      // Store the interval ref for cleanup
+      const intervalRef = { current: scrollInterval } as any;
+      timeoutsRef.current.push(intervalRef);
+      
+      // Loop back to beginning after scrolling completes
+      const loopTimeout = setTimeout(() => {
+        clearInterval(scrollInterval);
+        setScrollY(0);
+        runAnimation(); // Restart the loop
+      }, 6000); // Complete scroll takes ~6 seconds, then loop
+      timeoutsRef.current.push(loopTimeout);
+    };
+    
+    runAnimation();
+    
+    return () => {
+      timeoutsRef.current.forEach(timeout => {
+        if (typeof timeout === 'object' && 'current' in timeout) {
+          clearInterval(timeout.current);
+        } else {
+          clearTimeout(timeout);
+        }
+      });
+      timeoutsRef.current = [];
+    };
+  }, []);
 
   return (
     <div className="absolute inset-0 bg-[#f0f4f8] flex flex-col overflow-hidden">

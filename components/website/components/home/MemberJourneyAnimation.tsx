@@ -267,69 +267,99 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
                 <div className="space-y-2">
                   {/* Email Input */}
                   <motion.div
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: '100%' }}
-                    transition={{ delay: 0.5, duration: 0.4 }}
                     className="h-8 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-2 overflow-hidden relative"
                   >
-                    <User className="w-3 h-3 text-slate-400 mr-2" />
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.9, duration: 0.3 }}
-                      className="text-slate-400 text-xs"
-                    >
-                      demo@pilot.com
-                    </motion.span>
-                    {/* Mouse click on email field */}
+                    <User className="w-3 h-3 text-slate-400 mr-2 flex-shrink-0" />
+                    <span className="text-slate-600 text-xs font-mono">
+                      {'demo@pilot.com'.split('').map((char, i) => (
+                        <motion.span
+                          key={i}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.8 + i * 0.08 }}
+                        >
+                          {char}
+                        </motion.span>
+                      ))}
+                    </span>
+                    {/* Mouse cursor moves to email and clicks */}
                     <motion.div
-                      className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: [0, 1, 1, 0], x: [0, 0, 0, 0] }}
-                      transition={{ delay: 0.6, duration: 0.5 }}
+                      className="absolute left-20 top-1/2 -translate-y-1/2 pointer-events-none z-10"
+                      initial={{ opacity: 0, x: 60, y: -30 }}
+                      animate={{ opacity: [0, 1, 1, 1, 0], x: [60, 0, 0, 0, 0], y: [-30, 0, 0, 0, 0] }}
+                      transition={{ delay: 0.5, duration: 1.2, times: [0, 0.3, 0.5, 0.8, 1] }}
                     >
-                      <MousePointer2 className="w-4 h-4 text-slate-600 fill-slate-600" />
+                      <MousePointer2 className="w-4 h-4 text-slate-700 fill-slate-700" />
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: [0, 0, 1, 0, 0] }}
+                        transition={{ delay: 0.8, duration: 0.4 }}
+                        className="absolute top-0 left-0 w-4 h-4 rounded-full bg-blue-500/30"
+                      />
                     </motion.div>
                   </motion.div>
                   
                   {/* Password Input */}
                   <motion.div
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: '100%' }}
-                    transition={{ delay: 1.2, duration: 0.4 }}
                     className="h-8 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-2 overflow-hidden relative"
                   >
-                    <Lock className="w-3 h-3 text-slate-400 mr-2" />
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 1.6, duration: 0.3 }}
-                      className="text-slate-400 text-xs tracking-widest"
-                    >
-                      ••••••••
-                    </motion.span>
-                    {/* Mouse click on password field */}
+                    <Lock className="w-3 h-3 text-slate-400 mr-2 flex-shrink-0" />
+                    <span className="text-slate-600 text-xs font-mono tracking-widest">
+                      {'••••••••'.split('').map((char, i) => (
+                        <motion.span
+                          key={i}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 2.0 + i * 0.06 }}
+                        >
+                          {char}
+                        </motion.span>
+                      ))}
+                    </span>
+                    {/* Mouse cursor moves to password and clicks */}
                     <motion.div
-                      className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: [0, 1, 1, 0], x: [0, 0, 0, 0] }}
-                      transition={{ delay: 1.3, duration: 0.5 }}
+                      className="absolute left-20 top-1/2 -translate-y-1/2 pointer-events-none z-10"
+                      initial={{ opacity: 0, x: -40, y: -40 }}
+                      animate={{ opacity: [0, 1, 1, 1, 0], x: [-40, 0, 0, 0, 0], y: [-40, 0, 0, 0, 0] }}
+                      transition={{ delay: 1.7, duration: 1.2, times: [0, 0.3, 0.5, 0.8, 1] }}
                     >
-                      <MousePointer2 className="w-4 h-4 text-slate-600 fill-slate-600" />
+                      <MousePointer2 className="w-4 h-4 text-slate-700 fill-slate-700" />
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: [0, 0, 1, 0, 0] }}
+                        transition={{ delay: 2.0, duration: 0.4 }}
+                        className="absolute top-0 left-0 w-4 h-4 rounded-full bg-blue-500/30"
+                      />
                     </motion.div>
                   </motion.div>
 
                   {/* Login Button */}
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.6, duration: 0.3 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-full py-2 bg-[#1a1f36] hover:bg-[#252b4a] text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-all shadow-md"
-                  >
-                    Login
-                    <ArrowRight className="w-3 h-3" />
-                  </motion.button>
+                  <motion.div className="relative">
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 3.2, duration: 0.3 }}
+                      className="w-full py-2 bg-[#1a1f36] text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1 shadow-md"
+                    >
+                      Login
+                      <ArrowRight className="w-3 h-3" />
+                    </motion.button>
+                    {/* Mouse cursor moves to login button and clicks */}
+                    <motion.div
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
+                      initial={{ opacity: 0, x: -80, y: 20 }}
+                      animate={{ opacity: [0, 1, 1, 1, 0], x: [-80, 0, 0, 0, 0], y: [20, 0, 0, 0, 0] }}
+                      transition={{ delay: 3.0, duration: 1.0, times: [0, 0.3, 0.5, 0.8, 1] }}
+                    >
+                      <MousePointer2 className="w-4 h-4 text-slate-700 fill-slate-700" />
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: [0, 0, 1, 0, 0] }}
+                        transition={{ delay: 3.3, duration: 0.3 }}
+                        className="absolute top-0 left-0 w-4 h-4 rounded-full bg-blue-500/30"
+                      />
+                    </motion.div>
+                  </motion.div>
                 </div>
 
                 {/* Footer Links */}
