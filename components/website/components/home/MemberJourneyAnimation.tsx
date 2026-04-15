@@ -326,21 +326,21 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="relative w-[90%] max-w-[350px] aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-2xl z-10 flex flex-col md:flex-row scale-[0.8]"
+              className="relative w-[95%] max-w-[400px] aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-2xl z-10 flex flex-col md:flex-row scale-[0.75]"
           >
             {/* Left Side - Dark Blue with Info */}
-            <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-3 md:p-4 flex flex-col relative">
+            <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-2 md:p-3 flex flex-col relative">
               {/* Logo - Centered */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="mt-2 mb-2 flex justify-center"
+                className="mt-1 mb-1 flex justify-center"
               >
                 <img
                   src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
                   alt="WingMentor Logo"
-                  className="w-12 md:w-16 h-auto object-contain"
+                  className="w-10 md:w-12 h-auto object-contain"
                 />
               </motion.div>
 
@@ -352,58 +352,58 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                 className="flex-1 flex flex-col justify-center items-center"
               >
                 {/* Mentor Network Label */}
-                <p className="text-[6px] md:text-[8px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-1 text-center">
+                <p className="text-[5px] md:text-[6px] font-bold tracking-[0.15em] uppercase text-blue-400 mb-0.5 text-center">
                   Mentor Network
                 </p>
 
                 {/* Title */}
-                <h2 className="text-sm md:text-lg font-serif mb-2 text-center">
+                <h2 className="text-[10px] md:text-sm font-serif mb-1 text-center">
                   Pilot Portal
                 </h2>
 
                 {/* Description */}
-                <p className="text-white/70 text-[8px] md:text-[10px] leading-relaxed mb-2 text-center max-w-[120px]">
-                  Access program enrollment & portfolio data.
+                <p className="text-white/70 text-[6px] md:text-[8px] leading-tight mb-1 text-center max-w-[100px]">
+                  Program & portfolio access.
                 </p>
 
                 {/* Learn More Button */}
-                <button className="px-3 py-1 border border-white/30 rounded-full text-[8px] md:text-[10px] font-medium hover:bg-white/10 transition-all duration-300">
+                <button className="px-2 py-0.5 border border-white/30 rounded-full text-[6px] md:text-[8px] font-medium hover:bg-white/10 transition-all duration-300">
                   Learn more
                 </button>
               </motion.div>
             </div>
 
             {/* Right Side - Login Form */}
-            <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-3 md:p-4 flex flex-col justify-center">
+            <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-2 md:p-3 flex flex-col justify-center">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
               >
                 {/* Header */}
-                <div className="mb-2 md:mb-3">
-                  <h2 className="text-xs md:text-sm font-serif text-slate-800 mb-1">
+                <div className="mb-1 md:mb-2">
+                  <h2 className="text-[10px] md:text-xs font-serif text-slate-800 mb-0.5">
                     Connecting pilots
                   </h2>
-                  <p className="text-slate-500 text-[8px] md:text-[10px]">
-                    Sign in with credentials.
+                  <p className="text-slate-500 text-[6px] md:text-[8px]">
+                    Sign in.
                   </p>
                 </div>
 
                 {/* WingMentor Account Label */}
-                <p className="text-[6px] md:text-[8px] font-bold tracking-[0.1em] uppercase text-slate-400 mb-2">
+                <p className="text-[5px] md:text-[6px] font-bold tracking-[0.08em] uppercase text-slate-400 mb-1">
                   WINGMENTOR ACCOUNT
                 </p>
                 
-                <div className="space-y-2 md:space-y-3">
+                <div className="space-y-1.5 md:space-y-2">
                   {/* Email Input */}
                   <motion.div
-                    className="h-6 md:h-8 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-2 md:px-3 overflow-hidden relative"
+                    className="h-5 md:h-6 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-1.5 md:px-2 overflow-hidden relative"
                   >
-                    <svg className="w-3 h-3 md:w-4 md:h-4 text-slate-400 mr-1 md:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-2.5 h-2.5 md:w-3 md:h-3 text-slate-400 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <span className="text-slate-600 text-[8px] md:text-[10px] font-mono">
+                    <span className="text-slate-600 text-[7px] md:text-[8px] font-mono">
                       {'demo@pilot.com'.split('').map((char, i) => (
                         <motion.span
                           key={i}
@@ -417,29 +417,29 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                     </span>
                     {/* Mouse cursor moves to email and clicks */}
                     <motion.div
-                      className="absolute left-16 md:left-20 top-1/2 -translate-y-1/2 pointer-events-none z-10"
-                      initial={{ opacity: 0, x: 60, y: -20 }}
-                      animate={{ opacity: [0, 1, 1, 1, 0], x: [60, 0, 0, 0, 0], y: [-20, 0, 0, 0, 0] }}
+                      className="absolute left-14 md:left-16 top-1/2 -translate-y-1/2 pointer-events-none z-10"
+                      initial={{ opacity: 0, x: 50, y: -15 }}
+                      animate={{ opacity: [0, 1, 1, 1, 0], x: [50, 0, 0, 0, 0], y: [-15, 0, 0, 0, 0] }}
                       transition={{ delay: 0.5, duration: 1.2, times: [0, 0.3, 0.5, 0.8, 1] }}
                     >
-                      <MousePointer2 className="w-3 h-3 text-slate-700 fill-slate-700" />
+                      <MousePointer2 className="w-2.5 h-2.5 text-slate-700 fill-slate-700" />
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: [0, 0, 1, 0, 0] }}
                         transition={{ delay: 0.8, duration: 0.4 }}
-                        className="absolute top-0 left-0 w-3 h-3 rounded-full bg-blue-500/30"
+                        className="absolute top-0 left-0 w-2.5 h-2.5 rounded-full bg-blue-500/30"
                       />
                     </motion.div>
                   </motion.div>
                   
                   {/* Password Input */}
                   <motion.div
-                    className="h-6 md:h-8 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-2 md:px-3 overflow-hidden relative"
+                    className="h-5 md:h-6 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-1.5 md:px-2 overflow-hidden relative"
                   >
-                    <svg className="w-3 h-3 md:w-4 md:h-4 text-slate-400 mr-1 md:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-2.5 h-2.5 md:w-3 md:h-3 text-slate-400 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
-                    <span className="text-slate-600 text-[8px] md:text-[10px] font-mono tracking-widest">
+                    <span className="text-slate-600 text-[7px] md:text-[8px] font-mono tracking-widest">
                       {'••••••••'.split('').map((char, i) => (
                         <motion.span
                           key={i}
@@ -453,17 +453,17 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                     </span>
                     {/* Mouse cursor moves to password and clicks */}
                     <motion.div
-                      className="absolute left-16 md:left-20 top-1/2 -translate-y-1/2 pointer-events-none z-10"
-                      initial={{ opacity: 0, x: -40, y: -40 }}
-                      animate={{ opacity: [0, 1, 1, 1, 0], x: [-40, 0, 0, 0, 0], y: [-40, 0, 0, 0, 0] }}
+                      className="absolute left-14 md:left-16 top-1/2 -translate-y-1/2 pointer-events-none z-10"
+                      initial={{ opacity: 0, x: -30, y: -30 }}
+                      animate={{ opacity: [0, 1, 1, 1, 0], x: [-30, 0, 0, 0, 0], y: [-30, 0, 0, 0, 0] }}
                       transition={{ delay: 1.7, duration: 1.2, times: [0, 0.3, 0.5, 0.8, 1] }}
                     >
-                      <MousePointer2 className="w-3 h-3 text-slate-700 fill-slate-700" />
+                      <MousePointer2 className="w-2.5 h-2.5 text-slate-700 fill-slate-700" />
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: [0, 0, 1, 0, 0] }}
                         transition={{ delay: 2.0, duration: 0.4 }}
-                        className="absolute top-0 left-0 w-3 h-3 rounded-full bg-blue-500/30"
+                        className="absolute top-0 left-0 w-2.5 h-2.5 rounded-full bg-blue-500/30"
                       />
                     </motion.div>
                   </motion.div>
@@ -475,7 +475,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                     transition={{ delay: 2.5, duration: 0.3 }}
                     className="flex justify-end"
                   >
-                      <span className="text-[8px] md:text-[10px] text-blue-600 hover:text-blue-700 font-medium">
+                      <span className="text-[6px] md:text-[8px] text-blue-600 hover:text-blue-700 font-medium">
                         Forgot?
                       </span>
                   </motion.div>
@@ -486,24 +486,24 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 2.8, duration: 0.3 }}
-                      className="w-full py-2 md:py-3 bg-[#1a1f36] text-white rounded-lg text-[8px] md:text-[10px] font-semibold flex items-center justify-center gap-1 shadow-lg hover:shadow-xl"
+                      className="w-full py-1.5 md:py-2 bg-[#1a1f36] text-white rounded-lg text-[6px] md:text-[8px] font-semibold flex items-center justify-center gap-0.5 shadow-lg hover:shadow-xl"
                     >
                       Login
-                      <ArrowRight className="w-2 h-2 md:w-3 md:h-3" />
+                      <ArrowRight className="w-1.5 h-1.5 md:w-2 md:h-2" />
                     </motion.button>
                     {/* Mouse cursor moves to login button and clicks */}
                     <motion.div
                       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
-                      initial={{ opacity: 0, x: -60, y: 20 }}
-                      animate={{ opacity: [0, 1, 1, 1, 0], x: [-60, 0, 0, 0, 0], y: [20, 0, 0, 0, 0] }}
+                      initial={{ opacity: 0, x: -40, y: 15 }}
+                      animate={{ opacity: [0, 1, 1, 1, 0], x: [-40, 0, 0, 0, 0], y: [15, 0, 0, 0, 0] }}
                       transition={{ delay: 2.6, duration: 1.0, times: [0, 0.3, 0.5, 0.8, 1] }}
                     >
-                      <MousePointer2 className="w-3 h-3 text-slate-700 fill-slate-700" />
+                      <MousePointer2 className="w-2.5 h-2.5 text-slate-700 fill-slate-700" />
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: [0, 0, 1, 0, 0] }}
                         transition={{ delay: 2.9, duration: 0.3 }}
-                        className="absolute top-0 left-0 w-3 h-3 rounded-full bg-blue-500/30"
+                        className="absolute top-0 left-0 w-2.5 h-2.5 rounded-full bg-blue-500/30"
                       />
                     </motion.div>
                   </motion.div>
@@ -514,11 +514,11 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 3.2, duration: 0.3 }}
-                  className="mt-2 md:mt-3 pt-2 md:pt-3 border-t border-slate-300 text-center"
+                  className="mt-1 md:mt-2 pt-1 md:pt-2 border-t border-slate-300 text-center"
                 >
-                  <p className="text-[8px] md:text-[10px] text-slate-500">
+                  <p className="text-[6px] md:text-[8px] text-slate-500">
                     Not a member?{' '}
-                    <span className="text-blue-600 font-medium">Create account</span>
+                    <span className="text-blue-600 font-medium">Create</span>
                   </p>
                 </motion.div>
               </motion.div>
