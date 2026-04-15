@@ -517,11 +517,11 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-cyan-900 flex flex-col items-center justify-center p-8 text-center"
+            className="absolute inset-0 bg-white flex flex-col items-center justify-center p-8 text-center"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Container for all text elements */}
-            <motion.div 
+            <motion.div
               className="relative flex items-center justify-center gap-2 md:gap-4"
               initial={{ scale: 1 }}
               animate={{ scale: 0.8 }}
@@ -534,15 +534,15 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
-                <motion.span 
-                  className="font-serif text-white text-lg md:text-2xl tracking-wide"
+                <motion.span
+                  className="font-serif text-slate-900 text-lg md:text-2xl tracking-wide"
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 0 }}
                   transition={{ delay: 1.2, duration: 0.3 }}
                 >
                   Access
                 </motion.span>
-                <motion.span className="font-serif text-white text-lg md:text-2xl tracking-wide">
+                <motion.span className="font-serif text-slate-900 text-lg md:text-2xl tracking-wide">
                   Programs
                 </motion.span>
                 {/* Arrow */}
@@ -551,7 +551,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 1.0, duration: 0.3 }}
                 >
-                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-white/80" />
+                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-slate-400" />
                 </motion.div>
               </motion.div>
 
@@ -562,7 +562,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.5, duration: 0.5 }}
               >
-                <motion.span className="font-serif text-white text-lg md:text-2xl tracking-wide">
+                <motion.span className="font-serif text-slate-900 text-lg md:text-2xl tracking-wide">
                   Pilot Recognition
                 </motion.span>
                 {/* Arrow */}
@@ -571,7 +571,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 2.0, duration: 0.3 }}
                 >
-                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-white/80" />
+                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-slate-400" />
                 </motion.div>
               </motion.div>
 
@@ -581,14 +581,14 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 2.2, duration: 0.5 }}
               >
-                <span className="font-serif text-white text-lg md:text-2xl tracking-wide">
+                <span className="font-serif text-slate-900 text-lg md:text-2xl tracking-wide">
                   Pathways
                 </span>
               </motion.div>
 
               {/* Morph to Logo - Step 4 */}
               <motion.div
-                className="absolute inset-0 flex items-center justify-center"
+                className="absolute inset-0 flex items-center justify-center bg-white"
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 3.5, duration: 0.8 }}
