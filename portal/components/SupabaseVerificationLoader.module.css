@@ -13,8 +13,8 @@
 /* Verification Card */
 .verificationCard {
     width: 100%;
-    max-width: 900px;
-    min-height: 371px;
+    max-width: 700px;
+    min-height: 300px;
     background: rgba(255,255,255,0.92);
     border-radius: 24px;
     box-shadow: 0 40px 120px rgba(15,23,42,0.25);
@@ -30,14 +30,14 @@
     flex: 0 0 44%;
     background: radial-gradient(circle at top, rgba(59,130,246,0.35), transparent 60%),
                 linear-gradient(145deg, #020817 0%, #04182b 60%, #032130 100%);
-    padding: 1.95rem 1.58rem 1.69rem;
+    padding: 1.5rem 1.2rem 1.3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: #ffffff;
     text-align: center;
-    padding-bottom: 1.69rem;
+    padding-bottom: 1.3rem;
     position: relative;
     overflow: hidden;
 }
@@ -62,61 +62,61 @@
 }
 
 .logo {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .logo img {
-    width: 135px;
+    width: 100px;
     height: auto;
     object-fit: contain;
 }
 
 .pageLabel {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     letter-spacing: 0.25em;
     color: #cbd5f5;
-    margin-bottom: 0.42rem;
+    margin-bottom: 0.32rem;
 }
 
 .panelTitle {
-    font-size: 0.956rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    margin-bottom: 0.56rem;
+    margin-bottom: 0.42rem;
     letter-spacing: -0.01em;
     line-height: 1.3;
 }
 
 .panelDescription {
     color: #cbd5e1;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     line-height: 1.65;
-    margin-bottom: 0.71rem;
-    max-width: 247.5px;
-    padding: 0 0.56rem;
+    margin-bottom: 0.53rem;
+    max-width: 200px;
+    padding: 0 0.42rem;
 }
 
 /* Right Side - Verification Panel */
 .verificationPanel {
     flex: 1;
-    padding: 2.25rem 2.4rem;
+    padding: 1.7rem 1.8rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .verificationHeader {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .verificationTitle {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     font-weight: 400;
     font-family: Georgia, serif;
     color: #0f172a;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.26rem;
     letter-spacing: -0.02em;
     line-height: 1.2;
     text-align: center;
@@ -124,7 +124,7 @@
 
 .verificationSubtitle {
     color: #64748b;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-align: center;
 }
 
@@ -133,19 +133,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
 }
 
 .statusIcon {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .statusIcon svg {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
 }
 
 .statusIcon.connecting svg,
@@ -160,13 +160,13 @@
 
 .statusMessage {
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .statusTitle {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.38rem;
 }
 
 .statusTitle.connecting,
@@ -183,7 +183,7 @@
 }
 
 .statusDescription {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: #94a3b8;
     line-height: 1.5;
 }
@@ -191,11 +191,11 @@
 /* Progress Bar */
 .progressBarContainer {
     width: 100%;
-    height: 4px;
+    height: 3px;
     background-color: rgba(15,23,42,0.1);
     border-radius: 2px;
     overflow: hidden;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .progressBar {
@@ -226,23 +226,23 @@
 /* Additional Info */
 .additionalInfo {
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: #64748b;
 }
 
 .additionalInfo p {
-    margin: 0.5rem 0;
+    margin: 0.38rem 0;
 }
 
 /* Retry Button */
 .retryButton {
-    margin-top: 1.5rem;
-    padding: 0.75rem 1.5rem;
+    margin-top: 1.1rem;
+    padding: 0.56rem 1.13rem;
     background-color: #3b82f6;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s ease;
