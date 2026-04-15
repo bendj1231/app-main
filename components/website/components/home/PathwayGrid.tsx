@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MemberJourneyAnimation } from './MemberJourneyAnimation';
+import { DigitalLogbookAnimation } from './DigitalLogbookAnimation';
+import { EtihadExpectationsAnimation } from './EtihadExpectationsAnimation';
 
 interface Slide {
     image: string;
@@ -13,6 +15,7 @@ interface Slide {
     isDarkCard?: boolean;
     titleColor?: string;
     subtitleColor?: string;
+    animationIndices?: number[];
 }
 
 interface PathwayGridProps {
@@ -48,13 +51,14 @@ const dummyCards = [
         ],
         image: '/images/w1000.png',
         title: 'Discover',
-        dynamicTitles: ['W1000', 'Expectations', 'ATS-Formatting'],
+        dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
         subtitle: 'Explore W1000 application, Expectations, and Examination Terminal',
         icon: Map,
         badge: null,
         accentColor: 'from-emerald-500/80 to-teal-400/80',
         isCarousel: true,
         hasArrows: true,
+        animationIndices: [1, 2], // Index 1 (Expectations) and 2 (Digital Logbook) use animations
     },
     {
         id: 'programs',
@@ -334,20 +338,34 @@ const GridCard: React.FC<GridCardProps> = ({
                         // Member Journey Animation
                         <MemberJourneyAnimation isHovered={isHovered} />
                     ) : card.isCarousel && card.images ? (
-                        // Carousel with multiple images
+                        // Carousel with multiple images or animations
                         <div className="relative w-full h-full">
-                            {card.images.map((img, idx) => (
-                                <img 
-                                    key={idx}
-                                    src={img} 
-                                    alt={`${card.title} ${idx + 1}`}
-                                    className={`
-                                        absolute inset-0 w-full h-full object-cover transition-all duration-1000
+                            {card.images.map((img, idx) => {
+                                const isAnimationIndex = card.animationIndices?.includes(idx);
+                                return (
+                                    <div key={idx} className={`
+                                        absolute inset-0 w-full h-full transition-all duration-1000
                                         ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}
-                                        ${isHovered ? 'scale-110' : ''}
-                                    `}
-                                />
-                            ))}
+                                    `}>
+                                        {isAnimationIndex ? (
+                                            idx === 1 ? (
+                                                <EtihadExpectationsAnimation isHovered={isHovered && idx === currentImageIndex} />
+                                            ) : (
+                                                <DigitalLogbookAnimation isHovered={isHovered && idx === currentImageIndex} />
+                                            )
+                                        ) : (
+                                            <img 
+                                                src={img} 
+                                                alt={`${card.title} ${idx + 1}`}
+                                                className={`
+                                                    w-full h-full object-cover
+                                                    ${isHovered && idx === currentImageIndex ? 'scale-110' : ''}
+                                                `}
+                                            />
+                                        )}
+                                    </div>
+                                );
+                            })}
                             {/* Carousel Indicators */}
                             <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                                 {card.images.map((_, idx) => (

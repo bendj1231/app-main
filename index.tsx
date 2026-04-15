@@ -763,12 +763,15 @@ const App = () => {
       )}
 
       {/* Login Modal - at root level to avoid overflow-x-hidden issue */}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-        onLogin={navigateToPortal}
-        onNavigate={navigateTo}
-      />
+      {isLoginModalOpen && (
+        <LoginModal
+          key="login-modal"
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+          onLogin={navigateToPortal}
+          onNavigate={navigateTo}
+        />
+      )}
     </>
   );
 

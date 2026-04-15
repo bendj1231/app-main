@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, MousePointer2, ArrowRight, Lock, User, ChevronRight } from 'lucide-react';
 
@@ -10,38 +10,60 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
   const [scene, setScene] = useState<'search' | 'warp' | 'portal' | 'member'>('search');
   const [typedText, setTypedText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
-  const [isTyping, setIsTyping] = useState(false);
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const warpTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const targetText = 'pilotrecognition.com';
 
   // Reset animation when hover starts
   useEffect(() => {
     if (isHovered) {
+      // Clear any existing intervals/timeouts
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+      if (warpTimeoutRef.current) {
+        clearTimeout(warpTimeoutRef.current);
+        warpTimeoutRef.current = null;
+      }
+      
       setScene('search');
       setTypedText('');
-      setIsTyping(false);
     }
   }, [isHovered]);
 
   // Typing animation
   useEffect(() => {
-    if (scene === 'search' && isHovered && !isTyping) {
-      setIsTyping(true);
+    if (scene === 'search' && isHovered && typedText === '') {
       let index = 0;
-      const typeInterval = setInterval(() => {
+      
+      typingIntervalRef.current = setInterval(() => {
         if (index <= targetText.length) {
           setTypedText(targetText.slice(0, index));
           index++;
         } else {
-          clearInterval(typeInterval);
+          if (typingIntervalRef.current) {
+            clearInterval(typingIntervalRef.current);
+            typingIntervalRef.current = null;
+          }
           // Wait a moment then transition to warp
-          setTimeout(() => setScene('warp'), 500);
+          warpTimeoutRef.current = setTimeout(() => setScene('warp'), 500);
         }
       }, 100);
 
-      return () => clearInterval(typeInterval);
+      return () => {
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+        }
+        if (warpTimeoutRef.current) {
+          clearTimeout(warpTimeoutRef.current);
+          warpTimeoutRef.current = null;
+        }
+      };
     }
-  }, [scene, isHovered, isTyping]);
+  }, [scene, isHovered, typedText, targetText]);
 
   // Cursor blink
   useEffect(() => {
@@ -54,16 +76,30 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
   // Scene transitions
   useEffect(() => {
     if (scene === 'warp') {
-      setTimeout(() => setScene('portal'), 800);
+      const warpTimeout = setTimeout(() => setScene('portal'), 800);
+      return () => clearTimeout(warpTimeout);
     } else if (scene === 'portal') {
-      setTimeout(() => setScene('member'), 2000);
+      const portalTimeout = setTimeout(() => setScene('member'), 2000);
+      return () => clearTimeout(portalTimeout);
     }
   }, [scene]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+      }
+      if (warpTimeoutRef.current) {
+        clearTimeout(warpTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="absolute inset-0 overflow-hidden rounded-xl bg-white">
       <AnimatePresence mode="wait">
-        {/* Scene 1: Search Page */}
+        {/* Scene 1: Search Bar */}
         {scene === 'search' && (
           <motion.div
             key="search"
@@ -73,60 +109,38 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
             transition={{ duration: 0.5 }}
             className="absolute inset-0 bg-white flex flex-col items-center justify-center p-6"
           >
-            {/* Browser Chrome */}
-            <div className="w-full max-w-md bg-slate-100 rounded-t-lg p-2 flex items-center gap-2 border-b border-slate-200">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
+            {/* Search Bar */}
+            <div className="relative w-full max-w-md">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                <Search className="w-5 h-5" />
               </div>
-              <div className="flex-1 bg-white rounded-md px-3 py-1 text-xs text-slate-400 text-center">
-                Search or enter address
-              </div>
-            </div>
-
-            {/* Search Bar Area */}
-            <div className="w-full max-w-md bg-white rounded-b-lg shadow-lg p-8">
-              <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold text-slate-800 mb-2 font-serif">
-                  Pilot Recognition
-                </h1>
-                <p className="text-slate-500 text-sm">Your Aviation Career Starts Here</p>
+              <div 
+                className={`w-full pl-12 pr-4 py-4 bg-slate-100 rounded-full text-slate-700 font-mono text-base transition-colors ${
+                  typedText.length > 0 ? 'border-2 border-blue-500' : 'border-2 border-transparent'
+                }`}
+              >
+                {typedText}
+                <motion.span
+                  animate={{ opacity: showCursor ? 1 : 0 }}
+                  className="inline-block w-0.5 h-5 bg-blue-500 ml-0.5"
+                />
               </div>
 
-              {/* Search Bar */}
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                  <Search className="w-5 h-5" />
-                </div>
-                <div className="w-full pl-12 pr-4 py-3 bg-slate-100 border-2 border-blue-500 rounded-full text-slate-700 font-mono text-sm">
-                  {typedText}
-                  <motion.span
-                    animate={{ opacity: showCursor ? 1 : 0 }}
-                    className="inline-block w-0.5 h-5 bg-blue-500 ml-0.5"
-                  />
-                </div>
-
-                {/* Animated Mouse */}
+              {/* Animated Mouse */}
+              <motion.div
+                className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none z-10"
+                initial={{ x: -100, y: 0 }}
+                animate={{ x: 0, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5, ease: 'easeOut' }}
+              >
+                <MousePointer2 className="w-6 h-6 text-slate-700 fill-slate-700" />
                 <motion.div
-                  className="absolute -right-4 -bottom-8 pointer-events-none"
-                  initial={{ x: -50, y: -30 }}
-                  animate={{ x: 0, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.5, ease: 'easeOut' }}
-                >
-                  <MousePointer2 className="w-6 h-6 text-slate-700 fill-slate-700" />
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: [0, 1, 0] }}
-                    transition={{ delay: 1, duration: 0.3 }}
-                    className="absolute top-0 left-0 w-6 h-6 rounded-full bg-blue-500/30"
-                  />
-                </motion.div>
-              </div>
-
-              <div className="mt-4 text-center">
-                <p className="text-xs text-slate-400">Press Enter to navigate</p>
-              </div>
+                  initial={{ scale: 0 }}
+                  animate={{ scale: [0, 1, 0] }}
+                  transition={{ delay: 0.8, duration: 0.3 }}
+                  className="absolute top-0 left-0 w-6 h-6 rounded-full bg-blue-500/30"
+                />
+              </motion.div>
             </div>
           </motion.div>
         )}
