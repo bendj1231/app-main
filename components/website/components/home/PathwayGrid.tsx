@@ -186,7 +186,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                 onLeave={() => setHoveredCard(null)}
                                 onClick={() => {
                                     if (card.id === 'member' && isLoggedIn) {
-                                        onNavigate('dashboard');
+                                        onNavigate('portal');
                                     } else if (card.id === 'member' && !isLoggedIn) {
                                         onNavigate('become-member');
                                     } else {
