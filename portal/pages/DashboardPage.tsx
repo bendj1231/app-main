@@ -45,10 +45,10 @@ interface DashboardPageProps {
 }
 
 const CategorySection: React.FC<{ title: string; description?: string; children: React.ReactNode; isDarkMode?: boolean }> = ({ title, description, children, isDarkMode = false }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
     <div>
-      <p style={{ margin: 0, fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: isDarkMode ? '#94a3b8' : '#94a3b8', fontWeight: 600 }}>{title}</p>
-      {description && <p style={{ margin: '0.15rem 0 0', color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.75rem' }}>{description}</p>}
+      <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: isDarkMode ? '#94a3b8' : '#94a3b8', fontWeight: 600 }}>{title}</p>
+      {description && <p style={{ margin: '0.1rem 0 0', color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.7rem' }}>{description}</p>}
     </div>
     {children}
   </div>
@@ -66,8 +66,8 @@ const renderCard = (card: {
     background: isDarkMode
       ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
       : 'rgba(255, 255, 255, 0.9)',
-    borderRadius: '16px',
-    padding: '1rem',
+    borderRadius: '12px',
+    padding: '0.75rem',
     boxShadow: isDarkMode
       ? '0 20px 45px rgba(0,0,0,0.3)'
       : '0 20px 45px rgba(15, 23, 42, 0.08)',
@@ -76,25 +76,25 @@ const renderCard = (card: {
       : '1px solid rgba(226,232,240,0.8)',
     display: 'grid',
     gridTemplateColumns: '1fr auto',
-    gap: '0.75rem',
+    gap: '0.5rem',
     alignItems: 'center'
   }}>
     <div>
-      <h3 style={{ margin: '0 0 0.3rem', fontWeight: 700, fontSize: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{card.title}</h3>
-      <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.8rem', lineHeight: 1.4 }}>{card.description}</p>
+      <h3 style={{ margin: '0 0 0.2rem', fontWeight: 700, fontSize: '0.9rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{card.title}</h3>
+      <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.75rem', lineHeight: 1.3 }}>{card.description}</p>
       {card.progress !== undefined && (
-        <div style={{ marginTop: '0.5rem' }}>
-          <div style={{ height: '4px', borderRadius: '999px', background: isDarkMode ? 'rgba(255,255,255,0.1)' : '#e2e8f0', overflow: 'hidden' }}>
+        <div style={{ marginTop: '0.35rem' }}>
+          <div style={{ height: '3px', borderRadius: '999px', background: isDarkMode ? 'rgba(255,255,255,0.1)' : '#e2e8f0', overflow: 'hidden' }}>
             <div style={{ width: `${card.progress}%`, height: '100%', background: 'linear-gradient(90deg, #34d399, #0ea5e9)' }} />
           </div>
-          <p style={{ margin: '0.2rem 0 0', fontSize: '0.7rem', color: isDarkMode ? '#94a3b8' : '#475569', fontWeight: 600 }}>{card.progress}% complete</p>
+          <p style={{ margin: '0.15rem 0 0', fontSize: '0.65rem', color: isDarkMode ? '#94a3b8' : '#475569', fontWeight: 600 }}>{card.progress}% complete</p>
         </div>
       )}
     </div>
     {card.cta && (
       <button
         style={{
-          padding: '0.4rem 1rem',
+          padding: '0.35rem 0.85rem',
           borderRadius: '999px',
           border: card.filled ? 'none' : isDarkMode ? '1px solid rgba(71,85,105,0.8)' : '1px solid #cbd5e1',
           background: card.filled ? '#0ea5e9' : 'transparent',
@@ -1208,7 +1208,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   }, [userProfile?.uid]);
 
   return (
-    <div className="dashboard-container animate-fade-in pilot-profile-page" style={{ backgroundColor: '#eef4fb', paddingBottom: '1.5rem', padding: '0.3rem 0.4rem', maxWidth: '850px', margin: '0 auto', minHeight: 'auto' }}>
+    <div className="dashboard-container animate-fade-in pilot-profile-page" style={{ backgroundColor: '#eef4fb', paddingBottom: '1rem', padding: '0.25rem 0.35rem', maxWidth: '1000px', margin: '0 auto', minHeight: 'auto' }}>
       <main
         style={{
           position: 'relative',
@@ -1463,7 +1463,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </p>
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', alignItems: 'stretch' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', alignItems: 'stretch' }}>
                 {/* Foundational Program Card - Clickable */}
                 <div
                   onClick={() => {
@@ -1476,11 +1476,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }
                   }}
                   style={{
-                    background: isDarkMode 
+                    background: isDarkMode
                       ? (isFoundationalEnrolled === null ? 'linear-gradient(135deg, rgba(71,85,105,0.6), rgba(51,65,85,0.5))' : 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))')
                       : (isFoundationalEnrolled === null ? 'rgba(148, 163, 184, 0.3)' : 'rgba(255, 255, 255, 0.7)'),
-                    borderRadius: '24px',
-                    padding: '1.75rem',
+                    borderRadius: '16px',
+                    padding: '1rem',
                     boxShadow: isDarkMode 
                       ? '0 20px 45px rgba(0,0,0,0.3)'
                       : '0 20px 45px rgba(15,23,42,0.08)',
@@ -1516,18 +1516,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Core Training</span>
-                    <h3 style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Foundational Program</h3>
+                    <span style={{ fontSize: '0.65rem', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Core Training</span>
+                    <h3 style={{ margin: '0.15rem 0 0', fontSize: '1rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Foundational Program</h3>
                   </div>
-                  
-                  <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '0.9rem', lineHeight: 1.5, flex: 1 }}>
+
+                  <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '0.8rem', lineHeight: 1.4, flex: 1 }}>
                     Master core aviation fundamentals, instrument procedures, and CRM techniques through structured simulator training.
                   </p>
-                  
+
                   <div
                     style={{
                       marginTop: 'auto',
-                      padding: '0.75rem 1.5rem',
+                      padding: '0.5rem 1rem',
                       borderRadius: '12px',
                       border: 'none',
                       background: isFoundationalEnrolled === null ? '#94a3b8' : isFoundationalEnrolled ? 'rgba(14, 165, 233, 0.9)' : '#10b981',
