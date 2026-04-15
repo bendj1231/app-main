@@ -159,7 +159,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 </motion.div>
                 
                 {/* Flight Simulator Style Grid - 2 rows */}
-                <div className="grid grid-cols-1 md:grid-cols-6 gap-3 md:gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-3">
                     
                     {/* Top Row - 2 larger cards spanning 3 columns each */}
                     {dummyCards.slice(0, 2).map((card) => (
