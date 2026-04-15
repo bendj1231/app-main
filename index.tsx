@@ -551,6 +551,13 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
+        {currentPage === 'programs-pathways' && (
+          <ProgramsPathwaysPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
       </div>
 
       {![
@@ -558,7 +565,7 @@ const App = () => {
         'committees', 'w1000-suite', 'hinfact', 'membership-benefits', 'become-member',
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
         'pilot-recognition', 'air-taxi-pathways', 'private-charter-pathways', 'ebt-cbta',
-        'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
+        'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
         'pilot-gap', 'website'
       ].includes(currentPage) && (
           <div className={`layout-wrapper ${loading ? 'content-loading' : 'content-ready'}`}>
