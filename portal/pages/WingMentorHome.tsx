@@ -35,6 +35,7 @@ import FoundationalKnowledgeExamPage from './FoundationalKnowledgeExamPage';
 import LicenseSelectionPage from './LicenseSelectionPage';
 import InterviewEvaluationPage from './InterviewEvaluationPage';
 import ProgramSyllabusPage from './ProgramSyllabusPage';
+import PilotLicensureExperiencePage from './PilotLicensureExperiencePage';
 import { Sidebar } from '../components/Sidebar';
 import { TopBar } from '../components/TopBar';
 
@@ -248,6 +249,7 @@ export type MainView =
   | 'examination-portal'
   | 'foundational-exam'
   | 'license-selection'
+  | 'pilot-licensure-experience'
   | 'interview-evaluation'
   | 'program-syllabus';
 
@@ -3899,7 +3901,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onViewFoundationalProgram={() => setMainView('foundational')}
             onViewFoundationalPlatform={() => setMainView('foundational-enrolled')}
             onViewFoundationalEnrollment={() => setMainView('foundational-enrollment-check')}
-            onViewLicensureExperience={() => setMainView('license-selection')}
+            onViewLicensureExperience={() => setMainView('pilot-licensure-experience')}
             onViewModule01={() => setMainView('pilot-gap-module')}
             onViewModule02={() => setMainView('pilot-gap-module-2')}
             onViewModule03={() => setMainView('module-3')}
@@ -4008,6 +4010,14 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             userProfile={userProfile}
             onBack={() => setMainView('examination-portal')}
             onSelectLicense={(licenseType) => console.log('Selected license:', licenseType)}
+          />
+        );
+
+      case 'pilot-licensure-experience':
+        return (
+          <PilotLicensureExperiencePage
+            userProfile={userProfile}
+            onBack={() => setMainView('pilot-portfolio')}
           />
         );
 
