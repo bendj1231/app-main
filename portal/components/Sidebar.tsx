@@ -53,8 +53,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                         </div>
 
                         <div 
-                            className={`${styles.horizontalCard} ${mainView === 'applications' ? styles.active : ''}`}
-                            onClick={() => onNavigate('applications')}
+                            className={`${styles.horizontalCard} ${mainView === 'pilot-portfolio' ? styles.active : ''}`}
+                            onClick={() => onNavigate('pilot-portfolio')}
                         >
                             <div className={styles.horizontalCardContentWrapper}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
