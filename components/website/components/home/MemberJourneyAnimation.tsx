@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, MousePointer2, ArrowRight, Lock, User, ChevronRight } from 'lucide-react';
 
 interface MemberJourneyAnimationProps {
-  isHovered: boolean;
+  isHovered?: boolean;
 }
 
-export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ isHovered }) => {
+export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () => {
   const [scene, setScene] = useState<'search' | 'registration' | 'portal' | 'member'>('search');
   const [typedText, setTypedText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
@@ -85,7 +85,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
         }
       };
     }
-  }, [scene, isHovered, targetText]);
+  }, [scene, targetText]);
 
   // Cursor blink
   useEffect(() => {
