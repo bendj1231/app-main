@@ -284,7 +284,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 }) => {
   const [mainView, setMainView] = useState<MainView>(initialView || 'dashboard');
   const [isMobile, setIsMobile] = useState(false);
-  const SIDEBAR_BASE_WIDTH = 280;
+  const SIDEBAR_BASE_WIDTH = 240;
   const SIDEBAR_BASE_HEIGHT = 980;
 
   useEffect(() => {
