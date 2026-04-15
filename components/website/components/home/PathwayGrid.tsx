@@ -52,7 +52,7 @@ const dummyCards = [
         title: 'Discover',
         subtitle: 'Explore W1000 application, Airline Expectations, and Examination Terminal',
         icon: Map,
-        badge: 'NEW',
+        badge: null,
         accentColor: 'from-emerald-500/80 to-teal-400/80',
         isCarousel: true,
     },
@@ -71,7 +71,7 @@ const dummyCards = [
         title: 'Pilot Recognition',
         subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
         icon: Compass,
-        badge: 'NEW',
+        badge: null,
         accentColor: 'from-violet-500/80 to-purple-400/80',
     },
     {
