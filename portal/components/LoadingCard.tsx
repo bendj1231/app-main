@@ -20,8 +20,8 @@ export const LoadingCard: React.FC = () => {
     }, []);
 
     return (
-        <div className="dashboard-container animate-fade-in">
-            <main className="dashboard-card" style={{
+        <div className="loading-card-container animate-fade-in">
+            <main className="loading-card-main" style={{
                 minHeight: '337.5px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -29,12 +29,12 @@ export const LoadingCard: React.FC = () => {
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)'
             }}>
-                <div className="dashboard-header" style={{ borderBottom: 'none', background: 'transparent', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div className="dashboard-logo" style={{ marginBottom: '1.13rem', display: 'flex', justifyContent: 'center' }}>
+                <div className="loading-card-header" style={{ borderBottom: 'none', background: 'transparent', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div className="loading-card-logo" style={{ marginBottom: '1.13rem', display: 'flex', justifyContent: 'center' }}>
                         <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '180px' }} />
                     </div>
 
-                    <div className="dashboard-subtitle" style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                    <div className="loading-card-subtitle" style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                         SYSTEM LOADING
                     </div>
 
@@ -64,7 +64,7 @@ export const LoadingCard: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="dashboard-footer" style={{
+                <div className="loading-card-footer" style={{
                     padding: '1.5rem',
                     background: '#f8fafc',
                     borderTop: '1px solid #e2e8f0',
@@ -81,7 +81,23 @@ export const LoadingCard: React.FC = () => {
                     @keyframes spin {
                         to { transform: rotate(360deg); }
                     }
-                `}} />
+                    .loading-card-container {
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 2rem;
+                        background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
+                    }
+                    .loading-card-main {
+                        width: 100%;
+                        max-width: 500px;
+                        border-radius: 16px;
+                        box-shadow: 0 20px 60px rgba(15,23,42,0.15);
+                        border: 1px solid rgba(255,255,255,0.8);
+                        overflow: hidden;
+                    }
+                    `}} />
             </main>
         </div>
     );
