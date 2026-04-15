@@ -66,10 +66,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'Home',
             target: 'home',
             subItems: [
-                { category: 'Overview', name: 'Hero Section', target: 'home', bullets: ['Welcome', 'Get Started', 'Learn More'] },
-                { name: 'Features', target: 'home', bullets: ['Program Highlights', 'Pathway Options', 'Recognition System'] },
-                { name: 'Membership Benefits', target: 'home', bullets: ['Global Registry', 'Mentorship', 'Career Support'] },
-                { name: 'Get Started', target: 'home', bullets: ['Create Account', 'Join Network', 'Begin Journey'] }
+                { category: 'Navigation', name: 'Home Navigation', target: 'home', bullets: ['Main Landing', 'Quick Access', 'Site Overview'] },
+                { category: 'Platform', name: 'The Pilot Portal', target: 'home', bullets: ['Login Access', 'Dashboard', 'Member Area'] },
+                { name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
+                { name: 'Carousel Cards', target: 'home', bullets: ['Program Highlights', 'Feature Showcase', 'Dynamic Content'] },
+                { name: 'Pilot Recognition', target: 'pilot-recognition', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'ATS Pilot Data Formatting Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { category: 'About', name: 'About Us', target: 'about', bullets: ['Brief Overview', 'Mission', 'Our Values'] },
+                { name: 'Become a Member', target: 'become-member', bullets: ['Join Network', 'Create Account', 'Start Journey'] }
             ]
         },
         {
