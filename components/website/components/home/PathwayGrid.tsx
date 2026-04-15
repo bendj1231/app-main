@@ -374,17 +374,42 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 )}
 
-                {/* Text Overlay - Directly on Image */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                    <div className="relative">
-                        <h3 className={`font-bold text-white tracking-wide mb-2 drop-shadow-lg ${isLargeCard ? 'font-serif text-2xl md:text-3xl lg:text-4xl' : 'text-sm md:text-base'}`}>
-                            {displayTitle}
-                        </h3>
-                        <p className={`text-white/90 truncate drop-shadow-md ${isLargeCard ? 'text-xs md:text-sm' : 'text-[10px] md:text-xs'}`}>
-                            {displaySubtitle.length > (isLargeCard ? 60 : 45) ? displaySubtitle.slice(0, (isLargeCard ? 57 : 42)) + '...' : displaySubtitle}
-                        </p>
+                {/* Text Overlay - Directly on Image (for large cards only) */}
+                {isLargeCard && (
+                    <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+                        <div className="relative">
+                            <h3 className="font-serif font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2 drop-shadow-lg">
+                                {displayTitle}
+                            </h3>
+                            <p className="text-white/90 text-xs md:text-sm truncate drop-shadow-md">
+                                {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
+                            </p>
+                        </div>
                     </div>
-                </div>
+                )}
+
+                {/* Airy Glassy Strip - Bottom (for small cards only) */}
+                {!isLargeCard && (
+                    <div className="absolute bottom-0 left-0 right-0">
+                        <div className={`
+                            relative bg-slate-400/20 backdrop-blur-xl border-t border-white/25
+                            px-4 py-2 md:px-5 md:py-2.5 transition-all duration-300
+                            ${isHovered ? 'bg-slate-300/25 border-white/35' : ''}
+                        `}>
+                            <div className="flex items-center">
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-medium text-white text-sm md:text-base truncate tracking-wide">
+                                        {displayTitle}
+                                    </h3>
+                                    <p className="text-white/80 text-[10px] md:text-xs truncate hidden md:block">
+                                        {displaySubtitle.length > 45 ? displaySubtitle.slice(0, 42) + '...' : displaySubtitle}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                        </div>
+                    </div>
+                )}
 
                 {/* Hover Border Effect */}
                 <div className={`
