@@ -1,7 +1,7 @@
 /* Top Bar Container */
 .topBarContainer {
     width: 100%;
-    padding: 0.75rem 1.5rem 0.5rem;
+    padding: 0.75rem 1rem 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,25 +49,25 @@
 .actionButtons {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.3rem;
 }
 
 .actionButton {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.4rem 0.75rem;
+    gap: 0.2rem;
+    padding: 0.35rem 0.6rem;
     border-radius: 999px;
     border: none;
     font-weight: 600;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .actionButton svg {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
 }
 
 /* Dark Mode Button */
