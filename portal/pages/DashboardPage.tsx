@@ -1655,7 +1655,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <img src="/examinationterminalapp.png" alt="Examination Portal" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }} />
+                    <img src="/images/accessportal.png" alt="Examination Portal" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }} />
                     <div>
                       <span style={{ fontSize: '0.6rem', color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Assessments</span>
                       <h3 style={{ margin: '0.1rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#f8fafc' }}>Examination Portal</h3>
