@@ -130,7 +130,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         {
-            name: 'Applications & Systems',
+            name: 'Applications',
             target: 'applications_systems',
             subItems: [
                 { category: 'The Digital Ecosystem', name: 'WingMentor W1000 Suite', target: 'w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
