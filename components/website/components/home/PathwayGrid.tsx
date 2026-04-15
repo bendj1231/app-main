@@ -475,7 +475,13 @@ const GridCard: React.FC<GridCardProps> = ({
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        onNavigate('airline-expectations');
+                                        // Navigate to respective page based on current image index
+                                        const pageMap: Record<number, string> = {
+                                            0: 'w1000-suite',      // W1000
+                                            1: 'airline-expectations',  // Expectations
+                                            2: 'pilot-recognition',    // Digital Logbook
+                                        };
+                                        onNavigate(pageMap[currentImageIndex] || 'airline-expectations');
                                     }}
                                     className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                                 >
