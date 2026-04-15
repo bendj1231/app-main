@@ -180,7 +180,7 @@
 }
 
 .formTitle {
-    font-size: 1.46rem;
+    font-size: 1.1rem;
     font-weight: 400;
     font-family: Georgia, serif;
     color: #0f172a;
@@ -191,17 +191,17 @@
 
 .formSubtitle {
     color: #64748b;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .errorMessage {
     background-color: #fef2f2;
     border: 1px solid #fee2e2;
     color: #dc2626;
-    padding: 0.75rem;
+    padding: 0.56rem;
     border-radius: 6px;
-    font-size: 0.875rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    margin-bottom: 1.13rem;
 }
 
 .loginForm {
@@ -354,9 +354,9 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #475569;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.13rem;
 }
 
 .rememberMeCheckbox {
@@ -382,8 +382,8 @@
 
 .signupContainer {
     text-align: center;
-    margin-top: 2rem;
-    font-size: 0.9rem;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
     color: #64748b;
 }
 
