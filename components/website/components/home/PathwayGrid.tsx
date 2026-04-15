@@ -305,7 +305,7 @@ const GridCard: React.FC<GridCardProps> = ({
         
         const interval = setInterval(() => {
             setCurrentImageIndex((prev) => (prev + 1) % card.images.length);
-        }, 3000); // Change every 3 seconds
+        }, 5000); // Change every 5 seconds
         
         return () => clearInterval(interval);
     }, [card.isCarousel, card.images]);

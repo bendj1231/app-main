@@ -54,12 +54,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 <div className="flex flex-col md:flex-row min-h-[550px]">
                     {/* Left Side - Dark Blue with Info */}
                     <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-8 md:p-10 flex flex-col relative">
-                        {/* Logo - Centered and larger */}
-                        <div className="mb-8 flex justify-center">
+                        {/* Logo - Centered, larger, and positioned lower */}
+                        <div className="mt-8 mb-6 flex justify-center">
                             <img
                                 src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
                                 alt="WingMentor Logo"
-                                className="w-40 h-auto object-contain"
+                                className="w-48 h-auto object-contain"
                             />
                         </div>
 
@@ -105,11 +105,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                 Sign in with your WingMentor credentials.
                             </p>
                         </div>
-
-                        {/* Change Optimization Button */}
-                        <button className="w-fit mb-6 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg text-sm font-medium transition-all duration-300">
-                            Change Optimization
-                        </button>
 
                         {/* WingMentor Account Label */}
                         <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">
