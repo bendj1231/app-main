@@ -362,8 +362,8 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                 </h2>
 
                 {/* Description */}
-                <p className="text-white/70 text-[6px] md:text-[8px] leading-tight mb-1 text-center max-w-[100px]">
-                  Program & portfolio access.
+                <p className="text-white/70 text-[6px] md:text-[8px] leading-tight mb-1 text-center max-w-[110px]">
+                  Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies.
                 </p>
 
                 {/* Learn More Button */}
@@ -451,6 +451,11 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                         </motion.span>
                       ))}
                     </span>
+                    {/* Eye icon for password */}
+                    <svg className="w-2.5 h-2.5 md:w-3 md:h-3 text-slate-400 ml-auto flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
                     {/* Mouse cursor moves to password and clicks */}
                     <motion.div
                       className="absolute left-14 md:left-16 top-1/2 -translate-y-1/2 pointer-events-none z-10"
@@ -468,16 +473,20 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                     </motion.div>
                   </motion.div>
 
-                  {/* Forgot Password Link */}
+                  {/* Remember Me & Forgot Password */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 2.5, duration: 0.3 }}
-                    className="flex justify-end"
+                    className="flex items-center justify-between"
                   >
-                      <span className="text-[6px] md:text-[8px] text-blue-600 hover:text-blue-700 font-medium">
-                        Forgot?
-                      </span>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 rounded border border-slate-300 bg-white" />
+                      <span className="text-[6px] md:text-[8px] text-slate-600">Remember me</span>
+                    </div>
+                    <span className="text-[6px] md:text-[8px] text-blue-600 hover:text-blue-700 font-medium">
+                      Forgot Password?
+                    </span>
                   </motion.div>
 
                   {/* Login Button */}
@@ -518,7 +527,9 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                 >
                   <p className="text-[6px] md:text-[8px] text-slate-500">
                     Not a member?{' '}
-                    <span className="text-blue-600 font-medium">Create</span>
+                    <span className="text-blue-600 font-medium">Create an account</span>
+                    {' • '}
+                    <span className="text-blue-600 font-medium">Visit Pilot Network</span>
                   </p>
                 </motion.div>
               </motion.div>
