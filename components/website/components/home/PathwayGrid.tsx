@@ -76,7 +76,7 @@ const dummyCards = [
     },
     {
         id: 'pathways',
-        image: 'https://images.unsplash.com/photo-1559406041-c7d3b7c5c5f0?q=80&w=1000&auto=format&fit=crop',
+        image: '/images/grok-image-6c3347bc-ed6e-4c84-9e71-dca4df5d2c70.png',
         title: 'Pathways',
         subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
         icon: ShoppingBag,
