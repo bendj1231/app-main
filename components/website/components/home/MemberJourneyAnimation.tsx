@@ -17,9 +17,9 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
 
   const targetText = 'pilotrecognition.com';
 
-  // Reset animation when hover starts
+  // Auto-start animation and loop
   useEffect(() => {
-    if (isHovered) {
+    const startAnimation = () => {
       // Clear any existing intervals/timeouts
       if (typingIntervalRef.current) {
         clearInterval(typingIntervalRef.current);
@@ -34,12 +34,26 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
       setTypedText('');
       hasStartedTypingRef.current = false;
       isCompleteRef.current = false;
-    }
-  }, [isHovered]);
+    };
+
+    // Start immediately and loop every 8 seconds
+    startAnimation();
+    const loopInterval = setInterval(startAnimation, 8000);
+
+    return () => {
+      clearInterval(loopInterval);
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+      }
+      if (warpTimeoutRef.current) {
+        clearTimeout(warpTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Typing animation
   useEffect(() => {
-    if (scene === 'search' && isHovered && !hasStartedTypingRef.current && !isCompleteRef.current) {
+    if (scene === 'search' && !hasStartedTypingRef.current && !isCompleteRef.current) {
       hasStartedTypingRef.current = true;
       let index = 0;
       
