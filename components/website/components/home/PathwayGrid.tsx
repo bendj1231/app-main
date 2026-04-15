@@ -182,6 +182,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                 })}
                                 className="w-full h-full"
                                 isLoggedIn={isLoggedIn}
+                                isLargeCard={true}
                             />
                         </motion.div>
                     ))}
@@ -206,6 +207,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     isDarkCard: true,
                                 })}
                                 className="w-full h-full"
+                                isLargeCard={false}
                             />
                         </motion.div>
                     ))}
@@ -261,16 +263,18 @@ interface GridCardProps {
     onClick: () => void;
     className?: string;
     isLoggedIn?: boolean;
+    isLargeCard?: boolean;
 }
 
-const GridCard: React.FC<GridCardProps> = ({ 
-    card, 
-    isHovered, 
-    onHover, 
-    onLeave, 
+const GridCard: React.FC<GridCardProps> = ({
+    card,
+    isHovered,
+    onHover,
+    onLeave,
     onClick,
     className = '',
-    isLoggedIn = false
+    isLoggedIn = false,
+    isLargeCard = false
 }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const displayTitle = isLoggedIn && card.loggedInTitle ? card.loggedInTitle : card.title;
@@ -373,11 +377,11 @@ const GridCard: React.FC<GridCardProps> = ({
                 {/* Text Overlay - Directly on Image */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                     <div className="relative">
-                        <h3 className="font-serif font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-wide mb-2 drop-shadow-lg">
+                        <h3 className={`font-bold text-white tracking-wide mb-2 drop-shadow-lg ${isLargeCard ? 'font-serif text-2xl md:text-3xl lg:text-4xl' : 'text-sm md:text-base'}`}>
                             {displayTitle}
                         </h3>
-                        <p className="text-white/90 text-xs md:text-sm truncate drop-shadow-md">
-                            {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
+                        <p className={`text-white/90 truncate drop-shadow-md ${isLargeCard ? 'text-xs md:text-sm' : 'text-[10px] md:text-xs'}`}>
+                            {displaySubtitle.length > (isLargeCard ? 60 : 45) ? displaySubtitle.slice(0, (isLargeCard ? 57 : 42)) + '...' : displaySubtitle}
                         </p>
                     </div>
                 </div>
