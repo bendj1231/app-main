@@ -9,11 +9,12 @@ interface AuthBridgeProps {
 
 export const AuthBridge: React.FC<AuthBridgeProps> = ({ children }) => {
     const [isSynced, setIsSynced] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: User | null) => {
-            if (firebaseUser) {
-                try {
+            try {
+                if (firebaseUser) {
                     // Check if user exists in Supabase
                     const { data: existingProfile } = await supabase
                         .from('profiles')
@@ -53,17 +54,19 @@ export const AuthBridge: React.FC<AuthBridgeProps> = ({ children }) => {
 
                     if (signInError) {
                         console.error('Error signing in to Supabase:', signInError);
+                        // Continue anyway - auth sync is not critical
                     }
 
                     setIsSynced(true);
-                } catch (error) {
-                    console.error('Error syncing auth to Supabase:', error);
-                    setIsSynced(true); // Continue even if sync fails
+                } else {
+                    // Sign out from Supabase when Firebase signs out
+                    await supabase.auth.signOut();
+                    setIsSynced(true);
                 }
-            } else {
-                // Sign out from Supabase when Firebase signs out
-                await supabase.auth.signOut();
-                setIsSynced(true);
+            } catch (err) {
+                console.error('Error syncing auth to Supabase:', err);
+                setError('Auth sync failed');
+                setIsSynced(true); // Continue even if sync fails
             }
         });
 
@@ -76,6 +79,12 @@ export const AuthBridge: React.FC<AuthBridgeProps> = ({ children }) => {
                 <div className="text-white text-xl">Syncing authentication...</div>
             </div>
         );
+    }
+
+    if (error) {
+        console.warn('AuthBridge error:', error);
+        // Return children anyway to prevent blank page
+        return <>{children}</>;
     }
 
     return <>{children}</>;
