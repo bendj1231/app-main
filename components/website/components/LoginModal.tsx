@@ -18,18 +18,20 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+    const [error, setError] = useState('');
 
     if (!isOpen) return null;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
         try {
             await login(email, password);
             onNavigate('home'); // Navigate to home instead of portal
             onClose();
-        } catch (error) {
-            console.error('Login failed:', error);
-            // Handle login error (show error message to user)
+        } catch (err: any) {
+            console.error('Login failed:', err);
+            setError(err.message || 'Login failed. Please check your credentials and try again.');
         }
     };
 
@@ -110,6 +112,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                         <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">
                             WINGMENTOR ACCOUNT
                         </p>
+
+                        {/* Error Message */}
+                        {error && (
+                            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                                {error}
+                            </div>
+                        )}
 
                         {/* Login Form */}
                         <form onSubmit={handleSubmit} className="space-y-4">

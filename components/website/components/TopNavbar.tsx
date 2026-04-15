@@ -155,9 +155,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isLight
                     ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
                     : isDark
-                        ? scrolled
-                            ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
-                            : 'bg-transparent py-3 shadow-none'
+                        ? '!bg-transparent backdrop-filter-none py-3 shadow-none'
                         : scrolled
                             ? 'bg-gradient-to-b from-black/95 via-black/60 to-transparent backdrop-blur-sm py-3 shadow-2xl'
                             : 'bg-transparent py-6'
