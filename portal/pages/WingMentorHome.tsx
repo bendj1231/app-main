@@ -3987,7 +3987,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         return (
           <ExaminationPortalPage
             userProfile={userProfile}
-            onBack={() => setMainView('program-progress')}
+            onBack={() => setMainView('pilot-portfolio')}
             onStartFoundationalExam={() => setMainView('foundational-exam')}
             onStartFAAExam={() => setMainView('license-selection')}
             onStartInterviewEvaluation={() => setMainView('interview-evaluation')}
