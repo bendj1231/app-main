@@ -2,6 +2,7 @@ import React from 'react';
 import { Zap, Briefcase, Navigation, Cpu, Layers, ChevronRight } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
+import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 
 interface PathwaysPageProps {
     onBack: () => void;
@@ -93,6 +94,9 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
                     </RevealOnScroll>
                 </div>
             </div>
+
+            {/* Airline Expectations 3D Carousel */}
+            <AirlineExpectationsCarousel onNavigate={onNavigate} onLogin={onLogin} />
 
             {/* Pathways Section */}
             <div className="py-24 px-6 bg-[#050A30] text-white">
