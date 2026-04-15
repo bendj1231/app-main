@@ -7,7 +7,7 @@ interface MemberJourneyAnimationProps {
 }
 
 export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () => {
-  const [scene, setScene] = useState<'search' | 'registration' | 'portal' | 'member'>('search');
+  const [scene, setScene] = useState<'search' | 'registration' | 'portal' | 'programs' | 'member'>('search');
   const [typedText, setTypedText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -95,9 +95,13 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
       const registrationTimeout = setTimeout(() => setScene('portal'), 2500);
       return () => clearTimeout(registrationTimeout);
     } else if (scene === 'portal') {
-      // Give time for login animation + loading + pathways display
-      const portalTimeout = setTimeout(() => setScene('member'), 4000);
+      // Give time for login animation then go to programs scene
+      const portalTimeout = setTimeout(() => setScene('programs'), 3500);
       return () => clearTimeout(portalTimeout);
+    } else if (scene === 'programs') {
+      // Show programs scene for 5 seconds then go to member
+      const programsTimeout = setTimeout(() => setScene('member'), 5000);
+      return () => clearTimeout(programsTimeout);
     } else if (scene === 'member') {
       // Show member scene briefly then loop
       const memberTimeout = setTimeout(() => {
@@ -505,7 +509,101 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
           </motion.div>
         )}
 
-        {/* Scene 4: Become a Member */}
+        {/* Scene 4: Access Programs / Pilot Recognition / Pathways */}
+        {scene === 'programs' && (
+          <motion.div
+            key="programs"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-cyan-900 flex flex-col items-center justify-center p-8 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Container for all text elements */}
+            <motion.div 
+              className="relative flex items-center justify-center gap-2 md:gap-4"
+              initial={{ scale: 1 }}
+              animate={{ scale: 0.8 }}
+              transition={{ delay: 2.5, duration: 0.5 }}
+            >
+              {/* Access Programs - Step 1 */}
+              <motion.div
+                className="flex items-center gap-2"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
+                <motion.span 
+                  className="font-serif text-white text-lg md:text-2xl tracking-wide"
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 0 }}
+                  transition={{ delay: 1.2, duration: 0.3 }}
+                >
+                  Access
+                </motion.span>
+                <motion.span className="font-serif text-white text-lg md:text-2xl tracking-wide">
+                  Programs
+                </motion.span>
+                {/* Arrow */}
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 1.0, duration: 0.3 }}
+                >
+                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-white/80" />
+                </motion.div>
+              </motion.div>
+
+              {/* Pilot Recognition - Step 2 */}
+              <motion.div
+                className="flex items-center gap-2"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.5, duration: 0.5 }}
+              >
+                <motion.span className="font-serif text-white text-lg md:text-2xl tracking-wide">
+                  Pilot Recognition
+                </motion.span>
+                {/* Arrow */}
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 2.0, duration: 0.3 }}
+                >
+                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-white/80" />
+                </motion.div>
+              </motion.div>
+
+              {/* Pathways - Step 3 */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 2.2, duration: 0.5 }}
+              >
+                <span className="font-serif text-white text-lg md:text-2xl tracking-wide">
+                  Pathways
+                </span>
+              </motion.div>
+
+              {/* Morph to Logo - Step 4 */}
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 3.5, duration: 0.8 }}
+              >
+                <img
+                  src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                  alt="WingMentor Logo"
+                  className="w-24 md:w-32 h-auto object-contain"
+                />
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Scene 5: Become a Member */}
         {scene === 'member' && (
           <motion.div
             key="member"
