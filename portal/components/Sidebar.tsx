@@ -156,6 +156,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                                 <Icons.ArrowRight />
                             </div>
                         </div>
+
+                        <div 
+                            className={`${styles.horizontalCard} ${mainView === 'w1000' ? styles.active : ''}`}
+                            onClick={() => onNavigate('w1000')}
+                        >
+                            <div className={styles.horizontalCardContentWrapper}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
+                                    <div style={{ fontSize: '0.9rem', color: '#000000', fontWeight: 'bold' }}>•</div>
+                                    <div className={styles.horizontalCardContent}>
+                                        <h3 className={styles.horizontalCardTitle}>W1000</h3>
+                                        <p className={styles.horizontalCardDesc}>
+                                            Advanced training
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="/Gemini_Generated_Image_7awns87awns87awn.png" alt="W1000" className={styles.hubCardBgImage} />
+                            <div className={styles.hubCardArrow}>
+                                <Icons.ArrowRight />
+                            </div>
+                        </div>
                     </div>
                 </section>
                 
