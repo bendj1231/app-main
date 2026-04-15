@@ -226,7 +226,7 @@ export const WingMentorNetworkPage: React.FC<WingMentorNetworkPageProps> = ({ on
     };
 
     return (
-        <div className="dashboard-container animate-fade-in sm:py-10" style={{ position: 'fixed', top: '70px', left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 10, padding: '0', alignItems: 'flex-start', minHeight: 'auto' }}>
+        <div className="dashboard-container animate-fade-in sm:py-10" style={{ padding: '0.4rem 0.75rem', maxWidth: '800px', margin: '0 auto', minHeight: 'auto' }}>
             <main className="dashboard-card" style={{ position: 'relative', height: '100%', maxHeight: 'none', minHeight: 'auto', borderRadius: 0 }}>
                 <button
                     className="platform-logout-btn z-50 text-slate-400 hover:text-slate-800"

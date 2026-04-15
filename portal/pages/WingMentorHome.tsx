@@ -14,6 +14,7 @@ import ContactPage from './ContactPage';
 import { ATPLPathwayPage } from './ATPLPathwayPage';
 import { PrivateSectorPathwayPage } from './PrivateSectorPathwayPage';
 import { PathwaysPage } from './PathwaysPage';
+import { WingMentorNetworkPage } from './WingMentorNetworkPage';
 import LogbookPage from './LogbookPage';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import AtlasResumePage from './AtlasResumePage';
@@ -3902,7 +3903,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       case 'atlas-resume':
         return <AtlasResumePage onBack={() => setMainView('recognition')} onPrint={() => setMainView('printable-resume')} userProfile={userProfile} />;
       case 'wingmentor-network':
-        return <WingMentorNetworkView onBack={() => setMainView('dashboard')} onViewChange={onViewChange} />;
+        return <WingMentorNetworkPage onBack={() => setMainView('dashboard')} onLogout={onLogout} />;
       case 'aviation-expectations':
         return (
           <AviationIndustryExpectationsPage
@@ -4049,7 +4050,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       <Sidebar mainView={mainView} onLogout={onLogout} onNavigate={setMainView} isDarkMode={isDarkMode} />
       
       {/* Main Content Area */}
-      {mainView === 'pathways' || mainView === 'wingmentor-network' ? (
+      {mainView === 'pathways' ? (
         <div style={{ 
           position: 'fixed', 
           top: 0, 
@@ -4060,11 +4061,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           backgroundColor: isDarkMode ? '#0B0F19' : '#f8fafc',
           overflowY: 'auto'
         }}>
-          {mainView === 'pathways' ? (
-            <PathwaysPage onBack={() => setMainView('dashboard')} isDarkMode={isDarkMode} />
-          ) : (
-            <WingMentorNetworkView onBack={() => setMainView('dashboard')} onViewChange={onViewChange} />
-          )}
+          <PathwaysPage onBack={() => setMainView('dashboard')} isDarkMode={isDarkMode} />
         </div>
       ) : (
         <MainPanel />
