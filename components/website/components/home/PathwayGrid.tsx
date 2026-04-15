@@ -142,7 +142,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
     };
 
     return (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-start pt-16 md:pt-20 lg:pt-24 px-4 md:px-8 lg:px-12">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-start pt-8 md:pt-12 lg:pt-16 px-4 md:px-8 lg:px-12">
             <motion.div 
                 key={mountKey}
                 className="w-full max-w-[1200px]"
@@ -357,13 +357,6 @@ const GridCard: React.FC<GridCardProps> = ({
                         absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent
                         transition-opacity duration-300
                         ${isHovered ? 'opacity-90' : 'opacity-80'}
-                    `} />
-                    
-                    {/* Hover Accent Glow */}
-                    <div className={`
-                        absolute inset-0 bg-gradient-to-t ${card.accentColor}
-                        opacity-0 transition-opacity duration-300
-                        ${isHovered ? 'opacity-20' : ''}
                     `} />
                 </div>
 
