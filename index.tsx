@@ -640,12 +640,13 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
-        {currentPage === 'portal' && (
+        {/* Temporarily disabled portal routing to debug blank page issue */}
+        {/* {currentPage === 'portal' && (
           <PortalWrapper
             onNavigate={navigateTo}
             onBack={() => navigateTo('home')}
           />
-        )}
+        )} */}
       </div>
 
       {![
