@@ -461,17 +461,12 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                     </span>
                   </motion.div>
 
-                  {/* Login Button */}
+                  {/* Login Button - render immediately */}
                   <motion.div className="relative">
-                    <motion.button
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 2.8, duration: 0.3 }}
-                      className="w-full py-1.5 md:py-2 bg-[#1a1f36] text-white rounded-lg text-[6px] md:text-[8px] font-semibold flex items-center justify-center gap-0.5 shadow-lg hover:shadow-xl"
-                    >
+                    <button className="w-full py-1.5 md:py-2 bg-[#1a1f36] text-white rounded-lg text-[6px] md:text-[8px] font-semibold flex items-center justify-center gap-0.5 shadow-lg hover:shadow-xl">
                       Login
                       <ArrowRight className="w-1.5 h-1.5 md:w-2 md:h-2" />
-                    </motion.button>
+                    </button>
                     {/* Mouse cursor moves to login button and clicks */}
                     <motion.div
                       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
