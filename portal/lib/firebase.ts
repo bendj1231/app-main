@@ -1,40 +1,16 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, collection as firestoreCollection, doc as firestoreDoc, query as firestoreQuery, where as firestoreWhere, getDocs as firestoreGetDocs, getDoc as firestoreGetDoc, addDoc as firestoreAddDoc, updateDoc as firestoreUpdateDoc, deleteDoc as firestoreDeleteDoc, setDoc as firestoreSetDoc, onSnapshot as firestoreOnSnapshot, orderBy as firestoreOrderBy, limit as firestoreLimit } from 'firebase/firestore';
-
-// Create a mock Firestore instance for when db is null
-const createMockFirestore = () => ({
-  collection: (path: string) => ({
-    id: path,
-    path: path,
-    parent: null,
-    type: 'collection' as const,
-    onSnapshot: () => () => {},
-    getDocs: () => Promise.resolve({ docs: [] }),
-    addDoc: () => Promise.resolve({ id: 'mock-id' })
-  }),
-  doc: (path: string) => ({
-    id: path,
-    path: path,
-    parent: null,
-    type: 'document' as const,
-    onSnapshot: () => () => {},
-    getDoc: () => Promise.resolve({ exists: false, data: () => ({}) }),
-    setDoc: () => Promise.resolve(),
-    updateDoc: () => Promise.resolve(),
-    deleteDoc: () => Promise.resolve()
-  })
-});
+import { getFirestore } from 'firebase/firestore';
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyDummyKey',
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'dummy.firebaseapp.com',
     projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'wingmentor-ab3ad',
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
-    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'dummy.appspot.com',
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '123456789',
+    appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:123456789:web:abcdef',
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || 'G-DUMMY'
 };
 
 // Initialize Firebase
@@ -137,7 +113,7 @@ try {
                 });
             }
         };
-        db = createMockFirestore();
+        db = null;
         
     } else {
         // Use real Firebase
@@ -195,7 +171,7 @@ try {
             });
         }
     };
-    db = createMockFirestore();
+    db = null;
 }
 
 export { auth, db };
