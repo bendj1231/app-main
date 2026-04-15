@@ -335,10 +335,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             </button>
 
                             <button
-                                onClick={onLoginModalOpen || (() => {})}
-                                className="bg-blue-600 text-white w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-4 shadow-xl"
+                                onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
+                                className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-4 shadow-xl`}
                             >
-                                Login
+                                {currentUser ? 'Access Portal' : 'Login'}
                             </button>
                         </div>
                     </div>
