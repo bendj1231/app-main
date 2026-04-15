@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from './LoadingCard.module.css';
 
 const LOADING_MESSAGES = [
     "INITIALIZING FLIGHT PARAMETERS...",
@@ -20,85 +21,43 @@ export const LoadingCard: React.FC = () => {
     }, []);
 
     return (
-        <div className="loading-card-container animate-fade-in">
-            <main className="loading-card-main" style={{
-                minHeight: '337.5px',
-                display: 'flex',
-                flexDirection: 'column',
-                background: 'rgba(248, 250, 252, 0.95)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)'
-            }}>
-                <div className="loading-card-header" style={{ borderBottom: 'none', background: 'transparent', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div className="loading-card-logo" style={{ marginBottom: '1.13rem', display: 'flex', justifyContent: 'center' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '180px' }} />
+        <div className={styles.loadingContainer}>
+            <div className={styles.backgroundGradient1} />
+            <div className={styles.backgroundGradient2} />
+            <div className={styles.loadingCard}>
+                {/* Left Side (Dark Info Panel) */}
+                <div className={styles.loadingInfoPanel}>
+                    <div className={styles.infoPanelGradient1} />
+                    <div className={styles.infoPanelGradient2} />
+                    <div className={styles.logo}>
+                        <img src="/logo.png" alt="WingMentor Logo" />
                     </div>
-
-                    <div className="loading-card-subtitle" style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                        SYSTEM LOADING
-                    </div>
-
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{
-                            fontSize: '1rem',
-                            color: '#64748b',
-                            fontWeight: 500,
-                            minHeight: '1.5rem',
-                            transition: 'all 0.3s ease',
-                            margin: '0 auto',
-                            maxWidth: '450px'
-                        }}>
-                            {LOADING_MESSAGES[messageIndex]}
+                    <div className={styles.pageLabel}>SYSTEM LOADING</div>
+                    <h2 className={styles.panelTitle}>Loading Portal</h2>
+                    <p className={styles.panelDescription}>
+                        <strong>Please wait while we prepare your WingMentor experience.</strong> We're loading your personalized dashboard and training materials.
+                    </p>
+                </div>
+                
+                {/* Right Side (Loading Panel) */}
+                <div className={styles.loadingPanel}>
+                    <div className={styles.loadingHeader}>
+                        <h2 className={styles.loadingTitle}>Loading Your Dashboard</h2>
+                        <p className={styles.loadingSubtitle}>
+                            Please wait while we load your personalized experience
                         </p>
                     </div>
-
-                    <div className="loading-spinner-container" style={{ marginTop: '1.88rem', display: 'flex', justifyContent: 'center' }}>
-                        <div className="outer-ring" style={{
-                            width: '30px',
-                            height: '30px',
-                            borderRadius: '50%',
-                            border: '2px solid #e2e8f0',
-                            borderTopColor: '#2563eb',
-                            animation: 'spin 1s linear infinite'
-                        }}></div>
+                    <p className={styles.loadingMessage}>
+                        {LOADING_MESSAGES[messageIndex]}
+                    </p>
+                    <div className={styles.spinnerContainer}>
+                        <div className={styles.spinner}></div>
+                    </div>
+                    <div className={styles.loadingFooter}>
+                        ESTABLISHING SECURE CONNECTION...
                     </div>
                 </div>
-
-                <div className="loading-card-footer" style={{
-                    padding: '1.5rem',
-                    background: '#f8fafc',
-                    borderTop: '1px solid #e2e8f0',
-                    textAlign: 'center',
-                    fontSize: '0.7rem',
-                    color: '#94a3b8',
-                    letterSpacing: '0.1em'
-                }}>
-                    ESTABLISHING SECURE CONNECTION...
-                </div>
-
-                <style dangerouslySetInnerHTML={{
-                    __html: `
-                    @keyframes spin {
-                        to { transform: rotate(360deg); }
-                    }
-                    .loading-card-container {
-                        min-height: 100vh;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        padding: 2rem;
-                        background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
-                    }
-                    .loading-card-main {
-                        width: 100%;
-                        max-width: 500px;
-                        border-radius: 16px;
-                        box-shadow: 0 20px 60px rgba(15,23,42,0.15);
-                        border: 1px solid rgba(255,255,255,0.8);
-                        overflow: hidden;
-                    }
-                    `}} />
-            </main>
+            </div>
         </div>
     );
 };
