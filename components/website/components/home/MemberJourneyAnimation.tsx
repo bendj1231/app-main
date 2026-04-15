@@ -186,75 +186,121 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 flex"
+            className="absolute inset-0 bg-white flex flex-col md:flex-row"
           >
-            {/* Left Side - Dark */}
-            <div className="w-1/2 bg-[#0a1628] p-6 flex flex-col justify-center">
+            {/* Left Side - Dark Blue with Info */}
+            <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-6 md:p-8 flex flex-col relative">
+              {/* Logo - Centered */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-center"
+                className="mt-4 mb-4 flex justify-center"
               >
-                <div className="w-20 h-20 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center">
-                  <Lock className="w-10 h-10 text-white" />
-                </div>
-                <h2 className="text-2xl font-serif text-white mb-2">Pilot Portal</h2>
-                <p className="text-white/60 text-xs">Mentor Network</p>
+                <img
+                  src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                  alt="WingMentor Logo"
+                  className="w-36 h-auto object-contain"
+                />
+              </motion.div>
+
+              {/* Content */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex-1 flex flex-col justify-center items-center"
+              >
+                {/* Mentor Network Label */}
+                <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-blue-400 mb-2 text-center">
+                  Mentor Network
+                </p>
+
+                {/* Title */}
+                <h2 className="text-2xl md:text-3xl font-serif mb-3 text-center">
+                  Pilot Portal
+                </h2>
+
+                {/* Description */}
+                <p className="text-white/70 text-xs leading-relaxed mb-4 text-center max-w-xs">
+                  Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data.
+                </p>
+
+                {/* Learn More Button */}
+                <button className="px-5 py-2 border border-white/30 rounded-full text-xs font-medium hover:bg-white/10 transition-all duration-300">
+                  Learn more
+                </button>
               </motion.div>
             </div>
 
-            {/* Right Side - Form */}
-            <div className="w-1/2 bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex flex-col justify-center">
+            {/* Right Side - Login Form */}
+            <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-6 md:p-8 flex flex-col justify-center">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
-                className="space-y-4"
               >
-                <h3 className="text-lg font-semibold text-slate-800">Connecting pilots to aviation</h3>
+                {/* Header */}
+                <div className="mb-4">
+                  <h2 className="text-xl md:text-2xl font-serif text-slate-800 mb-2">
+                    Connecting pilots to the aviation industry
+                  </h2>
+                  <p className="text-slate-500 text-xs">
+                    Sign in with your WingMentor credentials.
+                  </p>
+                </div>
+
+                {/* WingMentor Account Label */}
+                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-3">
+                  WINGMENTOR ACCOUNT
+                </p>
                 
                 <div className="space-y-3">
+                  {/* Email Input */}
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: '100%' }}
                     transition={{ delay: 0.7, duration: 0.5 }}
-                    className="h-10 bg-white rounded-lg border border-slate-300 flex items-center px-3 overflow-hidden"
+                    className="h-10 bg-slate-100 border border-slate-300 rounded-xl flex items-center px-3 overflow-hidden"
                   >
                     <User className="w-4 h-4 text-slate-400 mr-2" />
                     <span className="text-slate-400 text-sm">demo@pilot.com</span>
                   </motion.div>
                   
+                  {/* Password Input */}
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: '100%' }}
                     transition={{ delay: 0.9, duration: 0.5 }}
-                    className="h-10 bg-white rounded-lg border border-slate-300 flex items-center px-3 overflow-hidden"
+                    className="h-10 bg-slate-100 border border-slate-300 rounded-xl flex items-center px-3 overflow-hidden"
                   >
                     <Lock className="w-4 h-4 text-slate-400 mr-2" />
                     <span className="text-slate-400 text-sm">••••••••</span>
                   </motion.div>
 
+                  {/* Login Button */}
                   <motion.button
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.1 }}
-                    className="w-full py-2.5 bg-[#1a1f36] text-white rounded-lg text-sm font-semibold flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-[#1a1f36] hover:bg-[#252b4a] text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-lg"
                   >
                     Login
                     <ArrowRight className="w-4 h-4" />
                   </motion.button>
                 </div>
 
+                {/* Footer Links */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.3 }}
-                  className="flex gap-2 justify-center"
+                  className="mt-4 pt-4 border-t border-slate-300 text-center"
                 >
-                  <div className="w-2 h-2 rounded-full bg-slate-300" />
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
-                  <div className="w-2 h-2 rounded-full bg-slate-300" />
+                  <p className="text-xs text-slate-500">
+                    Not a member?{' '}
+                    <span className="text-blue-600 font-medium">Create an account</span>
+                  </p>
                 </motion.div>
               </motion.div>
             </div>

@@ -8,22 +8,31 @@ interface EtihadExpectationsAnimationProps {
 
 export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationProps> = ({ isHovered }) => {
   const [scrollY, setScrollY] = useState(0);
+  const [currentSection, setCurrentSection] = useState(0);
 
   useEffect(() => {
     if (isHovered) {
       setScrollY(0);
+      setCurrentSection(0);
       
-      const scrollInterval = setInterval(() => {
-        setScrollY(prev => {
-          if (prev >= 500) {
-            clearInterval(scrollInterval);
-            return 500;
-          }
-          return prev + 1;
-        });
-      }, 40);
-
-      return () => clearInterval(scrollInterval);
+      // Section 1: Header (0px) - show header only
+      // Section 2: Netflix Hero (scroll to ~80px) - show hero section
+      // Section 3: Pilot Requirements (scroll to ~280px) - show requirements section
+      
+      const section1Timeout = setTimeout(() => {
+        setCurrentSection(1);
+        setScrollY(80);
+      }, 2000); // Show header for 2 seconds
+      
+      const section2Timeout = setTimeout(() => {
+        setCurrentSection(2);
+        setScrollY(280);
+      }, 5000); // Show hero for 3 seconds, then scroll to requirements
+      
+      return () => {
+        clearTimeout(section1Timeout);
+        clearTimeout(section2Timeout);
+      };
     }
   }, [isHovered]);
 
@@ -39,56 +48,57 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
   };
 
   return (
-    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden">
-      {/* Header Section */}
-      <div className="bg-white px-2 py-2 border-b border-slate-200 flex-shrink-0">
-        <div className="text-center">
-          <p className="text-[5px] font-bold tracking-[0.15em] uppercase text-blue-700 mb-0.5">
-            Strategic Career Guidance
-          </p>
-          <h1 className="text-[8px] font-serif text-slate-900 leading-tight mb-0.5">
-            Airline Expectations
-          </h1>
-          <p className="text-[5px] text-slate-600 leading-relaxed">
-            Understanding what airlines really look for in pilot candidates
-          </p>
-        </div>
-      </div>
-
-      {/* Netflix-style Hero Section */}
-      <div className="relative h-[25%] min-h-[80px] flex-shrink-0">
-        <img
-          src={etihadData.image}
-          alt={etihadData.name}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-        <div className="absolute bottom-2 left-2 right-2">
-          <div className="flex items-center gap-1.5 mb-1">
-            <span className="text-[5px] font-bold tracking-[0.1em] uppercase text-blue-400 bg-blue-500/20 px-1.5 py-0.5 rounded border border-blue-400/30">
-              SELECTED AIRLINE
-            </span>
-            <div className="flex items-center gap-0.5 text-[6px] text-white/80">
-              <MapPin className="w-2 h-2" />
-              {etihadData.location}
-            </div>
+    <div className="absolute inset-0 bg-white overflow-hidden">
+      {/* Single Scrollable Container */}
+      <div
+        className="transition-transform ease-in-out"
+        style={{ 
+          transform: `translateY(-${scrollY}px)`,
+          paddingBottom: `${scrollY + 20}px`,
+          transitionDuration: '1s'
+        }}
+      >
+        {/* Section 1: Header */}
+        <div className="bg-white px-2 py-2 border-b border-slate-200">
+          <div className="text-center">
+            <p className="text-[5px] font-bold tracking-[0.15em] uppercase text-blue-700 mb-0.5">
+              Strategic Career Guidance
+            </p>
+            <h1 className="text-[8px] font-serif text-slate-900 leading-tight mb-0.5">
+              Airline Expectations
+            </h1>
+            <p className="text-[5px] text-slate-600 leading-relaxed">
+              Understanding what airlines really look for in pilot candidates
+            </p>
           </div>
-          <h1 className="text-sm font-serif text-white font-bold leading-tight">
-            {etihadData.name}
-          </h1>
         </div>
-      </div>
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-hidden">
-        <div
-          className="transition-transform ease-linear"
-          style={{ 
-            transform: `translateY(-${scrollY}px)`,
-            paddingBottom: `${scrollY + 20}px`,
-            transitionDuration: '5s'
-          }}
-        >
+        {/* Section 2: Netflix-style Hero */}
+        <div className="relative h-[25%] min-h-[80px]">
+          <img
+            src={etihadData.image}
+            alt={etihadData.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+          <div className="absolute bottom-2 left-2 right-2">
+            <div className="flex items-center gap-1.5 mb-1">
+              <span className="text-[5px] font-bold tracking-[0.1em] uppercase text-blue-400 bg-blue-500/20 px-1.5 py-0.5 rounded border border-blue-400/30">
+                SELECTED AIRLINE
+              </span>
+              <div className="flex items-center gap-0.5 text-[6px] text-white/80">
+                <MapPin className="w-2 h-2" />
+                {etihadData.location}
+              </div>
+            </div>
+            <h1 className="text-sm font-serif text-white font-bold leading-tight">
+              {etihadData.name}
+            </h1>
+          </div>
+        </div>
+
+        {/* Section 3: Pilot Requirements and other content */}
+        <div>
           {/* Description */}
           <div className="p-2">
             <p className="text-[6px] text-slate-600 leading-relaxed">
@@ -225,8 +235,11 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
               </div>
             </div>
           </div>
+        {/* Section 3 content end */}
         </div>
+      {/* Scrollable container end */}
       </div>
+    {/* Outer container end */}
     </div>
   );
 };
