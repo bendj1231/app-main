@@ -79,14 +79,20 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         {
-            name: 'Programs &\u00A0Pathways',
+            name: 'Programs',
             target: 'about_programs',
             subItems: [
                 { category: 'Core Programs', name: 'Foundational Program', target: 'foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
                 { name: 'What is the pilot gap?', target: 'pilot-gap', isYellow: true },
                 { name: 'Transition Program', target: 'transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
                 { name: 'EBT CBTA Familiarization', target: 'ebt-cbta', isYellow: true },
-                { name: 'Airline Expectations', target: 'airline-expectations', isYellow: true },
+                { name: 'Airline Expectations', target: 'airline-expectations', isYellow: true }
+            ]
+        },
+        {
+            name: 'Pathways',
+            target: 'about_programs',
+            subItems: [
                 { category: 'Career Pathways', name: 'Air Taxi & eVTOL', target: 'air-taxi-pathways', bullets: ['Sub‑1000 Hour Pilots', 'New Sector Entry', 'Next‑Gen Rosters'] },
                 { name: 'Emirates ATPL', target: 'emirates-atpl', bullets: ['GCAA ATPL Theory', 'Global Recognition', 'Fujairah Aviation Academy'] },
                 { name: 'Cargo Transportation', target: 'about_programs', bullets: ['Feeder Operations', 'Heavy Logistics', 'Global Supply Chain'] },
@@ -96,6 +102,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'Aerial Tours & Skydive', target: 'about_programs', bullets: ['Sightseeing Ops', 'Jump Pilot Standards', 'Safety Protocols'] },
                 { name: 'Land Survey & Ag', target: 'about_programs', bullets: ['Precision Agriculture', 'Aerial Mapping', 'Utility Missions'] },
                 { name: 'Unmanned Systems', target: 'about_programs', bullets: ['BVLOS Operations', 'Data Intelligence', 'Remote Fleet Mgmt'] }
+            ]
+        },
+        {
+            name: 'Pilot Recognition',
+            target: 'pilot-recognition',
+            subItems: [
+                { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { name: 'Pilot Recognition Profile', target: 'pilot-recognition', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'Examination Results', target: 'examination-results', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
+                { name: 'Digital Logbook', target: 'digital-logbook', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
             ]
         },
         {
