@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Cpu, Users, Brain, Shield, Target, Briefcase, Zap, Search } from 'lucide-react';
 
@@ -9,9 +9,15 @@ interface EtihadExpectationsAnimationProps {
 export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationProps> = ({ isHovered }) => {
   const [scrollY, setScrollY] = useState(0);
   const [currentSection, setCurrentSection] = useState(0);
+  const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
   useEffect(() => {
     if (isHovered) {
+      // Clear any existing timeouts
+      timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+      timeoutsRef.current = [];
+      
+      // Reset animation state to beginning
       setScrollY(0);
       setCurrentSection(0);
       
@@ -23,16 +29,24 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
         setCurrentSection(1);
         setScrollY(80);
       }, 2000); // Show header for 2 seconds
+      timeoutsRef.current.push(section1Timeout);
       
       const section2Timeout = setTimeout(() => {
         setCurrentSection(2);
         setScrollY(280);
       }, 5000); // Show hero for 3 seconds, then scroll to requirements
+      timeoutsRef.current.push(section2Timeout);
       
       return () => {
-        clearTimeout(section1Timeout);
-        clearTimeout(section2Timeout);
+        timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+        timeoutsRef.current = [];
       };
+    } else {
+      // Reset to beginning when not hovering
+      setScrollY(0);
+      setCurrentSection(0);
+      timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+      timeoutsRef.current = [];
     }
   }, [isHovered]);
 
