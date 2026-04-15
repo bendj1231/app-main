@@ -114,7 +114,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Specialized Operations', name: 'Seaplane/Float Ops', target: 'about_programs', bullets: ['Island Transfers', 'Amphibious Skills', 'Specialized Handling'] },
                 { name: 'Aerial Tours & Skydive', target: 'about_programs', bullets: ['Sightseeing Ops', 'Jump Pilot Standards', 'Safety Protocols'] },
                 { name: 'Land Survey & Ag', target: 'about_programs', bullets: ['Precision Agriculture', 'Aerial Mapping', 'Utility Missions'] },
-                { name: 'Unmanned Systems', target: 'about_programs', bullets: ['BVLOS Operations', 'Data Intelligence', 'Remote Fleet Mgmt'] }
+                { name: 'Unmanned Systems', target: 'about_programs', bullets: ['BVLOS Operations', 'Data Intelligence', 'Remote Fleet Mgmt'] },
+                { category: 'Operational Intelligence', name: 'Float & Amphibious Ops', target: 'insights', bullets: ['Water Runways', 'Corrosion Management', 'Tidal Navigation'] },
+                { name: 'Flight Instruction', target: 'insights', bullets: ['Student Psychology', 'Marketing Your School', 'Regulatory Compliance'] },
+                { name: 'Specialized Aerial Work', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] }
             ]
         },
         {
@@ -135,9 +138,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'Corporate & VIP Jet', target: 'private-charter-pathways', bullets: ['Elite Service Standards', 'Executive Travel Trends', 'Non‑Scheduled Ops'] },
                 { name: 'UAM & Air Taxis', target: 'air-taxi-pathways', bullets: ['Urban Air Mobility', 'Infrastructure Layout', 'Battery Technology'] },
                 { name: 'Global Cargo Logistics', target: 'insights', bullets: ['Supply Chain Resilience', 'Hub Operations', 'Automation in Cargo'] },
-                { category: 'Operational Intelligence', name: 'Float & Amphibious Ops', target: 'insights', bullets: ['Water Runways', 'Corrosion Management', 'Tidal Navigation'] },
-                { name: 'Flight Instruction', target: 'insights', bullets: ['Student Psychology', 'Marketing Your School', 'Regulatory Compliance'] },
-                { name: 'Specialized Aerial Work', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] },
                 { category: 'Innovation & Ownership', name: 'Aircraft Mgmt & Ownership', target: 'insights', bullets: ['Registration Options', 'Maintenance Costs', 'Hangarage Strategy'] },
                 { name: 'Precision Agriculture', target: 'insights', bullets: ['Hyperspectral Imaging', 'Crop Yield Analysis', 'Autonomy in Ag'] }
             ]
