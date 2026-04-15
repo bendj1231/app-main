@@ -473,14 +473,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         padding: '2.5rem 3rem 2rem 3rem', 
         maxWidth: '1400px', 
         margin: '0 auto',
-        position: 'fixed',
-        top: '120px',
-        left: '0',
-        right: '0',
-        bottom: '0',
-        overflow: 'auto',
         background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'white',
-        zIndex: 10
       }}>
         {selectedNewsItem ? (
           // Detailed News View
@@ -1615,7 +1608,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
     return (
     <div className="wingmentor-subpage programs-view-page" style={{ width: '100%', height: '100%', overflow: 'auto' }}>
-      <div className="wingmentor-subpage-shell" style={{ position: 'relative', minHeight: '100vh', background: 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
+      <div className="wingmentor-subpage-shell" style={{ position: 'relative', background: 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
         <button
           onClick={() => setMainView('dashboard')}
           style={{
@@ -2317,7 +2310,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
     return (
       <div className="wingmentor-subpage pathways-view-page" style={{ width: '100%', height: '100%', overflow: 'auto' }}>
-        <div className="wingmentor-subpage-shell" style={{ position: 'relative', minHeight: '100vh', background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
+        <div className="wingmentor-subpage-shell" style={{ position: 'relative', background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
           <button
             onClick={() => setMainView('dashboard')}
             style={{
@@ -3147,7 +3140,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
   const DashboardView = () => {
     return (
     <div className="dashboard-container animate-fade-in">
-      <div style={{ position: 'relative', minHeight: '100vh', background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
+      <div style={{ position: 'relative', background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
         <div className="dashboard-header" style={{ marginBottom: '3rem', padding: '2rem 2rem 0 2rem' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
             <img src="/logo.png" alt="WingMentor Logo" />
