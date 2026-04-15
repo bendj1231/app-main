@@ -1827,17 +1827,19 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
           </button>
 
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-slate-50">
+              <img
+                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                alt="WingMentor Logo"
+                className="w-16 h-16 object-contain"
+              />
             </div>
 
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">
-              Member Access Required
+            <h3 className="text-2xl font-bold text-slate-800 mb-2 font-serif">
+              ATC calling : pilot ident required!
             </h3>
             <p className="text-slate-600 mb-6 leading-relaxed">
-              Become a member to access Airline Expectations and unlock detailed insights into carrier requirements, salary ranges, and career progression opportunities.
+              join today for free and unlock detailed insights into carrier requirements, salary ranges, and career progression opportunities.
             </p>
 
             <button
