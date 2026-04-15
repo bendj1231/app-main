@@ -580,22 +580,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
         )}
       </AnimatePresence>
 
-      {/* Progress indicator */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-        {['search', 'registration', 'portal', 'programs'].map((s, i) => (
-          <motion.div
-            key={s}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              ['search', 'registration', 'portal', 'programs'].indexOf(scene) >= i
-                ? 'bg-white'
-                : 'bg-white/30'
-            }`}
-            animate={{
-              scale: scene === s ? 1.5 : 1
-            }}
-          />
-        ))}
-      </div>
+      {/* Progress indicator - removed */}
     </div>
   );
 };
