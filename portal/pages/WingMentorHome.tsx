@@ -33,6 +33,7 @@ import LicenseSelectionPage from './LicenseSelectionPage';
 import InterviewEvaluationPage from './InterviewEvaluationPage';
 import ProgramSyllabusPage from './ProgramSyllabusPage';
 import { Sidebar } from '../components/Sidebar';
+import { TopBar } from '../components/TopBar';
 
 // Foundational Enrollment Check Component
 const FoundationalEnrollmentCheck: React.FC<{ 
@@ -3540,154 +3541,29 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         position: 'relative',
         paddingTop: '70px'
       }}>
-        {/* Global top bar - moved outside scaled div so position:fixed works */}
+        <TopBar
+          userFirstName={userFirstName}
+          isDarkMode={isDarkMode}
+          onToggleDarkMode={onToggleDarkMode}
+          onNavigateToModules={() => onViewChange?.('module-01')}
+          onNavigateToProfile={() => setMainView('pilot-portfolio')}
+          onNavigateToApplications={() => setMainView('applications')}
+          onAccessWebsite={handleAccessWebsite}
+        />
+
         <div
           style={{
-            width: `calc(100% - ${marginLeft}px)`,
-            padding: '1.5rem 2.75rem 1rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            position: 'fixed',
-            top: 0,
-            left: `${marginLeft}px`,
-            right: 0,
-            zIndex: 100,
-            background: isDarkMode
-              ? 'linear-gradient(180deg, rgba(2,6,23,0.96) 0%, rgba(15,23,42,0.9) 100%)'
-              : 'linear-gradient(180deg, rgba(248,250,252,0.98) 0%, rgba(248,250,252,0.9) 100%)',
-            backdropFilter: 'blur(8px)',
-            borderBottom: isDarkMode ? '1px solid rgba(71,85,105,0.55)' : '1px solid rgba(226,232,240,0.8)',
-            boxSizing: 'border-box',
+            transform: `scale(${mainPanelScale})`,
+            transformOrigin: 'top left',
+            width: inverseScalePercent,
+            minWidth: inverseScalePercent,
+            height: inverseScalePercent,
+            minHeight: inverseScalePercent
           }}
         >
-            <div>
-              <p style={{ margin: 0, fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#94a3b8', letterSpacing: '0.08em' }}>WELCOME BACK</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem' }}>
-                <Icons.User style={{ width: 22, height: 22, color: isDarkMode ? '#60a5fa' : '#2563eb' }} />
-                <h2 style={{ margin: 0, fontSize: '1.5rem', color: isDarkMode ? '#f8fafc' : '#0f172a', fontWeight: 600 }}>
-                  {userFirstName}
-                </h2>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <button
-                onClick={onToggleDarkMode}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.45rem',
-                  padding: '0.65rem 1.2rem',
-                  borderRadius: '999px',
-                  border: isDarkMode ? '1px solid rgba(148,163,184,0.35)' : '1px solid #dbeafe',
-                  background: isDarkMode ? 'rgba(30,41,59,0.9)' : '#eff6ff',
-                  color: isDarkMode ? '#e2e8f0' : '#1e40af',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                  cursor: 'pointer',
-                  boxShadow: isDarkMode ? '0 8px 20px rgba(2,6,23,0.3)' : '0 2px 6px rgba(37,99,235,0.08)'
-                }}
-              >
-                <Icons.Monitor style={{ width: 16, height: 16 }} />
-                {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-              </button>
-
-              <button
-                onClick={() => onViewChange?.('module-01')}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.65rem 1.2rem',
-                  borderRadius: '999px',
-                  border: isDarkMode ? '1px solid rgba(59, 130, 246, 0.35)' : '1px solid #dbeafe',
-                  background: isDarkMode ? 'rgba(30, 41, 59, 0.9)' : '#eff6ff',
-                  color: isDarkMode ? '#bfdbfe' : '#1e40af',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                  cursor: 'pointer',
-                  boxShadow: isDarkMode ? '0 8px 24px rgba(2, 6, 23, 0.28)' : '0 2px 6px rgba(37,99,235,0.08)'
-                }}
-              >
-                <Icons.BookOpen style={{ width: 16, height: 16 }} /> Pilot Modules
-              </button>
-
-              <button
-                onClick={() => setMainView('pilot-portfolio')}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.65rem 1.2rem',
-                  borderRadius: '999px',
-                  border: isDarkMode ? '1px solid rgba(71, 85, 105, 0.7)' : '1px solid #e2e8f0',
-                  background: isDarkMode ? 'rgba(15, 23, 42, 0.92)' : '#fff',
-                  color: isDarkMode ? '#e2e8f0' : '#1e293b',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                  cursor: 'pointer',
-                  boxShadow: isDarkMode ? '0 8px 24px rgba(2, 6, 23, 0.28)' : '0 2px 6px rgba(15,23,42,0.08)'
-                }}
-              >
-                <Icons.User style={{ width: 16, height: 16 }} /> Profile
-              </button>
-
-              <button
-                onClick={() => setMainView('applications')}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.65rem 1.2rem',
-                  borderRadius: '999px',
-                  border: isDarkMode ? '1px solid rgba(71, 85, 105, 0.65)' : '1px solid transparent',
-                  background: isDarkMode ? 'linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(30, 41, 59, 0.96) 100%)' : 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-                  color: isDarkMode ? '#cbd5e1' : '#475569',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                  cursor: 'pointer',
-                  boxShadow: isDarkMode ? '0 8px 24px rgba(2, 6, 23, 0.28)' : 'inset 0 1px 1px rgba(255,255,255,0.8)'
-                }}
-              >
-                <Icons.Settings style={{ width: 16, height: 16 }} /> Settings
-              </button>
-
-              <button
-                onClick={handleAccessWebsite}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.45rem',
-                  padding: '0.7rem 1.5rem',
-                  borderRadius: '14px',
-                  border: 'none',
-                  background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-                  color: '#fff',
-                  fontWeight: 600,
-                  fontSize: '0.95rem',
-                  cursor: 'pointer',
-                  boxShadow: '0 10px 25px rgba(31,41,55,0.18)'
-                }}
-              >
-                <Icons.Globe style={{ width: 18, height: 18 }} /> Access Website
-              </button>
-            </div>
-          </div>
-
-          <div
-            style={{
-              transform: `scale(${mainPanelScale})`,
-              transformOrigin: 'top left',
-              width: inverseScalePercent,
-              minWidth: inverseScalePercent,
-              height: inverseScalePercent,
-              minHeight: inverseScalePercent
-            }}
-          >
-            {renderMainContent()}
-          </div>
+          {renderMainContent()}
         </div>
+      </div>
     );
   };
 
