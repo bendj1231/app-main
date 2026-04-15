@@ -142,7 +142,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
     };
 
     return (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-start pt-8 md:pt-12 lg:pt-16 px-4 md:px-8 lg:px-12">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-start pt-12 md:pt-16 lg:pt-20 px-4 md:px-8 lg:px-12">
             <motion.div 
                 key={mountKey}
                 className="w-full max-w-[1200px]"
@@ -159,14 +159,14 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 </motion.div>
                 
                 {/* Flight Simulator Style Grid - 2 rows */}
-                <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-3 mb-4 md:mb-6">
                     
                     {/* Top Row - 2 larger cards spanning 3 columns each */}
                     {dummyCards.slice(0, 2).map((card) => (
                         <motion.div
                             key={card.id}
                             variants={cardVariants}
-                            className="md:col-span-3 h-[220px] md:h-[280px]"
+                            className="md:col-span-3 h-[260px] md:h-[340px]"
                         >
                             <GridCard 
                                 card={card}
