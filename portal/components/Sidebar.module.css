@@ -1,0 +1,203 @@
+/* Sidebar Container */
+.sidebarContainer {
+    width: 550px;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
+}
+
+.sidebarContent {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+/* Logout Button */
+.logoutButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.56rem 1rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    color: #1e293b;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.logoutButton:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.logoutButton svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Sidebar Header */
+.sidebarHeader {
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
+.sidebarLogo {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.sidebarLogo img {
+    max-width: 135px;
+    height: auto;
+    object-fit: contain;
+}
+
+.sidebarSubtitle {
+    text-align: center;
+    color: #2563eb;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+/* Dashboard Section */
+.dashboardSection {
+    margin-top: 0.5rem;
+}
+
+.cardsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Horizontal Card */
+.horizontalCard {
+    cursor: pointer;
+    padding: 0.6rem 1.2rem;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    min-height: 70px;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+}
+
+.horizontalCard:hover {
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateX(4px);
+}
+
+.horizontalCard.active {
+    border-color: #2563eb;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.horizontalCardContentWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.horizontalCardContent {
+    padding: 0.8rem 0;
+    text-align: left;
+    flex: 1;
+    max-width: 100%;
+}
+
+.horizontalCardTitle {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+    color: #0f172a;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.horizontalCardDesc {
+    max-width: 100%;
+    margin-bottom: 0;
+    color: #64748b;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.hubCardArrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hubCardArrow svg {
+    width: 16px;
+    height: 16px;
+}
+
+.hubCardBgImage {
+    width: 35%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px;
+}
+
+/* Sidebar Footer */
+.sidebarFooter {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(240, 244, 248, 0.9) 30%);
+    border-top: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.sidebarFooterButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footerButton {
+    padding: 0.6rem 1rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 12px;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.footerButton:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #2563eb;
+}
+
+.footerButton svg {
+    width: 14px;
+    height: 14px;
+}
