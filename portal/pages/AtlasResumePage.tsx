@@ -17,6 +17,7 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
   const userId = userProfile?.uid || userProfile?.id;
   const { portfolio } = usePilotPortfolio(userId);
   const [digitalLogbookTotal, setDigitalLogbookTotal] = useState(0);
+  const [licensureData, setLicensureData] = useState<any>(null);
 
   useEffect(() => {
     const fetchTotals = async () => {
@@ -43,9 +44,35 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
       }
     };
 
+    const fetchLicensureData = async () => {
+      if (!userProfile?.uid) {
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('pilot_licensure_experience')
+          .select('*')
+          .eq('user_id', userProfile.uid)
+          .maybeSingle();
+
+        if (error && error.code !== 'PGRST116') {
+          console.warn('Error fetching licensure data:', error);
+        }
+
+        if (data) {
+          setLicensureData(data);
+        }
+      } catch (error) {
+        console.warn('Error fetching licensure data:', error);
+      }
+    };
+
     fetchTotals();
+    fetchLicensureData();
   }, [userProfile?.uid]);
-  const fullName = `${userProfile?.firstName || 'Benjamin'} ${userProfile?.lastName || 'Bowler'}`.trim();
+  
+  const fullName = licensureData?.full_legal_name || `${userProfile?.firstName || 'Benjamin'} ${userProfile?.lastName || 'Bowler'}`.trim();
 
   const formatHours = (value: number) => `${value.toLocaleString('en-US')} hr`;
   const flightExperienceItems = [
@@ -65,17 +92,17 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
     {
       title: 'Certifications & Training',
       items: [
-        { label: 'License', value: 'ATPL (Frozen) – UAE GCAA' },
-        { label: 'Medical', value: 'Class 1 – Valid' },
-        { label: 'Simulator', value: 'Airbus A320 | Boeing 737 MAX' }
+        { label: 'License', value: licensureData?.current_license?.join(', ') || licensureData?.license_number || 'Not specified' },
+        { label: 'Medical', value: licensureData?.medical_class ? `${licensureData.medical_class} – ${licensureData.medical_expiry ? 'Valid until ' + new Date(licensureData.medical_expiry).toLocaleDateString() : 'Valid'}` : 'Not specified' },
+        { label: 'Aircraft Ratings', value: licensureData?.aircraft_ratings?.map((r: any) => r.type || r).join(', ') || licensureData?.aircraftRatedOn || 'Not specified' }
       ]
     },
     {
-      title: 'Mentorship & Leadership',
+      title: 'Personal Information',
       items: [
-        { label: 'WingMentor Hours', value: '22 hr' },
-        { label: 'Peer Mentorship', value: '10 hr observation' },
-        { label: 'Consultation', value: '4 structured cases' }
+        { label: 'Nationality', value: licensureData?.nationality || 'Not specified' },
+        { label: 'Country of License', value: licensureData?.country_of_license || 'Not specified' },
+        { label: 'Contact Number', value: licensureData?.contact_number || 'Not specified' }
       ]
     }
   ];
