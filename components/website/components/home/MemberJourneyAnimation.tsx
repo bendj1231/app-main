@@ -7,7 +7,7 @@ interface MemberJourneyAnimationProps {
 }
 
 export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ isHovered }) => {
-  const [scene, setScene] = useState<'search' | 'warp' | 'portal' | 'member'>('search');
+  const [scene, setScene] = useState<'search' | 'registration' | 'portal' | 'member'>('search');
   const [typedText, setTypedText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -68,8 +68,8 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
           }
           if (!isCompleteRef.current) {
             isCompleteRef.current = true;
-            // Go directly to portal after typing completes
-            warpTimeoutRef.current = setTimeout(() => setScene('portal'), 500);
+            // Go to registration page after typing completes
+            warpTimeoutRef.current = setTimeout(() => setScene('registration'), 500);
           }
         }
       }, 50);
@@ -97,7 +97,11 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
 
   // Scene transitions
   useEffect(() => {
-    if (scene === 'portal') {
+    if (scene === 'registration') {
+      // Show registration page for 4 seconds then go to portal
+      const registrationTimeout = setTimeout(() => setScene('portal'), 4000);
+      return () => clearTimeout(registrationTimeout);
+    } else if (scene === 'portal') {
       // Give time for login animation + loading + pathways display
       const portalTimeout = setTimeout(() => setScene('member'), 6000);
       return () => clearTimeout(portalTimeout);
@@ -168,6 +172,112 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = ({ 
                 />
               </motion.div>
             </div>
+          </motion.div>
+        )}
+
+        {/* Scene 2: Registration Page */}
+        {scene === 'registration' && (
+          <motion.div
+            key="registration"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white flex flex-col items-center p-4 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Logo */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-4 mb-2"
+            >
+              <img
+                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                alt="WingMentor Logo"
+                className="w-20 h-auto object-contain"
+              />
+            </motion.div>
+
+            {/* Title */}
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-xl md:text-2xl font-serif text-slate-800 text-center mb-2"
+            >
+              First Step Towards Pilot Recognition
+            </motion.h2>
+
+            {/* Links */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-xs text-amber-500 mb-4"
+            >
+              Programs | Pilot Recognition | Pathways
+            </motion.p>
+
+            {/* Info Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6 }}
+              className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-4 max-w-sm text-center"
+            >
+              <p className="text-xs text-slate-600 leading-relaxed">
+                The information provided below will be scanned and formed into a default{' '}
+                <span className="font-semibold text-blue-600">ATLAS CV format</span>{' '}
+                which you will be able to edit throughout your program & pathways.
+              </p>
+            </motion.div>
+
+            {/* Form Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-slate-100 p-5"
+            >
+              <h3 className="text-lg font-bold text-slate-800 mb-1">Account Credentials</h3>
+              <p className="text-xs text-slate-500 mb-4">
+                Think of this as the Ident of the aircraft you are flying—your unique signature in the sky. Use your Name, Personal Callsign, or a favorite Tailnumber.
+              </p>
+
+              <div className="space-y-3">
+                {/* Pilot ID Field */}
+                <div>
+                  <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1 block">
+                    Pilot ID
+                  </label>
+                  <div className="h-10 bg-slate-50 border border-slate-200 rounded-lg flex items-center px-3">
+                    <span className="text-slate-400 text-xs">Pilot ID (Name, Personal Callsign, or Tailnum...</span>
+                  </div>
+                </div>
+
+                {/* Email Field */}
+                <div>
+                  <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1 block">
+                    Email Address
+                  </label>
+                  <div className="h-10 bg-slate-50 border border-slate-200 rounded-lg flex items-center px-3">
+                    <span className="text-slate-400 text-xs">pilot@example.com</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mouse cursor moves to scroll down */}
+              <motion.div
+                className="absolute right-4 bottom-20 pointer-events-none"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: [0, 1, 1, 0], y: [-20, 0, 10, 10] }}
+                transition={{ delay: 2, duration: 1.5, times: [0, 0.3, 0.7, 1] }}
+              >
+                <MousePointer2 className="w-5 h-5 text-slate-600 fill-slate-600" />
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
 
