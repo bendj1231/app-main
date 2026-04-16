@@ -401,12 +401,9 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
 
     // Also check for existing session immediately
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('🔍 Initial session check:', { hasSession: !!session });
-      if (!session) {
-        console.log('👤 No session found, forcing login view');
-        setIsInitializing(false);
-        setCurrentView('login');
-      }
+      console.log('🔍 Initial session check:', { hasSession: !!session, email: session?.user?.email });
+      // Don't force login view here - let the auth state listener handle it
+      // This allows the listener to properly detect existing sessions from the home page
     });
 
     return () => subscription?.unsubscribe();
