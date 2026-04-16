@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
 import { auth } from '../lib/firebase';
 import { submitMentorshipLog, getUserLogs, type MentorshipLog } from '../lib/firestore';
+import { supabase } from '../lib/supabase-auth';
 
 export const MentorshipLogbook: React.FC = () => {
     const [mentorId, setMentorId] = useState('');
@@ -32,6 +33,7 @@ export const MentorshipLogbook: React.FC = () => {
 
         setSubmitting(true);
         try {
+            // Submit to Firebase Firestore
             await submitMentorshipLog({
                 mentorId,
                 menteeId,
@@ -40,6 +42,28 @@ export const MentorshipLogbook: React.FC = () => {
                 sessionDescription: description,
                 program: 'Foundational'
             });
+
+            // Also sync to Supabase mentor_logs table
+            const userId = auth.currentUser?.uid;
+            if (userId) {
+                const { error: supabaseError } = await supabase
+                    .from('mentor_logs')
+                    .insert({
+                        user_id: userId,
+                        session_date: new Date().toISOString(),
+                        mentor_name: mentorId,
+                        session_type: 'Foundational',
+                        duration: hours,
+                        notes: description,
+                        created_at: new Date().toISOString()
+                    });
+
+                if (supabaseError) {
+                    console.error('Supabase sync error (non-critical):', supabaseError);
+                } else {
+                    console.log('✅ Mentorship log synced to Supabase');
+                }
+            }
 
             // Reset form
             setMentorId('');
