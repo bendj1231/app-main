@@ -69,6 +69,10 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [videoControlsVisible, setVideoControlsVisible] = useState(true);
 
+    // Enrollment Form State
+    const [interest, setInterest] = useState('');
+    const [agreed, setAgreed] = useState(false);
+
     const displayName =
         (userProfile?.displayName && userProfile.displayName.trim()) ||
         [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ').trim() ||
@@ -748,13 +752,73 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                             </p>
                         </div>
 
+                        {/* Enrollment Form */}
+                        <div style={{ marginTop: '2.5rem', backgroundColor: 'rgba(255, 255, 255, 0.95)', padding: '2rem', borderRadius: '20px', border: '1px solid rgba(226, 232, 240, 0.8)' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#475569', marginBottom: '0.75rem' }}>
+                                        Why are you interested in this program?
+                                    </label>
+                                    <textarea
+                                        required
+                                        value={interest}
+                                        onChange={(e) => setInterest(e.target.value)}
+                                        placeholder="Tell us about your motivation..."
+                                        style={{
+                                            width: '100%',
+                                            minHeight: '100px',
+                                            padding: '1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #e2e8f0',
+                                            outline: 'none',
+                                            fontSize: '1rem',
+                                            resize: 'none',
+                                            backgroundColor: '#f8fafc',
+                                            color: '#1e293b'
+                                        }}
+                                    />
+                                </div>
+
+                                <div style={{
+                                    display: 'flex',
+                                    gap: '1rem',
+                                    padding: '1rem',
+                                    backgroundColor: '#f8fafc',
+                                    borderRadius: '12px',
+                                    border: '1px solid #e2e8f0'
+                                }}>
+                                    <div style={{ paddingTop: '0.2rem' }}>
+                                        <input
+                                            type="checkbox"
+                                            id="agreement"
+                                            checked={agreed}
+                                            onChange={(e) => setAgreed(e.target.checked)}
+                                            style={{ width: '1.25rem', height: '1.25rem', cursor: 'pointer' }}
+                                        />
+                                    </div>
+                                    <label htmlFor="agreement" style={{ fontSize: '0.875rem', color: '#64748b', cursor: 'pointer', lineHeight: 1.5 }}>
+                                        I agree to the <span style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Terms and Conditions</span> and acknowledge that WingMentor is a Pilot Quality Assurance and Credibility Experience provider.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Enrollment Button */}
                         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
                             <button
                                 onClick={() => {
                                     console.log('🔘 Enrollment button clicked');
                                     console.log('🔘 onStartEnrollment function:', onStartEnrollment);
-                                    
+
+                                    if (!agreed) {
+                                        alert('Please agree to the Terms and Conditions to complete enrollment.');
+                                        return;
+                                    }
+                                    if (!interest) {
+                                        alert('Please tell us why you are interested in this program.');
+                                        return;
+                                    }
+
                                     if (onStartEnrollment) {
                                         console.log('🚀 Calling onStartEnrollment...');
                                         onStartEnrollment();
@@ -763,28 +827,31 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                                         alert('Enrollment function is not available. Please refresh the page and try again.');
                                     }
                                 }}
+                                disabled={!agreed || !interest}
                                 style={{
                                     padding: '1.25rem 4rem',
                                     borderRadius: '50px',
                                     border: 'none',
-                                    background: 'linear-gradient(135deg, #2563eb, #1e40af)',
+                                    background: agreed && interest ? 'linear-gradient(135deg, #2563eb, #1e40af)' : '#94a3b8',
                                     color: '#fff',
                                     fontWeight: 700,
                                     fontSize: '1.1rem',
-                                    cursor: 'pointer',
-                                    boxShadow: '0 12px 30px rgba(37, 99, 235, 0.3)',
+                                    cursor: agreed && interest ? 'pointer' : 'not-allowed',
+                                    boxShadow: agreed && interest ? '0 12px 30px rgba(37, 99, 235, 0.3)' : 'none',
                                     transition: 'all 0.3s ease'
                                 }}
                                 onMouseOver={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                    e.currentTarget.style.boxShadow = '0 18px 40px rgba(37, 99, 235, 0.4)';
+                                    if (agreed && interest) {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.boxShadow = '0 18px 40px rgba(37, 99, 235, 0.4)';
+                                    }
                                 }}
                                 onMouseOut={(e) => {
                                     e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.boxShadow = '0 12px 30px rgba(37, 99, 235, 0.3)';
+                                    e.currentTarget.style.boxShadow = agreed && interest ? '0 12px 30px rgba(37, 99, 235, 0.3)' : 'none';
                                 }}
                             >
-                                Start Enrollment
+                                {agreed && interest ? 'Start Enrollment' : 'Complete Required Fields'}
                             </button>
                         </div>
                     </div>
