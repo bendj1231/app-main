@@ -4066,7 +4066,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onBack={() => setMainView(userProfile?.enrolledPrograms?.includes('Foundational') ? 'foundational-enrolled' : 'programs')}
             onLogout={onLogout}
             onOpenPortfolio={() => setMainView('pilot-portfolio')}
-            onStartEnrollment={() => setMainView('foundational-onboarding')}
+            onStartEnrollment={() => setMainView('foundational-get-started')}
             onStartSlideshow={() => setMainView('post-enrollment-slideshow')}
             userProfile={userProfile}
           />
