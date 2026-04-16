@@ -1,5 +1,6 @@
 # Exclude large video files from Vercel build
-*.mp4
-*.mov
-*.avi
-*.mkv
+# Temporarily disabled to include fp.mp4
+# *.mp4
+# *.mov
+# *.avi
+# *.mkv
