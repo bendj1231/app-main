@@ -5,7 +5,7 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUP
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 if (!supabaseAnonKey) {
-  console.error('❌ SUPABASE_ANON_KEY is not set');
+  console.error('❌ VITE_SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY is not set in environment variables');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
