@@ -359,7 +359,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           .eq('program_type', 'Foundational')
           .single();
 
-        if (error) {
+        if (error || !data) {
           console.log('No program progress found, using defaults');
           setProgramProgress({
             completion_percentage: 0,
@@ -371,7 +371,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           setProgramProgress(data);
         }
       } catch (err) {
-        console.error('Error fetching program progress:', err);
+        console.log('Program progress table not available, using defaults');
         setProgramProgress({
           completion_percentage: 0,
           modules_completed: [],

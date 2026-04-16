@@ -1191,9 +1191,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           .from('pilot_licensure_experience')
           .select('*')
           .eq('user_id', userProfile.uid)
-          .single();
+          .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') {
+        if (error && error.code !== 'PGRST116' && error.code !== '406') {
           console.warn('Error fetching licensure data:', error);
         }
 
