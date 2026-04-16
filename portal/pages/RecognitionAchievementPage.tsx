@@ -92,6 +92,9 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
   const [progress, setProgress] = useState({ foundational: preloadedPortfolio?.pilot_gap_module_completion?.foundational || 0 });
   const [loading, setLoading] = useState(!preloadedAchievements);
   const [mentorshipHours, setMentorshipHours] = useState<number>(0);
+  const [enrolledPrograms, setEnrolledPrograms] = useState<string[]>([]);
+  const [examData, setExamData] = useState<any>(null);
+  const [licensureData, setLicensureData] = useState<any>(null);
 
   // Fetch mentorship hours from Supabase
   const fetchMentorshipHours = async (uid: string) => {
@@ -116,6 +119,75 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
     } catch (error) {
       console.warn('Error fetching mentorship hours:', error);
       return 0;
+    }
+  };
+
+  // Fetch enrollment status from Supabase
+  const fetchEnrollmentStatus = async (uid: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('enrolled_programs')
+        .eq('id', uid)
+        .maybeSingle();
+
+      if (error) {
+        console.warn('Unable to fetch enrollment status:', error);
+        return [];
+      }
+
+      if (data && data.enrolled_programs) {
+        return data.enrolled_programs;
+      }
+
+      return [];
+    } catch (error) {
+      console.warn('Error fetching enrollment status:', error);
+      return [];
+    }
+  };
+
+  // Fetch exam data from Supabase
+  const fetchExamData = async (uid: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('exam_results')
+        .select('*')
+        .eq('user_id', uid)
+        .order('exam_date', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        console.warn('Unable to fetch exam data:', error);
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      console.warn('Error fetching exam data:', error);
+      return null;
+    }
+  };
+
+  // Fetch licensure data from Supabase
+  const fetchLicensureData = async (uid: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('pilot_licensure_data')
+        .select('*')
+        .eq('user_id', uid)
+        .maybeSingle();
+
+      if (error) {
+        console.warn('Unable to fetch licensure data:', error);
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      console.warn('Error fetching licensure data:', error);
+      return null;
     }
   };
 
@@ -168,6 +240,21 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
     if (userProfile?.uid) {
       fetchMentorshipHours(userProfile.uid).then(hours => {
         setMentorshipHours(hours);
+      });
+    }
+  }, [userProfile?.uid]);
+
+  // Fetch enrollment status, exam data, and licensure data when user profile loads
+  useEffect(() => {
+    if (userProfile?.uid) {
+      fetchEnrollmentStatus(userProfile.uid).then(programs => {
+        setEnrolledPrograms(programs);
+      });
+      fetchExamData(userProfile.uid).then(data => {
+        setExamData(data);
+      });
+      fetchLicensureData(userProfile.uid).then(data => {
+        setLicensureData(data);
       });
     }
   }, [userProfile?.uid]);
@@ -304,17 +391,27 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
               <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>Programs</h2>
               <span style={{ fontSize: '0.75rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Training Progress & Resources</span>
             </div>
-            {[{
-              title: 'Foundation Program',
-              description: 'Track your current completion progress synced directly from the foundational program dashboard.',
-              progress: progress.foundational,
-              filled: true
-            }, {
-              title: 'Mentorship Logbook Directory',
-              description: 'Access your verified mentorship sessions, mentor feedback, and 50-hour certification progress.',
-              progress: Math.min(100, Math.round((mentorshipHours / 50) * 100)),
-              filled: true
-            }].map(card => renderCard(card))}
+            {enrolledPrograms.map(program => {
+              if (program === 'Foundational') {
+                return renderCard({
+                  title: 'Foundation Program',
+                  description: 'Track your current completion progress synced directly from the foundational program dashboard.',
+                  progress: progress.foundational,
+                  filled: true
+                });
+              } else if (program === 'Mentorship') {
+                return renderCard({
+                  title: 'Mentorship Logbook Directory',
+                  description: 'Access your verified mentorship sessions, mentor feedback, and 50-hour certification progress.',
+                  progress: Math.min(100, Math.round((mentorshipHours / 50) * 100)),
+                  filled: true
+                });
+              }
+              return null;
+            })}
+            {enrolledPrograms.length === 0 && (
+              <p style={{ color: '#64748b', fontSize: '0.9rem', fontStyle: 'italic' }}>No enrolled programs</p>
+            )}
 
             {/* Official Documentation Section */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.5rem' }}>
@@ -429,7 +526,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       textAlign: 'center'
                     }}>
                       <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>Dual XC hrs</p>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>0</p>
+                      <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>{licensureData?.dual_xc_hours || 0}</p>
                     </div>
                     <div style={{
                       background: '#f8fafc',
@@ -438,7 +535,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       textAlign: 'center'
                     }}>
                       <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>Dual LOC</p>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>0</p>
+                      <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>{licensureData?.dual_loc || 0}</p>
                     </div>
                     <div style={{
                       background: '#f8fafc',
@@ -447,7 +544,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       textAlign: 'center'
                     }}>
                       <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>PIC LOC</p>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>0</p>
+                      <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>{licensureData?.pic_loc || 0}</p>
                     </div>
                     <div style={{
                       background: '#f8fafc',
@@ -456,7 +553,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       textAlign: 'center'
                     }}>
                       <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>LOC XC</p>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>0</p>
+                      <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>{licensureData?.loc_xc || 0}</p>
                     </div>
                   </div>
                   
@@ -469,11 +566,11 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                       <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Type</span>
-                      <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>Student Pilot</span>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{licensureData?.pilot_type || 'Not specified'}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Status</span>
-                      <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>Pending Verification</span>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{licensureData?.status || 'Not specified'}</span>
                     </div>
                   </div>
                   
@@ -507,23 +604,23 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>License</span>
-                      <strong style={{ color: '#0f172a' }}>Not specified</strong>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.license_type || 'Not specified'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>Medical</span>
-                      <strong style={{ color: '#0f172a' }}>Not specified</strong>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.medical_class || 'Not specified'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>Type Ratings</span>
-                      <strong style={{ color: '#0f172a' }}>None added</strong>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.type_ratings?.join(', ') || 'None added'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>English Proficiency</span>
-                      <strong style={{ color: '#0f172a' }}>Not specified</strong>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.english_proficiency || 'Not specified'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>Languages</span>
-                      <strong style={{ color: '#0f172a' }}>Not specified</strong>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.languages?.join(', ') || 'Not specified'}</strong>
                     </div>
                   </div>
                 </div>
@@ -549,7 +646,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       alignItems: 'center'
                     }}>
                       <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Medical Certificate</span>
-                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>Not specified</strong>
+                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>{licensureData?.medical_certificate || 'Not specified'}</strong>
                     </div>
                     <div style={{
                       background: 'white',
@@ -560,7 +657,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       alignItems: 'center'
                     }}>
                       <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Radio License</span>
-                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>Not specified</strong>
+                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>{licensureData?.radio_license || 'Not specified'}</strong>
                     </div>
                     <div style={{
                       background: 'white',
@@ -571,7 +668,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       alignItems: 'center'
                     }}>
                       <span style={{ fontSize: '0.9rem', color: '#64748b' }}>License Expiry</span>
-                      <strong style={{ fontSize: '0.9rem', color: '#0f172a' }}>Not specified</strong>
+                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>{licensureData?.license_expiry || 'Not specified'}</strong>
                     </div>
                   </div>
                 </div>
