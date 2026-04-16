@@ -12,6 +12,7 @@ import { PostEnrollmentSlideshow } from './PostEnrollmentSlideshow';
 import EnrolledFoundationalPage from './EnrolledFoundationalPage';
 import { TransitionProgramPage } from './TransitionProgramPage';
 import ContactPage from './ContactPage';
+import { EnrollmentSuccessPage } from './EnrollmentSuccessPage';
 import { ATPLPathwayPage } from './ATPLPathwayPage';
 import { PrivateSectorPathwayPage } from './PrivateSectorPathwayPage';
 import { PathwaysPage } from './PathwaysPage';
@@ -234,10 +235,10 @@ interface WingMentorHomeProps {
   };
 }
 
-export type MainView = 
+export type MainView =
   | 'dashboard'
   | 'news'
-  | 'programs' 
+  | 'programs'
   | 'pathways'
   | 'applications'
   | 'recognition'
@@ -245,6 +246,7 @@ export type MainView =
   | 'foundational'
   | 'foundational-get-started'
   | 'foundational-onboarding'
+  | 'enrollment-success'
   | 'enrollment-confirmation'
   | 'post-enrollment-slideshow'
   | 'transition'
@@ -4067,7 +4069,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onBack={() => setMainView(userProfile?.enrolledPrograms?.includes('Foundational') ? 'foundational-enrolled' : 'programs')}
             onLogout={onLogout}
             onOpenPortfolio={() => setMainView('pilot-portfolio')}
-            onStartEnrollment={() => setMainView('foundational-onboarding')}
+            onStartEnrollment={() => setMainView('enrollment-success')}
             onStartSlideshow={() => setMainView('post-enrollment-slideshow')}
             userProfile={userProfile}
           />
@@ -4086,6 +4088,12 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onBackToPrograms={() => setMainView('foundational')}
             onLogout={onLogout}
             onShowTerms={() => setMainView('foundational-get-started')}
+          />
+        );
+      case 'enrollment-success':
+        return (
+          <EnrollmentSuccessPage
+            onBack={() => setMainView('foundational-enrolled')}
           />
         );
       case 'enrollment-confirmation':
