@@ -4093,7 +4093,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       case 'enrollment-success':
         return (
           <EnrollmentSuccessPage
-            onBack={() => setMainView('foundational-enrolled')}
+            onLogout={onLogout}
           />
         );
       case 'enrollment-confirmation':
