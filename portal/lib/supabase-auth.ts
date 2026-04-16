@@ -3,8 +3,8 @@ import type { UserProfile, UserRole } from '../types/user';
 import { AVAILABLE_APPS, ROLE_PERMISSIONS } from '../types/user';
 
 // Supabase configuration from environment variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || '';
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY || '';
 
 if (!supabaseServiceKey) {
   console.error('❌ SUPABASE_SERVICE_KEY is not set');
