@@ -85,6 +85,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     id: userId,
                     email: email,
                     display_name: userData.fullName || email.split('@')[0],
+                    full_name: userData.fullName,
+                    phone: userData.contactNumber,
+                    country: userData.residingCountry,
+                    date_of_birth: userData.dob,
                     role: 'mentee', // Default role for new users
                     status: 'active',
                     firebase_uid: null, // Will be set after Firebase creation
