@@ -317,7 +317,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         <section style={{ textAlign: 'center', maxWidth: '52rem', marginTop: '3rem' }}>
                             {/* Candidates Image */}
                             <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', border: '1px solid rgba(0,0,0,0.05)', backgroundColor: '#f8fafc', marginBottom: '3rem', position: 'relative' }}>
-                                <img src="/candidates-pilot-gap.png" alt="Different pilot candidates at an interview" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+                                <img src="/images/low-timer/candidates-pilot-gap.png" alt="Different pilot candidates at an interview" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
                             </div>
 
                             <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
@@ -396,9 +396,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 The Manufacturer's Promise vs. Industry Reality
                             </h2>
 
-                            <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', border: '1px solid rgba(0,0,0,0.05)', backgroundColor: '#f8fafc', marginBottom: '2.5rem' }}>
-                                <img src="/pilot-manufacturer-reality.png" alt="Comic showing manufacturer promise vs industry reality" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                            </div>
+                            {/* Image removed - file not found */}
 
                             <div style={{ textAlign: 'left', padding: '0 1rem' }}>
                                 <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, marginBottom: '1.5rem' }}>
@@ -454,9 +452,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 The Industry Split
                             </h2>
 
-                            <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', border: '1px solid rgba(0,0,0,0.05)', backgroundColor: '#f8fafc', marginBottom: '3rem' }}>
-                                <img src="/low-timer-reality-presentation.png" alt="Recruitment Reality Image" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
-                            </div>
+                            {/* Image removed - file not found */}
 
 
                             <div style={{ textAlign: 'left', padding: '0 1.5rem', marginBottom: '3.5rem' }}>
@@ -520,9 +516,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                         {/* The Insurance Factor Section */}
                         <section style={{ textAlign: 'center', maxWidth: '52rem', marginTop: '3rem' }}>
-                            <div style={{ position: 'relative', width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', border: '1px solid rgba(0,0,0,0.05)', backgroundColor: '#f8fafc', marginBottom: '3rem' }}>
-                                <img src="/insurance-reality.png" alt="Insurance Reality for Low Timers" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
-                            </div>
+                            {/* Image removed - file not found */}
                             <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                 THE INSURANCE FACTOR
                             </div>
@@ -609,18 +603,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         </h1>
 
                         {/* ── New Header Image ── */}
-                        <div style={{
-                            width: '100%',
-                            maxWidth: '56rem',
-                            margin: '2rem auto 3rem auto',
-                            borderRadius: '24px',
-                            overflow: 'hidden',
-                            boxShadow: '0 15px 35px rgba(0,0,0,0.06)',
-                            border: '1px solid rgba(0,0,0,0.04)',
-                            backgroundColor: '#fff'
-                        }}>
-                            <img src="/Gemini_Generated_Image_pl6llkpl6llkpl6l.png" alt="Pilot Risk Management Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                        </div>
+                        {/* Image removed - file not found */}
 
                         {/* ── Visual Breakdown: The 3 Pillars ── */}
                         <div style={{ maxWidth: '52rem', margin: '0 auto 4rem auto', textAlign: 'left' }}>
@@ -718,9 +701,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     Pilot Fitness: Being Airworthy
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_lkiqzllkiqzllkiq.png" alt="Pilot Fitness Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     Being an airline pilot is not simply a career choice; it is a lifestyle. Just as an aircraft requires routine maintenance and rigorous checks to remain airworthy, you must maintain your own physical and mental airworthiness. This means learning how to live like a pilot long before you sit in the right seat.
                                 </p>
@@ -752,9 +733,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     The Archaic Reality
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_4fglej4fglej4fgl.png" alt="Mental Fatigue Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem', color: '#334155' }}>
                                     However, there are several downsides as well, where the industry's archaic mental health culture truly strikes. This reality hits early—even during your initial training as a student. You will encounter the fatigue or "drained" factor. You may not feel physically tired, but performing repetitive, high-stakes maneuvers is intensely mentally draining. Your mindset becomes fixated; it shifts from "I want to do this" to "I <em>have</em> to do this."
                                 </p>
@@ -786,9 +765,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     Stress Management & Workload
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_nbhb1gnbhb1gnbhb.png" alt="Stress Management Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     When navigating the Pilot Gap, studying under immense pressure can actually degrade your ability to focus. Aviation psychology demonstrates that pilots operating under high stress are significantly less cognitively aware of their surroundings. This degradation in situational awareness is a primary catalyst for poor decision-making.
                                 </p>
@@ -822,9 +799,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     Situational Awareness In Health
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_trogq9trogq9trog.png" alt="Situational Awareness Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     One of the most disregarded aspects of overall well-being is situational awareness of your own body and mind. If you ever feel that something is wrong, or you are reluctant to fly due to an underlying health concern—even if it means being grounded for a month—it is always best to consult a private doctor or clinic for evaluation.
                                 </p>
@@ -853,9 +828,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     Relationships & Personal Life
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_nspqu6nspqu6nspq.png" alt="Relationships & Personal Life Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     Your mental well-being is deeply intertwined with your personal life. Whether you are married, have a girlfriend, or are navigating a recent breakup, the state of your relationships will directly affect your performance and cognitive abilities on the flight deck. It is a harsh reality that many pilots experience firsthand.
                                 </p>
@@ -887,9 +860,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     Unforeseen Health Indications
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_2xu5h52xu5h52xu5.png" alt="Unforeseen Health Indications Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     Flight schools rigorously teach you about immediate physiological threats like hypoxia and spatial disorientation. However, they rarely teach you about the <strong>long-term health effects</strong> that an airline career inflicts upon the human body.
                                 </p>
@@ -967,9 +938,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     The Perfectionism Trap
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_cw7bdkcw7bdkcw7b.png" alt="Perfectionism Trap Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     Flight training is a series of highly consequential tests and checkrides. This fosters a climate of perfectionism where numerous pilots—even high-timers and well-experienced aviators—secretly feel as though their skills are still not good enough. This is widely known as <strong>Impostor Syndrome</strong>, and it is far more prevalent in aviation than the industry openly admits.
                                 </p>
@@ -1000,9 +969,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     The Seniority Gamble
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_a0rjm7a0rjm7a0rj.png" alt="Seniority Gamble Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     Unlike almost any other profession, an airline pilot's entire career trajectory is governed by a single, ruthless mechanism: the <strong>seniority list</strong>. Your salary, your routes, your aircraft type, your roster quality—all of it is determined by your position on that list. And that list is extraordinarily fragile.
                                 </p>
@@ -1048,9 +1015,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     The Lost Decade: Debt vs. Pay
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_adg4jbadg4jbadg4.png" alt="Lost Decade Financials" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     Flight schools sell the dream of a $300,000 captain's salary. What they rarely mention is what comes before it — the <strong>lost decade</strong>. The gap between the promise and the reality of early-career pay is one of the most financially dangerous decisions a young pilot can be underprepared for.
                                 </p>
@@ -1096,9 +1061,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                     The Industry Blind Spot
                                 </h3>
-                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                    <img src="/Gemini_Generated_Image_tiw3pqtiw3pqtiw3.png" alt="Industry Blind Spot Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                </div>
+                                {/* Image removed - file not found */}
                                 <p style={{ marginBottom: '1.5rem' }}>
                                     From the outside, being a pilot looks everything a dream career should be—high paychecks, globe-trotting, and enviable airline perks. But these are only the external attractions. The internal reality of the industry is something the majority of student pilots never see coming.
                                 </p>
@@ -1168,9 +1131,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                                 {/* Embedded Banker vs Casino Section */}
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', alignItems: 'center', marginTop: '3rem', marginBottom: '3rem' }}>
-                                    <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', border: '1px solid #e2e8f0', backgroundColor: 'white', padding: '1rem' }}>
-                                        <img src="/banker-vs-casino.png" alt="Banker vs Casino Manager Psychology" style={{ width: '100%', height: 'auto', borderRadius: '16px', display: 'block' }} />
-                                    </div>
+                                    {/* Image removed - file not found */}
 
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', width: '100%', marginTop: '1rem' }}>
                                         <section>
@@ -1217,9 +1178,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                         The Instructor's Dilemma
                                     </h3>
-                                    <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
-                                        <img src="/instructor-wrong-investment-pilot-gap.png" alt="Flight instructor stuck paying for Airbus rating" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                    </div>
+                                    {/* Image removed - file not found */}
                                     <p style={{ marginBottom: '1.5rem' }}>
                                         Even pilots who chose the <strong>traditional flight instructor route</strong> are not immune. Trapped in a holding pattern, some will burn their hard-earned cash on a Category 3 type rating (like an A320) out of pure frustration, hoping it will force an airline to notice them. Sadly, they remain stuck as instructors, now burdened with a heavy training loan and recurrent costs they can't afford.
                                     </p>
@@ -1233,9 +1192,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
                                         "Shiny Type Rating" Syndrome
                                     </h3>
-                                    <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
-                                        <img src="/financial-drain-pilot-gap.jpg" alt="Cartoon showing the financial drain of type ratings" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                    </div>
+                                    {/* Image removed - file not found */}
                                     <p style={{ marginBottom: '1.5rem' }}>
                                         Trapped with no clear direction, many succumb to <strong>"Shiny Type Rating Syndrome."</strong> Out of frustration, they spend tens of thousands on complex ratings (A320 or ATR) <em>before</em> securing a job offer. Without line experience, this is often a catastrophic mistake—bleeding their remaining funds dry just as an airline might finally call.
                                     </p>
@@ -1254,17 +1211,13 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             Expectations vs. Reality
                         </h2>
 
-                        <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                            <img src="/low-timer-expectation.png" alt="Pilot holding commercial license dreaming of a jet" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                        </div>
+                        {/* Image removed - file not found */}
 
                         <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, marginBottom: '2.5rem', textAlign: 'left' }}>
                             The journey often begins with towering expectations. Fresh out of flight school, clutching a newly printed Commercial Pilot License, the immediate dream is a fast-tracked leap into the right seat of a shiny corporate jet or major airliner.
                         </p>
 
-                        <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                            <img src="/low-timer-reality.jpg" alt="Bankrupt pilot regretting buying a type rating" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                        </div>
+                        {/* Image removed - file not found */}
 
                         <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, marginBottom: '2.5rem', textAlign: 'left' }}>
                             However, reality quickly sets in. Desperate to bridge the massive experience gap and stand out from the immense stack of identical resumes, many pilots succumb to paying out-of-pocket for expensive, heavy jet type ratings without any guaranteed job offer attached. The aftermath is often devastating—wishing they had simply invested that money into building organic flight hours instead.
@@ -1283,9 +1236,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             The Liquidity Trap
                         </h2>
 
-                        <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                            <img src="/what-is-a-type-rating.png" alt="Be smart with your investments. You can cash out and sell a plane, but not a type rating." style={{ width: '100%', height: 'auto', display: 'block' }} />
-                        </div>
+                        {/* Image removed - file not found */}
 
                         <div style={{ textAlign: 'left', color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0 }}>
                             <p style={{ marginBottom: '1.5rem' }}>
@@ -1361,11 +1312,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             position: 'relative',
                             marginBottom: '1.25rem'
                         }}>
-                            <img
-                                src="/the-pilot-gap.png"
-                                alt="The Pilot Gap — A Massive Loss of Talent and Potential"
-                                style={{ width: '100%', height: 'auto', display: 'block' }}
-                            />
+                            {/* Image removed - file not found */}
                         </div>
 
                         {/* Caption below image */}
@@ -1407,7 +1354,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 backgroundColor: '#fff',
                                 position: 'relative'
                             }}>
-                                <img src="/universal-pilot-gap.jpg" alt="The Universal Pilot Gap: A Systemic Failure" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 1.5rem 0', textAlign: 'left' }}>
@@ -1483,7 +1430,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 backgroundColor: '#fff',
                                 marginBottom: '2.5rem'
                             }}>
-                                <img src="/wingmentor-approach-gap.png" alt="Bridging the Pilot Gap" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
@@ -1517,7 +1464,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 backgroundColor: '#fff',
                                 marginBottom: '2.5rem'
                             }}>
-                                <img src="/wingmentor-3-segments.png" alt="Wingmentor 3 core segments approach" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 1.5rem 0', textAlign: 'left' }}>
@@ -1547,7 +1494,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     backgroundColor: '#fff',
                                     marginBottom: '1.5rem'
                                 }}>
-                                    <img src="/wingmentor-pilot-database.png" alt="Wingmentor Pilot Database Visualization" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                    {/* Image removed - file not found */}
                                 </div>
                                 <p style={{ color: '#0c4a6e', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>
                                     We handle and maintain a comprehensive <strong>database of pilots</strong>. Your profile in our database is not just a resume; it is a quantified record recognized through our <strong>Pilot Recognition System</strong>, making you visible to our network of industry partners who are looking for standardized excellence.
@@ -1708,7 +1655,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </h2>
 
                             <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                                <img src="/hopeful-news-paradox.png" alt="Comic showing the pilot shortage in a nutshell" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <div style={{ textAlign: 'left', color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0 }}>
@@ -1757,7 +1704,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </h2>
 
                             <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                <img src="/pilot-gap-pathways.png" alt="Aviation Career Pathways Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <div style={{ textAlign: 'left', padding: '0 1.5rem', marginBottom: '3.5rem' }}>
@@ -1822,7 +1769,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </h2>
 
                             <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                                <img src="/saturation-shift-pilot-gap.jpg" alt="Aviation Career Fair showing pilots rejected from airlines and joining a massive backlog line for Flight Instructor Plan B" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <div style={{ textAlign: 'left' }}>
@@ -1875,7 +1822,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 The Instructor Bottleneck: Plan B Saturation
                             </h2>
                             <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
-                                <img src="/instructor-bottleneck.png" alt="Illustration of the Instructor Bottleneck" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <div style={{ textAlign: 'left' }}>
@@ -2013,7 +1960,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </h2>
 
                             <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                                <img src="/pilot-economic-cycle.png" alt="Drawing showing the Pilot Economic Cycle" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <div style={{ textAlign: 'left', marginBottom: '2rem' }}>
@@ -2052,7 +1999,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 </div>
 
                                 <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                                    <img src="/dream-paradox-pilot-gap.png" alt="Comic showing the pilot dream paradox" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                    {/* Image removed - file not found */}
                                 </div>
 
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem', textAlign: 'left' }}>
