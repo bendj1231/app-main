@@ -88,7 +88,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     role: 'mentee', // Default role for new users
                     status: 'active',
                     firebase_uid: null, // Will be set after Firebase creation
-                    total_hours: parseInt(userData.currentFlightHours || '0', 10),
                     enrolled_programs: [],
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
