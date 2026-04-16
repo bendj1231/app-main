@@ -4095,7 +4095,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       case 'enrollment-success':
         return (
           <EnrollmentSuccessPage
-            onLogout={onLogout}
+            onNavigateToDashboard={() => setMainView('hub')}
           />
         );
       case 'enrollment-confirmation':

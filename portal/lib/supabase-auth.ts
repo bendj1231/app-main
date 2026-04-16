@@ -406,9 +406,21 @@ export const completeEnrollment = async (uid: string, onboardingData: {
     
     if (verifyError) {
       console.error('❌ Verification error:', verifyError);
-    } else {
-      console.log('✅ Verification - enrolled_programs:', verifyProfile?.enrolled_programs);
+      throw new Error(`Verification error: ${verifyError.message}`);
     }
+    
+    console.log('✅ Verification - enrolled_programs:', verifyProfile?.enrolled_programs);
+    
+    // Additional verification: Check if enrolled_programs was actually updated
+    if (!verifyProfile?.enrolled_programs || !Array.isArray(verifyProfile.enrolled_programs)) {
+      throw new Error('Verification failed: enrolled_programs was not properly updated');
+    }
+    
+    if (!verifyProfile.enrolled_programs.includes('Foundational')) {
+      throw new Error('Verification failed: Foundational program not found in enrolled_programs');
+    }
+    
+    console.log('✅ Enrollment verification successful');
 
     // Insert enrollment record in separate table
     console.log('📝 Creating enrollment record...');

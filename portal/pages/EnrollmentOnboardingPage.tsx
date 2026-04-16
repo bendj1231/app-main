@@ -51,6 +51,9 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             setLoading(false);
             setAuthLoading(true);
             
+            // Add minimum delay to ensure loading screen is shown
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            
             // Complete enrollment in Supabase
             console.log('💾 Saving enrollment data...');
             await completeEnrollment(user.id, {
