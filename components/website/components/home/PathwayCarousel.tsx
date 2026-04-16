@@ -144,20 +144,6 @@ export const PathwayCarousel: React.FC<PathwayCarouselProps> = ({
                     <GhostCard slide={nextSlideData} />
                 </div>
 
-                {/* Navigation Arrows */}
-                <button 
-                    onClick={prevSlide}
-                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
-                >
-                    <ChevronLeft className="w-6 h-6 text-white" />
-                </button>
-                <button 
-                    onClick={nextSlide}
-                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
-                >
-                    <ChevronRight className="w-6 h-6 text-white" />
-                </button>
-
                 {/* Dots Indicator */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-40 flex gap-2">
                     {filteredSlides.map((_, idx) => (

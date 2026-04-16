@@ -38,15 +38,139 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true);
 
     async function signup(email: string, password: string, userData: any) {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+        let userId: string;
+        let firebaseUser: any = null;
 
-        // Structure the user data
+        // Step 1: Create Supabase auth user first (preferred)
+        try {
+            const { data: supabaseData, error: supabaseError } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        display_name: userData.fullName || email.split('@')[0],
+                        firebase_uid: null // Will be set after Firebase creation
+                    }
+                }
+            });
+
+            if (supabaseError) {
+                console.error('Supabase auth error:', supabaseError);
+                throw new Error(`Supabase auth failed: ${supabaseError.message}`);
+            }
+
+            if (!supabaseData.user) {
+                throw new Error('No user returned from Supabase auth');
+            }
+
+            userId = supabaseData.user.id;
+            console.log('✅ Supabase auth user created:', userId);
+        } catch (supabaseError) {
+            console.error('Failed to create Supabase auth user:', supabaseError);
+            throw supabaseError;
+        }
+
+        // Step 2: Create portal profile in profiles table
+        try {
+            const experienceLevel = (() => {
+                const hours = parseInt(userData.currentFlightHours || '0', 10);
+                if (hours < 500) return 'Low Timer';
+                if (hours < 1500) return 'Middle Timer';
+                return 'High Timer';
+            })();
+
+            const { error: profileError } = await supabase
+                .from('profiles')
+                .insert({
+                    id: userId,
+                    email: email,
+                    display_name: userData.fullName || email.split('@')[0],
+                    role: 'mentee', // Default role for new users
+                    status: 'active',
+                    firebase_uid: null, // Will be set after Firebase creation
+                    total_hours: parseInt(userData.currentFlightHours || '0', 10),
+                    enrolled_programs: [],
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                });
+
+            if (profileError) {
+                console.error('Portal profile creation error:', profileError);
+                throw new Error(`Failed to create portal profile: ${profileError.message}`);
+            }
+
+            console.log('✅ Portal profile created:', userId);
+        } catch (profileError) {
+            console.error('Failed to create portal profile:', profileError);
+            throw profileError;
+        }
+
+        // Step 3: Create app access records
+        try {
+            const defaultApps = [
+                { app_id: 'foundational', granted: true },
+                { app_id: 'pilot-profile', granted: true },
+                { app_id: 'mentorship', granted: false },
+                { app_id: 'atlas-cv', granted: false },
+                { app_id: 'w1000', granted: false }
+            ];
+
+            const appAccessRecords = defaultApps.map(app => ({
+                user_id: userId,
+                app_id: app.app_id,
+                granted: app.granted,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            }));
+
+            const { error: accessError } = await supabase
+                .from('user_app_access')
+                .insert(appAccessRecords);
+
+            if (accessError) {
+                console.error('App access creation error:', accessError);
+                throw new Error(`Failed to create app access: ${accessError.message}`);
+            }
+
+            console.log('✅ App access records created:', userId);
+        } catch (accessError) {
+            console.error('Failed to create app access:', accessError);
+            throw accessError;
+        }
+
+        // Step 4: Create Firebase user for compatibility (using same ID pattern)
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            firebaseUser = userCredential.user;
+            
+            console.log('✅ Firebase user created:', firebaseUser.uid);
+
+            // Update Supabase profile with Firebase UID
+            await supabase
+                .from('profiles')
+                .update({ firebase_uid: firebaseUser.uid })
+                .eq('id', userId);
+
+            // Update Supabase auth user metadata with Firebase UID
+            await supabase.auth.admin.updateUserById(userId, {
+                user_metadata: {
+                    display_name: userData.fullName || email.split('@')[0],
+                    firebase_uid: firebaseUser.uid
+                }
+            });
+        } catch (firebaseError) {
+            console.error('Firebase creation error:', firebaseError);
+            // Non-critical: Supabase auth is the primary auth
+            console.log('⚠️ Firebase creation failed, but Supabase auth succeeded');
+        }
+
+        // Step 5: Structure the user data
         const structuredData = {
-            uid: user.uid,
+            uid: userId, // Use Supabase ID as primary
+            firebaseUid: firebaseUser?.uid || null,
             email,
             createdAt: new Date().toISOString(),
-            pilotCategory: userData.pilotCategory, // Keep top-level for easy querying
+            pilotCategory: userData.pilotCategory,
             experienceLevel: (() => {
                 const hours = parseInt(userData.currentFlightHours || '0', 10);
                 if (hours < 500) return 'Low Timer';
@@ -93,15 +217,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
         };
 
-        // Create user document in Firestore
-        await setDoc(doc(db, 'users', user.uid), structuredData);
-
-        // Sync to Supabase for portal app access
+        // Step 6: Create user document in Firestore (using Supabase ID)
         try {
-            const { error: supabaseError } = await supabase
+            await setDoc(doc(db, 'users', userId), structuredData);
+            console.log('✅ Firestore document created:', userId);
+        } catch (firestoreError) {
+            console.error('Firestore creation error:', firestoreError);
+            // Non-critical: Supabase is the primary
+        }
+
+        // Step 7: Sync to Supabase pilot_licensure_experience table with all gathered information
+        try {
+            const { error: pilotTableError } = await supabase
                 .from('pilot_licensure_experience')
                 .upsert({
-                    user_id: user.uid,
+                    user_id: userId,
+                    firebase_uid: firebaseUser?.uid || null,
                     pilot_id: userData.pilotId,
                     full_legal_name: userData.fullName,
                     first_name: userData.fullName?.split(' ')[0] || '',
@@ -126,47 +257,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     updated_at: new Date().toISOString()
                 }, { onConflict: 'user_id' });
 
-            if (supabaseError) {
-                console.error('Supabase sync error:', supabaseError);
-            } else {
-                console.log('Pilot data synced to Supabase successfully');
+            if (pilotTableError) {
+                console.error('Pilot table sync error:', pilotTableError);
+                throw new Error(`Failed to sync to pilot table: ${pilotTableError.message}`);
             }
-        } catch (syncError) {
-            console.error('Error syncing to Supabase:', syncError);
-            // Non-critical: Firebase user is still created
+
+            console.log('✅ Pilot data synced to pilot_licensure_experience table');
+        } catch (pilotTableError) {
+            console.error('Failed to sync to pilot table:', pilotTableError);
+            throw pilotTableError;
         }
 
-        // Send email verification
+        // Step 8: Send email verification via Supabase
         try {
-            await sendEmailVerification(user);
-            console.log("Verification email sent to:", email);
+            await supabase.auth.resend({
+                type: 'signup',
+                email: email
+            });
+            console.log("✅ Verification email sent via Supabase to:", email);
         } catch (emailError) {
             console.error("Error sending verification email:", emailError);
-            // Non-critical: User is still created, they can resend later if we add that feature
+            // Non-critical: User is still created
         }
 
-        // Create readable roster entry for admin view
-        // Format: [Experience] Name , License, Hours (UID_SUFFIX)
+        // Step 9: Create readable roster entry for admin view
         if (userData.pilotCategory) {
             try {
-                const experienceLevel = structuredData.experienceLevel; // Use the calculated level
-                const shortUid = user.uid.substring(0, 5);
-
-                // Construct ID: [Level] Name , License , Hours (UID)
-                // e.g. [High Timer] Benjamin Bowler , CPL , 3000hrs (AbCdE)
+                const experienceLevel = structuredData.experienceLevel;
+                const shortUid = userId.substring(0, 5);
                 const safeId = `[${experienceLevel}] ${userData.pilotCategory} (${shortUid})`
                     .replace(/\//g, '-')
                     .replace(/\./g, '_');
 
                 await setDoc(doc(db, 'pilot_roster', safeId), {
                     ...structuredData,
-                    originalUid: user.uid
+                    originalUid: userId,
+                    firebaseUid: firebaseUser?.uid || null
                 });
+                console.log('✅ Roster entry created');
             } catch (error) {
                 console.error("Error creating roster entry:", error);
                 // Non-critical, allows signup to proceed
             }
         }
+
+        console.log('🎉 Signup completed successfully for user:', userId);
     }
 
     async function login(email: string, password: string) {

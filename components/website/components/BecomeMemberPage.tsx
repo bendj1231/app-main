@@ -343,6 +343,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             <div className="relative">
                                                 <textarea
                                                     placeholder="Aviation Way, Sector 4, Global Flight Academy..."
+                                                    value={flightSchoolAddress}
+                                                    onChange={(e) => setFlightSchoolAddress(e.target.value)}
                                                     className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 min-h-[80px] placeholder:text-slate-400 placeholder:font-normal resize-none"
                                                 />
                                             </div>

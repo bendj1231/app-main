@@ -225,7 +225,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 'Psychological Awareness',
                 'Peer Observation Psychology'
             ],
-            description: 'Learn the core difference between instructing and mentoring. This stage focuses on self-assessment, issue-resolution techniques, and the pre-psychology of peer observation.',
+            description: 'Learn the core difference between instructing and mentoring. This stage focuses on self-assessment, issue-resolution techniques, and the pre-psychology of peer observation. Once received initial pilot recognition, you may access pathways and compare your recognition credentials within our network consisting of jobs from pilotcareercenter.com, betterjobs.com and many more, along with direct relations with airlines expectations to review their requirements and access various pathways such as cadet programmes, cargo pathways, licensure & type rating pathways, specialized pathways and more!',
             icon: 'Users',
             onLaunch: onLaunchModule02
         },
