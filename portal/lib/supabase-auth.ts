@@ -385,14 +385,30 @@ export const completeEnrollment = async (uid: string, onboardingData: {
         enrollment_agreement_timestamp: new Date().toISOString(),
         updated_at: new Date().toISOString()
       })
-      .eq('id', uid);
+      .eq('id', uid)
+      .select()
+      .single();
 
     if (profileError) {
       console.error('❌ Profile update error:', profileError);
+      console.error('Error details:', JSON.stringify(profileError, null, 2));
       throw new Error(`Failed to update profile: ${profileError.message}`);
     }
 
     console.log('✅ Profile updated successfully:', profileUpdate);
+    
+    // Verify the update was successful
+    const { data: verifyProfile, error: verifyError } = await supabase
+      .from('profiles')
+      .select('enrolled_programs')
+      .eq('id', uid)
+      .single();
+    
+    if (verifyError) {
+      console.error('❌ Verification error:', verifyError);
+    } else {
+      console.log('✅ Verification - enrolled_programs:', verifyProfile?.enrolled_programs);
+    }
 
     // Insert enrollment record in separate table
     console.log('📝 Creating enrollment record...');
