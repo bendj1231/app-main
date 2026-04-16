@@ -25,25 +25,12 @@ export const EnrollmentSuccessPage: React.FC<EnrollmentSuccessPageProps> = ({ on
                 textAlign: 'center'
             }}>
                 <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{
-                        width: '120px',
-                        height: '120px',
-                        borderRadius: '50%',
-                        backgroundColor: '#dcfce7',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                            <polyline points="22 4 12 14.01 9 11.01" />
-                        </svg>
-                    </div>
+                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto' }} />
                 </div>
 
                 <h1 style={{
                     fontSize: '2.5rem',
-                    fontWeight: 700,
+                    fontWeight: 400,
                     color: '#0f172a',
                     marginBottom: '1rem',
                     fontFamily: 'Georgia, serif'
