@@ -912,20 +912,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [licensureLoading, setLicensureLoading] = useState(true);
   const hasCheckedEnrollment = useRef(false);
 
-  // Separate useEffect for enrollment check - runs on mount and when email changes
+  // Separate useEffect for enrollment check - runs on mount and when userProfile changes
   useEffect(() => {
-    // Prevent multiple checks
-    if (hasCheckedEnrollment.current) {
-      return;
-    }
-
     const checkEnrollment = async () => {
       console.log('🔍 Enrollment check triggered');
       console.log('📋 userProfile:', userProfile);
       console.log('📋 userProfile.email:', userProfile?.email);
-      
-      // Mark as checked
-      hasCheckedEnrollment.current = true;
       
       if (!userProfile?.email) {
         console.log('⚠️ No email in userProfile, skipping enrollment check');
@@ -987,7 +979,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     };
 
     checkEnrollment();
-  }, [userProfile?.email, userProfile]);
+  }, [userProfile?.email, userProfile?.enrolledPrograms]);
 
   useEffect(() => {
     const fetchFirebaseData = async () => {
