@@ -4647,29 +4647,29 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 </div>
             )}
             {/* Minimal Header */}
-            <header style={{ backgroundColor: 'white', borderBottom: '1px solid #e2e8f0', padding: '0.75rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '48px', width: 'auto', objectFit: 'contain' }} />
+            <header style={{ backgroundColor: 'white', borderBottom: '1px solid #e2e8f0', padding: '0.5rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
                     <div>
-                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Required Reading</div>
-                        <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a' }}>Module 01: Industry Familiarization & Indoctrination</div>
-                        <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.2em', marginTop: '2px' }}>
+                        <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Required Reading</div>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a' }}>Module 01: Industry Familiarization & Indoctrination</div>
+                        <div style={{ fontSize: '0.6rem', fontWeight: 700, color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.2em', marginTop: '2px' }}>
                             {currentChapter === 0 ? 'Overview' : `Chapter ${String(currentChapter).padStart(2, '0')}`}
                         </div>
                     </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <div style={{ width: '180px', height: '6px', backgroundColor: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ width: '140px', height: '5px', backgroundColor: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
                         <div style={{ width: `${progress}%`, height: '100%', backgroundColor: '#2563eb', transition: 'width 0.3s ease-out' }}></div>
                     </div>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#475569' }}>{Math.round(progress)}% Complete</span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>{Math.round(progress)}% Complete</span>
                 </div>
             </header>
 
             {/* Main Layout wrapper for sidebar and content */}
-            <div style={{ display: 'flex', minHeight: 'calc(100vh - 65px)' }}>
+            <div style={{ display: 'flex', minHeight: 'calc(100vh - 55px)' }}>
                 {/* Module Viewer Sidebar */}
-                <aside style={{ width: '260px', flexShrink: 0, backgroundColor: 'white', borderRight: '1px solid #e2e8f0', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '65px', height: 'calc(100vh - 65px)', overflowY: 'auto' }}>
+                <aside style={{ width: '200px', flexShrink: 0, backgroundColor: 'white', borderRight: '1px solid #e2e8f0', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', position: 'sticky', top: '55px', height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
                     <button
                         onClick={onBack}
                         style={{
@@ -4817,8 +4817,8 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 </aside>
 
 
-                <main style={{ flex: 1, padding: '2.5rem 1.5rem', backgroundColor: '#f8fafc', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
-                    <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
+                <main style={{ flex: 1, padding: '1.5rem 1rem', backgroundColor: '#f8fafc', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+                    <div style={{ maxWidth: '700px', width: '100%', margin: '0 auto' }}>
                         {renderChapterContent()}
 
                         {/* Pagination Controls */}
