@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, ChevronLeft, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronDown, User, Settings } from 'lucide-react';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -304,6 +304,24 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         >
                             {currentUser ? 'Access Portal' : 'Login'}
                         </button>
+
+                        {currentUser && (
+                            <>
+                                <button
+                                    onClick={() => onNavigate('portal')}
+                                    className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
+                                    title="Profile"
+                                >
+                                    <User className="w-4 h-4" />
+                                </button>
+                                <button
+                                    className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
+                                    title="Settings"
+                                >
+                                    <Settings className="w-4 h-4" />
+                                </button>
+                            </>
+                        )}
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -363,6 +381,26 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             >
                                 {currentUser ? 'Access Portal' : 'Login'}
                             </button>
+
+                            {currentUser && (
+                                <div className="flex gap-4 mt-4">
+                                    <button
+                                        onClick={() => onNavigate('portal')}
+                                        className="flex-1 py-3 rounded-sm bg-slate-700 hover:bg-slate-800 text-white font-bold uppercase tracking-widest flex items-center justify-center gap-2"
+                                        title="Profile"
+                                    >
+                                        <User className="w-5 h-5" />
+                                        Profile
+                                    </button>
+                                    <button
+                                        className="flex-1 py-3 rounded-sm bg-slate-700 hover:bg-slate-800 text-white font-bold uppercase tracking-widest flex items-center justify-center gap-2"
+                                        title="Settings"
+                                    >
+                                        <Settings className="w-5 h-5" />
+                                        Settings
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
