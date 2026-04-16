@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { UserProfile } from '../types/user';
 import { Icons } from '../icons';
+import { supabase } from '../lib/supabase-auth';
 
 interface FoundationalKnowledgeExamPageProps {
   userProfile?: UserProfile | null;
@@ -75,6 +76,52 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>(new Array(examQuestions.length).fill(-1));
   const [showResults, setShowResults] = useState(false);
+  const [examSaved, setExamSaved] = useState(false);
+
+  const saveExamResult = async (score: number) => {
+    if (examSaved) return;
+    
+    const userId = userProfile?.id || userProfile?.uid;
+    if (!userId) {
+      console.error('No user ID found');
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('pilot_exams')
+        .insert({
+          user_id: userId,
+          exam_name: 'Foundational Knowledge Examination',
+          exam_type: 'foundational',
+          score: score,
+          max_score: 100,
+          passed: score >= 80,
+          duration: examQuestions.length * 5, // Estimated duration in minutes
+          exam_date: new Date().toISOString(),
+          remarks: `Score: ${score}%, Questions: ${examQuestions.length}`,
+          module_id: 'foundational-program',
+          status: score >= 80 ? 'passed' : 'failed',
+          attempts: 1,
+          max_attempts: 3
+        });
+
+      if (error) {
+        console.error('Error saving exam result:', error);
+      } else {
+        console.log('✅ Exam result saved to Supabase');
+        setExamSaved(true);
+      }
+    } catch (error) {
+      console.error('Error saving exam result:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (showResults && !examSaved) {
+      saveExamResult(score);
+    }
+  }, [showResults, examSaved]);
 
   const handleSelectAnswer = (answerIndex: number) => {
     const newAnswers = [...selectedAnswers];

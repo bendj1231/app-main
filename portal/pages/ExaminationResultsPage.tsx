@@ -36,7 +36,7 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
       
       try {
         const { data, error } = await supabase
-          .from('exam_results')
+          .from('pilot_exams')
           .select('*')
           .eq('user_id', userId)
           .order('exam_date', { ascending: false });
@@ -52,9 +52,9 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
             id: exam.id,
             name: exam.exam_name || 'Exam',
             date: new Date(exam.exam_date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
-            overall: exam.overall_score || 0,
-            status: exam.status || 'Pending',
-            sections: exam.section_scores || []
+            overall: exam.score ? Number(exam.score) : 0,
+            status: exam.status || exam.passed ? 'Passed' : 'Pending',
+            sections: exam.remarks ? [{ label: 'Overall', score: exam.score ? Number(exam.score) : 0 }] : []
           }));
           setExams(formattedExams);
         }
