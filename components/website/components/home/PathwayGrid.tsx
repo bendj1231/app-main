@@ -79,6 +79,7 @@ interface GridCardData {
     hasArrows?: boolean;
     dynamicTitles?: string[];
     animationIndices?: number[];
+    isDirectory?: boolean;
 }
 
 interface ViewSet {
@@ -142,7 +143,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
         },
         {
             id: 'pilot-recognition',
-            videoUrl: '/pilotRecognitionVideo.mp4',
+            image: '/images/accessportal.png',
             title: 'Pilot Recognition',
             subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
             icon: Compass,
@@ -162,6 +163,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
     programs: [
         {
             id: 'foundation',
+            videoUrl: '/fp.mp4',
             title: 'Foundation Program',
             subtitle: 'Start your pilot journey with structured mentorship and guidance',
             icon: Plane,
@@ -270,6 +272,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
             icon: BookOpen,
             badge: null,
             accentColor: 'from-violet-500/80 to-purple-400/80',
+            isDirectory: true,
         },
         {
             id: 'profile-matched-jobs',
@@ -278,6 +281,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
             icon: Zap,
             badge: null,
             accentColor: 'from-yellow-500/80 to-amber-400/80',
+            isDirectory: true,
         },
     ],
     applications: [
@@ -1288,16 +1292,46 @@ const GridCard: React.FC<GridCardProps> = ({
             onMouseLeave={onLeave}
             onClick={handleCardClick}
         >
-            {/* Main Card Container - Glassy UI */}
-            <div className={`
-                relative w-full h-full rounded-xl overflow-hidden
-                bg-slate-900/40 backdrop-blur-xl border border-white/20
-                shadow-lg shadow-black/30
-                transition-all duration-300 ease-out
-                ${isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}
-            `}>
-                {/* Background Image / Video / Carousel / Animation */}
-                <div className="absolute inset-0">
+            {/* Directory Card - Simple text with arrow */}
+            {card.isDirectory ? (
+                <div className={`
+                    relative w-full h-full rounded-xl overflow-hidden
+                    bg-slate-900/40 backdrop-blur-xl border border-white/20
+                    shadow-lg shadow-black/30
+                    transition-all duration-300 ease-out
+                    flex items-center justify-between px-4 md:px-6
+                    ${isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}
+                `}>
+                    <div className="flex flex-col">
+                        <h3 className="text-white font-serif text-sm md:text-base tracking-wide">
+                            {displayTitle}
+                        </h3>
+                        <p className="text-white/60 text-[10px] md:text-xs mt-1">
+                            {displaySubtitle}
+                        </p>
+                    </div>
+                    <div className={`
+                        w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center
+                        bg-white/10 border border-white/20
+                        transition-all duration-300
+                        ${isHovered ? 'bg-white/20 scale-110' : ''}
+                    `}>
+                        <svg className="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+            ) : (
+                /* Main Card Container - Glassy UI */
+                <div className={`
+                    relative w-full h-full rounded-xl overflow-hidden
+                    bg-slate-900/40 backdrop-blur-xl border border-white/20
+                    shadow-lg shadow-black/30
+                    transition-all duration-300 ease-out
+                    ${isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}
+                `}>
+                    {/* Background Image / Video / Carousel / Animation */}
+                    <div className="absolute inset-0">
                     {card.videoUrl ? (
                         // Video playback for cards with videoUrl - isolated from card click
                         <div 
@@ -1634,7 +1668,8 @@ const GridCard: React.FC<GridCardProps> = ({
                 <div className="absolute top-0 left-0 w-px h-8 bg-gradient-to-b from-white/40 to-transparent" />
                 <div className="absolute top-0 right-0 w-8 h-px bg-gradient-to-l from-white/40 to-transparent" />
                 <div className="absolute top-0 right-0 w-px h-8 bg-gradient-to-b from-white/40 to-transparent" />
-            </div>
+                </div>
+            )}
         </div>
     );
 };

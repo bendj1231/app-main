@@ -15,9 +15,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
   const [cursorVisible, setCursorVisible] = useState(false);
   const [typingField, setTypingField] = useState<null | 'email' | 'password'>(null);
   const [loginPressed, setLoginPressed] = useState(false);
-  const [showHomeScreen, setShowHomeScreen] = useState(false);
-  const [showDashboard, setShowDashboard] = useState(true);
-  const [selectedNavItem, setSelectedNavItem] = useState<null | 'programs' | 'recognition' | 'pathways'>(null);
+  const [showDashboard, setShowDashboard] = useState(false);
   const [showFoundationPlatform, setShowFoundationPlatform] = useState(false);
   const [showModulesPage, setShowModulesPage] = useState(false);
   const [showLowTimerPage, setShowLowTimerPage] = useState(false);
@@ -29,11 +27,14 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
   const [showDigitalLogbook, setShowDigitalLogbook] = useState(false);
   const [showPilotRecognition, setShowPilotRecognition] = useState(false);
   const [showPilotRecognition2, setShowPilotRecognition2] = useState(false);
+  const [showResultsToRecognition, setShowResultsToRecognition] = useState(false);
+  const [showMentorshipLogbook, setShowMentorshipLogbook] = useState(false);
   const [modulesScrollY, setModulesScrollY] = useState(0);
   const [lowTimerScrollY, setLowTimerScrollY] = useState(0);
   const [examPortalScrollY, setExamPortalScrollY] = useState(0);
   const [examResultsScrollY, setExamResultsScrollY] = useState(0);
   const [pilotRecognitionScrollY, setPilotRecognitionScrollY] = useState(0);
+  const [mentorshipLogbookScrollY, setMentorshipLogbookScrollY] = useState(0);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [buttonPressed, setButtonPressed] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -63,15 +64,375 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
   const runAnimation = async () => {
     // Small delay after component is visible
     await new Promise(r => setTimeout(r, 150));
-
-      // Show home screen
+      
+      // Show cursor
+      setCursorVisible(true);
+      
+      // Move cursor to email field (right side, ~60% from left, ~45% from top)
+      setCursorPosition({ x: 58, y: 42 });
+      await new Promise(r => setTimeout(r, 400));
+      
+      // Click email field
+      setCursorPosition({ x: 58, y: 42 });
       await new Promise(r => setTimeout(r, 200));
-      setShowHomeScreen(true);
+      setTypingField('email');
+      
+      // Type email
+      const email = "wingmentorprogram@gmail.com";
+      for (let i = 0; i <= email.length; i++) {
+        setEmailText(email.slice(0, i));
+        await new Promise(r => setTimeout(r, 40));
+      }
+      
+      // Finish typing email, pause
+      setTypingField(null);
+      await new Promise(r => setTimeout(r, 200));
+      
+      // Move mouse to password field
+      setCursorPosition({ x: 58, y: 52 });
+      await new Promise(r => setTimeout(r, 250));
+      
+      // Click on password field
+      await new Promise(r => setTimeout(r, 100));
+      setTypingField('password');
+      await new Promise(r => setTimeout(r, 200));
+      
+      // Type password (dots)
+      const passwordLength = 12;
+      for (let i = 0; i <= passwordLength; i++) {
+        setPasswordText("•".repeat(i));
+        await new Promise(r => setTimeout(r, 40));
+      }
+      
+      setTypingField(null);
+      await new Promise(r => setTimeout(r, 250));
+      
+      // Pause before moving to login
+      await new Promise(r => setTimeout(r, 150));
+      
+      // Move mouse to login button (positioned on the button in right panel)
+      setCursorPosition({ x: 62, y: 66 });
+      await new Promise(r => setTimeout(r, 450));
+      
+      // Hover over login button briefly
+      await new Promise(r => setTimeout(r, 100));
+      
+      // Press login button
+      setLoginPressed(true);
+      await new Promise(r => setTimeout(r, 125));
+      setLoginPressed(false);
+      await new Promise(r => setTimeout(r, 250));
+      
+      // Hide cursor
+      setCursorVisible(false);
+      
+      // Show dashboard inside iPad after login
+      await new Promise(r => setTimeout(r, 200));
+      setShowDashboard(true);
 
-      // Animation stops here - waits for user to click a card
-      // Dashboard transition happens when user clicks a card
+      // Wait for dashboard to render
+      await new Promise(r => setTimeout(r, 1000));
 
-      // Mark animation as complete to enable user interaction
+      // Show cursor again for dashboard interaction
+      setCursorVisible(true);
+
+      // Move cursor to the "Access Platform" button on Foundational Program card
+      setCursorPosition({ x: 42, y: 65 });
+      await new Promise(r => setTimeout(r, 400));
+
+      // Hover effect on the button
+      await new Promise(r => setTimeout(r, 150));
+
+      // Press the button
+      setButtonPressed(true);
+      await new Promise(r => setTimeout(r, 100));
+      setButtonPressed(false);
+      await new Promise(r => setTimeout(r, 75));
+
+      // Hide cursor before transition
+      setCursorVisible(false);
+      await new Promise(r => setTimeout(r, 150));
+
+      // Transition to Foundation Program Platform page with warp effect
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 200));
+      setShowFoundationPlatform(true);
+      await new Promise(r => setTimeout(r, 200));
+      setIsTransitioning(false);
+
+      // Wait for platform page to render
+      await new Promise(r => setTimeout(r, 1000));
+
+      // Show cursor again for platform interaction
+      setCursorVisible(true);
+
+      // Move cursor to the "View Details" button on Modules card
+      setCursorPosition({ x: 18, y: 58 });
+      await new Promise(r => setTimeout(r, 400));
+
+      // Hover effect on the button
+      await new Promise(r => setTimeout(r, 150));
+
+      // Press the button
+      setButtonPressed(true);
+      await new Promise(r => setTimeout(r, 100));
+      setButtonPressed(false);
+      await new Promise(r => setTimeout(r, 75));
+
+      // Hide cursor
+      setCursorVisible(false);
+
+      // Show modules page
+      setShowModulesPage(true);
+
+      // Wait for modules page to render
+      await new Promise(r => setTimeout(r, 800));
+
+      // Show cursor for scrolling
+      setCursorVisible(true);
+
+      // Move cursor to scroll position
+      setCursorPosition({ x: 50, y: 60 });
+      await new Promise(r => setTimeout(r, 400));
+
+      // Animate scrolling down on modules page - single CSS transition for smoothness
+      setModulesScrollY(800);
+      await new Promise(r => setTimeout(r, 4000)); // Wait for scroll to complete
+      
+      // Hide cursor
+      setCursorVisible(false);
+      
+      // Wait briefly then transition to Pilot Gap page
+      await new Promise(r => setTimeout(r, 500));
+      
+      // Transition to Pilot Gap page (moved up in sequence)
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 200));
+      setShowModulesPage(false);
+      setShowPilotGapPage(true);
+      await new Promise(r => setTimeout(r, 200));
+      setIsTransitioning(false);
+
+      // Wait for Pilot Gap page to display so users can read it
+      await new Promise(r => setTimeout(r, 2000));
+
+      // Transition to Low-Timer page
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowPilotGapPage(false);
+      setShowLowTimerPage(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for Low-Timer page to render
+      await new Promise(r => setTimeout(r, 800));
+
+      // Show cursor for scrolling on Low-Timer page
+      setCursorVisible(true);
+
+      // Move cursor to scroll position
+      setCursorPosition({ x: 50, y: 60 });
+      await new Promise(r => setTimeout(r, 400));
+
+      // Animate scrolling down on Low-Timer page - single CSS transition for smoothness
+      setLowTimerScrollY(1500);
+      await new Promise(r => setTimeout(r, 5000)); // Wait for scroll to complete
+      
+      // Hide cursor
+      setCursorVisible(false);
+      
+      // Wait briefly then transition to Examination Portal
+      await new Promise(r => setTimeout(r, 500));
+
+      // Wait for Examination Portal to render
+      await new Promise(r => setTimeout(r, 500));
+
+      // Transition to Examination Portal with warp zoom effect
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 200));
+      setShowLowTimerPage(false);
+      setShowExaminationPortal(true);
+      await new Promise(r => setTimeout(r, 200));
+      setIsTransitioning(false);
+
+      // Wait for Examination Portal to render
+      await new Promise(r => setTimeout(r, 1000));
+
+      // Show cursor for clicking Pilot Licensure Examination
+      setCursorVisible(true);
+      setCursorPosition({ x: 72, y: 58 }); // Position on "Select License & Start" button
+      await new Promise(r => setTimeout(r, 1000));
+      
+      // Click animation
+      setButtonPressed(true);
+      await new Promise(r => setTimeout(r, 200));
+      setButtonPressed(false);
+      await new Promise(r => setTimeout(r, 400));
+      
+      // Hide cursor
+      setCursorVisible(false);
+      
+      // Transition to License Selection page
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowExaminationPortal(false);
+      setShowLicenseSelection(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for License Selection to render
+      await new Promise(r => setTimeout(r, 800));
+      
+      // Show cursor for selecting CPL
+      setCursorVisible(true);
+      setCursorPosition({ x: 25, y: 50 }); // Position on CPL card
+      await new Promise(r => setTimeout(r, 600));
+      
+      // Click on CPL
+      setButtonPressed(true);
+      await new Promise(r => setTimeout(r, 150));
+      setButtonPressed(false);
+      await new Promise(r => setTimeout(r, 200));
+      
+      // Hide cursor
+      setCursorVisible(false);
+      
+      // Transition to Examination In Progress
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowLicenseSelection(false);
+      setShowExaminationInProgress(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for exam to display
+      await new Promise(r => setTimeout(r, 2000));
+      
+      // Transition to Examination Results
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowExaminationInProgress(false);
+      setShowExaminationResults(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for Examination Results to render
+      await new Promise(r => setTimeout(r, 800));
+
+      // Show cursor for scrolling
+      setCursorVisible(true);
+      setCursorPosition({ x: 50, y: 60 });
+      await new Promise(r => setTimeout(r, 400));
+
+      // Scroll down through Examination Results - single CSS transition for smoothness
+      setExamResultsScrollY(700);
+      await new Promise(r => setTimeout(r, 4000)); // Wait for scroll to complete
+      
+      // Hide cursor
+      setCursorVisible(false);
+
+      // Wait then show results to recognition transition
+      await new Promise(r => setTimeout(r, 500));
+
+      // Show Results to Recognition transition page
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowExaminationResults(false);
+      setShowResultsToRecognition(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for transition page to display
+      await new Promise(r => setTimeout(r, 3000));
+
+      // Transition to Pilot Recognition page with ATLAS CV
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowResultsToRecognition(false);
+      setShowPilotRecognition2(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for Pilot Recognition page to render
+      await new Promise(r => setTimeout(r, 1000));
+
+      // Show cursor for scrolling
+      setCursorVisible(true);
+      setCursorPosition({ x: 50, y: 60 });
+      await new Promise(r => setTimeout(r, 400));
+
+      // Scroll down to reveal the ATLAS CV card (red header component)
+      setPilotRecognitionScrollY(800);
+      await new Promise(r => setTimeout(r, 3000)); // Wait for scroll to complete
+
+      // Move cursor to "View Flight Digital Logbook" button
+      setCursorPosition({ x: 25, y: 72 });
+      await new Promise(r => setTimeout(r, 800));
+      
+      // Click the button
+      setButtonPressed(true);
+      await new Promise(r => setTimeout(r, 150));
+      setButtonPressed(false);
+      await new Promise(r => setTimeout(r, 200));
+      
+      // Hide cursor after click
+      await new Promise(r => setTimeout(r, 300));
+      setCursorVisible(false);
+      await new Promise(r => setTimeout(r, 300));
+
+      // Transition to Digital Flight Logbook
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowPilotRecognition2(false);
+      setShowDigitalLogbook(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for Digital Logbook to render
+      await new Promise(r => setTimeout(r, 1500));
+
+      // Wait briefly then transition to Mentorship Logbook
+      await new Promise(r => setTimeout(r, 500));
+
+      // Transition to Mentorship Logbook
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowDigitalLogbook(false);
+      setShowMentorshipLogbook(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for Mentorship Logbook to render
+      await new Promise(r => setTimeout(r, 800));
+
+      // Show cursor for scrolling
+      setCursorVisible(true);
+      setCursorPosition({ x: 50, y: 60 });
+      await new Promise(r => setTimeout(r, 400));
+
+      // Scroll down through Mentorship Logbook
+      setMentorshipLogbookScrollY(600);
+      await new Promise(r => setTimeout(r, 3000)); // Wait for scroll to complete
+
+      // Hide cursor
+      setCursorVisible(false);
+      await new Promise(r => setTimeout(r, 300));
+
+      // Wait briefly then transition to Platform Dashboard
+      await new Promise(r => setTimeout(r, 500));
+
+      // Transition to Platform Dashboard
+      setIsTransitioning(true);
+      await new Promise(r => setTimeout(r, 250));
+      setShowMentorshipLogbook(false);
+      setShowDashboard(true);
+      await new Promise(r => setTimeout(r, 250));
+      setIsTransitioning(false);
+
+      // Wait for Dashboard to render
+      await new Promise(r => setTimeout(r, 1000));
+
+      // Animation ends on the Platform Dashboard
       setAnimationComplete(true);
   };
 
@@ -109,37 +470,114 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
         <div className={`relative w-full h-full rounded-[20px] overflow-hidden transition-all duration-500 ease-in-out ${
           isTransitioning ? 'scale-95 blur-md opacity-50' : 'scale-100 blur-0 opacity-100'
         }`}>
-          {!showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
-            /* Home Screen - Carousel */
-            <div className={`relative w-full h-full ${animationComplete ? '' : 'pointer-events-none'}`}>
-              {/* Background */}
-              <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+          {!showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
+            /* Login Screen */
+            <div className={`relative w-full h-full flex items-center justify-center p-8 ${animationComplete ? '' : 'pointer-events-none'}`}>
+              {/* Background Shader - Cloud/Sky */}
+              <div className="absolute inset-0 z-0">
                 <img
                   src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2000&auto=format&fit=crop"
-                  alt="Background"
-                  className="w-full h-full object-cover opacity-20"
+                  alt="Cloud background"
+                  className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/30 via-blue-300/20 to-white/40 backdrop-blur-[2px]" />
               </div>
-
-              {/* Content */}
-              <div className="relative z-10 w-full h-full flex flex-col p-6">
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-6">
-                  <img
-                    src={IMAGES.LOGO}
-                    alt="WingMentor Logo"
-                    className="w-10 h-auto object-contain"
-                  />
-                  <div>
-                    <p className="text-white font-bold text-xs">WingMentor</p>
-                    <p className="text-white/60 text-[7px] uppercase tracking-wider">Pilot Mentor Network</p>
-                  </div>
-                </div>
-
+              
+              {/* Login Card - Smaller and more square */}
+              <div className="relative z-10 w-[75%] h-[65%] rounded-[12px] overflow-hidden shadow-2xl flex pointer-events-none">
+                {/* Mouse Cursor */}
+                <div
+                  className={`absolute z-50 pointer-events-none transition-all duration-700 ease-in-out ${cursorVisible ? 'opacity-100' : 'opacity-0'}`}
+                  style={{
+                    left: `${cursorPosition.x}%`,
+                    top: `${cursorPosition.y}%`,
+                    transform: 'translate(-100%, -20%)',
+                    transitionProperty: 'left, top, opacity',
+                  }}
+                >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="drop-shadow-lg">
+                <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.45 0 .67-.53.35-.85L6.35 2.86a.5.5 0 0 0-.85.35Z" fill="white" stroke="#1a1a2e" strokeWidth="1"/>
+              </svg>
+              {/* Click ripple effect */}
+              <div className={`absolute inset-0 flex items-center justify-center ${typingField ? 'scale-0' : 'scale-100'} transition-transform duration-150`}>
+                <div className="w-4 h-4 rounded-full bg-blue-400/30 animate-ping" />
               </div>
             </div>
+
+            {/* Left Side - Dark Blue */}
+            <div className="w-1/2 bg-gradient-to-br from-[#0d1f35] to-[#051020] flex flex-col items-center justify-center p-5 text-center">
+              <img
+                src={IMAGES.LOGO}
+                alt="WingMentor Logo"
+                className="w-16 h-auto object-contain mb-3 opacity-90"
+              />
+              <p className="text-[8px] font-bold tracking-[0.25em] uppercase text-white/50 mb-1.5">
+                Mentor Network
+              </p>
+              <h3 className="text-white font-semibold text-base mb-3">Pilot Portal</h3>
+              <p className="text-white/70 text-[9px] leading-relaxed max-w-[180px] mb-3">
+                Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies.
+              </p>
+              <div className="px-4 py-1.5 bg-white/10 text-white text-[9px] rounded-full border border-white/20">
+                Learn more
+              </div>
+            </div>
+            
+            {/* Right Side - Light */}
+            <div className="w-1/2 bg-[#eef2f6] flex flex-col justify-center p-5">
+              <h2 className="text-slate-800 font-medium text-xs mb-0.5">Connecting pilots to the aviation industry</h2>
+              <p className="text-slate-500 text-[9px] mb-2">Sign in with your WingMentor credentials.</p>
+              
+              {/* Badge - Blue pill style */}
+              <div className="mb-2">
+                <span className="inline-block px-2 py-0.5 bg-blue-100/80 text-blue-600 text-[8px] rounded-md font-medium">Change Optimization</span>
+              </div>
+              
+              <p className="text-[7px] font-bold tracking-[0.15em] uppercase text-slate-400 mb-1.5">WingMentor Account</p>
+              
+              {/* Form Fields */}
+              <div className="space-y-1.5">
+                <div className={`flex items-center gap-2 px-2.5 py-1.5 bg-white border rounded-lg text-[10px] transition-all ${typingField === 'email' ? 'border-blue-400 ring-2 ring-blue-100' : 'border-slate-200'}`}>
+                  <Mail className="w-3 h-3 text-slate-400" />
+                  <span className={emailText ? 'text-slate-700' : 'text-slate-400'}>
+                    {emailText || 'Email'}
+                  </span>
+                  {typingField === 'email' && (
+                    <span className="w-0.5 h-3 bg-blue-500 animate-pulse ml-0.5" />
+                  )}
+                </div>
+                <div className={`flex items-center gap-2 px-2.5 py-1.5 bg-white border rounded-lg text-[10px] transition-all ${typingField === 'password' ? 'border-blue-400 ring-2 ring-blue-100' : 'border-slate-200'}`}>
+                  <Lock className="w-3 h-3 text-slate-400" />
+                  <span className={passwordText ? 'text-slate-700' : 'text-slate-400'}>
+                    {passwordText || 'Password'}
+                  </span>
+                  {typingField === 'password' && (
+                    <span className="w-0.5 h-3 bg-blue-500 animate-pulse ml-0.5" />
+                  )}
+                </div>
+              </div>
+              
+              <div className="flex justify-end mt-1">
+                <span className="text-blue-500 text-[9px]">Forgot Password?</span>
+              </div>
+              
+              <div className={`w-full mt-1.5 py-1.5 text-white text-[10px] font-medium rounded-lg text-center flex items-center justify-center gap-1 transition-all duration-100 ${loginPressed ? 'bg-slate-600 scale-95' : 'bg-slate-800'}`}>
+                Login <span>→</span>
+              </div>
+              
+              <div className="flex items-center gap-1 mt-2">
+                <div className="w-3 h-3 rounded border border-slate-300 bg-white" />
+                <span className="text-slate-500 text-[9px]">Remember me</span>
+              </div>
+              
+              <p className="text-slate-400 text-[8px] mt-2">
+                Not a member? <span className="text-blue-500">Create an account</span> • <span className="text-blue-500">Visit Pilot Network</span>
+              </p>
+            </div>
+          </div>
+        </div>
           )}
-          {showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showDashboard && !showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Dashboard View Inside iPad - Full Dashboard Layout */
         <div className={`w-full h-full bg-[#f0f4f8] flex relative ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Mouse Cursor */}
@@ -387,7 +825,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showFoundationPlatform && !showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Foundation Program Platform View Inside iPad */
         <div className={`w-full h-full bg-white flex flex-col overflow-hidden relative ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Mouse Cursor */}
@@ -508,7 +946,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showModulesPage && !showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Modules Page View Inside iPad - Welcome Aboard */
         <div className={`w-full h-full bg-white flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Simple Header */}
@@ -688,7 +1126,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showLowTimerPage && !showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Low-Timer Pilot Page View Inside iPad */
         <div className={`w-full h-full bg-white flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Simple Header */}
@@ -860,7 +1298,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showPilotGapPage && !showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Pilot Gap Page - Simple White Page */
         <div className={`w-full h-full bg-white flex flex-col items-center justify-center p-8 ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Title - Georgian/Serif Font */}
@@ -874,7 +1312,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </p>
         </div>
           )}
-          {showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showExaminationPortal && !showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Examination Portal Page */
         <div className={`w-full h-full bg-[#f0f4f8] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Header */}
@@ -1100,7 +1538,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showLicenseSelection && !showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* License Selection Page */
         <div className={`w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Header */}
@@ -1143,16 +1581,11 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
             <div className="max-w-2xl mx-auto grid grid-cols-2 gap-4">
               {/* CPL Card */}
               <div className={`bg-white rounded-xl p-4 border-2 shadow-sm cursor-pointer transition-all ${buttonPressed ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:border-blue-300'}`}>
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-blue-600 text-lg">📈</span>
-                  </div>
-                  <div>
-                    <h3 className="text-[11px] font-bold text-slate-900 mb-1">Commercial Pilot License (CPL)</h3>
-                    <p className="text-[8px] text-slate-500 leading-relaxed">
-                      For pilots pursuing commercial aviation careers. Covers advanced aerodynamics, flight planning, and commercial regulations.
-                    </p>
-                  </div>
+                <div className="mb-3">
+                  <h3 className="text-[11px] font-bold text-slate-900 mb-1">Commercial Pilot License (CPL)</h3>
+                  <p className="text-[8px] text-slate-500 leading-relaxed">
+                    For pilots pursuing commercial aviation careers. Covers advanced aerodynamics, flight planning, and commercial regulations.
+                  </p>
                 </div>
                 <div className="flex items-center gap-2 text-[8px] text-slate-400">
                   <span>60 questions</span>
@@ -1163,16 +1596,11 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
 
               {/* IR Card */}
               <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm opacity-75">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-purple-600 text-lg">🧭</span>
-                  </div>
-                  <div>
-                    <h3 className="text-[11px] font-bold text-slate-900 mb-1">Instrument Rating (IR)</h3>
-                    <p className="text-[8px] text-slate-500 leading-relaxed">
-                      Focuses on instrument flight rules, navigation systems, and procedures for flying in IFR conditions.
-                    </p>
-                  </div>
+                <div className="mb-3">
+                  <h3 className="text-[11px] font-bold text-slate-900 mb-1">Instrument Rating (IR)</h3>
+                  <p className="text-[8px] text-slate-500 leading-relaxed">
+                    Focuses on instrument flight rules, navigation systems, and procedures for flying in IFR conditions.
+                  </p>
                 </div>
                 <div className="flex items-center gap-2 text-[8px] text-slate-400">
                   <span>50 questions</span>
@@ -1183,16 +1611,11 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
 
               {/* ME Card */}
               <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm opacity-75">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-sky-600 text-lg">🚁</span>
-                  </div>
-                  <div>
-                    <h3 className="text-[11px] font-bold text-slate-900 mb-1">Multi-Engine Rating (ME)</h3>
-                    <p className="text-[8px] text-slate-500 leading-relaxed">
-                      Covers multi-engine aircraft systems, engine-out procedures, and performance calculations.
-                    </p>
-                  </div>
+                <div className="mb-3">
+                  <h3 className="text-[11px] font-bold text-slate-900 mb-1">Multi-Engine Rating (ME)</h3>
+                  <p className="text-[8px] text-slate-500 leading-relaxed">
+                    Covers multi-engine aircraft systems, engine-out procedures, and performance calculations.
+                  </p>
                 </div>
                 <div className="flex items-center gap-2 text-[8px] text-slate-400">
                   <span>40 questions</span>
@@ -1203,16 +1626,11 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
 
               {/* PPL Card */}
               <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm opacity-75">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-emerald-600 text-lg">🪪</span>
-                  </div>
-                  <div>
-                    <h3 className="text-[11px] font-bold text-slate-900 mb-1">Private Pilot License (PPL)</h3>
-                    <p className="text-[8px] text-slate-500 leading-relaxed">
-                      Fundamental aviation knowledge for private pilots including basic aerodynamics and VFR regulations.
-                    </p>
-                  </div>
+                <div className="mb-3">
+                  <h3 className="text-[11px] font-bold text-slate-900 mb-1">Private Pilot License (PPL)</h3>
+                  <p className="text-[8px] text-slate-500 leading-relaxed">
+                    Fundamental aviation knowledge for private pilots including basic aerodynamics and VFR regulations.
+                  </p>
                 </div>
                 <div className="flex items-center gap-2 text-[8px] text-slate-400">
                   <span>40 questions</span>
@@ -1231,7 +1649,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showExaminationInProgress && !showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showExaminationInProgress && !showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Examination In Progress - CPL Questions */
         <div className={`w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Header */}
@@ -1319,7 +1737,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showExaminationResults && !showPilotRecognition && !showPilotRecognition2 && !showDigitalLogbook && (
+          {showExaminationResults && !showResultsToRecognition && !showPilotRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Examination Results Page */
         <div className={`w-full h-full bg-white flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Header */}
@@ -1548,7 +1966,21 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
           </div>
         </div>
           )}
-          {showPilotRecognition2 && !showDigitalLogbook && (
+          {showResultsToRecognition && !showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
+        /* Results to Recognition Transition Page */
+        <div className={`w-full h-full bg-white flex flex-col items-center justify-center p-8 ${animationComplete ? '' : 'pointer-events-none'}`}>
+          {/* Title - Same font as pilot gap, with red text for results and light blue for recognition */}
+          <h1 className="text-5xl md:text-6xl font-serif text-slate-900 mb-6 text-center leading-tight">
+            examination <span className="text-red-600">results</span> → pilot <span className="text-sky-400">recognition</span>
+          </h1>
+
+          {/* Blue Subtitle - Same style as pilot gap */}
+          <p className="text-sm md:text-base text-blue-600 uppercase tracking-[0.3em] font-semibold text-center">
+            your verified journey continues
+          </p>
+        </div>
+          )}
+          {showPilotRecognition2 && !showMentorshipLogbook && !showDigitalLogbook && (
         /* Pilot Recognition & Achievements Full Page */
         <div className={`w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
           {/* Header */}
@@ -1864,6 +2296,187 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
               </div>
             </div>
           </div>
+          </div>
+        </div>
+          )}
+          {showMentorshipLogbook && !showDigitalLogbook && (
+        /* Mentorship Logbook Page */
+        <div className={`w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden ${animationComplete ? '' : 'pointer-events-none'}`}>
+          {/* Header */}
+          <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3">
+            <button className="text-[10px] text-blue-600 hover:text-blue-800 flex items-center gap-1">
+              <span>←</span>
+              Back to Program
+            </button>
+            <div className="flex-1"></div>
+            <img src={IMAGES.LOGO} alt="WingMentor" className="w-8 h-auto" />
+          </div>
+
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-hidden">
+            <div
+              className="p-4 transition-transform ease-linear"
+              style={{
+                transform: `translateY(-${mentorshipLogbookScrollY}px)`,
+                paddingBottom: `${mentorshipLogbookScrollY + 24}px`,
+                transitionDuration: '3s'
+              }}
+            >
+              {/* Title */}
+              <div className="text-center mb-6">
+                <img src={IMAGES.LOGO} alt="WingMentor" className="w-16 h-auto mx-auto mb-3" />
+                <h1 className="text-xl font-serif text-slate-900 mb-2">Mentorship Logbook</h1>
+                <p className="text-[8px] text-blue-600 uppercase tracking-[0.3em] font-semibold">
+                  Track your mentorship journey
+                </p>
+              </div>
+
+              {/* Progress Overview */}
+              <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm mb-4">
+                <h3 className="text-[10px] font-bold text-slate-900 mb-3">50-Hour Certification Progress</h3>
+                <div className="mb-3">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-[8px] text-slate-600">Total Hours Completed</span>
+                    <span className="text-[8px] font-bold text-slate-900">32.5 / 50 hrs</span>
+                  </div>
+                  <div className="w-full bg-slate-200 rounded-full h-2">
+                    <div className="bg-emerald-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div>
+                    <p className="text-base font-bold text-slate-900">12</p>
+                    <p className="text-[7px] text-slate-500 uppercase tracking-wide mt-0.5">Sessions</p>
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-slate-900">4.5</p>
+                    <p className="text-[7px] text-slate-500 uppercase tracking-wide mt-0.5">Avg/Session</p>
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-slate-900">92%</p>
+                    <p className="text-[7px] text-slate-500 uppercase tracking-wide mt-0.5">Completion</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Recent Mentorship Sessions */}
+              <div className="mb-4">
+                <h3 className="text-[10px] font-bold text-slate-900 mb-3">Recent Mentorship Sessions</h3>
+                <div className="space-y-2">
+                  {/* Session 1 */}
+                  <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="text-[9px] font-bold text-slate-900">IFR Procedures Review</p>
+                        <p className="text-[8px] text-slate-500">Mentor: Capt. John Smith</p>
+                      </div>
+                      <span className="text-[8px] text-slate-400">Jan 15, 2025</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[8px] text-slate-600">Duration: 2.5 hrs</span>
+                      <span className="text-[8px] font-bold text-emerald-600">Completed</span>
+                    </div>
+                  </div>
+
+                  {/* Session 2 */}
+                  <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="text-[9px] font-bold text-slate-900">CRM & Communication</p>
+                        <p className="text-[8px] text-slate-500">Mentor: Capt. Sarah Johnson</p>
+                      </div>
+                      <span className="text-[8px] text-slate-400">Jan 12, 2025</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[8px] text-slate-600">Duration: 3.0 hrs</span>
+                      <span className="text-[8px] font-bold text-emerald-600">Completed</span>
+                    </div>
+                  </div>
+
+                  {/* Session 3 */}
+                  <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="text-[9px] font-bold text-slate-900">Multi-Engine Operations</p>
+                        <p className="text-[8px] text-slate-500">Mentor: Capt. Michael Chen</p>
+                      </div>
+                      <span className="text-[8px] text-slate-400">Jan 08, 2025</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[8px] text-slate-600">Duration: 2.0 hrs</span>
+                      <span className="text-[8px] font-bold text-emerald-600">Completed</span>
+                    </div>
+                  </div>
+
+                  {/* Session 4 */}
+                  <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="text-[9px] font-bold text-slate-900">Aircraft Systems Deep Dive</p>
+                        <p className="text-[8px] text-slate-500">Mentor: Capt. Emily Davis</p>
+                      </div>
+                      <span className="text-[8px] text-slate-400">Jan 05, 2025</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[8px] text-slate-600">Duration: 2.5 hrs</span>
+                      <span className="text-[8px] font-bold text-emerald-600">Completed</span>
+                    </div>
+                  </div>
+
+                  {/* Session 5 */}
+                  <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="text-[9px] font-bold text-slate-900">Navigation & Flight Planning</p>
+                        <p className="text-[8px] text-slate-500">Mentor: Capt. Robert Wilson</p>
+                      </div>
+                      <span className="text-[8px] text-slate-400">Jan 02, 2025</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[8px] text-slate-600">Duration: 3.5 hrs</span>
+                      <span className="text-[8px] font-bold text-emerald-600">Completed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Milestones */}
+              <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
+                <h3 className="text-[10px] font-bold text-slate-900 mb-3">Certification Milestones</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                      <span className="text-white text-[6px]">✓</span>
+                    </div>
+                    <span className="text-[8px] text-slate-700">Initial Assessment Complete</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                      <span className="text-white text-[6px]">✓</span>
+                    </div>
+                    <span className="text-[8px] text-slate-700">First 10 Hours Achieved</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                      <span className="text-white text-[6px]">✓</span>
+                    </div>
+                    <span className="text-[8px] text-slate-700">IFR Proficiency Verified</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <span className="text-white text-[6px]">→</span>
+                    </div>
+                    <span className="text-[8px] text-slate-700">25 Hours (In Progress)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded-full bg-slate-200 flex items-center justify-center">
+                      <span className="text-slate-400 text-[6px]">○</span>
+                    </div>
+                    <span className="text-[8px] text-slate-400">50 Hours Certification</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
           )}
