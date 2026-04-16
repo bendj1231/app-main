@@ -2,13 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import type { UserProfile, UserRole } from '../types/user';
 import { AVAILABLE_APPS, ROLE_PERMISSIONS } from '../types/user';
 
-// Supabase configuration from environment variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || '';
-
-if (!supabaseServiceKey) {
-  console.error('❌ SUPABASE_SERVICE_KEY is not set');
-}
+const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzUzNDE5MSwiZXhwIjoyMDg5MTEwMTkxfQ.V4bQeDT98UmwXJ9gWJVHRJCgNpw0npMx-BnabMgEnbM';
 
 export const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
