@@ -169,6 +169,13 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
         return () => document.removeEventListener('fullscreenchange', handleChange);
     }, []);
 
+    useEffect(() => {
+        const video = heroVideoRef.current;
+        if (video) {
+            video.volume = heroVolume;
+        }
+    }, [heroVolume, isVideoMuted]);
+
     // Program access is now open for all authenticated users.
 
     const modules: Module[] = [
