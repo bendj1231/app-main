@@ -524,6 +524,42 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         throw error;
       }
 
+      // Also sync with profiles table for consistency
+      const userId = userProfile?.id || userProfile?.uid;
+      if (userId) {
+        const profileUpdateData: any = {
+          full_name: fullLegalName,
+          phone: contactNumber,
+          country: residingCountry,
+          date_of_birth: dateOfBirth,
+          nationality: nationality,
+          flight_school_address: flightSchoolAddress,
+          license_id: licenseNumber,
+          country_of_license: licenseCountryOfIssue,
+          aircraft_rated_on: aircraftRatings?.length > 0 ? aircraftRatings[0].type : '',
+          experience_description: whyBecomePilot,
+          ratings: currentLicenses,
+          program_interests: aviationPathwaysInterests,
+          pathway_interests: aviationPathwaysInterests,
+          insight_interests: pilotJobPositionsInterests,
+          updated_at: new Date().toISOString()
+        };
+
+        console.log('Syncing data to profiles table:', profileUpdateData);
+        
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update(profileUpdateData)
+          .eq('id', userId);
+
+        if (profileError) {
+          console.error('Profile sync error (non-critical):', profileError);
+          // Non-critical: main data is saved to pilot_licensure_experience
+        } else {
+          console.log('✅ Data synced to profiles table');
+        }
+      }
+
       setSaveMessage('Data saved successfully!');
     } catch (error: any) {
       console.error('Error saving data:', error);
