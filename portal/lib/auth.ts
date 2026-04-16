@@ -14,35 +14,9 @@ export interface AuthState {
 export const SUPER_ADMIN_EMAIL = 'benjamintigerbowler@gmail.com';
 
 export const createUserProfile = async (user: User, role: UserRole['type'] = 'mentee'): Promise<UserProfile> => {
-  // Use real Firebase if available, otherwise use mock
-  if (!db || db._mockUsers) {
-    console.log("Using mock profile creation (development mode)");
-    const mockProfile: UserProfile = {
-      id: user.uid,
-      email: user.email || 'benjamintigerbowler@gmail.com',
-      displayName: user.displayName || 'Benjamin Bowler',
-      firstName: user.displayName?.split(' ')[0] || 'Benjamin',
-      lastName: user.displayName?.split(' ').slice(1).join(' ') || 'Bowler',
-      role: user.email === SUPER_ADMIN_EMAIL ? 'super_admin' : role,
-      totalHours: user.email === SUPER_ADMIN_EMAIL ? 100 : 0,
-      enrolledPrograms: user.email === SUPER_ADMIN_EMAIL ? ['Foundational'] : [],
-      appAccess: AVAILABLE_APPS.map(app => ({
-        appId: app.id,
-        appName: app.name,
-        granted: true,
-        restricted: false
-      })),
-      createdAt: new Date(),
-      lastLogin: new Date(),
-      status: 'active'
-    };
-    return mockProfile;
-  }
-
   // Real Firebase operations
   if (!db) {
-    console.error('Firestore not initialized');
-    return;
+    throw new Error('Firestore not initialized');
   }
   const userRef = doc(db, 'users', user.uid);
   
@@ -78,45 +52,10 @@ export const createUserProfile = async (user: User, role: UserRole['type'] = 'me
 };
 
 export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
-  // Use mock data for development mode
-  if (!db || db._mockUsers) {
-    console.log("Using mock user profile (development mode)");
-    const mockProfile: UserProfile = {
-      id: uid,
-      email: 'benjamintigerbowler@gmail.com',
-      displayName: 'Benjamin Bowler',
-      firstName: 'Benjamin',
-      lastName: 'Bowler',
-      role: 'super_admin',
-      totalHours: 100,
-      enrolledPrograms: ['Foundational'],
-      appAccess: AVAILABLE_APPS.map(app => ({
-        appId: app.id,
-        appName: app.name,
-        granted: true,
-        restricted: false
-      })),
-      createdAt: new Date(),
-      lastLogin: new Date(),
-      status: 'active'
-    };
-    return mockProfile;
-  }
-
   // Real Firebase operations
   try {
     if (!db) {
-      console.error('Firestore not initialized');
-      return {
-        id: uid,
-        email: '',
-        role: 'mentee',
-        enrolledPrograms: [],
-        appAccess: [],
-        createdAt: new Date(),
-        lastLogin: new Date(),
-        status: 'active'
-      } as unknown as UserProfile;
+      throw new Error('Firestore not initialized');
     }
     const userRef = doc(db, 'users', uid);
     const userSnap = await getDoc(userRef);
@@ -132,19 +71,30 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
     }
   } catch (error) {
     console.error('Error getting user profile:', error);
+    throw error;
   }
 
   return null;
 };
 
-export const updateUserLastLogin = async (_uid: string) => {
-  console.log("Mock update user last login (development mode)");
-  // No-op for development
+export const updateUserLastLogin = async (uid: string) => {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
+  const userRef = doc(db, 'users', uid);
+  await setDoc(userRef, {
+    lastLogin: serverTimestamp()
+  }, { merge: true });
 };
 
-export const switchSystem = async (_uid: string, system: 'pms' | 'wms' | 'super_admin') => {
-  console.log(`Mock switch system to ${system} (development mode)`);
-  // No-op for development
+export const switchSystem = async (uid: string, system: 'pms' | 'wms' | 'super_admin') => {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
+  const userRef = doc(db, 'users', uid);
+  await setDoc(userRef, {
+    currentSystem: system
+  }, { merge: true });
 };
 
 export const hasPermission = (userProfile: UserProfile | null, permission: string): boolean => {
@@ -169,7 +119,6 @@ export const canAccessApp = (userProfile: UserProfile | null, appId: string): bo
 };
 
 export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
-  // Use real Firebase auth for both development and production
   return onAuthStateChanged(auth, async (user) => {
     if (user) {
       try {
@@ -184,8 +133,7 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
         // Ensure super admin role for the specific email
         if (user.email === SUPER_ADMIN_EMAIL && userProfile.role !== 'super_admin') {
           userProfile.role = 'super_admin';
-          // Only try to update if db is available
-          if (db && !db._mockUsers) {
+          if (db) {
             try {
               await setDoc(doc(db, 'users', user.uid), {
                 role: 'super_admin'
@@ -204,54 +152,12 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
         });
       } catch (error: any) {
         console.error('Error loading user profile:', error);
-        
-        // Only use fallback if Firebase is completely unavailable
-        if (error?.code === 'unavailable' || error?.code === 'failed-precondition' || !db) {
-          console.log('Firebase unavailable, using fallback profile for super admin');
-          if (user.email === SUPER_ADMIN_EMAIL) {
-            const fallbackProfile: UserProfile = {
-              id: user.uid,
-              email: user.email,
-              displayName: 'Benjamin Bowler',
-              firstName: 'Benjamin',
-              lastName: 'Bowler',
-              role: 'super_admin',
-              totalHours: 100,
-              enrolledPrograms: ['Foundational'],
-              appAccess: AVAILABLE_APPS.map(app => ({
-                appId: app.id,
-                appName: app.name,
-                granted: true,
-                restricted: false
-              })),
-              createdAt: new Date(),
-              lastLogin: new Date(),
-              status: 'active'
-            };
-            
-            callback({
-              user,
-              userProfile: fallbackProfile,
-              loading: false,
-              currentSystem: 'pms'
-            });
-          } else {
-            callback({
-              user,
-              userProfile: null,
-              loading: false,
-              currentSystem: 'pms'
-            });
-          }
-        } else {
-          // For other errors, show error state
-          callback({
-            user,
-            userProfile: null,
-            loading: false,
-            currentSystem: 'pms'
-          });
-        }
+        callback({
+          user,
+          userProfile: null,
+          loading: false,
+          currentSystem: 'pms'
+        });
       }
     } else {
       callback({
