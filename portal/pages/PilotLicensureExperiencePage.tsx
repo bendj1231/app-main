@@ -72,10 +72,23 @@ const LANGUAGES = [
 ];
 
 const NATIONALITIES = [
-  'United Arab Emirates', 'Saudi Arabia', 'Qatar', 'Kuwait', 'Bahrain', 'Oman',
-  'United Kingdom', 'United States', 'Canada', 'Australia', 'New Zealand',
-  'India', 'Pakistan', 'South Africa', 'Egypt', 'Jordan', 'Lebanon', 'Morocco',
-  'Turkey', 'Other'
+  'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan',
+  'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia',
+  'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada',
+  'Cape Verde', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia',
+  'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Estonia',
+  'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece',
+  'Guatemala', 'Guinea', 'Guyana', 'Haiti', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia',
+  'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya',
+  'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania',
+  'Luxembourg', 'Madagascar', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Moldova',
+  'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nepal', 'Netherlands', 'New Zealand',
+  'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Panama', 'Paraguay',
+  'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saudi Arabia', 'Senegal',
+  'Serbia', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain',
+  'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand',
+  'Togo', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States',
+  'Uruguay', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'
 ];
 
 const ENGLISH_PROFICIENCY_LEVELS = [
@@ -158,6 +171,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [currentLicenses, setCurrentLicenses] = useState<string[]>([]);
   const [licenseNumber, setLicenseNumber] = useState('');
   const [licenseExpiry, setLicenseExpiry] = useState('');
+  const [licenseCountryOfIssue, setLicenseCountryOfIssue] = useState('');
   
   // Medical Certificate State
   const [medicalExpiry, setMedicalExpiry] = useState('');
@@ -329,6 +343,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           setCurrentLicenses(data.current_license || []);
           setLicenseNumber(data.license_number || '');
           setLicenseExpiry(data.license_expiry || '');
+          setLicenseCountryOfIssue(data.license_country_of_issue || '');
 
           // Medical Info
           setMedicalExpiry(data.medical_expiry || '');
@@ -476,6 +491,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         current_license: currentLicenses,
         license_number: licenseNumber,
         license_expiry: licenseExpiry,
+        license_country_of_issue: licenseCountryOfIssue,
         medical_expiry: medicalExpiry,
         medical_country: medicalCountry,
         medical_class: medicalClass,
@@ -903,6 +919,29 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 }}
                 placeholder="Enter license number"
               />
+            </div>
+            
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                License Country of Issue
+              </label>
+              <select
+                value={licenseCountryOfIssue}
+                onChange={(e) => setLicenseCountryOfIssue(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  background: 'white'
+                }}
+              >
+                <option value="">Select country of issue</option>
+                {NATIONALITIES.map(country => (
+                  <option key={country} value={country}>{country}</option>
+                ))}
+              </select>
             </div>
             
             <div>

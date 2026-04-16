@@ -895,6 +895,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     current_license?: string[];
     license_number?: string;
     license_expiry?: string;
+    license_country_of_issue?: string;
     medical_class?: string;
     medical_expiry?: string;
     medical_country?: string;
@@ -1201,6 +1202,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             current_license: data.current_license || [],
             license_number: data.license_number,
             license_expiry: data.license_expiry,
+            license_country_of_issue: data.license_country_of_issue,
             medical_class: data.medical_class,
             medical_expiry: data.medical_expiry,
             medical_country: data.medical_country,
@@ -2378,6 +2380,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <span>License</span>
                           <strong style={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
                             {licensureData.current_license?.join(', ') || 'Not specified'}
+                          </strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: isDarkMode ? '#cbd5e1' : '#475569' }}>
+                          <span>License Country</span>
+                          <strong style={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
+                            {licensureData.license_country_of_issue || 'Not specified'}
                           </strong>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: isDarkMode ? '#cbd5e1' : '#475569' }}>

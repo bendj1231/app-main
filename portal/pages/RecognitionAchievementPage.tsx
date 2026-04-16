@@ -174,7 +174,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
   const fetchLicensureData = async (uid: string) => {
     try {
       const { data, error } = await supabase
-        .from('pilot_licensure_data')
+        .from('pilot_licensure_experience')
         .select('*')
         .eq('user_id', uid)
         .maybeSingle();
@@ -604,15 +604,19 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>License</span>
-                      <strong style={{ color: '#0f172a' }}>{licensureData?.license_type || 'Not specified'}</strong>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.current_license?.join(', ') || 'Not specified'}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
+                      <span>License Country</span>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.license_country_of_issue || 'Not specified'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>Medical</span>
                       <strong style={{ color: '#0f172a' }}>{licensureData?.medical_class || 'Not specified'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
-                      <span>Type Ratings</span>
-                      <strong style={{ color: '#0f172a' }}>{licensureData?.type_ratings?.join(', ') || 'None added'}</strong>
+                      <span>Aircraft Ratings</span>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.aircraft_ratings?.map((r: any) => r.aircraftType).join(', ') || 'None added'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>English Proficiency</span>
@@ -620,7 +624,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#475569' }}>
                       <span>Languages</span>
-                      <strong style={{ color: '#0f172a' }}>{licensureData?.languages?.join(', ') || 'Not specified'}</strong>
+                      <strong style={{ color: '#0f172a' }}>{licensureData?.languages || 'Not specified'}</strong>
                     </div>
                   </div>
                 </div>
@@ -646,7 +650,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       alignItems: 'center'
                     }}>
                       <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Medical Certificate</span>
-                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>{licensureData?.medical_certificate || 'Not specified'}</strong>
+                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>{licensureData?.medical_expiry || 'Not specified'}</strong>
                     </div>
                     <div style={{
                       background: 'white',
@@ -657,7 +661,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                       alignItems: 'center'
                     }}>
                       <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Radio License</span>
-                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>{licensureData?.radio_license || 'Not specified'}</strong>
+                      <strong style={{ fontSize: '0.9rem', color: '#0f172a', textAlign: 'right' }}>{licensureData?.radio_license_expiry || 'Not specified'}</strong>
                     </div>
                     <div style={{
                       background: 'white',
