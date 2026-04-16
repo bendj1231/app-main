@@ -621,16 +621,29 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
       }, 100);
     } catch (error) {
       console.error("Logout error:", error);
-      // Fallback: force redirect to login even if error
-      setAuthState({
-        user: null,
-        userProfile: null,
-        loading: false,
-        currentSystem: 'pms',
-        preloadedData: {}
-      });
-      setCurrentView('login');
-      window.location.hash = '';
+    }
+  };
+
+  const refreshUserProfile = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (profile) {
+        setAuthState(prev => ({
+          ...prev,
+          userProfile: profile
+        }));
+        console.log('✅ Profile refreshed successfully');
+      }
+    } catch (error) {
+      console.error('❌ Error refreshing profile:', error);
     }
   };
 
@@ -765,6 +778,7 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
           onBackToPrograms={() => setCurrentView('foundational')}
           onLogout={handleLogout}
           onShowTerms={() => setCurrentView('terms-conditions')}
+          onRefreshProfile={refreshUserProfile}
         />
       ) : currentView === 'terms-conditions' ? (
         <TermsAndConditionsPage onBack={() => setCurrentView('foundational-onboarding')} onAccept={() => setCurrentView('foundational-onboarding')} />

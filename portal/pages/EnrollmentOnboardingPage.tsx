@@ -8,9 +8,10 @@ interface EnrollmentOnboardingPageProps {
     onBackToPrograms: () => void;
     onLogout: () => void;
     onShowTerms: () => void;
+    onRefreshProfile?: () => void;
 }
 
-export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> = ({ onComplete, onBackToPrograms, onLogout, onShowTerms }) => {
+export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> = ({ onComplete, onBackToPrograms, onLogout, onShowTerms, onRefreshProfile }) => {
     const [interest, setInterest] = useState('');
     const [goals, setGoals] = useState('');
     const [agreed, setAgreed] = useState(false);
@@ -54,6 +55,13 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             });
             console.log('✅ Enrollment data saved successfully');
             console.log('🎉 Enrollment process completed successfully');
+            
+            // Refresh profile data to ensure enrollment status is updated
+            if (onRefreshProfile) {
+                console.log('🔄 Refreshing profile data...');
+                await onRefreshProfile();
+            }
+            
             onComplete();
             
         } catch (error) {
