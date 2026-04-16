@@ -236,6 +236,7 @@ interface WingMentorHomeProps {
 }
 
 export type MainView =
+  | 'hub'
   | 'dashboard'
   | 'news'
   | 'programs'
@@ -4071,7 +4072,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onBack={() => setMainView(userProfile?.enrolledPrograms?.includes('Foundational') ? 'foundational-enrolled' : 'programs')}
             onLogout={onLogout}
             onOpenPortfolio={() => setMainView('pilot-portfolio')}
-            onStartEnrollment={() => setMainView('enrollment-success')}
+            onStartEnrollment={() => setMainView('foundational-onboarding')}
             onStartSlideshow={() => setMainView('post-enrollment-slideshow')}
             userProfile={userProfile}
           />
