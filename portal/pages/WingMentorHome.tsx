@@ -411,6 +411,20 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
   const userDisplayName = userProfileDisplayName;
   const userHasFoundationalEnrollment = Boolean(userProfile?.enrolledPrograms?.includes('Foundational'));
   const userFirstName = userProfile?.firstName?.trim() || userDisplayName.split(' ')[0] || 'Pilot';
+
+  // Re-check enrollment when userProfile changes
+  useEffect(() => {
+    if (userProfile?.enrolledPrograms && userProfile.enrolledPrograms.includes('Foundational')) {
+      console.log('✅ User is enrolled in Foundational program, updating view');
+      setMainView(prev => {
+        // Only update if currently on dashboard or programs view
+        if (prev === 'dashboard' || prev === 'programs' || prev === 'pilot-portfolio') {
+          return 'foundational-enrolled';
+        }
+        return prev;
+      });
+    }
+  }, [userProfile?.enrolledPrograms]);
   const handleAccessWebsite = () => {
     window.open('https://wingmentor.app', '_blank', 'noopener,noreferrer');
   };
