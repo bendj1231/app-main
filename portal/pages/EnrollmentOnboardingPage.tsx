@@ -64,6 +64,9 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             });
             console.log('✅ Enrollment data saved successfully');
             
+            // Add delay to ensure Supabase commits the changes
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
             // Refresh profile data to ensure enrollment status is updated
             if (onRefreshProfile) {
                 console.log('🔄 Refreshing profile data...');
