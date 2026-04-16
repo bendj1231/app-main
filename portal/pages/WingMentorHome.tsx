@@ -18,6 +18,7 @@ import { PathwaysPage } from './PathwaysPage';
 import { WingMentorNetworkPage } from './WingMentorNetworkPage';
 import LogbookPage from './LogbookPage';
 import ExaminationResultsPage from './ExaminationResultsPage';
+import { TermsAndConditionsPage } from './TermsAndConditionsPage';
 import AtlasResumePage from './AtlasResumePage';
 import PrintableResumePage from './PrintableResumePage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -4069,6 +4070,13 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onStartEnrollment={() => setMainView('foundational-get-started')}
             onStartSlideshow={() => setMainView('post-enrollment-slideshow')}
             userProfile={userProfile}
+          />
+        );
+      case 'foundational-get-started':
+        return (
+          <TermsAndConditionsPage
+            onBack={() => setMainView('foundational')}
+            onAccept={() => setMainView('foundational-onboarding')}
           />
         );
       case 'enrollment-confirmation':

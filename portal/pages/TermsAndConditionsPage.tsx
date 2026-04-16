@@ -3,9 +3,10 @@ import { Icons } from '../icons';
 
 interface TermsAndConditionsPageProps {
     onBack: () => void;
+    onAccept: () => void;
 }
 
-export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ onBack }) => {
+export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ onBack, onAccept }) => {
     return (
         <div className="animate-fade-in" style={{
             minHeight: '100vh',
@@ -432,22 +433,22 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                 <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1rem' }}>Industry Credibility Starts Here</h2>
                 <p style={{ color: '#94a3b8', marginBottom: '2.5rem' }}>Building the future of Pilot Quality Assurance.</p>
                 <button
-                    onClick={onBack}
+                    onClick={onAccept}
                     style={{
                         backgroundColor: '#2563eb',
                         color: 'white',
                         border: 'none',
-                        padding: '1rem 3rem',
-                        borderRadius: '12px',
-                        fontWeight: 700,
-                        cursor: 'pointer',
+                        padding: '1.25rem 3rem',
+                        borderRadius: '999px',
                         fontSize: '1rem',
-                        transition: 'all 0.2s'
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
                     }}
                     onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
                     onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
                 >
-                    I Acknowledge and Return
+                    I Acknowledge and Continue
                 </button>
             </div>
         </div>
