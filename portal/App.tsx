@@ -636,11 +636,15 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
         .single();
 
       if (profile) {
+        console.log('📊 Profile data from Supabase:', profile);
+        console.log('📋 enrolled_programs from profile:', profile.enrolled_programs);
         setAuthState(prev => ({
           ...prev,
           userProfile: profile
         }));
         console.log('✅ Profile refreshed successfully');
+      } else {
+        console.warn('⚠️ No profile data returned from Supabase');
       }
     } catch (error) {
       console.error('❌ Error refreshing profile:', error);
