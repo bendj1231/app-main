@@ -143,7 +143,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
         },
         {
             id: 'pilot-recognition',
-            image: '/images/accessportal.png',
+            image: '/images/pilotrecognitioncompoennt.png',
             title: 'Pilot Recognition',
             subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
             icon: Compass,
@@ -173,7 +173,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
         },
         {
             id: 'benefits',
-            image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800',
+            image: '/New Note.jpeg',
             title: 'Program Benefits',
             subtitle: 'Discover certification advantages, career pathways, and exclusive member perks',
             icon: Award,
@@ -191,7 +191,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
         },
         {
             id: 'learn-more',
-            image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800',
+            image: 'https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g',
             title: 'Learn More',
             subtitle: 'Deep dive into curriculum details, mentorship structure, and success stories',
             icon: GraduationCap,
@@ -1477,9 +1477,10 @@ const GridCard: React.FC<GridCardProps> = ({
                         <img 
                             src={card.image} 
                             alt={card.title}
+                            style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : 'center' }}
                             className={`
-                                w-full h-full object-cover transition-transform duration-700
-                                ${isHovered ? 'scale-110' : 'scale-100'}
+                                w-full h-full object-cover
+                                ${isHovered ? 'scale-110' : ''}
                             `}
                         />
                     ) : null}
