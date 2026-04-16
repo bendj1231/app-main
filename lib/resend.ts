@@ -1,6 +1,12 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend: Resend | null = null;
+
+if (process.env.RESEND_API_KEY) {
+  resend = new Resend(process.env.RESEND_API_KEY);
+} else {
+  console.warn('RESEND_API_KEY not set - email functionality will be disabled');
+}
 
 export const sendEmail = async ({
   to,
@@ -13,6 +19,11 @@ export const sendEmail = async ({
   html: string;
   from?: string;
 }) => {
+  if (!resend) {
+    console.warn('Email functionality disabled - RESEND_API_KEY not set');
+    return null;
+  }
+
   try {
     const { data, error } = await resend.emails.send({
       from,

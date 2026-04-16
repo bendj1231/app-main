@@ -199,7 +199,6 @@ const App = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log('Loading timer fired, setting loading to false');
       setLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
