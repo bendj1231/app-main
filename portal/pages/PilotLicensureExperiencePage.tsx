@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase-auth';
 interface PilotLicensureExperiencePageProps {
   onBack: () => void;
   userProfile?: {
+    id?: string;
     uid?: string;
     firstName?: string;
     lastName?: string;
@@ -205,13 +206,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [dataLoaded, userProfile?.uid]);
+  }, [dataLoaded, userProfile?.id]);
 
   // Load existing data from Supabase
   useEffect(() => {
     const loadExistingData = async () => {
-      if (!userProfile?.uid) {
-        console.log('No userProfile uid available, skipping data load');
+      const userId = userProfile?.id || userProfile?.uid;
+      if (!userId) {
+        console.log('No userProfile id available, skipping data load');
         setDataLoaded(true); // Mark as loaded so loader hides
         return;
       }
@@ -221,7 +223,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('full_name, display_name, phone, country, date_of_birth, email, onboarding_responses')
-          .eq('id', userProfile.uid)
+          .eq('id', userId)
           .single();
 
         // Set initial values from profiles (if available)
@@ -283,14 +285,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         const { data, error } = await supabase
           .from('pilot_licensure_experience')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .maybeSingle();
 
         // Also fetch from pilot_profiles for flight hours and license data
         const { data: pilotProfileData, error: pilotProfileError } = await supabase
           .from('pilot_profiles')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .maybeSingle();
 
         if (pilotProfileError) {
@@ -453,7 +455,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
   // Save all data to Supabase
   const handleSave = async () => {
-    if (!userProfile?.uid) {
+    const userId = userProfile?.id || userProfile?.uid;
+    if (!userId) {
       setSaveMessage('Please log in to save your data');
       return;
     }
@@ -463,7 +466,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 
     try {
       const data = {
-        user_id: userProfile.uid,
+        user_id: userId,
         first_name: firstName,
         middle_name: middleName,
         last_name: lastName,

@@ -223,7 +223,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .from('pilot_licensure_experience')
                 .upsert({
                     user_id: userId,
-                    firebase_uid: firebaseUser?.uid || null,
                     pilot_id: userData.pilotId,
                     full_legal_name: userData.fullName,
                     first_name: userData.fullName?.split(' ')[0] || '',

@@ -450,7 +450,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                     <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#020617' }} onMouseEnter={() => setVideoControlsVisible(true)} onMouseLeave={() => setVideoControlsVisible(false)}>
                         <video
                             ref={heroVideoRef}
-                            src="/wm%20productions%20final%20output.mov"
+                            src="/wm-productions-final-output.mp4"
                             preload="auto"
                             playsInline
                             autoPlay
@@ -692,42 +692,57 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
 
                         {/* Enrollment Button */}
                         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                            <button
-                                onClick={() => {
-                                    console.log('🔘 Enrollment button clicked');
-                                    console.log('🔘 onStartEnrollment function:', onStartEnrollment);
-                                    
-                                    if (onStartEnrollment) {
-                                        console.log('🚀 Calling onStartEnrollment...');
-                                        onStartEnrollment();
-                                    } else {
-                                        console.error('❌ onStartEnrollment is not defined');
-                                        alert('Enrollment function is not available. Please refresh the page and try again.');
-                                    }
-                                }}
-                                style={{
-                                    padding: '1.25rem 4rem',
+                            {userHasFoundationalEnrollment ? (
+                                <div style={{
+                                    padding: '1.25rem 2rem',
                                     borderRadius: '50px',
-                                    border: 'none',
-                                    background: 'linear-gradient(135deg, #2563eb, #1e40af)',
-                                    color: '#fff',
+                                    background: '#f0fdf4',
+                                    border: '2px solid #22c55e',
+                                    color: '#166534',
                                     fontWeight: 700,
                                     fontSize: '1.1rem',
-                                    cursor: 'pointer',
-                                    boxShadow: '0 12px 30px rgba(37, 99, 235, 0.3)',
-                                    transition: 'all 0.3s ease'
-                                }}
-                                onMouseOver={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                    e.currentTarget.style.boxShadow = '0 18px 40px rgba(37, 99, 235, 0.4)';
-                                }}
-                                onMouseOut={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.boxShadow = '0 12px 30px rgba(37, 99, 235, 0.3)';
-                                }}
-                            >
-                                Start Enrollment
-                            </button>
+                                    display: 'inline-block'
+                                }}>
+                                    ✓ You are already enrolled
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        console.log('🔘 Enrollment button clicked');
+                                        console.log('🔘 onStartEnrollment function:', onStartEnrollment);
+                                        
+                                        if (onStartEnrollment) {
+                                            console.log('🚀 Calling onStartEnrollment...');
+                                            onStartEnrollment();
+                                        } else {
+                                            console.error('❌ onStartEnrollment is not defined');
+                                            alert('Enrollment function is not available. Please refresh the page and try again.');
+                                        }
+                                    }}
+                                    style={{
+                                        padding: '1.25rem 4rem',
+                                        borderRadius: '50px',
+                                        border: 'none',
+                                        background: 'linear-gradient(135deg, #2563eb, #1e40af)',
+                                        color: '#fff',
+                                        fontWeight: 700,
+                                        fontSize: '1.1rem',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 12px 30px rgba(37, 99, 235, 0.3)',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    onMouseOver={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.boxShadow = '0 18px 40px rgba(37, 99, 235, 0.4)';
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 12px 30px rgba(37, 99, 235, 0.3)';
+                                    }}
+                                >
+                                    Start Enrollment
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

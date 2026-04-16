@@ -3771,7 +3771,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#020617' }} onMouseEnter={() => setVideoControlsVisible(true)} onMouseLeave={() => setVideoControlsVisible(false)}>
                                 <video
                                     ref={heroVideoRef}
-                                    src="/wm%20productions%20final%20output.mov"
+                                    src="/wm-productions-final-output.mp4"
                                     preload="auto"
                                     playsInline
                                     autoPlay
