@@ -11,6 +11,7 @@ import {
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { supabase } from '../lib/supabase';
+import { sendWelcomeEmail } from '../../lib/resend';
 
 interface AuthContextType {
     currentUser: User | null;
@@ -143,6 +144,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (emailError) {
             console.error("Error sending verification email:", emailError);
             // Non-critical: User is still created, they can resend later if we add that feature
+        }
+
+        // Send welcome email via Resend
+        try {
+            const firstName = userData.fullName?.split(' ')[0] || 'Pilot';
+            await sendWelcomeEmail(email, firstName);
+            console.log("Welcome email sent to:", email);
+        } catch (welcomeEmailError) {
+            console.error("Error sending welcome email:", welcomeEmailError);
+            // Non-critical: User is still created
         }
 
         // Create readable roster entry for admin view
