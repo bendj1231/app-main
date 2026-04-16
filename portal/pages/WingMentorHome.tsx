@@ -256,6 +256,7 @@ export type MainView =
   | 'aviation-expectations'
   | 'atpl-pathway'
   | 'private-sector'
+  | 'pilot-licensure-experience'
   | 'examination-results'
   | 'logbook'
   | 'digital-logbook'
@@ -3907,6 +3908,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             userProfile={userProfile}
             onViewExams={() => setMainView('examination-results')}
             onViewAtlas={() => setMainView('atlas-resume')}
+            onViewLicensureExperience={() => setMainView('pilot-licensure-experience')}
           />
         );
       case 'examination-results':
@@ -4043,7 +4045,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         return (
           <PilotLicensureExperiencePage
             userProfile={userProfile}
-            onBack={() => setMainView('pilot-portfolio')}
+            onBack={() => setMainView('recognition')}
           />
         );
 
