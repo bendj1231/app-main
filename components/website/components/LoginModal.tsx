@@ -55,7 +55,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             />
             
             {/* Modal Container */}
-            <div className="relative z-10 w-full max-w-[900px] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative z-10 w-full max-w-[900px] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl animate-fadeInUp">
                 {/* Glassy X Button - Top Right */}
                 <button
                     onClick={onClose}

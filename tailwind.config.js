@@ -8,6 +8,20 @@ export default {
     ],
     theme: {
         extend: {
+            animation: {
+                'fadeInUp': 'fadeInUp 0.3s ease-out',
+                'fadeIn': 'fadeIn 0.3s ease-out',
+            },
+            keyframes: {
+                fadeInUp: {
+                    '0%': { opacity: '0', transform: 'translateY(20px) scale(0.95)' },
+                    '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+                },
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+            },
             // Fluid spacing scale using clamp()
             spacing: {
                 'fluid-xs': 'clamp(0.25rem, 0.5vw, 0.5rem)',
