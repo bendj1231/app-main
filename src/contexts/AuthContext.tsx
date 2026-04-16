@@ -150,14 +150,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .from('profiles')
                 .update({ firebase_uid: firebaseUser.uid })
                 .eq('id', userId);
-
-            // Update Supabase auth user metadata with Firebase UID
-            await supabase.auth.admin.updateUserById(userId, {
-                user_metadata: {
-                    display_name: userData.fullName || email.split('@')[0],
-                    firebase_uid: firebaseUser.uid
-                }
-            });
         } catch (firebaseError) {
             console.error('Firebase creation error:', firebaseError);
             // Non-critical: Supabase auth is the primary auth

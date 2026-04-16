@@ -457,7 +457,10 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
               <span className="font-bold text-slate-800">The first step towards your Pilot recognition.</span> Join WingMentor network to gain access to the programs, pathways, and pilot recognition.
             </p>
             <a 
-              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate?.('become-member');
+              }}
               className="text-blue-600 hover:text-blue-800 font-semibold text-sm md:text-base underline cursor-pointer"
             >
               Create Account

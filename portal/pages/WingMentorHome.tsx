@@ -48,10 +48,19 @@ const FoundationalEnrollmentCheck: React.FC<{
   userProfile?: any;
 }> = ({ userId, onResult, preloadedEnrollment, preloadedPrograms, userProfile }) => {
   const [isLoading, setIsLoading] = useState(!preloadedEnrollment && !preloadedPrograms);
+  const hasCheckedEnrollment = useRef(false);
 
   useEffect(() => {
+    // Prevent multiple checks
+    if (hasCheckedEnrollment.current) {
+      return;
+    }
+
     const checkEnrollment = async () => {
       console.log('🔍 FoundationalEnrollmentCheck: Starting check', { userId, hasPreloadedPrograms: !!preloadedPrograms, hasPreloadedEnrollment: !!preloadedEnrollment });
+      
+      // Mark as checked
+      hasCheckedEnrollment.current = true;
       
       // Try both Supabase ID and Firebase UID
       const supabaseId = userProfile?.id || userId;
@@ -119,15 +128,15 @@ const FoundationalEnrollmentCheck: React.FC<{
 
     checkEnrollment();
 
-    // Failsafe: ensure loading completes even if something hangs
+    // Reduced timeout from 5s to 2s for faster fallback
     const timeout = setTimeout(() => {
       console.warn('⚠️ FoundationalEnrollmentCheck: Timeout - forcing completion');
       setIsLoading(false);
       onResult(false);
-    }, 5000);
+    }, 2000);
 
     return () => clearTimeout(timeout);
-  }, [userId, onResult, preloadedEnrollment, preloadedPrograms, userProfile]);
+  }, [userId, preloadedEnrollment, preloadedPrograms, userProfile?.id, userProfile?.firebase_uid, userProfile?.enrolledPrograms]);
 
   if (isLoading) {
     return (
@@ -301,6 +310,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
   preloadedData = {}
 }) => {
   const [mainView, setMainView] = useState<MainView>(initialView || 'dashboard');
+  const [fullScreenView, setFullScreenView] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const SIDEBAR_BASE_WIDTH = 280;
   const SIDEBAR_BASE_HEIGHT = 980;
@@ -3915,9 +3925,9 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onViewFoundationalPlatform={() => setMainView('foundational-enrolled')}
             onViewFoundationalEnrollment={() => setMainView('foundational-enrollment-check')}
             onViewLicensureExperience={() => setMainView('pilot-licensure-experience')}
-            onViewModule01={() => setMainView('pilot-gap-module')}
-            onViewModule02={() => setMainView('pilot-gap-module-2')}
-            onViewModule03={() => setMainView('module-3')}
+            onViewModule01={() => setFullScreenView('pilot-gap-module')}
+            onViewModule02={() => setFullScreenView('pilot-gap-module-2')}
+            onViewModule03={() => setFullScreenView('module-3')}
             onViewWingMentorConnect={() => setMainView('wingmentor-network')}
             onViewEBTCBTAInterview={() => setMainView('interview-evaluation')}
             userProfile={userProfile ?? undefined} 
@@ -4102,6 +4112,66 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         </div>
       ) : (
         <MainPanel />
+      )}
+
+      {/* Full-screen module overlay */}
+      {fullScreenView && (
+        <div style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          bottom: 0, 
+          zIndex: 2000,
+          backgroundColor: isDarkMode ? '#020817' : '#f8fafc',
+          overflowY: 'auto'
+        }}>
+          <button
+            onClick={() => setFullScreenView(null)}
+            style={{
+              position: 'absolute',
+              top: '1rem',
+              right: '1rem',
+              padding: '0.5rem 1rem',
+              background: '#ef4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              zIndex: 2001,
+              fontWeight: 600
+            }}
+          >
+            ✕ Close
+          </button>
+          {fullScreenView === 'pilot-gap-module' && (
+            <PilotGapModulePage 
+              onBack={() => setFullScreenView(null)}
+              onComplete={() => setFullScreenView(null)}
+              onNavigateToMentorModules={() => setFullScreenView('mentor-modules')}
+            />
+          )}
+          {fullScreenView === 'pilot-gap-module-2' && (
+            <PilotGapModulePage 
+              onBack={() => setFullScreenView(null)}
+              onComplete={() => setFullScreenView(null)}
+              onNavigateToMentorModules={() => setFullScreenView('mentor-modules')}
+            />
+          )}
+          {fullScreenView === 'module-3' && (
+            <PilotGapModulePage 
+              onBack={() => setFullScreenView(null)}
+              onComplete={() => setFullScreenView(null)}
+              onNavigateToMentorModules={() => setFullScreenView('mentor-modules')}
+            />
+          )}
+          {fullScreenView === 'mentor-modules' && (
+            <MentorModulesPage 
+              onBack={() => setFullScreenView('pilot-gap-module')}
+              onComplete={() => setFullScreenView(null)}
+            />
+          )}
+        </div>
       )}
     </div>
   );

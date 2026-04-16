@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { Icons } from '../icons';
 import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
@@ -909,17 +909,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   }
   const [licensureData, setLicensureData] = useState<LicensureData | null>(null);
   const [licensureLoading, setLicensureLoading] = useState(true);
+  const hasCheckedEnrollment = useRef(false);
 
   // Separate useEffect for enrollment check - runs on mount and when email changes
   useEffect(() => {
+    // Prevent multiple checks
+    if (hasCheckedEnrollment.current) {
+      return;
+    }
+
     const checkEnrollment = async () => {
       console.log('🔍 Enrollment check triggered');
       console.log('📋 userProfile:', userProfile);
       console.log('📋 userProfile.email:', userProfile?.email);
       
+      // Mark as checked
+      hasCheckedEnrollment.current = true;
+      
       if (!userProfile?.email) {
         console.log('⚠️ No email in userProfile, skipping enrollment check');
         setIsFoundationalEnrolled(false);
+        return;
+      }
+
+      // First check if enrolled_programs is already in userProfile
+      if (userProfile?.enrolledPrograms && Array.isArray(userProfile.enrolledPrograms)) {
+        const isEnrolled = userProfile.enrolledPrograms.includes('Foundational');
+        console.log('✅ Using cached enrolled_programs from userProfile:', isEnrolled);
+        setIsFoundationalEnrolled(isEnrolled);
         return;
       }
 
