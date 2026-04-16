@@ -739,12 +739,12 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
       ) : currentView === 'reset-password' ? (
         <ResetPasswordPage />
       ) : currentView === 'hub' ? (
-        <WingMentorHome 
-          onLogout={handleLogout} 
+        <WingMentorHome
+          onLogout={handleLogout}
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
           onViewChange={(view) => handleViewChange(view as ViewName)}
-          initialView={pendingHomeView || 'wingmentor-network'}
+          initialView={pendingHomeView || 'pilot-portfolio'}
           isDarkMode={isDarkMode}
           onToggleDarkMode={handleToggleDarkMode}
         />
@@ -770,7 +770,7 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
           onShowTerms={() => setCurrentView('terms-conditions')}
         />
       ) : currentView === 'terms-conditions' ? (
-        <TermsAndConditionsPage onBack={() => setCurrentView('foundational-onboarding')} />
+        <TermsAndConditionsPage onBack={() => setCurrentView('foundational-onboarding')} onAccept={() => setCurrentView('foundational-onboarding')} />
       ) : currentView === 'post-enrollment-slideshow' ? (
         <PostEnrollmentSlideshow
           onComplete={() => setCurrentView('foundational')}
