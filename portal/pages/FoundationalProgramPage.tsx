@@ -89,10 +89,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
     };
 
     const toggleHeroVideoMute = () => {
-        const video = heroVideoRef.current;
-        if (!video) return;
-        video.muted = !video.muted;
-        setIsVideoMuted(video.muted);
+        setIsVideoMuted(!isVideoMuted);
     };
 
     const handleHeroVideoSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,11 +151,13 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
         const video = heroVideoRef.current;
         if (!video) return;
         if (!document.fullscreenElement) {
-            video.requestFullscreen();
-            setIsFullScreen(true);
+            video.requestFullscreen().catch(err => {
+                console.error('Fullscreen request failed:', err);
+            });
         } else {
-            document.exitFullscreen();
-            setIsFullScreen(false);
+            document.exitFullscreen().catch(err => {
+                console.error('Exit fullscreen failed:', err);
+            });
         }
     };
 
