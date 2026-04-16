@@ -2090,7 +2090,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </h2>
 
                             <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
-                                <img src="/unclogging-pipes-pilot-gap.png" alt="Cartoon illustrating the clogged pipeline of flight instructors" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <div style={{ textAlign: 'left', marginBottom: '3rem' }}>
@@ -2100,7 +2100,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
 
                             <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
-                                <img src="/unclogging-pipes-pilot-gap-2.png" alt="Cartoon illustrating the unclogged pipeline of flight instructors through Wingmentor Pilot Recognition" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                {/* Image removed - file not found */}
                             </div>
 
                             <div style={{ textAlign: 'left', marginBottom: '2rem' }}>
@@ -2156,7 +2156,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                     </div>
 
                     <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '1rem' }}>
-                        <img src="/recogntion.png" alt="Pilot Recognition — Wingmentor Foundation Program" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                        {/* Image removed - file not found */}
                     </div>
                     <p style={{ fontSize: '0.8rem', color: '#94a3b8', fontStyle: 'italic', textAlign: 'center', margin: '0 0 3rem 0', lineHeight: 1.5 }}>
                         A recognized pilot completing a standardized multi-crew assessment — the foundation of airline-level readiness.
@@ -2182,11 +2182,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             <h4 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', fontFamily: 'Georgia, serif', marginBottom: '1.5rem' }}>
                                 The Blind Application Trap
                             </h4>
-                            <img
-                                src="/pilotcenter.png"
-                                alt="Pilot Center — blind resume submission"
-                                style={{ width: '100%', height: 'auto', borderRadius: '20px', boxShadow: '0 8px 32px rgba(0,0,0,0.08)', marginBottom: '1.75rem', display: 'block' }}
-                            />
+                            {/* Image removed - file not found */}
                             <p style={{ marginBottom: '1.5rem' }}>
                                 Majority of pilots send resumes blindly to airlines or upload them to sites like <em>pilotcenter.com</em>. While you may technically meet the basic requirements, the "Next Step"—the follow-up response—is where most careers stall.
                             </p>
@@ -2199,11 +2195,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             <h4 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', fontFamily: 'Georgia, serif', marginBottom: '1.5rem' }}>
                                 Beyond the "Blind Submit"
                             </h4>
-                            <img
-                                src="/staffingimg.png"
-                                alt="Pilot Staffing & Recruitment"
-                                style={{ width: '100%', height: 'auto', borderRadius: '20px', boxShadow: '0 8px 32px rgba(0,0,0,0.08)', marginBottom: '2rem', display: 'block' }}
-                            />
+                            {/* Image removed - file not found */}
                             <p style={{ marginBottom: '1.5rem' }}>
                                 Look at this from the airline's perspective: every year, thousands of newly-minted low-timer pilots graduate globally and immediately begin sending their 200-hour resumes blindly to every carrier they can find. The sheer volume of applications creates an insurmountable administrative wall for internal HR departments.
                             </p>
