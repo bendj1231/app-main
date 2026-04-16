@@ -419,6 +419,24 @@ export const completeEnrollment = async (uid: string, onboardingData: {
     if (!verifyProfile.enrolled_programs.includes('Foundational')) {
       throw new Error('Verification failed: Foundational program not found in enrolled_programs');
     }
+
+    // Update pilot_portfolio table foundation_program_status
+    console.log('💾 Updating pilot_portfolio foundation_program_status...');
+    const { error: portfolioError } = await supabase
+      .from('pilot_portfolio')
+      .update({
+        foundation_program_status: 'in_progress',
+        program_start_date: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .eq('user_id', uid);
+
+    if (portfolioError) {
+      console.error('⚠️ Pilot portfolio update error:', portfolioError);
+      // Non-critical: enrollment is still successful
+    } else {
+      console.log('✅ Pilot portfolio updated successfully');
+    }
     
     console.log('✅ Enrollment verification successful');
 
