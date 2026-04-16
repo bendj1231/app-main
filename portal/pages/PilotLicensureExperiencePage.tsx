@@ -536,12 +536,18 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           flight_school_address: flightSchoolAddress,
           license_id: licenseNumber,
           country_of_license: licenseCountryOfIssue,
-          aircraft_rated_on: aircraftRatings?.length > 0 ? aircraftRatings[0].type : '',
+          aircraft_rated_on: aircraftRatings?.length > 0 ? aircraftRatings[0].aircraftType : '',
           experience_description: whyBecomePilot,
           ratings: currentLicenses,
           program_interests: aviationPathwaysInterests,
           pathway_interests: aviationPathwaysInterests,
           insight_interests: pilotJobPositionsInterests,
+          // Medical information
+          medical_expiry: medicalExpiry,
+          medical_country: medicalCountry,
+          medical_class: medicalClass,
+          radio_license_expiry: radioLicenseExpiry,
+          license_expiry: licenseExpiry,
           updated_at: new Date().toISOString()
         };
 
