@@ -151,9 +151,17 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
         const video = heroVideoRef.current;
         if (!video) return;
         if (!document.fullscreenElement) {
-            video.requestFullscreen().catch(err => {
-                console.error('Fullscreen request failed:', err);
-            });
+            if (video.requestFullscreen) {
+                video.requestFullscreen().catch(err => {
+                    console.error('Fullscreen request failed:', err);
+                });
+            } else if ((video as any).webkitRequestFullscreen) {
+                (video as any).webkitRequestFullscreen();
+            } else if ((video as any).mozRequestFullScreen) {
+                (video as any).mozRequestFullScreen();
+            } else if ((video as any).msRequestFullscreen) {
+                (video as any).msRequestFullscreen();
+            }
         } else {
             document.exitFullscreen().catch(err => {
                 console.error('Exit fullscreen failed:', err);
@@ -506,9 +514,9 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                                 flexDirection: 'column',
                                 gap: '0.9rem',
                                 boxShadow: '0 40px 80px rgba(2,4,12,0.5)',
-                                opacity: isVideoPlaying && !videoControlsVisible ? 0 : 1,
-                                transition: 'opacity 0.4s ease',
-                                pointerEvents: isVideoPlaying && !videoControlsVisible ? 'none' : 'auto'
+                                opacity: videoControlsVisible ? 1 : 0,
+                                transition: 'opacity 0.3s ease',
+                                pointerEvents: 'auto'
                             }}
                             onMouseEnter={() => setVideoControlsVisible(true)}
                             onMouseLeave={() => setVideoControlsVisible(false)}
