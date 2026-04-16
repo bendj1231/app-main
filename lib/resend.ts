@@ -6,7 +6,7 @@ export const sendEmail = async ({
   to,
   subject,
   html,
-  from = 'Karl Brian Vogt <kb@pilotrecognition.com>',
+  from = 'PilotRecognition Team <contact@pilotrecognition.com>',
 }: {
   to: string | string[];
   subject: string;
