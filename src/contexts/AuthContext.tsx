@@ -89,12 +89,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     phone: userData.contactNumber,
                     country: userData.residingCountry,
                     date_of_birth: userData.dob,
+                    nationality: userData.nationality,
                     role: 'mentee', // Default role for new users
                     status: 'active',
                     firebase_uid: null, // Will be set after Firebase creation
                     enrolled_programs: [],
                     created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
+                    updated_at: new Date().toISOString(),
+                    // Additional detailed fields
+                    pilot_id: userData.pilotId,
+                    flight_school_address: userData.flightSchoolAddress,
+                    license_id: userData.licenseId,
+                    country_of_license: userData.countryOfLicense,
+                    current_flight_hours: userData.currentFlightHours,
+                    aircraft_rated_on: userData.aircraftRatedOn,
+                    experience_description: userData.experienceDescription,
+                    ratings: userData.ratings,
+                    program_interests: userData.programInterests,
+                    pathway_interests: userData.pathwayInterests,
+                    insight_interests: userData.insightInterests
                 });
 
             if (profileError) {
