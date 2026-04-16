@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase-auth';
 
 interface ExaminationResultsPageProps {
   onBack: () => void;
@@ -6,41 +7,78 @@ interface ExaminationResultsPageProps {
     firstName?: string;
     lastName?: string;
     uid?: string;
+    id?: string;
   } | null;
 }
 
-const sampleExams = [
-  {
-    id: 'exam-01',
-    name: 'Knowledge Recency Exam',
-    date: 'Mar 04, 2026',
-    overall: 92,
-    status: 'Verified',
-    sections: [
-      { label: 'Systems & Performance', score: 94 },
-      { label: 'Meteorology', score: 88 },
-      { label: 'Flight Planning', score: 95 }
-    ]
-  },
-  {
-    id: 'exam-02',
-    name: 'Mentorship Observation Assessment',
-    date: 'Feb 21, 2026',
-    overall: 87,
-    status: 'Verified',
-    sections: [
-      { label: 'CRM & Leadership', score: 90 },
-      { label: 'Scenario Analysis', score: 84 },
-      { label: 'Peer Consultation', score: 88 }
-    ]
-  }
-];
+interface Exam {
+  id: string;
+  name: string;
+  date: string;
+  overall: number;
+  status: string;
+  sections: Array<{ label: string; score: number }>;
+}
 
 const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack, userProfile }) => {
-  const currentExam = sampleExams[0];
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [loading, setLoading] = useState(true);
   const fullName = `${userProfile?.firstName || 'Benjamin'} ${userProfile?.lastName || 'Bowler'}`.trim();
 
-  return (
+  useEffect(() => {
+    const fetchExamResults = async () => {
+      if (!userProfile?.id && !userProfile?.uid) {
+        setLoading(false);
+        return;
+      }
+
+      const userId = userProfile?.id || userProfile?.uid;
+      
+      try {
+        const { data, error } = await supabase
+          .from('exam_results')
+          .select('*')
+          .eq('user_id', userId)
+          .order('exam_date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching exam results:', error);
+          setLoading(false);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          const formattedExams: Exam[] = data.map((exam: any) => ({
+            id: exam.id,
+            name: exam.exam_name || 'Exam',
+            date: new Date(exam.exam_date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+            overall: exam.overall_score || 0,
+            status: exam.status || 'Pending',
+            sections: exam.section_scores || []
+          }));
+          setExams(formattedExams);
+        }
+      } catch (error) {
+        console.error('Error fetching exam results:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExamResults();
+  }, [userProfile?.id, userProfile?.uid]);
+
+  const currentExam = exams.length > 0 ? exams[0] : null;
+
+  if (loading) {
+      return (
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <p>Loading exam results...</p>
+        </div>
+      );
+    }
+
+    return (
     <div className="dashboard-container animate-fade-in" style={{ overflowY: 'auto', height: '100vh' }}>
       <main className="dashboard-card" style={{ position: 'relative', textAlign: 'center' }}>
         <button
@@ -76,12 +114,32 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
           </p>
         </div>
 
+        {exams.length === 0 ? (
+          <section className="dashboard-section" style={{ marginBottom: '2rem' }}>
+            <div style={{
+              background: 'white',
+              borderRadius: '24px',
+              padding: '3rem',
+              boxShadow: '0 15px 40px rgba(15,23,42,0.08)',
+              border: '1px solid rgba(226,232,240,0.8)',
+              textAlign: 'center'
+            }}>
+              <p style={{ fontSize: '1.1rem', color: '#64748b', marginBottom: '1rem' }}>
+                No exam results found
+              </p>
+              <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
+                You haven't taken any exams yet. Visit the Examination Portal to take your first exam.
+              </p>
+            </div>
+          </section>
+        ) : (
+          <>
         <section className="dashboard-section" style={{ marginBottom: '1.5rem' }}>
           <div style={{
             background: 'white',
             borderRadius: '24px',
             padding: '1.5rem',
-            boxShadow: '0 18px 45px rgba(15, 23, 42, 0.08)',
+            boxShadow: '0 18px 45px rgba(15, 42, 0.08)',
             border: '1px solid rgba(226,232,240,0.8)',
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
@@ -92,13 +150,13 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
               value: fullName
             }, {
               label: 'Latest Exam Score',
-              value: `${currentExam.overall}%`
+              value: currentExam ? `${currentExam.overall}%` : 'N/A'
             }, {
               label: 'Exams Verified',
-              value: sampleExams.length.toString()
+              value: exams.length.toString()
             }, {
               label: 'Status',
-              value: currentExam.status
+              value: currentExam ? currentExam.status : 'N/A'
             }].map(card => (
               <div key={card.label} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.72rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '0.35rem' }}>{card.label}</div>
@@ -133,7 +191,7 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
                   </tr>
                 </thead>
                 <tbody>
-                  {sampleExams.map(exam => (
+                  {exams.map(exam => (
                     <tr key={exam.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                       <td style={{ padding: '0.9rem 0.5rem', fontWeight: 600, color: '#0f172a' }}>{exam.name}</td>
                       <td style={{ padding: '0.9rem 0.5rem', color: '#475569' }}>{exam.date}</td>
@@ -163,6 +221,7 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
           </div>
         </section>
 
+        {currentExam && (
         <section className="dashboard-section">
           <div style={{
             background: 'white',
@@ -188,6 +247,9 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
             </div>
           </div>
         </section>
+        )}
+        </>
+        )}
       </main>
     </div>
   );

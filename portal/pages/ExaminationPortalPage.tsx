@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { UserProfile } from '../types/user';
 import { Icons } from '../icons';
 
@@ -21,6 +21,8 @@ export const ExaminationPortalPage: React.FC<ExaminationPortalPageProps> = ({
   module01Completed = true,
   programCompleted = false
 }) => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [pendingExam, setPendingExam] = useState<string | null>(null);
   const displayName = userProfile?.firstName || userProfile?.displayName || userProfile?.email || 'Pilot';
 
   const category1Exams = [
@@ -131,7 +133,25 @@ export const ExaminationPortalPage: React.FC<ExaminationPortalPageProps> = ({
     },
   ];
 
-  // Exam Card Component
+  const handleExamStart = (examId: string, examTitle: string) => {
+    setPendingExam(examTitle);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmExamStart = () => {
+    setShowConfirmation(false);
+    if (pendingExam === 'Foundational Knowledge Examination' && onStartFoundationalExam) {
+      onStartFoundationalExam();
+    } else if (pendingExam === 'Pilot Licensure Examination' && onStartFAAExam) {
+      onStartFAAExam();
+    }
+    setPendingExam(null);
+  };
+
+  const handleCancelExamStart = () => {
+    setShowConfirmation(false);
+    setPendingExam(null);
+  };
   const ExamCard = ({ exam }: { exam: any }) => (
     <div
       style={{
@@ -183,7 +203,7 @@ export const ExaminationPortalPage: React.FC<ExaminationPortalPageProps> = ({
 
       {exam.id === 'foundational-knowledge' ? (
         <button
-          onClick={onStartFoundationalExam}
+          onClick={() => handleExamStart(exam.id, exam.title)}
           disabled={exam.status === 'locked'}
           style={{
             width: '100%',
@@ -201,7 +221,7 @@ export const ExaminationPortalPage: React.FC<ExaminationPortalPageProps> = ({
         </button>
       ) : exam.id === 'pilot-licensure' ? (
         <button
-          onClick={onStartFAAExam}
+          onClick={() => handleExamStart(exam.id, exam.title)}
           disabled={exam.status === 'locked'}
           style={{
             width: '100%',
@@ -359,6 +379,83 @@ export const ExaminationPortalPage: React.FC<ExaminationPortalPageProps> = ({
             </span>
           </div>
         </div>
+
+        {/* Confirmation Dialog */}
+        {showConfirmation && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000
+          }}>
+            <div style={{
+              background: 'white',
+              borderRadius: '16px',
+              padding: '2rem',
+              maxWidth: '500px',
+              width: '90%',
+              boxShadow: '0 20px 45px rgba(0, 0, 0, 0.2)'
+            }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#0f172a', marginBottom: '1rem' }}>
+                Start Exam
+              </h2>
+              <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                You are about to start <strong>{pendingExam}</strong>.
+              </p>
+              <div style={{
+                background: '#f0f9ff',
+                border: '1px solid #bae6fd',
+                borderRadius: '8px',
+                padding: '1rem',
+                marginBottom: '1.5rem'
+              }}>
+                <p style={{ color: '#0369a1', fontSize: '0.9rem', margin: 0 }}>
+                  <strong>Important:</strong> This exam will be logged on your Examination Results page with your overall score.
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <button
+                  onClick={handleCancelExamStart}
+                  style={{
+                    flex: 1,
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: '8px',
+                    border: '1px solid #d1d5db',
+                    background: 'white',
+                    color: '#374151',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirmExamStart}
+                  style={{
+                    flex: 1,
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: '#2563eb',
+                    color: 'white',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  Start Exam
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
