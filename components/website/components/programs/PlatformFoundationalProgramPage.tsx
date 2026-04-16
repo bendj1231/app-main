@@ -16,7 +16,7 @@ export const PlatformFoundationalProgramPage: React.FC<PlatformFoundationalProgr
                     <img
                         src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
                         alt="WingMentor Logo"
-                        className="mx-auto w-64 h-auto object-contain mb-2"
+                        className="block mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                         Building Your Foundation

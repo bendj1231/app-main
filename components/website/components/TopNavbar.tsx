@@ -9,6 +9,7 @@ interface TopNavbarProps {
     forceScrolled?: boolean;
     isLight?: boolean;
     onLoginModalOpen?: () => void;
+    currentPage?: string;
 }
 
 interface NavSubItem {
@@ -34,6 +35,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     forceScrolled = false,
     isLight = false,
     onLoginModalOpen,
+    currentPage = '',
 }) => {
     const { currentUser, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -159,6 +161,11 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         { name: 'Contact', target: 'contact-support' },
     ];
 
+    // Filter out Home nav item when on home page
+    const visibleNavItems = currentPage === 'home' 
+        ? navItems.filter(item => item.name !== 'Home')
+        : navItems;
+
     const handleMouseEnter = (name: string) => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         setActiveDropdown(name);
@@ -185,7 +192,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
                     {/* Logo Section */}
                     <div className="flex items-center gap-4 group cursor-pointer" onClick={() => onNavigate('home')}>
-                        <div className="w-24 h-12 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                        <div className="w-32 h-16 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
                             <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="Logo" className="w-full h-full object-contain" />
                         </div>
                         <div className="flex flex-col items-center">
@@ -206,7 +213,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex items-center gap-3">
-                        {navItems.map((item) => (
+                        {visibleNavItems.map((item) => (
                             <div
                                 key={item.name}
                                 className="relative group/dropdown"
@@ -341,7 +348,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     </div>
                     <div className="flex flex-col items-center justify-center flex-1 gap-6">
                         <div className="w-full max-w-sm space-y-6">
-                            {navItems.map((item) => (
+                            {visibleNavItems.map((item) => (
                                 <div key={item.name} className="flex flex-col items-center gap-3">
                                     <button
                                         onClick={() => { onNavigate(item.target); setIsMenuOpen(false); }}

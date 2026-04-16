@@ -688,6 +688,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                 isLight={isOverWhite}
                 isDark={!isOverWhite}
                 onLoginModalOpen={onLoginModalOpen}
+                currentPage="home"
             />
 
             {/* Smoke Shader Section with Glassy Card */}
