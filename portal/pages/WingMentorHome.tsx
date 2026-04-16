@@ -2141,7 +2141,8 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
               </div>
             </div>
 
-            {/* Foundation Program Progress Card - Hard Truth Format */}
+            {/* Foundation Program Progress Card - Hard Truth Format - Only show if enrolled */}
+            {userHasFoundationalEnrollment && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', marginTop: '2rem', textAlign: 'left' }}>
                 <div style={{
                   backgroundColor: 'rgba(15, 23, 42, 0.7)',
@@ -2297,6 +2298,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                 }
               `}</style>
             </div>
+            )}
         </section>
 
         {/* Footer Section */}
