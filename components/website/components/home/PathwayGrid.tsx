@@ -32,6 +32,11 @@ const dummyCards = [
         id: 'member',
         images: [],
         image: '',
+        loggedInImages: [
+            '/images/accessportal.png',
+            '/images/w1000.png',
+            '/images/airlinesexpectations.png',
+        ],
         loggedInImage: '/images/accessportal.png',
         title: 'Become a Member',
         loggedInTitle: 'Access Portal',
@@ -41,6 +46,7 @@ const dummyCards = [
         badge: null,
         accentColor: 'from-blue-500/80 to-cyan-400/80',
         hasAnimation: true,
+        isCarouselWhenLoggedIn: true,
     },
     {
         id: 'discover',
@@ -315,19 +321,26 @@ const GridCard: React.FC<GridCardProps> = ({
     const displayTitle = isLoggedIn && card.loggedInTitle ? card.loggedInTitle : card.title;
     const displaySubtitle = isLoggedIn && card.loggedInSubtitle ? card.loggedInSubtitle : card.subtitle;
     
+    // Determine if we should use carousel for logged in state
+    const shouldUseLoggedInCarousel = isLoggedIn && card.isCarouselWhenLoggedIn && card.loggedInImages;
+    
+    // Get the images array to use for carousel
+    const carouselImages = shouldUseLoggedInCarousel ? card.loggedInImages : card.images;
+    
     // Get current dynamic title for discover card
     const currentDynamicTitle = card.dynamicTitles ? card.dynamicTitles[currentImageIndex] : null;
     
     // Auto-rotate carousel images
     useEffect(() => {
-        if (!card.isCarousel || !card.images || card.images.length <= 1 || isPaused) return;
+        const shouldUseCarousel = shouldUseLoggedInCarousel ? carouselImages : card.isCarousel && card.images;
+        if (!shouldUseCarousel || !carouselImages || carouselImages.length <= 1 || isPaused) return;
         
         const interval = setInterval(() => {
-            setCurrentImageIndex((prev) => (prev + 1) % card.images.length);
+            setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
         }, 5000); // Change every 5 seconds
         
         return () => clearInterval(interval);
-    }, [card.isCarousel, card.images, isPaused]);
+    }, [shouldUseLoggedInCarousel, carouselImages, card.isCarousel, card.images, isPaused]);
     
     // Cleanup pause timeout on unmount
     useEffect(() => {
@@ -360,11 +373,13 @@ const GridCard: React.FC<GridCardProps> = ({
         }, 10000);
     };
     
-    const currentImage = isLoggedIn && card.loggedInImage
-        ? card.loggedInImage
-        : card.isCarousel && card.images
-            ? card.images[currentImageIndex]
-            : card.image;
+    const currentImage = shouldUseLoggedInCarousel
+        ? carouselImages[currentImageIndex]
+        : isLoggedIn && card.loggedInImage
+            ? card.loggedInImage
+            : card.isCarousel && card.images
+                ? card.images[currentImageIndex]
+                : card.image;
     
     // Handle card click - for discover card, navigate based on current image index
     const handleCardClick = (e: React.MouseEvent) => {
@@ -399,9 +414,41 @@ const GridCard: React.FC<GridCardProps> = ({
             `}>
                 {/* Background Image / Carousel / Animation */}
                 <div className="absolute inset-0">
-                    {card.hasAnimation ? (
-                        // Member Journey Animation
+                    {card.hasAnimation && !shouldUseLoggedInCarousel ? (
+                        // Member Journey Animation (only when not logged in)
                         <MemberJourneyAnimation />
+                    ) : shouldUseLoggedInCarousel && carouselImages ? (
+                        // Carousel when logged in
+                        <div className="relative w-full h-full">
+                            {carouselImages.map((img, idx) => (
+                                <div key={idx} className={`
+                                    absolute inset-0 w-full h-full transition-all duration-1000
+                                    ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}
+                                `}>
+                                    <img 
+                                        src={img} 
+                                        alt={`${card.title} ${idx + 1}`}
+                                        className={`
+                                            w-full h-full object-cover
+                                            ${isHovered && idx === currentImageIndex ? 'scale-110' : ''}
+                                        `}
+                                    />
+                                </div>
+                            ))}
+                            {/* Carousel Indicators */}
+                            <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                                {carouselImages.map((_, idx) => (
+                                    <div 
+                                        key={idx}
+                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                            idx === currentImageIndex 
+                                                ? 'bg-white w-4' 
+                                                : 'bg-white/50'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     ) : card.isCarousel && card.images ? (
                         // Carousel with multiple images or animations
                         <div className="relative w-full h-full">
