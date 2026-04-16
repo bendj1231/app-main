@@ -3,6 +3,7 @@ import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
 import { RestrictionPage } from './RestrictionPage';
 import { EnrolledFoundationalCard } from '../components/EnrolledFoundationalCard';
+import { supabase } from '../lib/supabase-auth';
 
 interface Module {
     id: string;
@@ -74,8 +75,33 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
         userProfile?.email ||
         'Pilot';
 
-    // Check if user is enrolled in Foundational Program
-    const userHasFoundationalEnrollment = Boolean(userProfile?.enrolledPrograms?.includes('Foundational'));
+    // Check if user is enrolled in Foundational Program from Supabase
+    const [userHasFoundationalEnrollment, setUserHasFoundationalEnrollment] = useState<boolean | null>(null);
+    
+    useEffect(() => {
+        const checkEnrollment = async () => {
+            if (userProfile?.id || userProfile?.uid) {
+                const userId = userProfile?.id || userProfile?.uid;
+                const { data: profileData } = await supabase
+                    .from('profiles')
+                    .select('enrolled_programs')
+                    .eq('id', userId)
+                    .maybeSingle();
+                
+                if (profileData?.enrolled_programs && Array.isArray(profileData.enrolled_programs)) {
+                    const isEnrolled = profileData.enrolled_programs.some((p: string) => 
+                        p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')
+                    );
+                    setUserHasFoundationalEnrollment(isEnrolled);
+                } else {
+                    setUserHasFoundationalEnrollment(false);
+                }
+            } else {
+                setUserHasFoundationalEnrollment(false);
+            }
+        };
+        checkEnrollment();
+    }, [userProfile?.id, userProfile?.uid]);
 
     // Video Player Helpers
     const toggleHeroVideoPlayback = () => {
@@ -89,7 +115,10 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
     };
 
     const toggleHeroVideoMute = () => {
-        setIsVideoMuted(!isVideoMuted);
+        const video = heroVideoRef.current;
+        if (!video) return;
+        video.muted = !video.muted;
+        setIsVideoMuted(video.muted);
     };
 
     const handleHeroVideoSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,21 +180,11 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
         const video = heroVideoRef.current;
         if (!video) return;
         if (!document.fullscreenElement) {
-            if (video.requestFullscreen) {
-                video.requestFullscreen().catch(err => {
-                    console.error('Fullscreen request failed:', err);
-                });
-            } else if ((video as any).webkitRequestFullscreen) {
-                (video as any).webkitRequestFullscreen();
-            } else if ((video as any).mozRequestFullScreen) {
-                (video as any).mozRequestFullScreen();
-            } else if ((video as any).msRequestFullscreen) {
-                (video as any).msRequestFullscreen();
-            }
+            video.requestFullscreen();
+            setIsFullScreen(true);
         } else {
-            document.exitFullscreen().catch(err => {
-                console.error('Exit fullscreen failed:', err);
-            });
+            document.exitFullscreen();
+            setIsFullScreen(false);
         }
     };
 
@@ -176,13 +195,6 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
         document.addEventListener('fullscreenchange', handleChange);
         return () => document.removeEventListener('fullscreenchange', handleChange);
     }, []);
-
-    useEffect(() => {
-        const video = heroVideoRef.current;
-        if (video) {
-            video.volume = heroVolume;
-        }
-    }, [heroVolume, isVideoMuted]);
 
     // Program access is now open for all authenticated users.
 
@@ -239,7 +251,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 'Psychological Awareness',
                 'Peer Observation Psychology'
             ],
-            description: 'Learn the core difference between instructing and mentoring. This stage focuses on self-assessment, issue-resolution techniques, and the pre-psychology of peer observation. Once received initial pilot recognition, you may access pathways and compare your recognition credentials within our network consisting of jobs from pilotcareercenter.com, betterjobs.com and many more, along with direct relations with airlines expectations to review their requirements and access various pathways such as cadet programmes, cargo pathways, licensure & type rating pathways, specialized pathways and more!',
+            description: 'Learn the core difference between instructing and mentoring. This stage focuses on self-assessment, issue-resolution techniques, and the pre-psychology of peer observation.',
             icon: 'Users',
             onLaunch: onLaunchModule02
         },
@@ -392,6 +404,38 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 paddingBottom: '4rem'
             }}
         >
+            {/* Loading State - Show while enrollment check is in progress */}
+            {userHasFoundationalEnrollment === null && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: '#f8fafc',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 50
+                }}>
+                    <img src="/logo.png" alt="WingMentor" style={{ maxWidth: '200px', marginBottom: '2rem' }} />
+                    <div style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '50%',
+                        border: '4px solid #e2e8f0',
+                        borderTopColor: '#2563eb',
+                        animation: 'spin 1s linear infinite'
+                    }} />
+                    <style>{`
+                        @keyframes spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    `}</style>
+                </div>
+            )}
+
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2.5rem clamp(1.25rem, 4vw, 3rem)' }}>
                 {/* Show enrolled card if user is enrolled */}
                 {userHasFoundationalEnrollment && (
@@ -429,7 +473,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 </div>
 
                 <section id="foundational-details" style={{ textAlign: 'center', marginBottom: '2.5rem', filter: userHasFoundationalEnrollment ? 'blur(2px)' : 'none', transition: 'filter 0.3s ease' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ display: 'block', maxWidth: '250px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '250px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                     <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                         WINGMENTOR PROGRAMS
                     </div>
@@ -514,9 +558,9 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                                 flexDirection: 'column',
                                 gap: '0.9rem',
                                 boxShadow: '0 40px 80px rgba(2,4,12,0.5)',
-                                opacity: videoControlsVisible ? 1 : 0,
-                                transition: 'opacity 0.3s ease',
-                                pointerEvents: 'auto'
+                                opacity: isVideoPlaying && !videoControlsVisible ? 0 : 1,
+                                transition: 'opacity 0.4s ease',
+                                pointerEvents: isVideoPlaying && !videoControlsVisible ? 'none' : 'auto'
                             }}
                             onMouseEnter={() => setVideoControlsVisible(true)}
                             onMouseLeave={() => setVideoControlsVisible(false)}
@@ -587,7 +631,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
 
                 {/* New Header Section */}
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '300px', height: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '300px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                     <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.02em' }}>
                         Earn Experience
                     </h2>
@@ -706,57 +750,42 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
 
                         {/* Enrollment Button */}
                         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                            {userHasFoundationalEnrollment ? (
-                                <div style={{
-                                    padding: '1.25rem 2rem',
+                            <button
+                                onClick={() => {
+                                    console.log('🔘 Enrollment button clicked');
+                                    console.log('🔘 onStartEnrollment function:', onStartEnrollment);
+                                    
+                                    if (onStartEnrollment) {
+                                        console.log('🚀 Calling onStartEnrollment...');
+                                        onStartEnrollment();
+                                    } else {
+                                        console.error('❌ onStartEnrollment is not defined');
+                                        alert('Enrollment function is not available. Please refresh the page and try again.');
+                                    }
+                                }}
+                                style={{
+                                    padding: '1.25rem 4rem',
                                     borderRadius: '50px',
-                                    background: '#f0fdf4',
-                                    border: '2px solid #22c55e',
-                                    color: '#166534',
+                                    border: 'none',
+                                    background: 'linear-gradient(135deg, #2563eb, #1e40af)',
+                                    color: '#fff',
                                     fontWeight: 700,
                                     fontSize: '1.1rem',
-                                    display: 'inline-block'
-                                }}>
-                                    ✓ You are already enrolled
-                                </div>
-                            ) : (
-                                <button
-                                    onClick={() => {
-                                        console.log('🔘 Enrollment button clicked');
-                                        console.log('🔘 onStartEnrollment function:', onStartEnrollment);
-                                        
-                                        if (onStartEnrollment) {
-                                            console.log('🚀 Calling onStartEnrollment...');
-                                            onStartEnrollment();
-                                        } else {
-                                            console.error('❌ onStartEnrollment is not defined');
-                                            alert('Enrollment function is not available. Please refresh the page and try again.');
-                                        }
-                                    }}
-                                    style={{
-                                        padding: '1.25rem 4rem',
-                                        borderRadius: '50px',
-                                        border: 'none',
-                                        background: 'linear-gradient(135deg, #2563eb, #1e40af)',
-                                        color: '#fff',
-                                        fontWeight: 700,
-                                        fontSize: '1.1rem',
-                                        cursor: 'pointer',
-                                        boxShadow: '0 12px 30px rgba(37, 99, 235, 0.3)',
-                                        transition: 'all 0.3s ease'
-                                    }}
-                                    onMouseOver={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(-2px)';
-                                        e.currentTarget.style.boxShadow = '0 18px 40px rgba(37, 99, 235, 0.4)';
-                                    }}
-                                    onMouseOut={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 12px 30px rgba(37, 99, 235, 0.3)';
-                                    }}
-                                >
-                                    Start Enrollment
-                                </button>
-                            )}
+                                    cursor: 'pointer',
+                                    boxShadow: '0 12px 30px rgba(37, 99, 235, 0.3)',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = '0 18px 40px rgba(37, 99, 235, 0.4)';
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = '0 12px 30px rgba(37, 99, 235, 0.3)';
+                                }}
+                            >
+                                Start Enrollment
+                            </button>
                         </div>
                     </div>
                 </div>
