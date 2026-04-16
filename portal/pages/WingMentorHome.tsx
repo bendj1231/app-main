@@ -4079,6 +4079,15 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onAccept={() => setMainView('foundational-onboarding')}
           />
         );
+      case 'foundational-onboarding':
+        return (
+          <EnrollmentOnboardingPage
+            onComplete={() => setMainView('enrollment-confirmation')}
+            onBackToPrograms={() => setMainView('foundational')}
+            onLogout={onLogout}
+            onShowTerms={() => setMainView('foundational-get-started')}
+          />
+        );
       case 'enrollment-confirmation':
         console.log('🔍 WingMentorHome: Loading enrollment confirmation with user:', {
             userProfile: !!userProfile,
