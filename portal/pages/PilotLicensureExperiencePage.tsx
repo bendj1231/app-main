@@ -548,7 +548,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
       ) : (
       <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}
-        <header style={{ marginBottom: '2rem', textAlign: 'center' }}>
+        <header style={{ marginBottom: '2rem', textAlign: 'center', position: 'relative' }}>
           <button
             onClick={onBack}
             style={{
