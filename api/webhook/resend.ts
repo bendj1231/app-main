@@ -3,11 +3,12 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Email routing mapping
-const emailRouting = {
+const emailRouting: Record<string, string | string[]> = {
   'benjamin@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
   'recruiter@pilotrecognition.com': 'recruiter-benjamintigerbowler@gmail.com',
   'karl@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
   'kb@pilotrecognition.com': 'karlbrianabibas@gmail.com',
+  'support@pilotrecognition.com': ['karlbrianabibas@gmail.com', 'benjamintigerbowler@gmail.com'],
 };
 
 export default async function handler(req: Request) {
@@ -39,20 +40,26 @@ export default async function handler(req: Request) {
         return new Response('OK', { status: 200 });
       }
 
-      // Forward email using Resend's receiving.forward() method
-      const { data, error } = await resend.emails.receiving.forward({
-        emailId: emailData.email_id,
-        from: toAddress,
-        to: destination,
-        passthrough: true, // Preserve formatting and attachments
-      });
+      // Handle multiple destinations (array) or single destination (string)
+      const destinations = Array.isArray(destination) ? destination : [destination];
 
-      if (error) {
-        console.error('Failed to forward email:', error);
-        return new Response('Failed to forward', { status: 500 });
+      // Forward email to each destination
+      for (const dest of destinations) {
+        const { data, error } = await resend.emails.receiving.forward({
+          emailId: emailData.email_id,
+          from: toAddress,
+          to: dest,
+          passthrough: true, // Preserve formatting and attachments
+        });
+
+        if (error) {
+          console.error(`Failed to forward email to ${dest}:`, error);
+          return new Response('Failed to forward', { status: 500 });
+        }
+
+        console.log(`Forwarded email from ${toAddress} to ${dest}`);
       }
 
-      console.log(`Forwarded email from ${toAddress} to ${destination}`);
       return new Response('OK', { status: 200 });
     }
 
