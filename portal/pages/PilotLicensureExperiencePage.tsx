@@ -513,16 +513,22 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         updated_at: new Date().toISOString()
       };
 
+      console.log('Saving data to pilot_licensure_experience:', data);
+      
       const { error } = await supabase
         .from('pilot_licensure_experience')
         .upsert(data, { onConflict: 'user_id' });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       setSaveMessage('Data saved successfully!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving data:', error);
-      setSaveMessage('Error saving data. Please try again.');
+      const errorMessage = error?.message || error?.error_details || error?.hint || 'Unknown error';
+      setSaveMessage(`Error saving data: ${errorMessage}. Please try again.`);
     } finally {
       setIsSaving(false);
     }
