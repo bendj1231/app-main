@@ -97,7 +97,7 @@ export const AVAILABLE_APPS = [
 ] as const;
 
 export const APP_CATEGORIES = {
-  programs: { name: 'Programs', description: 'Core training programs' },
+  programs: { name: 'Programs', description: 'Foundation Program' },
   pathways: { name: 'Pathways', description: 'Career progression pathways' },
   applications: { name: 'Applications', description: 'Specialized applications and tools' },
   systems: { name: 'Systems', description: 'Platform systems and services' }

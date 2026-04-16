@@ -68,7 +68,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                             Programs
                         </p>
                         <h1 className="text-4xl md:text-7xl font-serif text-white leading-tight mb-8">
-                            Core Training Programs
+                            Foundation Program
                         </h1>
                         <p className="max-w-3xl mx-auto text-lg md:text-xl text-white/80 leading-relaxed font-sans">
                             Structured training pathways from flight school to airline-ready professional.
