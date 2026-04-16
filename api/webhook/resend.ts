@@ -9,6 +9,12 @@ const emailRouting: Record<string, string | string[]> = {
   'karl@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
   'kb@pilotrecognition.com': 'karlbrianabibas@gmail.com',
   'support@pilotrecognition.com': ['karlbrianabibas@gmail.com', 'benjamintigerbowler@gmail.com'],
+  'contact@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
+};
+
+// Display name mapping for forwarded emails
+const displayNameMapping: Record<string, string> = {
+  'contact@pilotrecognition.com': 'WingMentor Team',
 };
 
 export default async function handler(req: Request) {
@@ -43,11 +49,15 @@ export default async function handler(req: Request) {
       // Handle multiple destinations (array) or single destination (string)
       const destinations = Array.isArray(destination) ? destination : [destination];
 
+      // Get custom display name if exists, otherwise use original address
+      const displayName = displayNameMapping[toAddress];
+      const fromAddress = displayName ? `${displayName} <${toAddress}>` : toAddress;
+
       // Forward email to each destination
       for (const dest of destinations) {
         const { data, error } = await resend.emails.receiving.forward({
           emailId: emailData.email_id,
-          from: toAddress,
+          from: fromAddress,
           to: dest,
           passthrough: true, // Preserve formatting and attachments
         });
