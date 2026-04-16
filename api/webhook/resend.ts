@@ -7,7 +7,7 @@ const emailRouting = {
   'benjamin@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
   'recruiter@pilotrecognition.com': 'recruiter-benjamintigerbowler@gmail.com',
   'karl@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
-  'kb@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
+  'kb@pilotrecognition.com': 'karlbrianabibas@gmail.com',
 };
 
 export default async function handler(req: Request) {
