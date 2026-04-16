@@ -9,13 +9,15 @@ interface EnrollmentOnboardingPageProps {
     onLogout: () => void;
     onShowTerms: () => void;
     onRefreshProfile?: () => void;
+    onNavigateToDashboard?: () => void;
 }
 
-export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> = ({ onComplete, onBackToPrograms, onLogout, onShowTerms, onRefreshProfile }) => {
+export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> = ({ onComplete, onBackToPrograms, onLogout, onShowTerms, onRefreshProfile, onNavigateToDashboard }) => {
     const [interest, setInterest] = useState('');
     const [goals, setGoals] = useState('');
     const [agreed, setAgreed] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [authLoading, setAuthLoading] = useState(false);
     const [showLegal, setShowLegal] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -45,6 +47,10 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             
             console.log('✅ User authenticated:', { id: user.id, email: user.email });
             
+            // Show auth loading screen during Supabase enrollment authentication
+            setLoading(false);
+            setAuthLoading(true);
+            
             // Complete enrollment in Supabase
             console.log('💾 Saving enrollment data...');
             await completeEnrollment(user.id, {
@@ -54,7 +60,6 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                 agreedAt: new Date().toISOString()
             });
             console.log('✅ Enrollment data saved successfully');
-            console.log('🎉 Enrollment process completed successfully');
             
             // Refresh profile data to ensure enrollment status is updated
             if (onRefreshProfile) {
@@ -62,10 +67,22 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                 await onRefreshProfile();
             }
             
-            onComplete();
+            console.log('🎉 Enrollment process completed successfully');
+            
+            // Navigate directly to dashboard instead of showing success page
+            if (onNavigateToDashboard) {
+                console.log('🏠 Navigating to dashboard...');
+                onNavigateToDashboard();
+            } else {
+                // Fallback to showing completion if onNavigateToDashboard is not provided
+                setAuthLoading(false);
+                onComplete();
+            }
             
         } catch (error) {
             console.error('❌ Enrollment error details:', error);
+            setAuthLoading(false);
+            setLoading(false);
             
             let errorMessage = 'Failed to complete enrollment. Please try again.';
             
@@ -82,12 +99,50 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             }
             
             setError(errorMessage);
-        } finally {
-            setLoading(false);
         }
     };
 
     return (
+        <>
+        {/* Authentication Loading Screen */}
+        {authLoading && (
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: '#f8fafc',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 9999
+            }}>
+                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '250px', marginBottom: '3rem' }} />
+                <div style={{
+                    width: '60px',
+                    height: '60px',
+                    borderRadius: '50%',
+                    border: '4px solid #e2e8f0',
+                    borderTopColor: '#2563eb',
+                    animation: 'spin 1s linear infinite',
+                    marginBottom: '2rem'
+                }} />
+                <div style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
+                    Authenticating with Supabase...
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
+                    Please wait while we process your enrollment
+                </div>
+                <style>{`
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+                `}</style>
+            </div>
+        )}
+
         <div className="animate-fade-in" style={{
             minHeight: '100vh',
             padding: '4rem 1rem',
@@ -533,5 +588,6 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                 )}
             </div>
         </div>
+        </>
     );
 };

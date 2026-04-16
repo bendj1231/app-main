@@ -2,10 +2,10 @@ import React from 'react';
 import { Icons } from '../icons';
 
 interface EnrollmentSuccessPageProps {
-    onLogout: () => void;
+    onNavigateToDashboard?: () => void;
 }
 
-export const EnrollmentSuccessPage: React.FC<EnrollmentSuccessPageProps> = ({ onLogout }) => {
+export const EnrollmentSuccessPage: React.FC<EnrollmentSuccessPageProps> = ({ onNavigateToDashboard }) => {
     return (
         <div className="animate-fade-in" style={{
             minHeight: '100vh',
@@ -48,7 +48,7 @@ export const EnrollmentSuccessPage: React.FC<EnrollmentSuccessPageProps> = ({ on
                 </p>
 
                 <button
-                    onClick={onLogout}
+                    onClick={onNavigateToDashboard}
                     style={{
                         backgroundColor: '#2563eb',
                         color: 'white',
@@ -63,7 +63,7 @@ export const EnrollmentSuccessPage: React.FC<EnrollmentSuccessPageProps> = ({ on
                     onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
                     onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
                 >
-                    Sign In Again to Refresh Access
+                    Go to Dashboard
                 </button>
             </div>
         </div>

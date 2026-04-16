@@ -779,6 +779,7 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
           onLogout={handleLogout}
           onShowTerms={() => setCurrentView('terms-conditions')}
           onRefreshProfile={refreshUserProfile}
+          onNavigateToDashboard={() => setCurrentView('hub')}
         />
       ) : currentView === 'terms-conditions' ? (
         <TermsAndConditionsPage onBack={() => setCurrentView('foundational-onboarding')} onAccept={() => setCurrentView('foundational-onboarding')} />
