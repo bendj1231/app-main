@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { supabase } from '@/src/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings } from 'lucide-react';
+import { ProfileModal } from './ProfileModal';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -44,6 +45,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
     const [pilotId, setPilotId] = useState<string>('');
     const [profileImageUrl, setProfileImageUrl] = useState<string>('');
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Fetch pilot_id and profile image from Supabase profile
@@ -346,7 +348,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         {currentUser && (
                             <>
                                 <button
-                                    onClick={() => onNavigate('portal')}
+                                    onClick={() => setIsProfileModalOpen(true)}
                                     className="w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
                                     title="Profile"
                                 >
@@ -450,6 +452,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     </div>
                 </div>
             </div>
+
+            {/* Profile Modal */}
+            <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
 
             {/* Login Modal - moved to root level */}
         </>
