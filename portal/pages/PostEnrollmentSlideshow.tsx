@@ -10,37 +10,64 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
 
     const slides = [
         {
-            title: "Your Mentorship Foundation",
-            subtitle: "Phase 1: Starter Mentee Track",
-            content: "Welcome to the Foundational Program. This phase is designed to transition you from a low-time pilot into a verifiable asset. Rather than reteaching initial concepts, we will focus on analyzing your specific performance gaps, targeted 1-on-1 consultation, and building your professional portfolio.",
+            title: "The Pilot Gap",
+            subtitle: "Phase 1: The Context",
+            content: "Understand the pilot gap through Module 1, which contains 5 chapters addressing the issues facing the current industry. The content is based on collaborative research and independent journalism within the aviation industry. You will learn about AIRBUS EBT CBTA core principles and how they align with the industry, understand pilot risk management, access a database of investment case studies of type ratings, and learn about pilot decision making (ADM).",
             points: [
-                "Cultivate advanced problem-solving skills, learning to assess scenarios and peers diagnostically, like a doctor.",
-                "Master advanced Crew Resource Management (CRM) and targeted consultation techniques.",
-                "Log your first 10 verified mentorship hours to unlock the Black Box Knowledge Vault."
+                "Learn about AIRBUS EBT CBTA core principles and industry alignment",
+                "Understand pilot risk management strategies",
+                "Access database of investment case studies for type ratings",
+                "Master pilot decision making (ADM) concepts"
             ],
             icon: <Icons.BookOpen style={{ width: 48, height: 48 }} />
         },
         {
-            title: "Your Command Center",
-            subtitle: "Phase 2: The Pilot App Ecosystem",
-            content: "Access the full suite of WingMentor pilot-engineered applications. From running diagnostic CRM scenarios in the w1000 Simulator to securing your progress in the dual-verification logbook, these systems are your gateway to career acceleration.",
+            title: "Application Access",
+            subtitle: "Phase 1.5: W1000 Access",
+            content: "Prior to your examination, you will receive access to the W1000 application—a state-of-the-art software for pilot development featuring examination practice, core material for PPL, CPL, IR, and ME, examination reviewers, PowerPoint slides, video content, POH handbooks, an IFR Jeppesen Charts database, and IFR simulators.",
             points: [
-                "Execute high-fidelity CRM scenarios via the w1000 Simulator engine.",
-                "Securely log and peer-verify your consultation hours to build your official portfolio.",
-                "Assess peers and diagnose performance gaps in 1-on-1 collaborative testing environments."
+                "Access examination practice and core material for PPL, CPL, IR, and ME",
+                "Utilize examination reviewers and video content",
+                "Access POH handbooks and IFR Jeppesen Charts database",
+                "Practice with IFR simulators for VOR homing, ILS approaches, and G1000"
             ],
             icon: <Icons.Monitor style={{ width: 48, height: 48 }} />
         },
         {
-            title: "Enter the Network",
-            subtitle: "Phase 3: Network & Progression",
-            content: "The WingMentor portal is your centralized tracking authority. From here, you will manage your flight profile, log your verifiable consultation hours, and engage directly with our exclusive community of vetted aviators.",
+            title: "Examination",
+            subtitle: "Phase 2: Examination",
+            content: "Your first examination evaluates how well you know the industry and the chapters you have read. The initial pilot licensure examination uses integrated Gleims software for FAA/CAAP examinations. This examination will provide your first score, identifying areas where you are struggling and highlighting weaknesses based on recurrency through monthly examinations.",
             points: [
-                "Track your verifiable progress towards the official 50-Hour Mentorship Certificate.",
-                "Unlock the Black Box Knowledge Vault as you reach new mentorship milestones.",
-                "Access the Pilot Gap Forum for industry intelligence and professional networking."
+                "Complete initial pilot licensure examination using Gleims software",
+                "Receive your first score and identify areas for improvement",
+                "Stay current with monthly recurrency examinations",
+                "Create first imprint on your pilot recognition profile"
             ],
             icon: <Icons.Cpu style={{ width: 48, height: 48 }} />
+        },
+        {
+            title: "Mentorship & Road to 50hrs Certification",
+            subtitle: "Phase 3: Mentorship",
+            content: "After your initial examination is complete, you will receive mentor modules to observe, learn, and view masterclasses on how to mentor fellow aviators. Mentorship is an effort-based approach—mentors who have completed 20 hours of observation and passed their practical examination become missionaries who provide guidance and support to fellow members and pilots within the community.",
+            points: [
+                "Complete 20 hours of mentorship observation",
+                "Pass practical examination to become a missionary",
+                "Log mentored hours through pilotrecognition.com",
+                "Access checkride practice for checkride preparation"
+            ],
+            icon: <Icons.Users style={{ width: 48, height: 48 }} />
+        },
+        {
+            title: "EBT Aligned Evaluation",
+            subtitle: "Phase 4: Airbus Interview",
+            content: "An AIRBUS interview based on an EBT-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathways and compare your recognition credentials within our network consisting of jobs from pilotcareercenter.com, betterjobs.com and many more.",
+            points: [
+                "Complete EBT-aligned AIRBUS interview evaluation",
+                "Receive certificate of achievement and initial pilot recognition",
+                "Access pathways network with pilotcareercenter.com and betterjobs.com",
+                "Review airline expectations and access cadet programmes, cargo pathways, and specialized pathways"
+            ],
+            icon: <Icons.Award style={{ width: 48, height: 48 }} />
         }
     ];
 
