@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle } from 'lucide-react';
+import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, ChevronDown, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { useAuth } from '@/src/contexts/AuthContext';
 
@@ -157,29 +157,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* Profiling Mode Toggle */}
-                    <div className="bg-white/90 backdrop-blur-md border border-blue-200/50 rounded-3xl shadow-sm p-6 mb-8">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h3 className="text-lg font-semibold text-slate-900 mb-1">Profiling Mode</h3>
-                                <p className="text-sm text-slate-600">
-                                    {fullProfiling ? 'Full profiling for enhanced pilot recognition' : 'Basic profiling for quick account creation'}
-                                </p>
-                            </div>
-                            <button
-                                onClick={() => setFullProfiling(!fullProfiling)}
-                                className="px-6 py-3 rounded-xl font-semibold text-sm transition-all"
-                                style={{
-                                    background: fullProfiling ? '#2563eb' : '#f1f5f9',
-                                    color: fullProfiling ? 'white' : '#475569',
-                                    border: 'none'
-                                }}
-                            >
-                                {fullProfiling ? 'Switch to Basic' : 'Switch to Full Profiling'}
-                            </button>
                         </div>
                     </div>
 
@@ -652,6 +629,25 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         </div>
                                     </div>
                                 </section>
+
+                                {/* Profiling Mode Toggle - Glassy UI Button */}
+                                <div className="flex justify-center mb-8">
+                                    <button
+                                        type="button"
+                                        onClick={() => setFullProfiling(!fullProfiling)}
+                                        className="px-8 py-4 rounded-2xl font-semibold text-sm transition-all flex items-center gap-3"
+                                        style={{
+                                            background: 'rgba(255, 255, 255, 0.7)',
+                                            backdropFilter: 'blur(12px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.5)',
+                                            color: fullProfiling ? '#2563eb' : '#475569',
+                                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
+                                        }}
+                                    >
+                                        <span>{fullProfiling ? 'Full Profiling Mode' : 'Basic Profiling Mode'}</span>
+                                        <ChevronDown className="w-5 h-5" />
+                                    </button>
+                                </div>
 
                                 <div className="h-px w-full bg-slate-100/80" />
 
