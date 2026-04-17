@@ -30,9 +30,9 @@ export const PlatformFoundationalProgramPage: React.FC<PlatformFoundationalProgr
 
                     <button
                         onClick={() => onNavigate('foundational-verification')}
-                        className="mt-8 w-full sm:w-auto px-12 py-5 bg-emerald-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-emerald-700 transition-all shadow-[0_20px_40px_-10px_rgba(16,185,129,0.4)] hover:shadow-[0_25px_50px_-12px_rgba(16,185,129,0.5)] active:scale-95 flex items-center justify-center gap-3"
+                        className="mt-8 px-8 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-700 transition-all hover:-translate-y-1"
                     >
-                        <span>Get Started</span>
+                        Access / Verify Eligibility
                     </button>
                 </div>
             </div>
@@ -207,15 +207,15 @@ export const PlatformFoundationalProgramPage: React.FC<PlatformFoundationalProgr
                             <div className="flex flex-col gap-3">
                                 <button
                                     onClick={() => onNavigate('contact-support')}
-                                    className="w-full sm:w-auto px-12 py-5 bg-emerald-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-emerald-700 transition-all shadow-[0_20px_40px_-10px_rgba(16,185,129,0.4)] hover:shadow-[0_25px_50px_-12px_rgba(16,185,129,0.5)] active:scale-95 flex items-center justify-center gap-3"
+                                    className="w-full px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition-colors shadow-lg"
                                 >
-                                    <span>Contact Us to Get Started</span>
+                                    Contact Us to Get Started
                                 </button>
                                 <button
                                     onClick={() => onNavigate('transition-program')}
-                                    className="w-full sm:w-auto px-12 py-5 bg-emerald-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-emerald-700 transition-all shadow-[0_20px_40px_-10px_rgba(16,185,129,0.4)] hover:shadow-[0_25px_50px_-12px_rgba(16,185,129,0.5)] active:scale-95 flex items-center justify-center gap-3"
+                                    className="w-full px-6 py-3 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-colors shadow-lg border-2 border-slate-200"
                                 >
-                                    <span>Explore Transition Program</span>
+                                    Explore Transition Program
                                 </button>
                             </div>
                         </div>
