@@ -384,11 +384,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             await supabase.auth.signOut();
             console.log('✅ Supabase sign out successful');
 
-            console.log('🔴 Signing out from Firebase...');
-            // Sign out from Firebase
-            await signOut(auth);
-            console.log('✅ Firebase sign out successful');
-
             console.log('🔴 Clearing IndexedDB session...');
             // Clear IndexedDB session
             await indexedDB.clearSession();
