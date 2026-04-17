@@ -503,16 +503,180 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                 </section>
 
+                                <div className="h-px w-full bg-slate-100/80" />
+
+                                {/* Section: Pilot Profile */}
+                                <section className="space-y-10">
+                                    <div className="flex items-center gap-4">
+                                        <div>
+                                            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Pilot Profile</h2>
+                                            <p className="text-sm text-slate-500 font-medium">Overview of your current flight qualification</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                        <div className="space-y-6">
+                                            <div className="space-y-2.5 group">
+                                                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Pilot License ID Code Number</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter License ID Number"
+                                                        value={licenseId}
+                                                        onChange={(e) => setLicenseId(e.target.value)}
+                                                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2.5 group">
+                                                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Country of License</label>
+                                                <div className="relative">
+                                                    <select
+                                                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 appearance-none bg-no-repeat"
+                                                        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2364748b\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundSize: '1.5em' }}
+                                                        value={countryOfLicense}
+                                                        onChange={(e) => setCountryOfLicense(e.target.value)}
+                                                    >
+                                                        <option value="">Select Country of License</option>
+                                                        {[
+                                                            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
+                                                            "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
+                                                            "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+                                                            "Denmark", "Djibouti", "Dominica", "Dominican Republic",
+                                                            "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
+                                                            "Fiji", "Finland", "France",
+                                                            "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
+                                                            "Haiti", "Honduras", "Hungary",
+                                                            "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
+                                                            "Jamaica", "Japan", "Jordan",
+                                                            "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo", "Kuwait", "Kyrgyzstan",
+                                                            "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+                                                            "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
+                                                            "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway",
+                                                            "Oman",
+                                                            "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+                                                            "Qatar",
+                                                            "Romania", "Russia", "Rwanda",
+                                                            "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+                                                            "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
+                                                            "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
+                                                            "Vanuatu", "Vatican City", "Venezuela", "Vietnam",
+                                                            "Yemen",
+                                                            "Zambia", "Zimbabwe"
+                                                        ].map(country => (
+                                                            <option key={country} value={country.toLowerCase().replace(/\s+/g, '-')}>{country}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2.5 group">
+                                                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Flight Hours</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type="number"
+                                                        placeholder="e.g. 250"
+                                                        value={currentFlightHours}
+                                                        onChange={(e) => setCurrentFlightHours(e.target.value)}
+                                                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-bold text-slate-800 text-lg placeholder:text-slate-400 placeholder:font-normal"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Ratings & Endorsements</label>
+                                            <div className="p-6 bg-slate-50/80 border border-slate-200 rounded-[2rem] space-y-4">
+                                                {ratingsOptions.map(option => (
+                                                    <label
+                                                        key={option.id}
+                                                        className="flex items-center gap-4 group cursor-pointer"
+                                                    >
+                                                        <div className="relative flex items-center justify-center">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={selectedRatings.includes(option.id)}
+                                                                onChange={() => toggleRating(option.id)}
+                                                                className="peer appearance-none w-6 h-6 border-2 border-slate-300 rounded-lg checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer"
+                                                            />
+                                                            <CheckCircle2 className="absolute w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-1 h-1 rounded-full bg-slate-300" />
+                                                            <span className={`text-sm font-bold transition-colors ${selectedRatings.includes(option.id) ? 'text-blue-900' : 'text-slate-600 group-hover:text-slate-900'}`}>
+                                                                {option.label}
+                                                            </span>
+                                                        </div>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                            <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100/50 flex items-start gap-3">
+                                                <HelpCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                                                <p className="text-[11px] leading-relaxed text-amber-900/80 font-semibold">
+                                                    Accurate ratings selection ensures you are assigned to the correct syllabus within the WingMentor ecosystem.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Additional Pilot Info: Aircraft & Experience */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-100">
+                                        <div className="space-y-4">
+                                            <div className="space-y-2.5 group">
+                                                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Aircraft Rated On</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="e.g. C172, PA28, B737, A320..."
+                                                        value={aircraftRatedOn}
+                                                        onChange={(e) => setAircraftRatedOn(e.target.value)}
+                                                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2.5 group">
+                                            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Experience Description</label>
+                                            <textarea
+                                                placeholder="Briefly describe your flight experience, operational background, or specific aviation goals..."
+                                                value={experienceDescription}
+                                                onChange={(e) => setExperienceDescription(e.target.value)}
+                                                className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 min-h-[120px] placeholder:text-slate-400 placeholder:font-normal resize-none"
+                                            />
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {/* Profiling Mode Toggle - Glassy UI Button */}
+                                <div className="flex justify-center mb-8">
+                                    <button
+                                        type="button"
+                                        onClick={() => setFullProfiling(!fullProfiling)}
+                                        className="px-8 py-4 rounded-2xl font-semibold text-sm transition-all flex items-center gap-3"
+                                        style={{
+                                            background: 'rgba(255, 255, 255, 0.7)',
+                                            backdropFilter: 'blur(12px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.5)',
+                                            color: fullProfiling ? '#2563eb' : '#475569',
+                                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
+                                        }}
+                                    >
+                                        <span>{fullProfiling ? 'Full Profiling Mode' : 'Basic Profiling Mode'}</span>
+                                        <ChevronDown className="w-5 h-5" />
+                                    </button>
+                                </div>
+
                                 {/* Full Profiling Additional Fields */}
                                 {fullProfiling && (
                                     <>
                                         <div className="h-px w-full bg-slate-100/80" />
 
-                                        {/* Section: Additional Personal Details */}
+                                        {/* Section: Detailed Pilot Recognition Profiling Data */}
                                         <section className="space-y-10">
                                             <div className="flex items-center gap-4">
                                                 <div>
-                                                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Additional Personal Details</h2>
+                                                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Detailed Pilot Recognition Profiling Data</h2>
                                                     <p className="text-sm text-slate-500 font-medium">Extra information for enhanced pilot recognition</p>
                                                 </div>
                                             </div>
@@ -760,170 +924,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         </section>
                                     </>
                                 )}
-
-                                <div className="h-px w-full bg-slate-100/80" />
-
-                                {/* Section: Pilot Profile */}
-                                <section className="space-y-10">
-                                    <div className="flex items-center gap-4">
-                                        <div>
-                                            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Pilot Profile</h2>
-                                            <p className="text-sm text-slate-500 font-medium">Overview of your current flight qualification</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                        <div className="space-y-6">
-                                            <div className="space-y-2.5 group">
-                                                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Pilot License ID Code Number</label>
-                                                <div className="relative">
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Enter License ID Number"
-                                                        value={licenseId}
-                                                        onChange={(e) => setLicenseId(e.target.value)}
-                                                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-2.5 group">
-                                                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Country of License</label>
-                                                <div className="relative">
-                                                    <select
-                                                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 appearance-none bg-no-repeat"
-                                                        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2364748b\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundSize: '1.5em' }}
-                                                        value={countryOfLicense}
-                                                        onChange={(e) => setCountryOfLicense(e.target.value)}
-                                                    >
-                                                        <option value="">Select Country of License</option>
-                                                        {[
-                                                            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
-                                                            "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
-                                                            "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
-                                                            "Denmark", "Djibouti", "Dominica", "Dominican Republic",
-                                                            "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
-                                                            "Fiji", "Finland", "France",
-                                                            "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
-                                                            "Haiti", "Honduras", "Hungary",
-                                                            "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
-                                                            "Jamaica", "Japan", "Jordan",
-                                                            "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo", "Kuwait", "Kyrgyzstan",
-                                                            "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
-                                                            "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
-                                                            "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway",
-                                                            "Oman",
-                                                            "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
-                                                            "Qatar",
-                                                            "Romania", "Russia", "Rwanda",
-                                                            "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
-                                                            "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
-                                                            "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
-                                                            "Vanuatu", "Vatican City", "Venezuela", "Vietnam",
-                                                            "Yemen",
-                                                            "Zambia", "Zimbabwe"
-                                                        ].map(country => (
-                                                            <option key={country} value={country.toLowerCase().replace(/\s+/g, '-')}>{country}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-2.5 group">
-                                                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Flight Hours</label>
-                                                <div className="relative">
-                                                    <input
-                                                        type="number"
-                                                        placeholder="e.g. 250"
-                                                        value={currentFlightHours}
-                                                        onChange={(e) => setCurrentFlightHours(e.target.value)}
-                                                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-bold text-slate-800 text-lg placeholder:text-slate-400 placeholder:font-normal"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-4">
-                                            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Ratings & Endorsements</label>
-                                            <div className="p-6 bg-slate-50/80 border border-slate-200 rounded-[2rem] space-y-4">
-                                                {ratingsOptions.map(option => (
-                                                    <label
-                                                        key={option.id}
-                                                        className="flex items-center gap-4 group cursor-pointer"
-                                                    >
-                                                        <div className="relative flex items-center justify-center">
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={selectedRatings.includes(option.id)}
-                                                                onChange={() => toggleRating(option.id)}
-                                                                className="peer appearance-none w-6 h-6 border-2 border-slate-300 rounded-lg checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer"
-                                                            />
-                                                            <CheckCircle2 className="absolute w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-1 h-1 rounded-full bg-slate-300" />
-                                                            <span className={`text-sm font-bold transition-colors ${selectedRatings.includes(option.id) ? 'text-blue-900' : 'text-slate-600 group-hover:text-slate-900'}`}>
-                                                                {option.label}
-                                                            </span>
-                                                        </div>
-                                                    </label>
-                                                ))}
-                                            </div>
-                                            <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100/50 flex items-start gap-3">
-                                                <HelpCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                                                <p className="text-[11px] leading-relaxed text-amber-900/80 font-semibold">
-                                                    Accurate ratings selection ensures you are assigned to the correct syllabus within the WingMentor ecosystem.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Additional Pilot Info: Aircraft & Experience */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-100">
-                                        <div className="space-y-4">
-                                            <div className="space-y-2.5 group">
-                                                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Aircraft Rated On</label>
-                                                <div className="relative">
-                                                    <input
-                                                        type="text"
-                                                        placeholder="e.g. C172, PA28, B737, A320..."
-                                                        value={aircraftRatedOn}
-                                                        onChange={(e) => setAircraftRatedOn(e.target.value)}
-                                                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2.5 group">
-                                            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Experience Description</label>
-                                            <textarea
-                                                placeholder="Briefly describe your flight experience, operational background, or specific aviation goals..."
-                                                value={experienceDescription}
-                                                onChange={(e) => setExperienceDescription(e.target.value)}
-                                                className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 min-h-[120px] placeholder:text-slate-400 placeholder:font-normal resize-none"
-                                            />
-                                        </div>
-                                    </div>
-                                </section>
-
-                                {/* Profiling Mode Toggle - Glassy UI Button */}
-                                <div className="flex justify-center mb-8">
-                                    <button
-                                        type="button"
-                                        onClick={() => setFullProfiling(!fullProfiling)}
-                                        className="px-8 py-4 rounded-2xl font-semibold text-sm transition-all flex items-center gap-3"
-                                        style={{
-                                            background: 'rgba(255, 255, 255, 0.7)',
-                                            backdropFilter: 'blur(12px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.5)',
-                                            color: fullProfiling ? '#2563eb' : '#475569',
-                                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
-                                        }}
-                                    >
-                                        <span>{fullProfiling ? 'Full Profiling Mode' : 'Basic Profiling Mode'}</span>
-                                        <ChevronDown className="w-5 h-5" />
-                                    </button>
-                                </div>
 
                                 <div className="h-px w-full bg-slate-100/80" />
 
