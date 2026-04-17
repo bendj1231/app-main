@@ -731,7 +731,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <TermsAndConditionsPage onBack={() => setCurrentView('foundational-onboarding')} onAccept={() => setCurrentView('foundational-onboarding')} />
       ) : currentView === 'post-enrollment-slideshow' ? (
         <PostEnrollmentSlideshow
-          onComplete={() => setCurrentView('foundational')}
+          onComplete={() => setCurrentView('hub')}
         />
       ) : currentView === 'ai-screening' ? (
         <AIScreeningPage
