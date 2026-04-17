@@ -438,6 +438,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
         'all' | 'program' | 'systems_automation' | 'network' | 'application' | 'pathways'
     >('all');
     const [currentFaq, setCurrentFaq] = useState(0);
+    const scrollPositionRef = useRef(0);
 
     const faqItems = [
         {
@@ -631,9 +632,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
+            scrollPositionRef.current = window.scrollY;
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Save and restore scroll position on visibility change
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                // Save scroll position when tab is hidden
+                scrollPositionRef.current = window.scrollY;
+            } else {
+                // Restore scroll position when tab becomes visible
+                setTimeout(() => {
+                    window.scrollTo(0, scrollPositionRef.current);
+                }, 100);
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
     }, []);
 
     // Ensure currentSlide is always in range when category changes
