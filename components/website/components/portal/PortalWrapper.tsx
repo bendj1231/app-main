@@ -1,6 +1,5 @@
 import React, { useEffect, useState, Component, ErrorInfo } from 'react';
 import PortalApp from '../../../../portal/App';
-import { AuthBridge } from './AuthBridge';
 
 interface PortalWrapperProps {
     onNavigate: (page: string) => void;
@@ -94,11 +93,9 @@ export const PortalWrapper: React.FC<PortalWrapperProps> = ({ onNavigate, onBack
     // Portal has its own internal routing system - keeping systems separate
     return (
         <ErrorBoundary>
-            <AuthBridge>
-                <div className="portal-container">
-                    <PortalApp onNavigateToMainApp={onNavigate} directToEnrollment={directToEnrollment} />
-                </div>
-            </AuthBridge>
+            <div className="portal-container">
+                <PortalApp onNavigateToMainApp={onNavigate} directToEnrollment={directToEnrollment} />
+            </div>
         </ErrorBoundary>
     );
 };
