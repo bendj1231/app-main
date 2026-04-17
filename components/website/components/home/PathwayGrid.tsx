@@ -1266,9 +1266,9 @@ const GridCard: React.FC<GridCardProps> = ({
         
         // Navigate
         if (direction === 'next') {
-            setCurrentImageIndex((prev) => (prev + 1) % card.images.length);
+            setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
         } else {
-            setCurrentImageIndex((prev) => (prev === 0 ? card.images.length - 1 : prev - 1));
+            setCurrentImageIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
         }
         
         // Resume after 10 seconds
