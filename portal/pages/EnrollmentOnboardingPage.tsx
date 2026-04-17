@@ -36,12 +36,14 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             if (authError) {
                 console.error('❌ Auth error:', authError);
                 setError(`Authentication error: ${authError.message}`);
+                setLoading(false);
                 return;
             }
             
             if (!user) {
                 console.error('❌ No authenticated user found');
                 setError('No authenticated user found. Please log in again.');
+                setLoading(false);
                 return;
             }
             
@@ -75,13 +77,15 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             
             console.log('🎉 Enrollment process completed successfully');
             
+            // Hide auth loading screen
+            setAuthLoading(false);
+            
             // Navigate directly to dashboard instead of showing success page
             if (onNavigateToDashboard) {
                 console.log('🏠 Navigating to dashboard...');
                 onNavigateToDashboard();
             } else {
                 // Fallback to showing completion if onNavigateToDashboard is not provided
-                setAuthLoading(false);
                 onComplete();
             }
             
