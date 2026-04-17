@@ -8,10 +8,10 @@ interface EnrollmentEmailPayload {
 export const sendEnrollmentConfirmationEmail = async ({ email, name }: EnrollmentEmailPayload) => {
   try {
     console.log('📧 Sending enrollment confirmation to:', email);
-    
+
     const displayName = name || email.split('@')[0];
-    
-    // Primary: Use Edge Function with Resend API
+
+    // Use Edge Function with Resend API only - no fallbacks to Supabase
     console.log('📧 Using Edge Function for email sending...');
     const { data, error } = await supabase.functions.invoke('send-enrollment-email', {
       body: {
@@ -23,36 +23,14 @@ export const sendEnrollmentConfirmationEmail = async ({ email, name }: Enrollmen
     });
 
     if (error) {
-      console.warn('⚠️ Edge Function error:', error);
+      console.error('❌ Edge Function error:', error);
+      console.log('⚠️ Enrollment email failed to send via Resend');
     } else {
       console.log('✅ Email sent via Edge Function:', data);
       await storeEmailNotification(email, displayName, 'edge-function');
       await storeCustomEmailTemplate(email, displayName);
-      return;
     }
-    
-    // Fallback: Use resetPasswordForEmail which works for existing users and supports email templates
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/enrollment-confirmation`
-      });
-      
-      if (error) {
-        console.warn('⚠️ Could not send enrollment confirmation via reset password:', error);
-      } else {
-        console.log('✅ Enrollment confirmation sent via Supabase Auth reset password');
-        await storeEmailNotification(email, displayName, 'supabase-auth-reset-password');
-        
-        // Store custom email template for reference
-        await storeCustomEmailTemplate(email, displayName);
-        return;
-      }
-    } catch (authError) {
-      console.warn('⚠️ Supabase Auth reset password error:', authError);
-    }
-    
-    console.log('✅ Enrollment confirmation processed for:', email);
-    
+
   } catch (error) {
     console.error('❌ Error sending enrollment confirmation:', error);
     // Don't throw error - enrollment should succeed even if email fails

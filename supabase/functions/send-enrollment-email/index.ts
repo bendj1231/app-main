@@ -31,143 +31,66 @@ serve(async (req) => {
 
     console.log('📧 Sending enrollment confirmation to:', email)
     
-    // Primary: Try Resend API
+    // Use Resend API only - no fallbacks
     const resendApiKey = Deno.env.get('RESEND_API_KEY')
-    if (resendApiKey) {
-      try {
-        console.log('📧 Sending via Resend API...')
-        const resendResponse = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'noreply@pilotrecognition.com',
-            to: email,
-            subject: 'Foundation Program Enrollment Confirmation',
-            template: 'foundation-enrollment',
-            variables: {
-              first_name: displayName,
-              program_name: 'Foundation Program',
-              dashboard_url: 'https://pilotrecognition.com/portal',
-              support_email: 'enroll@pilotrecognition.com',
-              company_name: 'PilotRecognition.com'
-            }
-          })
+    if (!resendApiKey) {
+      console.error('❌ Resend API key not configured')
+      return new Response(
+        JSON.stringify({ error: 'Resend API key not configured' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      )
+    }
+
+    try {
+      console.log('📧 Sending via Resend API...')
+      const resendResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'noreply@pilotrecognition.com',
+          to: email,
+          subject: 'Foundation Program Enrollment Confirmation',
+          template: 'foundation-enrollment',
+          variables: {
+            first_name: displayName,
+            program_name: 'Foundation Program',
+            dashboard_url: 'https://pilotrecognition.com/portal',
+            support_email: 'enroll@pilotrecognition.com',
+            company_name: 'PilotRecognition.com'
+          }
         })
-
-        if (resendResponse.ok) {
-          console.log('✅ Email sent via Resend API')
-          await storeNotification(supabase, email, displayName, program, 'resend-api')
-          return new Response(
-            JSON.stringify({ 
-              success: true, 
-              message: 'Enrollment confirmation sent via Resend',
-              email: email,
-              method: 'resend-api'
-            }),
-            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
-          )
-        } else {
-          console.warn('⚠️ Resend API error:', resendResponse.status, resendResponse.statusText)
-        }
-      } catch (resendError) {
-        console.warn('⚠️ Resend API error:', resendError)
-      }
-    } else {
-      console.log('⚠️ Resend API key not configured, skipping...')
-    }
-    
-    // Fallback: Try to send email using Supabase Auth's magic link with custom redirect
-    try {
-      const { error: emailError } = await supabase.auth.admin.generateLink({
-        type: 'magiclink',
-        email: email,
-        options: {
-          emailRedirectTo: `${supabaseUrl.replace('/rest/v1', '')}/enrollment-confirmation`,
-          data: {
-            display_name: displayName,
-            program: program,
-            enrollment_date: new Date().toISOString(),
-            type: 'enrollment-confirmation'
-          }
-        }
       })
-      
-      if (emailError) {
-        console.warn('⚠️ Supabase Auth email error:', emailError)
-      } else {
-        console.log('✅ Email sent via Supabase Auth magic link')
-        
-        // Store notification for tracking
-        await storeNotification(supabase, email, displayName, program, 'supabase-auth-magiclink')
-        
+
+      if (!resendResponse.ok) {
+        const errorText = await resendResponse.text()
+        console.error('❌ Resend API error:', resendResponse.status, errorText)
         return new Response(
-          JSON.stringify({ 
-            success: true, 
-            message: 'Enrollment confirmation sent via Supabase Auth',
-            email: email,
-            method: 'supabase-auth-magiclink'
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+          JSON.stringify({ error: 'Resend API failed', details: errorText }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
         )
       }
-    } catch (authError) {
-      console.warn('⚠️ Supabase Auth error:', authError)
-    }
-    
-    // Fallback: Create a signup link that sends a welcome email
-    try {
-      const { error: signupError } = await supabase.auth.admin.generateLink({
-        type: 'signup',
-        email: email,
-        options: {
-          emailRedirectTo: `${supabaseUrl.replace('/rest/v1', '')}/enrollment-confirmation`,
-          data: {
-            display_name: displayName,
-            program: program,
-            enrollment_date: new Date().toISOString(),
-            type: 'enrollment-confirmation'
-          }
-        }
-      })
-      
-      if (signupError) {
-        console.warn('⚠️ Supabase signup email error:', signupError)
-      } else {
-        console.log('✅ Email sent via Supabase signup link')
-        
-        // Store notification for tracking
-        await storeNotification(supabase, email, displayName, program, 'supabase-auth-signup')
-        
-        return new Response(
-          JSON.stringify({ 
-            success: true, 
-            message: 'Enrollment confirmation sent via Supabase signup',
-            email: email,
-            method: 'supabase-auth-signup'
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
-        )
-      }
-    } catch (signupError) {
-      console.warn('⚠️ Supabase signup error:', signupError)
-    }
-    
-    // Final fallback: Store the email content for manual sending
-    console.log('📧 Storing email content for manual sending...')
-    await storeNotification(supabase, email, displayName, program, 'database-storage')
 
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: 'Enrollment confirmation stored for manual sending',
-        email: email,
-        method: 'database-storage'
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
-    )
+      console.log('✅ Email sent via Resend API')
+      await storeNotification(supabase, email, displayName, program, 'resend-api')
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: 'Enrollment confirmation sent via Resend',
+          email: email,
+          method: 'resend-api'
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+      )
+    } catch (resendError) {
+      console.error('❌ Resend API error:', resendError)
+      return new Response(
+        JSON.stringify({ error: 'Resend API error', details: (resendError as Error).message }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      )
+    }
   } catch (error) {
     console.error('❌ Error in Edge Function:', error)
     return new Response(
