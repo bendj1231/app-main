@@ -539,6 +539,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     useEffect(() => {
+        // Clear Supabase session on app initialization to force fresh start
+        const clearSupabaseSession = async () => {
+            try {
+                await supabase.auth.signOut();
+                console.log('🔵 Supabase session cleared');
+            } catch (error) {
+                // Ignore error if no session exists
+                console.log('🔵 No Supabase session to clear');
+            }
+        };
+
+        clearSupabaseSession();
+
         // Session restoration disabled - cache clears on every refresh
         // const restoreSession = async () => {
         //     try {
@@ -558,7 +571,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         //         console.error("❌ Error restoring session from IndexedDB:", error);
         //     }
         // };
-        
+
         // restoreSession();
 
         // Firebase auth state listener
