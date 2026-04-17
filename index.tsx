@@ -198,7 +198,7 @@ const App = () => {
   const [appError, setAppError] = useState<string | null>(null);
   const [directToEnrollment, setDirectToEnrollment] = useState(false);
   const [showDirectEnrollmentLoading, setShowDirectEnrollmentLoading] = useState(false);
-  const { currentUser } = useAuth(); // Get current user
+  const { currentUser, logout } = useAuth(); // Get current user and logout function
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -741,6 +741,21 @@ const App = () => {
                     >
                       {currentUser ? 'Access Portal' : 'Sign In'}
                     </span>
+
+                    {/* Logout Button - only shows when logged in */}
+                    {currentUser && (
+                      <span
+                        style={{
+                          fontSize: '0.9rem',
+                          fontWeight: 600,
+                          color: '#dc2626',
+                          cursor: 'pointer'
+                        }}
+                        onClick={logout}
+                      >
+                        Sign Out
+                      </span>
+                    )}
 
                     {/* Profile Icon - Light Cyan Blue Square */}
                     <div style={{
