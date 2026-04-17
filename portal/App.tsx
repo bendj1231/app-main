@@ -541,14 +541,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       console.log('🔴 handleLogout called');
       console.log('🔴 Calling logout function...');
 
-      // First sign out from Supabase
-      await signOut();
-      console.log('🔴 Logout function called');
-
-      console.log('🔴 Clearing all Supabase storage...');
-      // Clear all Supabase storage to prevent session restoration
-      await supabase.auth.setSession({ access_token: '', refresh_token: '' });
-      console.log('✅ Supabase session cleared');
+      // Clear URL hash first
+      window.location.hash = '';
 
       // Clear any stored session data
       localStorage.removeItem('supabase.auth.token');
@@ -584,8 +578,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       });
       console.log('✅ Auth state cleared');
 
-      // Clear URL hash
-      window.location.hash = '';
+      // Try to sign out from Supabase, but don't fail if there's a lock error
+      try {
+        await signOut();
+        console.log('🔴 Logout function called');
+        await supabase.auth.setSession({ access_token: '', refresh_token: '' });
+        console.log('✅ Supabase session cleared');
+      } catch (error: any) {
+        console.error('⚠️ Supabase logout error (continuing anyway):', error.message);
+        // Continue with logout even if Supabase logout fails due to lock
+      }
 
       // Navigate back to main app home page
       if (onNavigateToMainApp) {
@@ -596,6 +598,10 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       console.log('✅ Logout successful, navigating to home');
     } catch (error) {
       console.error("Logout error:", error);
+      // Still try to navigate to home even if logout fails
+      if (onNavigateToMainApp) {
+        onNavigateToMainApp('home');
+      }
     }
   };
 
