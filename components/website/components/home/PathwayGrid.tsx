@@ -1637,7 +1637,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 )}
 
                 {/* Glassy Arrows for carousel cards */}
-                {card.hasArrows && card.images && card.images.length > 1 && (
+                {card.hasArrows && card.images && card.images.length > 1 && !(card.id === 'discover' && isLoggedIn) && (
                     <>
                         {/* Left Arrow */}
                         <button
