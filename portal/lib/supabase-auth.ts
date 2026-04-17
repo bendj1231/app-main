@@ -59,7 +59,6 @@ export const createUserProfile = async (user: any, role: UserRole['type'] = 'men
         display_name: userProfile.displayName,
         role: userProfile.role,
         status: userProfile.status,
-        firebase_uid: user.user_metadata?.firebase_uid || null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       })
@@ -109,18 +108,8 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
       return null;
     }
 
-    // Get user data from Supabase auth to access user_metadata as fallback
-    const { data: { user }, error: userError } = await supabase.auth.admin.getUserById(uid);
-    
-    if (userError) {
-      console.log('Could not fetch user metadata:', userError);
-    }
-    
-    // Use display_name from profile, or from auth user_metadata, or generate from email
-    const displayName = profile.display_name || 
-                       user?.user_metadata?.display_name || 
-                       user?.user_metadata?.name ||
-                       profile.email?.split('@')[0] || '';
+    // Use display_name from profile, or generate from email
+    const displayName = profile.display_name || profile.email?.split('@')[0] || '';
     
     const firstName = displayName?.split(' ')[0] || profile.email?.split('@')[0] || '';
     const lastName = displayName?.split(' ').slice(1).join(' ') || '';

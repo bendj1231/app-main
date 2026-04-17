@@ -374,7 +374,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
             title: "The Pilot Gap",
             description: "Maps the critical transition between flight school graduation and airline employment. This program provides recent graduates with essential hands-on experience, helping you maintain strict professional proficiency during extended hiring cycles. Bridge the 1,500-hour gap through structured peer mentorship and build the data-driven portfolio that airlines demand.",
             tag: "1. The Context",
-            image: "https://lh3.googleusercontent.com/d/1jL8lgdJZgdMrzUJkhvDOrlb1S8s7dEb4",
+            image: "/images/pilot-gap.png",
             bullets: []
         },
         {

@@ -27,7 +27,7 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <div className="flex justify-center items-center gap-4 mb-4">
-                        <img src="https://lh3.googleusercontent.com/d/1tJfCxpesiltD4KQzNyqVnDlNN7Py3sbJ" alt="Airbus" className="h-6 w-auto opacity-70" />
+                        <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto opacity-70" />
                         <div className="w-px h-6 bg-slate-300"></div>
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700">
                             HINFACT AIRBUS INTEGRATION
@@ -49,7 +49,7 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                 <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
                     <div className="md:w-1/2 space-y-8 text-left md:text-justify order-2 md:order-1">
                         <div className="hidden md:block mb-8">
-                            <img src="https://lh3.googleusercontent.com/d/1tJfCxpesiltD4KQzNyqVnDlNN7Py3sbJ" alt="Airbus" className="h-16 w-auto opacity-90" />
+                            <img src="/images/accreditation-4.png" alt="Airbus" className="h-16 w-auto opacity-90" />
                         </div>
                         <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans first-letter:text-5xl first-letter:font-serif first-letter:text-slate-900 first-letter:mr-3 first-letter:float-left">
                             HINFACT represents the next evolution in pilot training—a seamless integration of real-time biometric and cognitive monitoring directly into the Airbus cockpit environment. By leveraging advanced eye-tracking and workload analysis, we bridge the critical gap between subjective instructor assessment and objective, data-driven performance metrics.
@@ -101,7 +101,7 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                         </p>
                         <div className="flex items-center gap-4 pt-4 border-t border-slate-200">
                             <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Validated By</div>
-                            <img src="https://lh3.googleusercontent.com/d/1tJfCxpesiltD4KQzNyqVnDlNN7Py3sbJ" alt="Airbus" className="h-6 w-auto opacity-60 mix-blend-multiply" />
+                            <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto opacity-60 mix-blend-multiply" />
                         </div>
                     </div>
                 </div>
@@ -213,7 +213,7 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                                     />
                                     <div className="hidden md:block w-px h-8 bg-slate-300"></div>
                                     <div className="flex items-center gap-3 opacity-80">
-                                        <img src="https://lh3.googleusercontent.com/d/1tJfCxpesiltD4KQzNyqVnDlNN7Py3sbJ" alt="Airbus" className="h-6 w-auto mix-blend-multiply" />
+                                        <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto mix-blend-multiply" />
                                         <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Integration</span>
                                     </div>
                                 </div>

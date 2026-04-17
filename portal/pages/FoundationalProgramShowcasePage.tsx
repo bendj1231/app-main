@@ -151,7 +151,7 @@ const overviewCards = [
         tag: '1 · Context',
         title: 'The Pilot Gap',
         description: 'Extended hiring cycles and low-time plateaus create a credibility gap. WingMentor keeps cadets active with auditable hours.',
-        image: 'https://lh3.googleusercontent.com/d/1jL8lgdJZgdMrzUJkhvDOrlb1S8s7dEb4'
+        image: '/images/pilot-gap.png'
     },
     {
         tag: '2 · Approach',

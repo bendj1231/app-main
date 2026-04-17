@@ -115,7 +115,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                             <div className="flex flex-col items-center mb-6 pb-6 border-b border-slate-200">
                                 <div className="flex items-center gap-3 mb-3">
                                     <img
-                                        src="https://lh3.googleusercontent.com/d/1tJfCxpesiltD4KQzNyqVnDlNN7Py3sbJ"
+                                        src="/images/accreditation-4.png"
                                         alt="Airbus"
                                         className="h-10 w-auto object-contain"
                                     />
@@ -266,7 +266,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                         >
                             <div className="aspect-video bg-slate-100 overflow-hidden">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1RuXrqruV5eSKoL1lasEVpML__Pcqfjmi"
+                                    src="/images/airline-operations.png"
                                     alt="Airline Operations"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />

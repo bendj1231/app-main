@@ -116,7 +116,7 @@ export const PlatformTransitionProgramPage: React.FC<PlatformTransitionProgramPa
                             <div className="flex flex-col items-center mb-6 pb-6 border-b border-slate-200">
                                 <div className="flex items-center gap-3 mb-3">
                                     <img
-                                        src="https://lh3.googleusercontent.com/d/1tJfCxpesiltD4KQzNyqVnDlNN7Py3sbJ"
+                                        src="/images/accreditation-4.png"
                                         alt="Airbus"
                                         className="h-10 w-auto object-contain"
                                     />

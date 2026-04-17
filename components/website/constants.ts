@@ -28,7 +28,7 @@ export const IMAGES = {
     INFO_WELCOME_IMG: "https://images.unsplash.com/photo-1510931211026-646e33ed32f6?q=80&w=2940&auto-format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     INFO_RULES_IMG: "https://images.unsplash.com/photo-1563986682052-7e04f0d3a5323?q=80&w=2942&auto-format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     INFO_GUIDE_IMG: "https://images.unsplash.com/photo-1506478939714-b0e6e76878b3?q=80&w=2940&auto-format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    GAP_CAREER_TURBULENCE_IMG: "https://images.unsplash.com/photo-1601666497330-9b5f3d4c06b8?q=80&w=2940&auto-format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    GAP_CAREER_TURBULENCE_IMG: "https://images.unsplash.com/photo-1559827291-72ee739d0d9a?q=80&w=2940&auto=format&fit=crop",
     GAP_UNIVERSITY_REALITY_IMG: "https://images.unsplash.com/photo-1518974558230-019685714041?q=80&w=2940&auto-format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     GAP_JOHN_CASE_IMG: "https://lh3.googleusercontent.com/d/1FaBcJWDnk6t9JJSimwq4YrV11v_DBgOz",
     GAP_INDUSTRY_BLIND_SPOT_IMG: "https://images.unsplash.com/photo-1517479109725-b46320577d33?q=80&w=2835&auto-format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",

@@ -362,7 +362,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 <h3 style={{ fontSize: '1.25rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
                                     The Pilot Gap
                                 </h3>
-                                <img src="https://lh3.googleusercontent.com/d/1jL8lgdJZgdMrzUJkhvDOrlb1S8s7dEb4" alt="The Pilot Gap" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
+                                <img src="/images/pilot-gap.png" alt="The Pilot Gap" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
                                 <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 }}>
                                     Maps the critical transition between flight school graduation and airline employment. This program provides recent graduates with essential hands-on experience, helping you maintain strict professional proficiency during extended hiring cycles.
                                 </p>

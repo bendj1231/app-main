@@ -546,7 +546,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1RuXrqruV5eSKoL1lasEVpML__Pcqfjmi",
+            image: "/images/airline-operations.png",
             title: "Airline Expectations",
             category: 'network',
             subtitle: "Strategic Investment Guidance",
@@ -578,7 +578,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1jL8lgdJZgdMrzUJkhvDOrlb1S8s7dEb4",
+            image: "/images/pilot-gap.png",
             title: "What is the Pilot Gap?",
             category: 'network',
             subtitle: "Unifying the voices of experienced aviators and all professional pilots to navigate the critical transition between flight training and the airline flight deck.",

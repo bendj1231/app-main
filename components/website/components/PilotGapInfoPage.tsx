@@ -56,7 +56,7 @@ export const PilotGapInfoPage: React.FC<PilotGapInfoPageProps> = ({
                     <div className="md:w-1/2">
                         <div className="relative w-full max-w-md mx-auto">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1jL8lgdJZgdMrzUJkhvDOrlb1S8s7dEb4"
+                                src="/images/pilot-gap.png"
                                 alt="The Pilot Gap Challenge"
                                 className="w-full rounded-3xl shadow-lg object-cover"
                             />
