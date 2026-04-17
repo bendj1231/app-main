@@ -436,182 +436,22 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       setCanSkipLoading(true);
     }, 2000));
 
-    // Use provided userId or fall back to authState
-    const effectiveUserId = userId || authState.user?.id;
+    console.log('🎬 Showing dummy loading sequence (always dummy now)');
     
-    console.log('🔍 startLoadingSequence called:', {
-      effectiveUserId,
-      hasAuthUser: !!authState.user,
-      hasUserProfile: !!authState.userProfile,
-      userId,
-      authUserId: authState.user?.id
-    });
-    
-    // If user is already authenticated (from IndexedDB), just show dummy loading animation
-    if (authState.user) {
-      console.log('✅ User already authenticated, showing dummy loading sequence');
-      
-      // Dummy loading sequence - just show the animation phases
-      loadingTimers.current.push(setTimeout(() => {
-        setLoadingPhase('sync');
-      }, 1500));
-
-      loadingTimers.current.push(setTimeout(() => {
-        setLoadingPhase('deploy');
-      }, 3000));
-
-      loadingTimers.current.push(setTimeout(() => {
-        setShowLoading(false);
-        clearLoadingSequence();
-      }, 4500));
-      return;
-    } else {
-      console.log('❌ User not authenticated, running full loading sequence');
-    }
-
-    if (!effectiveUserId) {
-      // No user, just show loading animation then proceed
-      loadingTimers.current.push(setTimeout(() => {
-        setLoadingPhase('sync');
-      }, 1500));
-
-      loadingTimers.current.push(setTimeout(() => {
-        setLoadingPhase('deploy');
-      }, 3000));
-
-      loadingTimers.current.push(setTimeout(() => {
-        setShowLoading(false);
-        clearLoadingSequence();
-      }, 4200));
-      return;
-    }
-
-    // Phase 1: Fetch enrollment and program data
-    try {
-      const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Phase 1 timeout after 5s')), 5000)
-      );
-
-      const enrollmentPromise = supabase
-        .from('enrollments')
-        .select('*')
-        .eq('user_id', effectiveUserId)
-        .maybeSingle();
-
-      const profilePromise = supabase
-        .from('profiles')
-        .select('enrolled_programs, onboarding_data')
-        .eq('id', effectiveUserId)
-        .maybeSingle();
-
-      const [enrollmentData, profileData] = await Promise.race([
-        Promise.all([enrollmentPromise, profilePromise]),
-        timeoutPromise
-      ]) as [any, any];
-
-      setAuthState(prev => ({
-        ...prev,
-        preloadedData: {
-          ...prev.preloadedData,
-          enrollment: enrollmentData,
-          programs: profileData?.enrolled_programs || []
-        }
-      }));
-    } catch (err: any) {
-      console.error('Error fetching enrollment data:', err);
-      // Don't set loading error, just log it and continue
-      console.log('Continuing without enrollment data');
-    }
-
+    // Always show dummy loading sequence - no database queries
     loadingTimers.current.push(setTimeout(() => {
       setLoadingPhase('sync');
     }, 1500));
 
-    // Phase 2: Fetch recognition and achievements data
-    loadingTimers.current.push(setTimeout(async () => {
-      setLoadingPhase('sync');
-
-      try {
-        const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Phase 2 timeout after 5s')), 5000)
-        );
-
-        const achievementsPromise = supabase
-          .from('achievements')
-          .select('*')
-          .eq('user_id', effectiveUserId)
-          .order('achievement_date', { ascending: false });
-
-        const achievementsData = await Promise.race([
-          achievementsPromise,
-          timeoutPromise
-        ]) as any;
-
-        setAuthState(prev => ({
-          ...prev,
-          preloadedData: {
-            ...prev.preloadedData,
-            achievements: achievementsData || []
-          }
-        }));
-      } catch (err: any) {
-        console.error('Error fetching achievements:', err);
-        console.log('Continuing without achievements data');
-      }
-    }, 1500));
-
-    // Phase 3: Fetch pilot portfolio data
-    loadingTimers.current.push(setTimeout(async () => {
+    loadingTimers.current.push(setTimeout(() => {
       setLoadingPhase('deploy');
-
-      try {
-        const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Phase 3 timeout after 5s')), 5000)
-        );
-
-        const portfolioPromise = supabase
-          .from('pilot_portfolio_data')
-          .select('*')
-          .eq('user_id', effectiveUserId)
-          .maybeSingle();
-
-        const portfolioData = await Promise.race([
-          portfolioPromise,
-          timeoutPromise
-        ]) as any;
-
-        // Also fetch pathways data - handle missing table gracefully
-        let pathwaysData = [];
-        try {
-          const { data: pathwaysDataResult } = await supabase
-            .from('user_pathways')
-            .select('*')
-            .eq('user_id', effectiveUserId);
-          pathwaysData = pathwaysDataResult || [];
-        } catch (pathwaysError) {
-          console.log('user_pathways table not found or error fetching:', pathwaysError);
-          // Continue without pathways data
-        }
-
-        setAuthState(prev => ({
-          ...prev,
-          preloadedData: {
-            ...prev.preloadedData,
-            portfolio: portfolioData,
-            pathways: pathwaysData
-          }
-        }));
-      } catch (err: any) {
-        console.error('Error fetching portfolio/pathways:', err);
-        console.log('Continuing without portfolio/pathways data');
-      }
     }, 3000));
 
     loadingTimers.current.push(setTimeout(() => {
       setShowLoading(false);
       clearLoadingSequence();
-    }, 10000));
-  }, [authState.user, authState.userProfile]);
+    }, 4500));
+  }, []);
 
   const handleLogin = (email: string) => {
     setLastLoginEmail(email);
