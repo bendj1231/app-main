@@ -73,6 +73,7 @@ interface GridCardData {
     badge?: string | null;
     accentColor: string;
     hasAnimation?: boolean;
+    hasAnimationWhenLoggedIn?: boolean;
     enrollNow?: boolean;
     isCarousel?: boolean;
     isCarouselWhenLoggedIn?: boolean;
@@ -116,6 +117,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
             badge: null,
             accentColor: 'from-blue-500/80 to-cyan-400/80',
             hasAnimation: true,
+            hasAnimationWhenLoggedIn: false,
             isCarouselWhenLoggedIn: false,
         },
         {
@@ -400,6 +402,7 @@ const dummyCards = [
         badge: null,
         accentColor: 'from-blue-500/80 to-cyan-400/80',
         hasAnimation: true,
+        hasAnimationWhenLoggedIn: false,
         isCarouselWhenLoggedIn: false,
     },
     {
@@ -410,7 +413,7 @@ const dummyCards = [
             '/images/atlascv.png',
         ],
         image: '/images/w1000.png',
-        loggedInImages: ['/foundationprogram.png', '/foundationprogram2.png'],
+        loggedInImages: ['/foundationprogram.png', '/images/newimgfp.png'],
         title: 'Discover',
         loggedInTitle: 'Enroll on Foundation Program',
         dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
@@ -1402,11 +1405,11 @@ const GridCard: React.FC<GridCardProps> = ({
                                 </>
                             )}
                             {/* Overlay for glassy effect - only when there's content */}
-                            {(card.videoUrl || (card.isCarousel && card.images) || card.image || card.hasAnimation) && (
+                            {(card.videoUrl || (card.isCarousel && card.images) || card.image || card.hasAnimation) && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) && (
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent pointer-events-none" />
                             )}
                         </div>
-                    ) : card.hasAnimation && !shouldUseLoggedInCarousel ? (
+                    ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) ? (
                         // Member Journey Animation (only when not logged in)
                         <MemberJourneyAnimation />
                     ) : shouldUseLoggedInCarousel && carouselImages ? (
