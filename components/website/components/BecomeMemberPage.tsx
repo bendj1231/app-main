@@ -275,6 +275,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     console.log('✅ Signup successful, setting signupSuccess to true');
                                     setSignupSuccess(true);
                                     setUserAlreadyExisted(false);
+                                    // Navigate to confirmation page
+                                    setTimeout(() => {
+                                        onNavigate('account-confirmation');
+                                    }, 500);
                                 } catch (err: any) {
                                     clearTimeout(timeoutId);
                                     console.error("Signup failed", err);
