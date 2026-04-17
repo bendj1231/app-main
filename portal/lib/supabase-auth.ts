@@ -102,22 +102,12 @@ export const createUserProfile = async (user: any, role: UserRole['type'] = 'men
 
 export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
   try {
-    // Add timeout to prevent hanging (increased to 30s)
-    const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('getUserProfile timeout after 30s')), 30000)
-    );
-
-    // Get profile from Supabase
-    const profilePromise = supabase
+    // Get profile from Supabase - removed timeout to allow natural query completion
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', uid)
       .maybeSingle();
-
-    const { data: profile, error: profileError } = await Promise.race([
-      profilePromise,
-      timeoutPromise
-    ]);
 
     if (profileError) {
       // Only log error if it's not a "not found" error
