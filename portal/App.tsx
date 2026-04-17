@@ -732,7 +732,23 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <TermsAndConditionsPage onBack={() => setCurrentView('foundational-onboarding')} onAccept={() => setCurrentView('foundational-onboarding')} />
       ) : currentView === 'post-enrollment-slideshow' ? (
         <PostEnrollmentSlideshow
-          onComplete={() => setCurrentView('pilot-portfolio')}
+          onComplete={async () => {
+            // Fetch portfolio data before navigating to pilot-portfolio
+            const { data: portfolioData } = await supabase
+              .from('pilot_portfolio')
+              .select('*')
+              .eq('user_id', authState.userProfile?.uid)
+              .single();
+            
+            setAuthState(prev => ({
+              ...prev,
+              preloadedData: {
+                ...prev.preloadedData,
+                portfolio: portfolioData
+              }
+            }));
+            setCurrentView('pilot-portfolio');
+          }}
         />
       ) : currentView === 'ai-screening' ? (
         <AIScreeningPage
