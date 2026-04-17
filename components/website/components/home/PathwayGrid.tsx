@@ -1228,9 +1228,9 @@ const GridCard: React.FC<GridCardProps> = ({
     
     // For discover card, enable carousel when logged in to shuffle Foundation Program images
     const shouldUseCarousel = (card.id === 'discover' && isLoggedIn)
-        ? carouselImages
+        ? !!carouselImages
         : shouldUseLoggedInCarousel
-            ? carouselImages
+            ? !!carouselImages
             : card.isCarousel && card.images;
     
     // Get current dynamic title for discover card (only when not logged in)
