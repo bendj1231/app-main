@@ -112,12 +112,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         try {
             const fileExt = file.name.split('.').pop();
             const fileName = `${currentUser.uid}-${Date.now()}.${fileExt}`;
-            const filePath = `profile-images/${fileName}`;
+            const filePath = `profile pics/${fileName}`;
 
             console.log('📤 Uploading to path:', filePath);
 
             const { error: uploadError } = await supabase.storage
-                .from('profile-images')
+                .from('profile pics')
                 .upload(filePath, file);
 
             if (uploadError) {
@@ -128,7 +128,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             console.log('✅ Upload successful');
 
             const { data: { publicUrl } } = supabase.storage
-                .from('profile-images')
+                .from('profile pics')
                 .getPublicUrl(filePath);
 
             console.log('🔗 Public URL:', publicUrl);
