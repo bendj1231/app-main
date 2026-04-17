@@ -83,23 +83,33 @@ export const indexedDB = {
       const session = await this.getSession();
       if (!session) return null;
 
-      // Verify user still exists in database
+      // Verify user still exists in Supabase auth
       if (session.user?.id) {
         try {
-          const { data: profile, error } = await supabaseClient
+          // First, try to get the current session from Supabase to verify it's still valid
+          const { data: { session: currentSession }, error: sessionError } = await supabaseClient.auth.getSession();
+          
+          if (sessionError || !currentSession) {
+            console.log('⚠️ Session no longer valid in Supabase auth, clearing session');
+            await this.clearSession();
+            return null;
+          }
+
+          // Verify user still exists in profiles table
+          const { data: profile, error: profileError } = await supabaseClient
             .from('profiles')
             .select('id')
             .eq('id', session.user.id)
             .single();
 
-          if (error || !profile) {
+          if (profileError || !profile) {
             console.log('⚠️ User no longer exists in database, clearing session');
             await this.clearSession();
             return null;
           }
-          console.log('✅ User verified in database');
+          console.log('✅ User verified in Supabase auth and database');
         } catch (verifyError) {
-          console.error('❌ Error verifying user in database:', verifyError);
+          console.error('❌ Error verifying user:', verifyError);
           // If verification fails, clear session to be safe
           await this.clearSession();
           return null;
