@@ -1272,10 +1272,10 @@ const GridCard: React.FC<GridCardProps> = ({
                 ? !!carouselImages
                 : card.isCarousel && card.images;
     
-    // Get current dynamic title for discover card (only when not logged in and not enrolled)
-    const currentDynamicTitle = (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation) 
-        ? null 
-        : card.dynamicTitles ? card.dynamicTitles[currentImageIndex] : null;
+    // Get current dynamic title for discover card (only when not logged in)
+    const currentDynamicTitle = (card.id === 'discover' && !isLoggedIn) 
+        ? card.dynamicTitles ? card.dynamicTitles[currentImageIndex] : null 
+        : null;
     
     // Auto-rotate carousel images
     useEffect(() => {
