@@ -69,22 +69,30 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     
                     if (error) {
                         console.error('Error fetching profile data:', error);
+                        // Set default values on error to prevent UI breakage
+                        setPilotId(currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
                         return;
                     }
                     
                     if (data) {
-                        setPilotId(data.pilot_id || '');
+                        // Safely set values with fallbacks for missing or invalid data
+                        setPilotId(data.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
                         setProfileImageUrl(data.profile_image_url || '');
-                        setTotalHours(data.total_flight_hours || 0);
+                        setTotalHours(typeof data.total_flight_hours === 'number' ? data.total_flight_hours : 0);
                         setLastFlown(data.last_flown || '');
-                        setMentorshipHours(data.mentorship_hours || 0);
-                        setFoundationProgress(data.foundation_progress || 0);
-                        setExaminationScore(data.examination_score || 0);
-                        setOverallRecognitionScore(data.overall_recognition_score || 0);
-                        setIsEnrolledInFoundation(data.enrolled_programs?.includes('Foundational') || false);
+                        setMentorshipHours(typeof data.mentorship_hours === 'number' ? data.mentorship_hours : 0);
+                        setFoundationProgress(typeof data.foundation_progress === 'number' ? data.foundation_progress : 0);
+                        setExaminationScore(typeof data.examination_score === 'number' ? data.examination_score : 0);
+                        setOverallRecognitionScore(typeof data.overall_recognition_score === 'number' ? data.overall_recognition_score : 0);
+                        setIsEnrolledInFoundation(Array.isArray(data.enrolled_programs) && data.enrolled_programs.includes('Foundational'));
+                    } else {
+                        // Profile doesn't exist, set defaults
+                        setPilotId(currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
                     }
                 } catch (err) {
-                    console.error('Error fetching profile data:', err);
+                    console.error('Unexpected error fetching profile data:', err);
+                    // Set default values on unexpected error
+                    setPilotId(currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
                 }
             }
         };
