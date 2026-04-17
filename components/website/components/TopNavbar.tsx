@@ -61,7 +61,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         const fetchProfileData = async () => {
             if (currentUser?.uid) {
                 try {
-                    console.log('🔍 Fetching profile data for user:', currentUser.uid);
                     const { data, error } = await supabase
                         .from('profiles')
                         .select('pilot_id, profile_image_url, total_flight_hours, last_flown, mentorship_hours, foundation_progress, examination_score, overall_recognition_score, enrolled_programs')
@@ -69,11 +68,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         .maybeSingle();
                     
                     if (error) {
-                        console.error('❌ Error fetching profile data:', error);
+                        console.error('Error fetching profile data:', error);
                         return;
                     }
-                    
-                    console.log('✅ Profile data fetched:', data);
                     
                     if (data) {
                         setPilotId(data.pilot_id || '');
@@ -87,7 +84,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         setIsEnrolledInFoundation(data.enrolled_programs?.includes('Foundational') || false);
                     }
                 } catch (err) {
-                    console.error('❌ Error fetching profile data:', err);
+                    console.error('Error fetching profile data:', err);
                 }
             }
         };
