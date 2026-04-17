@@ -520,24 +520,32 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           .select('*')
           .eq('user_id', effectiveUserId)
           .maybeSingle();
-        
-        // Also fetch pathways data
-        const { data: pathwaysData } = await supabase
-          .from('user_pathways')
-          .select('*')
-          .eq('user_id', effectiveUserId);
+
+        // Also fetch pathways data - handle missing table gracefully
+        let pathwaysData = [];
+        try {
+          const { data: pathwaysDataResult } = await supabase
+            .from('user_pathways')
+            .select('*')
+            .eq('user_id', effectiveUserId);
+          pathwaysData = pathwaysDataResult || [];
+        } catch (pathwaysError) {
+          console.log('user_pathways table not found or error fetching:', pathwaysError);
+          // Continue without pathways data
+        }
 
         setAuthState(prev => ({
           ...prev,
           preloadedData: {
             ...prev.preloadedData,
             portfolio: portfolioData,
-            pathways: pathwaysData || []
+            pathways: pathwaysData
           }
         }));
       } catch (err) {
         console.error('Error fetching portfolio/pathways:', err);
-        setLoadingError('Failed to load portfolio data. Please try again.');
+        // Don't set loading error, just log it and continue
+        console.log('Continuing without portfolio/pathways data');
       }
     }, 3000));
 
