@@ -27,28 +27,28 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
                         Your central hub to access programs, pathways, pilot recognition profile, and comprehensive aviation resources.
                     </p>
                     
-                    <div className="flex gap-4 overflow-x-auto pb-4 mb-8 snap-x snap-mandatory">
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Examination Terminal</h3>
                             <p className="text-sm text-slate-600">Access through programs or dashboard page</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Pilot Terminal</h3>
                             <p className="text-sm text-slate-600">Chat with fellow members and discuss aviation</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Industry News</h3>
                             <p className="text-sm text-slate-600">Stay updated on AIRBUS aligned updates and airline expectations</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Job Requirements</h3>
                             <p className="text-sm text-slate-600">Notices of job requirement changes and updates</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">WingMentor Support</h3>
                             <p className="text-sm text-slate-600">Contact us for any issues or assistance</p>
                         </div>
-                        <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-6 min-w-[280px] snap-start border-2 border-violet-200 shadow-md">
+                        <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-6 border-2 border-violet-200 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">PilotRecognition.ai</h3>
                             <p className="text-sm text-slate-600">Upcoming AI for performance tracking and score management</p>
                         </div>

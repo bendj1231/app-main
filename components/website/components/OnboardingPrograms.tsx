@@ -27,20 +27,20 @@ export const OnboardingPrograms: React.FC<OnboardingProgramsProps> = ({ onBack, 
                         Structured pathways designed to guide you from student to professional pilot with comprehensive training and mentorship.
                     </p>
                     
-                    <div className="flex gap-4 overflow-x-auto pb-4 mb-8 snap-x snap-mandatory">
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Foundation Program</h3>
                             <p className="text-sm text-slate-600">Start your journey with fundamental pilot training</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Advanced Training</h3>
                             <p className="text-sm text-slate-600">Specialized courses for career advancement</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Career Pathways</h3>
                             <p className="text-sm text-slate-600">Tailored paths to major airlines and operators</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 min-w-[280px] snap-start shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Certification Prep</h3>
                             <p className="text-sm text-slate-600">Prepare for ATPL, CPL, and other certifications</p>
                         </div>
