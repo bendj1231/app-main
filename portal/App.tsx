@@ -137,6 +137,7 @@ import { EmergingAirTaxiPage } from './pages/EmergingAirTaxiPage';
 import { PrivateSectorPage } from './pages/PrivateSectorPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { EnrollmentOnboardingPage } from './pages/EnrollmentOnboardingPage';
+import { EnrollmentConfirmationPage } from './pages/EnrollmentConfirmationPage';
 import { PostEnrollmentSlideshow } from './pages/PostEnrollmentSlideshow';
 import { AIScreeningPage } from './pages/AIScreeningPage';
 import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
@@ -245,6 +246,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'airtaxi'
     | 'privatesector'
     | 'foundational-onboarding'
+    | 'enrollment-confirmation'
     | 'post-enrollment-slideshow'
     | 'ai-screening'
     | 'remote-segment'
@@ -263,7 +265,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   const VIEW_WHITELIST: ViewName[] = [
     'login','hub','dashboard','programs','pathways','applications','foundational','atpl','airtaxi','privatesector',
-    'foundational-onboarding','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
+    'foundational-onboarding','enrollment-confirmation','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
     'reset-password','module-01','module-02','module-03','pilot-profile','recognition','verification','job-database','become-member'
   ];
 
@@ -721,7 +723,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         />
       ) : currentView === 'foundational-onboarding' ? (
         <EnrollmentOnboardingPage
-          onComplete={() => setCurrentView('post-enrollment-slideshow')}
+          onComplete={() => setCurrentView('enrollment-confirmation')}
           onBackToPrograms={() => setCurrentView('foundational')}
           onLogout={handleLogout}
           onShowTerms={() => setCurrentView('terms-conditions')}
@@ -730,6 +732,11 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         />
       ) : currentView === 'terms-conditions' ? (
         <TermsAndConditionsPage onBack={() => setCurrentView('foundational-onboarding')} onAccept={() => setCurrentView('foundational-onboarding')} />
+      ) : currentView === 'enrollment-confirmation' ? (
+        <EnrollmentConfirmationPage
+          onComplete={() => setCurrentView('post-enrollment-slideshow')}
+          userProfile={authState.userProfile}
+        />
       ) : currentView === 'post-enrollment-slideshow' ? (
         <PostEnrollmentSlideshow
           onComplete={() => setCurrentView('hub')}

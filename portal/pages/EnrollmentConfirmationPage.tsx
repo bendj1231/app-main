@@ -1,338 +1,244 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icons } from '../icons';
+import { supabase } from '../lib/supabase-auth';
 
 interface EnrollmentConfirmationPageProps {
+    onComplete: () => void;
     onBack?: () => void;
     onLogout?: () => void;
     userEmail?: string;
+    userProfile?: {
+        firstName?: string;
+        email?: string;
+    };
 }
 
 export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProps> = ({
+    onComplete,
     onBack,
     onLogout,
-    userEmail
+    userEmail,
+    userProfile
 }) => {
+    useEffect(() => {
+        // Auto-advance to slideshow after 5 seconds
+        const timer = setTimeout(() => {
+            onComplete();
+        }, 5000);
+
+        // Send enrollment confirmation email
+        const sendEnrollmentEmail = async () => {
+            try {
+                const { data, error } = await supabase.functions.invoke('send-enrollment-email', {
+                    body: {
+                        email: userProfile?.email || userEmail,
+                        name: userProfile?.firstName,
+                        program: 'Foundation Program',
+                        type: 'enrollment-confirmation'
+                    }
+                });
+
+                if (error) {
+                    console.error('❌ Failed to send enrollment confirmation email:', error);
+                } else {
+                    console.log('✅ Enrollment confirmation email sent');
+                }
+            } catch (error) {
+                console.error('❌ Error sending enrollment confirmation email:', error);
+            }
+        };
+
+        sendEnrollmentEmail();
+
+        return () => clearTimeout(timer);
+    }, [onComplete, userProfile, userEmail]);
     return (
         <div style={{
+            fontFamily: 'Georgia, serif',
+            maxWidth: '600px',
+            margin: '0 auto',
+            padding: '20px',
             minHeight: '100vh',
-            backgroundColor: '#f8fafc',
-            fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-            position: 'relative',
             display: 'flex',
-            flexDirection: 'column'
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            background: 'linear-gradient(180deg, #f0f4f8 0%, #e8eef5 100%)'
         }}>
-            {/* Header */}
-            <header style={{
-                width: '100%',
-                padding: '1.5rem 2.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                backgroundColor: 'white',
-                borderBottom: '1px solid #e2e8f0',
-                zIndex: 10
-            }}>
-                <button
-                    onClick={onBack}
-                    style={{
-                        background: 'none',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.6rem',
-                        color: '#64748b',
-                        cursor: 'pointer',
-                        fontSize: '0.875rem',
-                        fontWeight: 600,
-                        transition: 'all 0.2s'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.color = '#0f172a'}
-                    onMouseOut={(e) => e.currentTarget.style.color = '#64748b'}
-                >
-                    <div style={{ transform: 'rotate(180deg)', display: 'flex' }}>
-                        <Icons.ArrowRight style={{ width: 16, height: 16 }} />
-                    </div>
-                    Back to Programs
-                </button>
-
-                <div style={{ flex: 1 }}></div>
-
-                <button
-                    onClick={onLogout}
-                    style={{
-                        background: 'none',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.6rem',
-                        color: '#64748b',
-                        cursor: 'pointer',
-                        fontSize: '0.875rem',
-                        fontWeight: 600,
-                        transition: 'all 0.2s'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.color = '#0f172a'}
-                    onMouseOut={(e) => e.currentTarget.style.color = '#64748b'}
-                >
-                    <Icons.LogOut style={{ width: 16, height: 16 }} />
-                    Logout
-                </button>
-            </header>
-
-            {/* Main Content */}
+            {/* Soft Transition Shader Background */}
             <div style={{
-                flex: 1,
+                position: 'absolute',
+                inset: 0,
+                background: `
+                    radial-gradient(circle at 20% 20%, rgba(59,130,246,0.25), rgba(255,255,255,0.15) 20%, transparent 35%),
+                    radial-gradient(circle at 80% 10%, rgba(14,165,233,0.25), rgba(255,255,255,0.12) 18%, transparent 30%),
+                    radial-gradient(circle at 50% 60%, rgba(147,197,253,0.20), rgba(255,255,255,0.10) 25%, transparent 40%),
+                    radial-gradient(circle at 35% 75%, rgba(59,130,246,0.15), rgba(255,255,255,0.08) 22%, transparent 38%)
+                `,
+                mixBlendMode: 'screen',
+                pointerEvents: 'none',
+                zIndex: 1
+            }}></div>
+            
+            <div style={{
+                position: 'absolute',
+                width: '600px',
+                height: '600px',
+                background: 'radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.08) 30%, transparent 50%)',
+                top: '10%',
+                right: '0%',
+                filter: 'blur(8px)',
+                opacity: 0.9,
+                pointerEvents: 'none',
+                zIndex: 1
+            }}></div>
+            
+            <div style={{
+                position: 'absolute',
+                width: '500px',
+                height: '500px',
+                background: 'radial-gradient(circle, rgba(147,197,253,0.18) 0%, rgba(255,255,255,0.06) 35%, transparent 55%)',
+                bottom: '5%',
+                left: '-10%',
+                filter: 'blur(12px)',
+                opacity: 0.8,
+                pointerEvents: 'none',
+                zIndex: 1
+            }}></div>
+            
+            <div style={{
+                position: 'absolute',
+                width: '400px',
+                height: '400px',
+                background: 'radial-gradient(circle, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.05) 40%, transparent 60%)',
+                top: '60%',
+                left: '40%',
+                filter: 'blur(10px)',
+                opacity: 0.7,
+                pointerEvents: 'none',
+                zIndex: 1
+            }}></div>
+
+            <div style={{
                 display: 'flex',
-                justifyContent: 'center',
+                flexDirection: 'column',
                 alignItems: 'center',
-                padding: '2rem'
+                gap: '1.5rem',
+                textAlign: 'center',
+                position: 'relative',
+                zIndex: 2
             }}>
                 <div style={{
-                    maxWidth: '600px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                    borderRadius: '16px',
+                    padding: '3rem 2.5rem',
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                    backdropFilter: 'blur(18px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
                     width: '100%',
-                    textAlign: 'center'
+                    fontFamily: 'sans-serif'
                 }}>
-                    {/* Logo */}
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', marginBottom: '2rem', display: 'block', margin: '0 auto 2rem' }} />
-
-                    {/* Success Message */}
-                    <h1 style={{
-                        fontSize: '2.5rem',
+                    <img
+                        src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6"
+                        alt="WingMentor Logo"
+                        style={{
+                            height: '110px',
+                            width: 'auto',
+                            objectFit: 'contain',
+                            marginBottom: '1.5rem'
+                        }}
+                    />
+                    
+                    <div style={{
+                        color: '#2563eb',
+                        fontSize: '0.875rem',
                         fontWeight: 700,
+                        letterSpacing: '0.25em',
+                        textTransform: 'uppercase',
+                        marginBottom: '0.75rem'
+                    }}>
+                        ENROLLMENT CONFIRMATION
+                    </div>
+                    
+                    <h2 style={{
+                        fontSize: '1.8rem',
+                        fontWeight: 400,
+                        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+                        letterSpacing: '-0.02em',
+                        lineHeight: 1.2,
                         color: '#0f172a',
-                        marginBottom: '1rem',
-                        fontFamily: 'Georgia, serif'
+                        marginBottom: '2.5rem'
                     }}>
-                        Enrollment Confirmed!
-                    </h1>
-
+                        Welcome to the Foundation Program
+                    </h2>
+                    
                     <p style={{
-                        fontSize: '1.25rem',
                         color: '#475569',
-                        lineHeight: 1.6,
-                        marginBottom: '2rem'
-                    }}>
-                        Your enrollment confirmation has been sent to:
-                    </p>
-
-                    {/* Email Display */}
-                    <div style={{
-                        backgroundColor: '#f1f5f9',
-                        padding: '1rem 1.5rem',
-                        borderRadius: '12px',
-                        marginBottom: '2rem',
-                        border: '1px solid #e2e8f0'
-                    }}>
-                        <p style={{
-                            fontSize: '1.1rem',
-                            color: '#1e293b',
-                            fontWeight: 600,
-                            margin: 0
-                        }}>
-                            {userEmail || 'Loading email...'}
-                        </p>
-                        {userEmail && (
-                            <p style={{
-                                fontSize: '0.85rem',
-                                color: '#64748b',
-                                margin: '0.5rem 0 0 0',
-                                fontStyle: 'italic'
-                            }}>
-                                This is the email address associated with your logged-in account
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Email Confirmation Card */}
-                    <div style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                        backdropFilter: 'blur(16px)',
-                        borderRadius: '24px',
-                        padding: '3rem 2.5rem',
-                        boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
-                        border: '1px solid rgba(255, 255, 255, 0.8)',
-                        textAlign: 'center',
-                        width: '100%',
-                        boxSizing: 'border-box',
-                        marginBottom: '2rem'
-                    }}>
-                        <div style={{ color: '#10b981', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                            Email Confirmation
-                        </div>
-                        <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
-                            Check Your Inbox
-                        </h2>
-                        <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '40rem', textAlign: 'left' }}>
-                            Your enrollment confirmation has been sent to your registered email address. This email contains your enrollment details, next steps, and important information about the WingMentor Foundational Program.
-                        </p>
-                        <div style={{
-                            backgroundColor: '#f0fdf4',
-                            borderRadius: '16px',
-                            padding: '1.5rem',
-                            border: '1px solid #bbf7d0',
-                            marginTop: '2rem',
-                            textAlign: 'left'
-                        }}>
-                            <div style={{ fontWeight: 700, color: '#166534', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>
-                                What's Included in Your Email
-                            </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <div style={{ width: '8px', height: '8px', backgroundColor: '#10b981', borderRadius: '50%' }}></div>
-                                    <span style={{ color: '#475569', fontSize: '0.95rem' }}>Program enrollment confirmation</span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <div style={{ width: '8px', height: '8px', backgroundColor: '#10b981', borderRadius: '50%' }}></div>
-                                    <span style={{ color: '#475569', fontSize: '0.95rem' }}>Next steps timeline</span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <div style={{ width: '8px', height: '8px', backgroundColor: '#10b981', borderRadius: '50%' }}></div>
-                                    <span style={{ color: '#475569', fontSize: '0.95rem' }}>Mentorship contact info</span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <div style={{ width: '8px', height: '8px', backgroundColor: '#10b981', borderRadius: '50%' }}></div>
-                                    <span style={{ color: '#475569', fontSize: '0.95rem' }}>Program components overview</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div style={{
-                            padding: '1.25rem 1.5rem',
-                            backgroundColor: '#eff6ff',
-                            borderRadius: '12px',
-                            borderLeft: '4px solid #3b82f6',
-                            marginTop: '2rem',
-                            textAlign: 'left'
-                        }}>
-                            <p style={{ margin: 0, fontSize: '0.95rem', color: '#1e3a8a', fontWeight: 500 }}>
-                                <strong>Important:</strong> Please keep your confirmation email for your records. If you don't see it within 5 minutes, check your spam folder or contact support.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Next Steps */}
-                    <div style={{
-                        backgroundColor: '#eff6ff',
-                        padding: '2rem',
-                        borderRadius: '16px',
-                        marginBottom: '2rem',
-                        border: '1px solid #bfdbfe',
+                        fontSize: '1.05rem',
+                        lineHeight: 1.8,
+                        margin: '0 auto 2rem',
+                        maxWidth: '40rem',
                         textAlign: 'left'
                     }}>
-                        <h3 style={{
-                            fontSize: '1.25rem',
-                            fontWeight: 700,
+                        Congratulations <strong>{userProfile?.firstName || 'Pilot'}</strong>! Your enrollment in the <strong>Foundation Program</strong> has been successfully confirmed. This email serves as your official enrollment confirmation and provides access to your personalized pilot development journey.
+                    </p>
+                    
+                    <div style={{
+                        textAlign: 'center',
+                        margin: '2.5rem 0'
+                    }}>
+                        <button
+                            onClick={onComplete}
+                            style={{
+                                display: 'inline-block',
+                                padding: '1.1rem 2.75rem',
+                                background: 'rgba(147, 197, 253, 0.35)',
+                                color: '#1e40af',
+                                textDecoration: 'none',
+                                borderRadius: '12px',
+                                fontSize: '1rem',
+                                fontWeight: 700,
+                                transition: 'all 0.25s ease',
+                                boxShadow: '0 8px 32px rgba(147, 197, 253, 0.2), inset 0 1px 0 rgba(255,255,255,0.6)',
+                                backdropFilter: 'blur(12px)',
+                                border: '1px solid rgba(147, 197, 253, 0.4)',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Continue to Dashboard
+                        </button>
+                    </div>
+                    
+                    <div style={{
+                        background: '#dbeafe',
+                        borderLeft: '4px solid #2563eb',
+                        padding: '15px',
+                        marginBottom: '20px'
+                    }}>
+                        <p style={{
                             color: '#1e40af',
-                            marginBottom: '1rem',
-                            marginTop: 0
+                            margin: 0,
+                            fontSize: '0.9rem'
                         }}>
-                            What Happens Next?
-                        </h3>
-                        <ul style={{
-                            color: '#475569',
-                            lineHeight: 1.8,
-                            paddingLeft: '1.5rem',
-                            margin: 0
-                        }}>
-                            <li>Check your email for the confirmation message</li>
-                            <li>Our mentorship team will review your responses</li>
-                            <li>You'll receive scheduler contact information</li>
-                            <li>Full portal access will be activated</li>
-                        </ul>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div style={{
-                        display: 'flex',
-                        gap: '1rem',
-                        justifyContent: 'center',
-                        flexWrap: 'wrap'
-                    }}>
-                        <button
-                            onClick={onBack}
-                            style={{
-                                padding: '1rem 2rem',
-                                borderRadius: '12px',
-                                border: '2px solid #2563eb',
-                                background: 'white',
-                                color: '#2563eb',
-                                fontWeight: 700,
-                                fontSize: '1rem',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s'
-                            }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundColor = '#eff6ff';
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundColor = 'white';
-                            }}
-                        >
-                            Back to Programs
-                        </button>
-
-                        <button
-                            onClick={() => {
-                                if (userEmail) {
-                                    console.log('📧 Opening email client for:', userEmail);
-                                    window.location.href = `mailto:${userEmail}`;
-                                } else {
-                                    console.log('❌ No user email available');
-                                    alert('Please check your email for the confirmation message. If you don\'t see it, check your spam folder.');
-                                }
-                            }}
-                            style={{
-                                padding: '1rem 2rem',
-                                borderRadius: '12px',
-                                border: 'none',
-                                background: 'linear-gradient(135deg, #2563eb, #1e40af)',
-                                color: 'white',
-                                fontWeight: 700,
-                                fontSize: '1rem',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s',
-                                boxShadow: '0 10px 15px -3px rgba(37, 99, 235, 0.3)'
-                            }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-2px)';
-                                e.currentTarget.style.boxShadow = '0 15px 25px -3px rgba(37, 99, 235, 0.4)';
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(37, 99, 235, 0.3)';
-                            }}
-                        >
-                            {userEmail ? 'Check Email' : 'Return to Programs'}
-                        </button>
-                    </div>
-
-                    {/* Support Info */}
-                    <div style={{
-                        marginTop: '2rem',
-                        padding: '1.5rem',
-                        backgroundColor: '#f8fafc',
-                        borderRadius: '12px',
-                        border: '1px solid #e2e8f0'
-                    }}>
-                        <p style={{
-                            fontSize: '0.9rem',
-                            color: '#64748b',
-                            margin: 0
-                        }}>
-                            <strong>Note:</strong> Email confirmations are currently being logged to the console for development. 
-                            In production, emails will be sent automatically to your registered email address.
+                            <strong>Next Steps:</strong> Our mentorship team will review your onboarding responses and contact you with further instructions.
                         </p>
+                    </div>
+                    
+                    <div style={{
+                        textAlign: 'center',
+                        color: '#64748b',
+                        fontSize: '0.85rem',
+                        marginTop: '30px',
+                        paddingTop: '20px',
+                        borderTop: '1px solid #e5e7eb'
+                    }}>
+                        <p>For questions about your enrollment, contact: enroll@pilotrecognition.com</p>
                         <p style={{
-                            fontSize: '0.9rem',
-                            color: '#64748b',
-                            margin: '0.5rem 0 0 0'
+                            color: '#9ca3af',
+                            fontSize: '0.75rem',
+                            marginTop: '15px'
                         }}>
-                            For questions, contact{' '}
-                            <a 
-                                href="mailto:enroll@pilotrecognition.com" 
-                                style={{ color: '#2563eb', textDecoration: 'none' }}
-                            >
-                                enroll@pilotrecognition.com
-                            </a>
+                            © 2026 PilotRecognition.com. All rights reserved.
                         </p>
                     </div>
                 </div>
