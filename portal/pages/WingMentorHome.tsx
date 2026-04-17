@@ -523,6 +523,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         maxWidth: '1400px', 
         margin: '0 auto',
         background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'white',
+        zoom: 0.9
       }}>
         {selectedNewsItem ? (
           // Detailed News View
