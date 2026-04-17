@@ -497,6 +497,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Restore session from IndexedDB on app initialization
         const restoreSession = async () => {
             try {
+                console.log('🔵 Attempting to restore session from IndexedDB...');
                 const savedSession = await indexedDB.getSessionWithVerification(supabase);
                 if (savedSession) {
                     console.log("🔄 Restoring session from IndexedDB:", savedSession.user?.id);
@@ -505,6 +506,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         access_token: savedSession.access_token,
                         refresh_token: savedSession.refresh_token,
                     });
+                } else {
+                    console.log('🔵 No saved session found in IndexedDB');
                 }
             } catch (error) {
                 console.error("❌ Error restoring session from IndexedDB:", error);
