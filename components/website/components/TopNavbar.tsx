@@ -43,29 +43,35 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
     const [pilotId, setPilotId] = useState<string>('');
+    const [profileImageUrl, setProfileImageUrl] = useState<string>('');
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Fetch pilot_id from Supabase profile
+    // Fetch pilot_id and profile image from Supabase profile
     useEffect(() => {
-        const fetchPilotId = async () => {
+        const fetchProfileData = async () => {
             if (currentUser?.uid) {
                 try {
                     const { data, error } = await supabase
                         .from('profiles')
-                        .select('pilot_id')
+                        .select('pilot_id, profile_image_url')
                         .eq('id', currentUser.uid)
                         .maybeSingle();
                     
-                    if (data?.pilot_id) {
-                        setPilotId(data.pilot_id);
+                    if (data) {
+                        if (data.pilot_id) {
+                            setPilotId(data.pilot_id);
+                        }
+                        if (data.profile_image_url) {
+                            setProfileImageUrl(data.profile_image_url);
+                        }
                     }
                 } catch (err) {
-                    console.error('Error fetching pilot_id:', err);
+                    console.error('Error fetching profile data:', err);
                 }
             }
         };
         
-        fetchPilotId();
+        fetchProfileData();
     }, [currentUser]);
 
     const handleLogout = async () => {
@@ -341,10 +347,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             <>
                                 <button
                                     onClick={() => onNavigate('portal')}
-                                    className="w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg"
+                                    className="w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
                                     title="Profile"
                                 >
-                                    <User className="w-6 h-6" />
+                                    {profileImageUrl ? (
+                                        <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+                                    ) : (
+                                        <User className="w-6 h-6" />
+                                    )}
                                 </button>
                                 <button
                                     className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
