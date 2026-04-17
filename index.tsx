@@ -666,11 +666,8 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
-        {currentPage === 'portal' && directToEnrollment && (
-          <DirectEnrollmentLoadingScreen />
-        )}
-        {currentPage === 'portal' && !directToEnrollment && (
-          <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Portal...</div>}>
+        {currentPage === 'portal' && (
+          <Suspense fallback={directToEnrollment ? <DirectEnrollmentLoadingScreen /> : <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Portal...</div>}>
             <PortalWrapper
               onNavigate={navigateTo}
               onBack={() => navigateTo('home')}
