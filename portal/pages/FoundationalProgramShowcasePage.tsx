@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
 import { RestrictionPage } from './RestrictionPage';
@@ -178,74 +178,6 @@ const overviewCards = [
         image: 'https://lh3.googleusercontent.com/d/1hHcJHmG0pTPDuvgiv79l88VpPz_lOXi1'
     }
 ];
-
-const CloudShader: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const animationRef = useRef<number | undefined>(undefined);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        const resizeCanvas = () => {
-            const parent = canvas.parentElement;
-            if (parent) {
-                canvas.width = parent.clientWidth;
-                canvas.height = 600;
-            }
-        };
-
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        const animate = () => {
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, '#2a3f5a');
-            gradient.addColorStop(0.4, '#3f5f82');
-            gradient.addColorStop(0.8, '#5f88ad');
-            gradient.addColorStop(1, '#7aa3c4');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            const time = Date.now() * 0.0001;
-            for (let i = 0; i < 8; i++) {
-                const x = (Math.sin(time + i * 0.5) * 0.5 + 0.5) * canvas.width;
-                const y = (Math.cos(time * 0.7 + i * 0.5) * 0.5 + 0.5) * canvas.height;
-                const radius = 100 + Math.sin(time + i) * 50;
-
-                const cloudGradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-                cloudGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
-                cloudGradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
-                cloudGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                ctx.fillStyle = cloudGradient;
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            animationRef.current = requestAnimationFrame(animate);
-        };
-
-        animate();
-
-        return () => {
-            window.removeEventListener('resize', resizeCanvas);
-            if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current);
-            }
-        };
-    }, []);
-
-    return (
-        <canvas
-            ref={canvasRef}
-            className="absolute inset-0 w-full h-full"
-        />
-    );
-};
 
 const FoundationalProgramShowcasePage: React.FC<FoundationalProgramShowcasePageProps> = ({
     onBack,
@@ -434,55 +366,48 @@ const FoundationalProgramShowcasePage: React.FC<FoundationalProgramShowcasePageP
                     ))}
                 </div>
 
-                <section style={{ marginBottom: '4rem', position: 'relative', minHeight: '600px', borderRadius: '24px', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', inset: 0, zIndex: 0, height: '600px', width: '100%' }}>
-                        <CloudShader />
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/40" />
+                <section style={{ marginBottom: '4rem' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                        <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem' }}>
+                            Orientation Overview
+                        </div>
+                        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '2.2rem', fontWeight: 400, color: '#0f172a', marginBottom: '0.75rem' }}>
+                            How WingMentor Bridges the Pilot Gap
+                        </h2>
+                        <p style={{ color: '#64748b', fontSize: '1rem', lineHeight: 1.7, maxWidth: '38rem', margin: '0 auto' }}>
+                            A transparent roadmap outlining why the Foundational Program exists, how it operates, and what recognition pilots gain along the way.
+                        </p>
                     </div>
-                    <div style={{ position: 'relative', zIndex: 1 }}>
-                        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                            <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem' }}>
-                                Orientation Overview
-                            </div>
-                            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '2.2rem', fontWeight: 400, color: '#0f172a', marginBottom: '0.75rem' }}>
-                                How WingMentor Bridges the Pilot Gap
-                            </h2>
-                            <p style={{ color: '#64748b', fontSize: '1rem', lineHeight: 1.7, maxWidth: '38rem', margin: '0 auto' }}>
-                                A transparent roadmap outlining why the Foundational Program exists, how it operates, and what recognition pilots gain along the way.
-                            </p>
-                        </div>
 
-                        <div style={{ display: 'grid', gap: '1.5rem' }}>
-                            {overviewCards.map((card) => (
-                                <div
-                                    key={card.title}
-                                    style={{
-                                        display: 'flex',
-                                        flexWrap: 'wrap',
-                                        gap: '1.5rem',
-                                        padding: '1.75rem',
-                                        borderRadius: '24px',
-                                        background: 'rgba(255,255,255,0.9)',
-                                        backdropFilter: 'blur(8px)',
-                                        border: '1px solid rgba(148,163,184,0.3)',
-                                        boxShadow: '0 15px 45px rgba(15,23,42,0.12)'
-                                    }}
-                                >
-                                    <div style={{ flex: '1 1 320px' }}>
-                                        <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#2563eb', letterSpacing: '0.08em', marginBottom: '0.4rem' }}>
-                                            {card.tag}
-                                        </div>
-                                        <h3 style={{ margin: 0, fontFamily: 'Georgia, serif', fontSize: '1.5rem', fontWeight: 400, color: '#0f172a', letterSpacing: '-0.01em' }}>
-                                            {card.title}
-                                        </h3>
-                                        <p style={{ margin: '0.85rem 0 1.5rem', color: '#475569', lineHeight: 1.65 }}>
-                                            {card.description}
-                                        </p>
+                    <div style={{ display: 'grid', gap: '1.5rem' }}>
+                        {overviewCards.map((card) => (
+                            <div
+                                key={card.title}
+                                style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: '1.5rem',
+                                    padding: '1.75rem',
+                                    borderRadius: '24px',
+                                    background: 'rgba(255,255,255,0.85)',
+                                    border: '1px solid rgba(148,163,184,0.2)',
+                                    boxShadow: '0 15px 45px rgba(15,23,42,0.08)'
+                                }}
+                            >
+                                <div style={{ flex: '1 1 320px' }}>
+                                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#2563eb', letterSpacing: '0.08em', marginBottom: '0.4rem' }}>
+                                        {card.tag}
                                     </div>
-                                    <img src={card.image} alt={card.title} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '24px' }} />
+                                    <h3 style={{ margin: 0, fontFamily: 'Georgia, serif', fontSize: '1.5rem', fontWeight: 400, color: '#0f172a', letterSpacing: '-0.01em' }}>
+                                        {card.title}
+                                    </h3>
+                                    <p style={{ margin: '0.85rem 0 1.5rem', color: '#475569', lineHeight: 1.65 }}>
+                                        {card.description}
+                                    </p>
                                 </div>
-                            ))}
-                        </div>
+                                <img src={card.image} alt={card.title} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '24px' }} />
+                            </div>
+                        ))}
                     </div>
                 </section>
             </div>
