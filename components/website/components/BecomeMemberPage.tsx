@@ -650,21 +650,26 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                 {/* Profiling Mode Toggle - Glassy UI Button */}
                                 <div className="flex justify-center mb-8">
-                                    <button
-                                        type="button"
-                                        onClick={() => setFullProfiling(!fullProfiling)}
-                                        className="px-8 py-4 rounded-2xl font-semibold text-sm transition-all flex items-center gap-3"
-                                        style={{
-                                            background: 'rgba(255, 255, 255, 0.7)',
-                                            backdropFilter: 'blur(12px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.5)',
-                                            color: fullProfiling ? '#2563eb' : '#475569',
-                                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
-                                        }}
-                                    >
-                                        <span>{fullProfiling ? 'Full Profiling Mode' : 'Basic Profiling Mode'}</span>
-                                        <ChevronDown className="w-5 h-5" />
-                                    </button>
+                                    <div className="flex flex-col items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => setFullProfiling(!fullProfiling)}
+                                            className="px-8 py-4 rounded-2xl font-semibold text-sm transition-all flex items-center gap-3"
+                                            style={{
+                                                background: 'rgba(255, 255, 255, 0.7)',
+                                                backdropFilter: 'blur(12px)',
+                                                border: '1px solid rgba(255, 255, 255, 0.5)',
+                                                color: fullProfiling ? '#2563eb' : '#475569',
+                                                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
+                                            }}
+                                        >
+                                            <span>Click to expand Pilot Recognition Data Entry</span>
+                                            <ChevronDown className="w-5 h-5" />
+                                        </button>
+                                        <p className="text-xs font-semibold text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full">
+                                            preferred for Aviation Industry Oversight
+                                        </p>
+                                    </div>
                                 </div>
 
                                 {/* Full Profiling Additional Fields */}
