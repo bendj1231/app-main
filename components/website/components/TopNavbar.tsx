@@ -299,7 +299,11 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     {/* Actions */}
                     <div className="hidden lg:flex items-center gap-3 ml-4">
 
-
+                        {currentUser && (
+                            <span className="text-white text-sm font-medium">
+                                Welcome, {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
+                            </span>
+                        )}
 
                         <button
                             onClick={currentUser ? handleLogout : () => onNavigate('become-member')}
