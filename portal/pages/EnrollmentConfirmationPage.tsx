@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Icons } from '../icons';
 import { supabase } from '../lib/supabase-auth';
 
@@ -12,79 +12,6 @@ interface EnrollmentConfirmationPageProps {
         email?: string;
     };
 }
-
-const CloudShader: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const animationRef = useRef<number | undefined>(undefined);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        const resizeCanvas = () => {
-            const parent = canvas.parentElement;
-            if (parent) {
-                canvas.width = parent.clientWidth;
-                canvas.height = parent.clientHeight;
-            }
-        };
-
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        const animate = () => {
-            // Light blue gradient background
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, '#e8f4fc');
-            gradient.addColorStop(0.3, '#d4e9f7');
-            gradient.addColorStop(0.6, '#c5dff0');
-            gradient.addColorStop(1, '#b8d4ea');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            const time = Date.now() * 0.0001;
-            
-            // Smoke wisps with Perlin-like noise effect
-            for (let i = 0; i < 20; i++) {
-                const x = (Math.sin(time + i * 0.3) * 0.5 + 0.5) * canvas.width;
-                const y = (Math.cos(time * 0.2 + i * 0.4) * 0.5 + 0.5) * canvas.height;
-                const radius = 150 + Math.sin(time + i * 0.5) * 100;
-                const opacity = (Math.sin(time * 0.3 + i) + 1) / 2 * 0.15;
-
-                const smokeGradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-                smokeGradient.addColorStop(0, `rgba(220, 235, 250, ${opacity})`);
-                smokeGradient.addColorStop(0.5, `rgba(200, 220, 240, ${opacity * 0.5})`);
-                smokeGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2);
-                ctx.fillStyle = smokeGradient;
-                ctx.fill();
-            }
-
-            animationRef.current = requestAnimationFrame(animate);
-        };
-
-        animate();
-
-        return () => {
-            window.removeEventListener('resize', resizeCanvas);
-            if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current);
-            }
-        };
-    }, []);
-
-    return (
-        <canvas
-            ref={canvasRef}
-            className="absolute inset-0 w-full h-full"
-        />
-    );
-};
 
 export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProps> = ({
     onComplete,
@@ -125,139 +52,197 @@ export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProp
 
         return () => clearTimeout(timer);
     }, [onComplete, userProfile, userEmail]);
-
-    const nextSteps = [
-        "Review the Foundation Program overview in the next slides",
-        "Access the W1000 application for examination practice",
-        "Complete your initial pilot licensure examination",
-        "Begin your mentorship journey with 20 hours of observation"
-    ];
-
     return (
-        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', height: '100%', pointerEvents: 'none' }}>
-                <CloudShader />
-            </div>
-            <main className="dashboard-card" style={{
-                position: 'relative',
-                zIndex: 1,
+        <div style={{
+            fontFamily: 'Georgia, serif',
+            maxWidth: '600px',
+            margin: '0 auto',
+            padding: '20px',
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            background: 'linear-gradient(180deg, #f0f4f8 0%, #e8eef5 100%)'
+        }}>
+            {/* Soft Transition Shader Background */}
+            <div style={{
+                position: 'absolute',
+                inset: 0,
+                background: `
+                    radial-gradient(circle at 20% 20%, rgba(59,130,246,0.25), rgba(255,255,255,0.15) 20%, transparent 35%),
+                    radial-gradient(circle at 80% 10%, rgba(14,165,233,0.25), rgba(255,255,255,0.12) 18%, transparent 30%),
+                    radial-gradient(circle at 50% 60%, rgba(147,197,253,0.20), rgba(255,255,255,0.10) 25%, transparent 40%),
+                    radial-gradient(circle at 35% 75%, rgba(59,130,246,0.15), rgba(255,255,255,0.08) 22%, transparent 38%)
+                `,
+                mixBlendMode: 'screen',
+                pointerEvents: 'none',
+                zIndex: 1
+            }}></div>
+            
+            <div style={{
+                position: 'absolute',
+                width: '600px',
+                height: '600px',
+                background: 'radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.08) 30%, transparent 50%)',
+                top: '10%',
+                right: '0%',
+                filter: 'blur(8px)',
+                opacity: 0.9,
+                pointerEvents: 'none',
+                zIndex: 1
+            }}></div>
+            
+            <div style={{
+                position: 'absolute',
+                width: '500px',
+                height: '500px',
+                background: 'radial-gradient(circle, rgba(147,197,253,0.18) 0%, rgba(255,255,255,0.06) 35%, transparent 55%)',
+                bottom: '5%',
+                left: '-10%',
+                filter: 'blur(12px)',
+                opacity: 0.8,
+                pointerEvents: 'none',
+                zIndex: 1
+            }}></div>
+            
+            <div style={{
+                position: 'absolute',
+                width: '400px',
+                height: '400px',
+                background: 'radial-gradient(circle, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.05) 40%, transparent 60%)',
+                top: '60%',
+                left: '40%',
+                filter: 'blur(10px)',
+                opacity: 0.7,
+                pointerEvents: 'none',
+                zIndex: 1
+            }}></div>
+
+            <div style={{
                 display: 'flex',
                 flexDirection: 'column',
-                minHeight: 'auto',
-                maxHeight: '85vh',
-                padding: 0,
-                maxWidth: '750px',
-                width: '100%',
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(8px)',
-                borderRadius: '24px',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-                overflow: 'hidden'
+                alignItems: 'center',
+                gap: '1.5rem',
+                textAlign: 'center',
+                position: 'relative',
+                zIndex: 2
             }}>
-                {/* Progress Bar */}
-                <div style={{ display: 'flex', width: '100%', height: '6px', backgroundColor: '#f1f5f9' }}>
+                <div style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                    borderRadius: '16px',
+                    padding: '3rem 2.5rem',
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                    backdropFilter: 'blur(18px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    width: '100%',
+                    fontFamily: 'sans-serif'
+                }}>
+                    <img
+                        src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6"
+                        alt="WingMentor Logo"
+                        style={{
+                            height: '110px',
+                            width: 'auto',
+                            objectFit: 'contain',
+                            marginBottom: '1.5rem'
+                        }}
+                    />
+                    
                     <div style={{
-                        height: '100%',
-                        width: '100%',
-                        backgroundColor: '#2563eb',
-                        transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
-                    }}></div>
-                </div>
-
-                {/* Content area */}
-                <div style={{ padding: '2.5rem 2.5rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', overflow: 'auto' }}>
-                    <div className="dashboard-header" style={{ marginBottom: '1.5rem' }}>
-                        <div className="dashboard-logo" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '90px', height: 'auto' }} />
-                        </div>
-
-                        <div className="dashboard-subtitle">
-                            ENROLLMENT CONFIRMED
-                        </div>
-
-                        <h1 className="dashboard-title" style={{ fontSize: '1.8rem', marginBottom: '0.75rem' }}>
-                            Welcome to the Foundation Program
-                        </h1>
-
-                        <p style={{ maxWidth: '550px', margin: '0 auto', fontSize: '0.95rem', color: '#475569', lineHeight: 1.5 }}>
-                            Congratulations <strong>{userProfile?.firstName || 'Pilot'}</strong>! Your enrollment in the <strong>Foundation Program</strong> has been successfully confirmed. You're now ready to begin your personalized pilot development journey.
-                        </p>
+                        color: '#2563eb',
+                        fontSize: '0.875rem',
+                        fontWeight: 700,
+                        letterSpacing: '0.25em',
+                        textTransform: 'uppercase',
+                        marginBottom: '0.75rem'
+                    }}>
+                        ENROLLMENT CONFIRMATION
                     </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '480px', textAlign: 'center', margin: '0 auto' }}>
-                        <div style={{
-                            padding: '1.25rem',
-                            backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                            backdropFilter: 'blur(12px)',
-                            border: '1px solid rgba(226, 232, 240, 0.8)',
-                            borderRadius: '16px',
-                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
-                        }}>
-                            {nextSteps.map((step, index) => (
-                                <div key={index} className="animate-fade-in" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', animationDelay: `${index * 0.15}s`, marginBottom: index < nextSteps.length - 1 ? '0.8rem' : '0' }}>
-                                    <div style={{ marginTop: '0.1rem', color: '#10b981' }}>
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                    </div>
-                                    <p style={{ margin: 0, color: '#334155', fontSize: '0.875rem', lineHeight: 1.4, textAlign: 'left' }}>{step}</p>
-                                </div>
-                            ))}
-                        </div>
+                    
+                    <h2 style={{
+                        fontSize: '1.8rem',
+                        fontWeight: 400,
+                        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+                        letterSpacing: '-0.02em',
+                        lineHeight: 1.2,
+                        color: '#0f172a',
+                        marginBottom: '2.5rem'
+                    }}>
+                        Welcome to the Foundation Program
+                    </h2>
+                    
+                    <p style={{
+                        color: '#475569',
+                        fontSize: '1.05rem',
+                        lineHeight: 1.8,
+                        margin: '0 auto 2rem',
+                        maxWidth: '40rem',
+                        textAlign: 'left'
+                    }}>
+                        Congratulations <strong>{userProfile?.firstName || 'Pilot'}</strong>! Your enrollment in the <strong>Foundation Program</strong> has been successfully confirmed. This email serves as your official enrollment confirmation and provides access to your personalized pilot development journey.
+                    </p>
+                    
+                    <div style={{
+                        textAlign: 'center',
+                        margin: '2.5rem 0'
+                    }}>
+                        <button
+                            onClick={onComplete}
+                            style={{
+                                display: 'inline-block',
+                                padding: '1.1rem 2.75rem',
+                                background: 'rgba(147, 197, 253, 0.35)',
+                                color: '#1e40af',
+                                textDecoration: 'none',
+                                borderRadius: '12px',
+                                fontSize: '1rem',
+                                fontWeight: 700,
+                                transition: 'all 0.25s ease',
+                                boxShadow: '0 8px 32px rgba(147, 197, 253, 0.2), inset 0 1px 0 rgba(255,255,255,0.6)',
+                                backdropFilter: 'blur(12px)',
+                                border: '1px solid rgba(147, 197, 253, 0.4)',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Continue to Dashboard
+                        </button>
                     </div>
-
+                    
                     <div style={{
                         background: '#dbeafe',
                         borderLeft: '4px solid #2563eb',
                         padding: '15px',
-                        margin: '1.5rem 0 0',
-                        maxWidth: '480px',
-                        width: '100%'
+                        marginBottom: '20px'
                     }}>
                         <p style={{
                             color: '#1e40af',
                             margin: 0,
-                            fontSize: '0.9rem',
-                            textAlign: 'left'
+                            fontSize: '0.9rem'
                         }}>
                             <strong>Next Steps:</strong> Our mentorship team will review your onboarding responses and contact you with further instructions.
                         </p>
                     </div>
+                    
+                    <div style={{
+                        textAlign: 'center',
+                        color: '#64748b',
+                        fontSize: '0.85rem',
+                        marginTop: '30px',
+                        paddingTop: '20px',
+                        borderTop: '1px solid #e5e7eb'
+                    }}>
+                        <p>For questions about your enrollment, contact: enroll@pilotrecognition.com</p>
+                        <p style={{
+                            color: '#9ca3af',
+                            fontSize: '0.75rem',
+                            marginTop: '15px'
+                        }}>
+                            © 2026 PilotRecognition.com. All rights reserved.
+                        </p>
+                    </div>
                 </div>
-
-                {/* Footer Controls */}
-                <div style={{ padding: '1.25rem 2.5rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', backgroundColor: '#ffffff' }}>
-                    <button
-                        onClick={onComplete}
-                        style={{
-                            flex: 1,
-                            padding: '0.6rem 1.25rem',
-                            borderRadius: '10px',
-                            backgroundColor: '#2563eb',
-                            backdropFilter: 'blur(12px)',
-                            border: '1px solid #2563eb',
-                            boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
-                            color: '#ffffff',
-                            fontWeight: 600,
-                            fontSize: '0.8rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                            maxWidth: '140px'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.backgroundColor = '#1d4ed8';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.backgroundColor = '#2563eb';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                        }}
-                    >
-                        Continue
-                        <Icons.ArrowRight style={{ width: 14, height: 14, marginLeft: '0.4rem', display: 'inline', verticalAlign: 'middle' }} />
-                    </button>
-                </div>
-            </main>
+            </div>
         </div>
     );
 };
