@@ -457,17 +457,26 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
     // Phase 1: Fetch enrollment and program data
     try {
-      const { data: enrollmentData } = await supabase
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Phase 1 timeout after 5s')), 5000)
+      );
+
+      const enrollmentPromise = supabase
         .from('enrollments')
         .select('*')
         .eq('user_id', effectiveUserId)
         .maybeSingle();
-      
-      const { data: profileData } = await supabase
+
+      const profilePromise = supabase
         .from('profiles')
         .select('enrolled_programs, onboarding_data')
         .eq('id', effectiveUserId)
-        .single();
+        .maybeSingle();
+
+      const [enrollmentData, profileData] = await Promise.race([
+        Promise.all([enrollmentPromise, profilePromise]),
+        timeoutPromise
+      ]) as [any, any];
 
       setAuthState(prev => ({
         ...prev,
@@ -477,9 +486,10 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           programs: profileData?.enrolled_programs || []
         }
       }));
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching enrollment data:', err);
-      setLoadingError('Failed to load enrollment data. Please try again.');
+      // Don't set loading error, just log it and continue
+      console.log('Continuing without enrollment data');
     }
 
     loadingTimers.current.push(setTimeout(() => {
@@ -489,14 +499,23 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     // Phase 2: Fetch recognition and achievements data
     loadingTimers.current.push(setTimeout(async () => {
       setLoadingPhase('sync');
-      
+
       try {
-        const { data: achievementsData } = await supabase
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Phase 2 timeout after 5s')), 5000)
+        );
+
+        const achievementsPromise = supabase
           .from('achievements')
           .select('*')
           .eq('user_id', effectiveUserId)
           .order('achievement_date', { ascending: false });
-        
+
+        const achievementsData = await Promise.race([
+          achievementsPromise,
+          timeoutPromise
+        ]) as any;
+
         setAuthState(prev => ({
           ...prev,
           preloadedData: {
@@ -504,22 +523,31 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
             achievements: achievementsData || []
           }
         }));
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching achievements:', err);
-        setLoadingError('Failed to load achievements data. Please try again.');
+        console.log('Continuing without achievements data');
       }
     }, 1500));
 
     // Phase 3: Fetch pilot portfolio data
     loadingTimers.current.push(setTimeout(async () => {
       setLoadingPhase('deploy');
-      
+
       try {
-        const { data: portfolioData } = await supabase
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Phase 3 timeout after 5s')), 5000)
+        );
+
+        const portfolioPromise = supabase
           .from('pilot_portfolio_data')
           .select('*')
           .eq('user_id', effectiveUserId)
           .maybeSingle();
+
+        const portfolioData = await Promise.race([
+          portfolioPromise,
+          timeoutPromise
+        ]) as any;
 
         // Also fetch pathways data - handle missing table gracefully
         let pathwaysData = [];
@@ -542,9 +570,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
             pathways: pathwaysData
           }
         }));
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching portfolio/pathways:', err);
-        // Don't set loading error, just log it and continue
         console.log('Continuing without portfolio/pathways data');
       }
     }, 3000));
