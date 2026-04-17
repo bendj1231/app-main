@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { useAuth } from '@/src/contexts/AuthContext';
@@ -32,6 +32,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [loading, setLoading] = useState(false);
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [userAlreadyExisted, setUserAlreadyExisted] = useState(false);
+
+    // Log signupSuccess state changes
+    useEffect(() => {
+        console.log('📋 signupSuccess state changed:', signupSuccess);
+    }, [signupSuccess]);
 
     const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
     const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
@@ -267,6 +272,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         insightInterests: selectedInsights
                                     });
                                     clearTimeout(timeoutId);
+                                    console.log('✅ Signup successful, setting signupSuccess to true');
                                     setSignupSuccess(true);
                                     setUserAlreadyExisted(false);
                                 } catch (err: any) {
