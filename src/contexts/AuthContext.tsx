@@ -69,28 +69,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             });
 
             if (supabaseError) {
-                // If user already exists, try to use the existing user
+                // If user already exists, try to sign in to get the user ID
                 if (supabaseError.message.includes('already registered') || supabaseError.message === 'User already registered') {
-                    console.log('User already exists in auth, checking if profile exists...');
+                    console.log('User already exists in auth, attempting to sign in...');
                     userAlreadyExisted = true;
                     
-                    // Try to get the existing user by email
-                    const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
-                    if (listError) {
-                        console.error('❌ Error listing users:', listError);
-                        throw new Error(`Failed to check existing user: ${listError.message}`);
-                    }
+                    // Try to sign in to get the user ID
+                    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
                     
-                    const existingUser = users.find(u => u.email === email);
-                    if (!existingUser) {
+                    if (signInError) {
+                        console.error('❌ Failed to sign in to get user ID:', signInError);
                         throw new Error('USER_ALREADY_EXISTS');
                     }
                     
-                    userId = existingUser.id;
-                    console.log('✅ Found existing auth user:', userId);
+                    if (!signInData.user) {
+                        throw new Error('USER_ALREADY_EXISTS');
+                    }
+                    
+                    userId = signInData.user.id;
+                    console.log('✅ Found existing auth user via sign in:', userId);
                     
                     // Send confirmation email for existing user
-                    if (!existingUser.email_confirmed_at) {
+                    if (!signInData.user.email_confirmed_at) {
                         console.log('User email not confirmed, sending confirmation email...');
                         const { error: resendError } = await supabase.auth.resend({
                             type: 'signup',
@@ -105,6 +108,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     } else {
                         console.log('User email already confirmed');
                     }
+                    
+                    // Sign out after getting the user ID to avoid session conflicts
+                    await supabase.auth.signOut();
                 } else {
                     console.error('❌ Supabase auth error:', supabaseError);
                     throw new Error(`Supabase auth failed: ${supabaseError.message}`);
