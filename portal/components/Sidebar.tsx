@@ -17,7 +17,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                 {/* Navigation Bar */}
                 <div className={styles.navigationBar}>
                     <button 
-                        onClick={() => onNavigateToMainApp ? onNavigateToMainApp() : onNavigate('home')}
+                        onClick={() => {
+                            console.log('Home button clicked, onNavigateToMainApp:', !!onNavigateToMainApp);
+                            if (onNavigateToMainApp) {
+                                onNavigateToMainApp();
+                            } else {
+                                onNavigate('home');
+                            }
+                        }}
                         className={styles.homeButton}
                     >
                         <Icons.Home />
