@@ -39,7 +39,7 @@ export const AccountConfirmationPage: React.FC<AccountConfirmationPageProps> = (
                         
                         <div className="space-y-4">
                             <p className="text-sm text-slate-500">
-                                You can now access your Pilot Recognition Profile and begin your journey.
+                                You can now access the pilot portal to view programs, pathways & your pilot recognition profile.
                             </p>
                             
                             <button
