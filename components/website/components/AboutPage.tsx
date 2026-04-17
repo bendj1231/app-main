@@ -64,7 +64,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <div className="md:w-1/2">
                         <div className="relative w-full max-w-md mx-auto">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g"
+                                src="/images/foundational-program.png"
                                 alt="WingMentor Foundational Program"
                                 className="w-full rounded-3xl shadow-lg object-cover"
                             />

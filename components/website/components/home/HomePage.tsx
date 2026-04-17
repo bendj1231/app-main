@@ -480,7 +480,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g",
+            image: "/images/foundational-program.png",
             title: "Foundational Program",
             subtitle: "Leadership skills, verifiable experience, and industry-recognized accreditation supported by AIRBUS, Etihad & Archer.",
             category: 'program',

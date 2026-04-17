@@ -12,7 +12,7 @@ export const Carousel = ({ onCardClick }: { onCardClick: (id: string) => void })
             title: "Foundation Program",
             subtitle: "Systems Architecture",
             description: "Begin your first pilot experience with us at WM through learning leadership skills, mentoring, and one-on-one consultation.",
-            image: "https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g",
+            image: "/images/foundational-program.png",
             color: "text-sky-400",
             btnColor: "bg-sky-500 hover:bg-sky-600 shadow-sky-500/25",
             icon: BookOpen

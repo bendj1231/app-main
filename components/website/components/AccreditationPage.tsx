@@ -10,11 +10,11 @@ interface AccreditationPageProps {
     onLogin: () => void;
 }
 
-const ACCREDITATION_URL = "https://lh3.googleusercontent.com/d/12pf5A8zfaAmnN0TFPrL6_OV8Em7lX_p9";
-const ACCREDITATION_2_URL = "https://lh3.googleusercontent.com/d/1EbPJSQbhBiEnBtP6lSPrYIkLxANUDJBl";
-const ACCREDITATION_3_URL = "https://lh3.googleusercontent.com/d/1kpzjxNltR6BrX8IEitGbathVAZe8HVF-";
-const ACCREDITATION_4_URL = "https://lh3.googleusercontent.com/d/1mO2UeKmfgb2Z3ZMqcEeBze5w119HZgUb";
-const ACCREDITATION_5_URL = "https://lh3.googleusercontent.com/d/1sbabopQiNZkWXsGcePTH1MjzY2HzJate";
+const ACCREDITATION_URL = "/images/accreditation-1.png";
+const ACCREDITATION_2_URL = "/images/accreditation-2.png";
+const ACCREDITATION_3_URL = "/images/accreditation-3.png";
+const ACCREDITATION_4_URL = "/images/accreditation-4.png";
+const ACCREDITATION_5_URL = "/images/accreditation-5.png";
 
 export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, onNavigate, onLogin }) => {
     const partnershipTiles = [
