@@ -752,10 +752,12 @@ const App = () => {
                           cursor: 'pointer'
                         }}
                         onClick={async () => {
+                          console.log('🔴 Logout button clicked');
                           try {
                             await logout();
+                            console.log('✅ Logout successful');
                           } catch (error) {
-                            console.error('Logout error:', error);
+                            console.error('❌ Logout error:', error);
                           }
                         }}
                       >
