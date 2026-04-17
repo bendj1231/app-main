@@ -20,6 +20,7 @@ interface AuthContextType {
     signup: (email: string, password: string, userData: any) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    deleteAccount: (userId: string) => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
 }
 
@@ -509,6 +510,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return sendPasswordResetEmail(auth, email);
     }
 
+    async function deleteAccount(userId: string) {
+        console.log('🔴 deleteAccount called for user:', userId);
+        try {
+            const edgeFunctionUrl = `https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/delete-account`;
+
+            const response = await fetch(edgeFunctionUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to delete account');
+            }
+
+            console.log('✅ Account deleted successfully');
+        } catch (error) {
+            console.error('❌ Error deleting account:', error);
+            throw error;
+        }
+    }
+
     useEffect(() => {
         // Restore session from IndexedDB on app initialization
         const restoreSession = async () => {
@@ -640,20 +666,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         return () => {
-            unsubscribe();
-            subscription.unsubscribe();
-        };
-    }, []);
-
-    const value = {
-        currentUser,
-        userProfile,
-        loading,
-        signup,
-        login,
-        logout,
-        resetPassword
     };
+}, []);
+
+const value = {
+    currentUser,
+    userProfile,
+    loading,
+    signup,
+    login,
+    logout,
+    deleteAccount,
+    resetPassword
+};
 
     return (
         <AuthContext.Provider value={value}>
