@@ -11,6 +11,7 @@ import {
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { supabase } from '../lib/supabase';
+import { indexedDB } from '../lib/indexedDB';
 
 interface AuthContextType {
     currentUser: User | null;
@@ -381,12 +382,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             await supabase.auth.signOut();
             // Sign out from Firebase
             await signOut(auth);
+            // Clear IndexedDB session
+            await indexedDB.clearSession();
             // Explicitly clear auth state
             setCurrentUser(null);
             setUserProfile(null);
         } catch (error) {
             console.error("Logout error:", error);
-            // Even if there's an error, try to clear local state
+            // Even if there's an error, try to clear local state and IndexedDB
+            await indexedDB.clearSession();
             setCurrentUser(null);
             setUserProfile(null);
             throw error;
@@ -398,6 +402,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     useEffect(() => {
+        // Restore session from IndexedDB on app initialization
+        const restoreSession = async () => {
+            try {
+                const savedSession = await indexedDB.getSession();
+                if (savedSession) {
+                    console.log("🔄 Restoring session from IndexedDB:", savedSession.user?.id);
+                    // Set the session in Supabase
+                    await supabase.auth.setSession({
+                        access_token: savedSession.access_token,
+                        refresh_token: savedSession.refresh_token,
+                    });
+                }
+            } catch (error) {
+                console.error("❌ Error restoring session from IndexedDB:", error);
+            }
+        };
+        
+        restoreSession();
+
         // Firebase auth state listener
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setCurrentUser(user);
@@ -426,6 +449,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             if (session?.user) {
                 console.log("✅ Supabase user authenticated:", session.user.id, session.user.email);
+                
+                // Save session to IndexedDB for persistence
+                await indexedDB.saveSession(session);
                 
                 // Create a minimal User-like object for compatibility
                 const supabaseUser = {
