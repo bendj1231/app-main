@@ -32,20 +32,20 @@ export const OnboardingRecognition: React.FC<OnboardingRecognitionProps> = ({ on
                             Showcase your achievements, earn industry-recognized credentials, and follow structured pathways to your dream aviation career.
                         </p>
                         
-                        <div className="grid grid-cols-2 gap-4 mb-8">
-                            <div className="bg-violet-50 rounded-2xl p-6">
+                        <div className="flex gap-4 overflow-x-auto pb-4 mb-8 snap-x snap-mandatory">
+                            <div className="bg-violet-50 rounded-2xl p-6 min-w-[280px] snap-start">
                                 <h3 className="font-semibold text-slate-900 mb-1">Recognition Profile</h3>
                                 <p className="text-sm text-slate-600">Document your certifications and achievements</p>
                             </div>
-                            <div className="bg-violet-50 rounded-2xl p-6">
+                            <div className="bg-violet-50 rounded-2xl p-6 min-w-[280px] snap-start">
                                 <h3 className="font-semibold text-slate-900 mb-1">Career Pathways</h3>
                                 <p className="text-sm text-slate-600">Guided paths to major airlines and operators</p>
                             </div>
-                            <div className="bg-violet-50 rounded-2xl p-6">
+                            <div className="bg-violet-50 rounded-2xl p-6 min-w-[280px] snap-start">
                                 <h3 className="font-semibold text-slate-900 mb-1">Verified Credentials</h3>
                                 <p className="text-sm text-slate-600">Industry-recognized proof of your skills</p>
                             </div>
-                            <div className="bg-violet-50 rounded-2xl p-6">
+                            <div className="bg-violet-50 rounded-2xl p-6 min-w-[280px] snap-start">
                                 <h3 className="font-semibold text-slate-900 mb-1">Milestone Tracking</h3>
                                 <p className="text-sm text-slate-600">Celebrate your aviation journey achievements</p>
                             </div>
