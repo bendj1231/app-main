@@ -69,7 +69,7 @@ export const createUserProfile = async (user: any, role: UserRole['type'] = 'men
         updated_at: new Date().toISOString()
       })
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Error creating profile:', error);
