@@ -18,14 +18,19 @@ export const SUPER_ADMIN_EMAIL = 'benjamintigerbowler@gmail.com';
 export const createUserProfile = async (user: any, role: UserRole['type'] = 'mentee'): Promise<UserProfile> => {
   try {
     // Check if profile already exists
-    const { data: existingProfile } = await supabase
+    const { data: existingProfile, error: checkError } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
     if (existingProfile) {
       return existingProfile as UserProfile;
+    }
+
+    // Only log error if it's not a "not found" error
+    if (checkError && checkError.code !== 'PGRST116') {
+      console.error('Error checking for existing profile:', checkError);
     }
 
     // Create default app access
@@ -107,15 +112,23 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
       .from('profiles')
       .select('*')
       .eq('id', uid)
-      .single();
+      .maybeSingle();
 
     const { data: profile, error: profileError } = await Promise.race([
       profilePromise,
       timeoutPromise
     ]);
 
-    if (profileError || !profile) {
-      console.log('Profile not found:', profileError);
+    if (profileError) {
+      // Only log error if it's not a "not found" error
+      if (profileError.code !== 'PGRST116') {
+        console.log('Profile error:', profileError);
+      }
+      return null;
+    }
+
+    if (!profile) {
+      console.log('Profile not found');
       return null;
     }
 
