@@ -220,34 +220,23 @@ export const canAccessApp = (userProfile: UserProfile | null, appId: string): bo
 export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
   console.log('🔌 Setting up onAuthStateChange listener');
 
-  // Restore session from IndexedDB before setting up auth listener
-  const restoreSession = async () => {
+  // Clear expired sessions from IndexedDB before setting up listener
+  const clearExpiredSessions = async () => {
     try {
-      console.log('🔍 Attempting to get session from IndexedDB...');
-      const savedSession = await indexedDB.getSession();
-      console.log('🔍 IndexedDB getSession result:', savedSession ? 'Session found' : 'No session');
-      if (savedSession) {
-        console.log('🔄 Restoring session from IndexedDB in portal:', savedSession.user?.id);
-        console.log('🔍 Session data keys:', Object.keys(savedSession));
-        // Set the session in Supabase client
-        console.log('🔍 Calling supabase.auth.setSession...');
-        await supabase.auth.setSession({
-          access_token: savedSession.access_token,
-          refresh_token: savedSession.refresh_token,
-        });
-        console.log('✅ Session restored in Supabase client');
-        return savedSession;
-      } else {
-        console.log('⚠️ No session found in IndexedDB');
+      console.log('🔍 Checking for expired sessions in IndexedDB...');
+      const savedSession = await indexedDB.getSessionWithVerification(supabase);
+      if (!savedSession) {
+        console.log('🧹 Session cleared or invalid');
       }
     } catch (error) {
-      console.error('❌ Error restoring session from IndexedDB in portal:', error);
+      console.error('❌ Error checking expired sessions:', error);
     }
-    console.log('🔍 restoreSession returning null');
-    return null;
   };
 
-  // Set up auth listener first
+  // Clear expired sessions
+  clearExpiredSessions();
+
+  // Set up auth listener
   const subscription = supabase.auth.onAuthStateChange(async (event, session) => {
     console.log('🔍 Supabase Auth State Change:', { event, session: !!session });
 
@@ -312,37 +301,6 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
         currentSystem: 'pms'
       });
     }
-  });
-
-  // Restore session after setting up listener
-  restoreSession().then(async (savedSession) => {
-    console.log('🔍 Session restoration result:', savedSession ? 'Session found' : 'No session found');
-    if (savedSession) {
-      // Manually trigger the callback with the restored session
-      console.log('🔄 Manually triggering auth callback with restored session');
-      console.log('👤 Restored user:', savedSession.user?.email, savedSession.user?.id);
-      try {
-        let userProfile = await getUserProfile(savedSession.user.id);
-        console.log('📋 User profile after restoration:', userProfile ? 'Found' : 'Not found');
-        if (!userProfile) {
-          console.log('🔧 Creating new user profile from restored session...');
-          userProfile = await createUserProfile(savedSession.user);
-        }
-        console.log('✅ Calling callback with restored session');
-        callback({
-          user: savedSession.user,
-          userProfile,
-          loading: false,
-          currentSystem: 'pms'
-        });
-      } catch (error) {
-        console.error('❌ Error processing restored session:', error);
-      }
-    } else {
-      console.log('⚠️ No saved session to restore');
-    }
-  }).catch(error => {
-    console.error('❌ Error in session restoration promise:', error);
   });
 
   return subscription;

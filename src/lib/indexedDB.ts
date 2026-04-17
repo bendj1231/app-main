@@ -78,6 +78,41 @@ export const indexedDB = {
     }
   },
 
+  async getSessionWithVerification(supabaseClient: any): Promise<any | null> {
+    try {
+      const session = await this.getSession();
+      if (!session) return null;
+
+      // Verify user still exists in database
+      if (session.user?.id) {
+        try {
+          const { data: profile, error } = await supabaseClient
+            .from('profiles')
+            .select('id')
+            .eq('id', session.user.id)
+            .single();
+
+          if (error || !profile) {
+            console.log('⚠️ User no longer exists in database, clearing session');
+            await this.clearSession();
+            return null;
+          }
+          console.log('✅ User verified in database');
+        } catch (verifyError) {
+          console.error('❌ Error verifying user in database:', verifyError);
+          // If verification fails, clear session to be safe
+          await this.clearSession();
+          return null;
+        }
+      }
+
+      return session;
+    } catch (error) {
+      console.error('❌ Error getting session with verification:', error);
+      return null;
+    }
+  },
+
   async clearSession(): Promise<void> {
     try {
       const db = await this.openDB();

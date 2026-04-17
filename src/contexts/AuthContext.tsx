@@ -469,7 +469,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Restore session from IndexedDB on app initialization
         const restoreSession = async () => {
             try {
-                const savedSession = await indexedDB.getSession();
+                const savedSession = await indexedDB.getSessionWithVerification(supabase);
                 if (savedSession) {
                     console.log("🔄 Restoring session from IndexedDB:", savedSession.user?.id);
                     // Set the session in Supabase
