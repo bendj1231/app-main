@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 interface ShaderCloudProps {
     className?: string;
+    height?: string;
 }
 
 // Simple Perlin noise implementation
@@ -39,9 +40,9 @@ const grad = (hash: number, x: number, y: number, z: number) => {
     return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
 };
 
-export const ShaderCloud: React.FC<ShaderCloudProps> = ({ className = '' }) => {
+export const ShaderCloud: React.FC<ShaderCloudProps> = ({ className = '', height = '100vh' }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const animationRef = useRef<number>();
+    const animationRef = useRef<number | undefined>(undefined);
     const timeRef = useRef(0);
 
     useEffect(() => {
@@ -52,8 +53,11 @@ export const ShaderCloud: React.FC<ShaderCloudProps> = ({ className = '' }) => {
         if (!ctx) return;
 
         const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const parent = canvas.parentElement;
+            if (parent) {
+                canvas.width = parent.clientWidth;
+                canvas.height = parent.clientHeight;
+            }
         };
 
         resizeCanvas();
@@ -145,7 +149,7 @@ export const ShaderCloud: React.FC<ShaderCloudProps> = ({ className = '' }) => {
     }, []);
 
     return (
-        <div className={`relative w-full h-screen overflow-hidden ${className}`}>
+        <div className={`relative w-full overflow-hidden ${className}`} style={{ height }}>
             <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full"

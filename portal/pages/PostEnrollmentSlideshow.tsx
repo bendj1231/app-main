@@ -89,10 +89,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
     return (
         <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem', position: 'relative' }}>
             <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', height: '100vh' }}>
-                <div style={{ height: '100vh', width: '100%' }}>
-                    <ShaderCloud />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/30" />
+                <ShaderCloud height="100vh" />
             </div>
             <main className="dashboard-card" style={{
                 position: 'relative',
