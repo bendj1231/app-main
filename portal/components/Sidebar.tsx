@@ -6,24 +6,30 @@ interface SidebarProps {
     mainView: any;
     onLogout: () => void;
     onNavigate: (view: any) => void;
+    onNavigateToMainApp?: () => void;
     isDarkMode?: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate, isDarkMode = false }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate, onNavigateToMainApp, isDarkMode = false }) => {
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>
                 {/* Navigation Bar */}
                 <div className={styles.navigationBar}>
                     <button 
-                        onClick={() => onNavigate('home')}
+                        onClick={() => onNavigateToMainApp ? onNavigateToMainApp() : onNavigate('home')}
                         className={styles.homeButton}
                     >
                         <Icons.Home />
                         Home
                     </button>
                     <button 
-                        onClick={onLogout}
+                        onClick={() => {
+                            onLogout();
+                            if (onNavigateToMainApp) {
+                                onNavigateToMainApp();
+                            }
+                        }}
                         className={styles.logoutButton}
                     >
                         <Icons.LogOut />

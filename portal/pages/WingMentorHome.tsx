@@ -4146,7 +4146,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
   return (
     <div style={{ display: 'flex', height: '100vh', background: isDarkMode ? '#020817' : '#f8fafc' }}>
-      <Sidebar mainView={mainView} onLogout={onLogout} onNavigate={setMainView} isDarkMode={isDarkMode} />
+      <Sidebar mainView={mainView} onLogout={onLogout} onNavigate={setMainView} onNavigateToMainApp={onNavigateToMainApp} isDarkMode={isDarkMode} />
       
       {/* Main Content Area */}
       {mainView === 'pathways' ? (
