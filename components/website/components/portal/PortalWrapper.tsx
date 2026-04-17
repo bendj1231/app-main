@@ -46,7 +46,7 @@ class ErrorBoundary extends Component<{ children: React.ReactNode }, { hasError:
     }
 }
 
-export const PortalWrapper: React.FC<PortalWrapperProps> = ({ onNavigate, onBack }) => {
+export const PortalWrapper: React.FC<PortalWrapperProps> = ({ onNavigate, onBack, directToEnrollment = false }) => {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
