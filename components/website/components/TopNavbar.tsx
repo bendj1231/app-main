@@ -352,7 +352,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 >
                                     <Settings className="w-4 h-4" />
                                 </button>
-                                <span className="text-white text-sm font-medium">
+                                <span className={`text-sm font-medium ${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'}`}>
                                     Welcome, {pilotId || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                 </span>
                             </>
