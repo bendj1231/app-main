@@ -2870,7 +2870,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                 {/* Preview Section - Always Visible Top Edge */}
                 {!showAllPathways && (
                   <div
-                    onClick={() => setShowAllPathways(true)}
+                    onClick={() => setMainView('foundational-get-started')}
                     onMouseEnter={() => setTeaserHovered(true)}
                     onMouseLeave={() => setTeaserHovered(false)}
                     style={{
@@ -2924,10 +2924,10 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                       >
                         <div style={{ padding: '1.5rem 2rem 2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1.25rem' }}>
                           <div style={{ flex: 1 }}>
-                            <div style={{ fontSize: '0.8rem', letterSpacing: '0.35em', color: '#94a3b8', fontWeight: 700, marginBottom: '0.4rem' }}>• EXPANDING HORIZONS</div>
-                            <h4 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.35rem' }}>Discover More Pathways</h4>
+                            <div style={{ fontSize: '0.8rem', letterSpacing: '0.35em', color: '#94a3b8', fontWeight: 700, marginBottom: '0.4rem' }}>• FOUNDATION PROGRAM</div>
+                            <h4 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.35rem' }}>Enroll on Foundation Program</h4>
                             <p style={{ fontSize: '0.9rem', color: '#475569', margin: 0 }}>
-                              Military, Cargo, Instructor, and corporate tracks are queued below—hover to bring them into view.
+                              Start your aviation career with comprehensive training and mentorship designed for aspiring pilots.
                             </p>
                           </div>
                           <div style={{ width: '48px', height: '48px' }} />
@@ -2985,12 +2985,12 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                           alignItems: 'center',
                           gap: '0.4rem'
                         }}>
-                          Discover More Pathways — Click Here
+                          Enroll Now
                           <span style={{
                             display: 'inline-block',
                             animation: 'bounceArrow 1.6s infinite',
                             fontSize: '1.1rem'
-                          }}>↓</span>
+                          }}>→</span>
                         </div>
                       </div>
                     </div>
