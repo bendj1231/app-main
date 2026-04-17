@@ -122,7 +122,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
             id: 'discover',
             images: ['/images/w1000.png', '/images/airlinesexpectations.png', '/images/atlascv.png'],
             image: '/images/w1000.png',
-            loggedInImages: ['/foundationprogram.png', '/img34.png'],
+            loggedInImages: ['/foundationprogram.png', '/images/img34.png'],
             title: 'Discover',
             loggedInTitle: 'Enroll on Foundation Program',
             dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
@@ -1425,7 +1425,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                         src={img} 
                                         alt={`${card.title} ${idx + 1}`}
                                         className={`
-                                            w-full h-full object-cover
+                                            w-full h-full object-cover object-center
                                             ${isHovered && idx === currentImageIndex ? 'scale-110' : ''}
                                         `}
                                     />
