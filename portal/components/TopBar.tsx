@@ -61,10 +61,12 @@ export const TopBar: React.FC<TopBarProps> = ({
                     Access Website
                 </button>
 
+                <div style={{ width: '1px', height: '24px', background: '#e2e8f0', margin: '0 0.25rem' }}></div>
+
                 {onNavigateToHome && (
                     <button onClick={onNavigateToHome} className={`${styles.actionButton} ${styles.homeButton}`}>
                         <Icons.Home />
-                        Return to Home
+                        Home
                     </button>
                 )}
 
