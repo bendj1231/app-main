@@ -32,7 +32,7 @@ serve(async (req) => {
     console.log('📧 Sending account creation email to:', email)
     
     // Use Resend API only - no fallbacks
-    const resendApiKey = 're_2X1XHbv5_2Tzk3ZzfcHvAxjgW9jmEBd4k'
+    const resendApiKey = Deno.env.get('RESEND_API_KEY')
     if (!resendApiKey) {
       console.error('❌ Resend API key not configured')
       return new Response(
