@@ -607,33 +607,25 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                         <div className="space-y-4">
                                             <label className="text-sm font-semibold text-gray-700 mb-2 block">Current Ratings & Endorsements</label>
-                                            <div className="p-6 bg-slate-50/80 border border-slate-200 rounded-[2rem] space-y-4">
+                                            <div className="flex flex-wrap gap-2">
                                                 {ratingsOptions.map(option => (
-                                                    <label
+                                                    <button
                                                         key={option.id}
-                                                        className="flex items-center gap-4 group cursor-pointer"
+                                                        type="button"
+                                                        onClick={() => toggleRating(option.id)}
+                                                        className={`px-4 py-2 rounded-full border transition-all cursor-pointer text-sm font-medium ${
+                                                            selectedRatings.includes(option.id)
+                                                                ? 'border-blue-600 bg-blue-600 text-white'
+                                                                : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                                                        }`}
                                                     >
-                                                        <div className="relative flex items-center justify-center">
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={selectedRatings.includes(option.id)}
-                                                                onChange={() => toggleRating(option.id)}
-                                                                className="peer appearance-none w-6 h-6 border-2 border-slate-300 rounded-lg checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer"
-                                                            />
-                                                            <CheckCircle2 className="absolute w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-1 h-1 rounded-full bg-slate-300" />
-                                                            <span className={`text-sm font-bold transition-colors ${selectedRatings.includes(option.id) ? 'text-blue-900' : 'text-slate-600 group-hover:text-slate-900'}`}>
-                                                                {option.label}
-                                                            </span>
-                                                        </div>
-                                                    </label>
+                                                        {option.label}
+                                                    </button>
                                                 ))}
                                             </div>
                                             <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100/50 flex items-start gap-3">
                                                 <HelpCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                                                <p className="text-[11px] leading-relaxed text-amber-900/80 font-semibold">
+                                                <p className="text-sm leading-relaxed text-amber-900/80 font-medium">
                                                     Accurate ratings selection ensures you are assigned to the correct syllabus within the WingMentor ecosystem.
                                                 </p>
                                             </div>
