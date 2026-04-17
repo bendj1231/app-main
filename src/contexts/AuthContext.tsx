@@ -488,10 +488,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         console.log("✅ Supabase profile fetched for user:", session.user.id);
                         setUserProfile(profileData);
                     } else {
-                        console.log("⚠️ No Supabase profile found for user:", session.user.id);
+                        console.log("⚠️ No Supabase profile found for user:", session.user.id, "Creating default profile");
+                        // Create a default profile from Supabase auth data
+                        const defaultProfile = {
+                            user_id: session.user.id,
+                            email: session.user.email,
+                            created_at: session.user.created_at,
+                            enrolled_programs: [],
+                            appAccess: []
+                        };
+                        setUserProfile(defaultProfile);
                     }
                 } catch (err) {
                     console.error("❌ Error fetching Supabase profile:", err);
+                    // Create a default profile on error
+                    const defaultProfile = {
+                        user_id: session.user.id,
+                        email: session.user.email,
+                        created_at: session.user.created_at,
+                        enrolled_programs: [],
+                        appAccess: []
+                    };
+                    setUserProfile(defaultProfile);
                 }
             } else if (event === 'SIGNED_OUT') {
                 console.log("❌ Supabase user signed out");
