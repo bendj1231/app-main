@@ -144,28 +144,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
 
                     <button
                         onClick={nextSlide}
-                        style={{
-                            backgroundColor: '#2563eb',
-                            color: 'white',
-                            border: 'none',
-                            padding: '0.75rem 2rem',
-                            borderRadius: '10px',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)',
-                            transition: 'all 0.2s',
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.backgroundColor = '#1d4ed8';
-                            e.currentTarget.style.transform = 'translateY(-1px)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.backgroundColor = '#2563eb';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                        }}
+                        className="px-12 py-5 bg-emerald-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-emerald-700 transition-all shadow-[0_20px_40px_-10px_rgba(16,185,129,0.4)] hover:shadow-[0_25px_50px_-12px_rgba(16,185,129,0.5)] active:scale-95 flex items-center justify-center gap-3"
                     >
                         {currentSlide === slides.length - 1 ? 'Go to Program' : 'Continue'}
                         <Icons.ArrowRight style={{ width: 16, height: 16 }} />
