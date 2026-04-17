@@ -255,7 +255,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
     'pilot-recognition': [
         {
             id: 'pilot-recognition',
-            videoUrl: '/wm-productions-final-output.mp4',
+            videoUrl: '/images/My Movie 3 - 720WebShareName.mov',
             title: 'Pilot Recognition',
             subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
             icon: Compass,
