@@ -561,11 +561,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       try {
         const db = await (window as any).indexedDB.open('PilotRecognitionAuth', 1);
         const transaction = db.transaction(['authSession'], 'readwrite');
-        const store = transaction.objectStore('authSession');
-        store.delete('currentSession');
-        console.log('✅ IndexedDB session cleared from portal logout');
+        if (transaction && transaction.objectStore) {
+          const store = transaction.objectStore('authSession');
+          store.delete('currentSession');
+          console.log('✅ IndexedDB session cleared from portal logout');
+        } else {
+          console.log('⚠️ IndexedDB transaction or objectStore not available, skipping');
+        }
       } catch (error) {
         console.error('❌ Error clearing IndexedDB session from portal:', error);
+        // Continue with logout even if IndexedDB clearing fails
       }
 
       console.log('🔴 Clearing auth state...');
