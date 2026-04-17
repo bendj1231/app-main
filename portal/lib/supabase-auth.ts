@@ -1,8 +1,8 @@
 import type { UserProfile, UserRole } from '../types/user';
 import { AVAILABLE_APPS, ROLE_PERMISSIONS } from '../types/user';
 
-// Import shared Supabase client to avoid multiple instances
-import { supabase } from '../../shared/lib/supabase';
+// Use shared Supabase client from main app to share session automatically
+import { supabase } from '../../src/lib/supabase';
 import { indexedDB } from '../../src/lib/indexedDB';
 export { supabase };
 

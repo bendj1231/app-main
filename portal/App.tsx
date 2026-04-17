@@ -375,7 +375,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   useEffect(() => {
     console.log('🔐 Auth effect starting...');
-    
+
     // Set up auth state listener
     const { data: { subscription } } = onAuthStateChange((nextState) => {
       console.log('🔐 Auth state changed:', { user: !!nextState.user, loading: nextState.loading, hasUserProfile: !!nextState.userProfile });
@@ -384,7 +384,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         setLastLoginEmail(nextState.user.email);
       }
 
-      const isResetPasswordPage = window.location.pathname.includes('/reset-password') || 
+      const isResetPasswordPage = window.location.pathname.includes('/reset-password') ||
                                   window.location.hash.includes('type=recovery');
 
       if (isResetPasswordPage) {
