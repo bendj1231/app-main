@@ -309,8 +309,6 @@ button {
   padding: 5vh 1rem;
   position: relative;
   z-index: 10;
-  transform: scale(0.5);
-  transform-origin: top center;
 
   /* Fallback Sky Background Properties */
   background-size: cover;
