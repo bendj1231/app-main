@@ -39,14 +39,14 @@ export const AccountConfirmationPage: React.FC<AccountConfirmationPageProps> = (
                         
                         <div className="space-y-4">
                             <p className="text-sm text-slate-500">
-                                You can now access the pilot portal to view programs, pathways & your pilot recognition profile.
+                                You can now access the Pilot Portal to view programs, pathways, and your Pilot Recognition profile.
                             </p>
                             
                             <button
                                 onClick={onLogin}
                                 className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
                             >
-                                Continue to Login
+                                Get Started
                             </button>
                         </div>
                     </div>
