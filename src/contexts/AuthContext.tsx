@@ -81,14 +81,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             throw supabaseError;
         }
 
+        console.log('🔵 Step 2: Creating portal profile...');
+
         // Step 2: Create or update portal profile in profiles table
         try {
+            console.log('🔵 Step 2: Creating portal profile...');
             const experienceLevel = (() => {
                 const hours = parseInt(userData.currentFlightHours || '0', 10);
                 if (hours < 500) return 'Low Timer';
                 if (hours < 1500) return 'Middle Timer';
                 return 'High Timer';
             })();
+
+            console.log('🔵 Experience level:', experienceLevel);
 
             // Try to insert first, if it fails due to duplicate, update instead
             const { error: profileError } = await supabase
@@ -161,11 +166,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }
             } else {
                 console.log('✅ Portal profile created:', userId);
+                console.log('🔵 Profile created successfully. Proceeding to next step...');
             }
         } catch (profileError) {
-            console.error('Failed to create/update portal profile:', profileError);
+            console.error('❌ Failed to create profile:', profileError);
             throw profileError;
         }
+
+        console.log('🔵 Step 3: Creating app access records...');
 
         // Step 3: Create app access records (ignore if already exist)
         try {
