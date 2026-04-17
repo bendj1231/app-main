@@ -39,6 +39,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true);
     const [explicitLogout, setExplicitLogout] = useState(false);
 
+    // Clear explicitLogout flag on page refresh to allow session restoration
+    useEffect(() => {
+        setExplicitLogout(false);
+    }, []);
+
     async function signup(email: string, password: string, userData: any) {
         console.log('🔵 Starting signup process for:', email);
         console.log('🔵 User data:', userData);
