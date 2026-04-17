@@ -32,6 +32,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [loading, setLoading] = useState(false);
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [userAlreadyExisted, setUserAlreadyExisted] = useState(false);
+    const [fullProfiling, setFullProfiling] = useState(false);
 
     // Log signupSuccess state changes
     useEffect(() => {
@@ -156,6 +157,29 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Profiling Mode Toggle */}
+                    <div className="bg-white/90 backdrop-blur-md border border-blue-200/50 rounded-3xl shadow-sm p-6 mb-8">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h3 className="text-lg font-semibold text-slate-900 mb-1">Profiling Mode</h3>
+                                <p className="text-sm text-slate-600">
+                                    {fullProfiling ? 'Full profiling for enhanced pilot recognition' : 'Basic profiling for quick account creation'}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setFullProfiling(!fullProfiling)}
+                                className="px-6 py-3 rounded-xl font-semibold text-sm transition-all"
+                                style={{
+                                    background: fullProfiling ? '#2563eb' : '#f1f5f9',
+                                    color: fullProfiling ? 'white' : '#475569',
+                                    border: 'none'
+                                }}
+                            >
+                                {fullProfiling ? 'Switch to Basic' : 'Switch to Full Profiling'}
+                            </button>
                         </div>
                     </div>
 
