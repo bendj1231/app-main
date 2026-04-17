@@ -43,7 +43,7 @@ export const AccountConfirmationPage: React.FC<AccountConfirmationPageProps> = (
                             </p>
                             
                             <button
-                                onClick={onLogin}
+                                onClick={() => onNavigate('onboarding-pilot-portal')}
                                 className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
                             >
                                 Get Started

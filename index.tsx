@@ -62,6 +62,9 @@ import { ContactSupportPage } from './components/website/components/ContactSuppo
 import { AboutPage } from './components/website/components/AboutPage';
 import { BecomeMemberPage } from './components/website/components/BecomeMemberPage';
 import { AccountConfirmationPage } from './components/website/components/AccountConfirmationPage';
+import { OnboardingPilotPortal } from './components/website/components/OnboardingPilotPortal';
+import { OnboardingPrograms } from './components/website/components/OnboardingPrograms';
+import { OnboardingRecognition } from './components/website/components/OnboardingRecognition';
 import { AccreditationPage } from './components/website/components/AccreditationPage';
 import { EmiratesAtplPage } from './components/website/components/pathways/EmiratesAtplPage';
 import { EmergingAirTaxiPage } from './components/website/components/pathways/EmergingAirTaxiPage';
@@ -640,6 +643,27 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
+        {currentPage === 'onboarding-pilot-portal' && (
+          <OnboardingPilotPortal
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+        {currentPage === 'onboarding-programs' && (
+          <OnboardingPrograms
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+        {currentPage === 'onboarding-recognition' && (
+          <OnboardingRecognition
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
         {currentPage === 'contact-support' && (
           <ContactSupportPage
             onBack={() => navigateTo('home')}
@@ -700,6 +724,7 @@ const App = () => {
         'home', 'about', 'accreditation', 'faq', 'board', 'governance',
         'committees', 'w1000-suite', 'hinfact', 'membership-benefits', 'become-member',
         'account-confirmation',
+        'onboarding-pilot-portal', 'onboarding-programs', 'onboarding-recognition',
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
         'pilot-recognition', 'air-taxi-pathways', 'private-charter-pathways', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
