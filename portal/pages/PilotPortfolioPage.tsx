@@ -119,7 +119,7 @@ export const PilotPortfolioPage: React.FC<PilotPortfolioPageProps> = ({ onBack, 
 
   return (
     <div style={{ position: 'fixed', top: '70px', left: 0, right: 0, bottom: 0, overflow: 'auto', zIndex: 10 }}>
-      <main style={{ padding: '1.5rem', maxWidth: '900px', margin: '0 auto', minHeight: 'calc(100vh - 70px)' }}>
+      <main style={{ padding: '1rem', maxWidth: '450px', margin: '0 auto', minHeight: 'calc(100vh - 70px)' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <button
