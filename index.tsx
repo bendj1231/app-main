@@ -756,6 +756,7 @@ const App = () => {
                           try {
                             await logout();
                             console.log('✅ Logout successful');
+                            setCurrentPage('home');
                           } catch (error) {
                             console.error('❌ Logout error:', error);
                           }
