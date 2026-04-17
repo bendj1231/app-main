@@ -122,7 +122,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
             id: 'discover',
             images: ['/images/w1000.png', '/images/airlinesexpectations.png', '/images/atlascv.png'],
             image: '/images/w1000.png',
-            loggedInImage: '/images/w1000.png',
+            loggedInImages: ['/images/foundationprogram.png'],
             title: 'Discover',
             loggedInTitle: 'Enroll on Foundation Program',
             dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
@@ -132,6 +132,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
             badge: null,
             accentColor: 'from-emerald-500/80 to-teal-400/80',
             isCarousel: true,
+            isCarouselWhenLoggedIn: true,
             hasArrows: true,
             animationIndices: [1, 2],
         },
@@ -413,7 +414,7 @@ const dummyCards = [
             '/images/atlascv.png',
         ],
         image: '/images/w1000.png',
-        loggedInImage: '/images/w1000.png',
+        loggedInImages: ['/images/foundationprogram.png'],
         title: 'Discover',
         loggedInTitle: 'Enroll on Foundation Program',
         dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
@@ -423,6 +424,7 @@ const dummyCards = [
         badge: null,
         accentColor: 'from-emerald-500/80 to-teal-400/80',
         isCarousel: true,
+        isCarouselWhenLoggedIn: true,
         hasArrows: true,
         animationIndices: [1, 2], // Index 1 (Expectations) and 2 (Digital Logbook) use animations
     },
@@ -1221,11 +1223,11 @@ const GridCard: React.FC<GridCardProps> = ({
     // Get the images array to use for carousel
     const carouselImages = shouldUseLoggedInCarousel ? card.loggedInImages : card.images;
     
-    // For discover card, disable carousel when logged in to show static Foundation Program card
-    const shouldUseCarousel = (card.id === 'discover' && isLoggedIn) 
-        ? false 
-        : shouldUseLoggedInCarousel 
-            ? carouselImages 
+    // For discover card, enable carousel when logged in to shuffle Foundation Program images
+    const shouldUseCarousel = (card.id === 'discover' && isLoggedIn)
+        ? carouselImages
+        : shouldUseLoggedInCarousel
+            ? carouselImages
             : card.isCarousel && card.images;
     
     // Get current dynamic title for discover card (only when not logged in)
@@ -1473,20 +1475,18 @@ const GridCard: React.FC<GridCardProps> = ({
                                 );
                             })}
                             {/* Carousel Indicators */}
-                            {!(card.id === 'discover' && isLoggedIn) && (
-                                <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                                    {card.images.map((_, idx) => (
-                                        <div 
-                                            key={idx}
-                                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                                idx === currentImageIndex 
-                                                    ? 'bg-white w-4' 
-                                                    : 'bg-white/50'
-                                            }`}
-                                        />
-                                    ))}
-                                </div>
-                            )}
+                            <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                                {card.images.map((_, idx) => (
+                                    <div 
+                                        key={idx}
+                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                            idx === currentImageIndex 
+                                                ? 'bg-white w-4' 
+                                                : 'bg-white/50'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     ) : card.image || currentImage ? (
                         // Single image
@@ -1629,7 +1629,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 )}
 
                 {/* Glassy Arrows for carousel cards */}
-                {card.hasArrows && card.images && card.images.length > 1 && !(card.id === 'discover' && isLoggedIn) && (
+                {card.hasArrows && card.images && card.images.length > 1 && (
                     <>
                         {/* Left Arrow */}
                         <button
