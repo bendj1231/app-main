@@ -422,9 +422,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Supabase auth state listener
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log("Supabase auth state changed:", event, session?.user?.id);
+            console.log("Supabase auth state changed:", event, "Supabase ID:", session?.user?.id, "Session:", session);
 
             if (session?.user) {
+                console.log("✅ Supabase user authenticated:", session.user.id, session.user.email);
+                
                 // Create a minimal User-like object for compatibility
                 const supabaseUser = {
                     uid: session.user.id,
@@ -457,12 +459,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         .single();
 
                     if (profileData && !error) {
+                        console.log("✅ Supabase profile fetched for user:", session.user.id);
                         setUserProfile(profileData);
+                    } else {
+                        console.log("⚠️ No Supabase profile found for user:", session.user.id);
                     }
                 } catch (err) {
-                    console.error("Error fetching Supabase profile:", err);
+                    console.error("❌ Error fetching Supabase profile:", err);
                 }
             } else if (event === 'SIGNED_OUT') {
+                console.log("❌ Supabase user signed out");
                 // Only clear if Firebase is also not signed in
                 if (!auth.currentUser) {
                     setCurrentUser(null);
