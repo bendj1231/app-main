@@ -12,6 +12,7 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { supabase } from '../lib/supabase';
 import { indexedDB } from '../lib/indexedDB';
+import { createManagementAPI } from '../lib/supabase-management';
 
 interface AuthContextType {
     currentUser: User | null;
@@ -513,20 +514,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async function deleteAccount(userId: string) {
         console.log('🔴 deleteAccount called for user:', userId);
         try {
-            const edgeFunctionUrl = `https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/delete-account`;
+            // Get Supabase Management API access token from environment variables
+            const accessToken = import.meta.env.VITE_SUPABASE_MANAGEMENT_ACCESS_TOKEN;
 
-            const response = await fetch(edgeFunctionUrl, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || 'Failed to delete account');
+            if (!accessToken) {
+                throw new Error('Supabase Management API access token is not configured');
             }
+
+            const managementAPI = createManagementAPI(accessToken);
+
+            // Delete user's profile and related data from database
+            await supabase.from('user_app_access').delete().eq('user_id', userId);
+            await supabase.from('enrollments').delete().eq('user_id', userId);
+            await supabase.from('profiles').delete().eq('id', userId);
+
+            // Delete the auth user using Management API
+            await managementAPI.deleteUser(userId);
 
             console.log('✅ Account deleted successfully');
         } catch (error) {
