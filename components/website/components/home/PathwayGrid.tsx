@@ -122,6 +122,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
             id: 'discover',
             images: ['/images/w1000.png', '/images/airlinesexpectations.png', '/images/atlascv.png'],
             image: '/images/w1000.png',
+            loggedInImage: '/images/w1000.png',
             title: 'Discover',
             loggedInTitle: 'Enroll on Foundation Program',
             dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
@@ -412,6 +413,7 @@ const dummyCards = [
             '/images/atlascv.png',
         ],
         image: '/images/w1000.png',
+        loggedInImage: '/images/w1000.png',
         title: 'Discover',
         loggedInTitle: 'Enroll on Foundation Program',
         dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
@@ -1216,15 +1218,23 @@ const GridCard: React.FC<GridCardProps> = ({
     // Determine if we should use carousel for logged in state
     const shouldUseLoggedInCarousel = isLoggedIn && card.isCarouselWhenLoggedIn && card.loggedInImages;
     
+    // For discover card, disable carousel when logged in to show static Foundation Program card
+    const shouldUseCarousel = (card.id === 'discover' && isLoggedIn) 
+        ? false 
+        : shouldUseLoggedInCarousel 
+            ? carouselImages 
+            : card.isCarousel && card.images;
+    
     // Get the images array to use for carousel
     const carouselImages = shouldUseLoggedInCarousel ? card.loggedInImages : card.images;
     
-    // Get current dynamic title for discover card
-    const currentDynamicTitle = card.dynamicTitles ? card.dynamicTitles[currentImageIndex] : null;
+    // Get current dynamic title for discover card (only when not logged in)
+    const currentDynamicTitle = (card.id === 'discover' && isLoggedIn) 
+        ? null 
+        : card.dynamicTitles ? card.dynamicTitles[currentImageIndex] : null;
     
     // Auto-rotate carousel images
     useEffect(() => {
-        const shouldUseCarousel = shouldUseLoggedInCarousel ? carouselImages : card.isCarousel && card.images;
         if (!shouldUseCarousel || !carouselImages || carouselImages.length <= 1 || isPaused) return;
         
         const interval = setInterval(() => {
