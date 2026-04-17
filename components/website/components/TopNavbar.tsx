@@ -432,7 +432,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
                                             {/* Profile Header */}
                                             <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                                                <div className="flex items-center gap-3">
+                                                <div className="flex flex-col items-center gap-3">
                                                     <div className="relative group">
                                                         <div className="w-12 h-16 rounded-[50%/40%] bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30" style={{ borderRadius: '45% / 50%' }}>
                                                             {profileImageUrl ? (
@@ -452,7 +452,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                             />
                                                         </label>
                                                     </div>
-                                                    <div>
+                                                    <div className="text-center">
                                                         <h3 className="font-semibold text-lg">{pilotId || currentUser?.displayName || 'Pilot'}</h3>
                                                         <p className="text-sm text-white/80">{currentUser?.email}</p>
                                                     </div>
@@ -568,9 +568,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 >
                                     <Settings className="w-4 h-4" />
                                 </button>
-                                <span className={`text-sm font-medium ${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'}`}>
-                                    Welcome, {pilotId || 'Pilot'}
-                                </span>
                             </>
                         )}
                     </div>
