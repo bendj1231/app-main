@@ -712,6 +712,17 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </button>
                                 </div>
 
+                                <div className="flex justify-center mt-6">
+                                    <button
+                                        type="button"
+                                        onClick={() => onNavigate('onboarding-pilot-portal')}
+                                        className="w-full sm:w-auto px-12 py-5 bg-emerald-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-emerald-700 transition-all shadow-[0_20px_40px_-10px_rgba(16,185,129,0.4)] hover:shadow-[0_25px_50px_-12px_rgba(16,185,129,0.5)] active:scale-95 flex items-center justify-center gap-3"
+                                    >
+                                        <span>Get Started</span>
+                                        <ChevronRight className="w-4 h-4" />
+                                    </button>
+                                </div>
+
                                 <div className="text-center mt-12 pb-8">
                                     <h3 className="text-2xl md:text-3xl font-serif text-slate-900">
                                         Join the Pilot Network , Get Recognized
