@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { supabase } from '@/src/lib/supabase';
-import { Menu, X, ChevronLeft, ChevronDown, User, Settings } from 'lucide-react';
-import { ProfileModal } from './ProfileModal';
+import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit } from 'lucide-react';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -45,27 +44,33 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
     const [pilotId, setPilotId] = useState<string>('');
     const [profileImageUrl, setProfileImageUrl] = useState<string>('');
-    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+    const [totalHours, setTotalHours] = useState<number>(0);
+    const [mentorshipHours, setMentorshipHours] = useState<number>(0);
+    const [recognitionScore, setRecognitionScore] = useState<number>(0);
+    const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState<boolean>(false);
+    const [uploading, setUploading] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // Fetch pilot_id and profile image from Supabase profile
+    // Fetch pilot_id and profile data from Supabase profile
     useEffect(() => {
         const fetchProfileData = async () => {
             if (currentUser?.uid) {
                 try {
                     const { data, error } = await supabase
                         .from('profiles')
-                        .select('pilot_id, profile_image_url')
+                        .select('pilot_id, profile_image_url, total_flight_hours, mentorship_hours, recognition_score, enrolled_programs')
                         .eq('id', currentUser.uid)
                         .maybeSingle();
                     
                     if (data) {
-                        if (data.pilot_id) {
-                            setPilotId(data.pilot_id);
-                        }
-                        if (data.profile_image_url) {
-                            setProfileImageUrl(data.profile_image_url);
-                        }
+                        setPilotId(data.pilot_id || '');
+                        setProfileImageUrl(data.profile_image_url || '');
+                        setTotalHours(data.total_flight_hours || 0);
+                        setMentorshipHours(data.mentorship_hours || 0);
+                        setRecognitionScore(data.recognition_score || 0);
+                        setIsEnrolledInFoundation(data.enrolled_programs?.includes('Foundational') || false);
                     }
                 } catch (err) {
                     console.error('Error fetching profile data:', err);
@@ -88,6 +93,56 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             console.error("❌ Failed to log out", error);
         }
     };
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !currentUser?.uid) return;
+
+        setUploading(true);
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${currentUser.uid}-${Date.now()}.${fileExt}`;
+            const filePath = `profile-images/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('profile-images')
+                .upload(filePath, file);
+
+            if (uploadError) throw uploadError;
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('profile-images')
+                .getPublicUrl(filePath);
+
+            const { error: updateError } = await supabase
+                .from('profiles')
+                .update({ profile_image_url: publicUrl })
+                .eq('id', currentUser.uid);
+
+            if (updateError) throw updateError;
+
+            setProfileImageUrl(publicUrl);
+        } catch (err) {
+            console.error('Error uploading image:', err);
+            alert('Failed to upload image. Please try again.');
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsProfileDropdownOpen(false);
+            }
+        };
+
+        if (isProfileDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => document.removeEventListener('mousedown', handleClickOutside);
+        }
+    }, [isProfileDropdownOpen]);
 
     useEffect(() => {
         if (forceScrolled) return;
@@ -347,17 +402,112 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
                         {currentUser && (
                             <>
-                                <button
-                                    onClick={() => setIsProfileModalOpen(true)}
-                                    className="w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
-                                    title="Profile"
-                                >
-                                    {profileImageUrl ? (
-                                        <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
-                                    ) : (
-                                        <User className="w-6 h-6" />
+                                <div className="relative" ref={dropdownRef}>
+                                    <button
+                                        onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                                        className="w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
+                                        title="Profile"
+                                    >
+                                        {profileImageUrl ? (
+                                            <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <User className="w-6 h-6" />
+                                        )}
+                                    </button>
+
+                                    {/* Profile Dropdown Menu */}
+                                    {isProfileDropdownOpen && (
+                                        <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                                            {/* Profile Header */}
+                                            <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="relative group">
+                                                        <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30">
+                                                            {profileImageUrl ? (
+                                                                <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+                                                            ) : (
+                                                                <User className="w-8 h-8 text-white/80" />
+                                                            )}
+                                                        </div>
+                                                        <label className="absolute bottom-0 right-0 p-1.5 bg-white text-blue-600 rounded-full cursor-pointer hover:bg-blue-50 transition-colors">
+                                                            <Camera className="w-3 h-3" />
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                onChange={handleImageUpload}
+                                                                disabled={uploading}
+                                                                className="hidden"
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="font-semibold text-lg">{pilotId || currentUser?.displayName || 'Pilot'}</h3>
+                                                        <p className="text-sm text-white/80">{currentUser?.email}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Stats Section */}
+                                            <div className="p-4 space-y-3">
+                                                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                                    <div className="p-2 bg-blue-100 rounded-lg">
+                                                        <Clock className="w-4 h-4 text-blue-600" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Total Hours</p>
+                                                        <p className="text-base font-semibold text-slate-900">{totalHours.toFixed(1)} hrs</p>
+                                                    </div>
+                                                </div>
+
+                                                {isEnrolledInFoundation && (
+                                                    <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                                        <div className="p-2 bg-green-100 rounded-lg">
+                                                            <Clock className="w-4 h-4 text-green-600" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-xs text-slate-600 uppercase tracking-wider">Mentorship Hours</p>
+                                                            <p className="text-base font-semibold text-slate-900">{mentorshipHours.toFixed(1)} hrs</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                                    <div className="p-2 bg-green-100 rounded-lg">
+                                                        <Award className="w-4 h-4 text-green-600" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Recognition Score</p>
+                                                        <p className="text-base font-semibold text-slate-900">{recognitionScore.toFixed(0)}/100</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Action Buttons */}
+                                            <div className="p-4 border-t border-slate-200 space-y-2">
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('pilot-recognition');
+                                                        setIsProfileDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors"
+                                                >
+                                                    <User className="w-4 h-4" />
+                                                    View Recognition Profile
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('portal');
+                                                        setIsProfileDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-lg font-semibold transition-colors"
+                                                >
+                                                    <Edit className="w-4 h-4" />
+                                                    Edit Profile
+                                                </button>
+                                            </div>
+                                        </div>
                                     )}
-                                </button>
+                                </div>
                                 <button
                                     className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
                                     title="Settings"
@@ -452,9 +602,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     </div>
                 </div>
             </div>
-
-            {/* Profile Modal */}
-            <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} onNavigate={onNavigate} />
 
             {/* Login Modal - moved to root level */}
         </>
