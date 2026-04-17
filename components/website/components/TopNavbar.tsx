@@ -45,12 +45,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleLogout = async () => {
+        console.log('🔴 handleLogout called');
         try {
+            console.log('🔴 Calling logout function...');
             await logout();
+            console.log('✅ Logout successful, navigating to home');
             onNavigate('home'); // Redirect to home after logout
             setIsMenuOpen(false);
         } catch (error) {
-            console.error("Failed to log out", error);
+            console.error("❌ Failed to log out", error);
         }
     };
 
