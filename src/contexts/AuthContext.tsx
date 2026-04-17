@@ -322,15 +322,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             throw pilotTableError;
         }
 
-        // Step 8: Send email verification via Supabase
+        // Step 8: Send account creation email via Resend
         try {
-            await supabase.auth.resend({
-                type: 'signup',
-                email: email
+            const displayName = userData.fullName || email.split('@')[0];
+            const { data, error } = await supabase.functions.invoke('send-account-created-email', {
+                body: {
+                    email,
+                    name: displayName
+                }
             });
-            console.log("✅ Verification email sent via Supabase to:", email);
+            
+            if (error) {
+                console.error('❌ Account creation email error:', error);
+                console.log('⚠️ Account creation email failed to send via Resend');
+            } else {
+                console.log('✅ Account creation email sent via Resend to:', email);
+            }
         } catch (emailError) {
-            console.error("Error sending verification email:", emailError);
+            console.error("Error sending account creation email:", emailError);
             // Non-critical: User is still created
         }
 
