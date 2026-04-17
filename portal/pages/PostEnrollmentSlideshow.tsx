@@ -1,9 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Icons } from '../icons';
 
 interface PostEnrollmentSlideshowProps {
     onComplete: () => void;
 }
+
+const CloudShader: React.FC = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const animationRef = useRef<number | undefined>(undefined);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const resizeCanvas = () => {
+            const parent = canvas.parentElement;
+            if (parent) {
+                canvas.width = parent.clientWidth;
+                canvas.height = parent.clientHeight;
+            }
+        };
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const animate = () => {
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#2a3f5a');
+            gradient.addColorStop(0.4, '#3f5f82');
+            gradient.addColorStop(0.8, '#5f88ad');
+            gradient.addColorStop(1, '#7aa3c4');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const time = Date.now() * 0.0001;
+            for (let i = 0; i < 8; i++) {
+                const x = (Math.sin(time + i * 0.5) * 0.5 + 0.5) * canvas.width;
+                const y = (Math.cos(time * 0.7 + i * 0.5) * 0.5 + 0.5) * canvas.height;
+                const radius = 100 + Math.sin(time + i) * 50;
+
+                const cloudGradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                cloudGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+                cloudGradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+                cloudGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = cloudGradient;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            animationRef.current = requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        return () => {
+            window.removeEventListener('resize', resizeCanvas);
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+            }
+        };
+    }, []);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full"
+        />
+    );
+};
 
 export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = ({ onComplete }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -86,8 +154,14 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
     };
 
     return (
-        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem' }}>
+        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem', position: 'relative' }}>
+            <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
+                <CloudShader />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/30" />
+            </div>
             <main className="dashboard-card" style={{
+                position: 'relative',
+                zIndex: 1,
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: 'auto',
@@ -95,7 +169,8 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                 padding: 0,
                 maxWidth: '750px',
                 width: '100%',
-                backgroundColor: '#ffffff',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(8px)',
                 borderRadius: '24px',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
                 overflow: 'hidden'
