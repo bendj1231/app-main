@@ -46,8 +46,11 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [profileImageUrl, setProfileImageUrl] = useState<string>('');
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const [totalHours, setTotalHours] = useState<number>(0);
+    const [lastFlown, setLastFlown] = useState<string>('');
     const [mentorshipHours, setMentorshipHours] = useState<number>(0);
-    const [recognitionScore, setRecognitionScore] = useState<number>(0);
+    const [foundationProgress, setFoundationProgress] = useState<number>(0);
+    const [examinationScore, setExaminationScore] = useState<number>(0);
+    const [overallRecognitionScore, setOverallRecognitionScore] = useState<number>(0);
     const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState<boolean>(false);
     const [uploading, setUploading] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -60,7 +63,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 try {
                     const { data, error } = await supabase
                         .from('profiles')
-                        .select('pilot_id, profile_image_url, total_flight_hours, mentorship_hours, recognition_score, enrolled_programs')
+                        .select('pilot_id, profile_image_url, total_flight_hours, last_flown, mentorship_hours, foundation_progress, examination_score, overall_recognition_score, enrolled_programs')
                         .eq('id', currentUser.uid)
                         .maybeSingle();
                     
@@ -68,8 +71,11 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         setPilotId(data.pilot_id || '');
                         setProfileImageUrl(data.profile_image_url || '');
                         setTotalHours(data.total_flight_hours || 0);
+                        setLastFlown(data.last_flown || '');
                         setMentorshipHours(data.mentorship_hours || 0);
-                        setRecognitionScore(data.recognition_score || 0);
+                        setFoundationProgress(data.foundation_progress || 0);
+                        setExaminationScore(data.examination_score || 0);
+                        setOverallRecognitionScore(data.overall_recognition_score || 0);
                         setIsEnrolledInFoundation(data.enrolled_programs?.includes('Foundational') || false);
                     }
                 } catch (err) {
@@ -448,36 +454,78 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                             </div>
 
                                             {/* Stats Section */}
-                                            <div className="p-4 space-y-3">
-                                                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                                                    <div className="p-2 bg-blue-100 rounded-lg">
-                                                        <Clock className="w-4 h-4 text-blue-600" />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Total Hours</p>
-                                                        <p className="text-base font-semibold text-slate-900">{totalHours.toFixed(1)} hrs</p>
+                                            <div className="p-4 space-y-4">
+                                                {/* Recognition Category */}
+                                                <div>
+                                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Recognition</p>
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                                            <div className="p-2 bg-blue-100 rounded-lg">
+                                                                <Clock className="w-4 h-4 text-blue-600" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Flight Hours</p>
+                                                                <p className="text-base font-semibold text-slate-900">{totalHours.toFixed(1)} hrs</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                                            <div className="p-2 bg-blue-100 rounded-lg">
+                                                                <Clock className="w-4 h-4 text-blue-600" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Last Flown</p>
+                                                                <p className="text-base font-semibold text-slate-900">{lastFlown || 'Not recorded'}</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                {isEnrolledInFoundation && (
-                                                    <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                                                        <div className="p-2 bg-green-100 rounded-lg">
-                                                            <Clock className="w-4 h-4 text-green-600" />
+                                                {/* Programs Category */}
+                                                <div>
+                                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Programs</p>
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                                            <div className="p-2 bg-green-100 rounded-lg">
+                                                                <Clock className="w-4 h-4 text-green-600" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Mentorship Hours</p>
+                                                                <p className="text-base font-semibold text-slate-900">{mentorshipHours.toFixed(1)} hrs</p>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <p className="text-xs text-slate-600 uppercase tracking-wider">Mentorship Hours</p>
-                                                            <p className="text-base font-semibold text-slate-900">{mentorshipHours.toFixed(1)} hrs</p>
-                                                        </div>
-                                                    </div>
-                                                )}
 
-                                                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                                                    <div className="p-2 bg-green-100 rounded-lg">
-                                                        <Award className="w-4 h-4 text-green-600" />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Recognition Score</p>
-                                                        <p className="text-base font-semibold text-slate-900">{recognitionScore.toFixed(0)}/100</p>
+                                                        {isEnrolledInFoundation && (
+                                                            <>
+                                                                <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                                                    <div className="p-2 bg-green-100 rounded-lg">
+                                                                        <Award className="w-4 h-4 text-green-600" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Foundation Progress</p>
+                                                                        <p className="text-base font-semibold text-slate-900">{foundationProgress.toFixed(0)}%</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                                                    <div className="p-2 bg-green-100 rounded-lg">
+                                                                        <Award className="w-4 h-4 text-green-600" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Examination Score</p>
+                                                                        <p className="text-base font-semibold text-slate-900">{examinationScore.toFixed(0)}/100</p>
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        )}
+
+                                                        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                                            <div className="p-2 bg-blue-100 rounded-lg">
+                                                                <Award className="w-4 h-4 text-blue-600" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Recognition Score</p>
+                                                                <p className="text-base font-semibold text-slate-900">{overallRecognitionScore.toFixed(0)}/100</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
