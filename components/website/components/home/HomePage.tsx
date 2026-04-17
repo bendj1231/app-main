@@ -645,15 +645,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
             if (document.hidden) {
                 // Save scroll position when tab is hidden
                 scrollPositionRef.current = window.scrollY;
+                sessionStorage.setItem('scrollPosition', window.scrollY.toString());
             } else {
                 // Restore scroll position when tab becomes visible
-                window.scrollTo(0, scrollPositionRef.current);
+                const savedScroll = sessionStorage.getItem('scrollPosition');
+                const scrollPos = savedScroll ? parseInt(savedScroll, 10) : scrollPositionRef.current;
+                
+                // Restore scroll position with multiple attempts to ensure it works
+                window.scrollTo(0, scrollPos);
                 setTimeout(() => {
-                    window.scrollTo(0, scrollPositionRef.current);
-                }, 50);
+                    window.scrollTo(0, scrollPos);
+                }, 100);
                 setTimeout(() => {
-                    window.scrollTo(0, scrollPositionRef.current);
-                }, 200);
+                    window.scrollTo(0, scrollPos);
+                }, 300);
             }
         };
 
