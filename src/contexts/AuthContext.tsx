@@ -434,20 +434,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async function logout() {
         console.log('🔴 Logout function called');
         try {
-            console.log('🔴 Clearing IndexedDB session first...');
-            // Clear IndexedDB session first to prevent verification interference
+            console.log('🔴 Clearing all local state first...');
+            // Clear all local state immediately to prevent any interference
+            setCurrentUser(null);
+            setUserProfile(null);
+            console.log('✅ Local auth state cleared');
+
+            console.log('🔴 Clearing IndexedDB session...');
+            // Clear IndexedDB session
             await indexedDB.clearSession();
             console.log('✅ IndexedDB session cleared');
-
-            console.log('🔴 Signing out from Supabase...');
-            // First, sign out from Supabase and wait for it to complete
-            await supabase.auth.signOut();
-            console.log('✅ Supabase signOut completed');
-
-            console.log('🔴 Clearing all Supabase storage...');
-            // Clear all Supabase storage to prevent session restoration
-            await supabase.auth.setSession({ access_token: '', refresh_token: '' });
-            console.log('✅ Supabase session cleared');
 
             console.log('🔴 Clearing localStorage...');
             // Clear localStorage items that might contain session data
@@ -455,18 +451,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             localStorage.removeItem('supabase.auth.refreshToken');
             localStorage.removeItem('supabase.auth.codeVerifier');
             localStorage.removeItem('supabase.auth.pkceVerifier');
+            // Clear all Supabase-related localStorage items
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('supabase.')) {
+                    localStorage.removeItem(key);
+                }
+            });
             console.log('✅ localStorage cleared');
 
-            console.log('🔴 Clearing auth state...');
-            // Explicitly clear auth state
-            setCurrentUser(null);
-            setUserProfile(null);
-            console.log('✅ Auth state cleared');
+            console.log('🔴 Attempting Supabase signOut in background...');
+            // Try to sign out from Supabase but don't wait for it
+            supabase.auth.signOut().catch(err => {
+                console.log('⚠️ Supabase signOut failed (non-critical):', err);
+            });
+
+            console.log('🔴 Clearing Supabase session...');
+            // Clear Supabase session
+            await supabase.auth.setSession({ access_token: '', refresh_token: '' });
+            console.log('✅ Supabase session cleared');
+
+            console.log('✅ Logout completed');
         } catch (error) {
             console.error("❌ Logout error:", error);
-            // Even if there's an error, try to clear local state
-            setCurrentUser(null);
-            setUserProfile(null);
+            // Even if there's an error, local state is already cleared
         }
     }
 
