@@ -406,7 +406,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         directToEnrollment
       });
       
-      if (nextState.user && !hasShownInitialLoading.current && !showLoading && currentView === 'login' && !directToEnrollment) {
+      if (nextState.user && !hasShownInitialLoading.current && currentView === 'login' && !directToEnrollment) {
         console.log('🚀 Starting loading sequence for logged-in user');
         startLoadingSequence('pilot-profile');
       } else if (!nextState.user && !showLoading) {
@@ -417,6 +417,11 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         console.log('⏭️ Skipping loading sequence:', {
           reason: nextState.user ? 'Already shown loading or loading in progress' : 'User not authenticated'
         });
+        // If loading is already shown but sequence was skipped, dismiss it
+        if (showLoading && nextState.user && hasShownInitialLoading.current) {
+          console.log('🔓 Dismiss loading screen since user is authenticated');
+          setShowLoading(false);
+        }
       }
     });
 
