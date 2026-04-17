@@ -426,6 +426,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     // Set up auth state listener
     const { data: { subscription } } = onAuthStateChange((nextState) => {
       console.log('🔐 Auth state changed:', { user: !!nextState.user, loading: nextState.loading, hasUserProfile: !!nextState.userProfile });
+      
+      // Restore scroll position when auth state changes
+      if (typeof window !== 'undefined' && nextState.user) {
+        const savedPosition = sessionStorage.getItem('scrollPosition');
+        if (savedPosition) {
+          const { x, y } = JSON.parse(savedPosition);
+          window.scrollTo(x, y);
+        }
+      }
+      
       setAuthState(nextState);
       if (nextState.user?.email) {
         setLastLoginEmail(nextState.user.email);
