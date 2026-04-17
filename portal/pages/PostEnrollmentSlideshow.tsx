@@ -90,10 +90,10 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
             <main className="dashboard-card" style={{
                 display: 'flex',
                 flexDirection: 'column',
-                minHeight: '400px',
-                maxHeight: '75vh',
+                minHeight: 'auto',
+                maxHeight: '85vh',
                 padding: 0,
-                maxWidth: '700px',
+                maxWidth: '750px',
                 width: '100%',
                 backgroundColor: '#ffffff',
                 borderRadius: '24px',
@@ -111,28 +111,28 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                 </div>
 
                 {/* Slides content area */}
-                <div style={{ padding: '2rem 2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ padding: '2.5rem 2.5rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', overflow: 'auto' }}>
                     <div className="dashboard-header" style={{ marginBottom: '1.5rem' }}>
                         <div className="dashboard-logo" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '80px', height: 'auto' }} />
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '90px', height: 'auto' }} />
                         </div>
 
                         <div className="dashboard-subtitle">
                             {slides[currentSlide].subtitle}
                         </div>
 
-                        <h1 className="dashboard-title" style={{ fontSize: '1.75rem', marginBottom: '0.75rem' }}>
+                        <h1 className="dashboard-title" style={{ fontSize: '1.8rem', marginBottom: '0.75rem' }}>
                             {slides[currentSlide].title}
                         </h1>
 
-                        <p style={{ maxWidth: '500px', margin: '0 auto', fontSize: '0.95rem', color: '#475569', lineHeight: 1.5 }}>
+                        <p style={{ maxWidth: '550px', margin: '0 auto', fontSize: '0.95rem', color: '#475569', lineHeight: 1.5 }}>
                             {slides[currentSlide].content}
                         </p>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '450px', textAlign: 'center', margin: '0 auto' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '480px', textAlign: 'center', margin: '0 auto' }}>
                         <div style={{
-                            padding: '1rem 1.25rem',
+                            padding: '1.25rem',
                             backgroundColor: 'rgba(255, 255, 255, 0.6)',
                             backdropFilter: 'blur(12px)',
                             border: '1px solid rgba(226, 232, 240, 0.8)',
@@ -140,7 +140,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
                         }}>
                             {slides[currentSlide].points.map((point, index) => (
-                                <div key={index} className="animate-fade-in" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', animationDelay: `${index * 0.15}s`, marginBottom: index < slides[currentSlide].points.length - 1 ? '0.75rem' : '0' }}>
+                                <div key={index} className="animate-fade-in" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', animationDelay: `${index * 0.15}s`, marginBottom: index < slides[currentSlide].points.length - 1 ? '0.8rem' : '0' }}>
                                     <div style={{ marginTop: '0.1rem', color: '#10b981' }}>
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -154,13 +154,13 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                 </div>
 
                 {/* Footer Controls */}
-                <div style={{ padding: '1rem 2rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff' }}>
+                <div style={{ padding: '1.25rem 2.5rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff' }}>
                     <button
                         onClick={prevSlide}
                         disabled={currentSlide === 0}
                         style={{
                             flex: 1,
-                            padding: '0.5rem 1rem',
+                            padding: '0.6rem 1.25rem',
                             borderRadius: '10px',
                             backgroundColor: currentSlide === 0 ? 'rgba(148, 163, 184, 0.3)' : 'rgba(255, 255, 255, 0.7)',
                             backdropFilter: 'blur(12px)',
@@ -172,7 +172,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                             cursor: currentSlide === 0 ? 'not-allowed' : 'pointer',
                             transition: 'all 0.2s',
                             opacity: currentSlide === 0 ? 0.5 : 1,
-                            maxWidth: '100px'
+                            maxWidth: '110px'
                         }}
                         onMouseOver={(e) => {
                             if (currentSlide !== 0) {
@@ -206,7 +206,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                         disabled={currentSlide === slides.length - 1}
                         style={{
                             flex: 1,
-                            padding: '0.5rem 1rem',
+                            padding: '0.6rem 1.25rem',
                             borderRadius: '10px',
                             backgroundColor: currentSlide === slides.length - 1 ? 'rgba(148, 163, 184, 0.3)' : '#2563eb',
                             backdropFilter: 'blur(12px)',
@@ -218,7 +218,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                             cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer',
                             transition: 'all 0.2s',
                             opacity: currentSlide === slides.length - 1 ? 0.5 : 1,
-                            maxWidth: '100px'
+                            maxWidth: '110px'
                         }}
                         onMouseOver={(e) => {
                             if (currentSlide !== slides.length - 1) {
