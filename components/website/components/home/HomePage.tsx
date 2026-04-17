@@ -644,34 +644,42 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
         const handleVisibilityChange = () => {
             if (document.hidden) {
                 // Save scroll position when tab is hidden
-                scrollPositionRef.current = window.scrollY;
-                sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+                const currentScroll = window.scrollY;
+                scrollPositionRef.current = currentScroll;
+                sessionStorage.setItem('scrollPosition', currentScroll.toString());
                 sessionStorage.setItem('scrollPositionTimestamp', Date.now().toString());
+                console.log('💾 Saved scroll position:', currentScroll);
             } else {
                 // Restore scroll position when tab becomes visible
                 const savedScroll = sessionStorage.getItem('scrollPosition');
+                const savedTimestamp = sessionStorage.getItem('scrollPositionTimestamp');
                 const scrollPos = savedScroll ? parseInt(savedScroll, 10) : scrollPositionRef.current;
+                
+                console.log('🔄 Tab visible, restoring scroll position:', scrollPos, 'saved:', savedScroll, 'timestamp:', savedTimestamp);
+                console.log('📊 Current scroll position before restore:', window.scrollY);
                 
                 // Prevent default scroll behavior
                 window.scrollTo(0, 0);
+                console.log('📊 Reset scroll to 0, current:', window.scrollY);
                 
                 // Restore scroll position with multiple attempts with longer delays
-                const restoreScroll = () => {
+                const restoreScroll = (delay: number) => {
                     window.scrollTo({
                         top: scrollPos,
                         behavior: 'instant'
                     });
+                    console.log(`📊 Restored scroll to ${scrollPos} after ${delay}ms, current: ${window.scrollY}`);
                 };
                 
                 // Immediate restore
-                restoreScroll();
+                restoreScroll(0);
                 
                 // Multiple delayed restores to ensure it sticks
-                setTimeout(restoreScroll, 100);
-                setTimeout(restoreScroll, 300);
-                setTimeout(restoreScroll, 500);
-                setTimeout(restoreScroll, 800);
-                setTimeout(restoreScroll, 1200);
+                setTimeout(() => restoreScroll(100), 100);
+                setTimeout(() => restoreScroll(300), 300);
+                setTimeout(() => restoreScroll(500), 500);
+                setTimeout(() => restoreScroll(800), 800);
+                setTimeout(() => restoreScroll(1200), 1200);
             }
         };
 
