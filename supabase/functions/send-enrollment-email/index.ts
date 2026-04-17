@@ -45,39 +45,64 @@ serve(async (req) => {
       console.log('📧 Sending via Resend API...')
       
       const emailHtml = `
-<div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
-  <div style="background-color: rgba(255, 255, 255, 0.95); border-radius: 16px; padding: 3rem 2.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.5);">
-    <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="WingMentor Logo" style="height: 90px; width: auto; object-fit: contain; margin-bottom: 2rem; display: block; margin-left: auto; margin-right: auto;" />
-    
-    <div style="color: #2563eb; font-size: 0.875rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem; text-align: center;">
-      ENROLLMENT CONFIRMATION
-    </div>
-    
-    <h2 style="font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; color: #0f172a; margin-bottom: 1.5rem; text-align: center;">
-      Welcome to the ${program || 'Foundation Program'}
-    </h2>
-    
-    <p style="color: #475569; font-size: 1rem; line-height: 1.7; margin: 0 0 2rem 0; text-align: center;">
-      Congratulations <strong>${displayName}</strong>! Your enrollment in the <strong>${program || 'Foundation Program'}</strong> has been successfully confirmed. This email serves as your official enrollment confirmation and provides access to your personalized pilot development journey.
-    </p>
-    
-    <div style="text-align: center; margin: 2rem 0;">
-      <a href="https://pilotrecognition.com/portal" 
-         style="display: inline-block; padding: 1rem 2.5rem; background: #2563eb; color: #ffffff; text-decoration: none; border-radius: 12px; font-size: 1rem; font-weight: 600; transition: background-color 0.2s;">
-        View Pilot Portfolio
-      </a>
-    </div>
-    
-    <div style="background: #dbeafe; border-left: 4px solid #2563eb; padding: 1.25rem; margin: 2rem 0 0 0; border-radius: 8px;">
-      <p style="color: #1e40af; margin: 0; font-size: 0.95rem; line-height: 1.5;"><strong>Next Steps:</strong> Our mentorship team will review your onboarding responses and contact you with further instructions.</p>
-    </div>
-    
-    <div style="text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
-      <p style="margin: 0 0 0.5rem 0;">For questions about your enrollment, contact: enroll@pilotrecognition.com</p>
-      <p style="margin: 0; color: #9ca3af; font-size: 0.75rem;">© 2026 PilotRecognition.com. All rights reserved.</p>
-    </div>
-  </div>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 40px 20px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.5);">
+          <tr>
+            <td style="padding: 40px 40px 30px 40px; text-align: center;">
+              <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="WingMentor Logo" style="height: 90px; width: auto; object-fit: contain; display: block; margin: 0 auto 30px auto;" />
+              
+              <div style="color: #2563eb; font-size: 14px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 20px;">
+                ENROLLMENT CONFIRMATION
+              </div>
+              
+              <h2 style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; color: #0f172a; margin: 0 0 24px 0;">
+                Welcome to the ${program || 'Foundation Program'}
+              </h2>
+              
+              <p style="color: #475569; font-size: 16px; line-height: 1.7; margin: 0 0 32px 0;">
+                Congratulations <strong>${displayName}</strong>! Your enrollment in the <strong>${program || 'Foundation Program'}</strong> has been successfully confirmed. This email serves as your official enrollment confirmation and provides access to your personalized pilot development journey.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0 40px 30px 40px; text-align: center;">
+              <a href="https://pilotrecognition.com/portal" 
+                 style="display: inline-block; padding: 16px 40px; background: #2563eb; color: #ffffff; text-decoration: none; border-radius: 12px; font-size: 16px; font-weight: 600;">
+                View Pilot Portfolio
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0 40px 30px 40px;">
+              <div style="background: #dbeafe; border-left: 4px solid #2563eb; padding: 20px; border-radius: 8px;">
+                <p style="color: #1e40af; margin: 0; font-size: 15px; line-height: 1.5;"><strong>Next Steps:</strong> Our mentorship team will review your onboarding responses and contact you with further instructions.</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 30px 40px 40px 40px; text-align: center; border-top: 1px solid #e5e7eb;">
+              <p style="color: #64748b; font-size: 14px; margin: 0 0 8px 0;">For questions about your enrollment, contact: enroll@pilotrecognition.com</p>
+              <p style="color: #9ca3af; font-size: 12px; margin: 0;">© 2026 PilotRecognition.com. All rights reserved.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
 `;
       
       const resendResponse = await fetch('https://api.resend.com/emails', {
