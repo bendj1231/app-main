@@ -646,9 +646,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                 scrollPositionRef.current = window.scrollY;
             } else {
                 // Restore scroll position when tab becomes visible
+                window.scrollTo(0, scrollPositionRef.current);
                 setTimeout(() => {
                     window.scrollTo(0, scrollPositionRef.current);
-                }, 100);
+                }, 50);
+                setTimeout(() => {
+                    window.scrollTo(0, scrollPositionRef.current);
+                }, 200);
             }
         };
 
