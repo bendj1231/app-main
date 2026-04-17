@@ -588,6 +588,12 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       // Clear URL hash
       window.location.hash = '';
 
+      // Navigate back to main app home page
+      if (onNavigateToMainApp) {
+        console.log('🔴 Navigating back to main app home page...');
+        onNavigateToMainApp('home');
+      }
+
       console.log('✅ Logout successful, navigating to home');
     } catch (error) {
       console.error("Logout error:", error);
