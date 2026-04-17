@@ -52,6 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         let userId: string;
         let firebaseUser: any = null;
+        let userAlreadyExisted = false;
 
         // Step 1: Create Supabase auth user first (preferred)
         try {
@@ -68,10 +69,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             });
 
             if (supabaseError) {
-                // If user already exists, throw a specific error so the UI can handle it
+                // If user already exists, try to use the existing user
                 if (supabaseError.message.includes('already registered') || supabaseError.message === 'User already registered') {
-                    console.log('User already exists, throwing specific error for UI handling');
-                    throw new Error('USER_ALREADY_EXISTS');
+                    console.log('User already exists in auth, checking if profile exists...');
+                    userAlreadyExisted = true;
+                    
+                    // Try to get the existing user by email
+                    const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+                    if (listError) {
+                        console.error('❌ Error listing users:', listError);
+                        throw new Error(`Failed to check existing user: ${listError.message}`);
+                    }
+                    
+                    const existingUser = users.find(u => u.email === email);
+                    if (!existingUser) {
+                        throw new Error('USER_ALREADY_EXISTS');
+                    }
+                    
+                    userId = existingUser.id;
+                    console.log('✅ Found existing auth user:', userId);
                 } else {
                     console.error('❌ Supabase auth error:', supabaseError);
                     throw new Error(`Supabase auth failed: ${supabaseError.message}`);
@@ -94,85 +110,99 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Step 2: Create or update portal profile in profiles table
         try {
             console.log('🔵 Step 2: Creating portal profile...');
-            const experienceLevel = (() => {
-                const hours = parseInt(userData.currentFlightHours || '0', 10);
-                if (hours < 500) return 'Low Timer';
-                if (hours < 1500) return 'Middle Timer';
-                return 'High Timer';
-            })();
-
-            console.log('🔵 Experience level:', experienceLevel);
-
-            // Try to insert first, if it fails due to duplicate, update instead
-            const { error: profileError } = await supabase
+            
+            // First check if profile already exists
+            const { data: existingProfile, error: checkError } = await supabase
                 .from('profiles')
-                .insert({
-                    id: userId,
-                    email: email,
-                    display_name: userData.fullName || email.split('@')[0],
-                    full_name: userData.fullName,
-                    phone: userData.contactNumber,
-                    country: userData.residingCountry,
-                    date_of_birth: userData.dob || null,
-                    nationality: userData.nationality,
-                    role: 'mentee', // Default role for new users
-                    status: 'active',
-                    firebase_uid: null, // Will be set after Firebase creation
-                    enrolled_programs: [],
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString(),
-                    // Additional detailed fields
-                    pilot_id: userData.pilotId,
-                    flight_school_address: userData.flightSchoolAddress,
-                    license_id: userData.licenseId,
-                    country_of_license: userData.countryOfLicense,
-                    current_flight_hours: userData.currentFlightHours,
-                    aircraft_rated_on: userData.aircraftRatedOn,
-                    experience_description: userData.experienceDescription,
-                    ratings: userData.ratings,
-                    program_interests: userData.programInterests,
-                    pathway_interests: userData.pathwayInterests,
-                    insight_interests: userData.insightInterests
-                });
+                .select('id')
+                .eq('id', userId)
+                .single();
+            
+            if (checkError && checkError.code !== 'PGRST116') {
+                // PGRST116 is "not found", which is expected if profile doesn't exist
+                console.error('❌ Error checking existing profile:', checkError);
+                throw new Error(`Failed to check existing profile: ${checkError.message}`);
+            }
+            
+            if (existingProfile) {
+                console.log('⚠️ Profile already exists for user, updating...');
+                // Profile exists, update it
+                const { error: updateError } = await supabase
+                    .from('profiles')
+                    .update({
+                        display_name: userData.fullName || email.split('@')[0],
+                        full_name: userData.fullName,
+                        phone: userData.contactNumber,
+                        country: userData.residingCountry,
+                        date_of_birth: userData.dob || null,
+                        nationality: userData.nationality,
+                        updated_at: new Date().toISOString(),
+                        pilot_id: userData.pilotId,
+                        flight_school_address: userData.flightSchoolAddress,
+                        license_id: userData.licenseId,
+                        country_of_license: userData.countryOfLicense,
+                        current_flight_hours: userData.currentFlightHours,
+                        aircraft_rated_on: userData.aircraftRatedOn,
+                        experience_description: userData.experienceDescription,
+                        ratings: userData.ratings,
+                        program_interests: userData.programInterests,
+                        pathway_interests: userData.pathwayInterests,
+                        insight_interests: userData.insightInterests
+                    })
+                    .eq('id', userId);
 
-            if (profileError) {
-                // If profile already exists, update it instead
-                if (profileError.code === '23505') { // Unique violation
-                    console.log('Profile already exists, updating instead...');
-                    const { error: updateError } = await supabase
-                        .from('profiles')
-                        .update({
-                            display_name: userData.fullName || email.split('@')[0],
-                            full_name: userData.fullName,
-                            phone: userData.contactNumber,
-                            country: userData.residingCountry,
-                            date_of_birth: userData.dob || null,
-                            nationality: userData.nationality,
-                            updated_at: new Date().toISOString(),
-                            pilot_id: userData.pilotId,
-                            flight_school_address: userData.flightSchoolAddress,
-                            license_id: userData.licenseId,
-                            country_of_license: userData.countryOfLicense,
-                            current_flight_hours: userData.currentFlightHours,
-                            aircraft_rated_on: userData.aircraftRatedOn,
-                            experience_description: userData.experienceDescription,
-                            ratings: userData.ratings,
-                            program_interests: userData.programInterests,
-                            pathway_interests: userData.pathwayInterests,
-                            insight_interests: userData.insightInterests
-                        })
-                        .eq('id', userId);
-
-                    if (updateError) {
-                        console.error('Portal profile update error:', updateError);
-                        throw new Error(`Failed to update portal profile: ${updateError.message}`);
-                    }
-                    console.log('✅ Portal profile updated:', userId);
-                } else {
-                    console.error('Portal profile creation error:', profileError);
-                    throw new Error(`Failed to create portal profile: ${profileError.message}`);
+                if (updateError) {
+                    console.error('❌ Profile update error:', updateError);
+                    throw new Error(`Failed to update portal profile: ${updateError.message}`);
                 }
             } else {
+                // Profile doesn't exist, create it
+                console.log('Creating new profile...');
+                const experienceLevel = (() => {
+                    const hours = parseInt(userData.currentFlightHours || '0', 10);
+                    if (hours < 500) return 'Low Timer';
+                    if (hours < 1500) return 'Middle Timer';
+                    return 'High Timer';
+                })();
+
+                console.log('🔵 Experience level:', experienceLevel);
+
+                const { error: profileError } = await supabase
+                    .from('profiles')
+                    .insert({
+                        id: userId,
+                        email: email,
+                        display_name: userData.fullName || email.split('@')[0],
+                        full_name: userData.fullName,
+                        phone: userData.contactNumber,
+                        country: userData.residingCountry,
+                        date_of_birth: userData.dob || null,
+                        nationality: userData.nationality,
+                        role: 'mentee', // Default role for new users
+                        status: 'active',
+                        firebase_uid: null, // Will be set after Firebase creation
+                        enrolled_programs: [],
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
+                        // Additional detailed fields
+                        pilot_id: userData.pilotId,
+                        flight_school_address: userData.flightSchoolAddress,
+                        license_id: userData.licenseId,
+                        country_of_license: userData.countryOfLicense,
+                        current_flight_hours: userData.currentFlightHours,
+                        aircraft_rated_on: userData.aircraftRatedOn,
+                        experience_description: userData.experienceDescription,
+                        ratings: userData.ratings,
+                        program_interests: userData.programInterests,
+                        pathway_interests: userData.pathwayInterests,
+                        insight_interests: userData.insightInterests
+                    });
+
+                if (profileError) {
+                    console.error('❌ Profile insert error:', profileError);
+                    throw new Error(`Failed to create portal profile: ${profileError.message}`);
+                }
+                
                 console.log('✅ Portal profile created:', userId);
                 console.log('🔵 Profile created successfully. Proceeding to next step...');
             }
@@ -514,24 +544,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async function deleteAccount(userId: string) {
         console.log('🔴 deleteAccount called for user:', userId);
         try {
-            // Get Supabase Management API access token from environment variables
-            const accessToken = import.meta.env.VITE_SUPABASE_MANAGEMENT_ACCESS_TOKEN;
+            // Call the delete-account Edge Function
+            const { data, error } = await supabase.functions.invoke('delete-account', {
+                body: { userId }
+            });
 
-            if (!accessToken) {
-                throw new Error('Supabase Management API access token is not configured');
+            if (error) {
+                console.error('❌ Error calling delete-account Edge Function:', error);
+                throw new Error(`Failed to delete account: ${error.message}`);
             }
 
-            const managementAPI = createManagementAPI(accessToken);
-
-            // Delete user's profile and related data from database
-            await supabase.from('user_app_access').delete().eq('user_id', userId);
-            await supabase.from('enrollments').delete().eq('user_id', userId);
-            await supabase.from('profiles').delete().eq('id', userId);
-
-            // Delete the auth user using Management API
-            await managementAPI.deleteUser(userId);
-
             console.log('✅ Account deleted successfully');
+            return data;
         } catch (error) {
             console.error('❌ Error deleting account:', error);
             throw error;
