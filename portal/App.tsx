@@ -766,6 +766,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
           onViewChange={(view) => handleViewChange(view as ViewName)}
+          onNavigateToMainApp={onNavigateToMainApp}
           initialView={pendingHomeView || 'pilot-portfolio'}
           isDarkMode={isDarkMode}
           onToggleDarkMode={handleToggleDarkMode}
@@ -811,6 +812,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
           onViewChange={(view) => handleViewChange(view as ViewName)}
+          onNavigateToMainApp={onNavigateToMainApp}
           initialView={currentView === 'pathways' ? 'pathways' : 'programs'}
           preloadedData={authState.preloadedData}
           isDarkMode={isDarkMode}

@@ -223,6 +223,7 @@ interface WingMentorHomeProps {
   userProfile?: UserProfile | null;
   onStartFoundationalEnrollment?: () => void;
   onViewChange?: (view: string) => void;
+  onNavigateToMainApp?: (page?: string) => void;
   initialView?: MainView;
   isDarkMode?: boolean;
   onToggleDarkMode?: () => void;
@@ -309,6 +310,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
   userProfile, 
   onStartFoundationalEnrollment,
   onViewChange,
+  onNavigateToMainApp,
   initialView = 'programs',
   isDarkMode = false,
   onToggleDarkMode,
@@ -3589,6 +3591,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           onNavigateToProfile={() => setMainView('pilot-portfolio')}
           onNavigateToApplications={() => setMainView('applications')}
           onAccessWebsite={handleAccessWebsite}
+          onNavigateToHome={onNavigateToMainApp}
           onLogout={onLogout}
         />
 

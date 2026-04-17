@@ -10,6 +10,7 @@ interface TopBarProps {
     onNavigateToProfile?: () => void;
     onNavigateToApplications?: () => void;
     onAccessWebsite?: () => void;
+    onNavigateToHome?: () => void;
     onLogout?: () => void;
 }
 
@@ -21,6 +22,7 @@ export const TopBar: React.FC<TopBarProps> = ({
     onNavigateToProfile,
     onNavigateToApplications,
     onAccessWebsite,
+    onNavigateToHome,
     onLogout
 }) => {
     return (
@@ -58,6 +60,13 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <Icons.Globe />
                     Access Website
                 </button>
+
+                {onNavigateToHome && (
+                    <button onClick={onNavigateToHome} className={`${styles.actionButton} ${styles.homeButton}`}>
+                        <Icons.Home />
+                        Return to Home
+                    </button>
+                )}
 
                 {onLogout && (
                     <button onClick={onLogout} className={`${styles.actionButton} ${styles.logoutButton}`}>
