@@ -80,14 +80,8 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             // Hide auth loading screen
             setAuthLoading(false);
             
-            // Navigate directly to dashboard instead of showing success page
-            if (onNavigateToDashboard) {
-                console.log('🏠 Navigating to dashboard...');
-                onNavigateToDashboard();
-            } else {
-                // Fallback to showing completion if onNavigateToDashboard is not provided
-                onComplete();
-            }
+            // Show completion/confirmation page
+            onComplete();
             
         } catch (error) {
             console.error('❌ Enrollment error details:', error);
