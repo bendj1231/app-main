@@ -16,6 +16,7 @@ interface HomePageProps {
     onGoToProgramDetail: (slide?: Slide) => void;
     isLoggedIn?: boolean;
     onLoginModalOpen?: () => void;
+    isEnrolledInFoundation?: boolean;
 }
 
 interface Slide {
@@ -431,7 +432,7 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = ({ onJoinUs }) => {
     );
 };
 
-export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigate, onGoToProgramDetail, isLoggedIn = false, onLoginModalOpen }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigate, onGoToProgramDetail, isLoggedIn = false, onLoginModalOpen, isEnrolledInFoundation = false }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [scrolled, setScrolled] = useState(false);
     const [activeCategory, setActiveCategory] = useState<
@@ -720,7 +721,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                 <SmokeShader />
                 
                 {/* Flight Simulator Style Grid */}
-                <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} />
+                <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
             </div>
             
             {/* Gradient Fade Below Shader - After Discover More */}

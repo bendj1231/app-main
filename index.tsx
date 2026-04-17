@@ -371,6 +371,7 @@ const App = () => {
             onNavigate={navigateTo}
             isLoggedIn={!!currentUser}
             onLoginModalOpen={() => setIsLoginModalOpen(true)}
+            isEnrolledInFoundation={false}
             onGoToProgramDetail={(slide) => {
               if (slide?.title === 'Emirates ATPL Pilot Pathways') {
                 navigateTo('emirates-atpl');
