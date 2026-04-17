@@ -299,12 +299,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     {/* Actions */}
                     <div className="hidden lg:flex items-center gap-3 ml-4">
 
-                        {currentUser && (
-                            <span className="text-white text-sm font-medium">
-                                Welcome, {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
-                            </span>
-                        )}
-
                         <button
                             onClick={currentUser ? handleLogout : () => onNavigate('become-member')}
                             className={`${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-1.5 whitespace-nowrap`}
@@ -334,6 +328,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 >
                                     <Settings className="w-4 h-4" />
                                 </button>
+                                <span className="text-white text-sm font-medium">
+                                    Welcome, {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
+                                </span>
                             </>
                         )}
                     </div>
