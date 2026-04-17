@@ -1518,7 +1518,7 @@ const GridCard: React.FC<GridCardProps> = ({
                     <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 md:p-6 flex flex-col justify-end z-20">
                         <div className="flex items-center gap-3 mb-2">
                             <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide">
-                                {card.dynamicTitles ? (
+                                {card.dynamicTitles && currentDynamicTitle ? (
                                     <>
                                         {card.title}{' '}
                                         <span className="text-yellow-400">{currentDynamicTitle}</span>
