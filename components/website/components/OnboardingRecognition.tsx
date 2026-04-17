@@ -13,7 +13,7 @@ export const OnboardingRecognition: React.FC<OnboardingRecognitionProps> = ({ on
         <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)' }}>
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
             
-            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem', animation: 'fadeIn 0.5s ease-in-out' }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem', animation: 'fadeIn 0.5s ease-in-out', overflowX: 'hidden' }}>
                 <div className="max-w-4xl mx-auto">
                     <div className="mb-8 flex justify-center">
                         <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
@@ -27,20 +27,20 @@ export const OnboardingRecognition: React.FC<OnboardingRecognitionProps> = ({ on
                         Showcase your achievements, earn industry-recognized credentials, and follow structured pathways to your dream aviation career.
                     </p>
                     
-                    <div className="flex flex-col gap-4 mb-8">
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
+                    <div className="flex flex-col gap-4 mb-8 w-full">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Recognition Profile</h3>
                             <p className="text-sm text-slate-600">Document your certifications and achievements</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Career Pathways</h3>
                             <p className="text-sm text-slate-600">Guided paths to major airlines and operators</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Verified Credentials</h3>
                             <p className="text-sm text-slate-600">Industry-recognized proof of your skills</p>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Milestone Tracking</h3>
                             <p className="text-sm text-slate-600">Celebrate your aviation journey achievements</p>
                         </div>
