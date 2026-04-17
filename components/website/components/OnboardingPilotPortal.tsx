@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 
 interface OnboardingPilotPortalProps {
@@ -107,15 +107,19 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
                         {/* Navigation buttons */}
                         <button
                             onClick={prevSlide}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/30 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center hover:bg-white/50 hover:scale-110 transition-all duration-300 border border-white/40"
+                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 md:-translate-x-20 z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 group"
                         >
-                            &#8592;
+                            <div style={{ pointerEvents: 'auto' }}>
+                                <ChevronLeft className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-110 transition-transform" />
+                            </div>
                         </button>
                         <button
                             onClick={nextSlide}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/30 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center hover:bg-white/50 hover:scale-110 transition-all duration-300 border border-white/40"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 md:translate-x-20 z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 group"
                         >
-                            &#8594;
+                            <div style={{ pointerEvents: 'auto' }}>
+                                <ChevronRight className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-110 transition-transform" />
+                            </div>
                         </button>
 
                         {/* Dots indicator */}
