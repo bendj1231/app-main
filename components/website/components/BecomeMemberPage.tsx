@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, ChevronDown, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle } from 'lucide-react';
+import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, ChevronDown, ChevronUp, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { useAuth } from '@/src/contexts/AuthContext';
 
@@ -664,7 +664,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             }}
                                         >
                                             <span>Click to Expand Pilot Recognition Data Entry</span>
-                                            <ChevronDown className="w-5 h-5" />
+                                            {fullProfiling ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                                         </button>
                                         <p className="text-xs font-semibold text-blue-600">
                                             preferred for Aviation Industry Oversight
