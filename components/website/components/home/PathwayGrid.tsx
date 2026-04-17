@@ -1425,7 +1425,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                         src={img} 
                                         alt={`${card.title} ${idx + 1}`}
                                         className={`
-                                            w-full h-full object-cover
+                                            w-full h-full object-contain bg-black
                                             ${isHovered && idx === currentImageIndex ? 'scale-110' : ''}
                                         `}
                                     />
@@ -1515,6 +1515,32 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 )}
 
+                {/* Glassy Discover button for discover card - always visible outside text overlay */}
+                {card.id === 'discover' && isLargeCard && (
+                    <div className="absolute bottom-4 right-4 z-30">
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                // Navigate to Foundation Program when logged in, otherwise use carousel navigation
+                                if (isLoggedIn) {
+                                    onNavigate('foundational-program');
+                                } else {
+                                    const pageMap: Record<number, string> = {
+                                        0: 'w1000-suite',      // W1000
+                                        1: 'airline-expectations',  // Expectations
+                                        2: 'pilot-recognition',    // Digital Logbook
+                                    };
+                                    onNavigate(pageMap[currentImageIndex] || 'airline-expectations');
+                                }
+                            }}
+                            className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                        >
+                            {isLoggedIn ? 'Enroll Now' : 'Discover'}
+                        </button>
+                    </div>
+                )}
+
                 {/* Text Overlay - Directly on Image (for large cards) */}
                 {isLargeCard && (
                     <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 md:p-6 flex flex-col justify-end z-20">
@@ -1547,29 +1573,6 @@ const GridCard: React.FC<GridCardProps> = ({
                                     className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                                 >
                                     {isLoggedIn ? 'Access Portal' : 'Join Now'}
-                                </button>
-                            )}
-                            {/* Glassy Discover button for discover card - always visible */}
-                            {card.id === 'discover' && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        // Navigate to Foundation Program when logged in, otherwise use carousel navigation
-                                        if (isLoggedIn) {
-                                            onNavigate('foundational-program');
-                                        } else {
-                                            const pageMap: Record<number, string> = {
-                                                0: 'w1000-suite',      // W1000
-                                                1: 'airline-expectations',  // Expectations
-                                                2: 'pilot-recognition',    // Digital Logbook
-                                            };
-                                            onNavigate(pageMap[currentImageIndex] || 'airline-expectations');
-                                        }
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    {isLoggedIn ? 'Enroll Now' : 'Discover'}
                                 </button>
                             )}
                             {/* Glassy Enroll Now button for foundation card */}
