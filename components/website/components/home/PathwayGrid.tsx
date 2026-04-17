@@ -1279,7 +1279,7 @@ const GridCard: React.FC<GridCardProps> = ({
         ? carouselImages[currentImageIndex]
         : isLoggedIn && card.loggedInImage
             ? card.loggedInImage
-            : card.isCarousel && card.images
+            : shouldUseCarousel && card.images
                 ? card.images[currentImageIndex]
                 : card.image;
     
