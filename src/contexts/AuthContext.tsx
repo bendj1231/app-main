@@ -380,28 +380,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('🔴 Logout function called');
         try {
             console.log('🔴 Signing out from Supabase...');
-            // Sign out from Supabase
-            await supabase.auth.signOut();
+            // Sign out from Supabase with timeout to prevent hanging
+            const signOutPromise = supabase.auth.signOut();
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('SignOut timeout')), 5000)
+            );
+            
+            await Promise.race([signOutPromise, timeoutPromise]);
             console.log('✅ Supabase sign out successful');
+        } catch (error) {
+            console.warn('⚠️ Supabase signOut failed or timed out, clearing local state:', error);
+        }
 
+        try {
             console.log('🔴 Clearing IndexedDB session...');
             // Clear IndexedDB session
             await indexedDB.clearSession();
             console.log('✅ IndexedDB session cleared');
-
-            console.log('🔴 Clearing auth state...');
-            // Explicitly clear auth state
-            setCurrentUser(null);
-            setUserProfile(null);
-            console.log('✅ Auth state cleared');
         } catch (error) {
-            console.error("❌ Logout error:", error);
-            // Even if there's an error, try to clear local state and IndexedDB
-            await indexedDB.clearSession();
-            setCurrentUser(null);
-            setUserProfile(null);
-            throw error;
+            console.warn('⚠️ Failed to clear IndexedDB:', error);
         }
+
+        console.log('🔴 Clearing auth state...');
+        // Explicitly clear auth state
+        setCurrentUser(null);
+        setUserProfile(null);
+        console.log('✅ Auth state cleared');
     }
 
     function resetPassword(email: string) {
