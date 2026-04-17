@@ -30,19 +30,23 @@ export const OnboardingPrograms: React.FC<OnboardingProgramsProps> = ({ onBack, 
                     <div className="flex flex-col gap-4 mb-8 w-full">
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Foundation Program</h3>
-                            <p className="text-sm text-slate-600">Start your journey with fundamental pilot training</p>
+                            <p className="text-sm text-slate-600 mb-3">Start your journey with fundamental pilot training</p>
+                            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors">Learn More &rarr;</button>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Advanced Training</h3>
-                            <p className="text-sm text-slate-600">Specialized courses for career advancement</p>
+                            <p className="text-sm text-slate-600 mb-3">Specialized courses for career advancement</p>
+                            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors">Learn More &rarr;</button>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Career Pathways</h3>
-                            <p className="text-sm text-slate-600">Tailored paths to major airlines and operators</p>
+                            <p className="text-sm text-slate-600 mb-3">Tailored paths to major airlines and operators</p>
+                            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors">Learn More &rarr;</button>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Certification Prep</h3>
-                            <p className="text-sm text-slate-600">Prepare for ATPL, CPL, and other certifications</p>
+                            <p className="text-sm text-slate-600 mb-3">Prepare for ATPL, CPL, and other certifications</p>
+                            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors">Learn More &rarr;</button>
                         </div>
                     </div>
                     

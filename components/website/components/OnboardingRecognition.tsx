@@ -30,19 +30,23 @@ export const OnboardingRecognition: React.FC<OnboardingRecognitionProps> = ({ on
                     <div className="flex flex-col gap-4 mb-8 w-full">
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Recognition Profile</h3>
-                            <p className="text-sm text-slate-600">Document your certifications and achievements</p>
+                            <p className="text-sm text-slate-600 mb-3">Document your certifications and achievements</p>
+                            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors">Learn More &rarr;</button>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Career Pathways</h3>
-                            <p className="text-sm text-slate-600">Guided paths to major airlines and operators</p>
+                            <p className="text-sm text-slate-600 mb-3">Guided paths to major airlines and operators</p>
+                            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors">Learn More &rarr;</button>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Verified Credentials</h3>
-                            <p className="text-sm text-slate-600">Industry-recognized proof of your skills</p>
+                            <p className="text-sm text-slate-600 mb-3">Industry-recognized proof of your skills</p>
+                            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors">Learn More &rarr;</button>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md w-full">
                             <h3 className="font-semibold text-slate-900 mb-1">Milestone Tracking</h3>
-                            <p className="text-sm text-slate-600">Celebrate your aviation journey achievements</p>
+                            <p className="text-sm text-slate-600 mb-3">Celebrate your aviation journey achievements</p>
+                            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors">Learn More &rarr;</button>
                         </div>
                     </div>
                     
