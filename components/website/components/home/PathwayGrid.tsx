@@ -1425,7 +1425,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                         src={img} 
                                         alt={`${card.title} ${idx + 1}`}
                                         className={`
-                                            w-full h-full object-contain bg-black
+                                            w-full h-full object-cover
                                             ${isHovered && idx === currentImageIndex ? 'scale-110' : ''}
                                         `}
                                     />
