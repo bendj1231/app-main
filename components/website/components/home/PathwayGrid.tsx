@@ -770,10 +770,13 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
     const getCardClickHandler = (card: GridCardData) => {
         return () => {
+            console.log("Card clicked:", card.id, "isLoggedIn:", isLoggedIn, "currentViewKey:", currentViewKey);
+            
             // When on Home view, clicking Programs/Pathways/Pilot Recognition switches to that view
             if (currentViewKey === 'home' && ['programs', 'pathways', 'pilot-recognition'].includes(card.id)) {
                 const targetIndex = viewIndexMap[card.id];
                 if (targetIndex !== undefined) {
+                    console.log("Switching to view:", card.id, "index:", targetIndex);
                     goToView(targetIndex);
                     return;
                 }
@@ -813,6 +816,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
             const target = navMap[card.id];
             if (target) {
+                console.log("Navigating to:", target, "for card:", card.id);
                 onNavigate(target);
             } else {
                 onGoToProgramDetail({
