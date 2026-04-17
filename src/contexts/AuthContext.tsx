@@ -113,7 +113,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     full_name: userData.fullName,
                     phone: userData.contactNumber,
                     country: userData.residingCountry,
-                    date_of_birth: userData.dob,
+                    date_of_birth: userData.dob || null,
                     nationality: userData.nationality,
                     role: 'mentee', // Default role for new users
                     status: 'active',
@@ -146,7 +146,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             full_name: userData.fullName,
                             phone: userData.contactNumber,
                             country: userData.residingCountry,
-                            date_of_birth: userData.dob,
+                            date_of_birth: userData.dob || null,
                             nationality: userData.nationality,
                             updated_at: new Date().toISOString(),
                             pilot_id: userData.pilotId,
