@@ -765,6 +765,12 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <MentorshipProtocolsModulePage onBack={() => setCurrentView('foundational')} onLogout={handleLogout} />
       ) : currentView === 'module-03' ? (
         <PeerAdvocacyModulePage onBack={() => setCurrentView('foundational')} onLogout={handleLogout} />
+      ) : currentView === 'pilot-portfolio' ? (
+        <PilotPortfolioPage
+          onBack={() => setCurrentView('hub')}
+          userProfile={authState.userProfile}
+          preloadedPortfolio={authState.preloadedData?.portfolio}
+        />
       ) : currentView === 'pilot-profile' ? (
         <PilotPortfolioPage
           onBack={() => setCurrentView('hub')}
