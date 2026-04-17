@@ -10,7 +10,7 @@ interface OnboardingPilotPortalProps {
 
 export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ onBack, onNavigate, onLogin }) => {
     return (
-        <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)' }}>
+        <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)', overflowX: 'hidden' }}>
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
             
             <div style={{ width: '100%', padding: '4rem 2rem', animation: 'fadeIn 0.5s ease-in-out', overflowX: 'hidden' }}>
