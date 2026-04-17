@@ -1516,7 +1516,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 )}
 
                 {/* Text Overlay - Directly on Image (for large cards) */}
-                {isLargeCard && (
+                {isLargeCard && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
                     <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 md:p-6 flex flex-col justify-end z-20">
                         <div className="flex items-center gap-3 mb-2">
                             <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide">
@@ -1546,29 +1546,38 @@ const GridCard: React.FC<GridCardProps> = ({
                                     {isLoggedIn ? 'Access Portal' : 'Join Now'}
                                 </button>
                             )}
-                            {/* Glassy Discover button for discover card only */}
-                            {card.id === 'discover' && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        // Navigate to Foundation Program when logged in, otherwise use carousel navigation
-                                        if (isLoggedIn) {
-                                            onNavigate('foundational-program');
-                                        } else {
-                                            const pageMap: Record<number, string> = {
-                                                0: 'w1000-suite',      // W1000
-                                                1: 'airline-expectations',  // Expectations
-                                                2: 'pilot-recognition',    // Digital Logbook
-                                            };
-                                            onNavigate(pageMap[currentImageIndex] || 'airline-expectations');
-                                        }
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    {isLoggedIn ? 'Enroll Now' : 'Discover'}
-                                </button>
-                            )}
+                        </div>
+                        <p className="text-white/90 text-xs md:text-sm truncate">
+                            {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
+                        </p>
+                    </div>
+                )}
+
+                {/* Glassy Discover button for discover card - always visible outside text overlay */}
+                {card.id === 'discover' && isLargeCard && (
+                    <div className="absolute bottom-4 right-4 z-30">
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                // Navigate to Foundation Program when logged in, otherwise use carousel navigation
+                                if (isLoggedIn) {
+                                    onNavigate('foundational-program');
+                                } else {
+                                    const pageMap: Record<number, string> = {
+                                        0: 'w1000-suite',      // W1000
+                                        1: 'airline-expectations',  // Expectations
+                                        2: 'pilot-recognition',    // Digital Logbook
+                                    };
+                                    onNavigate(pageMap[currentImageIndex] || 'airline-expectations');
+                                }
+                            }}
+                            className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                        >
+                            {isLoggedIn ? 'Enroll Now' : 'Discover'}
+                        </button>
+                    </div>
+                )}
                             {/* Glassy Enroll Now button for foundation card */}
                             {card.enrollNow && (
                                 <button
