@@ -159,7 +159,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         <div className="space-y-4">
                             <h1 className="text-3xl md:text-5xl font-serif text-slate-900 tracking-tight leading-none mb-2">
-                                First Step Towards Pilot Recognition
+                                First Step Towards Pilot Recognition.
                             </h1>
                             <p className="text-sm md:text-base mb-8" style={{ color: '#DAA520' }}>
                                 Programs | Pilot Recognition | Pathways
@@ -332,48 +332,46 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                 {/* Section: Account Credentials */}
                                 <section className="space-y-10">
-                                    <div className="flex items-center gap-4">
-                                        <div>
-                                            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Account Credentials</h2>
-                                            <p className="text-sm text-slate-500 font-medium italic">Think of this as the Ident of the aircraft you are flying—your unique signature in the sky. Use your Name, Personal Callsign, or a favorite Tailnumber.</p>
-                                        </div>
+                                    <div style={{ borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
+                                        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Account Credentials</h2>
+                                        <p className="text-sm text-slate-500 font-medium italic">Think of this as the Ident of the aircraft you are flying—your unique signature in the sky. Use your Name, Personal Callsign, or a favorite Tailnumber.</p>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-2.5 group">
-                                            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 group-focus-within:text-blue-600 transition-colors">Pilot ID</label>
+                                            <label className="text-sm font-semibold text-gray-700 mb-2 block">Pilot ID</label>
                                             <div className="relative">
                                                 <input
                                                     type="text"
                                                     placeholder="Pilot ID (Name, Personal Callsign, or Tailnumber)"
                                                     value={pilotId}
                                                     onChange={(e) => setPilotId(e.target.value)}
-                                                    className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 />
                                             </div>
                                         </div>
                                         <div className="space-y-2.5 group">
-                                            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 group-focus-within:text-blue-600 transition-colors">Email Address</label>
+                                            <label className="text-sm font-semibold text-gray-700 mb-2 block">Email Address</label>
                                             <div className="relative">
                                                 <input
                                                     type="email"
                                                     placeholder="pilot@example.com"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
-                                                    className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400"
+                                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                     required
                                                 />
                                             </div>
                                         </div>
                                         <div className="space-y-2.5 group">
-                                            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 group-focus-within:text-blue-600 transition-colors">Password</label>
+                                            <label className="text-sm font-semibold text-gray-700 mb-2 block">Password</label>
                                             <div className="relative">
                                                 <input
                                                     type="password"
                                                     placeholder="••••••••"
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
-                                                    className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400"
+                                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                     required
                                                 />
                                             </div>
