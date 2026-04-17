@@ -100,14 +100,24 @@ export const indexedDB = {
             .from('profiles')
             .select('id')
             .eq('id', session.user.id)
-            .single();
+            .maybeSingle(); // Use maybeSingle() to handle case where profile doesn't exist
 
-          if (profileError || !profile) {
-            console.log('⚠️ User no longer exists in database, clearing session');
-            await this.clearSession();
-            return null;
+          if (profileError) {
+            console.error('❌ Profile verification error:', profileError);
+            // Only clear session on critical errors, not on missing profiles
+            if (profileError.code !== 'PGRST116') { // PGRST116 = no rows returned
+              await this.clearSession();
+              return null;
+            }
+            console.log('⚠️ Profile not found in database, but user is authenticated');
           }
-          console.log('✅ User verified in Supabase auth and database');
+
+          if (!profile) {
+            console.log('⚠️ Profile not found in database, but user is authenticated. Profile will be created on first login.');
+            // Don't clear session - allow user to continue
+          } else {
+            console.log('✅ User verified in Supabase auth and database');
+          }
         } catch (verifyError) {
           console.error('❌ Error verifying user:', verifyError);
           // If verification fails, clear session to be safe
