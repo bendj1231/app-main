@@ -376,10 +376,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     async function logout() {
-        // Sign out from Supabase
-        await supabase.auth.signOut();
-        // Sign out from Firebase
-        await signOut(auth);
+        try {
+            // Sign out from Supabase
+            await supabase.auth.signOut();
+            // Sign out from Firebase
+            await signOut(auth);
+            // Explicitly clear auth state
+            setCurrentUser(null);
+            setUserProfile(null);
+        } catch (error) {
+            console.error("Logout error:", error);
+            // Even if there's an error, try to clear local state
+            setCurrentUser(null);
+            setUserProfile(null);
+            throw error;
+        }
     }
 
     function resetPassword(email: string) {
