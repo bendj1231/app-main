@@ -394,8 +394,17 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       throw new Error(`Error checking existing enrollment: ${existingError.message}`);
     }
     
-    if (existingEnrollment) {
-      console.log('⚠️ Found existing enrollment record:', existingEnrollment);
+    // Also check profiles.enrolled_programs for consistency
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('enrolled_programs')
+      .eq('id', uid)
+      .single();
+    
+    const isEnrolledInProfile = profileData?.enrolled_programs?.includes('Foundational');
+    
+    if (existingEnrollment || isEnrolledInProfile) {
+      console.log('⚠️ Found existing enrollment record or profile enrollment:', { existingEnrollment, isEnrolledInProfile });
       throw new Error('You already have an enrollment record for the Foundational Program.');
     }
     
