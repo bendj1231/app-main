@@ -39,11 +39,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true);
 
     async function signup(email: string, password: string, userData: any) {
+        console.log('🔵 Starting signup process for:', email);
+        console.log('🔵 User data:', userData);
+
         let userId: string;
         let firebaseUser: any = null;
 
         // Step 1: Create Supabase auth user first (preferred)
         try {
+            console.log('🔵 Step 1: Creating Supabase auth user...');
             const { data: supabaseData, error: supabaseError } = await supabase.auth.signUp({
                 email,
                 password,
@@ -61,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     console.log('User already exists, throwing specific error for UI handling');
                     throw new Error('USER_ALREADY_EXISTS');
                 } else {
-                    console.error('Supabase auth error:', supabaseError);
+                    console.error('❌ Supabase auth error:', supabaseError);
                     throw new Error(`Supabase auth failed: ${supabaseError.message}`);
                 }
             } else {
@@ -73,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 console.log('✅ Supabase auth user created:', userId);
             }
         } catch (supabaseError) {
-            console.error('Failed to create Supabase auth user:', supabaseError);
+            console.error('❌ Failed to create Supabase auth user:', supabaseError);
             throw supabaseError;
         }
 

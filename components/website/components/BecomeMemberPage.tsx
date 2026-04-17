@@ -252,6 +252,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     // Construct the categorization string "Name , License, Hours"
                                     const pilotCategory = `${fullName} , ${highestRating}, ${currentFlightHours}hrs`;
 
+                                    console.log('🔵 About to call signup function with email:', email);
                                     await signup(email, password, {
                                         pilotId,
                                         pilotCategory, // New field for easy identification
