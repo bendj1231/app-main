@@ -439,8 +439,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     // Use provided userId or fall back to authState
     const effectiveUserId = userId || authState.user?.id;
     
-    // If user is already authenticated, just show dummy loading animation
-    if (authState.user && authState.userProfile) {
+    // If user is already authenticated (from IndexedDB), just show dummy loading animation
+    if (authState.user) {
       console.log('User already authenticated, showing dummy loading sequence');
       
       // Dummy loading sequence - just show the animation phases
