@@ -109,8 +109,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         console.log('User email already confirmed');
                     }
                     
-                    // Sign out after getting the user ID to avoid session conflicts
-                    await supabase.auth.signOut();
+                    // Don't sign out - keep the session for profile creation
+                    // RLS policies require an authenticated session
                 } else {
                     console.error('❌ Supabase auth error:', supabaseError);
                     throw new Error(`Supabase auth failed: ${supabaseError.message}`);
