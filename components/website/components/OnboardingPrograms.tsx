@@ -34,22 +34,18 @@ export const OnboardingPrograms: React.FC<OnboardingProgramsProps> = ({ onBack, 
                         
                         <div className="grid grid-cols-2 gap-4 mb-8">
                             <div className="bg-emerald-50 rounded-2xl p-6">
-                                <Plane className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">Foundation Program</h3>
                                 <p className="text-sm text-slate-600">Start your journey with fundamental pilot training</p>
                             </div>
                             <div className="bg-emerald-50 rounded-2xl p-6">
-                                <Award className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">Advanced Training</h3>
                                 <p className="text-sm text-slate-600">Specialized courses for career advancement</p>
                             </div>
                             <div className="bg-emerald-50 rounded-2xl p-6">
-                                <TrendingUp className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">Career Pathways</h3>
                                 <p className="text-sm text-slate-600">Tailored paths to major airlines and operators</p>
                             </div>
                             <div className="bg-emerald-50 rounded-2xl p-6">
-                                <GraduationCap className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">Certification Prep</h3>
                                 <p className="text-sm text-slate-600">Prepare for ATPL, CPL, and other certifications</p>
                             </div>

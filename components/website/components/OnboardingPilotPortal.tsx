@@ -34,32 +34,26 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
                         
                         <div className="grid grid-cols-2 gap-4 mb-8">
                             <div className="bg-blue-50 rounded-2xl p-6">
-                                <LayoutDashboard className="w-6 h-6 text-blue-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">Examination Terminal</h3>
                                 <p className="text-sm text-slate-600">Access through programs or dashboard page</p>
                             </div>
                             <div className="bg-blue-50 rounded-2xl p-6">
-                                <MessageSquare className="w-6 h-6 text-blue-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">Pilot Terminal</h3>
                                 <p className="text-sm text-slate-600">Chat with fellow members and discuss aviation</p>
                             </div>
                             <div className="bg-blue-50 rounded-2xl p-6">
-                                <Newspaper className="w-6 h-6 text-blue-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">Industry News</h3>
                                 <p className="text-sm text-slate-600">Stay updated on AIRBUS aligned updates and airline expectations</p>
                             </div>
                             <div className="bg-blue-50 rounded-2xl p-6">
-                                <AlertTriangle className="w-6 h-6 text-blue-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">Job Requirements</h3>
                                 <p className="text-sm text-slate-600">Notices of job requirement changes and updates</p>
                             </div>
                             <div className="bg-blue-50 rounded-2xl p-6">
-                                <Headphones className="w-6 h-6 text-blue-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">WingMentor Support</h3>
                                 <p className="text-sm text-slate-600">Contact us for any issues or assistance</p>
                             </div>
                             <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-6 border-2 border-violet-200">
-                                <Sparkles className="w-6 h-6 text-violet-600 mx-auto mb-2" />
                                 <h3 className="font-semibold text-slate-900 mb-1">PilotRecognition.ai</h3>
                                 <p className="text-sm text-slate-600">Upcoming AI for performance tracking and score management</p>
                             </div>
