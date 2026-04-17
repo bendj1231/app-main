@@ -130,7 +130,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                         </p>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '500px', textAlign: 'left' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '500px', textAlign: 'center', margin: '0 auto' }}>
                         <div style={{
                             padding: '1.5rem',
                             backgroundColor: 'rgba(255, 255, 255, 0.6)',
@@ -146,7 +146,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                                             <polyline points="20 6 9 17 4 12"></polyline>
                                         </svg>
                                     </div>
-                                    <p style={{ margin: 0, color: '#334155', fontSize: '1rem', lineHeight: 1.5 }}>{point}</p>
+                                    <p style={{ margin: 0, color: '#334155', fontSize: '1rem', lineHeight: 1.5, textAlign: 'left' }}>{point}</p>
                                 </div>
                             ))}
                         </div>
