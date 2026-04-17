@@ -31,6 +31,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [signupSuccess, setSignupSuccess] = useState(false);
+    const [userAlreadyExisted, setUserAlreadyExisted] = useState(false);
 
     const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
     const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
@@ -162,32 +163,49 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 
                                 <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
-                                    Welcome to WingMentor
+                                    {userAlreadyExisted ? 'Welcome Back!' : 'Welcome to WingMentor'}
                                 </h2>
                                 
                                 <p className="text-lg text-slate-600 mb-6">
-                                    Thank you for successfully creating your account!
+                                    {userAlreadyExisted 
+                                        ? 'Your account has been updated with your information.'
+                                        : 'Thank you for successfully creating your account!'
+                                    }
                                 </p>
                                 
-                                <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
-                                    <p className="text-sm text-slate-700 mb-2">
-                                        <strong>Verification email sent</strong>
-                                    </p>
-                                    <p className="text-sm text-slate-600">
-                                        Please check your inbox at <span className="font-semibold text-blue-900">{email}</span> and click the verification link to activate your account.
-                                    </p>
-                                </div>
+                                {userAlreadyExisted ? (
+                                    <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-8">
+                                        <p className="text-sm text-slate-700 mb-2">
+                                            <strong>Account Updated</strong>
+                                        </p>
+                                        <p className="text-sm text-slate-600">
+                                            Your profile information has been updated. You can now access your Pilot Recognition Profile and continue your journey.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
+                                        <p className="text-sm text-slate-700 mb-2">
+                                            <strong>Verification email sent</strong>
+                                        </p>
+                                        <p className="text-sm text-slate-600">
+                                            Please check your inbox at <span className="font-semibold text-blue-900">{email}</span> and click the verification link to activate your account.
+                                        </p>
+                                    </div>
+                                )}
                                 
                                 <div className="space-y-4">
                                     <p className="text-sm text-slate-500">
-                                        Once verified, you can access your Pilot Recognition Profile and begin your journey.
+                                        {userAlreadyExisted 
+                                            ? 'You can now access all available features.'
+                                            : 'Once verified, you can access your Pilot Recognition Profile and begin your journey.'
+                                        }
                                     </p>
                                     
                                     <button
                                         onClick={onLogin}
                                         className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
                                     >
-                                        Continue to Login
+                                        {userAlreadyExisted ? 'Go to Dashboard' : 'Continue to Login'}
                                     </button>
                                 </div>
                             </div>
@@ -205,6 +223,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 e.preventDefault();
                                 setError('');
                                 setLoading(true);
+
+                                // Add timeout to prevent infinite loading
+                                const timeoutId = setTimeout(() => {
+                                    if (loading) {
+                                        setLoading(false);
+                                        setError('Request timed out. Please check your internet connection and try again.');
+                                    }
+                                }, 30000); // 30 second timeout
 
                                 try {
                                     // Determine highest rating from selection
@@ -240,11 +266,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         pathwayInterests: selectedPathways,
                                         insightInterests: selectedInsights
                                     });
+                                    clearTimeout(timeoutId);
                                     setSignupSuccess(true);
+                                    setUserAlreadyExisted(false);
                                 } catch (err: any) {
+                                    clearTimeout(timeoutId);
                                     console.error("Signup failed", err);
-                                    setError(err.message || "Failed to create account");
+                                    // Check if user already existed
+                                    if (err.message === 'USER_ALREADY_EXISTS') {
+                                        setError('An account with this email already exists. Please sign in instead.');
+                                    } else {
+                                        setError(err.message || "Failed to create account");
+                                    }
                                 } finally {
+                                    clearTimeout(timeoutId);
                                     setLoading(false);
                                 }
                             }}>

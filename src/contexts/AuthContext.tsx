@@ -56,22 +56,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             });
 
             if (supabaseError) {
-                console.error('Supabase auth error:', supabaseError);
-                throw new Error(`Supabase auth failed: ${supabaseError.message}`);
-            }
+                // If user already exists, throw a specific error so the UI can handle it
+                if (supabaseError.message.includes('already registered') || supabaseError.message === 'User already registered') {
+                    console.log('User already exists, throwing specific error for UI handling');
+                    throw new Error('USER_ALREADY_EXISTS');
+                } else {
+                    console.error('Supabase auth error:', supabaseError);
+                    throw new Error(`Supabase auth failed: ${supabaseError.message}`);
+                }
+            } else {
+                if (!supabaseData.user) {
+                    throw new Error('No user returned from Supabase auth');
+                }
 
-            if (!supabaseData.user) {
-                throw new Error('No user returned from Supabase auth');
+                userId = supabaseData.user.id;
+                console.log('✅ Supabase auth user created:', userId);
             }
-
-            userId = supabaseData.user.id;
-            console.log('✅ Supabase auth user created:', userId);
         } catch (supabaseError) {
             console.error('Failed to create Supabase auth user:', supabaseError);
             throw supabaseError;
         }
 
-        // Step 2: Create portal profile in profiles table
+        // Step 2: Create or update portal profile in profiles table
         try {
             const experienceLevel = (() => {
                 const hours = parseInt(userData.currentFlightHours || '0', 10);
@@ -80,6 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 return 'High Timer';
             })();
 
+            // Try to insert first, if it fails due to duplicate, update instead
             const { error: profileError } = await supabase
                 .from('profiles')
                 .insert({
@@ -112,17 +119,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 });
 
             if (profileError) {
-                console.error('Portal profile creation error:', profileError);
-                throw new Error(`Failed to create portal profile: ${profileError.message}`);
-            }
+                // If profile already exists, update it instead
+                if (profileError.code === '23505') { // Unique violation
+                    console.log('Profile already exists, updating instead...');
+                    const { error: updateError } = await supabase
+                        .from('profiles')
+                        .update({
+                            display_name: userData.fullName || email.split('@')[0],
+                            full_name: userData.fullName,
+                            phone: userData.contactNumber,
+                            country: userData.residingCountry,
+                            date_of_birth: userData.dob,
+                            nationality: userData.nationality,
+                            updated_at: new Date().toISOString(),
+                            pilot_id: userData.pilotId,
+                            flight_school_address: userData.flightSchoolAddress,
+                            license_id: userData.licenseId,
+                            country_of_license: userData.countryOfLicense,
+                            current_flight_hours: userData.currentFlightHours,
+                            aircraft_rated_on: userData.aircraftRatedOn,
+                            experience_description: userData.experienceDescription,
+                            ratings: userData.ratings,
+                            program_interests: userData.programInterests,
+                            pathway_interests: userData.pathwayInterests,
+                            insight_interests: userData.insightInterests
+                        })
+                        .eq('id', userId);
 
-            console.log('✅ Portal profile created:', userId);
+                    if (updateError) {
+                        console.error('Portal profile update error:', updateError);
+                        throw new Error(`Failed to update portal profile: ${updateError.message}`);
+                    }
+                    console.log('✅ Portal profile updated:', userId);
+                } else {
+                    console.error('Portal profile creation error:', profileError);
+                    throw new Error(`Failed to create portal profile: ${profileError.message}`);
+                }
+            } else {
+                console.log('✅ Portal profile created:', userId);
+            }
         } catch (profileError) {
-            console.error('Failed to create portal profile:', profileError);
+            console.error('Failed to create/update portal profile:', profileError);
             throw profileError;
         }
 
-        // Step 3: Create app access records
+        // Step 3: Create app access records (ignore if already exist)
         try {
             const defaultApps = [
                 { app_id: 'foundational', granted: true },
@@ -145,11 +186,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .insert(appAccessRecords);
 
             if (accessError) {
-                console.error('App access creation error:', accessError);
-                throw new Error(`Failed to create app access: ${accessError.message}`);
+                // If records already exist, it's not a critical error
+                if (accessError.code === '23505') {
+                    console.log('App access records already exist, skipping...');
+                } else {
+                    console.error('App access creation error:', accessError);
+                    throw new Error(`Failed to create app access: ${accessError.message}`);
+                }
             }
 
-            console.log('✅ App access records created:', userId);
+            console.log('✅ App access records created/verified:', userId);
         } catch (accessError) {
             console.error('Failed to create app access:', accessError);
             throw accessError;
