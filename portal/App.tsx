@@ -320,6 +320,52 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     };
   }, [isDarkMode]);
 
+  // Fix scroll position restoration when switching tabs in Safari
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    let scrollY = 0;
+    let scrollX = 0;
+
+    const handleBlur = () => {
+      scrollY = window.scrollY;
+      scrollX = window.scrollX;
+      sessionStorage.setItem('scrollPosition', JSON.stringify({ x: scrollX, y: scrollY }));
+    };
+
+    const handleFocus = () => {
+      const savedPosition = sessionStorage.getItem('scrollPosition');
+      if (savedPosition) {
+        const { x, y } = JSON.parse(savedPosition);
+        window.scrollTo(x, y);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        scrollY = window.scrollY;
+        scrollX = window.scrollX;
+        sessionStorage.setItem('scrollPosition', JSON.stringify({ x: scrollX, y: scrollY }));
+      } else if (document.visibilityState === 'visible') {
+        const savedPosition = sessionStorage.getItem('scrollPosition');
+        if (savedPosition) {
+          const { x, y } = JSON.parse(savedPosition);
+          window.scrollTo(x, y);
+        }
+      }
+    };
+
+    window.addEventListener('blur', handleBlur);
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('blur', handleBlur);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
   const handleToggleDarkMode = useCallback(() => {
     setIsDarkMode((prev) => !prev);
   }, []);
