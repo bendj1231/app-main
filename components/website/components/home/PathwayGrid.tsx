@@ -1543,7 +1543,7 @@ const GridCard: React.FC<GridCardProps> = ({
 
                 {/* Text Overlay - Directly on Image (for large cards) */}
                 {isLargeCard && (
-                    <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 md:p-6 flex flex-col justify-end z-20">
+                    <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'}`}>
                         <div className="flex items-center gap-3 mb-2">
                             {/* Hide title/subtitle for second image of discover card when logged in */}
                             {!(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
