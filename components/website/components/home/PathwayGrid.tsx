@@ -1223,6 +1223,18 @@ const GridCard: React.FC<GridCardProps> = ({
     // Get the images array to use for carousel
     const carouselImages = shouldUseLoggedInCarousel ? card.loggedInImages : card.images;
     
+    // Debug logging for discover card
+    if (card.id === 'discover' && isLoggedIn) {
+        console.log('Discover card logged in state:', {
+            isLoggedIn,
+            isCarouselWhenLoggedIn: card.isCarouselWhenLoggedIn,
+            loggedInImages: card.loggedInImages,
+            shouldUseLoggedInCarousel,
+            carouselImages,
+            currentImageIndex
+        });
+    }
+    
     // For discover card, enable carousel when logged in to shuffle Foundation Program images
     const shouldUseCarousel = (card.id === 'discover' && isLoggedIn)
         ? carouselImages
@@ -1244,7 +1256,7 @@ const GridCard: React.FC<GridCardProps> = ({
         }, 5000); // Change every 5 seconds
         
         return () => clearInterval(interval);
-    }, [shouldUseLoggedInCarousel, carouselImages, card.isCarousel, card.images, isPaused]);
+    }, [shouldUseCarousel, shouldUseLoggedInCarousel, carouselImages, card.isCarousel, card.images, isPaused]);
     
     // Cleanup pause timeout on unmount
     useEffect(() => {
@@ -1476,7 +1488,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             })}
                             {/* Carousel Indicators */}
                             <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                                {card.images.map((_, idx) => (
+                                {carouselImages.map((_, idx) => (
                                     <div 
                                         key={idx}
                                         className={`w-2 h-2 rounded-full transition-all duration-300 ${
