@@ -215,7 +215,7 @@ const detectGraphicsPreset = (): DetectionResult => {
 
 function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateToMainApp?: (page: string) => void; directToEnrollment?: boolean }) {
   const [isMobile, setIsMobile] = useState(false);
-  const [showLoading, setShowLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(!directToEnrollment);
   const [loginBlurred, setLoginBlurred] = useState(false);
   const [graphicsDetection, setGraphicsDetection] = useState<DetectionResult>(() => detectGraphicsPreset());
   const [graphicsPreset, setGraphicsPreset] = useState<GraphicsPreset>(() => detectGraphicsPreset().recommendedPreset);
@@ -581,6 +581,14 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       startLoadingSequence('pilot-profile');
     }
   }, [authState.user, showLoading, startLoadingSequence, directToEnrollment]);
+
+  // Ensure showLoading stays false when directToEnrollment is true
+  useEffect(() => {
+    if (directToEnrollment && showLoading) {
+      setShowLoading(false);
+      clearLoadingSequence();
+    }
+  }, [directToEnrollment, showLoading]);
 
   useEffect(() => {
     if (!showLoading && authState.user && currentView === 'login') {
