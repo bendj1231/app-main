@@ -280,30 +280,57 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                         ))}
                     </div>
 
+                    {currentSlide === slides.length - 1 ? (
                     <button
-                        onClick={nextSlide}
-                        disabled={currentSlide === slides.length - 1}
+                        onClick={onComplete}
                         style={{
                             flex: 1,
                             padding: '0.6rem 1.25rem',
                             borderRadius: '10px',
-                            backgroundColor: currentSlide === slides.length - 1 ? 'rgba(148, 163, 184, 0.3)' : '#2563eb',
+                            backgroundColor: '#2563eb',
                             backdropFilter: 'blur(12px)',
-                            border: currentSlide === slides.length - 1 ? '1px solid rgba(148, 163, 184, 0.3)' : '1px solid #2563eb',
-                            boxShadow: currentSlide === slides.length - 1 ? 'none' : '0 8px 32px rgba(37, 99, 235, 0.3)',
-                            color: currentSlide === slides.length - 1 ? '#94a3b8' : '#ffffff',
+                            border: '1px solid #2563eb',
+                            boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
+                            color: '#ffffff',
                             fontWeight: 600,
                             fontSize: '0.8rem',
-                            cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer',
+                            cursor: 'pointer',
                             transition: 'all 0.2s',
-                            opacity: currentSlide === slides.length - 1 ? 0.5 : 1,
                             maxWidth: '110px'
                         }}
                         onMouseOver={(e) => {
-                            if (currentSlide !== slides.length - 1) {
-                                e.currentTarget.style.backgroundColor = '#1d4ed8';
-                                e.currentTarget.style.transform = 'translateY(-2px)';
-                            }
+                            e.currentTarget.style.backgroundColor = '#1d4ed8';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseOut={(e) => {
+                            e.currentTarget.style.backgroundColor = '#2563eb';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                        }}
+                    >
+                        Dashboard
+                        <Icons.ArrowRight style={{ width: 14, height: 14, marginLeft: '0.4rem', display: 'inline', verticalAlign: 'middle' }} />
+                    </button>
+                ) : (
+                    <button
+                        onClick={nextSlide}
+                        style={{
+                            flex: 1,
+                            padding: '0.6rem 1.25rem',
+                            borderRadius: '10px',
+                            backgroundColor: '#2563eb',
+                            backdropFilter: 'blur(12px)',
+                            border: '1px solid #2563eb',
+                            boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
+                            color: '#ffffff',
+                            fontWeight: 600,
+                            fontSize: '0.8rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            maxWidth: '110px'
+                        }}
+                        onMouseOver={(e) => {
+                            e.currentTarget.style.backgroundColor = '#1d4ed8';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
                         }}
                         onMouseOut={(e) => {
                             e.currentTarget.style.backgroundColor = '#2563eb';
@@ -313,6 +340,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                         Next
                         <Icons.ArrowRight style={{ width: 14, height: 14, marginLeft: '0.4rem', display: 'inline', verticalAlign: 'middle' }} />
                     </button>
+                )}
                 </div>
             </main>
         </div>
