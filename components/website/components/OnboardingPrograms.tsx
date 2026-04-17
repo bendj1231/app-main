@@ -13,8 +13,8 @@ export const OnboardingPrograms: React.FC<OnboardingProgramsProps> = ({ onBack, 
         <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)' }}>
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
             
-            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem', animation: 'fadeIn 0.5s ease-in-out', overflowX: 'hidden' }}>
-                <div className="max-w-4xl mx-auto">
+            <div style={{ width: '100%', padding: '4rem 2rem', animation: 'fadeIn 0.5s ease-in-out', overflowX: 'hidden' }}>
+                <div className="max-w-4xl mx-auto w-full">
                     <div className="mb-8 flex justify-center">
                         <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                     </div>
