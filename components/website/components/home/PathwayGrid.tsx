@@ -497,9 +497,6 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
     const viewKeys = ['home', 'programs', 'pilot-recognition', 'pathways', 'applications', 'membership'];
     const viewCards = getViewCards(isLoggedIn, isEnrolledInFoundation);
 
-    // Debug logging
-    console.log('PathwayGrid - isLoggedIn:', isLoggedIn, 'isEnrolledInFoundation:', isEnrolledInFoundation);
-
     // Trigger animations on every mount (including refresh)
     useEffect(() => {
         setMountKey(Date.now());
@@ -1243,12 +1240,6 @@ const GridCard: React.FC<GridCardProps> = ({
     const [isVideoPlaying, setIsVideoPlaying] = useState(false);
     const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
-    // Debug logging
-    console.log('GridCard - card.id:', card.id, 'isLoggedIn:', isLoggedIn, 'isEnrolledInFoundation:', isEnrolledInFoundation);
-    if (card.id === 'discover') {
-        console.log('Discover card - enrolledTitle:', card.enrolledTitle, 'loggedInTitle:', card.loggedInTitle, 'title:', card.title);
-    }
-    
     // Determine display title and subtitle based on enrollment state
     const displayTitle = isEnrolledInFoundation && card.enrolledTitle 
         ? card.enrolledTitle 
@@ -1260,11 +1251,6 @@ const GridCard: React.FC<GridCardProps> = ({
         : isLoggedIn && card.loggedInSubtitle 
             ? card.loggedInSubtitle 
             : card.subtitle;
-    
-    // Debug logging
-    if (card.id === 'discover') {
-        console.log('Discover card - displayTitle:', displayTitle, 'displaySubtitle:', displaySubtitle);
-    }
     
     // Determine if we should use carousel for enrolled/logged in state
     const shouldUseEnrolledCarousel = isEnrolledInFoundation && card.isCarouselWhenEnrolled && card.enrolledImages;
