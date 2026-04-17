@@ -17,10 +17,12 @@ import {
     LogOut
 } from 'lucide-react';
 import { ChevronRight } from './Icons';
+import { useAuth } from '@/src/contexts/AuthContext';
 
 const LOGO_URL = "https://cdn.shopify.com/s/files/1/0807/5801/4243/files/logo_3.png?v=1738739665";
 
 export const Sidebar = ({ activePage, onNavigate, isOpen, onClose }: { activePage: string, onNavigate: (page: any) => void, isOpen: boolean, onClose: () => void }) => {
+    const { logout } = useAuth();
     const NavItem = ({ id, icon: Icon, label, active }: any) => (
         <div
             onClick={() => { onNavigate(id); if (window.innerWidth <= 768) onClose(); }}
@@ -77,9 +79,9 @@ export const Sidebar = ({ activePage, onNavigate, isOpen, onClose }: { activePag
                 </div>
 
                 <div style={{ marginTop: 'auto', paddingTop: 20, borderTop: '1px solid #f0f0f0' }}>
-                    <div className="nav-link" onClick={() => onNavigate('portal-signin')}>
+                    <div className="nav-link" onClick={logout}>
                         <LogOut size={18} />
-                        <span>Portal Access</span>
+                        <span>Sign Out</span>
                     </div>
                     <p style={{ fontSize: '0.7rem', color: '#ccc', textAlign: 'center', marginTop: 16 }}>v2.4.0 • WingMentor Inc.</p>
                 </div>
