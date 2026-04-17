@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, LayoutDashboard, Users, BookOpen, Target } from 'lucide-react';
+import { ArrowRight, LayoutDashboard, MessageSquare, Newspaper, AlertTriangle, Headphones, Sparkles } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 
 interface OnboardingPilotPortalProps {
@@ -29,30 +29,46 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
                         </h2>
                         
                         <p className="text-lg text-slate-600 mb-8">
-                            Your personalized dashboard to track your aviation journey, access resources, and connect with the WingMentor community.
+                            Your central hub to access programs, pathways, pilot recognition profile, and comprehensive aviation resources.
                         </p>
                         
                         <div className="grid grid-cols-2 gap-4 mb-8">
                             <div className="bg-blue-50 rounded-2xl p-6">
-                                <BookOpen className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                                <h3 className="font-semibold text-slate-900 mb-1">Track Progress</h3>
-                                <p className="text-sm text-slate-600">Monitor your certifications and training milestones</p>
-                            </div>
-                            <div className="bg-blue-50 rounded-2xl p-6">
-                                <Users className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                                <h3 className="font-semibold text-slate-900 mb-1">Connect</h3>
-                                <p className="text-sm text-slate-600">Engage with mentors and fellow pilots</p>
-                            </div>
-                            <div className="bg-blue-50 rounded-2xl p-6">
-                                <Target className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                                <h3 className="font-semibold text-slate-900 mb-1">Set Goals</h3>
-                                <p className="text-sm text-slate-600">Define and achieve your aviation objectives</p>
-                            </div>
-                            <div className="bg-blue-50 rounded-2xl p-6">
                                 <LayoutDashboard className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                                <h3 className="font-semibold text-slate-900 mb-1">Access Resources</h3>
-                                <p className="text-sm text-slate-600">Explore comprehensive aviation materials</p>
+                                <h3 className="font-semibold text-slate-900 mb-1">Examination Terminal</h3>
+                                <p className="text-sm text-slate-600">Access through programs or dashboard page</p>
                             </div>
+                            <div className="bg-blue-50 rounded-2xl p-6">
+                                <MessageSquare className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                                <h3 className="font-semibold text-slate-900 mb-1">Pilot Terminal</h3>
+                                <p className="text-sm text-slate-600">Chat with fellow members and discuss aviation</p>
+                            </div>
+                            <div className="bg-blue-50 rounded-2xl p-6">
+                                <Newspaper className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                                <h3 className="font-semibold text-slate-900 mb-1">Industry News</h3>
+                                <p className="text-sm text-slate-600">Stay updated on AIRBUS aligned updates and airline expectations</p>
+                            </div>
+                            <div className="bg-blue-50 rounded-2xl p-6">
+                                <AlertTriangle className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                                <h3 className="font-semibold text-slate-900 mb-1">Job Requirements</h3>
+                                <p className="text-sm text-slate-600">Notices of job requirement changes and updates</p>
+                            </div>
+                            <div className="bg-blue-50 rounded-2xl p-6">
+                                <Headphones className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                                <h3 className="font-semibold text-slate-900 mb-1">WingMentor Support</h3>
+                                <p className="text-sm text-slate-600">Contact us for any issues or assistance</p>
+                            </div>
+                            <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-6 border-2 border-violet-200">
+                                <Sparkles className="w-6 h-6 text-violet-600 mx-auto mb-2" />
+                                <h3 className="font-semibold text-slate-900 mb-1">PilotRecognition.ai</h3>
+                                <p className="text-sm text-slate-600">Upcoming AI for performance tracking and score management</p>
+                            </div>
+                        </div>
+                        
+                        <div className="bg-violet-50 border border-violet-200 rounded-2xl p-6 mb-8">
+                            <p className="text-sm text-violet-900 mb-2">
+                                <strong>Coming Soon:</strong> PilotRecognition.ai will track your performance, provide job requirements, notify you when you haven't flown for a while, and advise on keeping your pilot recognition score up.
+                            </p>
                         </div>
                         
                         <button
