@@ -782,7 +782,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
             // Navigation mapping for all view cards
             const navMap: Record<string, string> = {
                 'member': isLoggedIn ? 'portal' : 'become-member',
-                'discover': isLoggedIn ? 'portal' : 'airline-expectations',
+                'discover': isLoggedIn ? 'foundational-program' : 'airline-expectations',
                 'programs': 'programs',
                 'pilot-recognition': 'pilot-recognition',
                 'pathways': 'pathways',
@@ -1521,9 +1521,9 @@ const GridCard: React.FC<GridCardProps> = ({
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                // Navigate to portal when logged in, otherwise use carousel navigation
+                                // Navigate to Foundation Program when logged in, otherwise use carousel navigation
                                 if (isLoggedIn) {
-                                    onNavigate('portal');
+                                    onNavigate('foundational-program');
                                 } else {
                                     const pageMap: Record<number, string> = {
                                         0: 'w1000-suite',      // W1000
