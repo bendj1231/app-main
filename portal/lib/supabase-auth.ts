@@ -3,6 +3,7 @@ import { AVAILABLE_APPS, ROLE_PERMISSIONS } from '../types/user';
 
 // Import shared Supabase client to avoid multiple instances
 import { supabase } from '../../shared/lib/supabase';
+import { indexedDB } from '../../src/lib/indexedDB';
 export { supabase };
 
 export interface AuthState {
@@ -218,9 +219,31 @@ export const canAccessApp = (userProfile: UserProfile | null, appId: string): bo
 
 export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
   console.log('🔌 Setting up onAuthStateChange listener');
+
+  // Restore session from IndexedDB before setting up auth listener
+  const restoreSession = async () => {
+    try {
+      const savedSession = await indexedDB.getSession();
+      if (savedSession) {
+        console.log('🔄 Restoring session from IndexedDB in portal:', savedSession.user?.id);
+        // Set the session in Supabase client
+        await supabase.auth.setSession({
+          access_token: savedSession.access_token,
+          refresh_token: savedSession.refresh_token,
+        });
+        console.log('✅ Session restored in Supabase client');
+      }
+    } catch (error) {
+      console.error('❌ Error restoring session from IndexedDB in portal:', error);
+    }
+  };
+
+  // Restore session before setting up listener
+  restoreSession();
+
   const subscription = supabase.auth.onAuthStateChange(async (event, session) => {
     console.log('🔍 Supabase Auth State Change:', { event, session: !!session });
-    
+
     if (session?.user) {
       console.log('👤 User logged in:', session.user.email);
       
