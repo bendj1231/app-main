@@ -549,7 +549,10 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   const handleLogin = (email: string) => {
     setLastLoginEmail(email);
-    startLoadingSequence('pilot-profile');
+    // Skip loading sequence when directToEnrollment is true
+    if (!directToEnrollment) {
+      startLoadingSequence('pilot-profile');
+    }
   };
 
   useEffect(() => {
