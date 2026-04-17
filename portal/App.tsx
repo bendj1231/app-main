@@ -698,7 +698,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   return (
     <>
       {/* <CloudBackground variant={currentView === 'login' || showLoading || isInitializing || isDarkMode ? 'dark' : 'light'} performancePreset={graphicsPreset} /> */}
-      {isInitializing ? (
+      {isInitializing && !directToEnrollment ? (
         <div style={{
           position: 'fixed',
           inset: 0,
