@@ -341,10 +341,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             <>
                                 <button
                                     onClick={() => onNavigate('portal')}
-                                    className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
+                                    className="w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg"
                                     title="Profile"
                                 >
-                                    <User className="w-4 h-4" />
+                                    <User className="w-6 h-6" />
                                 </button>
                                 <button
                                     className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
