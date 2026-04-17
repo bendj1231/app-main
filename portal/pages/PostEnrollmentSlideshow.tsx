@@ -131,16 +131,25 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '500px', textAlign: 'left' }}>
-                        {slides[currentSlide].points.map((point, index) => (
-                            <div key={index} className="animate-fade-in" style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', animationDelay: `${index * 0.15}s` }}>
-                                <div style={{ marginTop: '0.25rem', color: '#10b981' }}>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
+                        <div style={{
+                            padding: '1.5rem',
+                            backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                            backdropFilter: 'blur(12px)',
+                            border: '1px solid rgba(226, 232, 240, 0.8)',
+                            borderRadius: '16px',
+                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
+                        }}>
+                            {slides[currentSlide].points.map((point, index) => (
+                                <div key={index} className="animate-fade-in" style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', animationDelay: `${index * 0.15}s`, marginBottom: index < slides[currentSlide].points.length - 1 ? '1rem' : '0' }}>
+                                    <div style={{ marginTop: '0.25rem', color: '#10b981' }}>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <p style={{ margin: 0, color: '#334155', fontSize: '1rem', lineHeight: 1.5 }}>{point}</p>
                                 </div>
-                                <p style={{ margin: 0, color: '#334155', fontSize: '1rem', lineHeight: 1.5 }}>{point}</p>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
 
