@@ -482,6 +482,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             });
             console.log('✅ Supabase signOut completed');
 
+            console.log('🔴 Signing out from Firebase...');
+            // Also sign out from Firebase to prevent interference
+            try {
+                await signOut(auth);
+                console.log('✅ Firebase signOut completed');
+            } catch (firebaseError) {
+                console.log('⚠️ Firebase signOut failed (non-critical):', firebaseError);
+            }
+
             console.log('✅ Logout completed');
         } catch (error) {
             console.error("❌ Logout error:", error);
