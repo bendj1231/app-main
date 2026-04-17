@@ -1443,7 +1443,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                 ))}
                             </div>
                         </div>
-                    ) : card.isCarousel && card.images ? (
+                    ) : shouldUseCarousel && card.images ? (
                         // Carousel with multiple images or animations
                         <div className="relative w-full h-full">
                             {card.images.map((img, idx) => {
