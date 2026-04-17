@@ -438,6 +438,27 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
     // Use provided userId or fall back to authState
     const effectiveUserId = userId || authState.user?.id;
+    
+    // If user is already authenticated, just show dummy loading animation
+    if (authState.user && authState.userProfile) {
+      console.log('User already authenticated, showing dummy loading sequence');
+      
+      // Dummy loading sequence - just show the animation phases
+      loadingTimers.current.push(setTimeout(() => {
+        setLoadingPhase('sync');
+      }, 1500));
+
+      loadingTimers.current.push(setTimeout(() => {
+        setLoadingPhase('deploy');
+      }, 3000));
+
+      loadingTimers.current.push(setTimeout(() => {
+        setShowLoading(false);
+        clearLoadingSequence();
+      }, 4500));
+      return;
+    }
+
     if (!effectiveUserId) {
       // No user, just show loading animation then proceed
       loadingTimers.current.push(setTimeout(() => {
@@ -580,7 +601,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       setShowLoading(false);
       clearLoadingSequence();
     }, 10000));
-  }, []);
+  }, [authState.user, authState.userProfile]);
 
   const handleLogin = (email: string) => {
     setLastLoginEmail(email);
