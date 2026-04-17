@@ -529,7 +529,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 }}>
                     <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#020617' }}>
                         <video
-                            src="/My Movie 6.mp4"
+                            src="/My%20Movie%206.mp4"
                             preload="none"
                             loop
                             controls={true}
