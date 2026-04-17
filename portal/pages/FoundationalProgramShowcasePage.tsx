@@ -148,22 +148,34 @@ const highlightStats = [
 
 const overviewCards = [
     {
-        tag: '1 · Context',
+        tag: '1 · The Context',
         title: 'The Pilot Gap',
-        description: 'Extended hiring cycles and low-time plateaus create a credibility gap. WingMentor keeps cadets active with auditable hours.',
+        description: 'Understand the pilot gap through Module 1, which contains 5 chapters addressing the issues facing the current industry. The content is based on collaborative research and independent journalism within the aviation industry. You will learn about AIRBUS EBT CBTA core principles and how they align with the industry, understand pilot risk management, access a database of investment case studies of type ratings, and learn about pilot decision making (ADM).',
         image: '/images/pilot-gap.png'
     },
     {
-        tag: '2 · Approach',
-        title: 'WingMentorship Framework',
-        description: 'Simulator, mentorship, and NOTECHS data are orchestrated so airlines trust the evidence, not just flight hours.',
+        tag: '1.5 · W1000 Access',
+        title: 'Application Access',
+        description: 'Prior to your examination, you will receive access to the W1000 application—a state-of-the-art software for pilot development featuring examination practice, core material for PPL, CPL, IR, and ME, examination reviewers, PowerPoint slides, video content, POH handbooks, an IFR Jeppesen Charts database, and IFR simulators. The Apps serve as a practical examination terminal for exam preparation—not the official examination. The Black Box contains PowerPoint presentations, core material, and the Simulator Room, which offers IFR simulation for practicing VOR homing, ILS landing approaches, G1000 system practice, and flight plan navigation.',
         image: 'https://lh3.googleusercontent.com/d/1hHcJHmG0pTPDuvgiv79l88VpPz_lOXi1'
     },
     {
-        tag: '3 · Recognition',
-        title: 'Pilot Advocacy',
-        description: 'Evidence is syndicated to the WingMentor registry and partner dashboards for instant shortlist decisions.',
+        tag: '2 · Examination',
+        title: 'Examination',
+        description: 'Your first examination evaluates how well you know the industry and the chapters you have read. The initial pilot licensure examination uses integrated Gleims software for FAA/CAAP examinations. This examination will provide your first score, identifying areas where you are struggling and highlighting weaknesses based on recurrency through monthly examinations to stay current before mentorship. This will also create the first imprint on your pilot recognition profile—you may check the examination results as well as your profile score.',
         image: 'https://lh3.googleusercontent.com/d/1MfE9fiot6b9kCpgwQfc4aUY6e317nrUj'
+    },
+    {
+        tag: '3 · Mentorship',
+        title: 'Mentorship & Road to 50hrs Certification',
+        description: 'After your initial examination is complete, you will receive mentor modules to observe, learn, and view masterclasses on how to mentor fellow aviators. Mentorship is an effort-based approach—mentors who have completed 20 hours of observation and passed their practical examination become missionaries who provide guidance and support to fellow members and pilots within the community. For your mentorship to be logged, your mentee must create an account through pilotrecognition.com, enabling you to access their profile and log their mentor ID.',
+        image: 'https://lh3.googleusercontent.com/d/1GyMG1004Ny93i4_ktGikIXgzy-FHiPBI'
+    },
+    {
+        tag: '4 · Airbus Interview',
+        title: 'EBT Aligned Evaluation',
+        description: 'An AIRBUS interview based on an EBT-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathways and compare your recognition credentials within our network consisting of jobs from pilotcareercenter.com, betterjobs.com and many more, along with direct relations with airlines expectations to review their requirements and access various pathways such as cadet programmes, cargo pathways, licensure & type rating pathways, specialized pathways and more!',
+        image: 'https://lh3.googleusercontent.com/d/1hHcJHmG0pTPDuvgiv79l88VpPz_lOXi1'
     }
 ];
 
