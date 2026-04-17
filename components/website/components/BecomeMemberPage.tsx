@@ -166,18 +166,18 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-8">
                                     <CheckCircle2 className="w-10 h-10 text-emerald-600" />
                                 </div>
-                                
+
                                 <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
                                     {userAlreadyExisted ? 'Welcome Back!' : 'Welcome to WingMentor'}
                                 </h2>
-                                
+
                                 <p className="text-lg text-slate-600 mb-6">
-                                    {userAlreadyExisted 
+                                    {userAlreadyExisted
                                         ? 'Your account has been updated with your information.'
                                         : 'Thank you for successfully creating your account!'
                                     }
                                 </p>
-                                
+
                                 {userAlreadyExisted ? (
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-8">
                                         <p className="text-sm text-slate-700 mb-2">
@@ -188,24 +188,40 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         </p>
                                     </div>
                                 ) : (
-                                    <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
-                                        <p className="text-sm text-slate-700 mb-2">
-                                            <strong>Verification email sent</strong>
-                                        </p>
-                                        <p className="text-sm text-slate-600">
-                                            Please check your inbox at <span className="font-semibold text-blue-900">{email}</span> and click the verification link to activate your account.
-                                        </p>
-                                    </div>
+                                    <>
+                                        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-6">
+                                            <p className="text-sm text-slate-700 mb-2">
+                                                <strong>Verification email sent</strong>
+                                            </p>
+                                            <p className="text-sm text-slate-600">
+                                                Please check your inbox at <span className="font-semibold text-blue-900">{email}</span> and click the verification link to activate your account.
+                                            </p>
+                                        </div>
+
+                                        {pilotId && (
+                                            <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-8">
+                                                <p className="text-sm text-slate-700 mb-2">
+                                                    <strong>Your Pilot ID</strong>
+                                                </p>
+                                                <p className="text-2xl font-bold text-emerald-900">
+                                                    {pilotId}
+                                                </p>
+                                                <p className="text-xs text-slate-500 mt-2">
+                                                    Save this ID for future reference
+                                                </p>
+                                            </div>
+                                        )}
+                                    </>
                                 )}
-                                
+
                                 <div className="space-y-4">
                                     <p className="text-sm text-slate-500">
-                                        {userAlreadyExisted 
+                                        {userAlreadyExisted
                                             ? 'You can now access all available features.'
                                             : 'Once verified, you can access your Pilot Recognition Profile and begin your journey.'
                                         }
                                     </p>
-                                    
+
                                     <button
                                         onClick={onLogin}
                                         className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
