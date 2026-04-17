@@ -108,7 +108,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         try {
             const fileExt = file.name.split('.').pop();
             const fileName = `${currentUser.uid}-${Date.now()}.${fileExt}`;
-            const filePath = `profile pics/${fileName}`;
+            const filePath = `${currentUser.uid}-${Date.now()}.${fileExt}`;
 
             const { error: uploadError } = await supabase.storage
                 .from('profile pics')
