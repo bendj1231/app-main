@@ -364,7 +364,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     full_legal_name: userData.fullName,
                     first_name: userData.fullName?.split(' ')[0] || '',
                     last_name: userData.fullName?.split(' ').slice(1).join(' ') || '',
-                    date_of_birth: userData.dob,
+                    date_of_birth: userData.dob || null,
                     nationality: userData.nationality,
                     residing_country: userData.residingCountry,
                     flight_school_address: userData.flightSchoolAddress,
