@@ -1,5 +1,5 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { supabase } from '@/src/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings } from 'lucide-react';
 
 interface TopNavbarProps {
@@ -42,7 +42,31 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [scrolled, setScrolled] = useState(forceScrolled);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
+    const [pilotId, setPilotId] = useState<string>('');
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Fetch pilot_id from Supabase profile
+    useEffect(() => {
+        const fetchPilotId = async () => {
+            if (currentUser?.uid) {
+                try {
+                    const { data, error } = await supabase
+                        .from('profiles')
+                        .select('pilot_id')
+                        .eq('id', currentUser.uid)
+                        .maybeSingle();
+                    
+                    if (data?.pilot_id) {
+                        setPilotId(data.pilot_id);
+                    }
+                } catch (err) {
+                    console.error('Error fetching pilot_id:', err);
+                }
+            }
+        };
+        
+        fetchPilotId();
+    }, [currentUser]);
 
     const handleLogout = async () => {
         console.log('🔴 handleLogout called');
@@ -329,7 +353,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     <Settings className="w-4 h-4" />
                                 </button>
                                 <span className="text-white text-sm font-medium">
-                                    Welcome, {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
+                                    Welcome, {pilotId || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                 </span>
                             </>
                         )}
