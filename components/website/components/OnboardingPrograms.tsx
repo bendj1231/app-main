@@ -93,13 +93,13 @@ export const OnboardingPrograms: React.FC<OnboardingProgramsProps> = ({ onBack, 
                         {/* Navigation buttons */}
                         <button
                             onClick={prevSlide}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 rounded-full shadow-lg flex items-center justify-center hover:bg-white transition-colors"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/30 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center hover:bg-white/50 hover:scale-110 transition-all duration-300 border border-white/40"
                         >
                             &#8592;
                         </button>
                         <button
                             onClick={nextSlide}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 rounded-full shadow-lg flex items-center justify-center hover:bg-white transition-colors"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/30 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center hover:bg-white/50 hover:scale-110 transition-all duration-300 border border-white/40"
                         >
                             &#8594;
                         </button>
