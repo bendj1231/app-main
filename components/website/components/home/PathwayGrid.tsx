@@ -122,7 +122,7 @@ const getViewCards = (isLoggedIn: boolean) => ({
             id: 'discover',
             images: ['/images/w1000.png', '/images/airlinesexpectations.png', '/images/atlascv.png'],
             image: '/images/w1000.png',
-            loggedInImages: ['/foundationprogram.png', '/images/img34.png'],
+            loggedInImages: ['/foundationprogram.png', '/images/newimgfp.png'],
             title: 'Discover',
             loggedInTitle: 'Enroll on Foundation Program',
             dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
