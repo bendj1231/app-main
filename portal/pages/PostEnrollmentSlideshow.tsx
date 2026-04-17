@@ -78,8 +78,8 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
 
                 {/* Slides content area */}
                 <div style={{ padding: '4rem 3rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-                    <div className="dashboard-header" style={{ marginBottom: '2rem' }}>
-                        <div className="dashboard-logo">
+                    <div className="dashboard-header" style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                        <div className="dashboard-logo" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                             <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '120px', height: 'auto' }} />
                         </div>
 
