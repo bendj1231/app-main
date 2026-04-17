@@ -579,7 +579,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     loadingTimers.current.push(setTimeout(() => {
       setShowLoading(false);
       clearLoadingSequence();
-    }, 4200));
+    }, 10000));
   }, []);
 
   const handleLogin = (email: string) => {
