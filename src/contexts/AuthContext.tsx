@@ -37,6 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [userProfile, setUserProfile] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
+    const [explicitLogout, setExplicitLogout] = useState(false);
 
     async function signup(email: string, password: string, userData: any) {
         console.log('🔵 Starting signup process for:', email);
@@ -449,6 +450,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function logout() {
         console.log('🔴 Logout function called');
+        setExplicitLogout(true); // Set flag to prevent re-authentication
         try {
             console.log('🔴 Clearing all local state first...');
             // Clear all local state immediately to prevent any interference
@@ -550,6 +552,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Supabase auth state listener
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
             console.log("Supabase auth state changed:", event, "Supabase ID:", session?.user?.id, "Session:", session);
+
+            // Prevent re-authentication after explicit logout
+            if (explicitLogout && event === 'SIGNED_IN') {
+                console.log("⚠️ Preventing re-authentication after explicit logout");
+                setExplicitLogout(false); // Reset flag after preventing
+                return;
+            }
 
             if (session?.user) {
                 console.log("✅ Supabase user authenticated:", session.user.id, session.user.email);
