@@ -1488,10 +1488,10 @@ const GridCard: React.FC<GridCardProps> = ({
                                 </div>
                             )}
                         </div>
-                    ) : card.image ? (
+                    ) : card.image || currentImage ? (
                         // Single image
                         <img 
-                            src={card.image} 
+                            src={currentImage || card.image} 
                             alt={card.title}
                             style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : 'center' }}
                             className={`
