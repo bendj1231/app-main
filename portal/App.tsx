@@ -439,9 +439,17 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     // Use provided userId or fall back to authState
     const effectiveUserId = userId || authState.user?.id;
     
+    console.log('🔍 startLoadingSequence called:', {
+      effectiveUserId,
+      hasAuthUser: !!authState.user,
+      hasUserProfile: !!authState.userProfile,
+      userId,
+      authUserId: authState.user?.id
+    });
+    
     // If user is already authenticated (from IndexedDB), just show dummy loading animation
     if (authState.user) {
-      console.log('User already authenticated, showing dummy loading sequence');
+      console.log('✅ User already authenticated, showing dummy loading sequence');
       
       // Dummy loading sequence - just show the animation phases
       loadingTimers.current.push(setTimeout(() => {
@@ -457,6 +465,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         clearLoadingSequence();
       }, 4500));
       return;
+    } else {
+      console.log('❌ User not authenticated, running full loading sequence');
     }
 
     if (!effectiveUserId) {
