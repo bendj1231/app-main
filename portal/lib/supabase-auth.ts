@@ -96,12 +96,22 @@ export const createUserProfile = async (user: any, role: UserRole['type'] = 'men
 
 export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
   try {
+    // Add timeout to prevent hanging (increased to 20s)
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('getUserProfile timeout after 20s')), 20000)
+    );
+
     // Get profile from Supabase
-    const { data: profile, error: profileError } = await supabase
+    const profilePromise = supabase
       .from('profiles')
       .select('*')
       .eq('id', uid)
       .single();
+
+    const { data: profile, error: profileError } = await Promise.race([
+      profilePromise,
+      timeoutPromise
+    ]);
 
     if (profileError || !profile) {
       console.log('Profile not found:', profileError);
@@ -115,13 +125,22 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
     const lastName = displayName?.split(' ').slice(1).join(' ') || '';
 
     // Get app access
-    const { data: appAccess, error: accessError } = await supabase
-      .from('user_app_access')
-      .select('*')
-      .eq('user_id', uid);
+    let appAccess = [];
+    try {
+      const { data: accessData, error: accessError } = await supabase
+        .from('user_app_access')
+        .select('*')
+        .eq('user_id', uid);
 
-    if (accessError) {
-      console.error('Error fetching app access:', accessError);
+      if (accessError) {
+        console.error('Error fetching app access:', accessError);
+        // Continue without app access rather than hanging
+      } else {
+        appAccess = accessData || [];
+      }
+    } catch (error) {
+      console.error('Exception fetching app access:', error);
+      // Continue without app access rather than hanging
     }
 
     // Map app access to proper format
@@ -198,7 +217,8 @@ export const canAccessApp = (userProfile: UserProfile | null, appId: string): bo
 };
 
 export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
-  return supabase.auth.onAuthStateChange(async (event, session) => {
+  console.log('🔌 Setting up onAuthStateChange listener');
+  const subscription = supabase.auth.onAuthStateChange(async (event, session) => {
     console.log('🔍 Supabase Auth State Change:', { event, session: !!session });
     
     if (session?.user) {
@@ -237,6 +257,7 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
           canAccessMentorManagement: userProfile.role === 'super_admin' || userProfile.appAccess?.some(a => a.appId === 'mentor-management' && a.granted)
         });
 
+        console.log('🔔 Calling auth state callback');
         callback({
           user: session.user,
           userProfile,
@@ -262,6 +283,7 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
       });
     }
   });
+  return subscription;
 };
 
 export const signIn = async (email: string, password: string) => {

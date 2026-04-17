@@ -183,21 +183,37 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
     const handleFullscreenToggle = () => {
         const video = heroVideoRef.current;
         if (!video) return;
-        if (!document.fullscreenElement) {
-            video.requestFullscreen();
+        if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
+            // Try standard fullscreen first, then webkit for Safari
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if ((video as any).webkitRequestFullscreen) {
+                (video as any).webkitRequestFullscreen();
+            } else if ((video as any).webkitEnterFullscreen) {
+                (video as any).webkitEnterFullscreen();
+            }
             setIsFullScreen(true);
         } else {
-            document.exitFullscreen();
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if ((document as any).webkitExitFullscreen) {
+                (document as any).webkitExitFullscreen();
+            }
             setIsFullScreen(false);
         }
     };
 
     useEffect(() => {
         const handleChange = () => {
-            setIsFullScreen(Boolean(document.fullscreenElement));
+            setIsFullScreen(Boolean(document.fullscreenElement || (document as any).webkitFullscreenElement));
         };
         document.addEventListener('fullscreenchange', handleChange);
-        return () => document.removeEventListener('fullscreenchange', handleChange);
+        document.addEventListener('webkitfullscreenchange', handleChange);
+        return () => {
+            document.removeEventListener('fullscreenchange', handleChange);
+            document.removeEventListener('webkitfullscreenchange', handleChange);
+        };
     }, []);
 
     // Program access is now open for all authenticated users.
@@ -509,87 +525,17 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                     filter: userHasFoundationalEnrollment ? 'blur(2px)' : 'none',
                     transition: 'filter 0.3s ease'
                 }}>
-                    <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#020617' }} onMouseEnter={() => setVideoControlsVisible(true)} onMouseLeave={() => setVideoControlsVisible(false)}>
+                    <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#020617' }}>
                         <video
-                            ref={heroVideoRef}
                             src="/wm-productions-final-output.mp4"
-                            preload="auto"
-                            playsInline
-                            autoPlay
+                            preload="none"
                             loop
-                            muted={isVideoMuted}
-                            controls={false}
+                            controls={true}
                             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                             aria-label="WingMentor mission footage"
-                            onPlay={() => setIsVideoPlaying(true)}
-                            onPause={() => setIsVideoPlaying(false)}
-                            onEnded={() => {
-                                setIsVideoPlaying(false);
-                                if (heroVideoRef.current) {
-                                    heroVideoRef.current.currentTime = 0;
-                                    heroVideoRef.current.play();
-                                }
-                            }}
-                            onTimeUpdate={(e) => setVideoCurrentTime(e.currentTarget.currentTime)}
-                            onDurationChange={(e) => setVideoDuration(e.currentTarget.duration)}
-                            onError={(e) => console.error('Video playback error:', e)}
-                            onWaiting={() => console.log('Video buffering...')}
-                            onCanPlay={() => console.log('Video can play')}
-                            onLoadedData={() => {
-                                console.log('Video loaded');
-                                if (heroVideoRef.current && heroVideoRef.current.paused) {
-                                    heroVideoRef.current.play().catch(err => console.log('Autoplay prevented:', err));
-                                }
-                            }}
                         >
-                            <track kind="captions" />
                             Your browser does not support the mission footage video.
                         </video>
-                        <div style={{ position: 'absolute', inset: '0', background: 'linear-gradient(180deg, rgba(15,23,42,0) 0%, rgba(15,23,42,0.25) 50%, rgba(15,23,42,0.55) 100%)' }} />
-                        <div
-                            style={{
-                                position: 'absolute',
-                                left: '50%',
-                                bottom: '1.5rem',
-                                transform: 'translateX(-50%)',
-                                width: '78%',
-                                background: 'rgba(11,14,28,0.55)',
-                                backdropFilter: 'blur(32px)',
-                                borderRadius: '28px',
-                                padding: '1.15rem 1.5rem',
-                                color: 'white',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.9rem',
-                                boxShadow: '0 40px 80px rgba(2,4,12,0.5)',
-                                opacity: isVideoPlaying && !videoControlsVisible ? 0 : 1,
-                                transition: 'opacity 0.4s ease',
-                                pointerEvents: isVideoPlaying && !videoControlsVisible ? 'none' : 'auto'
-                            }}
-                            onMouseEnter={() => setVideoControlsVisible(true)}
-                            onMouseLeave={() => setVideoControlsVisible(false)}
-                        >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <span style={{ fontSize: '0.8rem', opacity: 0.85, minWidth: '2.5rem' }}>{formatTime(videoCurrentTime)}</span>
-                                <input type="range" min={0} max={100} value={videoDuration ? (videoCurrentTime / videoDuration) * 100 : 0} onChange={handleHeroVideoSeek} style={{ flex: 1, appearance: 'none', height: '6px', borderRadius: '999px', background: 'rgba(255,255,255,0.25)', outline: 'none' }} />
-                                <span style={{ fontSize: '0.8rem', opacity: 0.85, minWidth: '2.5rem', textAlign: 'right' }}>{formatTime(videoDuration)}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    <button type="button" onClick={toggleHeroVideoPlayback} aria-pressed={isVideoPlaying} aria-label={isVideoPlaying ? 'Pause mission footage' : 'Play mission footage'} style={{ width: '40px', height: '40px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(255,255,255,0.08)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.95rem', cursor: 'pointer' }}>
-                                        {isVideoPlaying ? '❚❚' : '▶'}
-                                    </button>
-                                    <button type="button" onClick={toggleHeroVideoMute} aria-label={isVideoMuted ? 'Unmute mission footage' : 'Mute mission footage'} style={{ width: '40px', height: '40px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.12)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.95rem', cursor: 'pointer' }}>
-                                        <VolumeIcon muted={isVideoMuted} />
-                                    </button>
-                                    <input type="range" min={0} max={1} step={0.05} value={heroVolume} onChange={handleHeroVolumeChange} style={{ width: '110px', appearance: 'none', height: '4px', borderRadius: '999px', background: 'rgba(255,255,255,0.22)', outline: 'none' }} />
-                                </div>
-                                <button type="button" onClick={handleFullscreenToggle} style={{ padding: '0.45rem 0.85rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(255,255,255,0.08)', color: 'white', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', cursor: 'pointer' }}>
-                                    <FullscreenIcon active={isFullScreen} />
-                                    {isFullScreen ? 'Exit Full View' : 'Full View'}
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

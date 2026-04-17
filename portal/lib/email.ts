@@ -1,4 +1,7 @@
 import { supabase } from './supabase-auth';
+import { Resend } from 'resend';
+
+const resend = new Resend(import.meta.env.VITE_RESEND_API_KEY || '');
 
 interface EnrollmentEmailPayload {
   email: string;
@@ -7,12 +10,44 @@ interface EnrollmentEmailPayload {
 
 export const sendEnrollmentConfirmationEmail = async ({ email, name }: EnrollmentEmailPayload) => {
   try {
-    console.log('📧 Sending enrollment confirmation via Supabase to:', email);
+    console.log('📧 Sending enrollment confirmation to:', email);
     
     const displayName = name || email.split('@')[0];
     
-    // Use resetPasswordForEmail which works for existing users and supports email templates
-    // We'll customize the data to make it clear this is for enrollment confirmation
+    // Primary: Try Resend API
+    if (import.meta.env.VITE_RESEND_API_KEY) {
+      try {
+        console.log('📧 Sending via Resend API...');
+        const { data, error } = await resend.emails.send({
+          from: 'noreply@pilotrecognition.com',
+          to: email,
+          subject: 'Foundation Program Enrollment Confirmation',
+          template: 'foundation-enrollment',
+          variables: {
+            first_name: displayName,
+            program_name: 'Foundation Program',
+            dashboard_url: 'https://pilotrecognition.com/portal',
+            support_email: 'enroll@pilotrecognition.com',
+            company_name: 'PilotRecognition.com'
+          }
+        });
+
+        if (error) {
+          console.warn('⚠️ Resend error:', error);
+        } else {
+          console.log('✅ Enrollment confirmation sent via Resend:', data);
+          await storeEmailNotification(email, displayName, 'resend-api');
+          await storeCustomEmailTemplate(email, displayName);
+          return;
+        }
+      } catch (resendError) {
+        console.warn('⚠️ Resend API error:', resendError);
+      }
+    } else {
+      console.log('⚠️ Resend API key not configured, skipping...');
+    }
+    
+    // Fallback 1: Use resetPasswordForEmail which works for existing users and supports email templates
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/enrollment-confirmation`
@@ -32,7 +67,7 @@ export const sendEnrollmentConfirmationEmail = async ({ email, name }: Enrollmen
       console.warn('⚠️ Supabase Auth reset password error:', authError);
     }
     
-    // Fallback: Use Edge Function with generateLink for magic link
+    // Fallback 2: Use Edge Function with generateLink for magic link
     console.log('📧 Using Edge Function for magic link email...');
     const { data, error } = await supabase.functions.invoke('send-enrollment-email', {
       body: {
@@ -116,38 +151,35 @@ const storeCustomEmailTemplate = async (email: string, displayName: string) => {
   "></div>
 
   <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; position: relative; z-index: 2;">
-    <div style="background-color: rgba(255, 255, 255, 0.85); border-radius: 16px; padding: 3rem 2.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); backdrop-filter: blur(18px); border: 1px solid rgba(255, 255, 255, 0.3); width: 100%;">
+    <div style="background-color: rgba(255, 255, 255, 0.85); border-radius: 16px; padding: 3rem 2.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); backdrop-filter: blur(18px); border: 1px solid rgba(255, 255, 255, 0.3); width: 100%; font-family: sans-serif;">
       <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="WingMentor Logo" style="height: 110px; width: auto; object-fit: contain; margin-bottom: 1.5rem;" />
       
       <div style="color: #2563eb; font-size: 0.875rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.75rem;">
         ENROLLMENT CONFIRMATION
       </div>
       
-      <h2 style="font-size: 1.8rem; font-weight: 400; font-family: 'Georgia, serif'; letter-spacing: -0.02em; line-height: 1.2; color: #0f172a; margin-bottom: 2.5rem;">
-        Program Enrollment Confirmed
-        <br />
-        <span style="font-size: 1rem; color: #475569;">WingMentor Foundational Program</span>
+      <h2 style="font-size: 1.8rem; font-weight: 400; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; letter-spacing: -0.02em; line-height: 1.2; color: #0f172a; margin-bottom: 2.5rem;">
+        Welcome to the Foundation Program
       </h2>
       
       <p style="color: #475569; font-size: 1.05rem; line-height: 1.8; margin: 0 auto 2rem; max-width: 40rem; text-align: left;">
-        Congratulations <strong>${displayName}</strong>! Your enrollment in the <strong>WingMentor Foundational Program</strong> has been successfully completed. This confirmation email validates your participation and provides access to your personalized pilot development journey.
+        Congratulations <strong>${displayName}</strong>! Your enrollment in the <strong>Foundation Program</strong> has been successfully confirmed. This email serves as your official enrollment confirmation and provides access to your personalized pilot development journey.
       </p>
       
       <div style="text-align: center; margin: 2.5rem 0;">
-        <a href="{{ .ConfirmationURL }}" 
+        <a href="https://pilotrecognition.com/portal" 
            style="display: inline-block; padding: 1.1rem 2.75rem; background: rgba(147, 197, 253, 0.35); color: #1e40af; text-decoration: none; border-radius: 12px; font-size: 1rem; font-weight: 700; transition: all 0.25s ease; box-shadow: 0 8px 32px rgba(147, 197, 253, 0.2), inset 0 1px 0 rgba(255,255,255,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(147, 197, 253, 0.4);">
-          View Enrollment Details
+          View Pilot Portfolio
         </a>
       </div>
       
       <div style="background: #dbeafe; border-left: 4px solid #2563eb; padding: 15px; margin-bottom: 20px;">
-        <p style="color: #1e40af; margin: 0; font-size: 0.9rem;"><strong>Next Steps:</strong> Our mentorship team will review your onboarding responses and contact you regarding the next available simulator block and program scheduling.</p>
+        <p style="color: #1e40af; margin: 0; font-size: 0.9rem;"><strong>Next Steps:</strong> Our mentorship team will review your onboarding responses and contact you with further instructions.</p>
       </div>
       
       <div style="text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-        <p>This confirmation link will expire in 1 hour for security reasons.</p>
-        <p>For questions about your enrollment, contact: wingmentorprogram@gmail.com</p>
-        <p style="color: #9ca3af; font-size: 0.75rem; margin-top: 15px;">© 2026 Wing Mentor Network. All rights reserved.</p>
+        <p>For questions about your enrollment, contact: enroll@pilotrecognition.com</p>
+        <p style="color: #9ca3af; font-size: 0.75rem; margin-top: 15px;">© 2026 PilotRecognition.com. All rights reserved.</p>
       </div>
     </div>
   </div>

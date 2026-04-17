@@ -92,35 +92,8 @@ export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProp
                     width: '100%',
                     textAlign: 'center'
                 }}>
-                    {/* Success Icon */}
-                    <div style={{
-                        width: '120px',
-                        height: '120px',
-                        backgroundColor: '#10b981',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: '0 auto 2rem',
-                        boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.3)'
-                    }}>
-                        <div style={{
-                            width: '60px',
-                            height: '60px',
-                            backgroundColor: 'white',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                    </div>
-
                     {/* Logo */}
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', marginBottom: '2rem' }} />
+                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', marginBottom: '2rem', display: 'block', margin: '0 auto 2rem' }} />
 
                     {/* Success Message */}
                     <h1 style={{
@@ -355,10 +328,10 @@ export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProp
                         }}>
                             For questions, contact{' '}
                             <a 
-                                href="mailto:wingmentorprogram@gmail.com" 
+                                href="mailto:enroll@pilotrecognition.com" 
                                 style={{ color: '#2563eb', textDecoration: 'none' }}
                             >
-                                wingmentorprogram@gmail.com
+                                enroll@pilotrecognition.com
                             </a>
                         </p>
                     </div>

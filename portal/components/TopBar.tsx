@@ -10,6 +10,7 @@ interface TopBarProps {
     onNavigateToProfile?: () => void;
     onNavigateToApplications?: () => void;
     onAccessWebsite?: () => void;
+    onLogout?: () => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -19,7 +20,8 @@ export const TopBar: React.FC<TopBarProps> = ({
     onNavigateToModules,
     onNavigateToProfile,
     onNavigateToApplications,
-    onAccessWebsite
+    onAccessWebsite,
+    onLogout
 }) => {
     return (
         <div className={styles.topBarContainer}>
@@ -56,6 +58,13 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <Icons.Globe />
                     Access Website
                 </button>
+
+                {onLogout && (
+                    <button onClick={onLogout} className={`${styles.actionButton} ${styles.logoutButton}`}>
+                        <Icons.LogOut />
+                        Sign Out
+                    </button>
+                )}
             </div>
         </div>
     );

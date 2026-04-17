@@ -3589,6 +3589,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           onNavigateToProfile={() => setMainView('pilot-portfolio')}
           onNavigateToApplications={() => setMainView('applications')}
           onAccessWebsite={handleAccessWebsite}
+          onLogout={onLogout}
         />
 
         <div style={{ padding: '0', maxWidth: '1200px', margin: '0 auto' }}>

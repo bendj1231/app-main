@@ -1190,7 +1190,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           .eq('user_id', userId)
           .maybeSingle();
 
-        if (error && error.code !== 'PGRST116' && error.code !== '406') {
+        if (error && error.code !== 'PGRST116') {
           console.warn('Error fetching licensure data:', error);
         }
 

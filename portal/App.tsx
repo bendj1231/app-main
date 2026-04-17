@@ -365,12 +365,20 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
     }
   }, [pendingHomeView, currentView]);
 
+  // Set isInitializing to false when currentView changes from 'login' to prevent stuck on initializing
+  useEffect(() => {
+    if (currentView !== 'login' && isInitializing) {
+      console.log('🔓 Setting isInitializing to false due to view change');
+      setIsInitializing(false);
+    }
+  }, [currentView, isInitializing]);
+
   useEffect(() => {
     console.log('🔐 Auth effect starting...');
     
     // Set up auth state listener
     const { data: { subscription } } = onAuthStateChange((nextState) => {
-      console.log('🔐 Auth state changed:', { user: !!nextState.user, loading: nextState.loading });
+      console.log('🔐 Auth state changed:', { user: !!nextState.user, loading: nextState.loading, hasUserProfile: !!nextState.userProfile });
       setAuthState(nextState);
       if (nextState.user?.email) {
         setLastLoginEmail(nextState.user.email);
@@ -386,10 +394,12 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
       }
 
       // Auth check complete
+      console.log('✅ Setting isInitializing to false');
       setIsInitializing(false);
 
       // If user is logged in and loading hasn't started, trigger it
-      if (nextState.user && !hasShownInitialLoading.current && !showLoading) {
+      // Only trigger if current view is 'login' to prevent re-triggering on tab switch
+      if (nextState.user && !hasShownInitialLoading.current && !showLoading && currentView === 'login') {
         console.log('🚀 Starting loading sequence for logged-in user');
         startLoadingSequence('pilot-profile');
       } else if (!nextState.user && !showLoading) {
@@ -409,20 +419,6 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
     return () => subscription?.unsubscribe();
   }, []);
 
-  // Failsafe: ensure initialization always completes
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (isInitializing) {
-        console.warn('⚠️ Auth check timeout - forcing initialization complete');
-        setIsInitializing(false);
-        if (!authState.user) {
-          setCurrentView('login');
-        }
-      }
-    }, 5000); // 5 second failsafe
-
-    return () => clearTimeout(timeout);
-  }, [isInitializing, authState.user]);
 
   const startLoadingSequence = useCallback(async (pendingView: MainView = 'pilot-profile', userId?: string) => {
     clearLoadingSequence();
