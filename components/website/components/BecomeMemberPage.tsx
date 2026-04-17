@@ -663,7 +663,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
                                             }}
                                         >
-                                            <span>Click to expand Pilot Recognition Data Entry</span>
+                                            <span>Click to Expand Pilot Recognition Data Entry</span>
                                             <ChevronDown className="w-5 h-5" />
                                         </button>
                                         <p className="text-xs font-semibold text-blue-600">
