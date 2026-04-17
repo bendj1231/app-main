@@ -131,6 +131,12 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
                             ))}
                         </div>
                     </div>
+
+                    {/* Description section below carousel */}
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md mb-8">
+                        <h3 className="text-xl font-bold text-slate-900 mb-2">{features[currentSlide].title}</h3>
+                        <p className="text-slate-600 leading-relaxed">{features[currentSlide].details}</p>
+                    </div>
                     
                     <div className="flex justify-center">
                         <button
