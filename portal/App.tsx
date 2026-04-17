@@ -770,6 +770,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           onLaunchModule02={() => setCurrentView('module-02')}
           onLaunchModule03={() => setCurrentView('module-03')}
           completedModules={completedModules}
+          directFromHome={directToEnrollment}
           userProfile={authState.userProfile}
         />
       ) : currentView === 'foundational-onboarding' ? (

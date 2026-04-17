@@ -32,6 +32,7 @@ interface FoundationalProgramPageProps {
     onOpenPortfolio?: () => void;
     completedModules?: string[];
     userProfile?: UserProfile | null;
+    directFromHome?: boolean;
 }
 
 const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
@@ -45,7 +46,8 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
     onLaunchModule03,
     onOpenPortfolio,
     completedModules = [],
-    userProfile
+    userProfile,
+    directFromHome = false
 }) => {
 
     // Debug: Log when component receives props
@@ -488,7 +490,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                             cursor: 'pointer'
                         }}
                     >
-                        <Icons.ArrowLeft style={{ width: 16, height: 16 }} /> Back to Hub
+                        <Icons.ArrowLeft style={{ width: 16, height: 16 }} /> {directFromHome ? 'Back to Home' : 'Back to Hub'}
                     </button>
                 </div>
 
