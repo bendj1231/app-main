@@ -13,13 +13,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>
-                <button 
-                    onClick={onLogout}
-                    className={styles.logoutButton}
-                >
-                    <Icons.LogOut />
-                    Logout
-                </button>
+                <div className={styles.sidebarHeader}>
+                    <button 
+                        onClick={() => onNavigate('home')}
+                        className={styles.homeButton}
+                    >
+                        <Icons.Home />
+                        Home
+                    </button>
+                    <button 
+                        onClick={onLogout}
+                        className={styles.logoutButton}
+                    >
+                        <Icons.LogOut />
+                        Logout
+                    </button>
+                </div>
                 
                 {/* Sidebar Logo */}
                 <div className={styles.sidebarHeader}>

@@ -19,6 +19,36 @@
 }
 
 /* Logout Button */
+.homeButton {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.56rem 1rem;
+    border-radius: 8px;
+    background: rgba(59, 130, 246, 0.9);
+    border: 1px solid rgba(59, 130, 246, 0.8);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.homeButton:hover {
+    background: rgba(59, 130, 246, 0.95);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.homeButton svg {
+    width: 14px;
+    height: 14px;
+}
+
 .logoutButton {
     position: absolute;
     top: 1rem;
