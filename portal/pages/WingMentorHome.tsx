@@ -1347,7 +1347,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           </section>
 
           {/* Program News & Updates Section - PilotGapModulePage Style */}
-          <section style={{ marginBottom: '4rem' }}>
+          <section style={{ marginBottom: '4rem', zoom: 0.9 }}>
             {/* Section header — matches main page title style */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
               <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
