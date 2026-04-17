@@ -1,35 +1,14 @@
 import React from 'react';
 
-const loadingPhaseOrder = ['fetch', 'sync', 'deploy'] as const;
-export type LoadingPhase = typeof loadingPhaseOrder[number];
-
-const loadingPhaseDetails: Record<LoadingPhase, { title: string; subtitle: string }> = {
-  fetch: {
-    title: 'Fetching Program Data',
-    subtitle: 'Verifying enrollment status and simulator modules'
-  },
-  sync: {
-    title: 'Pilot Recognition Sync',
-    subtitle: 'Syncing recognition ledger and advocacy records'
-  },
-  deploy: {
-    title: 'Connecting to Pilot Pathways Network',
-    subtitle: 'Loading mentorship applications and dashboards'
-  }
-};
-
 interface LoadingScreenProps {
-  phase: LoadingPhase;
+  phase?: string;
   error?: string | null;
   onRetry?: () => void;
   onSkip?: () => void;
   canSkip?: boolean;
 }
 
-export const LoadingScreen: React.FC<LoadingScreenProps> = ({ phase, error, onRetry, onSkip, canSkip = false }) => {
-  const phaseIndex = loadingPhaseOrder.indexOf(phase);
-  const progress = ((phaseIndex + 1) / loadingPhaseOrder.length) * 100;
-
+export const LoadingScreen: React.FC<LoadingScreenProps> = ({ error, onRetry, onSkip, canSkip = false }) => {
   return (
     <div
       role="dialog"
@@ -101,36 +80,19 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ phase, error, onRe
 
         <main
           id="loading-description"
-          style={{ textAlign: 'left' }}
+          style={{ textAlign: 'center' }}
         >
           <div
             style={{
               marginBottom: '0.35rem',
               color: '#0f172a',
               fontWeight: 700,
-              fontSize: '0.95rem',
-              transition: 'opacity 0.3s ease'
+              fontSize: '0.95rem'
             }}
           >
-            {loadingPhaseDetails[phase].title}
+            Loading...
           </div>
           <div
-            style={{
-              fontSize: '0.8rem',
-              color: '#475569',
-              marginBottom: '1rem',
-              transition: 'opacity 0.3s ease'
-            }}
-          >
-            {loadingPhaseDetails[phase].subtitle}
-          </div>
-          
-          <div
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label={`Loading: ${loadingPhaseDetails[phase].title}`}
             style={{
               height: '8px',
               background: '#e2e8f0',
@@ -142,76 +104,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ phase, error, onRe
           >
             <div
               style={{
-                width: `${progress}%`,
+                width: '100%',
                 height: '100%',
                 background: 'linear-gradient(90deg, #2563eb, #0f172a)',
-                transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                animation: 'progress 2s ease-in-out infinite',
                 boxShadow: '0 0 10px rgba(37, 99, 235, 0.5)'
               }}
             />
           </div>
-
-          <nav
-            aria-label="Loading phases"
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '0.75rem',
-              flexWrap: 'wrap',
-              fontSize: '0.7rem'
-            }}
-          >
-            {loadingPhaseOrder.map((phaseKey, idx) => {
-              const status = idx < phaseIndex ? 'complete' : idx === phaseIndex ? 'active' : 'pending';
-              const statusColor = status === 'active' ? '#0f172a' : status === 'complete' ? '#2563eb' : '#94a3b8';
-              const statusBg = status === 'active' ? 'rgba(37, 99, 235, 0.1)' : 'transparent';
-              return (
-                <div
-                  key={phaseKey}
-                  aria-current={status === 'active' ? 'step' : undefined}
-                  style={{
-                    color: statusColor,
-                    fontWeight: status === 'active' ? 700 : 500,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.35rem',
-                    padding: '0.35rem 0.75rem',
-                    borderRadius: '6px',
-                    background: statusBg,
-                    transition: 'all 0.3s ease',
-                    transform: status === 'active' ? 'scale(1.05)' : 'scale(1)'
-                  }}
-                >
-                  {status === 'complete' && (
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      aria-hidden="true"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                  <span>{loadingPhaseDetails[phaseKey].title}</span>
-                  {idx < loadingPhaseOrder.length - 1 && (
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        width: '15px',
-                        height: '2px',
-                        background: status === 'complete' ? '#2563eb' : 'rgba(148,163,184,0.4)',
-                        display: 'inline-block',
-                        transition: 'background 0.3s ease'
-                      }}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </nav>
 
           {error && (
             <div
@@ -320,6 +220,10 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ phase, error, onRe
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.7; }
+        }
+        @keyframes progress {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
         }
       `}</style>
     </div>

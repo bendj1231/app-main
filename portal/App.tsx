@@ -12,7 +12,6 @@ import { RecognitionAchievementPage } from './pages/RecognitionAchievementPage';
 import { LoginPage } from './pages/LoginPage';
 import { GraphicsPresetSelector, type DetectionResult, type GraphicsPreset } from './components/GraphicsPresetSelector';
 import { LoadingScreen } from './components/LoadingScreen';
-import type { LoadingPhase } from './components/LoadingScreen';
 
 // Remote segment disabled for integration
 // // Declare the remote module for TypeScript
@@ -221,7 +220,6 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   const [graphicsPreset, setGraphicsPreset] = useState<GraphicsPreset>(() => detectGraphicsPreset().recommendedPreset);
   const [hasConfirmedGraphicsPreset, setHasConfirmedGraphicsPreset] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [loadingPhase, setLoadingPhase] = useState<LoadingPhase>('fetch');
   const [loadingError, setLoadingError] = useState<string | null>(null);
   const [canSkipLoading, setCanSkipLoading] = useState(false);
   const [authState, setAuthState] = useState<AuthState & { preloadedData?: { portfolio?: any; achievements?: any; enrollment?: any; pathways?: any; programs?: any } }>({
@@ -436,7 +434,6 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   const startLoadingSequence = useCallback(async (pendingView: MainView = 'pilot-profile', userId?: string) => {
     clearLoadingSequence();
     setPendingHomeView(pendingView);
-    setLoadingPhase('fetch');
     setLoginBlurred(true);
     setShowLoading(true);
     setLoadingError(null);
@@ -452,17 +449,9 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     
     // Always show dummy loading sequence - no database queries
     loadingTimers.current.push(setTimeout(() => {
-      setLoadingPhase('sync');
-    }, 1500));
-
-    loadingTimers.current.push(setTimeout(() => {
-      setLoadingPhase('deploy');
-    }, 3000));
-
-    loadingTimers.current.push(setTimeout(() => {
       setShowLoading(false);
       clearLoadingSequence();
-    }, 4500));
+    }, 3000));
   }, []);
 
   const handleLogin = (email: string) => {
@@ -670,13 +659,11 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         </div>
       ) : showLoading && !directToEnrollment ? (
         <LoadingScreen
-          phase={loadingPhase}
           error={loadingError}
           onRetry={() => {
             setLoadingError(null);
             // Restart loading sequence
             setShowLoading(true);
-            setLoadingPhase('fetch');
             setCanSkipLoading(false);
             // Trigger data reload
             if (authState.user?.id) {
