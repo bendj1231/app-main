@@ -28,6 +28,24 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [aircraftRatedOn, setAircraftRatedOn] = useState('');
     const [experienceDescription, setExperienceDescription] = useState('');
 
+    // Full Profiling Additional Fields
+    const [middleName, setMiddleName] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [languages, setLanguages] = useState('');
+    const [licenseNumber, setLicenseNumber] = useState('');
+    const [licenseExpiry, setLicenseExpiry] = useState('');
+    const [medicalExpiry, setMedicalExpiry] = useState('');
+    const [medicalClass, setMedicalClass] = useState('');
+    const [medicalCountry, setMedicalCountry] = useState('');
+    const [radioLicenseExpiry, setRadioLicenseExpiry] = useState('');
+    const [currentOccupation, setCurrentOccupation] = useState('');
+    const [currentEmployer, setCurrentEmployer] = useState('');
+    const [currentPosition, setCurrentPosition] = useState('');
+    const [countriesVisited, setCountriesVisited] = useState('');
+    const [favoriteAircraft, setFavoriteAircraft] = useState('');
+    const [whyBecomePilot, setWhyBecomePilot] = useState('');
+    const [otherSkills, setOtherSkills] = useState('');
+
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [signupSuccess, setSignupSuccess] = useState(false);
@@ -484,6 +502,264 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         </div>
                                     </div>
                                 </section>
+
+                                {/* Full Profiling Additional Fields */}
+                                {fullProfiling && (
+                                    <>
+                                        <div className="h-px w-full bg-slate-100/80" />
+
+                                        {/* Section: Additional Personal Details */}
+                                        <section className="space-y-10">
+                                            <div className="flex items-center gap-4">
+                                                <div>
+                                                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Additional Personal Details</h2>
+                                                    <p className="text-sm text-slate-500 font-medium">Extra information for enhanced pilot recognition</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Middle Name</label>
+                                                    <div className="relative">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Middle Name"
+                                                            value={middleName}
+                                                            onChange={(e) => setMiddleName(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Date of Birth</label>
+                                                    <div className="relative">
+                                                        <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                                        <input
+                                                            type="date"
+                                                            value={dateOfBirth}
+                                                            onChange={(e) => setDateOfBirth(e.target.value)}
+                                                            className="w-full pl-12 pr-4 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Languages</label>
+                                                    <div className="relative">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="English, Spanish, French..."
+                                                            value={languages}
+                                                            onChange={(e) => setLanguages(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">License Number</label>
+                                                    <div className="relative">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="License Number"
+                                                            value={licenseNumber}
+                                                            onChange={(e) => setLicenseNumber(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">License Expiry Date</label>
+                                                    <div className="relative">
+                                                        <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                                        <input
+                                                            type="date"
+                                                            value={licenseExpiry}
+                                                            onChange={(e) => setLicenseExpiry(e.target.value)}
+                                                            className="w-full pl-12 pr-4 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Medical Certificate Class</label>
+                                                    <div className="relative">
+                                                        <select
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 appearance-none bg-no-repeat"
+                                                            style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2364748b\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundSize: '1.5em' }}
+                                                            value={medicalClass}
+                                                            onChange={(e) => setMedicalClass(e.target.value)}
+                                                        >
+                                                            <option value="">Select Medical Class</option>
+                                                            <option value="Class 1">Class 1</option>
+                                                            <option value="Class 2">Class 2</option>
+                                                            <option value="Class 3">Class 3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Medical Expiry Date</label>
+                                                    <div className="relative">
+                                                        <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                                        <input
+                                                            type="date"
+                                                            value={medicalExpiry}
+                                                            onChange={(e) => setMedicalExpiry(e.target.value)}
+                                                            className="w-full pl-12 pr-4 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Medical Country of Issue</label>
+                                                    <div className="relative">
+                                                        <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Country of Medical Issue"
+                                                            value={medicalCountry}
+                                                            onChange={(e) => setMedicalCountry(e.target.value)}
+                                                            className="w-full pl-12 pr-4 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Radio License Expiry</label>
+                                                    <div className="relative">
+                                                        <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                                        <input
+                                                            type="date"
+                                                            value={radioLicenseExpiry}
+                                                            onChange={(e) => setRadioLicenseExpiry(e.target.value)}
+                                                            className="w-full pl-12 pr-4 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <div className="h-px w-full bg-slate-100/80" />
+
+                                        {/* Section: Career Information */}
+                                        <section className="space-y-10">
+                                            <div className="flex items-center gap-4">
+                                                <div>
+                                                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Career Information</h2>
+                                                    <p className="text-sm text-slate-500 font-medium">Current employment and career details</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Occupation</label>
+                                                    <div className="relative">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Employed, Unemployed, Student..."
+                                                            value={currentOccupation}
+                                                            onChange={(e) => setCurrentOccupation(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Employer</label>
+                                                    <div className="relative">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Company Name"
+                                                            value={currentEmployer}
+                                                            onChange={(e) => setCurrentEmployer(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Position</label>
+                                                    <div className="relative">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Job Title"
+                                                            value={currentPosition}
+                                                            onChange={(e) => setCurrentPosition(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <div className="h-px w-full bg-slate-100/80" />
+
+                                        {/* Section: Additional Information */}
+                                        <section className="space-y-10">
+                                            <div className="flex items-center gap-4">
+                                                <div>
+                                                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Additional Information</h2>
+                                                    <p className="text-sm text-slate-500 font-medium">Extra details for comprehensive profile</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 gap-8">
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Countries Visited</label>
+                                                    <div className="relative">
+                                                        <textarea
+                                                            placeholder="List of countries you've visited..."
+                                                            value={countriesVisited}
+                                                            onChange={(e) => setCountriesVisited(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 min-h-[100px] placeholder:text-slate-400 placeholder:font-normal resize-none"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Favorite Aircraft</label>
+                                                    <div className="relative">
+                                                        <Plane className="absolute left-4 top-4 w-5 h-5 text-slate-400" />
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Boeing 737, Airbus A320, Cessna 172..."
+                                                            value={favoriteAircraft}
+                                                            onChange={(e) => setFavoriteAircraft(e.target.value)}
+                                                            className="w-full pl-12 pr-4 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Why You Want to Become a Pilot</label>
+                                                    <div className="relative">
+                                                        <textarea
+                                                            placeholder="Share your motivation for becoming a pilot..."
+                                                            value={whyBecomePilot}
+                                                            onChange={(e) => setWhyBecomePilot(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 min-h-[120px] placeholder:text-slate-400 placeholder:font-normal resize-none"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Other Skills</label>
+                                                    <div className="relative">
+                                                        <textarea
+                                                            placeholder="Any additional skills or certifications..."
+                                                            value={otherSkills}
+                                                            onChange={(e) => setOtherSkills(e.target.value)}
+                                                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all font-semibold text-slate-800 min-h-[100px] placeholder:text-slate-400 placeholder:font-normal resize-none"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </>
+                                )}
 
                                 <div className="h-px w-full bg-slate-100/80" />
 
