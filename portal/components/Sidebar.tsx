@@ -13,7 +13,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>
-                <div className={styles.sidebarHeader}>
+                {/* Navigation Bar */}
+                <div className={styles.navigationBar}>
                     <button 
                         onClick={() => onNavigate('home')}
                         className={styles.homeButton}
