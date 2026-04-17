@@ -320,47 +320,26 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     };
   }, [isDarkMode]);
 
-  // Fix scroll position restoration when switching tabs in Safari
+  // Prevent automatic scroll to bottom when switching tabs
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    let scrollY = 0;
-    let scrollX = 0;
-
-    const handleBlur = () => {
-      scrollY = window.scrollY;
-      scrollX = window.scrollX;
-      sessionStorage.setItem('scrollPosition', JSON.stringify({ x: scrollX, y: scrollY }));
-    };
-
     const handleFocus = () => {
-      const savedPosition = sessionStorage.getItem('scrollPosition');
-      if (savedPosition) {
-        const { x, y } = JSON.parse(savedPosition);
-        window.scrollTo(x, y);
-      }
+      // Scroll to top when window regains focus
+      window.scrollTo(0, 0);
     };
 
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        scrollY = window.scrollY;
-        scrollX = window.scrollX;
-        sessionStorage.setItem('scrollPosition', JSON.stringify({ x: scrollX, y: scrollY }));
-      } else if (document.visibilityState === 'visible') {
-        const savedPosition = sessionStorage.getItem('scrollPosition');
-        if (savedPosition) {
-          const { x, y } = JSON.parse(savedPosition);
-          window.scrollTo(x, y);
-        }
+      if (document.visibilityState === 'visible') {
+        // Scroll to top when tab becomes visible
+        window.scrollTo(0, 0);
       }
     };
 
-    window.addEventListener('blur', handleBlur);
     window.addEventListener('focus', handleFocus);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      window.removeEventListener('blur', handleBlur);
       window.removeEventListener('focus', handleFocus);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
@@ -426,16 +405,6 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     // Set up auth state listener
     const { data: { subscription } } = onAuthStateChange((nextState) => {
       console.log('🔐 Auth state changed:', { user: !!nextState.user, loading: nextState.loading, hasUserProfile: !!nextState.userProfile });
-      
-      // Restore scroll position when auth state changes
-      if (typeof window !== 'undefined' && nextState.user) {
-        const savedPosition = sessionStorage.getItem('scrollPosition');
-        if (savedPosition) {
-          const { x, y } = JSON.parse(savedPosition);
-          window.scrollTo(x, y);
-        }
-      }
-      
       setAuthState(nextState);
       if (nextState.user?.email) {
         setLastLoginEmail(nextState.user.email);
