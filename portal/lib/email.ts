@@ -1,7 +1,4 @@
 import { supabase } from './supabase-auth';
-import { Resend } from 'resend';
-
-const resend = new Resend(import.meta.env.VITE_RESEND_API_KEY || '');
 
 interface EnrollmentEmailPayload {
   email: string;
@@ -14,40 +11,27 @@ export const sendEnrollmentConfirmationEmail = async ({ email, name }: Enrollmen
     
     const displayName = name || email.split('@')[0];
     
-    // Primary: Try Resend API
-    if (import.meta.env.VITE_RESEND_API_KEY) {
-      try {
-        console.log('📧 Sending via Resend API...');
-        const { data, error } = await resend.emails.send({
-          from: 'noreply@pilotrecognition.com',
-          to: email,
-          subject: 'Foundation Program Enrollment Confirmation',
-          template: 'foundation-enrollment',
-          variables: {
-            first_name: displayName,
-            program_name: 'Foundation Program',
-            dashboard_url: 'https://pilotrecognition.com/portal',
-            support_email: 'enroll@pilotrecognition.com',
-            company_name: 'PilotRecognition.com'
-          }
-        });
-
-        if (error) {
-          console.warn('⚠️ Resend error:', error);
-        } else {
-          console.log('✅ Enrollment confirmation sent via Resend:', data);
-          await storeEmailNotification(email, displayName, 'resend-api');
-          await storeCustomEmailTemplate(email, displayName);
-          return;
-        }
-      } catch (resendError) {
-        console.warn('⚠️ Resend API error:', resendError);
+    // Primary: Use Edge Function with Resend API
+    console.log('📧 Using Edge Function for email sending...');
+    const { data, error } = await supabase.functions.invoke('send-enrollment-email', {
+      body: {
+        email,
+        name: displayName,
+        program: 'Foundational',
+        type: 'enrollment-confirmation'
       }
+    });
+
+    if (error) {
+      console.warn('⚠️ Edge Function error:', error);
     } else {
-      console.log('⚠️ Resend API key not configured, skipping...');
+      console.log('✅ Email sent via Edge Function:', data);
+      await storeEmailNotification(email, displayName, 'edge-function');
+      await storeCustomEmailTemplate(email, displayName);
+      return;
     }
     
-    // Fallback 1: Use resetPasswordForEmail which works for existing users and supports email templates
+    // Fallback: Use resetPasswordForEmail which works for existing users and supports email templates
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/enrollment-confirmation`
@@ -65,26 +49,6 @@ export const sendEnrollmentConfirmationEmail = async ({ email, name }: Enrollmen
       }
     } catch (authError) {
       console.warn('⚠️ Supabase Auth reset password error:', authError);
-    }
-    
-    // Fallback 2: Use Edge Function with generateLink for magic link
-    console.log('📧 Using Edge Function for magic link email...');
-    const { data, error } = await supabase.functions.invoke('send-enrollment-email', {
-      body: {
-        email,
-        name: displayName,
-        program: 'Foundational',
-        type: 'enrollment-confirmation'
-      }
-    });
-
-    if (error) {
-      console.warn('⚠️ Edge Function error:', error);
-    } else {
-      console.log('✅ Magic link email sent via Edge Function:', data);
-      await storeEmailNotification(email, displayName, 'supabase-edge-function-magiclink');
-      await storeCustomEmailTemplate(email, displayName);
-      return;
     }
     
     console.log('✅ Enrollment confirmation processed for:', email);
