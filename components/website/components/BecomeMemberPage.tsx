@@ -666,7 +666,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             <span>Click to expand Pilot Recognition Data Entry</span>
                                             <ChevronDown className="w-5 h-5" />
                                         </button>
-                                        <p className="text-xs font-semibold text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full">
+                                        <p className="text-xs font-semibold text-blue-600">
                                             preferred for Aviation Industry Oversight
                                         </p>
                                     </div>
