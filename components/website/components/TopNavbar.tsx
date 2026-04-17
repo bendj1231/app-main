@@ -104,32 +104,50 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         const file = e.target.files?.[0];
         if (!file || !currentUser?.uid) return;
 
+        console.log('📸 Starting profile image upload...');
+        console.log('📁 File:', file.name, 'Size:', file.size);
+        console.log('👤 User ID:', currentUser.uid);
+
         setUploading(true);
         try {
             const fileExt = file.name.split('.').pop();
             const fileName = `${currentUser.uid}-${Date.now()}.${fileExt}`;
             const filePath = `profile-images/${fileName}`;
 
+            console.log('📤 Uploading to path:', filePath);
+
             const { error: uploadError } = await supabase.storage
                 .from('profile-images')
                 .upload(filePath, file);
 
-            if (uploadError) throw uploadError;
+            if (uploadError) {
+                console.error('❌ Upload error:', uploadError);
+                throw uploadError;
+            }
+
+            console.log('✅ Upload successful');
 
             const { data: { publicUrl } } = supabase.storage
                 .from('profile-images')
                 .getPublicUrl(filePath);
+
+            console.log('🔗 Public URL:', publicUrl);
 
             const { error: updateError } = await supabase
                 .from('profiles')
                 .update({ profile_image_url: publicUrl })
                 .eq('id', currentUser.uid);
 
-            if (updateError) throw updateError;
+            if (updateError) {
+                console.error('❌ Database update error:', updateError);
+                throw updateError;
+            }
 
+            console.log('✅ Database updated successfully');
             setProfileImageUrl(publicUrl);
+            console.log('✅ Local state updated with:', publicUrl);
         } catch (err) {
-            console.error('Error uploading image:', err);
+            console.error('❌ Error uploading image:', err);
             alert('Failed to upload image. Please try again.');
         } finally {
             setUploading(false);
