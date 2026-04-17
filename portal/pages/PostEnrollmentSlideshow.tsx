@@ -1,10 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Icons } from '../icons';
-import { ShaderCloud } from '../../components/website/components/home/ShaderCloud';
 
 interface PostEnrollmentSlideshowProps {
     onComplete: () => void;
 }
+
+const CloudShader: React.FC = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const animationRef = useRef<number | undefined>(undefined);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const resizeCanvas = () => {
+            const parent = canvas.parentElement;
+            if (parent) {
+                canvas.width = parent.clientWidth;
+                canvas.height = parent.clientHeight;
+            }
+        };
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const animate = () => {
+            // Light blue gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#e8f4fc');
+            gradient.addColorStop(0.3, '#d4e9f7');
+            gradient.addColorStop(0.6, '#c5dff0');
+            gradient.addColorStop(1, '#b8d4ea');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const time = Date.now() * 0.0001;
+            
+            // Smoke wisps with Perlin-like noise effect
+            for (let i = 0; i < 20; i++) {
+                const x = (Math.sin(time + i * 0.3) * 0.5 + 0.5) * canvas.width;
+                const y = (Math.cos(time * 0.2 + i * 0.4) * 0.5 + 0.5) * canvas.height;
+                const radius = 150 + Math.sin(time + i * 0.5) * 100;
+                const opacity = (Math.sin(time * 0.3 + i) + 1) / 2 * 0.15;
+
+                const smokeGradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                smokeGradient.addColorStop(0, `rgba(220, 235, 250, ${opacity})`);
+                smokeGradient.addColorStop(0.5, `rgba(200, 220, 240, ${opacity * 0.5})`);
+                smokeGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = smokeGradient;
+                ctx.fill();
+            }
+
+            animationRef.current = requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        return () => {
+            window.removeEventListener('resize', resizeCanvas);
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+            }
+        };
+    }, []);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full"
+        />
+    );
+};
 
 export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = ({ onComplete }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -89,7 +161,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
     return (
         <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem', position: 'relative' }}>
             <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', height: '100vh' }}>
-                <ShaderCloud height="100vh" />
+                <CloudShader />
             </div>
             <main className="dashboard-card" style={{
                 position: 'relative',
