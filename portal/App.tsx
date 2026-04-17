@@ -253,6 +253,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'reset-password'
     | 'module-01'
     | 'module-02'
+    | 'pilot-portfolio'
     | 'module-03'
     | 'pilot-profile'
     | 'recognition'
@@ -731,7 +732,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <TermsAndConditionsPage onBack={() => setCurrentView('foundational-onboarding')} onAccept={() => setCurrentView('foundational-onboarding')} />
       ) : currentView === 'post-enrollment-slideshow' ? (
         <PostEnrollmentSlideshow
-          onComplete={() => setCurrentView('hub')}
+          onComplete={() => setCurrentView('pilot-portfolio')}
         />
       ) : currentView === 'ai-screening' ? (
         <AIScreeningPage
