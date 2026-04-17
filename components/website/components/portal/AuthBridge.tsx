@@ -36,14 +36,12 @@ export const AuthBridge: React.FC<AuthBridgeProps> = ({ children }) => {
                             .insert({
                                 id: firebaseUser.uid,
                                 email: firebaseUser.email,
-                                displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || '',
-                                firstName: firebaseUser.displayName?.split(' ')[0] || firebaseUser.email?.split('@')[0] || '',
-                                lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || '',
+                                display_name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || '',
+                                full_name: firebaseUser.displayName || '',
                                 role: 'mentee',
-                                totalHours: 0,
-                                enrolledPrograms: [],
-                                appAccess: [],
-                                createdAt: new Date(),
+                                status: 'active',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
                             });
 
                         if (insertError) {
