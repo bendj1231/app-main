@@ -13,7 +13,6 @@ interface EnrollmentOnboardingPageProps {
 }
 
 export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> = ({ onComplete, onBackToPrograms, onLogout, onShowTerms, onRefreshProfile, onNavigateToDashboard }) => {
-    const [interest, setInterest] = useState('');
     const [goals, setGoals] = useState('');
     const [agreed, setAgreed] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -23,7 +22,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!agreed || !interest || !goals) return;
+        if (!agreed || !goals) return;
 
         setLoading(true);
         setError(null); // Clear previous errors
@@ -59,7 +58,6 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             // Complete enrollment in Supabase
             console.log('💾 Saving enrollment data...');
             await completeEnrollment(user.id, {
-                interest,
                 goals,
                 agreementVersion: '1.0',
                 agreedAt: new Date().toISOString()
@@ -393,30 +391,6 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                                         <div className="form-group">
                                             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#475569', marginBottom: '0.75rem' }}>
-                                                Why are you interested in this program?
-                                            </label>
-                                            <textarea
-                                                required
-                                                value={interest}
-                                                onChange={(e) => setInterest(e.target.value)}
-                                                placeholder="Tell us about your motivation..."
-                                                style={{
-                                                    width: '100%',
-                                                    minHeight: '120px',
-                                                    padding: '1rem',
-                                                    borderRadius: '12px',
-                                                    border: '1px solid #e2e8f0',
-                                                    outline: 'none',
-                                                    fontSize: '1rem',
-                                                    resize: 'none',
-                                                    backgroundColor: '#f8fafc',
-                                                    color: '#1e293b'
-                                                }}
-                                            />
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#475569', marginBottom: '0.75rem' }}>
                                                 What are your primary aviation interests and goals?
                                             </label>
                                             <textarea
@@ -463,25 +437,25 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
 
                                         <button
                                             type="submit"
-                                            disabled={!agreed || loading || !interest || !goals}
+                                            disabled={!agreed || loading || !goals}
                                             className="w-full"
                                             style={{
-                                                backgroundColor: agreed && interest && goals ? '#2563eb' : '#94a3b8',
+                                                backgroundColor: agreed && goals ? '#2563eb' : '#94a3b8',
                                                 color: 'white',
                                                 border: 'none',
                                                 padding: '1.1rem',
                                                 borderRadius: '12px',
                                                 fontSize: '1.1rem',
                                                 fontWeight: 700,
-                                                cursor: agreed && interest && goals && !loading ? 'pointer' : 'not-allowed',
+                                                cursor: agreed && goals && !loading ? 'pointer' : 'not-allowed',
                                                 transition: 'all 0.2s',
-                                                boxShadow: agreed && interest && goals ? '0 10px 15px -3px rgba(37, 99, 235, 0.3)' : 'none'
+                                                boxShadow: agreed && goals ? '0 10px 15px -3px rgba(37, 99, 235, 0.3)' : 'none'
                                             }}
                                             onClick={(e) => {
                                                 if (!agreed) {
                                                     e.preventDefault();
                                                     alert('Please agree to the Terms and Conditions to complete enrollment.');
-                                                } else if (!interest || !goals) {
+                                                } else if (!goals) {
                                                     e.preventDefault();
                                                     alert('Please fill in all required fields before completing enrollment.');
                                                 }
@@ -489,7 +463,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                                         >
                                             {loading ? 'Processing...' : 
                                              !agreed ? 'Please Agree to Terms & Conditions' :
-                                             (!interest || !goals) ? 'Please Complete All Fields' :
+                                             (!goals) ? 'Please Complete All Fields' :
                                              'Complete Enrollment'}
                                         </button>
                                     </form>

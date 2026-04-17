@@ -351,7 +351,6 @@ export const signOut = async () => {
  * Complete enrollment with onboarding data in Supabase
  */
 export const completeEnrollment = async (uid: string, onboardingData: {
-  interest: string;
   goals: string;
   agreementVersion: string;
   agreedAt: string;
