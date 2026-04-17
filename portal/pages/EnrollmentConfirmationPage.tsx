@@ -134,8 +134,8 @@ export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProp
     ];
 
     return (
-        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem', position: 'relative' }}>
-            <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', height: '100vh' }}>
+        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', height: '100%', pointerEvents: 'none' }}>
                 <CloudShader />
             </div>
             <main className="dashboard-card" style={{
