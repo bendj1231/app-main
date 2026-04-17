@@ -400,6 +400,14 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       // If user is logged in and loading hasn't started, trigger it
       // Only trigger if current view is 'login' to prevent re-triggering on tab switch
       // Skip loading sequence when directToEnrollment is true
+      console.log('🔍 Loading sequence check:', {
+        hasUser: !!nextState.user,
+        hasShownLoading: hasShownInitialLoading.current,
+        showLoading,
+        currentView,
+        directToEnrollment
+      });
+      
       if (nextState.user && !hasShownInitialLoading.current && !showLoading && currentView === 'login' && !directToEnrollment) {
         console.log('🚀 Starting loading sequence for logged-in user');
         startLoadingSequence('pilot-profile');
@@ -407,6 +415,10 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         // No user, go to login
         console.log('👤 No user, going to login');
         setCurrentView('login');
+      } else {
+        console.log('⏭️ Skipping loading sequence:', {
+          reason: nextState.user ? 'Already shown loading or loading in progress' : 'User not authenticated'
+        });
       }
     });
 
