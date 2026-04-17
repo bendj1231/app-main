@@ -734,11 +734,48 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <PostEnrollmentSlideshow
           onComplete={async () => {
             // Fetch portfolio data before navigating to pilot-portfolio
-            const { data: portfolioData } = await supabase
-              .from('pilot_portfolio')
-              .select('*')
-              .eq('user_id', authState.userProfile?.uid)
-              .single();
+            let portfolioData = null;
+            try {
+              const { data, error } = await supabase
+                .from('pilot_portfolio')
+                .select('*')
+                .eq('user_id', authState.userProfile?.uid)
+                .single();
+              
+              if (!error) {
+                portfolioData = data;
+              }
+            } catch (err) {
+              console.error('Error fetching portfolio:', err);
+            }
+            
+            // Create portfolio if it doesn't exist
+            if (!portfolioData) {
+              try {
+                const { data: newPortfolio } = await supabase
+                  .from('pilot_portfolio')
+                  .insert({
+                    user_id: authState.userProfile?.uid,
+                    foundation_program_status: 'not_started',
+                    initial_examination_scores: {},
+                    airbus_interview_data: {},
+                    faa_examination_results: {},
+                    monthly_recency_records: {},
+                    performance_metrics: {},
+                    industry_knowledge_assessments: {},
+                    pilot_gap_module_completion: {},
+                    competency_development: {},
+                    career_progression: {},
+                    recognition_achievements: []
+                  })
+                  .select()
+                  .single();
+                
+                portfolioData = newPortfolio;
+              } catch (err) {
+                console.error('Error creating portfolio:', err);
+              }
+            }
             
             setAuthState(prev => ({
               ...prev,
