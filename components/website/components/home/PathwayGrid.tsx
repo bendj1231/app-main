@@ -1223,18 +1223,6 @@ const GridCard: React.FC<GridCardProps> = ({
     // Get the images array to use for carousel
     const carouselImages = shouldUseLoggedInCarousel ? card.loggedInImages : card.images;
     
-    // Debug logging for discover card
-    if (card.id === 'discover' && isLoggedIn) {
-        console.log('Discover card logged in state:', {
-            isLoggedIn,
-            isCarouselWhenLoggedIn: card.isCarouselWhenLoggedIn,
-            loggedInImages: card.loggedInImages,
-            shouldUseLoggedInCarousel,
-            carouselImages,
-            currentImageIndex
-        });
-    }
-    
     // For discover card, enable carousel when logged in to shuffle Foundation Program images
     const shouldUseCarousel = (card.id === 'discover' && isLoggedIn)
         ? carouselImages
@@ -1457,10 +1445,10 @@ const GridCard: React.FC<GridCardProps> = ({
                                 ))}
                             </div>
                         </div>
-                    ) : shouldUseCarousel && card.images ? (
+                    ) : shouldUseCarousel && carouselImages ? (
                         // Carousel with multiple images or animations
                         <div className="relative w-full h-full">
-                            {card.images.map((img, idx) => {
+                            {carouselImages.map((img, idx) => {
                                 const isAnimationIndex = card.animationIndices?.includes(idx);
                                 return (
                                     <div key={idx} className={`
