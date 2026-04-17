@@ -377,18 +377,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     async function logout() {
+        console.log('🔴 Logout function called');
         try {
+            console.log('🔴 Signing out from Supabase...');
             // Sign out from Supabase
             await supabase.auth.signOut();
+            console.log('✅ Supabase sign out successful');
+
+            console.log('🔴 Signing out from Firebase...');
             // Sign out from Firebase
             await signOut(auth);
+            console.log('✅ Firebase sign out successful');
+
+            console.log('🔴 Clearing IndexedDB session...');
             // Clear IndexedDB session
             await indexedDB.clearSession();
+            console.log('✅ IndexedDB session cleared');
+
+            console.log('🔴 Clearing auth state...');
             // Explicitly clear auth state
             setCurrentUser(null);
             setUserProfile(null);
+            console.log('✅ Auth state cleared');
         } catch (error) {
-            console.error("Logout error:", error);
+            console.error("❌ Logout error:", error);
             // Even if there's an error, try to clear local state and IndexedDB
             await indexedDB.clearSession();
             setCurrentUser(null);
