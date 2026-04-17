@@ -1473,18 +1473,20 @@ const GridCard: React.FC<GridCardProps> = ({
                                 );
                             })}
                             {/* Carousel Indicators */}
-                            <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                                {card.images.map((_, idx) => (
-                                    <div 
-                                        key={idx}
-                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                            idx === currentImageIndex 
-                                                ? 'bg-white w-4' 
-                                                : 'bg-white/50'
-                                        }`}
-                                    />
-                                ))}
-                            </div>
+                            {!(card.id === 'discover' && isLoggedIn) && (
+                                <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                                    {card.images.map((_, idx) => (
+                                        <div 
+                                            key={idx}
+                                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                                idx === currentImageIndex 
+                                                    ? 'bg-white w-4' 
+                                                    : 'bg-white/50'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     ) : card.image ? (
                         // Single image
@@ -1623,7 +1625,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 )}
 
                 {/* Glassy Arrows for carousel cards */}
-                {card.hasArrows && card.images && card.images.length > 1 && (
+                {card.hasArrows && card.images && card.images.length > 1 && !(card.id === 'discover' && isLoggedIn) && (
                     <>
                         {/* Left Arrow */}
                         <button
