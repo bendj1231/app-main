@@ -327,11 +327,12 @@ const App = () => {
   };
 
   const navigateToPortal = () => {
-    setIsRedirecting(true);
-    setTimeout(() => {
-      window.open('https://pilotnetwork.vercel.app', '_blank');
-      setIsRedirecting(false);
-    }, 3000);
+    setCurrentPage('portal');
+  };
+
+  const navigateToMainAppHome = () => {
+    console.log(' Navigating to main app home page from portal');
+    setCurrentPage('home');
   };
 
   return (
@@ -761,7 +762,7 @@ const App = () => {
         {currentPage === 'portal' && !showDirectEnrollmentLoading && (
           <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Portal...</div>}>
             <PortalWrapper
-              onNavigate={navigateTo}
+              onNavigate={navigateToMainAppHome}
               onBack={() => navigateTo('home')}
               directToEnrollment={directToEnrollment}
             />
