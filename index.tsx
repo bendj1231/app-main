@@ -197,6 +197,7 @@ const App = () => {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [appError, setAppError] = useState<string | null>(null);
   const [directToEnrollment, setDirectToEnrollment] = useState(false);
+  const [showDirectEnrollmentLoading, setShowDirectEnrollmentLoading] = useState(false);
   const { currentUser } = useAuth(); // Get current user
 
   useEffect(() => {
@@ -250,6 +251,13 @@ const App = () => {
     const params = new URLSearchParams(queryString || '');
     const directToEnrollmentParam = params.get('directToEnrollment') === 'true';
     setDirectToEnrollment(directToEnrollmentParam);
+
+    // Show direct enrollment loading screen if navigating to portal with directToEnrollment
+    if (pageWithoutQuery === 'portal' && directToEnrollmentParam) {
+      setShowDirectEnrollmentLoading(true);
+      // Hide loading screen after 2 seconds
+      setTimeout(() => setShowDirectEnrollmentLoading(false), 2000);
+    }
 
     // Store selected airline if provided
     if (data && pageWithoutQuery === 'airline-expectations') {
@@ -666,8 +674,11 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
-        {currentPage === 'portal' && (
-          <Suspense fallback={directToEnrollment ? <DirectEnrollmentLoadingScreen /> : <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Portal...</div>}>
+        {currentPage === 'portal' && showDirectEnrollmentLoading && (
+          <DirectEnrollmentLoadingScreen />
+        )}
+        {currentPage === 'portal' && !showDirectEnrollmentLoading && (
+          <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Portal...</div>}>
             <PortalWrapper
               onNavigate={navigateTo}
               onBack={() => navigateTo('home')}
