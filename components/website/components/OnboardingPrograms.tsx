@@ -20,10 +20,6 @@ export const OnboardingPrograms: React.FC<OnboardingProgramsProps> = ({ onBack, 
                             <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         
-                        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <GraduationCap className="w-8 h-8 text-emerald-600" />
-                        </div>
-                        
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
                             Aviation Development Programs
                         </h2>

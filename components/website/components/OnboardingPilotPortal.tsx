@@ -20,10 +20,6 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
                             <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         
-                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <LayoutDashboard className="w-8 h-8 text-blue-600" />
-                        </div>
-                        
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
                             Welcome to Your Pilot Portal
                         </h2>
