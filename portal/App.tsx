@@ -399,7 +399,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
       // If user is logged in and loading hasn't started, trigger it
       // Only trigger if current view is 'login' to prevent re-triggering on tab switch
-      if (nextState.user && !hasShownInitialLoading.current && !showLoading && currentView === 'login') {
+      // Skip loading sequence when directToEnrollment is true
+      if (nextState.user && !hasShownInitialLoading.current && !showLoading && currentView === 'login' && !directToEnrollment) {
         console.log('🚀 Starting loading sequence for logged-in user');
         startLoadingSequence('pilot-profile');
       } else if (!nextState.user && !showLoading) {
@@ -573,10 +574,10 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   }, [currentView, authState.userProfile]);
 
   useEffect(() => {
-    if (authState.user && !hasShownInitialLoading.current && !showLoading) {
+    if (authState.user && !hasShownInitialLoading.current && !showLoading && !directToEnrollment) {
       startLoadingSequence('pilot-profile');
     }
-  }, [authState.user, showLoading, startLoadingSequence]);
+  }, [authState.user, showLoading, startLoadingSequence, directToEnrollment]);
 
   useEffect(() => {
     if (!showLoading && authState.user && currentView === 'login') {
@@ -716,7 +717,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
             <div style={{ fontSize: '1.5rem', fontWeight: 500, letterSpacing: '0.15em' }}>INITIALIZING...</div>
           </div>
         </div>
-      ) : showLoading ? (
+      ) : showLoading && !directToEnrollment ? (
         <LoadingScreen
           phase={loadingPhase}
           error={loadingError}
