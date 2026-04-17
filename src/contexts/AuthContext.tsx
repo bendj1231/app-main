@@ -379,22 +379,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async function logout() {
         console.log('🔴 Logout function called');
         try {
+            console.log('🔴 Signing out from Supabase...');
+            // First, sign out from Supabase and wait for it to complete
+            await supabase.auth.signOut();
+            console.log('✅ Supabase signOut completed');
+
+            console.log('🔴 Clearing all Supabase storage...');
+            // Clear all Supabase storage to prevent session restoration
+            await supabase.auth.setSession({ access_token: '', refresh_token: '' });
+            console.log('✅ Supabase session cleared');
+
             console.log('🔴 Clearing IndexedDB session...');
-            // Clear IndexedDB session
+            // Clear IndexedDB session after signout
             await indexedDB.clearSession();
             console.log('✅ IndexedDB session cleared');
+
+            console.log('🔴 Clearing localStorage...');
+            // Clear localStorage items that might contain session data
+            localStorage.removeItem('supabase.auth.token');
+            localStorage.removeItem('supabase.auth.refreshToken');
+            localStorage.removeItem('supabase.auth.codeVerifier');
+            localStorage.removeItem('supabase.auth.pkceVerifier');
+            console.log('✅ localStorage cleared');
 
             console.log('🔴 Clearing auth state...');
             // Explicitly clear auth state
             setCurrentUser(null);
             setUserProfile(null);
             console.log('✅ Auth state cleared');
-
-            // Try to sign out from Supabase in the background without blocking
-            // If it fails, the user is still logged out locally
-            supabase.auth.signOut().catch(err => {
-                console.warn('⚠️ Supabase signOut failed (user already logged out locally):', err.message);
-            });
         } catch (error) {
             console.error("❌ Logout error:", error);
             // Even if there's an error, try to clear local state

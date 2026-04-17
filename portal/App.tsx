@@ -598,13 +598,25 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   const handleLogout = async () => {
     try {
+      console.log('🔴 handleLogout called');
+      console.log('🔴 Calling logout function...');
+
       // First sign out from Supabase
       await signOut();
-      
+      console.log('🔴 Logout function called');
+
+      console.log('🔴 Clearing all Supabase storage...');
+      // Clear all Supabase storage to prevent session restoration
+      await supabase.auth.setSession({ access_token: '', refresh_token: '' });
+      console.log('✅ Supabase session cleared');
+
       // Clear any stored session data
       localStorage.removeItem('supabase.auth.token');
       localStorage.removeItem('supabase.auth.refreshToken');
-      
+      localStorage.removeItem('supabase.auth.codeVerifier');
+      localStorage.removeItem('supabase.auth.pkceVerifier');
+      console.log('✅ localStorage cleared');
+
       // Clear IndexedDB session from main app
       try {
         const db = await (window as any).indexedDB.open('PilotRecognitionAuth', 1);
@@ -615,7 +627,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       } catch (error) {
         console.error('❌ Error clearing IndexedDB session from portal:', error);
       }
-      
+
+      console.log('🔴 Clearing auth state...');
       // Reset auth state
       setAuthState({
         user: null,
@@ -624,20 +637,18 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         currentSystem: 'pms',
         preloadedData: {}
       });
-      
+      console.log('✅ Auth state cleared');
+
       // Reset view state
       setCurrentView('login');
       setLoginBlurred(false);
       setShowLoading(false);
       hasShownInitialLoading.current = false;
-      
+
       // Clear URL hash
       window.location.hash = '';
-      
-      // Small delay to ensure state updates before any potential reload
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
+
+      console.log('✅ Logout successful, navigating to home');
     } catch (error) {
       console.error("Logout error:", error);
     }

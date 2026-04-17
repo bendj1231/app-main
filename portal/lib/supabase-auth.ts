@@ -223,35 +223,42 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
   // Restore session from IndexedDB before setting up auth listener
   const restoreSession = async () => {
     try {
+      console.log('🔍 Attempting to get session from IndexedDB...');
       const savedSession = await indexedDB.getSession();
+      console.log('🔍 IndexedDB getSession result:', savedSession ? 'Session found' : 'No session');
       if (savedSession) {
         console.log('🔄 Restoring session from IndexedDB in portal:', savedSession.user?.id);
+        console.log('🔍 Session data keys:', Object.keys(savedSession));
         // Set the session in Supabase client
+        console.log('🔍 Calling supabase.auth.setSession...');
         await supabase.auth.setSession({
           access_token: savedSession.access_token,
           refresh_token: savedSession.refresh_token,
         });
         console.log('✅ Session restored in Supabase client');
+        return savedSession;
+      } else {
+        console.log('⚠️ No session found in IndexedDB');
       }
     } catch (error) {
       console.error('❌ Error restoring session from IndexedDB in portal:', error);
     }
+    console.log('🔍 restoreSession returning null');
+    return null;
   };
 
-  // Restore session before setting up listener
-  restoreSession();
-
+  // Set up auth listener first
   const subscription = supabase.auth.onAuthStateChange(async (event, session) => {
     console.log('🔍 Supabase Auth State Change:', { event, session: !!session });
 
     if (session?.user) {
       console.log('👤 User logged in:', session.user.email);
-      
+
       try {
         let userProfile = await getUserProfile(session.user.id);
-        
+
         console.log('📋 User profile loaded:', userProfile ? 'Success' : 'Not found');
-        
+
         if (!userProfile) {
           console.log('🔧 Creating new user profile...');
           userProfile = await createUserProfile(session.user);
@@ -306,6 +313,38 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
       });
     }
   });
+
+  // Restore session after setting up listener
+  restoreSession().then(async (savedSession) => {
+    console.log('🔍 Session restoration result:', savedSession ? 'Session found' : 'No session found');
+    if (savedSession) {
+      // Manually trigger the callback with the restored session
+      console.log('🔄 Manually triggering auth callback with restored session');
+      console.log('👤 Restored user:', savedSession.user?.email, savedSession.user?.id);
+      try {
+        let userProfile = await getUserProfile(savedSession.user.id);
+        console.log('📋 User profile after restoration:', userProfile ? 'Found' : 'Not found');
+        if (!userProfile) {
+          console.log('🔧 Creating new user profile from restored session...');
+          userProfile = await createUserProfile(savedSession.user);
+        }
+        console.log('✅ Calling callback with restored session');
+        callback({
+          user: savedSession.user,
+          userProfile,
+          loading: false,
+          currentSystem: 'pms'
+        });
+      } catch (error) {
+        console.error('❌ Error processing restored session:', error);
+      }
+    } else {
+      console.log('⚠️ No saved session to restore');
+    }
+  }).catch(error => {
+    console.error('❌ Error in session restoration promise:', error);
+  });
+
   return subscription;
 };
 
