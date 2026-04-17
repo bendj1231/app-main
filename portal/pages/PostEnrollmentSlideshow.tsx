@@ -86,12 +86,19 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
     };
 
     return (
-        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20 }}>
+        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem' }}>
             <main className="dashboard-card" style={{
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: '500px',
-                padding: 0
+                maxHeight: '80vh',
+                padding: 0,
+                maxWidth: '900px',
+                width: '100%',
+                backgroundColor: '#ffffff',
+                borderRadius: '24px',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                overflow: 'hidden'
             }}>
                 {/* Progress Bar */}
                 <div style={{ display: 'flex', width: '100%', height: '6px', backgroundColor: '#f1f5f9' }}>
