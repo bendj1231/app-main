@@ -1218,15 +1218,15 @@ const GridCard: React.FC<GridCardProps> = ({
     // Determine if we should use carousel for logged in state
     const shouldUseLoggedInCarousel = isLoggedIn && card.isCarouselWhenLoggedIn && card.loggedInImages;
     
+    // Get the images array to use for carousel
+    const carouselImages = shouldUseLoggedInCarousel ? card.loggedInImages : card.images;
+    
     // For discover card, disable carousel when logged in to show static Foundation Program card
     const shouldUseCarousel = (card.id === 'discover' && isLoggedIn) 
         ? false 
         : shouldUseLoggedInCarousel 
             ? carouselImages 
             : card.isCarousel && card.images;
-    
-    // Get the images array to use for carousel
-    const carouselImages = shouldUseLoggedInCarousel ? card.loggedInImages : card.images;
     
     // Get current dynamic title for discover card (only when not logged in)
     const currentDynamicTitle = (card.id === 'discover' && isLoggedIn) 
