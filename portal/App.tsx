@@ -579,12 +579,6 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       });
       console.log('✅ Auth state cleared');
 
-      // Reset view state
-      setCurrentView('login');
-      setLoginBlurred(false);
-      setShowLoading(false);
-      hasShownInitialLoading.current = false;
-
       // Clear URL hash
       window.location.hash = '';
 
