@@ -46,6 +46,7 @@ import WebBrowser from './components/WebBrowser';
 import { Sidebar } from '@/src/components/ui/Sidebar';
 import { Handbook } from '@/src/components/ui/Handbook';
 import { AuthProvider } from '@/src/contexts/AuthContext';
+import { supabase } from '@/src/lib/supabase';
 
 const AboutProgramsPage = ({ onBack }: { onBack: () => void }) => (
   <div className="fade-in-up">
@@ -202,7 +203,45 @@ const App = () => {
   const [appError, setAppError] = useState<string | null>(null);
   const [directToEnrollment, setDirectToEnrollment] = useState(false);
   const [showDirectEnrollmentLoading, setShowDirectEnrollmentLoading] = useState(false);
+  const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState(false);
   const { currentUser, logout } = useAuth(); // Get current user and logout function
+
+  // Fetch user's enrollment status from Supabase
+  useEffect(() => {
+    const fetchEnrollmentStatus = async () => {
+      if (!currentUser?.email) {
+        setIsEnrolledInFoundation(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('enrolled_programs')
+          .eq('email', currentUser.email)
+          .single();
+
+        if (error) {
+          console.error('Error fetching enrollment status:', error);
+          setIsEnrolledInFoundation(false);
+          return;
+        }
+
+        if (data?.enrolled_programs && Array.isArray(data.enrolled_programs)) {
+          const isEnrolled = data.enrolled_programs.includes('Foundational');
+          setIsEnrolledInFoundation(isEnrolled);
+          console.log('Enrollment status:', isEnrolled, 'Programs:', data.enrolled_programs);
+        } else {
+          setIsEnrolledInFoundation(false);
+        }
+      } catch (error) {
+        console.error('Error fetching enrollment status:', error);
+        setIsEnrolledInFoundation(false);
+      }
+    };
+
+    fetchEnrollmentStatus();
+  }, [currentUser?.email]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -371,7 +410,7 @@ const App = () => {
             onNavigate={navigateTo}
             isLoggedIn={!!currentUser}
             onLoginModalOpen={() => setIsLoginModalOpen(true)}
-            isEnrolledInFoundation={false}
+            isEnrolledInFoundation={isEnrolledInFoundation}
             onGoToProgramDetail={(slide) => {
               if (slide?.title === 'Emirates ATPL Pilot Pathways') {
                 navigateTo('emirates-atpl');
