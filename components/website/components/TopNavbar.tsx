@@ -416,8 +416,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <div className="relative" ref={dropdownRef}>
                                     <button
                                         onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                                        className="w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
+                                        className="w-12 h-12 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
                                         title="Profile"
+                                        style={{ borderRadius: '50% / 40%' }}
                                     >
                                         {profileImageUrl ? (
                                             <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
@@ -433,7 +434,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                             <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
                                                 <div className="flex items-center gap-3">
                                                     <div className="relative group">
-                                                        <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30">
+                                                        <div className="w-16 h-16 rounded-[50%/40%] bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30" style={{ borderRadius: '50% / 40%' }}>
                                                             {profileImageUrl ? (
                                                                 <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
                                                             ) : (
@@ -636,7 +637,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <div className="flex gap-4 mt-4">
                                     <div className="flex-1 flex items-center justify-center gap-2">
                                         <div className="relative">
-                                            <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center overflow-hidden">
+                                            <div className="w-16 h-16 rounded-[50%/40%] bg-slate-700 flex items-center justify-center overflow-hidden" style={{ borderRadius: '50% / 40%' }}>
                                                 {profileImageUrl ? (
                                                     <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
                                                 ) : (
