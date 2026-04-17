@@ -379,31 +379,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async function logout() {
         console.log('🔴 Logout function called');
         try {
-            console.log('🔴 Clearing IndexedDB session first to prevent lock conflict...');
-            // Clear IndexedDB session first to prevent concurrent session restoration
+            console.log('🔴 Clearing IndexedDB session...');
+            // Clear IndexedDB session
             await indexedDB.clearSession();
             console.log('✅ IndexedDB session cleared');
-
-            console.log('🔴 Signing out from Supabase...');
-            // Sign out from Supabase with timeout to prevent hanging
-            const signOutPromise = supabase.auth.signOut();
-            const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('SignOut timeout after 5 seconds')), 5000)
-            );
-            await Promise.race([signOutPromise, timeoutPromise]);
-            console.log('✅ Supabase sign out successful');
 
             console.log('🔴 Clearing auth state...');
             // Explicitly clear auth state
             setCurrentUser(null);
             setUserProfile(null);
             console.log('✅ Auth state cleared');
+
+            // Try to sign out from Supabase in the background without blocking
+            // If it fails, the user is still logged out locally
+            supabase.auth.signOut().catch(err => {
+                console.warn('⚠️ Supabase signOut failed (user already logged out locally):', err.message);
+            });
         } catch (error) {
             console.error("❌ Logout error:", error);
             // Even if there's an error, try to clear local state
             setCurrentUser(null);
             setUserProfile(null);
-            throw error;
         }
     }
 
