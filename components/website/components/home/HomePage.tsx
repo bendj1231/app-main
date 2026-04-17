@@ -658,11 +658,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                 console.log('🔄 Tab visible, restoring scroll position:', scrollPos, 'saved:', savedScroll, 'timestamp:', savedTimestamp);
                 console.log('📊 Current scroll position before restore:', window.scrollY);
                 
-                // Prevent default scroll behavior
-                window.scrollTo(0, 0);
-                console.log('📊 Reset scroll to 0, current:', window.scrollY);
-                
-                // Restore scroll position with multiple attempts with longer delays
+                // Immediately restore scroll position without intermediate reset
                 const restoreScroll = (delay: number) => {
                     window.scrollTo({
                         top: scrollPos,
