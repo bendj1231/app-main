@@ -27,7 +27,7 @@ export const OnboardingPrograms: React.FC<OnboardingProgramsProps> = ({ onBack, 
                         Structured pathways designed to guide you from student to professional pilot with comprehensive training and mentorship.
                     </p>
                     
-                    <div className="grid grid-cols-2 gap-6 mb-8">
+                    <div className="flex flex-col gap-4 mb-8">
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Foundation Program</h3>
                             <p className="text-sm text-slate-600">Start your journey with fundamental pilot training</p>
