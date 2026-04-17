@@ -90,10 +90,10 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
             <main className="dashboard-card" style={{
                 display: 'flex',
                 flexDirection: 'column',
-                minHeight: '500px',
-                maxHeight: '85vh',
+                minHeight: '400px',
+                maxHeight: '75vh',
                 padding: 0,
-                maxWidth: '900px',
+                maxWidth: '700px',
                 width: '100%',
                 backgroundColor: '#ffffff',
                 borderRadius: '24px',
@@ -111,28 +111,28 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                 </div>
 
                 {/* Slides content area */}
-                <div style={{ padding: '4rem 3rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-                    <div className="dashboard-header" style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                <div style={{ padding: '2rem 2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                    <div className="dashboard-header" style={{ marginBottom: '1.5rem' }}>
                         <div className="dashboard-logo" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '120px', height: 'auto' }} />
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '80px', height: 'auto' }} />
                         </div>
 
                         <div className="dashboard-subtitle">
                             {slides[currentSlide].subtitle}
                         </div>
 
-                        <h1 className="dashboard-title" style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
+                        <h1 className="dashboard-title" style={{ fontSize: '1.75rem', marginBottom: '0.75rem' }}>
                             {slides[currentSlide].title}
                         </h1>
 
-                        <p style={{ maxWidth: '600px', margin: '0 auto', fontSize: '1.125rem', color: '#475569', lineHeight: 1.6 }}>
+                        <p style={{ maxWidth: '500px', margin: '0 auto', fontSize: '0.95rem', color: '#475569', lineHeight: 1.5 }}>
                             {slides[currentSlide].content}
                         </p>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '500px', textAlign: 'center', margin: '0 auto' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '450px', textAlign: 'center', margin: '0 auto' }}>
                         <div style={{
-                            padding: '1.5rem',
+                            padding: '1rem 1.25rem',
                             backgroundColor: 'rgba(255, 255, 255, 0.6)',
                             backdropFilter: 'blur(12px)',
                             border: '1px solid rgba(226, 232, 240, 0.8)',
@@ -140,13 +140,13 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
                         }}>
                             {slides[currentSlide].points.map((point, index) => (
-                                <div key={index} className="animate-fade-in" style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', animationDelay: `${index * 0.15}s`, marginBottom: index < slides[currentSlide].points.length - 1 ? '1rem' : '0' }}>
-                                    <div style={{ marginTop: '0.25rem', color: '#10b981' }}>
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <div key={index} className="animate-fade-in" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', animationDelay: `${index * 0.15}s`, marginBottom: index < slides[currentSlide].points.length - 1 ? '0.75rem' : '0' }}>
+                                    <div style={{ marginTop: '0.1rem', color: '#10b981' }}>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                             <polyline points="20 6 9 17 4 12"></polyline>
                                         </svg>
                                     </div>
-                                    <p style={{ margin: 0, color: '#334155', fontSize: '1rem', lineHeight: 1.5, textAlign: 'left' }}>{point}</p>
+                                    <p style={{ margin: 0, color: '#334155', fontSize: '0.875rem', lineHeight: 1.4, textAlign: 'left' }}>{point}</p>
                                 </div>
                             ))}
                         </div>
@@ -154,25 +154,25 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                 </div>
 
                 {/* Footer Controls */}
-                <div style={{ padding: '1.5rem 3rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff' }}>
+                <div style={{ padding: '1rem 2rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff' }}>
                     <button
                         onClick={prevSlide}
                         disabled={currentSlide === 0}
                         style={{
                             flex: 1,
-                            padding: '0.75rem 1.5rem',
-                            borderRadius: '12px',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '10px',
                             backgroundColor: currentSlide === 0 ? 'rgba(148, 163, 184, 0.3)' : 'rgba(255, 255, 255, 0.7)',
                             backdropFilter: 'blur(12px)',
                             border: currentSlide === 0 ? '1px solid rgba(148, 163, 184, 0.3)' : '1px solid rgba(226, 232, 240, 0.8)',
                             boxShadow: currentSlide === 0 ? 'none' : '0 8px 32px rgba(0, 0, 0, 0.1)',
                             color: currentSlide === 0 ? '#94a3b8' : '#475569',
                             fontWeight: 600,
-                            fontSize: '0.875rem',
+                            fontSize: '0.8rem',
                             cursor: currentSlide === 0 ? 'not-allowed' : 'pointer',
                             transition: 'all 0.2s',
                             opacity: currentSlide === 0 ? 0.5 : 1,
-                            maxWidth: '120px'
+                            maxWidth: '100px'
                         }}
                         onMouseOver={(e) => {
                             if (currentSlide !== 0) {
@@ -185,15 +185,15 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                             e.currentTarget.style.transform = 'translateY(0)';
                         }}
                     >
-                        <Icons.ArrowLeft style={{ width: 16, height: 16, marginRight: '0.5rem', display: 'inline', verticalAlign: 'middle' }} />
+                        <Icons.ArrowLeft style={{ width: 14, height: 14, marginRight: '0.4rem', display: 'inline', verticalAlign: 'middle' }} />
                         Back
                     </button>
 
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', gap: '0.4rem' }}>
                         {slides.map((_, i) => (
                             <div key={i} style={{
-                                width: '8px',
-                                height: '8px',
+                                width: '6px',
+                                height: '6px',
                                 borderRadius: '50%',
                                 backgroundColor: i === currentSlide ? '#2563eb' : '#cbd5e1',
                                 transition: 'background-color 0.3s'
@@ -206,19 +206,19 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                         disabled={currentSlide === slides.length - 1}
                         style={{
                             flex: 1,
-                            padding: '0.75rem 1.5rem',
-                            borderRadius: '12px',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '10px',
                             backgroundColor: currentSlide === slides.length - 1 ? 'rgba(148, 163, 184, 0.3)' : '#2563eb',
                             backdropFilter: 'blur(12px)',
                             border: currentSlide === slides.length - 1 ? '1px solid rgba(148, 163, 184, 0.3)' : '1px solid #2563eb',
                             boxShadow: currentSlide === slides.length - 1 ? 'none' : '0 8px 32px rgba(37, 99, 235, 0.3)',
                             color: currentSlide === slides.length - 1 ? '#94a3b8' : '#ffffff',
                             fontWeight: 600,
-                            fontSize: '0.875rem',
+                            fontSize: '0.8rem',
                             cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer',
                             transition: 'all 0.2s',
                             opacity: currentSlide === slides.length - 1 ? 0.5 : 1,
-                            maxWidth: '120px'
+                            maxWidth: '100px'
                         }}
                         onMouseOver={(e) => {
                             if (currentSlide !== slides.length - 1) {
@@ -232,7 +232,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                         }}
                     >
                         Next
-                        <Icons.ArrowRight style={{ width: 16, height: 16, marginLeft: '0.5rem', display: 'inline', verticalAlign: 'middle' }} />
+                        <Icons.ArrowRight style={{ width: 14, height: 14, marginLeft: '0.4rem', display: 'inline', verticalAlign: 'middle' }} />
                     </button>
                 </div>
             </main>
