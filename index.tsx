@@ -751,7 +751,13 @@ const App = () => {
                           color: '#dc2626',
                           cursor: 'pointer'
                         }}
-                        onClick={logout}
+                        onClick={async () => {
+                          try {
+                            await logout();
+                          } catch (error) {
+                            console.error('Logout error:', error);
+                          }
+                        }}
                       >
                         Sign Out
                       </span>
