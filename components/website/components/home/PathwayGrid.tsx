@@ -1336,9 +1336,9 @@ const GridCard: React.FC<GridCardProps> = ({
         if (card.id === 'discover') {
             e.preventDefault();
             e.stopPropagation();
-            // If enrolled, navigate to portal
+            // If enrolled, navigate to foundation program platform
             if (isEnrolledInFoundation) {
-                onNavigate('portal');
+                onNavigate('foundational-platform');
                 return;
             }
             // If logged in but not enrolled, navigate to enrollment
