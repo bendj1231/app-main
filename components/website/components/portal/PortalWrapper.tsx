@@ -5,6 +5,7 @@ import { AuthBridge } from './AuthBridge';
 interface PortalWrapperProps {
     onNavigate: (page: string) => void;
     onBack: () => void;
+    directToEnrollment?: boolean;
 }
 
 class ErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean, error: Error | null }> {
@@ -95,7 +96,7 @@ export const PortalWrapper: React.FC<PortalWrapperProps> = ({ onNavigate, onBack
         <ErrorBoundary>
             <AuthBridge>
                 <div className="portal-container">
-                    <PortalApp onNavigateToMainApp={onNavigate} />
+                    <PortalApp onNavigateToMainApp={onNavigate} directToEnrollment={directToEnrollment} />
                 </div>
             </AuthBridge>
         </ErrorBoundary>

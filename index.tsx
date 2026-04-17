@@ -95,6 +95,7 @@ import { ProgramsPathwaysPage } from './components/website/components/programs/P
 import { ProgramsPage } from './components/website/components/programs/ProgramsPage';
 import { PathwaysPage } from './components/website/components/pathways/PathwaysPage';
 const PortalWrapper = lazy(() => import('./components/website/components/portal/PortalWrapper').then(m => ({ default: m.PortalWrapper })));
+import { DirectEnrollmentLoadingScreen } from './components/website/components/home/DirectEnrollmentLoadingScreen';
 import { AviationInsightsDirectoryPage } from './components/website/components/AviationInsightsDirectoryPage';
 import { ApplicationsSystemsDirectoryPage } from './components/website/components/ApplicationsSystemsDirectoryPage';
 import { MembershipDirectoryPage } from './components/website/components/MembershipDirectoryPage';
@@ -195,6 +196,7 @@ const App = () => {
   const [selectedAirline, setSelectedAirline] = useState<any>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [appError, setAppError] = useState<string | null>(null);
+  const [directToEnrollment, setDirectToEnrollment] = useState(false);
   const { currentUser } = useAuth(); // Get current user
 
   useEffect(() => {
@@ -243,17 +245,23 @@ const App = () => {
     const [basePage, hash] = String(page).includes('#') ? String(page).split('#') : [page, null];
     setScrollToSection(hash || null);
 
+    // Parse query parameters
+    const [pageWithoutQuery, queryString] = String(basePage).includes('?') ? String(basePage).split('?') : [basePage, null];
+    const params = new URLSearchParams(queryString || '');
+    const directToEnrollmentParam = params.get('directToEnrollment') === 'true';
+    setDirectToEnrollment(directToEnrollmentParam);
+
     // Store selected airline if provided
-    if (data && basePage === 'airline-expectations') {
+    if (data && pageWithoutQuery === 'airline-expectations') {
       setSelectedAirline(data);
-    } else if (basePage !== 'airline-expectations') {
+    } else if (pageWithoutQuery !== 'airline-expectations') {
       setSelectedAirline(null);
     }
 
     setIsBlurring(true);
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'instant' });
-      setCurrentPage(basePage);
+      setCurrentPage(pageWithoutQuery);
       setIsBlurring(false);
     }, 600);
   };
@@ -658,11 +666,15 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
-        {currentPage === 'portal' && (
+        {currentPage === 'portal' && directToEnrollment && (
+          <DirectEnrollmentLoadingScreen />
+        )}
+        {currentPage === 'portal' && !directToEnrollment && (
           <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Portal...</div>}>
             <PortalWrapper
               onNavigate={navigateTo}
               onBack={() => navigateTo('home')}
+              directToEnrollment={directToEnrollment}
             />
           </Suspense>
         )}

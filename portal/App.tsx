@@ -213,7 +213,7 @@ const detectGraphicsPreset = (): DetectionResult => {
   };
 };
 
-function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => void }) {
+function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateToMainApp?: (page: string) => void; directToEnrollment?: boolean }) {
   const [isMobile, setIsMobile] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [loginBlurred, setLoginBlurred] = useState(false);
@@ -231,7 +231,7 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
     currentSystem: 'pms',
     preloadedData: {}
   });
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(!directToEnrollment);
   const loadingTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const hasShownInitialLoading = useRef(false);
   
@@ -268,7 +268,7 @@ function App({ onNavigateToMainApp }: { onNavigateToMainApp?: (page: string) => 
     'reset-password','module-01','module-02','module-03','pilot-profile','recognition','verification','job-database','become-member'
   ];
 
-  const [currentView, setCurrentView] = useState<ViewName>('login');
+  const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'foundational' : 'login');
   const [completedModules, setCompletedModules] = useState<string[]>([]);
   const [lastLoginEmail, setLastLoginEmail] = useState<string | null>(null);
   const [pendingHomeView, setPendingHomeView] = useState<MainView | null>(null);
