@@ -86,43 +86,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
     };
 
     return (
-        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem', position: 'relative' }}>
-            {/* Left Navigation Arrow */}
-            <button
-                onClick={prevSlide}
-                disabled={currentSlide === 0}
-                style={{
-                    position: 'absolute',
-                    left: '1rem',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    backgroundColor: currentSlide === 0 ? 'rgba(148, 163, 184, 0.2)' : 'rgba(255, 255, 255, 0.9)',
-                    border: currentSlide === 0 ? 'none' : '1px solid rgba(226, 232, 240, 0.8)',
-                    boxShadow: currentSlide === 0 ? 'none' : '0 4px 12px rgba(0, 0, 0, 0.1)',
-                    cursor: currentSlide === 0 ? 'not-allowed' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.2s',
-                    opacity: currentSlide === 0 ? 0.5 : 1
-                }}
-                onMouseOver={(e) => {
-                    if (currentSlide !== 0) {
-                        e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-                        e.currentTarget.style.backgroundColor = '#2563eb';
-                    }
-                }}
-                onMouseOut={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                }}
-            >
-                <Icons.ArrowLeft style={{ width: 24, height: 24, color: currentSlide === 0 ? '#94a3b8' : '#0f172a' }} />
-            </button>
-
+        <div className="dashboard-container animate-fade-in" style={{ zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '2rem' }}>
             <main className="dashboard-card" style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -222,41 +186,73 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                 </div>
             </main>
 
-            {/* Right Navigation Arrow */}
-            <button
-                onClick={nextSlide}
-                disabled={currentSlide === slides.length - 1}
-                style={{
-                    position: 'absolute',
-                    right: '1rem',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    backgroundColor: currentSlide === slides.length - 1 ? 'rgba(148, 163, 184, 0.2)' : 'rgba(255, 255, 255, 0.9)',
-                    border: currentSlide === slides.length - 1 ? 'none' : '1px solid rgba(226, 232, 240, 0.8)',
-                    boxShadow: currentSlide === slides.length - 1 ? 'none' : '0 4px 12px rgba(0, 0, 0, 0.1)',
-                    cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.2s',
-                    opacity: currentSlide === slides.length - 1 ? 0.5 : 1
-                }}
-                onMouseOver={(e) => {
-                    if (currentSlide !== slides.length - 1) {
-                        e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-                        e.currentTarget.style.backgroundColor = '#2563eb';
-                    }
-                }}
-                onMouseOut={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                }}
-            >
-                <Icons.ArrowRight style={{ width: 24, height: 24, color: currentSlide === slides.length - 1 ? '#94a3b8' : '#0f172a' }} />
-            </button>
+            {/* Navigation Buttons Underneath Card */}
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+                <button
+                    onClick={prevSlide}
+                    disabled={currentSlide === 0}
+                    style={{
+                        flex: 1,
+                        padding: '0.75rem 1.5rem',
+                        borderRadius: '12px',
+                        backgroundColor: currentSlide === 0 ? 'rgba(148, 163, 184, 0.3)' : 'rgba(255, 255, 255, 0.7)',
+                        backdropFilter: 'blur(12px)',
+                        border: currentSlide === 0 ? '1px solid rgba(148, 163, 184, 0.3)' : '1px solid rgba(226, 232, 240, 0.8)',
+                        boxShadow: currentSlide === 0 ? 'none' : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                        color: currentSlide === 0 ? '#94a3b8' : '#475569',
+                        fontWeight: 600,
+                        fontSize: '0.875rem',
+                        cursor: currentSlide === 0 ? 'not-allowed' : 'pointer',
+                        transition: 'all 0.2s',
+                        opacity: currentSlide === 0 ? 0.5 : 1
+                    }}
+                    onMouseOver={(e) => {
+                        if (currentSlide !== 0) {
+                            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                        }
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                >
+                    <Icons.ArrowLeft style={{ width: 16, height: 16, marginRight: '0.5rem', display: 'inline', verticalAlign: 'middle' }} />
+                    Back
+                </button>
+                <button
+                    onClick={nextSlide}
+                    disabled={currentSlide === slides.length - 1}
+                    style={{
+                        flex: 1,
+                        padding: '0.75rem 1.5rem',
+                        borderRadius: '12px',
+                        backgroundColor: currentSlide === slides.length - 1 ? 'rgba(148, 163, 184, 0.3)' : 'rgba(255, 255, 255, 0.7)',
+                        backdropFilter: 'blur(12px)',
+                        border: currentSlide === slides.length - 1 ? '1px solid rgba(148, 163, 184, 0.3)' : '1px solid rgba(226, 232, 240, 0.8)',
+                        boxShadow: currentSlide === slides.length - 1 ? 'none' : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                        color: currentSlide === slides.length - 1 ? '#94a3b8' : '#475569',
+                        fontWeight: 600,
+                        fontSize: '0.875rem',
+                        cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer',
+                        transition: 'all 0.2s',
+                        opacity: currentSlide === slides.length - 1 ? 0.5 : 1
+                    }}
+                    onMouseOver={(e) => {
+                        if (currentSlide !== slides.length - 1) {
+                            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                        }
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                >
+                    Next
+                    <Icons.ArrowRight style={{ width: 16, height: 16, marginLeft: '0.5rem', display: 'inline', verticalAlign: 'middle' }} />
+                </button>
+            </div>
         </div>
     );
 };
