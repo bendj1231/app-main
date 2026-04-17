@@ -37,9 +37,11 @@ const LogbookPage: React.FC<LogbookPageProps> = ({ onBack, userProfile }) => {
           console.error('Firestore not initialized');
           return;
         }
+        const userId = userProfile?.uid; // Firebase uses Firebase UID
+        if (!userId) return;
         const flightLogsQuery = query(
           collection(db, 'flightLogs'),
-          where('userId', '==', userProfile.uid)
+          where('userId', '==', userId)
         );
         const snapshot = await getDocs(flightLogsQuery);
         const logs: FlightLog[] = [];

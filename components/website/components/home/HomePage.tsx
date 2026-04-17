@@ -1342,7 +1342,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                     {/* High-Fidelity Background: Modern Flight Deck */}
                     <div className="absolute inset-0 z-0">
                         <img
-                            src="https://images.unsplash.com/photo-1483450389192-3d3a08d2ae46?q=80&w=2669&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=2669&auto=format&fit=crop"
                             alt="Modern Flight Deck"
                             className="w-full h-full object-cover"
                         />

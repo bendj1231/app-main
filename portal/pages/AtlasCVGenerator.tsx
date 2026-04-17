@@ -8,6 +8,7 @@ import { supabase } from '../lib/supabase-auth';
 interface AtlasCVGeneratorProps {
   onBack: () => void;
   userProfile?: {
+    id?: string;
     firstName?: string;
     lastName?: string;
     email?: string;
@@ -294,11 +295,12 @@ const AtlasCVGenerator: React.FC<AtlasCVGeneratorProps> = ({ onBack, userProfile
       }
 
       try {
+        const userId = userProfile?.id || userProfile?.uid;
         // Fetch pilot profiles from Supabase
         const { data: profileData, error: profileError } = await supabase
           .from('pilot_profiles')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .single();
 
         if (profileError && profileError.code !== 'PGRST116') {
@@ -344,7 +346,7 @@ const AtlasCVGenerator: React.FC<AtlasCVGeneratorProps> = ({ onBack, userProfile
         const { data: achievementData, error: achievementError } = await supabase
           .from('achievements')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userProfile.id || userProfile.uid)
           .eq('category', 'Certification');
 
         if (achievementError && achievementError.code !== 'PGRST116') {

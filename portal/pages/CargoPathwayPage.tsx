@@ -147,7 +147,7 @@ const CARGO_PATHWAYS: PathwayJob[] = [
     requirements: ['250 hrs', 'EASA CPL', 'A330 Type Rating Program'],
     tags: ['European Hub', 'A330F', 'Night Operations'],
     postedAt: 'EU Nationals Only',
-    image: 'https://www.aviationjobs.me/uploads/cache/socialBroadcastThumbnailFacebook/uploads/image/62286591eff11.jpeg'
+    image: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?q=80&w=800&auto=format&fit=crop'
   }
 ];
 
@@ -282,7 +282,7 @@ export const CargoPathwayPage: React.FC<CargoPathwayPageProps> = ({ onBack, onLo
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
-        const { data } = await supabase.from('pilot_recognition_profiles').select('total_hours, logged_hours, program_inputs').eq('user_id', user.id).maybeSingle();
+        const { data } = await supabase.from('pilot_recognition_matches').select('total_hours, logged_hours, program_inputs').eq('user_id', user.id).maybeSingle();
         if (data) setProfile({ total_hours: data.total_hours, logged_hours: data.logged_hours, program_inputs: data.program_inputs });
       } catch (err) { console.error('Error:', err); }
     };

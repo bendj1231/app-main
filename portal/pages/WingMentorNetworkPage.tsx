@@ -314,7 +314,7 @@ export const WingMentorNetworkPage: React.FC<WingMentorNetworkPageProps> = ({ on
                             <HorizontalCard
                                 title="Aviation Industry Expectations"
                                 description="Explore airline hiring requirements, career paths & expectations. Navigate the complex landscape of aviation industry standards and requirements."
-                                image="https://images.unsplash.com/photo-1436491865332-7a61fb94beff?q=80&w=800&auto=format&fit=crop&v=2"
+                                image="https://images.unsplash.com/photo-1559827291-72ee739d0d9a?q=80&w=800&auto=format&fit=crop"
                                 onClick={() => onViewChange?.('aviation-expectations')}
                                 tag="Industry Directory"
                             />

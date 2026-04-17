@@ -12,7 +12,7 @@ interface RecognitionAchievementPageProps {
   onViewExams?: () => void;
   onViewAtlas?: () => void;
   onViewLicensureExperience?: () => void;
-  userProfile?: { uid?: string; email?: string; firstName?: string; lastName?: string } | null;
+  userProfile?: { id?: string; uid?: string; email?: string; firstName?: string; lastName?: string } | null;
   preloadedAchievements?: any[];
   preloadedPortfolio?: any;
   onNavigateToDirectory?: () => void;
@@ -203,10 +203,11 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
           return;
         }
         const achievementsRef = collection(db, 'achievements');
+        const userId = userProfile?.id || userProfile?.uid;
         const { data, error } = await supabase
           .from('program_progress')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .eq('program_type', 'Foundational')
           .maybeSingle();
 
@@ -233,7 +234,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
     } else if (userProfile?.uid) {
       loadRecognitionData();
     }
-  }, [userProfile?.uid, preloadedAchievements, preloadedPortfolio]);
+  }, [userProfile?.id || userProfile?.uid, preloadedAchievements, preloadedPortfolio]);
 
   // Fetch mentorship hours when user profile loads
   useEffect(() => {

@@ -27,10 +27,11 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
       }
 
       try {
+        const userId = userProfile?.id || userProfile?.uid;
         const { data, error } = await supabase
           .from('pilot_flight_logs')
           .select('hours')
-          .eq('user_id', userProfile.uid);
+          .eq('user_id', userId);
 
         if (error) {
           throw error;
@@ -45,7 +46,8 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
     };
 
     const fetchLicensureData = async () => {
-      if (!userProfile?.uid) {
+      const userId = userProfile?.id || userProfile?.uid;
+      if (!userId) {
         return;
       }
 
@@ -53,7 +55,7 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
         const { data, error } = await supabase
           .from('pilot_licensure_experience')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .maybeSingle();
 
         if (error && error.code !== 'PGRST116') {

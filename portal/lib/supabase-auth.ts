@@ -1,16 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
 import type { UserProfile, UserRole } from '../types/user';
 import { AVAILABLE_APPS, ROLE_PERMISSIONS } from '../types/user';
 
-// Supabase configuration from environment variables
-const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-const supabaseServiceKey = (import.meta as any).env?.VITE_SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY || '';
-
-if (!supabaseServiceKey) {
-  console.error('❌ VITE_SUPABASE_SERVICE_KEY or SUPABASE_SERVICE_KEY is not set');
-}
-
-export const supabase = createClient(supabaseUrl, supabaseServiceKey);
+// Import shared Supabase client to avoid multiple instances
+import { supabase } from '../../shared/lib/supabase';
+export { supabase };
 
 export interface AuthState {
   user: any | null;

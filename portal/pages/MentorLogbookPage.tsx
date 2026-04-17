@@ -17,6 +17,7 @@ interface MentorLogEntry {
 interface MentorLogbookPageProps {
   onBack: () => void;
   userProfile?: {
+    id?: string;
     uid?: string;
     firstName?: string;
     lastName?: string;
@@ -50,10 +51,11 @@ export const MentorLogbookPage: React.FC<MentorLogbookPageProps> = ({ onBack, us
 
     try {
       setLoading(true);
+      const userId = userProfile?.id || userProfile?.uid;
       const { data: logsData, error: logsError } = await supabase
         .from('mentor_logs')
         .select('*')
-        .eq('user_id', userProfile.uid)
+        .eq('user_id', userId)
         .order('session_date', { ascending: false });
 
       if (logsError) {

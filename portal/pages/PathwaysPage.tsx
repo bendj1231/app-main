@@ -1357,7 +1357,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['250 hrs', 'EASA CPL', 'A330 Type Rating Program'],
       tags: ['European Hub', 'A330F', 'Night Operations'],
       postedAt: 'EU Nationals Only',
-      image: 'https://www.aviationjobs.me/uploads/cache/socialBroadcastThumbnailFacebook/uploads/image/62286591eff11.jpeg'
+      image: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?q=80&w=800&auto=format&fit=crop'
     }
   ],
   privateSector: [
@@ -4193,9 +4193,9 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
           return;
         }
 
-        // Fetch from pilot_recognition_profiles table
+        // Fetch from pilot_recognition_matches table
         const { data, error } = await supabase
-          .from('pilot_recognition_profiles')
+          .from('pilot_recognition_matches')
           .select('total_hours, licenses, type_ratings, logged_hours, program_inputs')
           .eq('user_id', user.id)
           .maybeSingle();

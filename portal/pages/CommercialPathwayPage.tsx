@@ -347,7 +347,7 @@ export const CommercialPathwayPage: React.FC<CommercialPathwayPageProps> = ({ on
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
-        const { data } = await supabase.from('pilot_recognition_profiles').select('total_hours, licenses, type_ratings, logged_hours, program_inputs').eq('user_id', user.id).maybeSingle();
+        const { data } = await supabase.from('pilot_recognition_matches').select('total_hours, licenses, type_ratings, logged_hours, program_inputs').eq('user_id', user.id).maybeSingle();
         if (data) setProfile({ total_hours: data.total_hours, licenses: data.licenses, type_ratings: data.type_ratings, logged_hours: data.logged_hours, program_inputs: data.program_inputs });
       } catch (err) { console.error('Error:', err); }
     };

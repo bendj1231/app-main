@@ -32,6 +32,7 @@ interface DashboardPageProps {
   onViewEBTCBTAInterview?: () => void;
   isDarkMode?: boolean;
   userProfile?: {
+    id?: string;
     uid?: string;
     firstName?: string;
     lastName?: string;
@@ -992,11 +993,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       let lastEntryDate = pilotData.lastFlownDate;
 
       try {
+        const userId = userProfile?.id || userProfile?.uid;
+        if (!userId) throw new Error('No user ID available');
+        
         // Fetch study sessions from Supabase
         const { data: studyData, error: studyError } = await supabase
           .from('study_sessions')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .order('session_date', { ascending: false });
 
         if (studyError) {
@@ -1013,7 +1017,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         const { data: examData, error: examError } = await supabase
           .from('pilot_exams')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .order('exam_date', { ascending: false });
 
         if (examError) {
@@ -1041,7 +1045,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         const { data: logbookData, error: logbookError } = await supabase
           .from('pilot_flight_logs')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .order('date', { ascending: false });
 
         if (logbookError) {
@@ -1075,7 +1079,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           const { data: profileData, error: profileError } = await supabase
             .from('pilot_profiles')
             .select('*')
-            .eq('user_id', userProfile.uid)
+            .eq('user_id', userId)
             .single();
 
           if (profileError && profileError.code !== 'PGRST116') {
@@ -1098,7 +1102,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           const { data: progressData, error: progressError } = await supabase
             .from('program_progress')
             .select('*')
-            .eq('user_id', userProfile.uid)
+            .eq('user_id', userId)
             .eq('program_type', 'foundational')
             .single();
 
@@ -1173,7 +1177,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // Fetch licensure data from Supabase
   useEffect(() => {
     const fetchLicensureData = async () => {
-      if (!userProfile?.uid) {
+      const userId = userProfile?.id || userProfile?.uid;
+      if (!userId) {
         setLicensureLoading(false);
         return;
       }
@@ -1182,7 +1187,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         const { data, error } = await supabase
           .from('pilot_licensure_experience')
           .select('*')
-          .eq('user_id', userProfile.uid)
+          .eq('user_id', userId)
           .maybeSingle();
 
         if (error && error.code !== 'PGRST116' && error.code !== '406') {

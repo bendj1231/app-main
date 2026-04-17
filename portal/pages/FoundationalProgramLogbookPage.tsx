@@ -59,11 +59,12 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
     }
 
     try {
+      const userId = userProfile?.id || userProfile?.uid;
       // Fetch from Supabase study_sessions table
       const { data, error } = await supabase
         .from('study_sessions')
         .select('*')
-        .eq('user_id', userProfile.uid)
+        .eq('user_id', userId)
         .eq('session_type', 'mentorship')
         .order('session_date', { ascending: false });
 
@@ -76,7 +77,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
             date: '2026-03-20',
             mentorId: 'mentor_001',
             mentorEmail: 'captain.sarah@wingmentor.com',
-            menteeId: userProfile.uid || 'mentee_001',
+            menteeId: userId || 'mentee_001',
             menteeEmail: userProfile.email || 'pilot@example.com',
             description: 'Initial mentorship session - Career pathway assessment and goal setting',
             hours: 2.5,
@@ -91,7 +92,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
             date: '2026-03-18',
             mentorId: 'mentor_001',
             mentorEmail: 'captain.sarah@wingmentor.com',
-            menteeId: userProfile.uid || 'mentee_001',
+            menteeId: userId || 'mentee_001',
             menteeEmail: userProfile.email || 'pilot@example.com',
             description: 'Risk management techniques review and CRM principles discussion',
             hours: 1.5,
@@ -106,7 +107,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
             date: '2026-03-15',
             mentorId: 'mentor_002',
             mentorEmail: 'mentor.james@wingmentor.com',
-            menteeId: userProfile.uid || 'mentee_001',
+            menteeId: userId || 'mentee_001',
             menteeEmail: userProfile.email || 'pilot@example.com',
             description: 'Aviation industry familiarization and mentorship framework overview',
             hours: 2.0,

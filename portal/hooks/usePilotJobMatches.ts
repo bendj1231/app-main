@@ -192,7 +192,7 @@ export const usePilotJobMatches = ({
     try {
       // First, check if user has a pilot profile
       const { data: profile, error: profileError } = await supabase
-        .from('pilot_recognition_profiles')
+        .from('pilot_recognition_matches')
         .select('id, total_hours, licenses, type_ratings')
         .eq('user_id', userId)
         .single();
@@ -304,7 +304,7 @@ export const usePilotJobMatches = ({
         {
           event: '*',
           schema: 'public',
-          table: 'pilot_recognition_profiles',
+          table: 'pilot_recognition_matches',
           filter: `user_id=eq.${userId}`
         },
         () => {
@@ -368,7 +368,7 @@ export const usePilotProfile = (userId?: string) => {
     const fetchProfile = async () => {
       try {
         const { data, error } = await supabase
-          .from('pilot_recognition_profiles')
+          .from('pilot_recognition_matches')
           .select('*')
           .eq('user_id', userId)
           .single();
