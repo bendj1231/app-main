@@ -475,16 +475,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             });
             console.log('✅ localStorage cleared');
 
-            console.log('🔴 Attempting Supabase signOut in background...');
-            // Try to sign out from Supabase but don't wait for it
-            supabase.auth.signOut().catch(err => {
-                console.log('⚠️ Supabase signOut failed (non-critical):', err);
+            console.log('🔴 Signing out from Supabase...');
+            // Sign out from Supabase properly
+            await supabase.auth.signOut().catch(err => {
+                console.log('⚠️ Supabase signOut failed:', err);
             });
-
-            console.log('🔴 Clearing Supabase session...');
-            // Clear Supabase session
-            await supabase.auth.setSession({ access_token: '', refresh_token: '' });
-            console.log('✅ Supabase session cleared');
+            console.log('✅ Supabase signOut completed');
 
             console.log('✅ Logout completed');
         } catch (error) {
