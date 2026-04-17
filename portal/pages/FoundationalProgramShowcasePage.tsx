@@ -367,10 +367,63 @@ const FoundationalProgramShowcasePage: React.FC<FoundationalProgramShowcasePageP
                     ))}
                 </div>
 
-                <section style={{ marginBottom: '4rem', position: 'relative' }}>
-                    <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', borderRadius: '24px' }}>
-                        <SmokeShader />
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/40" />
+                <section style={{ marginBottom: '4rem', position: 'relative', minHeight: '600px', borderRadius: '24px', overflow: 'hidden' }}>
+                    <div style={{ position: 'absolute', inset: 0, zIndex: 0, height: '600px', width: '100%' }}>
+                        <div className="relative w-full h-full overflow-hidden" style={{ height: '600px' }}>
+                            <canvas
+                                ref={(canvas) => {
+                                    if (!canvas) return;
+                                    const ctx = canvas.getContext('2d');
+                                    if (!ctx) return;
+                                    
+                                    const resizeCanvas = () => {
+                                        canvas.width = canvas.parentElement?.clientWidth || 800;
+                                        canvas.height = 600;
+                                    };
+                                    
+                                    resizeCanvas();
+                                    window.addEventListener('resize', resizeCanvas);
+                                    
+                                    // Initialize shader animation here (simplified version)
+                                    const animate = () => {
+                                        const gradient = ctx.createLinearGradient(0, 0, 0, 600);
+                                        gradient.addColorStop(0, '#2a3f5a');
+                                        gradient.addColorStop(0.4, '#3f5f82');
+                                        gradient.addColorStop(0.8, '#5f88ad');
+                                        gradient.addColorStop(1, '#7aa3c4');
+                                        ctx.fillStyle = gradient;
+                                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                                        
+                                        // Simple cloud effect
+                                        const time = Date.now() * 0.0001;
+                                        for (let i = 0; i < 5; i++) {
+                                            const x = (Math.sin(time + i) * 0.5 + 0.5) * canvas.width;
+                                            const y = (Math.cos(time * 0.7 + i * 0.5) * 0.5 + 0.5) * canvas.height;
+                                            const radius = 100 + Math.sin(time + i) * 50;
+                                            
+                                            const cloudGradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                                            cloudGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+                                            cloudGradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+                                            cloudGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                                            ctx.fillStyle = cloudGradient;
+                                            ctx.beginPath();
+                                            ctx.arc(x, y, radius, 0, Math.PI * 2);
+                                            ctx.fill();
+                                        }
+                                        
+                                        requestAnimationFrame(animate);
+                                    };
+                                    
+                                    animate();
+                                    
+                                    return () => {
+                                        window.removeEventListener('resize', resizeCanvas);
+                                    };
+                                }}
+                                className="absolute inset-0 w-full h-full"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/40" />
+                        </div>
                     </div>
                     <div style={{ position: 'relative', zIndex: 1 }}>
                         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
