@@ -605,6 +605,17 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       localStorage.removeItem('supabase.auth.token');
       localStorage.removeItem('supabase.auth.refreshToken');
       
+      // Clear IndexedDB session from main app
+      try {
+        const db = await (window as any).indexedDB.open('PilotRecognitionAuth', 1);
+        const transaction = db.transaction(['authSession'], 'readwrite');
+        const store = transaction.objectStore('authSession');
+        store.delete('currentSession');
+        console.log('✅ IndexedDB session cleared from portal logout');
+      } catch (error) {
+        console.error('❌ Error clearing IndexedDB session from portal:', error);
+      }
+      
       // Reset auth state
       setAuthState({
         user: null,
