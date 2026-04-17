@@ -91,7 +91,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: '500px',
-                maxHeight: '80vh',
+                maxHeight: '85vh',
                 padding: 0,
                 maxWidth: '900px',
                 width: '100%',
