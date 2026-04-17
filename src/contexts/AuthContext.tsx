@@ -88,6 +88,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     
                     userId = existingUser.id;
                     console.log('✅ Found existing auth user:', userId);
+                    
+                    // Send confirmation email for existing user
+                    if (!existingUser.email_confirmed_at) {
+                        console.log('User email not confirmed, sending confirmation email...');
+                        const { error: resendError } = await supabase.auth.resend({
+                            type: 'signup',
+                            email
+                        });
+                        if (resendError) {
+                            console.warn('⚠️ Failed to resend confirmation email:', resendError);
+                            // Non-critical: continue with profile creation
+                        } else {
+                            console.log('✅ Confirmation email sent');
+                        }
+                    } else {
+                        console.log('User email already confirmed');
+                    }
                 } else {
                     console.error('❌ Supabase auth error:', supabaseError);
                     throw new Error(`Supabase auth failed: ${supabaseError.message}`);
