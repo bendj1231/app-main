@@ -6,12 +6,17 @@ import { useAuth } from '@/src/contexts/AuthContext';
 interface ProfileModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onNavigate?: (page: string) => void;
 }
 
-export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) => {
+export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onNavigate }) => {
     const { currentUser } = useAuth();
     const [profileImageUrl, setProfileImageUrl] = useState<string>('');
     const [pilotId, setPilotId] = useState<string>('');
+    const [totalHours, setTotalHours] = useState<number>(0);
+    const [mentorshipHours, setMentorshipHours] = useState<number>(0);
+    const [recognitionScore, setRecognitionScore] = useState<number>(0);
+    const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState<boolean>(false);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -29,6 +34,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
                 if (data) {
                     setPilotId(data.pilot_id || '');
                     setProfileImageUrl(data.profile_image_url || '');
+                    setTotalHours(data.total_flight_hours || 0);
+                    setMentorshipHours(data.mentorship_hours || 0);
+                    setRecognitionScore(data.recognition_score || 0);
+                    setIsEnrolledInFoundation(data.enrolled_programs?.includes('Foundational') || false);
                 }
             } catch (err) {
                 console.error('Error fetching profile data:', err);
@@ -147,9 +156,21 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
                                 </div>
                                 <div>
                                     <p className="text-xs text-slate-600 uppercase tracking-wider">Total Hours</p>
-                                    <p className="text-lg font-semibold text-slate-900">Loading...</p>
+                                    <p className="text-lg font-semibold text-slate-900">{totalHours.toFixed(1)} hrs</p>
                                 </div>
                             </div>
+
+                            {isEnrolledInFoundation && (
+                                <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl">
+                                    <div className="p-2 bg-green-100 rounded-lg">
+                                        <Clock className="w-5 h-5 text-green-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Mentorship Hours</p>
+                                        <p className="text-lg font-semibold text-slate-900">{mentorshipHours.toFixed(1)} hrs</p>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
                                 <div className="p-2 bg-green-100 rounded-lg">
@@ -157,7 +178,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
                                 </div>
                                 <div>
                                     <p className="text-xs text-slate-600 uppercase tracking-wider">Recognition Score</p>
-                                    <p className="text-lg font-semibold text-slate-900">Loading...</p>
+                                    <p className="text-lg font-semibold text-slate-900">{recognitionScore.toFixed(0)}/100</p>
                                 </div>
                             </div>
                         </div>
@@ -165,14 +186,20 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
                         {/* Action Buttons */}
                         <div className="space-y-3 pt-4 border-t border-slate-200">
                             <button
-                                onClick={() => {/* TODO: Navigate to recognition profile */}}
+                                onClick={() => {
+                                    onNavigate?.('pilot-recognition');
+                                    onClose();
+                                }}
                                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors"
                             >
                                 <User className="w-5 h-5" />
                                 View Recognition Profile
                             </button>
                             <button
-                                onClick={() => {/* TODO: Navigate to edit profile */}}
+                                onClick={() => {
+                                    onNavigate?.('portal');
+                                    onClose();
+                                }}
                                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-xl font-semibold transition-colors"
                             >
                                 <Edit className="w-5 h-5" />

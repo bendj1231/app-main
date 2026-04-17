@@ -454,7 +454,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             </div>
 
             {/* Profile Modal */}
-            <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
+            <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} onNavigate={onNavigate} />
 
             {/* Login Modal - moved to root level */}
         </>
