@@ -629,21 +629,28 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
                             {currentUser && (
                                 <div className="flex gap-4 mt-4">
-                                    <button
-                                        onClick={() => onNavigate('portal')}
-                                        className="flex-1 py-3 rounded-sm bg-slate-700 hover:bg-slate-800 text-white font-bold uppercase tracking-widest flex items-center justify-center gap-2"
-                                        title="Profile"
-                                    >
-                                        <User className="w-5 h-5" />
-                                        Profile
-                                    </button>
-                                    <button
-                                        className="flex-1 py-3 rounded-sm bg-slate-700 hover:bg-slate-800 text-white font-bold uppercase tracking-widest flex items-center justify-center gap-2"
-                                        title="Settings"
-                                    >
-                                        <Settings className="w-5 h-5" />
-                                        Settings
-                                    </button>
+                                    <div className="flex-1 flex items-center justify-center gap-2">
+                                        <div className="relative">
+                                            <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center overflow-hidden">
+                                                {profileImageUrl ? (
+                                                    <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <User className="w-8 h-8 text-slate-400" />
+                                                )}
+                                            </div>
+                                            <label className="absolute bottom-0 right-0 p-1.5 bg-blue-600 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
+                                                <Camera className="w-3 h-3" />
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleImageUpload}
+                                                    disabled={uploading}
+                                                    className="hidden"
+                                                />
+                                            </label>
+                                        </div>
+                                        <span className="text-white text-sm font-medium">{pilotId || 'Pilot'}</span>
+                                    </div>
                                 </div>
                             )}
                         </div>
