@@ -101,6 +101,7 @@ import { ProgramsPage } from './components/website/components/programs/ProgramsP
 import { PathwaysPage } from './components/website/components/pathways/PathwaysPage';
 const PortalWrapper = lazy(() => import('./components/website/components/portal/PortalWrapper').then(m => ({ default: m.PortalWrapper })));
 import { DirectEnrollmentLoadingScreen } from './components/website/components/home/DirectEnrollmentLoadingScreen';
+import { DirectPlatformLoadingScreen } from './components/website/components/home/DirectPlatformLoadingScreen';
 import { AviationInsightsDirectoryPage } from './components/website/components/AviationInsightsDirectoryPage';
 import { ApplicationsSystemsDirectoryPage } from './components/website/components/ApplicationsSystemsDirectoryPage';
 import { MembershipDirectoryPage } from './components/website/components/MembershipDirectoryPage';
@@ -203,6 +204,7 @@ const App = () => {
   const [appError, setAppError] = useState<string | null>(null);
   const [directToEnrollment, setDirectToEnrollment] = useState(false);
   const [showDirectEnrollmentLoading, setShowDirectEnrollmentLoading] = useState(false);
+  const [showDirectPlatformLoading, setShowDirectPlatformLoading] = useState(false);
   const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState(false);
   const { currentUser, logout } = useAuth(); // Get current user and logout function
 
@@ -300,6 +302,13 @@ const App = () => {
       setShowDirectEnrollmentLoading(true);
       // Hide loading screen after 2 seconds
       setTimeout(() => setShowDirectEnrollmentLoading(false), 2000);
+    }
+
+    // Show direct platform loading screen if navigating to foundational-platform
+    if (pageWithoutQuery === 'foundational-platform') {
+      setShowDirectPlatformLoading(true);
+      // Hide loading screen after 2 seconds
+      setTimeout(() => setShowDirectPlatformLoading(false), 2000);
     }
 
     // Store selected airline if provided
@@ -757,6 +766,9 @@ const App = () => {
               directToEnrollment={directToEnrollment}
             />
           </Suspense>
+        )}
+        {currentPage === 'foundational-platform' && showDirectPlatformLoading && (
+          <DirectPlatformLoadingScreen />
         )}
       </div>
 
