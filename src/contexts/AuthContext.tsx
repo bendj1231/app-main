@@ -425,6 +425,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async function logout() {
         console.log('🔴 Logout function called');
         try {
+            console.log('🔴 Clearing IndexedDB session first...');
+            // Clear IndexedDB session first to prevent verification interference
+            await indexedDB.clearSession();
+            console.log('✅ IndexedDB session cleared');
+
             console.log('🔴 Signing out from Supabase...');
             // First, sign out from Supabase and wait for it to complete
             await supabase.auth.signOut();
@@ -434,11 +439,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             // Clear all Supabase storage to prevent session restoration
             await supabase.auth.setSession({ access_token: '', refresh_token: '' });
             console.log('✅ Supabase session cleared');
-
-            console.log('🔴 Clearing IndexedDB session...');
-            // Clear IndexedDB session after signout
-            await indexedDB.clearSession();
-            console.log('✅ IndexedDB session cleared');
 
             console.log('🔴 Clearing localStorage...');
             // Clear localStorage items that might contain session data
