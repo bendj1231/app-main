@@ -27,7 +27,7 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
                         Your central hub to access programs, pathways, pilot recognition profile, and comprehensive aviation resources.
                     </p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div className="grid grid-cols-3 gap-6 mb-8">
                         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md">
                             <h3 className="font-semibold text-slate-900 mb-1">Examination Terminal</h3>
                             <p className="text-sm text-slate-600">Access through programs or dashboard page</p>
