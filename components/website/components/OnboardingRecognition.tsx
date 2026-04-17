@@ -35,7 +35,7 @@ const recognitions = [
         title: 'Milestone Tracking',
         description: 'Celebrate your aviation journey achievements',
         image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&h=600&fit=crop',
-        details: 'Track your progress through various milestones from first solo to type ratings. Celebrate your achievements and see how far you've come in your aviation career.'
+        details: 'Track your progress through various milestones from first solo to type ratings. Celebrate your achievements and see how far you have come in your aviation career.'
     }
 ];
 
