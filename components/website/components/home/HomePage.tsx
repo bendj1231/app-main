@@ -17,6 +17,13 @@ interface HomePageProps {
     isLoggedIn?: boolean;
     onLoginModalOpen?: () => void;
     isEnrolledInFoundation?: boolean;
+    pilotId?: string;
+    totalHours?: number;
+    lastFlown?: string;
+    mentorshipHours?: number;
+    foundationProgress?: number;
+    examinationScore?: number;
+    overallRecognitionScore?: number;
 }
 
 interface Slide {
@@ -432,7 +439,22 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = ({ onJoinUs }) => {
     );
 };
 
-export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigate, onGoToProgramDetail, isLoggedIn = false, onLoginModalOpen, isEnrolledInFoundation = false }) => {
+export const HomePage: React.FC<HomePageProps> = ({
+    onJoinUs,
+    onLogin,
+    onNavigate,
+    onGoToProgramDetail,
+    isLoggedIn,
+    onLoginModalOpen,
+    isEnrolledInFoundation,
+    pilotId,
+    totalHours,
+    lastFlown,
+    mentorshipHours,
+    foundationProgress,
+    examinationScore,
+    overallRecognitionScore,
+}) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [scrolled, setScrolled] = useState(false);
     const [activeCategory, setActiveCategory] = useState<
@@ -1081,7 +1103,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-[10px] text-red-200 uppercase tracking-[0.2em] mb-1">Pilot Recognition Profile</p>
-                                            <h4 className="text-2xl font-bold text-white">Pete Mitchell</h4>
+                                            <h4 className="text-2xl font-bold text-white">{pilotId || 'Pilot'}</h4>
                                             <p className="text-sm text-red-100">WingMentor Recognition Portfolio</p>
                                         </div>
                                         <div className="text-right">
@@ -1103,20 +1125,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onJoinUs, onLogin, onNavigat
                                             {/* Flight Hours Grid */}
                                             <div className="grid grid-cols-2 gap-2 mb-4">
                                                 <div className="bg-slate-50 rounded-lg p-3 text-center">
-                                                    <p className="text-[10px] text-slate-500 mb-1">Dual XC hrs</p>
-                                                    <p className="text-lg font-bold text-slate-900">85</p>
+                                                    <p className="text-[10px] text-slate-500 mb-1">Total Hours</p>
+                                                    <p className="text-lg font-bold text-slate-900">{totalHours || 0}</p>
                                                 </div>
                                                 <div className="bg-slate-50 rounded-lg p-3 text-center">
-                                                    <p className="text-[10px] text-slate-500 mb-1">Dual LOC</p>
-                                                    <p className="text-lg font-bold text-slate-900">42</p>
+                                                    <p className="text-[10px] text-slate-500 mb-1">Mentorship</p>
+                                                    <p className="text-lg font-bold text-slate-900">{mentorshipHours || 0}</p>
                                                 </div>
                                                 <div className="bg-slate-50 rounded-lg p-3 text-center">
-                                                    <p className="text-[10px] text-slate-500 mb-1">PIC LOC</p>
-                                                    <p className="text-lg font-bold text-slate-900">156</p>
+                                                    <p className="text-[10px] text-slate-500 mb-1">Foundation</p>
+                                                    <p className="text-lg font-bold text-slate-900">{foundationProgress || 0}%</p>
                                                 </div>
                                                 <div className="bg-slate-50 rounded-lg p-3 text-center">
-                                                    <p className="text-[10px] text-slate-500 mb-1">LOC XC</p>
-                                                    <p className="text-lg font-bold text-slate-900">78</p>
+                                                    <p className="text-[10px] text-slate-500 mb-1">Recognition</p>
+                                                    <p className="text-lg font-bold text-slate-900">{overallRecognitionScore || 0}</p>
                                                 </div>
                                             </div>
 

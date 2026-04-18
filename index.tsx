@@ -74,6 +74,7 @@ import { PilotGapInfoPage } from './components/website/components/PilotGapInfoPa
 import { PilotRecognitionPage } from './components/website/components/pilot-recognition/PilotRecognitionPage';
 import { AirTaxiPathwaysPage } from './components/website/components/pathways/AirTaxiPathwaysPage';
 import { PrivateCharterPathwaysPage } from './components/website/components/pathways/PrivateCharterPathwaysPage';
+import { CargoTransportationPage } from './components/website/components/pathways/CargoTransportationPage';
 import { EBTCBTAPage } from './components/website/components/EBTCBTAPage';
 import { AirlineExpectationsPage } from './components/website/components/AirlineExpectationsPage';
 import { ATLASCVPage } from './components/website/components/pilot-recognition/ATLASCVDirectoryPage';
@@ -111,6 +112,7 @@ import { MembershipBenefitsPage } from './components/website/components/Membersh
 import { DownloadPage } from './components/website/components/DownloadPage'; // New Import
 import { useAuth } from './src/contexts/AuthContext'; // New Import
 import { LoginModal } from './components/website/components/LoginModal';
+import { SettingsDirectoryPage } from './components/website/components/SettingsDirectoryPage';
 
 
 
@@ -206,6 +208,13 @@ const App = () => {
   const [showDirectEnrollmentLoading, setShowDirectEnrollmentLoading] = useState(false);
   const [showDirectPlatformLoading, setShowDirectPlatformLoading] = useState(false);
   const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState(false);
+  const [pilotId, setPilotId] = useState('');
+  const [totalHours, setTotalHours] = useState(0);
+  const [lastFlown, setLastFlown] = useState('');
+  const [mentorshipHours, setMentorshipHours] = useState(0);
+  const [foundationProgress, setFoundationProgress] = useState(0);
+  const [examinationScore, setExaminationScore] = useState(0);
+  const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
   const { currentUser, logout } = useAuth(); // Get current user and logout function
 
   // Fetch user's enrollment status from Supabase
@@ -236,14 +245,48 @@ const App = () => {
         } else {
           setIsEnrolledInFoundation(false);
         }
-      } catch (error) {
-        console.error('Error fetching enrollment status:', error);
+      } catch (err) {
+        console.error('Error fetching enrollment status:', err);
         setIsEnrolledInFoundation(false);
       }
     };
 
     fetchEnrollmentStatus();
-  }, [currentUser?.email]);
+  }, [currentUser]);
+
+  // Fetch user's profile data from Supabase
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (!currentUser?.uid) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('pilot_id, profile_image_url, total_flight_hours, last_flown, mentorship_hours, foundation_progress, examination_score, overall_recognition_score, enrolled_programs')
+          .eq('id', currentUser.uid)
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error fetching profile data:', error);
+          return;
+        }
+
+        if (data) {
+          setPilotId(data.pilot_id || '');
+          setTotalHours(data.total_flight_hours || 0);
+          setLastFlown(data.last_flown || '');
+          setMentorshipHours(data.mentorship_hours || 0);
+          setFoundationProgress(data.foundation_progress || 0);
+          setExaminationScore(data.examination_score || 0);
+          setOverallRecognitionScore(data.overall_recognition_score || 0);
+        }
+      } catch (err) {
+        console.error('Error fetching profile data:', err);
+      }
+    };
+
+    fetchProfileData();
+  }, [currentUser]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -421,6 +464,13 @@ const App = () => {
             isLoggedIn={!!currentUser}
             onLoginModalOpen={() => setIsLoginModalOpen(true)}
             isEnrolledInFoundation={isEnrolledInFoundation}
+            pilotId={pilotId}
+            totalHours={totalHours}
+            lastFlown={lastFlown}
+            mentorshipHours={mentorshipHours}
+            foundationProgress={foundationProgress}
+            examinationScore={examinationScore}
+            overallRecognitionScore={overallRecognitionScore}
             onGoToProgramDetail={(slide) => {
               if (slide?.title === 'Emirates ATPL Pilot Pathways') {
                 navigateTo('emirates-atpl');
@@ -562,6 +612,14 @@ const App = () => {
 
         {currentPage === 'private-charter-pathways' && (
           <PrivateCharterPathwaysPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+
+        {currentPage === 'cargo-transportation' && (
+          <CargoTransportationPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
             onLogin={navigateToPortal}
@@ -735,6 +793,13 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
+        {currentPage === 'settings' && (
+          <SettingsDirectoryPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
         {currentPage === 'programs-pathways' && (
           <ProgramsPathwaysPage
             onBack={() => navigateTo('home')}
@@ -779,7 +844,7 @@ const App = () => {
         'account-confirmation',
         'onboarding-pilot-portal', 'onboarding-programs', 'onboarding-recognition',
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
-        'pilot-recognition', 'air-taxi-pathways', 'private-charter-pathways', 'ebt-cbta',
+        'pilot-recognition', 'air-taxi-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
         'pilot-gap', 'website'
       ].includes(currentPage) && (
