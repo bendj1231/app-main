@@ -69,23 +69,14 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                         <div className="bg-slate-50 p-6 rounded-xl">
-                            <div className="flex items-center justify-center mb-4">
-                                <Building2 className="w-12 h-12 text-blue-600" />
-                            </div>
                             <h3 className="text-xl font-bold text-slate-900 mb-2">Commercial Airlines</h3>
                             <p className="text-slate-700 text-sm">Major carriers and regional airlines seeking qualified pilots</p>
                         </div>
                         <div className="bg-slate-50 p-6 rounded-xl">
-                            <div className="flex items-center justify-center mb-4">
-                                <Briefcase className="w-12 h-12 text-blue-600" />
-                            </div>
                             <h3 className="text-xl font-bold text-slate-900 mb-2">Private Charter</h3>
                             <p className="text-slate-700 text-sm">VIP and corporate aviation opportunities</p>
                         </div>
                         <div className="bg-slate-50 p-6 rounded-xl">
-                            <div className="flex items-center justify-center mb-4">
-                                <Target className="w-12 h-12 text-blue-600" />
-                            </div>
                             <h3 className="text-xl font-bold text-slate-900 mb-2">Cargo Operations</h3>
                             <p className="text-slate-700 text-sm">Freight and logistics aviation pathways</p>
                         </div>
