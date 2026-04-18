@@ -119,6 +119,33 @@ import { useAuth } from './src/contexts/AuthContext'; // New Import
 import { LoginModal } from './components/website/components/LoginModal';
 import { SettingsDirectoryPage } from './components/website/components/SettingsDirectoryPage';
 
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { currentUser, loading } = useAuth();
+  const navigate = useLocation();
+
+  useEffect(() => {
+    if (!loading && !currentUser) {
+      // Redirect to home if not authenticated
+      window.location.href = '/';
+    }
+  }, [currentUser, loading]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-white text-xl">Checking authentication...</div>
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return null; // Will redirect in useEffect
+  }
+
+  return <>{children}</>;
+};
+
 // OAuth Callback Component
 const OAuthCallback = () => {
   useEffect(() => {
@@ -1189,6 +1216,13 @@ root.render(
       <ToastProvider>
         <Routes>
           <Route path="/callback" element={<OAuthCallback />} />
+          <Route path="/portal" element={
+            <ProtectedRoute>
+              <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center"><div className="text-white text-xl">Loading Portal...</div></div>}>
+                <PortalWrapper onNavigate={() => {}} onBack={() => {}} />
+              </Suspense>
+            </ProtectedRoute>
+          } />
           <Route path="/*" element={
             <>
               <App />
