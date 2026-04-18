@@ -129,10 +129,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         setOAuthLoading(true);
         setError('');
         try {
+            const redirectUri = `${window.location.origin}/callback`;
+            console.log('Google OAuth redirect URI:', redirectUri);
+            console.log('Window location origin:', window.location.origin);
+            
             const authUrl = generateGoogleAuthUrl({
-                redirectUri: `${window.location.origin}/callback`,
+                redirectUri: redirectUri,
                 prompt: 'consent',
             });
+            
+            console.log('Google OAuth auth URL:', authUrl);
             // Redirect to Google's OAuth authorization page
             window.location.href = authUrl;
         } catch (err: any) {
