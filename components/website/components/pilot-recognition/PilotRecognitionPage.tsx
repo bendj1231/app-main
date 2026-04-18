@@ -29,193 +29,165 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                         Professional Identity
                     </p>
-                    <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
+                    <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
                         Pilot Recognition
                     </h1>
-                    <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                        The biggest problem in the aviation industry is <strong>Recognition</strong>. A pilot spends <strong>$50,000 USD</strong> on training and <strong>4 grueling years</strong> of a university degree, only to end up looking at job application sites that haven't been updated since <strong>2007</strong>, or desperately job hunting on <strong>Facebook</strong>, which crosses the line of professionalism. This is the hard truth, and it's why <strong>PilotRecognition.com</strong> was established. After direct talks with <strong>AIRBUS</strong>, <strong>Etihad</strong>, and <strong>Archer</strong>, there is no denying the facts: what about pilots who just graduated and are unable to find a job after earning a degree due to the <strong>1500-hour barrier</strong>? What about <strong>flight instructors</strong> who barely managed to reach those hours and are still stuck in the same flight school for more than <strong>10 years</strong>? What about airline pilots flying <strong>international long-haul flights</strong> who are looking for a career change but are <strong>time-constrained</strong>? You have come to the right place. Welcome to the <strong>future of aviation</strong>, where communication between the industry and the pilot profession <strong>bridges the gap</strong>.
+                    <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-700 mb-6">
+                        Recognition-Based Profile
                     </p>
+                    <div className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 space-y-12 pt-12">
+                        <div>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-3">
+                                The Problem
+                            </p>
+                            <p>
+                                The most significant challenge facing the aviation industry today is professional <strong>Recognition</strong>. Pilots invest <strong>$50,000 USD</strong> in training and dedicate <strong>4 years</strong> to university education, yet many find themselves relying on job application platforms that have not been updated since <strong>2007</strong>, or resorting to informal job searches on social media platforms such as <strong>Facebook</strong>, which undermines professional standards.
+                            </p>
+                        </div>
+
+                        <div>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-3">
+                                The Solution & Challenges
+                            </p>
+                            <p>
+                                This reality prompted the establishment of <strong>PilotRecognition.com</strong>. Following strategic discussions with <strong>AIRBUS</strong>, <strong>Etihad</strong>, and <strong>Archer</strong>, the industry faces undeniable challenges: recent graduates are unable to secure employment due to the <strong>1500-hour requirement</strong>, flight instructors who have reached these hours remain employed at the same flight school for over <strong>10 years</strong>, and airline pilots operating <strong>international long-haul flights</strong> seek career advancement opportunities while constrained by time limitations.
+                            </p>
+                        </div>
+
+                        <div>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-3">
+                                The Future
+                            </p>
+                            <p>
+                                You have arrived at the appropriate destination. Welcome to the <strong>future of aviation</strong>, where effective communication between the industry and the pilot profession <strong>bridges the gap</strong>.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             {/* Readable Content */}
             <div className="py-12 px-6 max-w-6xl mx-auto space-y-16">
-                {/* Section 1: Unified Aviation Identity */}
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                            Single Source of Truth
-                        </p>
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-                            Unified Aviation Identity
-                        </h2>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Your complete aviation journey in one verified digital profile. WingMentor consolidates flight hours, certifications, mentorship, and career milestones into a single source of truth that travels with you throughout your professional life.
-                        </p>
-                        <div className="flex flex-col gap-2 mt-4">
-                            <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                                <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Single Profile</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                                <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Career Timeline</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                                <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Cross-Platform</span>
-                            </div>
+                {/* Section 1: Re-inventing the Pilot Flight Logbook */}
+                <div className="text-center max-w-4xl mx-auto">
+                    <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                        Innovation
+                    </p>
+                    <h2 className="text-2xl md:text-3xl font-serif text-slate-900 mb-4">
+                        Re-inventing the Pilot Flight Logbook
+                    </h2>
+                    <p className="text-base text-slate-700 leading-relaxed mb-4">
+                        Many believe that <strong>re-inventing</strong> an existing system for logging flight hours would be a waste of time. When people speak of <strong>digitalization</strong> as the innovation of aviation, they refer to digital logbooks that enable logging flight hours on an <strong>iPad</strong>. However, nothing has fundamentally changed—the transition from a book to an iPad merely replicates the same input process. While digital logbooks can store <strong>1000 hours</strong>, so can paper logbooks.
+                    </p>
+                    <p className="text-base text-slate-700 leading-relaxed mb-4">
+                        The <strong>traditional logbook</strong> has remained unchanged. PilotRecognition.com introduces <strong>Pilot Recognition-based Flight Logbooks</strong>, where your logbook serves a meaningful purpose beyond proving flight hours for checkrides or recency requirements. We have implemented <strong>live tracking</strong> of your hours, where every hour contributes to your <strong>Pilot Recognition Score</strong>.
+                    </p>
+                    <p className="text-base text-slate-700 leading-relaxed mb-4">
+                        When airlines access our platform, they gain access to a <strong>database of pilots</strong>. They would rather see a pilot who has maintained a <strong>high recognition score</strong>, indicating recent flight activity, than a pilot who has not flown for <strong>two years</strong> despite having <strong>1000 hours</strong>. A pilot with <strong>500 recent hours</strong> holds greater value than a pilot with <strong>1500 hours</strong> who flew <strong>five years ago</strong>.
+                    </p>
+                    <p className="text-base text-slate-700 leading-relaxed mb-4">
+                        We have identified the <strong>recognition factor</strong> in your logbook and will ensure your logbook keeps you on track. Our <strong>PilotRecogAI</strong> will provide notifications such as: "John, your recognition score is declining. Why not book a flight occasionally, since you have been aiming for that airline expectation?"
+                    </p>
+                </div>
+
+                {/* Section 2: Recognition-Based Pathways */}
+                <div className="text-center max-w-4xl mx-auto">
+                    <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
+                        Recognition-Based Pathways
+                    </h2>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        Your <strong>Pilot Recognition Profile</strong> will automatically suggest pathways based on your <strong>Pilot Recognition Profile Score</strong> and match percentage. The score determines an overall assessment of your profile in comparison to the overall job position, and you will be in greater favor if you possess a <strong>higher score</strong>. This <strong>intelligent matching system</strong> analyzes your flight hours, certifications, competencies, and recent activity to identify the <strong>most suitable career opportunities</strong> tailored to your professional development.
+                    </p>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        <strong>Operators and airlines</strong> will access your profile based on your interests in their programs or pathways, and they will evaluate your <strong>profile score</strong>. The <strong>percentage match</strong> compares the requirements from the job to your current profile, providing you with a percentage. This comprehensive evaluation ensures that airlines can identify pilots who not only meet the technical requirements but also demonstrate <strong>recent engagement</strong>, competency growth, and alignment with their specific operational needs and organizational culture.
+                    </p>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        By maintaining a <strong>high recognition score</strong> through consistent flight activity and skill development, you increase your <strong>visibility to recruiters</strong> and enhance your chances of securing desirable positions. The system continuously updates your profile score as you log flight hours, complete training programs, and achieve new certifications, ensuring that your <strong>professional standing</strong> is always current and accurately reflects your capabilities and readiness for career advancement.
+                    </p>
+                </div>
+
+                {/* Section 3: Initial-Recognition Profile */}
+                <div className="text-center max-w-4xl mx-auto">
+                    <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                        Getting Started
+                    </p>
+                    <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
+                        Initial-Recognition Profile
+                    </h2>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        Your journey begins with creating your <strong>Initial-Recognition Profile</strong>, the foundation of your professional aviation identity. This comprehensive profile captures your flight experience, certifications, training history, and competency assessments in a unified digital format that serves as your passport to the aviation industry.
+                    </p>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        Upon registration, you will be guided through a structured onboarding process that collects essential information including your flight hours, aircraft types flown, licenses held, and specialized training completed. This data is verified and integrated into your <strong>Pilot Recognition Score</strong>, providing you with an immediate baseline assessment of your professional standing.
+                    </p>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        Your <strong>Initial-Recognition Profile</strong> is not static—it evolves with your career. As you log new flight hours, complete additional training programs, and achieve new certifications, your profile updates in real-time, ensuring that your professional identity always reflects your current capabilities and readiness for new opportunities.
+                    </p>
+                </div>
+
+                {/* Section 4: First Step Towards Pilot Recognition */}
+                <div className="text-center max-w-4xl mx-auto">
+                    <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                        Foundation Program
+                    </p>
+                    <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
+                        First Step Towards Pilot Recognition
+                    </h2>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        The <strong>Foundation Program</strong> is your first step towards building a credible and recognized pilot profile. This recognition-based program is designed to establish a solid foundation of aviation knowledge, competency, and industry standards that global manufacturers and operators recognize as credible experience. The program is <strong>EBT CBTA Aligned with AIRBUS</strong>, ensuring that your recognition meets the highest international standards in evidence-based training and competency-based training and assessment.
+                    </p>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        Through strategic partnerships with industry leaders including <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>, <strong>MLG</strong>, <strong>Cebu Pacific</strong>, and <strong>WCC Pilot Academy</strong>, the Foundation Program provides a recognition framework that aligns with the highest industry standards. Upon completion, your profile reflects this achievement, demonstrating to airlines and operators that you have undergone rigorous assessment and verification.
+                    </p>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        This program significantly impacts your <strong>Pilot Recognition Score</strong> by adding verified recognition credentials, competency assessments, and industry-recognized certifications to your profile. As you progress through the program, your profile evolves, building a comprehensive <strong>pilot portfolio</strong> that showcases your skills, knowledge, and readiness for career opportunities.
+                    </p>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        The Foundation Program consists of <strong>5 core stages</strong>: <strong>The Context</strong> (Module 1 with 5 chapters addressing industry issues), <strong>W1000 Access</strong> (examination practice and core material), <strong>Examination</strong> (baseline assessment), <strong>Mentorship</strong> (road to 50hrs certification), and <strong>AIRBUS Interview</strong> (EBT-aligned evaluation with certificate of achievement). Each stage is designed to progressively build your recognition credentials.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                            <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Industry-Recognized Recognition</span>
                         </div>
-                    </div>
-                    <div className="md:w-1/2">
-                        <div className="relative w-full max-w-md mx-auto">
-                            <img
-                                src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=2940&auto=format&fit=crop"
-                                alt="Unified Aviation Identity"
-                                className="w-full rounded-3xl shadow-lg object-cover"
-                            />
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                            <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Global Partners</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                            <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Portfolio Building</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Section 2: Verified Professional Standing */}
-                <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                            Cryptographic Proof
-                        </p>
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-                            Verified Professional Standing
-                        </h2>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Every credential, flight hour, and achievement is cryptographically verified. Our blockchain-backed verification system creates an unbreakable chain of custody that airlines and regulatory bodies trust implicitly.
-                        </p>
-                        <div className="flex flex-col gap-2 mt-4">
-                            <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                                <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Cryptographic Proof</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                                <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Real-Time Verification</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                                <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Industry Trust</span>
-                            </div>
+                {/* Section 5: Transition Program */}
+                <div className="text-center max-w-4xl mx-auto">
+                    <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                        Upcoming Program
+                    </p>
+                    <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
+                        Transition Program
+                    </h2>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        Our upcoming <strong>Transition Program</strong> integrates <strong>AIRBUS HINFACT applications</strong> and <strong>ATLAS CV resume ATS screening</strong> for all users. As the aviation industry increasingly relies on <strong>AI-based recruitment</strong> rather than manual resume screening, we ensure our platform keeps pace with industry standards and technological advancements. We are also working with <strong>insurance underwriters</strong> to help identify high-risk pilots for airlines, providing valuable risk assessment data that enhances hiring decisions and operational safety.
+                    </p>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        Every credential, flight hour, and achievement is <strong>cryptographically verified</strong>. Our blockchain-backed verification system creates an <strong>unbreakable chain of custody</strong> that airlines and regulatory bodies trust implicitly.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                            <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Cryptographic Proof</span>
                         </div>
-                    </div>
-                    <div className="md:w-1/2">
-                        <div className="relative w-full max-w-md mx-auto">
-                            <img
-                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop"
-                                alt="Verified Professional Standing"
-                                className="w-full rounded-3xl shadow-lg object-cover"
-                            />
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                            <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Real-Time Verification</span>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Gated Content Container */}
-            <div className="relative">
-                {/* Content Sections (Blurred) */}
-                <div className="blur-[12px] opacity-20 pointer-events-none select-none transition-all duration-700">
-                    <div className="py-12 px-6 max-w-6xl mx-auto space-y-16">
-                        {/* Section 3: AI-Native Career Intelligence */}
-                        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                            <div className="md:w-1/2 text-center md:text-left">
-                                <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                    AI Integration
-                                </p>
-                                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-                                    AI-Native Career Intelligence
-                                </h2>
-                                <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                    Your profile is optimized for modern airline recruitment AI systems. We translate your experience into structured data that automated screening systems recognize, prioritize, and rank at the top of candidate pools.
-                                </p>
-                            </div>
-                            <div className="md:w-1/2">
-                                <div className="relative w-full max-w-md mx-auto">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2940&auto=format&fit=crop"
-                                        alt="AI-Native Career Intelligence"
-                                        className="w-full rounded-3xl shadow-lg object-cover"
-                                    />
-                                </div>
-                            </div>
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                            <span className="text-sm font-bold uppercase tracking-wider text-slate-600">Industry Trust</span>
                         </div>
-
-                        {/* Section 4: Competency-Based Recognition */}
-                        <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                            <div className="md:w-1/2 text-center md:text-left">
-                                <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                    Skill Analytics
-                                </p>
-                                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-                                    Competency-Based Recognition
-                                </h2>
-                                <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                    Beyond flight hours—we measure capability. Our competency framework maps your skills against industry standards like CBTA, highlighting strengths that matter to airlines: decision-making, leadership, technical expertise, and adaptability.
-                                </p>
-                            </div>
-                            <div className="md:w-1/2">
-                                <div className="relative w-full max-w-md mx-auto">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2940&auto=format&fit=crop"
-                                        alt="Competency-Based Recognition"
-                                        className="w-full rounded-3xl shadow-lg object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* CTA / Final Word */}
-                    <div className="py-16 px-6 max-w-4xl mx-auto text-center border-t border-slate-100 mt-16 pb-32">
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                            Build Your Verified Identity
-                        </p>
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-                            Don't Just Log Hours. Build a Career.
-                        </h2>
-                    </div>
-                </div>
-
-                {/* The Information Gate Card */}
-                <div className="absolute inset-x-0 bottom-0 z-30 flex flex-col items-center pb-20 bg-gradient-to-t from-white via-white/80 to-transparent pt-40">
-                    <div className="w-full max-w-4xl px-6">
-                        <RevealOnScroll delay={100}>
-                            <div className="relative bg-white border border-slate-200 rounded-3xl p-8 md:p-16 flex flex-col items-center text-center shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]">
-                                <img
-                                    src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                    alt="WingMentor Logo"
-                                    className="w-40 h-auto object-contain mb-6"
-                                />
-
-                                <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
-                                    Pilot Recognition System
-                                </p>
-
-                                <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                                    Unlock Your Verified <br /> Aviation Identity
-                                </h2>
-
-                                <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
-                                    Join the Pilot Recognition system to access comprehensive profile verification, career matching, and industry recognition.
-                                </p>
-
-                                <div className="flex flex-col items-center w-full max-w-xs">
-                                    <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-blue-600 mb-4 animate-pulse">It's free</span>
-                                    <button
-                                        onClick={() => onNavigate('become-member')}
-                                        className="w-full bg-[#050A30] hover:bg-[#070D3D] text-white py-4 rounded-xl font-bold uppercase tracking-widest transition-all shadow-lg hover:shadow-blue-900/30 hover:scale-[1.02] active:scale-95 border border-white/10"
-                                    >
-                                        Get Recognized
-                                    </button>
-                                </div>
-                            </div>
-                        </RevealOnScroll>
                     </div>
                 </div>
             </div>
