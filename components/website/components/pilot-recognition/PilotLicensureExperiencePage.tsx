@@ -227,7 +227,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   // Load existing data from Supabase
   useEffect(() => {
     const loadExistingData = async () => {
+      console.log('PilotLicensureExperiencePage - userProfile:', userProfile);
       const userId = userProfile?.id || userProfile?.uid;
+      console.log('PilotLicensureExperiencePage - userId:', userId);
       if (!userId) {
         console.log('No userProfile id available, skipping data load');
         setDataLoaded(true); // Mark as loaded so loader hides

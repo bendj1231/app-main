@@ -1,11 +1,19 @@
 import { GoogleGenAI } from "@google/genai";
 
 export const askWingman = async (prompt: string, history: string[] = []): Promise<string> => {
-  // Initialize the Gemini client using the API key from the environment variables directly.
-  // As per guidelines, we assume process.env.API_KEY is pre-configured and valid.
+  // Initialize the Gemini client using Google Cloud Platform credentials
+  // For production with GCP, use GOOGLE_APPLICATION_CREDENTIALS environment variable
+  // or service account authentication
   
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    console.error("Gemini API key not configured");
+    return "Wingman AI services are not configured. Please contact support.";
+  }
+
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey });
     
     // Construct a context-aware prompt
     const contextPrompt = `
@@ -21,10 +29,11 @@ export const askWingman = async (prompt: string, history: string[] = []): Promis
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-1.5-flash',
       contents: contextPrompt,
       config: {
-        thinkingConfig: { thinkingBudget: 0 }, // Low latency for chat
+        temperature: 0.7,
+        maxOutputTokens: 1024,
       }
     });
 

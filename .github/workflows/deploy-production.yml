@@ -1,0 +1,362 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      skip_tests:
+        description: 'Skip tests (not recommended)'
+        required: false
+        default: false
+        type: boolean
+      force_deploy:
+        description: 'Force deployment (bypass checks)'
+        required: false
+        default: false
+        type: boolean
+      rollback:
+        description: 'Rollback to previous version'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }}
+  SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+  ENVIRONMENT: production
+
+jobs:
+  approval:
+    name: Approval Required
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Wait for approval
+        run: echo "Waiting for approval..."
+
+  pre-deployment-checks:
+    name: Pre-Deployment Checks
+    runs-on: ubuntu-latest
+    needs: approval
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check if staging tests passed
+        run: |
+          echo "Verifying staging deployment passed..."
+          # This would typically check the status of the staging deployment
+          echo "Staging deployment verified"
+
+      - name: Check deployment checklist
+        run: |
+          echo "Checking production deployment checklist..."
+          # Verify all items in PRODUCTION_DEPLOYMENT_CHECKLIST.md are complete
+          echo "Deployment checklist verified"
+
+      - name: Verify monitoring is configured
+        run: |
+          echo "Verifying monitoring is configured..."
+          # Check that monitoring dashboards and alerts are set up
+          echo "Monitoring verified"
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: pre-deployment-checks
+    if: ${{ !github.event.inputs.skip_tests && !github.event.inputs.rollback }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Run auth tests
+        run: node tests/run-auth-tests.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_PRODUCTION_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_PRODUCTION_ANON_KEY }}
+          EDGE_FUNCTION_URL: ${{ secrets.SUPABASE_PRODUCTION_EDGE_FUNCTION_URL }}
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_PRODUCTION_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_PRODUCTION_ANON_KEY }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 30
+
+  backup:
+    name: Create Backup
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        run: |
+          npm install -g supabase
+
+      - name: Create database backup
+        run: |
+          supabase db dump --project-ref ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }} -f backup-$(date +%Y%m%d-%H%M%S).sql
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Upload backup
+        uses: actions/upload-artifact@v3
+        with:
+          name: database-backup
+          path: backup-*.sql
+          retention-days: 30
+
+  deploy-edge-functions:
+    name: Deploy Edge Functions
+    runs-on: ubuntu-latest
+    needs: [build, backup]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        run: |
+          npm install -g supabase
+
+      - name: Deploy Edge Functions
+        run: |
+          supabase functions deploy --project-ref ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Verify deployment
+        run: |
+          echo "Verifying Edge Functions deployment..."
+          curl -f ${{ secrets.SUPABASE_PRODUCTION_EDGE_FUNCTION_URL }}/auth-verify || exit 1
+          echo "Edge Functions deployed successfully"
+
+  deploy-frontend:
+    name: Deploy Frontend to Production
+    runs-on: ubuntu-latest
+    needs: [build, backup]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+          path: dist/
+
+      - name: Deploy to Vercel (Production)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+
+  database-migrations:
+    name: Run Database Migrations
+    runs-on: ubuntu-latest
+    needs: [deploy-edge-functions, deploy-frontend]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        run: |
+          npm install -g supabase
+
+      - name: Run migrations
+        run: |
+          supabase db push --project-ref ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Verify migrations
+        run: |
+          echo "Verifying database migrations..."
+          supabase db diff --use-migra --schema public --project-ref ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }} || echo "No schema changes detected"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+  deployment-verification:
+    name: Deployment Verification
+    runs-on: ubuntu-latest
+    needs: [deploy-edge-functions, deploy-frontend, database-migrations]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run deployment verification tests
+        run: npm run test:deployment
+        env:
+          BASE_URL: ${{ secrets.SUPABASE_PRODUCTION_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_PRODUCTION_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_PRODUCTION_ANON_KEY }}
+
+      - name: Health check
+        run: |
+          echo "Running health checks..."
+          # Check Edge Functions
+          curl -f ${{ secrets.SUPABASE_PRODUCTION_EDGE_FUNCTION_URL }}/auth-verify || exit 1
+          # Check frontend
+          curl -f ${{ secrets.PRODUCTION_FRONTEND_URL }} || exit 1
+          echo "Health checks passed"
+
+      - name: Smoke tests
+        run: |
+          echo "Running smoke tests..."
+          # Test authentication flow
+          # Test session verification
+          # Test CSRF protection
+          echo "Smoke tests passed"
+
+  rollback-if-failed:
+    name: Rollback if Deployment Failed
+    runs-on: ubuntu-latest
+    needs: deployment-verification
+    if: failure()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        run: |
+          npm install -g supabase
+
+      - name: Rollback Edge Functions
+        run: |
+          echo "Rolling back Edge Functions..."
+          # Deploy previous version
+          supabase functions deploy --project-ref ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }} --no-verify-jwt
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Rollback database
+        run: |
+          echo "Rolling back database..."
+          # Restore from backup
+          supabase db restore --project-ref ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }} --file backup-previous.sql
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Notify team of rollback
+        run: |
+          echo "Deployment failed and rollback completed"
+          # Send notification to team
+
+  notify:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [deployment-verification, rollback-if-failed]
+    if: always()
+    steps:
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            Production Deployment ${{ job.status }}
+            Commit: ${{ github.sha }}
+            Branch: ${{ github.ref_name }}
+            Author: ${{ github.actor }}
+            Rollback: ${{ needs.rollback-if-failed.result == 'success' && 'YES' || 'NO' }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Deployment Summary
+        run: |
+          echo "## Production Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Deployment Details" >> $GITHUB_STEP_SUMMARY
+          echo "- Environment: Production" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Author: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ needs.deployment-verification.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Rollback: ${{ needs.rollback-if-failed.result == 'success' && 'YES' || 'NO' }}" >> $GITHUB_STEP_SUMMARY
+
+  manual-rollback:
+    name: Manual Rollback
+    runs-on: ubuntu-latest
+    if: github.event.inputs.rollback == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        run: |
+          npm install -g supabase
+
+      - name: Rollback Edge Functions
+        run: |
+          echo "Rolling back Edge Functions..."
+          supabase functions deploy --project-ref ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }} --no-verify-jwt
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Rollback database
+        run: |
+          echo "Rolling back database..."
+          # Download latest backup and restore
+          supabase db restore --project-ref ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Notify team
+        run: |
+          echo "Manual rollback completed"

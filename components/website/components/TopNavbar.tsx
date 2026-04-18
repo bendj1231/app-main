@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { supabase } from '@/src/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit } from 'lucide-react';
+import { Skeleton } from '@/src/components/ui/skeleton';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -37,7 +38,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     onLoginModalOpen,
     currentPage = '',
 }) => {
-    const { currentUser, logout, loading: authLoading } = useAuth();
+    const { currentUser, logout, loading: authLoading, signupInProgress } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(forceScrolled);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -53,6 +54,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [overallRecognitionScore, setOverallRecognitionScore] = useState<number>(0);
     const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState<boolean>(false);
     const [uploading, setUploading] = useState(false);
+    const [profileLoading, setProfileLoading] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
@@ -63,6 +65,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     useEffect(() => {
         const fetchProfileData = async () => {
             if (currentUser?.uid) {
+                setProfileLoading(true);
                 try {
                     const { data, error } = await supabase
                         .from('profiles')
@@ -96,6 +99,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     console.error('Unexpected error fetching profile data:', err);
                     // Set default values on unexpected error
                     setPilotId(currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
+                } finally {
+                    setProfileLoading(false);
                 }
             }
         };
@@ -486,10 +491,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     {/* Actions */}
                     <div className="hidden lg:flex items-center gap-3 ml-4">
 
-                        {isAuthRestoring ? (
+                        {isAuthRestoring || signupInProgress ? (
                             <div className="flex items-center gap-2">
                                 <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                                <span className="text-[0.65rem] text-slate-600 font-medium">Restoring session...</span>
+                                <span className="text-[0.65rem] text-slate-600 font-medium">{signupInProgress ? 'Creating account...' : 'Restoring session...'}</span>
                             </div>
                         ) : (
                             <>
@@ -530,111 +535,135 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
                                             {/* Profile Header */}
                                             <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                                                <div className="flex flex-col items-center gap-3">
-                                                    <div className="relative group">
-                                                        <div className="w-12 h-16 rounded-[50%/40%] bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30" style={{ borderRadius: '45% / 50%' }}>
-                                                            {profileImageUrl ? (
-                                                                <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
-                                                            ) : (
-                                                                <User className="w-6 h-8 text-white/80" />
-                                                            )}
-                                                        </div>
-                                                        <label className="absolute bottom-0 right-0 p-1.5 bg-white text-blue-600 rounded-full cursor-pointer hover:bg-blue-50 transition-colors">
-                                                            <Camera className="w-3 h-3" />
-                                                            <input
-                                                                type="file"
-                                                                accept="image/*"
-                                                                onChange={handleImageUpload}
-                                                                disabled={uploading}
-                                                                className="hidden"
-                                                            />
-                                                        </label>
+                                                {profileLoading ? (
+                                                    <div className="flex flex-col items-center gap-3">
+                                                        <Skeleton variant="circle" width="48px" height="48px" />
+                                                        <Skeleton variant="text" width="60%" className="text-white" />
+                                                        <Skeleton variant="text" width="40%" className="text-white/80" />
                                                     </div>
-                                                    <div className="text-center">
-                                                        <h3 className="font-semibold text-lg">{pilotId || currentUser?.displayName || 'Pilot'}</h3>
-                                                        <p className="text-sm text-white/80">{currentUser?.email}</p>
-                                                        <div className="mt-2">
-                                                            <span className="text-sm font-bold text-white">Recognition Score: {overallRecognitionScore.toFixed(0)}/100</span>
+                                                ) : (
+                                                    <div className="flex flex-col items-center gap-3">
+                                                        <div className="relative group">
+                                                            <div className="w-12 h-16 rounded-[50%/40%] bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30" style={{ borderRadius: '45% / 50%' }}>
+                                                                {profileImageUrl ? (
+                                                                    <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+                                                                ) : (
+                                                                    <User className="w-6 h-8 text-white/80" />
+                                                                )}
+                                                            </div>
+                                                            <label className="absolute bottom-0 right-0 p-1.5 bg-white text-blue-600 rounded-full cursor-pointer hover:bg-blue-50 transition-colors">
+                                                                <Camera className="w-3 h-3" />
+                                                                <input
+                                                                    type="file"
+                                                                    accept="image/*"
+                                                                    onChange={handleImageUpload}
+                                                                    disabled={uploading}
+                                                                    className="hidden"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <div className="text-center">
+                                                            <h3 className="font-semibold text-lg">{pilotId || currentUser?.displayName || 'Pilot'}</h3>
+                                                            <p className="text-sm text-white/80">{currentUser?.email}</p>
+                                                            <div className="mt-2">
+                                                                <span className="text-sm font-bold text-white">Recognition Score: {overallRecognitionScore.toFixed(0)}/100</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                )}
                                             </div>
 
                                             {/* Stats Section */}
                                             <div className="p-4 space-y-4">
-                                                {/* Recognition Category */}
-                                                <div>
-                                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Recognition</p>
-                                                    <div className="space-y-2">
-                                                        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                                                            <div className="p-2 bg-blue-100 rounded-lg">
-                                                                <Clock className="w-4 h-4 text-blue-600" />
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Flight Hours</p>
-                                                                <p className="text-base font-semibold text-slate-900">{totalHours.toFixed(1)} hrs</p>
-                                                            </div>
+                                                {profileLoading ? (
+                                                    <div className="space-y-4">
+                                                        <Skeleton variant="text" width="30%" />
+                                                        <div className="space-y-2">
+                                                            <Skeleton variant="rect" height="3.5rem" />
+                                                            <Skeleton variant="rect" height="3.5rem" />
                                                         </div>
-                                                        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                                                            <div className="p-2 bg-blue-100 rounded-lg">
-                                                                <Clock className="w-4 h-4 text-blue-600" />
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Last Flown</p>
-                                                                <p className="text-base font-semibold text-slate-900">{lastFlown || 'Not recorded'}</p>
-                                                            </div>
+                                                        <Skeleton variant="text" width="30%" />
+                                                        <div className="space-y-2">
+                                                            <Skeleton variant="rect" height="3.5rem" />
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                {/* Programs Category */}
-                                                <div>
-                                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Programs</p>
-                                                    <div className="space-y-2">
-                                                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                                                            <div className="p-2 bg-green-100 rounded-lg">
-                                                                <Clock className="w-4 h-4 text-green-600" />
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Mentorship Hours</p>
-                                                                <p className="text-base font-semibold text-slate-900">{mentorshipHours.toFixed(1)} hrs</p>
+                                                ) : (
+                                                    <>
+                                                        {/* Recognition Category */}
+                                                        <div>
+                                                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Recognition</p>
+                                                            <div className="space-y-2">
+                                                                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                                                    <div className="p-2 bg-blue-100 rounded-lg">
+                                                                        <Clock className="w-4 h-4 text-blue-600" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Flight Hours</p>
+                                                                        <p className="text-base font-semibold text-slate-900">{totalHours.toFixed(1)} hrs</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                                                    <div className="p-2 bg-blue-100 rounded-lg">
+                                                                        <Clock className="w-4 h-4 text-blue-600" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Last Flown</p>
+                                                                        <p className="text-base font-semibold text-slate-900">{lastFlown || 'Not recorded'}</p>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
 
-                                                        {isEnrolledInFoundation && (
-                                                            <>
+                                                        {/* Programs Category */}
+                                                        <div>
+                                                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Programs</p>
+                                                            <div className="space-y-2">
                                                                 <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
                                                                     <div className="p-2 bg-green-100 rounded-lg">
-                                                                        <Award className="w-4 h-4 text-green-600" />
+                                                                        <Clock className="w-4 h-4 text-green-600" />
                                                                     </div>
                                                                     <div>
-                                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Foundation Progress</p>
-                                                                        <p className="text-base font-semibold text-slate-900">{foundationProgress.toFixed(0)}%</p>
+                                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Mentorship Hours</p>
+                                                                        <p className="text-base font-semibold text-slate-900">{mentorshipHours.toFixed(1)} hrs</p>
                                                                     </div>
                                                                 </div>
-                                                                <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                                                                    <div className="p-2 bg-green-100 rounded-lg">
-                                                                        <Award className="w-4 h-4 text-green-600" />
-                                                                    </div>
-                                                                    <div>
-                                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Examination Score</p>
-                                                                        <p className="text-base font-semibold text-slate-900">{examinationScore.toFixed(0)}/100</p>
-                                                                    </div>
-                                                                </div>
-                                                            </>
-                                                        )}
 
-                                                        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                                                            <div className="p-2 bg-blue-100 rounded-lg">
-                                                                <Award className="w-4 h-4 text-blue-600" />
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Recognition Score</p>
-                                                                <p className="text-base font-semibold text-slate-900">{overallRecognitionScore.toFixed(0)}/100</p>
+                                                                {isEnrolledInFoundation && (
+                                                                    <>
+                                                                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                                                            <div className="p-2 bg-green-100 rounded-lg">
+                                                                                <Award className="w-4 h-4 text-green-600" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Foundation Progress</p>
+                                                                                <p className="text-base font-semibold text-slate-900">{foundationProgress.toFixed(0)}%</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                                                            <div className="p-2 bg-green-100 rounded-lg">
+                                                                                <Award className="w-4 h-4 text-green-600" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-xs text-slate-600 uppercase tracking-wider">Examination Score</p>
+                                                                                <p className="text-base font-semibold text-slate-900">{examinationScore.toFixed(0)}/100</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </>
+                                                                )}
+
+                                                                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                                                    <div className="p-2 bg-blue-100 rounded-lg">
+                                                                        <Award className="w-4 h-4 text-blue-600" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="text-xs text-slate-600 uppercase tracking-wider">Recognition Score</p>
+                                                                        <p className="text-base font-semibold text-slate-900">{overallRecognitionScore.toFixed(0)}/100</p>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                    </>
+                                                )}
                                             </div>
 
                                             {/* Action Buttons */}
@@ -720,37 +749,51 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button className={`lg:hidden ${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    <button 
+                        className={`lg:hidden ${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'} p-2 rounded-lg hover:bg-white/10 transition-colors`}
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+                        aria-expanded={isMenuOpen}
+                    >
                         {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
                     </button>
                 </div>
             </nav>
 
             {/* Mobile Menu Overlay */}
-            <div className={`fixed inset-0 z-[60] bg-black transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-                <div className="flex flex-col h-full p-8">
+            <div 
+                className={`fixed inset-0 z-[60] bg-black transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Mobile navigation menu"
+            >
+                <div className="flex flex-col h-full p-6 md:p-8">
                     <div className="flex justify-end">
-                        <button className="text-white" onClick={() => setIsMenuOpen(false)}>
+                        <button 
+                            className="text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                            aria-label="Close menu"
+                        >
                             <X className="w-10 h-10" />
                         </button>
                     </div>
-                    <div className="flex flex-col items-center justify-center flex-1 gap-6">
-                        <div className="w-full max-w-sm space-y-6">
+                    <div className="flex flex-col items-center justify-center flex-1 gap-6 overflow-y-auto">
+                        <div className="w-full max-w-sm space-y-4 py-4">
                             {visibleNavItems.map((item) => (
                                 <div key={item.name} className="flex flex-col items-center gap-3">
                                     <button
                                         onClick={() => { onNavigate(item.target); setIsMenuOpen(false); }}
-                                        className="text-2xl font-bold text-white uppercase tracking-widest hover:text-blue-400 transition-colors"
+                                        className="text-2xl md:text-3xl font-bold text-white uppercase tracking-widest hover:text-blue-400 transition-colors py-3 px-6 min-h-[48px] min-w-[200px]"
                                     >
                                         {item.name}
                                     </button>
                                     {item.subItems && (
-                                        <div className="flex flex-col items-center gap-2 mb-2">
+                                        <div className="flex flex-col items-center gap-2 w-full">
                                             {item.subItems.map((subItem) => (
                                                 <button
                                                     key={`${subItem.name}-${subItem.target}`}
                                                     onClick={() => { onNavigate(subItem.target); setIsMenuOpen(false); }}
-                                                    className={`text-sm font-medium uppercase tracking-widest transition-colors flex items-center gap-2 ${subItem.isYellow ? 'text-yellow-400' : 'text-white/40 hover:text-blue-300'}`}
+                                                    className={`text-sm md:text-base font-medium uppercase tracking-widest transition-colors flex items-center justify-center gap-2 py-3 px-4 min-h-[44px] w-full ${subItem.isYellow ? 'text-yellow-400' : 'text-white/40 hover:text-blue-300'}`}
                                                 >
                                                     {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
                                                     {subItem.name}
@@ -772,14 +815,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <>
                                     <button
                                         onClick={currentUser ? handleLogout : () => { onNavigate('become-member'); setIsMenuOpen(false); }}
-                                        className={`w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-8 ${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
+                                        className={`w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest mt-8 ${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
                                     >
                                         {currentUser ? 'Sign Out' : 'Become a Member'}
                                     </button>
 
                                     <button
                                         onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
-                                        className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-4 shadow-xl`}
+                                        className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest mt-4 shadow-xl`}
                                     >
                                         {currentUser ? 'Access Portal' : 'Login'}
                                     </button>

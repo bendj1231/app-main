@@ -1917,8 +1917,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     <PilotLicensureExperiencePage
                         onBack={() => setCurrentDocumentationPage(null)}
                         userProfile={profileData ? {
-                            id: profileData.id,
-                            uid: profileData.id,
+                            id: profileData.id || profileData.user_id,
+                            uid: profileData.id || profileData.user_id,
                             firstName: profileData.full_name?.split(' ')[0] || profileData.display_name?.split(' ')[0] || '',
                             lastName: profileData.full_name?.split(' ').slice(1).join(' ') || profileData.display_name?.split(' ').slice(1).join(' ') || '',
                             email: profileData.email

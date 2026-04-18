@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, ArrowRight, Eye, EyeOff } from 'lucide-react';
-import { supabase } from '../../../portal/lib/supabase-auth';
+import { useAuth } from '@/src/contexts/AuthContext';
+import { useToast } from '@/src/components/ui/toast';
+import { validateEmail, validateSimplePassword } from '@/src/lib/validation';
 
 interface LoginModalProps {
     isOpen: boolean;
@@ -19,54 +21,131 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const { addToast } = useToast();
+    const { login } = useAuth();
+    const modalRef = useRef<HTMLDivElement>(null);
+    const emailInputRef = useRef<HTMLInputElement>(null);
+
+    // Handle ESC key to close modal
+    useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isOpen) {
+                onClose();
+            }
+        };
+
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [isOpen, onClose]);
+
+    // Focus email input when modal opens
+    useEffect(() => {
+        if (isOpen && emailInputRef.current) {
+            emailInputRef.current.focus();
+        }
+    }, [isOpen]);
+
+    // Trap focus within modal
+    useEffect(() => {
+        if (!isOpen || !modalRef.current) return;
+
+        const focusableElements = modalRef.current.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        const handleTab = (e: KeyboardEvent) => {
+            if (e.key !== 'Tab') return;
+
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleTab);
+        return () => document.removeEventListener('keydown', handleTab);
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+
+        // Validate email
+        const emailValidation = validateEmail(email);
+        if (!emailValidation.isValid) {
+            setError(emailValidation.error || 'Invalid email');
+            addToast('error', 'Invalid Email', emailValidation.error || 'Please enter a valid email address');
+            return;
+        }
+
+        // Validate password
+        const passwordValidation = validateSimplePassword(password);
+        if (!passwordValidation.isValid) {
+            setError(passwordValidation.error || 'Invalid password');
+            addToast('error', 'Invalid Password', passwordValidation.error || 'Please enter a valid password');
+            return;
+        }
+
         setLoading(true);
         try {
-            const { data, error: signInError } = await supabase.auth.signInWithPassword({
-                email,
-                password
-            });
+            await login(email, password);
 
-            if (signInError) {
-                throw signInError;
-            }
-
+            addToast('success', 'Login Successful', 'Welcome back to WingMentor!');
             onNavigate('home');
             onClose();
         } catch (err: any) {
             console.error('Login failed:', err);
             setError(err.message || 'Login failed. Please check your credentials and try again.');
+            addToast('error', 'Login Failed', err.message || 'Login failed. Please check your credentials and try again.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+        <div 
+            className="fixed inset-0 z-[9999] flex items-center justify-center"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="login-modal-title"
+            aria-describedby="login-modal-description"
+        >
             {/* Backdrop */}
             <div 
                 className="absolute inset-0 bg-black/60 backdrop-blur-xl transition-all duration-300"
                 onClick={onClose}
+                aria-hidden="true"
             />
             
             {/* Modal Container */}
-            <div className="relative z-10 w-full max-w-[900px] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl animate-fadeInUp">
+            <div 
+                ref={modalRef}
+                className="relative z-10 w-full max-w-[900px] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl animate-fadeInUp max-h-[90vh] overflow-y-auto"
+                role="document"
+            >
                 {/* Glassy X Button - Top Right */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all duration-300 hover:scale-110"
+                    className="absolute top-4 right-4 z-50 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all duration-300 hover:scale-110"
+                    aria-label="Close modal"
                 >
-                    <X className="w-5 h-5" />
+                    <X className="w-6 h-6" />
                 </button>
 
                 <div className="flex flex-col md:flex-row min-h-[550px]">
                     {/* Left Side - Dark Blue with Info */}
-                    <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-8 md:p-10 flex flex-col relative">
+                    <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-6 md:p-10 flex flex-col relative order-2 md:order-1">
                         {/* Logo - Centered, larger, and positioned lower */}
                         <div className="mt-8 mb-6 flex justify-center">
                             <img
@@ -101,6 +180,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                 onClose();
                             }}
                             className="px-6 py-2.5 border border-white/30 rounded-full text-sm font-medium hover:bg-white/10 transition-all duration-300"
+                            aria-label="Learn more about Pilot Portal"
                         >
                             Learn more
                         </button>
@@ -108,13 +188,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     </div>
 
                     {/* Right Side - Login Form */}
-                    <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-8 md:p-10 flex flex-col justify-center">
+                    <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-6 md:p-10 flex flex-col justify-center order-1 md:order-2">
                         {/* Header */}
                         <div className="mb-6">
-                            <h2 className="text-2xl md:text-3xl font-serif text-slate-800 mb-2">
+                            <h2 id="login-modal-title" className="text-xl md:text-2xl lg:text-3xl font-serif text-slate-800 mb-2">
                                 Connecting pilots to the aviation industry
                             </h2>
-                            <p className="text-slate-500 text-sm">
+                            <p id="login-modal-description" className="text-slate-500 text-sm md:text-base">
                                 Sign in with your WingMentor credentials.
                             </p>
                         </div>
@@ -126,34 +206,38 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
                         {/* Error Message */}
                         {error && (
-                            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm" role="alert" aria-live="assertive">
                                 {error}
                             </div>
                         )}
 
                         {/* Login Form */}
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                             {/* Email Input */}
                             <div className="relative">
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </div>
                                 <input
+                                    ref={emailInputRef}
                                     type="email"
                                     placeholder="Email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-slate-100 border border-slate-300 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                    className="w-full pl-12 pr-4 py-4 min-h-[52px] bg-slate-100 border border-slate-300 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
                                     required
+                                    aria-label="Email address"
+                                    aria-invalid={!!error}
+                                    aria-describedby={error ? 'login-error' : undefined}
                                 />
                             </div>
 
                             {/* Password Input */}
                             <div className="relative">
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                 </div>
@@ -162,13 +246,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-12 pr-12 py-3.5 bg-slate-100 border border-slate-300 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                    className="w-full pl-12 pr-14 py-4 min-h-[52px] bg-slate-100 border border-slate-300 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
                                     required
+                                    aria-label="Password"
+                                    aria-invalid={!!error}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-2"
+                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                                 >
                                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                 </button>
@@ -178,7 +265,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                             <div className="flex justify-end">
                                 <button
                                     type="button"
-                                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                    className="text-sm md:text-base text-blue-600 hover:text-blue-700 font-medium py-2"
+                                    aria-label="Reset password"
                                 >
                                     Forgot Password?
                                 </button>
@@ -188,22 +276,23 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full py-4 bg-[#1a1f36] hover:bg-[#252b4a] text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full py-4 min-h-[52px] bg-[#1a1f36] hover:bg-[#252b4a] text-white rounded-xl font-semibold text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                                aria-busy={loading}
                             >
                                 {loading ? 'Logging in...' : 'Login'}
                                 {!loading && <ArrowRight className="w-4 h-4" />}
                             </button>
 
                             {/* Remember Me */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-3">
                                 <input
                                     type="checkbox"
                                     id="remember"
                                     checked={rememberMe}
                                     onChange={(e) => setRememberMe(e.target.checked)}
-                                    className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                                    className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                                 />
-                                <label htmlFor="remember" className="text-sm text-slate-600">
+                                <label htmlFor="remember" className="text-sm md:text-base text-slate-600">
                                     Remember me
                                 </label>
                             </div>
@@ -211,14 +300,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
                         {/* Footer Links */}
                         <div className="mt-6 pt-6 border-t border-slate-300">
-                            <p className="text-sm text-slate-500 text-center">
+                            <p className="text-sm md:text-base text-slate-500 text-center">
                                 Not a member?{' '}
                                 <button
                                     onClick={() => {
                                         onNavigate('become-member');
                                         onClose();
                                     }}
-                                    className="text-blue-600 hover:text-blue-700 font-medium"
+                                    className="text-blue-600 hover:text-blue-700 font-medium py-2"
+                                    aria-label="Create a new account"
                                 >
                                     Create an account
                                 </button>
@@ -228,7 +318,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                         onNavigate('pilot-recognition');
                                         onClose();
                                     }}
-                                    className="text-blue-600 hover:text-blue-700 font-medium"
+                                    className="text-blue-600 hover:text-blue-700 font-medium py-2"
+                                    aria-label="Visit Pilot Network"
                                 >
                                     Visit Pilot Network
                                 </button>

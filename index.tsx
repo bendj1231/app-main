@@ -47,6 +47,9 @@ import { Sidebar } from '@/src/components/ui/Sidebar';
 import { Handbook } from '@/src/components/ui/Handbook';
 import { AuthProvider } from '@/src/contexts/AuthContext';
 import { supabase } from '@/src/lib/supabase';
+import { ToastProvider } from '@/src/components/ui/toast';
+import { CookieConsent } from './components/CookieConsent';
+import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
 
 const AboutProgramsPage = ({ onBack }: { onBack: () => void }) => (
   <div className="fade-in-up">
@@ -192,6 +195,9 @@ const InnovationHubPage = ({ onBack }: { onBack: () => void }) => (
 
 
 
+
+// Initialize analytics services on app load
+initializeAnalyticsServices();
 
 const App = () => {
   const [jotFormConnected, setJotFormConnected] = useState(false);
@@ -1112,6 +1118,9 @@ if (rootElement && !(rootElement as any)._reactRoot) {
 
 root.render(
   <AuthProvider>
-    <App />
+    <ToastProvider>
+      <App />
+      <CookieConsent />
+    </ToastProvider>
   </AuthProvider>
 );

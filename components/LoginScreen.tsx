@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { User, Lock, ArrowRight, AlertCircle, Mail } from 'lucide-react';
+import { User, Lock, ArrowRight, AlertCircle, Mail, Shield } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { useToast } from '@/src/components/ui/toast';
+import { MFAVerify } from './website/components/portal/MFAVerify';
 
 interface LoginScreenProps {
   onLogin: (username: string) => void;
@@ -12,12 +14,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
   const [wmUser, setWmUser] = useState('');
   const [wmPass, setWmPass] = useState('');
 
-  const { login, resetPassword } = useAuth();
+  const { login, resetPassword, mfaEnabled, mfaCheckStatus } = useAuth();
+  const { addToast } = useToast();
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
+  const [showMFAVerify, setShowMFAVerify] = useState(false);
+  const [mfaPendingUser, setMfaPendingUser] = useState('');
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,19 +29,18 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
 
     setIsLoading(true);
     setError('');
-    setSuccessMessage('');
 
     try {
       await resetPassword(resetEmail);
-      setSuccessMessage('Password reset email sent! Check your inbox.');
+      addToast('success', 'Password reset email sent!', 'Please check your inbox for the reset link.');
       setTimeout(() => {
         setShowResetModal(false);
-        setSuccessMessage('');
         setResetEmail('');
       }, 3000);
     } catch (err: any) {
       console.error("Reset Password Error:", err);
       setError(err.message || 'Failed to send reset email.');
+      addToast('error', 'Reset Failed', err.message || 'Failed to send reset email.');
     } finally {
       setIsLoading(false);
     }
@@ -62,8 +65,22 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
         timeoutPromise
       ]);
 
-      console.log("Login successful, navigating...");
-      onLogin(wmUser);
+      console.log("Login successful, checking MFA status...");
+      
+      // Check if MFA is enabled for this user
+      const isMFAEnabled = await mfaCheckStatus();
+      
+      if (isMFAEnabled) {
+        console.log("MFA enabled, showing verification modal");
+        setMfaPendingUser(wmUser);
+        setShowMFAVerify(true);
+        setIsLoading(false);
+      } else {
+        console.log("MFA not enabled, proceeding to login");
+        addToast('success', 'Login Successful', 'Welcome back to WingMentor!');
+        onLogin(wmUser);
+        setIsLoading(false);
+      }
     } catch (err: any) {
       console.error("Login Error in Component:", err);
       let errorMessage = 'Failed to log in. Please check your credentials.';
@@ -77,13 +94,47 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
         errorMessage = err.message;
       }
       setError(errorMessage);
-    } finally {
+      addToast('error', 'Login Failed', errorMessage);
       setIsLoading(false);
     }
   };
 
+  const handleMFAVerified = () => {
+    setShowMFAVerify(false);
+    addToast('success', 'Login Successful', 'Welcome back to WingMentor!');
+    onLogin(mfaPendingUser);
+    setMfaPendingUser('');
+  };
+
+  const handleMFACancel = () => {
+    setShowMFAVerify(false);
+    setMfaPendingUser('');
+    setError('MFA verification cancelled. Please login again.');
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
+      {/* MFA Verification Modal */}
+      {showMFAVerify && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full animate-fadeIn relative">
+            <button
+              onClick={handleMFACancel}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+            >
+              ✕
+            </button>
+
+            <div className="flex items-center gap-3 mb-4">
+              <Shield className="text-sky-600" size={24} />
+              <h3 className="text-xl font-bold text-slate-800">Two-Factor Authentication</h3>
+            </div>
+            
+            <MFAVerify onSuccess={handleMFAVerified} />
+          </div>
+        </div>
+      )}
+
       {/* Password Reset Modal */}
       {showResetModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -115,13 +166,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
                 <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm flex items-center gap-2">
                   <AlertCircle size={16} />
                   {error}
-                </div>
-              )}
-
-              {successMessage && (
-                <div className="bg-green-50 text-green-600 p-3 rounded-lg text-sm flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">✓</div>
-                  {successMessage}
                 </div>
               )}
 

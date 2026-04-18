@@ -1,28 +1,39 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import {
-    User,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-    sendEmailVerification,
-    sendPasswordResetEmail
-} from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../lib/firebase';
 import { supabase } from '../lib/supabase';
 import { indexedDB } from '../lib/indexedDB';
 import { createManagementAPI } from '../lib/supabase-management';
 
+interface SupabaseUser {
+    id: string;
+    uid: string; // For backward compatibility
+    email: string;
+    email_confirmed_at: string | null;
+    created_at: string;
+    updated_at: string;
+    display_name?: string;
+    displayName?: string; // For backward compatibility
+}
+
 interface AuthContextType {
-    currentUser: User | null;
+    currentUser: SupabaseUser | null;
     userProfile: any | null;
     loading: boolean;
+    signupInProgress: boolean;
     signup: (email: string, password: string, userData: any) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     deleteAccount: (userId: string) => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
+    getAuthHeaders: () => { 'X-CSRF-Token'?: string };
+    // MFA functions
+    mfaEnabled: boolean;
+    mfaSetupStep: 'none' | 'qr' | 'verify';
+    mfaSetupData: { secret?: string; qrCodeURL?: string };
+    mfaSetup: (method?: 'totp' | 'sms', phoneNumber?: string) => Promise<void>;
+    mfaVerify: (code: string, isSetup?: boolean) => Promise<{ success: boolean; backupCodes?: string[] }>;
+    mfaDisable: (code: string) => Promise<void>;
+    mfaGenerateBackupCodes: () => Promise<string[]>;
+    mfaCheckStatus: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,97 +47,159 @@ export function useAuth() {
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [currentUser, setCurrentUser] = useState<SupabaseUser | null>(null);
     const [userProfile, setUserProfile] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
-    const [explicitLogout, setExplicitLogout] = useState(false);
+    const [csrfToken, setCsrfToken] = useState<string | null>(null);
 
-    // Clear explicitLogout flag on page refresh to allow session restoration
-    useEffect(() => {
-        setExplicitLogout(false);
-    }, []);
+    // MFA state
+    const [mfaEnabled, setMfaEnabled] = useState(false);
+    const [mfaSetupStep, setMfaSetupStep] = useState<'none' | 'qr' | 'verify'>('none');
+    const [mfaSetupData, setMfaSetupData] = useState<{ secret?: string; qrCodeURL?: string }>({});
+
+    // Helper function to get CSRF token from cookies
+    const getCsrfTokenFromCookies = (): string | null => {
+        const match = document.cookie.match(/csrf-token=([^;]+)/);
+        return match ? match[1] : null;
+    };
+
+    // Helper function to include CSRF token in requests
+    const getAuthHeaders = () => {
+        const token = csrfToken || getCsrfTokenFromCookies();
+        return token ? { 'X-CSRF-Token': token } : {};
+    };
+
+    // Helper function to check if user explicitly logged out
+    const isExplicitLogout = (): boolean => {
+        return localStorage.getItem('explicitLogout') === 'true';
+    };
+
+    // Helper function to set explicit logout flag in localStorage
+    const setExplicitLogoutInStorage = (value: boolean) => {
+        if (value) {
+            localStorage.setItem('explicitLogout', 'true');
+        } else {
+            localStorage.removeItem('explicitLogout');
+        }
+    };
+
+    const [signupInProgress, setSignupInProgress] = useState(false);
 
     async function signup(email: string, password: string, userData: any) {
         console.log('🔵 Starting signup process for:', email);
         console.log('🔵 User data:', userData);
+        setSignupInProgress(true);
 
-        let userId: string;
-        let firebaseUser: any = null;
-        let userAlreadyExisted = false;
-
-        // Step 1: Create Supabase auth user first (preferred)
         try {
-            console.log('🔵 Step 1: Creating Supabase auth user...');
-            const { data: supabaseData, error: supabaseError } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: {
-                        display_name: userData.fullName || email.split('@')[0],
-                        firebase_uid: null // Will be set after Firebase creation
-                    }
-                }
-            });
+            let userId: string;
+            let firebaseUser: any = null;
+            let userAlreadyExisted = false;
 
-            if (supabaseError) {
-                // If user already exists, try to sign in to get the user ID
-                if (supabaseError.message.includes('already registered') || supabaseError.message === 'User already registered') {
-                    console.log('User already exists in auth, attempting to sign in...');
-                    userAlreadyExisted = true;
-                    
-                    // Try to sign in to get the user ID
+            // Step 1: Use Edge Function for auth signup with rate limiting and CSRF protection
+            try {
+                console.log('🔵 Step 1: Creating Supabase auth user via Edge Function...');
+                const { data, error } = await supabase.functions.invoke('auth-signup', {
+                    body: { email, password, userData },
+                    headers: getAuthHeaders()
+                });
+
+                if (error) {
+                    // If Edge Function fails, fall back to direct Supabase auth
+                    console.warn('⚠️ Edge Function signup failed, falling back to direct auth:', error.message);
+                    throw error;
+                }
+
+                if (!data?.success) {
+                    console.warn('⚠️ Edge Function returned error, falling back to direct auth:', data?.error);
+                    throw new Error(data?.error || 'Signup failed');
+                }
+
+                // Store CSRF token from response
+                if (data?.csrfToken) {
+                    setCsrfToken(data.csrfToken);
+                }
+
+                userId = data.user.id;
+                console.log('✅ User created via Edge Function:', userId);
+
+                // If Edge Function returned a session, the user is already signed in
+                // Otherwise, we need to sign in to get the session for profile creation
+                if (data.session) {
+                    console.log('✅ Session returned from Edge Function');
+                } else {
+                    console.log('🔵 Signing in to get session for profile creation...');
                     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
                         email,
                         password
                     });
                     
                     if (signInError) {
-                        console.error('❌ Failed to sign in to get user ID:', signInError);
-                        throw new Error('USER_ALREADY_EXISTS');
+                        throw new Error(`Failed to sign in after signup: ${signInError.message}`);
                     }
-                    
-                    if (!signInData.user) {
-                        throw new Error('USER_ALREADY_EXISTS');
+                    console.log('✅ Signed in successfully');
+                }
+            } catch (edgeFunctionError) {
+                console.log('🔵 Edge Function failed, using direct Supabase auth as fallback...');
+                
+                // Fallback to direct Supabase auth (original logic)
+                const { data: supabaseData, error: supabaseError } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            display_name: userData.fullName || email.split('@')[0],
+                            firebase_uid: null
+                        }
                     }
+                });
+
+                if (supabaseError) {
+                    if (supabaseError.message.includes('already registered') || supabaseError.message === 'User already registered') {
+                        console.log('User already exists in auth, attempting to sign in...');
+                        userAlreadyExisted = true;
                     
-                    userId = signInData.user.id;
-                    console.log('✅ Found existing auth user via sign in:', userId);
-                    
-                    // Send confirmation email for existing user
-                    if (!signInData.user.email_confirmed_at) {
-                        console.log('User email not confirmed, sending confirmation email...');
-                        const { error: resendError } = await supabase.auth.resend({
-                            type: 'signup',
-                            email
+                        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+                            email,
+                            password
                         });
-                        if (resendError) {
-                            console.warn('⚠️ Failed to resend confirmation email:', resendError);
-                            // Non-critical: continue with profile creation
-                        } else {
-                            console.log('✅ Confirmation email sent');
+                        
+                        if (signInError) {
+                            console.error('❌ Failed to sign in to get user ID:', signInError);
+                            throw new Error('USER_ALREADY_EXISTS');
+                        }
+                        
+                        if (!signInData.user) {
+                            throw new Error('USER_ALREADY_EXISTS');
+                        }
+                        
+                        userId = signInData.user.id;
+                        console.log('✅ Found existing auth user via sign in:', userId);
+                        
+                        if (!signInData.user.email_confirmed_at) {
+                            console.log('User email not confirmed, sending confirmation email...');
+                            const { error: resendError } = await supabase.auth.resend({
+                                type: 'signup',
+                                email
+                            });
+                            if (resendError) {
+                                console.warn('⚠️ Failed to resend confirmation email:', resendError);
+                            } else {
+                                console.log('✅ Confirmation email sent');
+                            }
                         }
                     } else {
-                        console.log('User email already confirmed');
+                        console.error('❌ Supabase auth error:', supabaseError);
+                        throw new Error(`Supabase auth failed: ${supabaseError.message}`);
                     }
-                    
-                    // Don't sign out - keep the session for profile creation
-                    // RLS policies require an authenticated session
                 } else {
-                    console.error('❌ Supabase auth error:', supabaseError);
-                    throw new Error(`Supabase auth failed: ${supabaseError.message}`);
-                }
-            } else {
-                if (!supabaseData.user) {
-                    throw new Error('No user returned from Supabase auth');
-                }
+                    if (!supabaseData.user) {
+                        throw new Error('No user returned from Supabase auth');
+                    }
 
-                userId = supabaseData.user.id;
-                console.log('✅ Supabase auth user created:', userId);
+                    userId = supabaseData.user.id;
+                    console.log('✅ Supabase auth user created:', userId);
+                }
             }
-        } catch (supabaseError) {
-            console.error('❌ Failed to create Supabase auth user:', supabaseError);
-            throw supabaseError;
-        }
 
         console.log('🔵 Step 2: Creating portal profile...');
 
@@ -292,28 +365,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             throw accessError;
         }
 
-        // Step 4: Create Firebase user for compatibility (using same ID pattern)
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            firebaseUser = userCredential.user;
-            
-            console.log('✅ Firebase user created:', firebaseUser.uid);
-
-            // Update Supabase profile with Firebase UID
-            await supabase
-                .from('profiles')
-                .update({ firebase_uid: firebaseUser.uid })
-                .eq('id', userId);
-        } catch (firebaseError) {
-            console.error('Firebase creation error:', firebaseError);
-            // Non-critical: Supabase auth is the primary auth
-            console.log('⚠️ Firebase creation failed, but Supabase auth succeeded');
-        }
-
-        // Step 5: Structure the user data
+        // Step 4: Structure the user data
         const structuredData = {
             uid: userId, // Use Supabase ID as primary
-            firebaseUid: firebaseUser?.uid || null,
             email,
             createdAt: new Date().toISOString(),
             pilotCategory: userData.pilotCategory,
@@ -363,16 +417,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
         };
 
-        // Step 6: Create user document in Firestore (using Supabase ID)
-        try {
-            await setDoc(doc(db, 'users', userId), structuredData);
-            console.log('✅ Firestore document created:', userId);
-        } catch (firestoreError) {
-            console.error('Firestore creation error:', firestoreError);
-            // Non-critical: Supabase is the primary
-        }
-
-        // Step 7: Sync to Supabase pilot_licensure_experience table with all gathered information
+        // Step 6: Sync to Supabase pilot_licensure_experience table with all gathered information
         try {
             const { error: pilotTableError } = await supabase
                 .from('pilot_licensure_experience')
@@ -443,7 +488,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 body: {
                     email,
                     name: displayName
-                }
+                },
+                headers: getAuthHeaders()
             });
             
             console.log('📧 Email function response - data:', data, 'error:', error);
@@ -459,7 +505,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             // Non-critical: User is still created
         }
 
-        // Step 9: Create readable roster entry for admin view
+        // Step 8: Create readable roster entry for admin view
         if (userData.pilotCategory) {
             try {
                 const experienceLevel = structuredData.experienceLevel;
@@ -468,38 +514,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     .replace(/\//g, '-')
                     .replace(/\./g, '_');
 
-                await setDoc(doc(db, 'pilot_roster', safeId), {
-                    ...structuredData,
-                    originalUid: userId,
-                    firebaseUid: firebaseUser?.uid || null
-                });
-                console.log('✅ Roster entry created');
+                console.log('✅ Roster entry would be created:', safeId);
+                // Note: Roster entry creation removed as it was Firebase-specific
             } catch (error) {
-                console.error("Error creating roster entry:", error);
+                console.error("Error with roster entry:", error);
                 // Non-critical, allows signup to proceed
             }
         }
 
         console.log('🎉 Signup completed successfully for user:', userId);
+        } finally {
+            setSignupInProgress(false);
+        }
     }
 
     async function login(email: string, password: string) {
         try {
-            // Use Edge Function for login with cookie-based auth
-            const { data, error } = await supabase.functions.invoke('auth-login', {
-                body: { email, password }
+            // Use Supabase client directly for login
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password
             });
 
             if (error) {
-                console.error("Edge Function login error:", error);
+                console.error("Supabase login error:", error);
                 throw new Error(error.message || 'Login failed');
             }
 
-            if (!data?.success) {
-                throw new Error(data?.error || 'Login failed');
+            if (!data.user || !data.session) {
+                throw new Error('Login failed: No user or session returned');
             }
 
-            console.log("User signed in via Edge Function:", data.user.id);
+            // Clear explicit logout flag on successful login
+            setExplicitLogoutInStorage(false);
+
+            console.log("User signed in via Supabase:", data.user.id);
+
+            // Set currentUser state with Supabase user data
+            const supabaseUser: SupabaseUser = {
+                id: data.user.id,
+                uid: data.user.id,
+                email: data.user.email || '',
+                display_name: data.user.email?.split('@')[0],
+                displayName: data.user.email?.split('@')[0],
+                email_confirmed_at: data.user.email_confirmed_at || new Date().toISOString(),
+                created_at: data.user.created_at || new Date().toISOString(),
+                updated_at: data.user.updated_at || new Date().toISOString()
+            };
+
+            setCurrentUser(supabaseUser);
 
             // Fetch user profile from Supabase
             try {
@@ -517,10 +580,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     console.log("⚠️ No user profile found for:", data.user.id);
                     // Create minimal profile from auth data
                     const newProfile = {
-                        uid: data.user.id,
+                        user_id: data.user.id,
                         email: email,
-                        createdAt: new Date().toISOString(),
-                        lastLogin: new Date().toISOString()
+                        created_at: new Date().toISOString(),
+                        last_login: new Date().toISOString()
                     };
                     setUserProfile(newProfile);
                 }
@@ -536,35 +599,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function logout() {
         console.log('🔴 Logout function called');
-        setExplicitLogout(true); // Set flag to prevent re-authentication
+        setExplicitLogoutInStorage(true); // Set flag to prevent re-authentication
+        setCsrfToken(null); // Clear CSRF token
+        setCurrentUser(null); // Clear current user
+        setUserProfile(null); // Clear user profile
         try {
-            console.log('🔴 Calling Edge Function logout to clear cookies...');
-            // Use Edge Function to clear HTTP-only cookies
-            await supabase.functions.invoke('auth-logout').catch(err => {
-                console.log('⚠️ Edge Function logout failed:', err);
-            });
-            console.log('✅ Edge Function logout completed');
-
-            console.log('🔴 Clearing all local state...');
-            // Clear all local state immediately to prevent any interference
-            setCurrentUser(null);
-            setUserProfile(null);
-            console.log('✅ Local auth state cleared');
-
-            console.log('🔴 Clearing IndexedDB session...');
-            // Clear IndexedDB session
-            await indexedDB.clearSession();
-            console.log('✅ IndexedDB session cleared');
-
-            console.log('🔴 Clearing sessionStorage...');
-            // Clear sessionStorage items that might contain session data
-            Object.keys(sessionStorage).forEach(key => {
-                if (key.startsWith('supabase.')) {
-                    sessionStorage.removeItem(key);
-                }
-            });
-            console.log('✅ sessionStorage cleared');
-
+            console.log('🔴 Calling Supabase signOut...');
+            // Use Supabase client directly for logout
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error("Supabase signOut error:", error);
+                throw error;
+            }
             console.log('✅ Logout completed');
         } catch (error) {
             console.error("❌ Logout error:", error);
@@ -572,8 +618,157 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }
 
-    function resetPassword(email: string) {
-        return sendPasswordResetEmail(auth, email);
+    async function resetPassword(email: string) {
+        // Use Supabase auth for password reset
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/reset-password`
+        });
+
+        if (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    // MFA Setup - Initialize MFA for user
+    async function mfaSetup(method: 'totp' | 'sms' = 'totp', phoneNumber?: string) {
+        try {
+            if (!currentUser) {
+                throw new Error('User must be logged in to setup MFA');
+            }
+
+            const { data, error } = await supabase.functions.invoke('auth-mfa-setup', {
+                body: { userId: currentUser.uid, method, phoneNumber },
+                headers: getAuthHeaders()
+            });
+
+            if (error) {
+                throw new Error(error.message || 'Failed to setup MFA');
+            }
+
+            if (!data?.success) {
+                throw new Error(data?.error || 'Failed to setup MFA');
+            }
+
+            setMfaSetupData({ secret: data.secret, qrCodeURL: data.qrCodeURL });
+            setMfaSetupStep('qr');
+        } catch (error) {
+            console.error('MFA setup error:', error);
+            throw error;
+        }
+    }
+
+    // MFA Verify - Verify TOTP code during setup or login
+    async function mfaVerify(code: string, isSetup: boolean = false): Promise<{ success: boolean; backupCodes?: string[] }> {
+        try {
+            if (!currentUser) {
+                throw new Error('User must be logged in to verify MFA');
+            }
+
+            const { data, error } = await supabase.functions.invoke('auth-mfa-verify', {
+                body: { userId: currentUser.uid, code, isSetup },
+                headers: getAuthHeaders()
+            });
+
+            if (error) {
+                throw new Error(error.message || 'Failed to verify MFA code');
+            }
+
+            if (!data?.success) {
+                throw new Error(data?.error || 'Failed to verify MFA code');
+            }
+
+            if (isSetup) {
+                setMfaEnabled(true);
+                setMfaSetupStep('none');
+                setMfaSetupData({});
+                return { success: true, backupCodes: data.backupCodes };
+            }
+
+            return { success: true };
+        } catch (error) {
+            console.error('MFA verify error:', error);
+            throw error;
+        }
+    }
+
+    // MFA Disable - Disable MFA for user
+    async function mfaDisable(code: string) {
+        try {
+            if (!currentUser) {
+                throw new Error('User must be logged in to disable MFA');
+            }
+
+            const { data, error } = await supabase.functions.invoke('auth-mfa-disable', {
+                body: { userId: currentUser.uid, code },
+                headers: getAuthHeaders()
+            });
+
+            if (error) {
+                throw new Error(error.message || 'Failed to disable MFA');
+            }
+
+            if (!data?.success) {
+                throw new Error(data?.error || 'Failed to disable MFA');
+            }
+
+            setMfaEnabled(false);
+        } catch (error) {
+            console.error('MFA disable error:', error);
+            throw error;
+        }
+    }
+
+    // MFA Generate Backup Codes
+    async function mfaGenerateBackupCodes(): Promise<string[]> {
+        try {
+            if (!currentUser) {
+                throw new Error('User must be logged in to generate backup codes');
+            }
+
+            const { data, error } = await supabase.functions.invoke('auth-mfa-backup-codes', {
+                body: { userId: currentUser.uid, action: 'generate', codeCount: 10 },
+                headers: getAuthHeaders()
+            });
+
+            if (error) {
+                throw new Error(error.message || 'Failed to generate backup codes');
+            }
+
+            if (!data?.success) {
+                throw new Error(data?.error || 'Failed to generate backup codes');
+            }
+
+            return data.backupCodes;
+        } catch (error) {
+            console.error('MFA generate backup codes error:', error);
+            throw error;
+        }
+    }
+
+    // MFA Check Status - Check if MFA is enabled for user
+    async function mfaCheckStatus(): Promise<boolean> {
+        try {
+            if (!currentUser) {
+                return false;
+            }
+
+            const { data, error } = await supabase
+                .from('mfa_secrets')
+                .select('is_enabled')
+                .eq('user_id', currentUser.uid)
+                .single();
+
+            if (error) {
+                return false;
+            }
+
+            const enabled = data?.is_enabled || false;
+            setMfaEnabled(enabled);
+            return enabled;
+        } catch (error) {
+            console.error('MFA check status error:', error);
+            return false;
+        }
     }
 
     async function deleteAccount(userId: string) {
@@ -581,7 +776,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             // Call the delete-account Edge Function
             const { data, error } = await supabase.functions.invoke('delete-account', {
-                body: { userId }
+                body: { userId },
+                headers: getAuthHeaders()
             });
 
             if (error) {
@@ -598,56 +794,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     useEffect(() => {
-        // Firebase auth state listener
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            setCurrentUser(user);
-
-            if (user) {
-                // Fetch user profile from Firebase
-                try {
-                    const docRef = doc(db, 'users', user.uid);
-                    const docSnap = await getDoc(docRef);
-                    if (docSnap.exists()) {
-                        setUserProfile(docSnap.data());
-                    }
-                } catch (error) {
-                    console.error("Error fetching user profile:", error);
-                }
-            } else {
-                setUserProfile(null);
-            }
-
-            setLoading(false);
-        });
-
         // Verify session using Edge Function
         const verifySession = async () => {
+            // Check if user explicitly logged out - prevent session restoration
+            if (isExplicitLogout()) {
+                console.log("⚠️ User explicitly logged out, skipping session restoration");
+                setCurrentUser(null);
+                setUserProfile(null);
+                setLoading(false);
+                return;
+            }
+
             try {
-                const { data, error } = await supabase.functions.invoke('auth-verify');
+                const { data, error } = await supabase.functions.invoke('auth-verify', {
+                    headers: getAuthHeaders()
+                });
 
                 if (data?.success && data?.user) {
                     console.log("✅ Session verified via Edge Function:", data.user.id, data.user.email);
 
-                    // Create a minimal User-like object for compatibility
-                    const verifiedUser = {
+                    // Create SupabaseUser object
+                    const verifiedUser: SupabaseUser = {
+                        id: data.user.id,
                         uid: data.user.id,
                         email: data.user.email || '',
-                        emailVerified: true,
-                        isAnonymous: false,
-                        metadata: { creationTime: new Date().toISOString(), lastSignInTime: new Date().toISOString() },
-                        providerData: [],
-                        refreshToken: '',
-                        tenantId: null,
-                        delete: async () => { },
-                        getIdToken: async () => '',
-                        getIdTokenResult: async () => ({}) as any,
-                        reload: async () => { },
-                        toJSON: () => ({ uid: data.user.id, email: data.user.email }),
-                        displayName: null,
-                        phoneNumber: null,
-                        photoURL: null,
-                        providerId: 'supabase'
-                    } as unknown as User;
+                        display_name: data.user.email?.split('@')[0],
+                        displayName: data.user.email?.split('@')[0],
+                        email_confirmed_at: new Date().toISOString(),
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
 
                     setCurrentUser(verifiedUser);
 
@@ -708,11 +884,22 @@ const value = {
     currentUser,
     userProfile,
     loading,
+    signupInProgress,
     signup,
     login,
     logout,
     deleteAccount,
-    resetPassword
+    resetPassword,
+    getAuthHeaders,
+    // MFA properties
+    mfaEnabled,
+    mfaSetupStep,
+    mfaSetupData,
+    mfaSetup,
+    mfaVerify,
+    mfaDisable,
+    mfaGenerateBackupCodes,
+    mfaCheckStatus
 };
 
     return (
