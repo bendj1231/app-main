@@ -1146,11 +1146,11 @@ export const HomePage: React.FC<HomePageProps> = ({
                                             <div className="bg-slate-50 rounded-lg p-3 mb-3">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <span className="text-xs text-slate-500">Type</span>
-                                                    <span className="text-xs font-bold text-slate-900">Commercial Pilot</span>
+                                                    <span className="text-xs font-bold text-slate-900">{isLoggedIn ? 'Professional Pilot' : 'Commercial Pilot'}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">Status</span>
-                                                    <span className="text-xs font-bold text-emerald-600">Verified</span>
+                                                    <span className="text-xs font-bold text-emerald-600">{isLoggedIn ? 'Verified' : 'Pending'}</span>
                                                 </div>
                                             </div>
 
@@ -1165,23 +1165,23 @@ export const HomePage: React.FC<HomePageProps> = ({
                                             <div className="space-y-3">
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">License</span>
-                                                    <span className="text-xs font-bold text-slate-900">CPL (A)</span>
+                                                    <span className="text-xs font-bold text-slate-900">{isLoggedIn ? 'Professional License' : 'CPL (A)'}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">Medical</span>
-                                                    <span className="text-xs font-bold text-emerald-600">Class 1 Valid</span>
+                                                    <span className="text-xs font-bold text-emerald-600">{isLoggedIn ? 'Class 1 Valid' : 'Class 1 Valid'}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">Type Ratings</span>
-                                                    <span className="text-xs font-bold text-slate-900">A320 (SEP)</span>
+                                                    <span className="text-xs font-bold text-slate-900">{isLoggedIn ? 'Multi-Engine' : 'A320 (SEP)'}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">English Proficiency</span>
-                                                    <span className="text-xs font-bold text-slate-900">Level 6 (Expert)</span>
+                                                    <span className="text-xs font-bold text-slate-900">{isLoggedIn ? 'Level 6 (Expert)' : 'Level 6 (Expert)'}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">Languages</span>
-                                                    <span className="text-xs font-bold text-slate-900">English, Spanish</span>
+                                                    <span className="text-xs font-bold text-slate-900">{isLoggedIn ? 'English, Spanish' : 'English, Spanish'}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1194,15 +1194,15 @@ export const HomePage: React.FC<HomePageProps> = ({
                                             <div className="space-y-3">
                                                 <div className="bg-slate-50 rounded-lg p-3 flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">Medical Certificate</span>
-                                                    <span className="text-xs font-bold text-emerald-600">Valid Until Aug 2026</span>
+                                                    <span className="text-xs font-bold text-emerald-600">{isLoggedIn ? 'Valid Until Aug 2026' : 'Not Available'}</span>
                                                 </div>
                                                 <div className="bg-slate-50 rounded-lg p-3 flex justify-between items-center">
-                                                    <span className="text-xs text-slate-500">Radio License</span>
-                                                    <span className="text-xs font-bold text-slate-900">G-RT12345</span>
+                                                    <span className="text-xs text-slate-500">Last Flown</span>
+                                                    <span className="text-xs font-bold text-slate-900">{lastFlown || 'Not Available'}</span>
                                                 </div>
                                                 <div className="bg-slate-50 rounded-lg p-3 flex justify-between items-center">
-                                                    <span className="text-xs text-slate-500">License Expiry</span>
-                                                    <span className="text-xs font-bold text-slate-900">Mar 2028</span>
+                                                    <span className="text-xs text-slate-500">Recognition Score</span>
+                                                    <span className="text-xs font-bold text-slate-900">{overallRecognitionScore || 0}/100</span>
                                                 </div>
                                             </div>
                                         </div>
