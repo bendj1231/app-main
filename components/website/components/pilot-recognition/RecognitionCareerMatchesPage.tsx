@@ -144,19 +144,52 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                                 overscrollBehaviorX: 'none',
                                 WebkitOverflowScrolling: 'touch',
                                 width: '100%',
-                                maxWidth: '100%'
+                                maxWidth: '100%',
+                                paddingLeft: '3rem',
+                                paddingRight: '3rem'
                             }}
                             className="snap-scroll scrollbar-hide"
                         >
+                            {/* WingMentor Intro Card */}
+                            <div 
+                                style={{ 
+                                    flexShrink: 0, 
+                                    width: '450px',
+                                    cursor: 'default',
+                                    border: '3px solid transparent',
+                                    borderRadius: '1rem',
+                                    padding: '3px',
+                                    transition: 'all 0.2s ease'
+                                }}
+                            >
+                                <div style={{ borderRadius: '0.75rem', overflow: 'hidden' }}>
+                                    <div style={{ position: 'relative', height: '300px', borderRadius: '0.75rem', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white' }}>
+                                        <img
+                                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                                            alt="WingMentor"
+                                            style={{ width: '120px', height: '120px', objectFit: 'contain', margin: 'auto' }}
+                                        />
+                                        <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', padding: '1rem', background: 'transparent', textAlign: 'center' }}>
+                                            <h4 style={{ margin: 0, fontSize: '1.125rem', fontWeight: 'normal', color: '#0f172a', fontFamily: 'Georgia, serif', textShadow: 'none' }}>
+                                                Pathways to Partnered Cadet Programs
+                                            </h4>
+                                            <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: '#64748b' }}>
+                                                WingMentor
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             {[
-                                { title: 'Envoy Air Pilot Cadet Program', subtitle: 'Envoy Air (American Airlines Group)', match: 80, pr: 0 },
-                                { title: 'CAE Philippines Type Rating Center', subtitle: 'CAE Philippines (PAAT)', match: 80, pr: 0 },
-                                { title: 'SkyWest Airlines Cadet Program', subtitle: 'SkyWest Airlines', match: 80, pr: 0 },
-                                { title: 'Zipline Flight Operations', subtitle: 'Zipline International', match: 79, pr: 0 },
-                                { title: 'Drone Delivery Pilot', subtitle: 'Wing (Alphabet)', match: 79, pr: 0 },
-                                { title: 'MLG Pilotless Drone Ops', subtitle: 'MLG (Medical Logistics Group)', match: 79, pr: 0 },
-                                { title: 'Cathay Pacific Cadet Pilot Programme', subtitle: 'Cathay Pacific Airways', match: 75, pr: 0 },
-                                { title: 'Cebu Pacific Cadet Pilot Program', subtitle: 'Cebu Pacific', match: 60, pr: 0 }
+                                { title: 'Envoy Air Pilot Cadet Program', subtitle: 'Envoy Air (American Airlines Group)', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                                { title: 'CAE Philippines Type Rating Center', subtitle: 'CAE Philippines (PAAT)', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1565514020176-792dd98c6d6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                                { title: 'SkyWest Airlines Cadet Program', subtitle: 'SkyWest Airlines', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                                { title: 'Zipline Flight Operations', subtitle: 'Zipline International', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                                { title: 'Drone Delivery Pilot', subtitle: 'Wing (Alphabet)', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1579829366248-204fe8413f31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                                { title: 'MLG Pilotless Drone Ops', subtitle: 'MLG (Medical Logistics Group)', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                                { title: 'Cathay Pacific Cadet Pilot Programme', subtitle: 'Cathay Pacific Airways', match: 75, pr: 0, image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                                { title: 'Cebu Pacific Cadet Pilot Program', subtitle: 'Cebu Pacific', match: 60, pr: 0, image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }
                             ].map((pathway, index) => (
                                 <div 
                                     key={index}
@@ -171,7 +204,12 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                                     }}
                                 >
                                     <div style={{ borderRadius: '0.75rem', overflow: 'hidden' }}>
-                                        <div style={{ position: 'relative', height: '300px', borderRadius: '0.75rem', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1e3a8a, #3b82f6)' }}>
+                                        <div style={{ position: 'relative', height: '300px', borderRadius: '0.75rem', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
+                                            <img
+                                                src={pathway.image}
+                                                alt={pathway.title}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                                            />
                                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent 40%)' }} />
                                             
                                             <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', display: 'flex', gap: '0.5rem' }}>
