@@ -471,6 +471,8 @@ const App = () => {
             foundationProgress={foundationProgress}
             examinationScore={examinationScore}
             overallRecognitionScore={overallRecognitionScore}
+            userDisplayName={currentUser?.displayName}
+            userEmail={currentUser?.email}
             onGoToProgramDetail={(slide) => {
               if (slide?.title === 'Emirates ATPL Pilot Pathways') {
                 navigateTo('emirates-atpl');

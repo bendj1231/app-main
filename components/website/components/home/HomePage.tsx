@@ -24,6 +24,8 @@ interface HomePageProps {
     foundationProgress?: number;
     examinationScore?: number;
     overallRecognitionScore?: number;
+    userDisplayName?: string;
+    userEmail?: string;
 }
 
 interface Slide {
@@ -454,6 +456,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     foundationProgress,
     examinationScore,
     overallRecognitionScore,
+    userDisplayName,
+    userEmail,
 }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [scrolled, setScrolled] = useState(false);
@@ -1103,7 +1107,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-[10px] text-red-200 uppercase tracking-[0.2em] mb-1">Pilot Recognition Profile</p>
-                                            <h4 className="text-2xl font-bold text-white">{pilotId || 'Pilot'}</h4>
+                                            <h4 className="text-2xl font-bold text-white">{pilotId || userDisplayName || userEmail?.split('@')[0] || 'Pilot'}</h4>
                                             <p className="text-sm text-red-100">WingMentor Recognition Portfolio</p>
                                         </div>
                                         <div className="text-right">
