@@ -80,7 +80,7 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                 <div className="mb-16">
                     <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '-1.5rem' }}>
                         <p style={{ margin: 0, fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>
-                            Pathways to Partnered Cadet Programs
+                            Discover Recommended Pathways
                         </p>
                         <h2 style={{ 
                             margin: '0.5rem 0 0', 
