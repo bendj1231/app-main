@@ -37,7 +37,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     onLoginModalOpen,
     currentPage = '',
 }) => {
-    const { currentUser, logout } = useAuth();
+    const { currentUser, logout, userProfile } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(forceScrolled);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -57,6 +57,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
     const settingsDropdownRef = useRef<HTMLDivElement>(null);
+
+    // Only consider user as logged in if they have a complete profile
+    const isFullyLoggedIn = currentUser && userProfile && (userProfile.user_id || userProfile.uid);
 
     // Fetch pilot_id and profile data from Supabase profile
     useEffect(() => {
@@ -475,20 +478,20 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     <div className="hidden lg:flex items-center gap-3 ml-4">
 
                         <button
-                            onClick={currentUser ? handleLogout : () => onNavigate('become-member')}
-                            className={`${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-1.5 whitespace-nowrap`}
+                            onClick={isFullyLoggedIn ? handleLogout : () => onNavigate('become-member')}
+                            className={`${isFullyLoggedIn ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-1.5 whitespace-nowrap`}
                         >
-                            {currentUser ? 'Sign Out' : 'Become a Member'}
+                            {isFullyLoggedIn ? 'Sign Out' : 'Become a Member'}
                         </button>
 
                         <button
-                            onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
-                            className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
+                            onClick={isFullyLoggedIn ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
+                            className={`${isFullyLoggedIn ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
                         >
-                            {currentUser ? 'Access Portal' : 'Login'}
+                            {isFullyLoggedIn ? 'Access Portal' : 'Login'}
                         </button>
 
-                        {currentUser && (
+                        {isFullyLoggedIn && (
                             <>
                                 <div className="relative" ref={dropdownRef}>
                                     <button
@@ -743,20 +746,20 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
 
                             <button
-                                onClick={currentUser ? handleLogout : () => { onNavigate('become-member'); setIsMenuOpen(false); }}
-                                className={`w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-8 ${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
+                                onClick={isFullyLoggedIn ? handleLogout : () => { onNavigate('become-member'); setIsMenuOpen(false); }}
+                                className={`w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-8 ${isFullyLoggedIn ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
                             >
-                                {currentUser ? 'Sign Out' : 'Become a Member'}
+                                {isFullyLoggedIn ? 'Sign Out' : 'Become a Member'}
                             </button>
 
                             <button
-                                onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
-                                className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-4 shadow-xl`}
+                                onClick={isFullyLoggedIn ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
+                                className={`${isFullyLoggedIn ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 rounded-sm font-bold uppercase tracking-widest mt-4 shadow-xl`}
                             >
-                                {currentUser ? 'Access Portal' : 'Login'}
+                                {isFullyLoggedIn ? 'Access Portal' : 'Login'}
                             </button>
 
-                            {currentUser && (
+                            {isFullyLoggedIn && (
                                 <div className="flex gap-4 mt-4">
                                     <div className="flex-1 flex items-center justify-center gap-2">
                                         <div className="relative">
