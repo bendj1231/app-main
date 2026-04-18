@@ -1232,6 +1232,40 @@ root.render(
           <Route path="/airbus-aligned-ebt-cbta-programs" element={<EBTCBTAPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/pilot-recognition" element={<PilotRecognitionPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/become-member" element={<BecomeMemberPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          {/* Pathways Pages */}
+          <Route path="/emirates-atpl" element={<EmiratesAtplPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/emerging-air-taxi" element={<EmergingAirTaxiPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/piloted-drones" element={<PilotedDronesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/air-taxi-pathways" element={<AirTaxiPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/private-charter-pathways" element={<PrivateCharterPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/cargo-transportation" element={<CargoTransportationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          {/* Pilot Recognition Pages */}
+          <Route path="/pilot-recognition-profile" element={<PilotRecognitionProfilePage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} />} />
+          <Route path="/atlas-cv" element={<ATLASCVPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          {/* Program Application Pages */}
+          <Route path="/foundational-application" element={<FoundationalProgramApplicationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/transition-application" element={<TransitionProgramApplicationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          {/* About/Company Pages */}
+          <Route path="/about" element={<AboutPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/faq" element={<FAQPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/board" element={<BoardPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/governance" element={<GovernancePage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/committees" element={<CommitteesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/mission-vision" element={<MissionVisionPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/core-values" element={<CoreValuesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          {/* Directory Pages */}
+          <Route path="/insights" element={<AviationInsightsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/applications-systems" element={<ApplicationsSystemsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/membership" element={<MembershipDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/hinfact" element={<HinfactPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/w1000-suite" element={<W1000SuitePage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/membership-benefits" element={<MembershipBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          {/* Other Pages */}
+          <Route path="/accreditation" element={<AccreditationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/contact-support" element={<ContactSupportPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/download" element={<DownloadPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/settings" element={<SettingsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/*" element={
             <>
               <App />
