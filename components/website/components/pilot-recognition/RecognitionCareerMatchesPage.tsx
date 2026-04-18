@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Target, Briefcase, Users, TrendingUp, CheckCircle2, Search, Award, Building2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
@@ -14,6 +14,26 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
     onNavigate,
     onLogin
 }) => {
+    const [selectedPathway, setSelectedPathway] = useState<{ title: string; subtitle: string } | null>(null);
+
+    const pathways = [
+        { title: 'Envoy Air Pilot Cadet Program', subtitle: 'Envoy Air (American Airlines Group)', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+        { title: 'CAE Philippines Type Rating Center', subtitle: 'CAE Philippines (PAAT)', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1565514020176-792dd98c6d6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+        { title: 'SkyWest Airlines Cadet Program', subtitle: 'SkyWest Airlines', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+        { title: 'Zipline Flight Operations', subtitle: 'Zipline International', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+        { title: 'Drone Delivery Pilot', subtitle: 'Wing (Alphabet)', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1579829366248-204fe8413f31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+        { title: 'MLG Pilotless Drone Ops', subtitle: 'MLG (Medical Logistics Group)', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+        { title: 'Cathay Pacific Cadet Pilot Programme', subtitle: 'Cathay Pacific Airways', match: 75, pr: 0, image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+        { title: 'Cebu Pacific Cadet Pilot Program', subtitle: 'Cebu Pacific', match: 60, pr: 0, image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }
+    ];
+
+    // Initialize selected pathway to first one
+    useEffect(() => {
+        if (!selectedPathway && pathways.length > 0) {
+            setSelectedPathway(pathways[0]);
+        }
+    }, []);
+
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
@@ -188,27 +208,19 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                                 </div>
                             </div>
 
-                            {[
-                                { title: 'Envoy Air Pilot Cadet Program', subtitle: 'Envoy Air (American Airlines Group)', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-                                { title: 'CAE Philippines Type Rating Center', subtitle: 'CAE Philippines (PAAT)', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1565514020176-792dd98c6d6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-                                { title: 'SkyWest Airlines Cadet Program', subtitle: 'SkyWest Airlines', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-                                { title: 'Zipline Flight Operations', subtitle: 'Zipline International', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-                                { title: 'Drone Delivery Pilot', subtitle: 'Wing (Alphabet)', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1579829366248-204fe8413f31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-                                { title: 'MLG Pilotless Drone Ops', subtitle: 'MLG (Medical Logistics Group)', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-                                { title: 'Cathay Pacific Cadet Pilot Programme', subtitle: 'Cathay Pacific Airways', match: 75, pr: 0, image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-                                { title: 'Cebu Pacific Cadet Pilot Program', subtitle: 'Cebu Pacific', match: 60, pr: 0, image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }
-                            ].map((pathway, index) => (
+                            {pathways.map((pathway, index) => (
                                 <div 
                                     key={index}
                                     style={{ 
                                         flexShrink: 0, 
                                         width: '600px',
                                         cursor: 'pointer',
-                                        border: index === 0 ? '3px solid #0ea5e9' : '3px solid transparent',
+                                        border: selectedPathway?.title === pathway.title ? '3px solid #0ea5e9' : '3px solid transparent',
                                         borderRadius: '1rem',
                                         padding: '3px',
                                         transition: 'all 0.2s ease'
                                     }}
+                                    onClick={() => setSelectedPathway(pathway)}
                                 >
                                     <div style={{ borderRadius: '0.75rem', overflow: 'hidden' }}>
                                         <div style={{ position: 'relative', height: '300px', borderRadius: '0.75rem', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
@@ -266,7 +278,7 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                                 Selected Pathway
                             </p>
                             <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '0.5rem', fontFamily: 'Georgia, serif' }}>
-                                Envoy Air Pilot Cadet Program
+                                {selectedPathway?.title || 'Select a pathway'}
                             </h3>
                         </div>
 
