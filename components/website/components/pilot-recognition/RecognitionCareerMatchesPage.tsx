@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Target, Briefcase, Users, TrendingUp, CheckCircle2, Search, Award, Building2 } from 'lucide-react';
+import { ArrowLeft, Target, Briefcase, Users, TrendingUp, CheckCircle2, Search, Award, Building2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -113,71 +113,133 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                     </div>
 
                     {/* Pathway Cards Carousel (Static Mock) */}
-                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                        <div className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg border border-slate-200 p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">Envoy Air Pilot Cadet Program</h3>
-                                <div className="bg-green-100 text-green-700 px-2 py-1 rounded text-sm font-bold">80% Match</div>
-                            </div>
-                            <p className="text-sm text-slate-600 mb-2">Envoy Air (American Airlines Group)</p>
-                            <p className="text-xs text-slate-500">PR: 0</p>
+                    <div style={{ position: 'relative', width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0', paddingRight: '0', marginTop: '0.5rem' }}>
+                        <style>{`
+                            .scrollbar-hide::-webkit-scrollbar {
+                                display: none;
+                            }
+                            .scrollbar-hide {
+                                -ms-overflow-style: none;
+                                scrollbar-width: none;
+                            }
+                            .snap-scroll {
+                                scroll-snap-type: x mandatory;
+                                scroll-padding-left: 3rem;
+                                scroll-padding-right: 3rem;
+                            }
+                            .snap-scroll > div {
+                                scroll-snap-align: center;
+                                scroll-snap-stop: always;
+                            }
+                        `}</style>
+                        <div 
+                            style={{ 
+                                display: 'flex', 
+                                gap: '1.5rem', 
+                                overflowX: 'scroll', 
+                                overflowY: 'hidden', 
+                                paddingBottom: '1rem', 
+                                scrollbarWidth: 'none', 
+                                msOverflowStyle: 'none',
+                                overscrollBehaviorX: 'none',
+                                WebkitOverflowScrolling: 'touch',
+                                width: '100%',
+                                maxWidth: '100%'
+                            }}
+                            className="snap-scroll scrollbar-hide"
+                        >
+                            {[
+                                { title: 'Envoy Air Pilot Cadet Program', subtitle: 'Envoy Air (American Airlines Group)', match: 80, pr: 0 },
+                                { title: 'CAE Philippines Type Rating Center', subtitle: 'CAE Philippines (PAAT)', match: 80, pr: 0 },
+                                { title: 'SkyWest Airlines Cadet Program', subtitle: 'SkyWest Airlines', match: 80, pr: 0 },
+                                { title: 'Zipline Flight Operations', subtitle: 'Zipline International', match: 79, pr: 0 },
+                                { title: 'Drone Delivery Pilot', subtitle: 'Wing (Alphabet)', match: 79, pr: 0 },
+                                { title: 'MLG Pilotless Drone Ops', subtitle: 'MLG (Medical Logistics Group)', match: 79, pr: 0 },
+                                { title: 'Cathay Pacific Cadet Pilot Programme', subtitle: 'Cathay Pacific Airways', match: 75, pr: 0 },
+                                { title: 'Cebu Pacific Cadet Pilot Program', subtitle: 'Cebu Pacific', match: 60, pr: 0 }
+                            ].map((pathway, index) => (
+                                <div 
+                                    key={index}
+                                    style={{ 
+                                        flexShrink: 0, 
+                                        width: '600px',
+                                        cursor: 'pointer',
+                                        border: index === 0 ? '3px solid #0ea5e9' : '3px solid transparent',
+                                        borderRadius: '1rem',
+                                        padding: '3px',
+                                        transition: 'all 0.2s ease'
+                                    }}
+                                >
+                                    <div style={{ borderRadius: '0.75rem', overflow: 'hidden' }}>
+                                        <div style={{ position: 'relative', height: '300px', borderRadius: '0.75rem', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1e3a8a, #3b82f6)' }}>
+                                            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent 40%)' }} />
+                                            
+                                            <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', display: 'flex', gap: '0.5rem' }}>
+                                                <div style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', background: 'rgba(16, 185, 129, 0.9)', color: 'white', fontSize: '0.75rem', fontWeight: 600 }}>
+                                                    {pathway.match}% Match
+                                                </div>
+                                                <div style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', background: 'rgba(14, 165, 233, 0.9)', color: 'white', fontSize: '0.75rem', fontWeight: 600 }}>
+                                                    PR: {pathway.pr}
+                                                </div>
+                                            </div>
+
+                                            <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', padding: '1rem', background: 'linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent)', textAlign: 'center' }}>
+                                                <h4 style={{ margin: 0, fontSize: '1.125rem', fontWeight: 'normal', color: 'white', fontFamily: 'Georgia, serif', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+                                                    {pathway.title}
+                                                </h4>
+                                                <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.8)' }}>
+                                                    {pathway.subtitle}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg border border-slate-200 p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">CAE Philippines Type Rating Center</h3>
-                                <div className="bg-green-100 text-green-700 px-2 py-1 rounded text-sm font-bold">80% Match</div>
-                            </div>
-                            <p className="text-sm text-slate-600 mb-2">CAE Philippines (PAAT)</p>
-                            <p className="text-xs text-slate-500">PR: 0</p>
+                    </div>
+
+                    {/* Navigation Arrows */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
+                        <button style={{
+                            padding: '0.75rem',
+                            borderRadius: '50%',
+                            border: '1px solid #e2e8f0',
+                            background: 'white',
+                            color: '#64748b',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0
+                        }}>
+                            <ChevronLeft size={20} />
+                        </button>
+
+                        <div style={{ textAlign: 'center', maxWidth: '600px' }}>
+                            <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.5rem' }}>
+                                Selected Pathway
+                            </p>
+                            <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '0.5rem', fontFamily: 'Georgia, serif' }}>
+                                Envoy Air Pilot Cadet Program
+                            </h3>
                         </div>
-                        <div className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg border border-slate-200 p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">SkyWest Airlines Cadet Program</h3>
-                                <div className="bg-green-100 text-green-700 px-2 py-1 rounded text-sm font-bold">80% Match</div>
-                            </div>
-                            <p className="text-sm text-slate-600 mb-2">SkyWest Airlines</p>
-                            <p className="text-xs text-slate-500">PR: 0</p>
-                        </div>
-                        <div className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg border border-slate-200 p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">Zipline Flight Operations</h3>
-                                <div className="bg-green-100 text-green-700 px-2 py-1 rounded text-sm font-bold">79% Match</div>
-                            </div>
-                            <p className="text-sm text-slate-600 mb-2">Zipline International</p>
-                            <p className="text-xs text-slate-500">PR: 0</p>
-                        </div>
-                        <div className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg border border-slate-200 p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">Drone Delivery Pilot</h3>
-                                <div className="bg-green-100 text-green-700 px-2 py-1 rounded text-sm font-bold">79% Match</div>
-                            </div>
-                            <p className="text-sm text-slate-600 mb-2">Wing (Alphabet)</p>
-                            <p className="text-xs text-slate-500">PR: 0</p>
-                        </div>
-                        <div className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg border border-slate-200 p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">MLG Pilotless Drone Ops</h3>
-                                <div className="bg-green-100 text-green-700 px-2 py-1 rounded text-sm font-bold">79% Match</div>
-                            </div>
-                            <p className="text-sm text-slate-600 mb-2">MLG (Medical Logistics Group)</p>
-                            <p className="text-xs text-slate-500">PR: 0</p>
-                        </div>
-                        <div className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg border border-slate-200 p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">Cathay Pacific Cadet Pilot Programme</h3>
-                                <div className="bg-amber-100 text-amber-700 px-2 py-1 rounded text-sm font-bold">75% Match</div>
-                            </div>
-                            <p className="text-sm text-slate-600 mb-2">Cathay Pacific Airways</p>
-                            <p className="text-xs text-slate-500">PR: 0</p>
-                        </div>
-                        <div className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg border border-slate-200 p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">Cebu Pacific Cadet Pilot Program</h3>
-                                <div className="bg-amber-100 text-amber-700 px-2 py-1 rounded text-sm font-bold">60% Match</div>
-                            </div>
-                            <p className="text-sm text-slate-600 mb-2">Cebu Pacific</p>
-                            <p className="text-xs text-slate-500">PR: 0</p>
-                        </div>
+
+                        <button style={{
+                            padding: '0.75rem',
+                            borderRadius: '50%',
+                            border: '1px solid #e2e8f0',
+                            background: 'white',
+                            color: '#64748b',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0
+                        }}>
+                            <ChevronRight size={20} />
+                        </button>
                     </div>
                 </div>
 
