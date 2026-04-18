@@ -264,6 +264,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             subItems: [
                 { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
                 { name: 'Pilot Recognition Profile', target: 'pilot-recognition', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'Recognition Career Matches', target: 'recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] },
                 { name: 'Examination Results', target: 'examination-results', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
                 { name: 'Digital Logbook', target: 'digital-logbook', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
             ]
