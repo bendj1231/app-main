@@ -55,6 +55,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [uploading, setUploading] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
+    const settingsDropdownRef = useRef<HTMLDivElement>(null);
 
     // Fetch pilot_id and profile data from Supabase profile
     useEffect(() => {
@@ -155,13 +157,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsProfileDropdownOpen(false);
             }
+            if (settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target as Node)) {
+                setIsSettingsDropdownOpen(false);
+            }
         };
 
-        if (isProfileDropdownOpen) {
+        if (isProfileDropdownOpen || isSettingsDropdownOpen) {
             document.addEventListener('mousedown', handleClickOutside);
             return () => document.removeEventListener('mousedown', handleClickOutside);
         }
-    }, [isProfileDropdownOpen]);
+    }, [isProfileDropdownOpen, isSettingsDropdownOpen]);
 
     useEffect(() => {
         if (forceScrolled) return;
@@ -218,23 +223,22 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             target: 'about_programs',
             subItems: [
                 { category: 'Career Pathways', name: 'Air Taxi & eVTOL', target: 'air-taxi-pathways', bullets: ['Sub‑1000 Hour Pilots', 'New Sector Entry', 'Next‑Gen Rosters'] },
-                { name: 'Emirates ATPL', target: 'emirates-atpl', bullets: ['GCAA ATPL Theory', 'Global Recognition', 'Fujairah Aviation Academy'] },
-                { name: 'Cargo Transportation', target: 'about_programs', bullets: ['Feeder Operations', 'Heavy Logistics', 'Global Supply Chain'] },
-                { name: 'Fleet & Private Charter', target: 'private-charter-pathways', bullets: ['Corporate Flight Depts', 'VIP Service Standards', 'Global Mission Profile'] },
-                { name: 'Flight Instructor', target: 'about_programs', bullets: ['Teaching Excellence', 'Building Experience', 'School Operations'] },
+                { category: 'Career Pathways', name: 'Emirates ATPL', target: 'emirates-atpl', bullets: ['GCAA ATPL Theory', 'Global Recognition', 'Fujairah Aviation Academy'] },
+                { category: 'Specialized Operations', name: 'Cargo Transportation', target: 'cargo-transportation', bullets: ['Feeder Operations', 'Heavy Logistics', 'Global Supply Chain'] },
+                { category: 'Career Pathways', name: 'Private Sector Pathway', target: 'private-charter-pathways', bullets: ['Corporate Flight Depts', 'VIP Service Standards', 'Global Mission Profile'] },
+                { category: 'Licensure & Type Rating Pathways', name: 'CFI Pathway', target: 'about_programs', bullets: ['Teaching Excellence', 'Building Experience', 'School Operations'] },
                 { category: 'Specialized Operations', name: 'Seaplane/Float Ops', target: 'about_programs', bullets: ['Island Transfers', 'Amphibious Skills', 'Specialized Handling'] },
-                { name: 'Aerial Tours & Skydive', target: 'about_programs', bullets: ['Sightseeing Ops', 'Jump Pilot Standards', 'Safety Protocols'] },
-                { name: 'Land Survey & Ag', target: 'about_programs', bullets: ['Precision Agriculture', 'Aerial Mapping', 'Utility Missions'] },
-                { name: 'Unmanned Systems', target: 'about_programs', bullets: ['BVLOS Operations', 'Data Intelligence', 'Remote Fleet Mgmt'] },
-                { category: 'Sector Insights', name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Flagship Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
-                { name: 'Corporate & VIP Jet', target: 'private-charter-pathways', bullets: ['Elite Service Standards', 'Executive Travel Trends', 'Non‑Scheduled Ops'] },
-                { name: 'UAM & Air Taxis', target: 'air-taxi-pathways', bullets: ['Urban Air Mobility', 'Infrastructure Layout', 'Battery Technology'] },
-                { name: 'Global Cargo Logistics', target: 'insights', bullets: ['Supply Chain Resilience', 'Hub Operations', 'Automation in Cargo'] },
-                { category: 'Operational Intelligence', name: 'Float & Amphibious Ops', target: 'insights', bullets: ['Water Runways', 'Corrosion Management', 'Tidal Navigation'] },
-                { name: 'Flight Instruction', target: 'insights', bullets: ['Student Psychology', 'Marketing Your School', 'Regulatory Compliance'] },
-                { name: 'Specialized Aerial Work', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] },
-                { category: 'Innovation & Ownership', name: 'Aircraft Mgmt & Ownership', target: 'insights', bullets: ['Registration Options', 'Maintenance Costs', 'Hangarage Strategy'] },
-                { name: 'Precision Agriculture', target: 'insights', bullets: ['Hyperspectral Imaging', 'Crop Yield Analysis', 'Autonomy in Ag'] }
+                { category: 'Specialized Operations', name: 'Aerial Tours & Skydive', target: 'about_programs', bullets: ['Sightseeing Ops', 'Jump Pilot Standards', 'Safety Protocols'] },
+                { category: 'Specialized Operations', name: 'Land Survey & Ag', target: 'about_programs', bullets: ['Precision Agriculture', 'Aerial Mapping', 'Utility Missions'] },
+                { category: 'Career Pathways', name: 'Piloted & Automated<br />Drones', target: 'piloted-drones', bullets: ['BVLOS Operations', 'Data Intelligence', 'Remote Fleet Mgmt'] },
+                { category: 'Licensure & Type Rating Pathways', name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Flagship Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
+                                { category: 'Career Pathways', name: 'UAM & Air Taxis', target: 'air-taxi-pathways', bullets: ['Urban Air Mobility', 'Infrastructure Layout', 'Battery Technology'] },
+                                { category: 'Specialized Operations', name: 'Float & Amphibious Ops', target: 'insights', bullets: ['Water Runways', 'Corrosion Management', 'Tidal Navigation'] },
+                { category: 'Licensure & Type Rating Pathways', name: 'CFI Pathway', target: 'insights', bullets: ['Student Psychology', 'Marketing Your School', 'Regulatory Compliance'] },
+                { category: 'Licensure & Type Rating Pathways', name: 'CPL & Type Ratings', target: 'about_programs', bullets: ['License Upgrades', 'Type Rating Courses', 'Multi-Engine'] },
+{ category: 'Licensure & Type Rating Pathways', name: 'Aerial Work<br />(UPRT)', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] },
+                { category: 'Licensure & Type Rating Pathways', name: 'Aircraft Mgmt &<br />Ownership', target: 'insights', bullets: ['Registration Options', 'Maintenance Costs', 'Hangarage Strategy'] },
+                { category: 'Specialized Operations', name: 'Agricultural Crop<br />Dusting', target: 'insights', bullets: ['Hyperspectral Imaging', 'Crop Yield Analysis', 'Autonomy in Ag'] }
             ]
         },
         {
@@ -347,54 +351,119 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Dropdown Menu */}
                                 {item.subItems && (
                                     <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-300 ${activeDropdown === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
-                                        <div className="bg-[#050A30]/95 backdrop-blur-xl border border-white/10 rounded-lg p-2 min-w-[200px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col gap-0.5 overflow-hidden">
-                                            {item.subItems.map((subItem, idx) => (
-                                                <React.Fragment key={`${item.name}-${subItem.name}-${idx}`}>
-                                                    {subItem.category && (
-                                                        <div className={`px-3 pt-2 pb-1 text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-400' : 'text-blue-400/60'} border-b border-white/5 mb-0.5 mt-0.5 first:mt-0`}>
-                                                            {subItem.category}
-                                                        </div>
-                                                    )}
-                                                    <div
-                                                        onMouseEnter={() => setActiveSubItem(subItem.name)}
-                                                        onMouseLeave={() => setActiveSubItem(null)}
-                                                        className="relative"
-                                                    >
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                onNavigate(subItem.target);
-                                                                setActiveDropdown(null);
-                                                            }}
-                                                            className={`w-full text-left px-3 py-1.5 rounded transition-all flex flex-col gap-0.5 ${activeSubItem === subItem.name
-                                                                ? subItem.isYellow ? 'bg-yellow-500/10 text-yellow-400 translate-x-1' : 'bg-blue-600/20 text-white translate-x-1'
-                                                                : subItem.isYellow ? 'text-yellow-400/80 hover:text-yellow-400 hover:bg-yellow-500/5' : 'text-white/70 hover:text-white hover:bg-white/5'
-                                                                }`}
-                                                        >
-                                                            <div className="flex items-center gap-1.5">
-                                                                {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
-                                                                <span className={`text-[0.7rem] font-bold uppercase tracking-wider whitespace-nowrap ${subItem.isYellow ? 'text-yellow-400' : ''}`}>
-                                                                    {subItem.name}
-                                                                </span>
-                                                            </div>
+                                        <div className={`bg-[#050A30]/95 backdrop-blur-xl border border-white/10 rounded-lg p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden ${item.name === 'Pathways' ? 'w-[600px] grid grid-cols-3 gap-4' : 'min-w-[200px] flex flex-col gap-0.5'}`}>
+                                            {item.name === 'Pathways' ? (
+                                                // Horizontal square layout for Pathways
+                                                (() => {
+                                                    const categories = item.subItems?.reduce((acc, subItem) => {
+                                                        const category = subItem.category || 'Other';
+                                                        if (!acc[category]) acc[category] = [];
+                                                        acc[category].push(subItem);
+                                                        return acc;
+                                                    }, {} as Record<string, typeof item.subItems>) || {};
 
-                                                            {/* Expanded Core Components */}
-                                                            {subItem.bullets && (
-                                                                <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeSubItem === subItem.name ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                                                                    <ul className="space-y-0.5">
-                                                                        {subItem.bullets.map((bullet, idx) => (
-                                                                            <li key={idx} className="flex items-center gap-1.5 text-[0.6rem] text-blue-300/80 font-medium tracking-wide">
-                                                                                <div className="w-0.5 h-0.5 rounded-full bg-blue-400"></div>
-                                                                                {bullet}
-                                                                            </li>
-                                                                        ))}
-                                                                    </ul>
+                                                    return Object.entries(categories).map(([category, items]) => (
+                                                        <div key={category} className="space-y-2">
+                                                            <h4 className={`text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-400' : 'text-blue-400/60'} border-b border-white/10 pb-2`}>
+                                                                {category}
+                                                            </h4>
+                                                            <div className="space-y-1">
+                                                                {items.map((subItem, idx) => (
+                                                                    <button
+                                                                        key={idx}
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            onNavigate(subItem.target);
+                                                                            setActiveDropdown(null);
+                                                                        }}
+                                                                        className={`w-full text-left px-3 py-2 rounded transition-all flex flex-col gap-0.5 ${activeSubItem === subItem.name
+                                                                            ? subItem.isYellow ? 'bg-yellow-500/10 text-yellow-400' : 'bg-blue-600/20 text-white'
+                                                                            : subItem.isYellow ? 'text-yellow-400/80 hover:text-yellow-400 hover:bg-yellow-500/5' : 'text-white/70 hover:text-white hover:bg-white/5'
+                                                                            }`}
+                                                                        onMouseEnter={() => setActiveSubItem(subItem.name)}
+                                                                        onMouseLeave={() => setActiveSubItem(null)}
+                                                                    >
+                                                                        <div className="flex items-center gap-1.5">
+                                                                            {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
+                                                                            <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-400' : ''}`} dangerouslySetInnerHTML={{ __html: subItem.name }}>
+                                                                            </span>
+                                                                        </div>
+
+                                                                        {subItem.bullets && (
+                                                                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeSubItem === subItem.name ? 'max-h-32 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+                                                                                <ul className="space-y-0.5">
+                                                                                    {subItem.bullets.map((bullet, bIdx) => (
+                                                                                        <li key={bIdx} className="flex items-center gap-1.5 text-[0.6rem] text-blue-300/80 font-medium tracking-wide">
+                                                                                            <div className="w-0.5 h-0.5 rounded-full bg-blue-400"></div>
+                                                                                            {bullet}
+                                                                                        </li>
+                                                                                    ))}
+                                                                                </ul>
+                                                                            </div>
+                                                                        )}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    ));
+                                                })()
+                                            ) : (
+                                                // Vertical layout for other dropdowns
+                                                item.subItems.map((subItem, idx) => (
+                                                    <React.Fragment key={`${item.name}-${subItem.name}-${idx}`}>
+                                                        {subItem.category && (
+                                                            <div className={`px-3 pt-2 pb-1 text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-400' : 'text-blue-400/60'} border-b border-white/5 mb-0.5 mt-0.5 first:mt-0`}>
+                                                                {subItem.category}
+                                                            </div>
+                                                        )}
+                                                        <div
+                                                            onMouseEnter={() => setActiveSubItem(subItem.name)}
+                                                            onMouseLeave={() => setActiveSubItem(null)}
+                                                            className="relative"
+                                                        >
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    onNavigate(subItem.target);
+                                                                    setActiveDropdown(null);
+                                                                }}
+                                                                className={`w-full text-left px-3 py-1.5 rounded transition-all flex flex-col gap-0.5 ${activeSubItem === subItem.name
+                                                                    ? subItem.isYellow ? 'bg-yellow-500/10 text-yellow-400 translate-x-1' : 'bg-blue-600/20 text-white translate-x-1'
+                                                                    : subItem.isYellow ? 'text-yellow-400/80 hover:text-yellow-400 hover:bg-yellow-500/5' : 'text-white/70 hover:text-white hover:bg-white/5'
+                                                                    }`}
+                                                            >
+                                                                <div className="flex items-center gap-1.5">
+                                                                    {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
+                                                                    <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-400' : ''}`} dangerouslySetInnerHTML={{ __html: subItem.name }}>
+                                                                    </span>
                                                                 </div>
-                                                            )}
-                                                        </button>
-                                                    </div>
-                                                </React.Fragment>
-                                            ))}
+
+                                                                {/* Expanded Core Components */}
+                                                                {subItem.bullets && (
+                                                                    <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeSubItem === subItem.name ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+                                                                        <ul className="space-y-0.5">
+                                                                            {subItem.bullets.map((bullet, idx) => (
+                                                                                <li key={idx} className="flex items-center gap-1.5 text-[0.6rem] text-blue-300/80 font-medium tracking-wide">
+                                                                                    <div className="w-0.5 h-0.5 rounded-full bg-blue-400"></div>
+                                                                                    {bullet}
+                                                                                </li>
+                                                                            ))}
+                                                                        </ul>
+                                                                    </div>
+                                                                )}
+                                                            </button>
+                                                        </div>
+                                                    </React.Fragment>
+                                                ))
+                                            )}
+                                            {/* Bottom message for Pathways dropdown */}
+                                            {item.name === 'Pathways' && (
+                                                <div className="col-span-3 mt-4 pt-4 border-t border-white/10 text-center">
+                                                    <p className="text-[0.6rem] text-blue-300/60 font-medium tracking-wide">
+                                                        Access the pilot portal to view more pathways
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -463,6 +532,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                     <div className="text-center">
                                                         <h3 className="font-semibold text-lg">{pilotId || currentUser?.displayName || 'Pilot'}</h3>
                                                         <p className="text-sm text-white/80">{currentUser?.email}</p>
+                                                        <div className="mt-2">
+                                                            <span className="text-sm font-bold text-white">Recognition Score: {overallRecognitionScore.toFixed(0)}/100</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -570,12 +642,58 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         </div>
                                     )}
                                 </div>
-                                <button
-                                    className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
-                                    title="Settings"
-                                >
-                                    <Settings className="w-4 h-4" />
-                                </button>
+                                <div className="relative" ref={settingsDropdownRef}>
+                                    <button
+                                        onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
+                                        className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
+                                        title="Settings"
+                                    >
+                                        <Settings className="w-4 h-4" />
+                                    </button>
+
+                                    {/* Settings Dropdown Menu */}
+                                    {isSettingsDropdownOpen && (
+                                        <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                                            <div className="p-4 border-b border-slate-200">
+                                                <h3 className="font-semibold text-slate-900">Quick Settings</h3>
+                                            </div>
+                                            <div className="p-2">
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('portal');
+                                                        setIsSettingsDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <User className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">Profile Settings</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('pilot-recognition');
+                                                        setIsSettingsDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <Award className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">Recognition Profile</span>
+                                                </button>
+                                            </div>
+                                            <div className="p-2 border-t border-slate-200">
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('settings');
+                                                        setIsSettingsDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors text-blue-700 font-medium"
+                                                >
+                                                    <Settings className="w-4 h-4" />
+                                                    <span>View Full Settings</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </>
                         )}
                     </div>
@@ -609,7 +727,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         <div className="flex flex-col items-center gap-2 mb-2">
                                             {item.subItems.map((subItem) => (
                                                 <button
-                                                    key={subItem.name}
+                                                    key={`${subItem.name}-${subItem.target}`}
                                                     onClick={() => { onNavigate(subItem.target); setIsMenuOpen(false); }}
                                                     className={`text-sm font-medium uppercase tracking-widest transition-colors flex items-center gap-2 ${subItem.isYellow ? 'text-yellow-400' : 'text-white/40 hover:text-blue-300'}`}
                                                 >

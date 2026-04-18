@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, ChevronDown, ChevronUp, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle } from 'lucide-react';
+import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, ChevronDown, ChevronUp, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { useAuth } from '@/src/contexts/AuthContext';
 
@@ -15,6 +15,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const { signup } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [pilotId, setPilotId] = useState('');
     const [fullName, setFullName] = useState('');
     const [dob, setDob] = useState('');
@@ -32,6 +33,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [middleName, setMiddleName] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [languages, setLanguages] = useState('');
+    const [englishProficiencyLevel, setEnglishProficiencyLevel] = useState('');
     const [licenseNumber, setLicenseNumber] = useState('');
     const [licenseExpiry, setLicenseExpiry] = useState('');
     const [medicalExpiry, setMedicalExpiry] = useState('');
@@ -45,6 +47,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [favoriteAircraft, setFavoriteAircraft] = useState('');
     const [whyBecomePilot, setWhyBecomePilot] = useState('');
     const [otherSkills, setOtherSkills] = useState('');
+    const [lastFlown, setLastFlown] = useState('');
+
+    // Job Experience Array
+    const [jobExperiences, setJobExperiences] = useState<Array<{
+        title: string;
+        company: string;
+        startDate: string;
+        endDate: string;
+        description: string;
+    }>>([]);
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -220,13 +232,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         {pilotId && (
                                             <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-8">
                                                 <p className="text-sm text-slate-700 mb-2">
-                                                    <strong>Your Pilot ID</strong>
+                                                    <strong>Your Profile Name</strong>
                                                 </p>
                                                 <p className="text-2xl font-bold text-emerald-900">
                                                     {pilotId}
                                                 </p>
                                                 <p className="text-xs text-slate-500 mt-2">
-                                                    Save this ID for future reference
+                                                    Save this name for future reference
                                                 </p>
                                             </div>
                                         )}
@@ -305,7 +317,27 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         ratings: selectedRatings,
                                         programInterests: selectedPrograms,
                                         pathwayInterests: selectedPathways,
-                                        insightInterests: selectedInsights
+                                        insightInterests: selectedInsights,
+                                        // Additional ATLAS resume fields
+                                        middleName,
+                                        dateOfBirth,
+                                        languages,
+                                        englishProficiencyLevel,
+                                        licenseNumber,
+                                        licenseExpiry,
+                                        medicalExpiry,
+                                        medicalClass,
+                                        medicalCountry,
+                                        radioLicenseExpiry,
+                                        currentOccupation,
+                                        currentEmployer,
+                                        currentPosition,
+                                        countriesVisited,
+                                        favoriteAircraft,
+                                        whyBecomePilot,
+                                        otherSkills,
+                                        lastFlown,
+                                        jobExperiences
                                     });
                                     clearTimeout(timeoutId);
                                     console.log('✅ Signup successful, setting signupSuccess to true');
@@ -334,16 +366,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <section className="space-y-10">
                                     <div style={{ borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
                                         <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Account Credentials</h2>
-                                        <p className="text-sm text-slate-500 font-medium italic">Think of this as the Ident of the aircraft you are flying—your unique signature in the sky. Use your Name, Personal Callsign, or a favorite Tailnumber.</p>
+                                        <p className="text-sm text-slate-500 font-medium italic">This name will be used across your pilot recognition profile.</p>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-2.5 group">
-                                            <label className="text-sm font-semibold text-gray-700 mb-2 block">Pilot ID</label>
+                                            <label className="text-sm font-semibold text-gray-700 mb-2 block">Profile Name</label>
                                             <div className="relative">
                                                 <input
                                                     type="text"
-                                                    placeholder="Pilot ID (Name, Personal Callsign, or Tailnumber)"
+                                                    placeholder="Pilot Recognition Name"
                                                     value={pilotId}
                                                     onChange={(e) => setPilotId(e.target.value)}
                                                     className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -367,13 +399,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             <label className="text-sm font-semibold text-gray-700 mb-2 block">Password</label>
                                             <div className="relative">
                                                 <input
-                                                    type="password"
+                                                    type={showPassword ? 'text' : 'password'}
                                                     placeholder="••••••••"
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
-                                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    className="w-full p-3 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                     required
                                                 />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                                >
+                                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -817,6 +856,116 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                         <div className="h-px w-full bg-slate-100/80" />
 
+                                        {/* Section: Job Experience */}
+                                        <section className="space-y-10">
+                                            <div style={{ borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
+                                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Job Experience</h2>
+                                                <p className="text-sm text-slate-500 font-medium">Recent job experience and industry aligned accredited programs</p>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                {jobExperiences.map((exp, index) => (
+                                                    <div key={index} className="bg-gray-50 rounded-xl p-6 border border-gray-200 opacity-60">
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                            <div className="space-y-2.5">
+                                                                <label className="text-sm font-semibold text-gray-700 mb-2 block">Job Title</label>
+                                                                <input
+                                                                    type="text"
+                                                                    disabled
+                                                                    placeholder="Flight Instructor, First Officer, etc."
+                                                                    value={exp.title}
+                                                                    onChange={(e) => {
+                                                                        const newExps = [...jobExperiences];
+                                                                        newExps[index].title = e.target.value;
+                                                                        setJobExperiences(newExps);
+                                                                    }}
+                                                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                                                                />
+                                                            </div>
+                                                            <div className="space-y-2.5">
+                                                                <label className="text-sm font-semibold text-gray-700 mb-2 block">Company</label>
+                                                                <input
+                                                                    type="text"
+                                                                    disabled
+                                                                    placeholder="Airline, Flight School, etc."
+                                                                    value={exp.company}
+                                                                    onChange={(e) => {
+                                                                        const newExps = [...jobExperiences];
+                                                                        newExps[index].company = e.target.value;
+                                                                        setJobExperiences(newExps);
+                                                                    }}
+                                                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                                                                />
+                                                            </div>
+                                                            <div className="space-y-2.5">
+                                                                <label className="text-sm font-semibold text-gray-700 mb-2 block">Start Date</label>
+                                                                <input
+                                                                    type="date"
+                                                                    disabled
+                                                                    value={exp.startDate}
+                                                                    onChange={(e) => {
+                                                                        const newExps = [...jobExperiences];
+                                                                        newExps[index].startDate = e.target.value;
+                                                                        setJobExperiences(newExps);
+                                                                    }}
+                                                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                                                                />
+                                                            </div>
+                                                            <div className="space-y-2.5">
+                                                                <label className="text-sm font-semibold text-gray-700 mb-2 block">End Date</label>
+                                                                <input
+                                                                    type="date"
+                                                                    disabled
+                                                                    value={exp.endDate}
+                                                                    onChange={(e) => {
+                                                                        const newExps = [...jobExperiences];
+                                                                        newExps[index].endDate = e.target.value;
+                                                                        setJobExperiences(newExps);
+                                                                    }}
+                                                                    className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="space-y-2.5 mt-4">
+                                                            <label className="text-sm font-semibold text-gray-700 mb-2 block">Description</label>
+                                                            <textarea
+                                                                disabled
+                                                                placeholder="Describe your role, responsibilities, and achievements..."
+                                                                value={exp.description}
+                                                                onChange={(e) => {
+                                                                    const newExps = [...jobExperiences];
+                                                                    newExps[index].description = e.target.value;
+                                                                    setJobExperiences(newExps);
+                                                                }}
+                                                                className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed min-h-[100px] resize-none"
+                                                            />
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            disabled
+                                                            onClick={() => {
+                                                                const newExps = jobExperiences.filter((_, i) => i !== index);
+                                                                setJobExperiences(newExps);
+                                                            }}
+                                                            className="mt-3 text-sm text-gray-400 font-medium cursor-not-allowed"
+                                                        >
+                                                            Remove Experience
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                                <button
+                                                    type="button"
+                                                    disabled
+                                                    onClick={() => setJobExperiences([...jobExperiences, { title: '', company: '', startDate: '', endDate: '', description: '' }])}
+                                                    className="w-full p-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-400 cursor-not-allowed font-medium text-sm"
+                                                >
+                                                    + Add Job Experience
+                                                </button>
+                                            </div>
+                                        </section>
+
+                                        <div className="h-px w-full bg-slate-100/80" />
+
                                         {/* Section: Career Information */}
                                         <section className="space-y-10">
                                             <div style={{ borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
@@ -938,6 +1087,55 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 </div>
                                             </div>
                                         </section>
+
+                                        <div className="h-px w-full bg-slate-100/80" />
+
+                                        {/* Foundation Program Notice */}
+                                        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mt-6">
+                                            <p className="text-sm font-semibold text-amber-800">
+                                                This section will be updated to your profile once enrolled in the foundation program
+                                            </p>
+                                        </div>
+
+                                        <div className="h-px w-full bg-slate-100/80" />
+
+                                        {/* ATLAS Resume Fields */}
+                                        <div className="relative bg-gradient-to-r from-slate-50/50 to-blue-50/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-sm font-semibold text-gray-700 mb-2 block">English Proficiency Level</label>
+                                                    <div className="relative">
+                                                        <select
+                                                            disabled
+                                                            className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                                                            value={englishProficiencyLevel}
+                                                            onChange={(e) => setEnglishProficiencyLevel(e.target.value)}
+                                                        >
+                                                            <option value="">Select English Proficiency</option>
+                                                            <option value="Level 1 (Elementary)">Level 1 (Elementary)</option>
+                                                            <option value="Level 2 (Pre-Intermediate)">Level 2 (Pre-Intermediate)</option>
+                                                            <option value="Level 3 (Intermediate)">Level 3 (Intermediate)</option>
+                                                            <option value="Level 4 (Upper Intermediate)">Level 4 (Upper Intermediate)</option>
+                                                            <option value="Level 5 (Advanced)">Level 5 (Advanced)</option>
+                                                            <option value="Level 6 (Expert)">Level 6 (Expert)</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2.5 group">
+                                                    <label className="text-sm font-semibold text-gray-700 mb-2 block">Last Flown Date</label>
+                                                    <div className="relative">
+                                                        <input
+                                                            type="date"
+                                                            disabled
+                                                            value={lastFlown}
+                                                            onChange={(e) => setLastFlown(e.target.value)}
+                                                            className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </>
                                 )}
 

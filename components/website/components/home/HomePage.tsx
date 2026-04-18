@@ -779,7 +779,10 @@ export const HomePage: React.FC<HomePageProps> = ({
             <PilotJourneyScroll onNavigate={onNavigate} />
 
             {/* Airline Expectations 3D Carousel */}
-            <AirlineExpectationsCarousel onNavigate={onNavigate} onLogin={onLogin} />
+            <AirlineExpectationsCarousel
+              onNavigate={onNavigate}
+              onLogin={onLogin}
+            />
 
             {/* Hero Section - Carousel */}
             <div ref={carouselRef} className="relative h-screen w-full flex items-center pt-20 overflow-hidden">

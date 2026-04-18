@@ -1,6 +1,11 @@
 import React from 'react';
+import { Home } from 'lucide-react';
 
-export const TopNavbar: React.FC = () => {
+interface TopNavbarProps {
+    onNavigate?: (page: string) => void;
+}
+
+export const TopNavbar: React.FC<TopNavbarProps> = ({ onNavigate }) => {
     return (
         <nav
             style={{
@@ -26,6 +31,37 @@ export const TopNavbar: React.FC = () => {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                {onNavigate && (
+                    <button
+                        onClick={() => onNavigate('home')}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.5rem 1rem',
+                            backgroundColor: 'rgba(59, 130, 246, 0.9)',
+                            border: '1px solid rgba(59, 130, 246, 0.8)',
+                            borderRadius: '8px',
+                            color: 'white',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.95)';
+                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.9)';
+                            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+                        }}
+                    >
+                        <Home size={14} />
+                        Home
+                    </button>
+                )}
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',

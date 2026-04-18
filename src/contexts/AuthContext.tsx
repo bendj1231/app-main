@@ -170,7 +170,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         ratings: userData.ratings,
                         program_interests: userData.programInterests,
                         pathway_interests: userData.pathwayInterests,
-                        insight_interests: userData.insightInterests
+                        insight_interests: userData.insightInterests,
+                        // Additional ATLAS resume fields
+                        last_flown: userData.lastFlown || null,
+                        english_proficiency_level: userData.englishProficiencyLevel || null,
+                        job_experiences: userData.jobExperiences || []
                     })
                     .eq('id', userId);
 
@@ -218,7 +222,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         ratings: userData.ratings,
                         program_interests: userData.programInterests,
                         pathway_interests: userData.pathwayInterests,
-                        insight_interests: userData.insightInterests
+                        insight_interests: userData.insightInterests,
+                        // Additional ATLAS resume fields
+                        last_flown: userData.lastFlown || null,
+                        english_proficiency_level: userData.englishProficiencyLevel || null,
+                        job_experiences: userData.jobExperiences || []
                     });
 
                 if (profileError) {

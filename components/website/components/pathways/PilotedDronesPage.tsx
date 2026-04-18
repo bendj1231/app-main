@@ -18,7 +18,7 @@ export const PilotedDronesPage: React.FC<PilotedDronesPageProps> = ({
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section */}
-            <div className="pt-32 pb-12 px-6">
+            <div className="pt-10 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
@@ -136,22 +136,6 @@ export const PilotedDronesPage: React.FC<PilotedDronesPageProps> = ({
                 </div>
             </div>
 
-            {/* Back button */}
-            <div className="py-12 flex justify-center">
-                <button
-                    onClick={onBack}
-                    className="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-xl"
-                >
-                    <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                    Back to Home
-                </button>
-            </div>
-
-            <div className="flex justify-center pb-12">
-                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-slate-300" />
-                </div>
-            </div>
         </div>
     );
 };

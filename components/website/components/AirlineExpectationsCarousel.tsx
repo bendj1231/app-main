@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { IMAGES } from '../../../src/lib/website-constants';
 import { useAuth } from '../../../src/contexts/AuthContext';
+import { supabase } from '../../../shared/lib/supabase';
 
 interface AirlineExpectationsCarouselProps {
   onNavigate?: (page: string) => void;
@@ -1259,44 +1260,151 @@ const airlines: Airline[] = [
   }
 ];
 
-export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselProps> = ({ onNavigate, onLogin }) => {
+export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselProps> = ({
+  onNavigate,
+  onLogin,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const [selectedRegion, setSelectedRegion] = useState<string>('Asia');
   const [isFading, setIsFading] = useState(false);
   const [contentVisible, setContentVisible] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [matchScores, setMatchScores] = useState<{ [key: string]: { matchPercentage: number; prScore: number } }>({});
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { currentUser } = useAuth();
 
-  // Calculate dynamic match score based on airline
-  const getMatchScore = (airline: Airline) => {
-    const scoreMap: { [key: string]: number } = {
-      'qatar': 87,
-      'singapore': 92,
-      'cathay': 85,
-      'emirates': 89,
-      'etihad': 84,
-      'lufthansa': 88,
-      'british': 86,
-      'airfrance': 83,
-      'klm': 81,
-      'qantas': 90,
-      'ana': 91,
-      'delta': 82,
-      'united': 80,
-      'american': 79,
-      'fiji': 75,
-      'airnz': 93,
-      'real-tonga': 70,
-      'vanuatu': 72,
-      'solomons': 68,
-      'air-niugini': 74,
-      'nauru': 71
+  // Fetch match scores from Supabase
+  useEffect(() => {
+    const fetchMatchScores = async () => {
+      try {
+        // Get the current Supabase session to get the user ID
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session?.user?.id) {
+          setMatchScores({});
+          return;
+        }
+
+        const { data, error } = await supabase.rpc('calculate_airline_match_score', {
+          p_user_id: session.user.id,
+          p_airline_id: null
+        });
+
+        if (error) {
+          console.error('Error fetching match scores:', error);
+          return;
+        }
+
+        if (data) {
+          const scoresMap: { [key: string]: { matchPercentage: number; prScore: number } } = {};
+          data.forEach((item: any) => {
+            // Map airline name to airline ID
+            const airlineId = mapAirlineNameToId(item.airline_name);
+            if (airlineId) {
+              scoresMap[airlineId] = {
+                matchPercentage: item.match_percentage,
+                prScore: item.pr_score
+              };
+            }
+          });
+          setMatchScores(scoresMap);
+        }
+      } catch (error) {
+        console.error('Error fetching match scores:', error);
+      }
     };
-    return scoreMap[airline.id] || 85;
+
+    fetchMatchScores();
+  }, []);
+
+  // Map airline name to airline ID
+  const mapAirlineNameToId = (airlineName: string): string | null => {
+    const nameToIdMap: { [key: string]: string } = {
+      'Qatar Airways': 'qatar',
+      'Singapore Airlines': 'singapore',
+      'Cathay Pacific': 'cathay',
+      'Emirates': 'emirates',
+      'Etihad Airways': 'etihad',
+      'Lufthansa': 'lufthansa',
+      'British Airways': 'british',
+      'Air France': 'airfrance',
+      'KLM': 'klm',
+      'Qantas': 'qantas',
+      'ANA All Nippon': 'ana',
+      'Japan Airlines': 'jal',
+      'Korean Air': 'korean',
+      'Asiana Airlines': 'asiana',
+      'Thai Airways': 'thai',
+      'Malaysia Airlines': 'malaysia',
+      'Garuda Indonesia': 'garuda',
+      'Philippine Airlines': 'philippine',
+      'Vietnam Airlines': 'vietnam',
+      'Air China': 'china',
+      'China Eastern': 'chinaeastern',
+      'China Southern': 'chinasouthern',
+      'Delta Air Lines': 'delta',
+      'American Airlines': 'american',
+      'United Airlines': 'united',
+      'Southwest Airlines': 'southwest',
+      'Alaska Airlines': 'alaska',
+      'JetBlue Airways': 'jetblue',
+      'Air Canada': 'aircanada',
+      'WestJet': 'westjet',
+      'Virgin Australia': 'virginaustralia',
+      'LATAM Airlines': 'latam',
+      'Avianca': 'avianca',
+      'Aeromexico': 'aeromexico',
+      'Copa Airlines': 'copaair',
+      'GOL Linhas': 'gol',
+      'El Al Israel': 'elal',
+      'Royal Jordanian': 'royaljordanian',
+      'Saudia': 'saudia',
+      'EgyptAir': 'egyptair',
+      'Ethiopian Airlines': 'ethiopian',
+      'South African Airways': 'southafrican',
+      'Iberia': 'iberia',
+      'ITA Airways': 'alitalia',
+      'Austrian Airlines': 'austrian',
+      'Brussels Airlines': 'brussels',
+      'SAS Scandinavian': 'sas',
+      'Finnair': 'finnair',
+      'TAP Portugal': 'tap',
+      'Aegean Airlines': 'aegean',
+      'LOT Polish': 'lot',
+      'Czech Airlines': 'czech',
+      'Norwegian': 'norwegian',
+      'Icelandair': 'icelandair',
+      'Cathay Dragon': 'cathaydragon',
+      'HK Express': 'hkexpress',
+      'Scoot': 'scoot',
+      'Jetstar Asia': 'jetstar',
+      'Peach Aviation': 'peach',
+      'Spring Airlines': 'spring',
+      'IndiGo': 'indigo',
+      'Air India': 'airindia',
+      'SpiceJet': 'spicejet',
+      'Air India Express': 'aigle'
+    };
+    return nameToIdMap[airlineName] || null;
+  };
+
+  // Get match score from Supabase data
+  const getMatchScore = (airline: Airline) => {
+    if (!matchScores[airline.id]) {
+      return 0;
+    }
+    return matchScores[airline.id].matchPercentage;
+  };
+
+  // Get PR score from Supabase data
+  const getPRScore = (airline: Airline) => {
+    if (!matchScores[airline.id]) {
+      return 1;
+    }
+    return matchScores[airline.id].prScore;
   };
 
   // Fade effect when currentIndex changes
@@ -1620,7 +1728,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
         <div className="px-8 mb-4 flex justify-end">
           <div className="bg-slate-100 px-4 py-2 rounded-lg border border-slate-200">
             <p className="text-xs text-slate-600">
-              <span className="font-semibold">Note:</span> Percentage match is based on your Pilot Recognition Profile
+              Pilot-Recognition Engine Powered By WingMentor
             </p>
           </div>
         </div>
@@ -1660,11 +1768,34 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
                           <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-blue-300">
                             AIRLINE — MAJOR AIRLINE
                           </span>
-                          {/* Percentage Match Badge */}
-                          <div className={`bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 ${
-                            isActive ? 'opacity-100' : 'opacity-50'
-                          }`}>
-                            {getMatchScore(airline)}%
+                          {/* Percentage Match Badge with PR Score */}
+                          <div className="flex items-center gap-2">
+                            <div className="relative group">
+                              <div className={`bg-blue-600 text-white px-2 py-1 rounded-lg text-xs font-bold transition-all duration-300 cursor-help ${
+                                isActive ? 'opacity-100' : 'opacity-50'
+                              }`}>
+                                PR: {getPRScore(airline)}/10
+                              </div>
+                              {/* Tooltip */}
+                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-slate-900 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                                <p className="font-semibold mb-1">Pilot Recognition Score</p>
+                                <p>Profile match on 1-10 scale based on your qualifications vs airline requirements</p>
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900"></div>
+                              </div>
+                            </div>
+                            <div className="relative group">
+                              <div className={`bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 cursor-help ${
+                                isActive ? 'opacity-100' : 'opacity-50'
+                              }`}>
+                                {getMatchScore(airline)}%
+                              </div>
+                              {/* Tooltip */}
+                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-slate-900 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                                <p className="font-semibold mb-1">Match Percentage</p>
+                                <p>Overall compatibility score calculated from your Pilot Recognition Profile and flight hours</p>
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900"></div>
+                              </div>
+                            </div>
                           </div>
                         </div>
 

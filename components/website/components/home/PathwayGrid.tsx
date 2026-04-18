@@ -76,6 +76,7 @@ interface GridCardData {
     enrolledSubtitle?: string;
     icon: React.ComponentType<{ className?: string }>;
     badge?: string | null;
+    enrolledBadge?: string;
     accentColor: string;
     hasAnimation?: boolean;
     hasAnimationWhenLoggedIn?: boolean;
@@ -184,9 +185,12 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             id: 'foundation',
             videoUrl: '/fp.mp4',
             title: 'Foundation Program',
+            enrolledTitle: 'Foundation Program Access',
             subtitle: 'Start your pilot journey with structured mentorship and guidance',
+            enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
             icon: Plane,
             badge: 'Start Here',
+            enrolledBadge: 'Enrolled',
             accentColor: 'from-red-500/80 to-rose-400/80',
             enrollNow: true,
         },
@@ -792,8 +796,14 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         return () => {
             console.log("Card clicked:", card.id, "isLoggedIn:", isLoggedIn, "currentViewKey:", currentViewKey);
             
-            // When on Home view, clicking Programs/Pathways/Pilot Recognition switches to that view
-            if (currentViewKey === 'home' && ['programs', 'pathways', 'pilot-recognition'].includes(card.id)) {
+            // When on Home view, clicking Programs/Pathways switches to that view
+            // Pilot Recognition navigates to the profile page when logged in
+            if (currentViewKey === 'home' && card.id === 'pilot-recognition' && isLoggedIn) {
+                console.log("Navigating to pilot-recognition-profile page");
+                onNavigate('pilot-recognition-profile');
+                return;
+            }
+            if (currentViewKey === 'home' && ['programs', 'pathways'].includes(card.id)) {
                 const targetIndex = viewIndexMap[card.id];
                 if (targetIndex !== undefined) {
                     console.log("Switching to view:", card.id, "index:", targetIndex);
@@ -1566,9 +1576,9 @@ const GridCard: React.FC<GridCardProps> = ({
                 </div>
 
                 {/* Badge */}
-                {card.badge && (
+                {(isEnrolledInFoundation ? card.enrolledBadge : card.badge) && (
                     <div className="absolute top-3 right-3 px-2 py-1 bg-yellow-500/90 text-black text-xs font-bold rounded">
-                        {card.badge}
+                        {isEnrolledInFoundation ? card.enrolledBadge : card.badge}
                     </div>
                 )}
 

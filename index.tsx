@@ -72,6 +72,7 @@ import { EmergingAirTaxiPage } from './components/website/components/pathways/Em
 import { PilotedDronesPage } from './components/website/components/pathways/PilotedDronesPage';
 import { PilotGapInfoPage } from './components/website/components/PilotGapInfoPage';
 import { PilotRecognitionPage } from './components/website/components/pilot-recognition/PilotRecognitionPage';
+import { PilotRecognitionProfilePage } from './components/website/components/pilot-recognition/PilotRecognitionProfilePage';
 import { AirTaxiPathwaysPage } from './components/website/components/pathways/AirTaxiPathwaysPage';
 import { PrivateCharterPathwaysPage } from './components/website/components/pathways/PrivateCharterPathwaysPage';
 import { CargoTransportationPage } from './components/website/components/pathways/CargoTransportationPage';
@@ -604,6 +605,13 @@ const App = () => {
           />
         )}
 
+        {currentPage === 'pilot-recognition-profile' && (
+          <PilotRecognitionProfilePage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+          />
+        )}
+
         {currentPage === 'air-taxi-pathways' && (
           <AirTaxiPathwaysPage
             onBack={() => navigateTo('home')}
@@ -846,7 +854,7 @@ const App = () => {
         'account-confirmation',
         'onboarding-pilot-portal', 'onboarding-programs', 'onboarding-recognition',
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
-        'pilot-recognition', 'air-taxi-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
+        'pilot-recognition', 'pilot-recognition-profile', 'air-taxi-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
         'pilot-gap', 'website'
       ].includes(currentPage) && (
