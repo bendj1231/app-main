@@ -8,5 +8,12 @@ if (!supabaseAnonKey) {
   console.error('❌ VITE_SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY is not set in environment variables');
 }
 
-// Create a single shared Supabase client instance
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create a single shared Supabase client instance with localStorage persistence
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    storage: localStorage,
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+  },
+});

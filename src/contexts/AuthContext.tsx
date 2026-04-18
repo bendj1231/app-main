@@ -625,41 +625,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     useEffect(() => {
-        // Clear Supabase session on app initialization to force fresh start
-        const clearSupabaseSession = async () => {
-            try {
-                await supabase.auth.signOut();
-                console.log('🔵 Supabase session cleared');
-            } catch (error) {
-                // Ignore error if no session exists
-                console.log('🔵 No Supabase session to clear');
-            }
-        };
-
-        clearSupabaseSession();
-
-        // Session restoration disabled - cache clears on every refresh
-        // const restoreSession = async () => {
-        //     try {
-        //         console.log('🔵 Attempting to restore session from IndexedDB...');
-        //         const savedSession = await indexedDB.getSessionWithVerification(supabase);
-        //         if (savedSession) {
-        //             console.log("🔄 Restoring session from IndexedDB:", savedSession.user?.id);
-        //             // Set the session in Supabase
-        //             await supabase.auth.setSession({
-        //                 access_token: savedSession.access_token,
-        //                 refresh_token: savedSession.refresh_token,
-        //             });
-        //         } else {
-        //             console.log('🔵 No saved session found in IndexedDB');
-        //         }
-        //     } catch (error) {
-        //         console.error("❌ Error restoring session from IndexedDB:", error);
-        //     }
-        // };
-
-        // restoreSession();
-
         // Firebase auth state listener
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setCurrentUser(user);
@@ -695,9 +660,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             if (session?.user) {
                 console.log("✅ Supabase user authenticated:", session.user.id, session.user.email);
-
-                // Session saving disabled - cache clears on every refresh
-                // await indexedDB.saveSession(session);
 
                 // Create a minimal User-like object for compatibility
                 const supabaseUser = {
