@@ -129,7 +129,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         setOAuthLoading(true);
         setError('');
         try {
-            const redirectUri = `${window.location.origin}/callback`;
+            const redirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/callback`;
             console.log('Google OAuth redirect URI:', redirectUri);
             console.log('Window location origin:', window.location.origin);
             
