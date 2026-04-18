@@ -3,6 +3,7 @@ import { X, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useToast } from '@/src/components/ui/toast';
 import { validateEmail, validateSimplePassword } from '@/src/lib/validation';
+import { generateGoogleAuthUrl } from '@/src/lib/google-oauth';
 
 // Google SVG icon
 const GoogleIcon = () => (
@@ -128,8 +129,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         setOAuthLoading(true);
         setError('');
         try {
-            await loginWithOAuth('google');
-            // OAuth will redirect, so we don't need to close modal here
+            const authUrl = generateGoogleAuthUrl({
+                redirectUri: `${window.location.origin}/auth/callback`,
+                prompt: 'consent',
+            });
+            // Redirect to Google's OAuth authorization page
+            window.location.href = authUrl;
         } catch (err: any) {
             console.error('Google Sign-In failed:', err);
             setError(err.message || 'Google Sign-In failed. Please try again.');

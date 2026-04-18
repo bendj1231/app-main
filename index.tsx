@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef, useLayoutEffect, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './index.css';
 import { View } from './types';
 import {
@@ -117,6 +118,69 @@ import { DownloadPage } from './components/website/components/DownloadPage'; // 
 import { useAuth } from './src/contexts/AuthContext'; // New Import
 import { LoginModal } from './components/website/components/LoginModal';
 import { SettingsDirectoryPage } from './components/website/components/SettingsDirectoryPage';
+
+// OAuth Callback Component
+const OAuthCallback = () => {
+  useEffect(() => {
+    // Handle OAuth callback logic here
+    // This will process the callback from OAuth provider
+    const handleCallback = async () => {
+      const hash = window.location.hash;
+      const params = new URLSearchParams(hash.substring(1));
+      const accessToken = params.get('access_token');
+      const refreshToken = params.get('refresh_token');
+      const error = params.get('error');
+      const errorDescription = params.get('error_description');
+
+      if (error) {
+        console.error('OAuth error:', error, errorDescription);
+        // Redirect to home with error
+        window.location.href = '/?error=' + encodeURIComponent(errorDescription || error);
+        return;
+      }
+
+      if (accessToken && refreshToken) {
+        // Store tokens or send them to your backend
+        console.log('OAuth successful, tokens received');
+        // Redirect to home or dashboard
+        window.location.href = '/';
+      }
+    };
+
+    handleCallback();
+  }, []);
+
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+      background: '#f8fafc'
+    }}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{
+          width: '48px',
+          height: '48px',
+          border: '4px solid #3b82f6',
+          borderTopColor: 'transparent',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite',
+          margin: '0 auto 20px'
+        }}></div>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#1e293b', marginBottom: '8px' }}>
+          Processing Authentication
+        </h2>
+        <p style={{ color: '#64748b' }}>Please wait while we complete your sign-in...</p>
+      </div>
+      <style>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
+};
 
 
 
@@ -1117,10 +1181,19 @@ if (rootElement && !(rootElement as any)._reactRoot) {
 }
 
 root.render(
-  <AuthProvider>
-    <ToastProvider>
-      <App />
-      <CookieConsent />
-    </ToastProvider>
-  </AuthProvider>
+  <BrowserRouter>
+    <AuthProvider>
+      <ToastProvider>
+        <Routes>
+          <Route path="/auth/callback" element={<OAuthCallback />} />
+          <Route path="/*" element={
+            <>
+              <App />
+              <CookieConsent />
+            </>
+          } />
+        </Routes>
+      </ToastProvider>
+    </AuthProvider>
+  </BrowserRouter>
 );
