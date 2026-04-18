@@ -33,7 +33,7 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                         Pilot Recognition
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                        Transform your flight hours into verifiable professional credentials. WingMentor creates a trusted digital identity that airlines recognize and recruiters seek—bridging the gap between your training and airline-ready credibility.
+                        The biggest problem in the aviation industry at the moment is recognition. A pilot spends $50,000 USD for training, 4 grueling years of a university degree, however he ends up looking at an application job site which hasn't been updated since 2007, or desperately job hunting on Facebook which draws the line of professionalism. It is the hard truth and it is why PilotRecognition.com was established. After direct talks with AIRBUS & Etihad, Archer, there is no denial of the fact of what about the pilots who just graduated and are not able to find a job after a degree due to the 1500 hour high bar they have to get to? Or even for those flight instructors who barely managed to get to those hours are still stuck in the same flight school for more than 10 years! An airline pilot flying international long haul flights looking for change but is time constraint. You have come to the right place. Welcome to the future of aviation, where communication between industry and pilot profession bridges the gap.
                     </p>
                 </div>
             </div>
