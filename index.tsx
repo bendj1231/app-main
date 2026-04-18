@@ -77,6 +77,7 @@ import { PilotedDronesPage } from './components/website/components/pathways/Pilo
 import { PilotGapInfoPage } from './components/website/components/PilotGapInfoPage';
 import { PilotRecognitionPage } from './components/website/components/pilot-recognition/PilotRecognitionPage';
 import { PilotRecognitionProfilePage } from './components/website/components/pilot-recognition/PilotRecognitionProfilePage';
+import { RecognitionCareerMatchesPage } from './components/website/components/pilot-recognition/RecognitionCareerMatchesPage';
 import { AirTaxiPathwaysPage } from './components/website/components/pathways/AirTaxiPathwaysPage';
 import { PrivateCharterPathwaysPage } from './components/website/components/pathways/PrivateCharterPathwaysPage';
 import { CargoTransportationPage } from './components/website/components/pathways/CargoTransportationPage';
@@ -709,6 +710,14 @@ const App = () => {
           />
         )}
 
+        {currentPage === 'recognition-career-matches' && (
+          <RecognitionCareerMatchesPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+
         {currentPage === 'air-taxi-pathways' && (
           <AirTaxiPathwaysPage
             onBack={() => navigateTo('home')}
@@ -954,7 +963,7 @@ const App = () => {
         'account-confirmation',
         'onboarding-pilot-portal', 'onboarding-programs', 'onboarding-recognition',
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
-        'pilot-recognition', 'pilot-recognition-profile', 'air-taxi-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
+        'pilot-recognition', 'pilot-recognition-profile', 'recognition-career-matches', 'air-taxi-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
         'pilot-gap', 'website'
       ].includes(currentPage) && (
@@ -1241,6 +1250,7 @@ root.render(
           <Route path="/cargo-transportation" element={<CargoTransportationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Pilot Recognition Pages */}
           <Route path="/pilot-recognition-profile" element={<PilotRecognitionProfilePage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} />} />
+          <Route path="/recognition-career-matches" element={<RecognitionCareerMatchesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/atlas-cv" element={<ATLASCVPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Program Application Pages */}
           <Route path="/foundational-application" element={<FoundationalProgramApplicationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
