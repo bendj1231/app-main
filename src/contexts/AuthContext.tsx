@@ -485,30 +485,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function login(email: string, password: string) {
         try {
-            // Sign in with Supabase
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password
+            // Use Edge Function for login with cookie-based auth
+            const { data, error } = await supabase.functions.invoke('auth-login', {
+                body: { email, password }
             });
 
             if (error) {
-                console.error("Supabase login error:", error);
-                throw new Error(error.message);
+                console.error("Edge Function login error:", error);
+                throw new Error(error.message || 'Login failed');
             }
 
-            if (!data.user) {
-                throw new Error("No user returned from Supabase");
+            if (!data?.success) {
+                throw new Error(data?.error || 'Login failed');
             }
 
-            console.log("User signed in via Supabase:", data.user.id);
-
-            // Also sign in to Firebase to maintain compatibility
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (firebaseError) {
-                console.log("Firebase sign-in (compatibility):", firebaseError);
-                // Non-critical - Supabase is the primary auth
-            }
+            console.log("User signed in via Edge Function:", data.user.id);
 
             // Fetch user profile from Supabase
             try {
@@ -519,20 +510,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     .eq('user_id', data.user.id)
                     .single();
 
-                if (profileError) {
-                    console.log("Supabase profile fetch error:", profileError);
-                }
-
-                if (profileData) {
-                    console.log("User profile found via Supabase");
+                if (profileData && !profileError) {
+                    console.log("✅ User profile fetched:", data.user.id);
                     setUserProfile(profileData);
                 } else {
-                    console.log("No user profile found in Supabase for:", data.user.id);
+                    console.log("⚠️ No user profile found for:", data.user.id);
                     // Create minimal profile from auth data
                     const newProfile = {
                         uid: data.user.id,
                         email: email,
-                        createdAt: data.user.created_at || new Date().toISOString(),
+                        createdAt: new Date().toISOString(),
                         lastLogin: new Date().toISOString()
                     };
                     setUserProfile(newProfile);
@@ -551,12 +538,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('🔴 Logout function called');
         setExplicitLogout(true); // Set flag to prevent re-authentication
         try {
-            console.log('🔴 Signing out from Supabase first...');
-            // Sign out from Supabase FIRST to invalidate the session
-            await supabase.auth.signOut().catch(err => {
-                console.log('⚠️ Supabase signOut failed:', err);
+            console.log('🔴 Calling Edge Function logout to clear cookies...');
+            // Use Edge Function to clear HTTP-only cookies
+            await supabase.functions.invoke('auth-logout').catch(err => {
+                console.log('⚠️ Edge Function logout failed:', err);
             });
-            console.log('✅ Supabase signOut completed');
+            console.log('✅ Edge Function logout completed');
 
             console.log('🔴 Clearing all local state...');
             // Clear all local state immediately to prevent any interference
@@ -569,28 +556,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             await indexedDB.clearSession();
             console.log('✅ IndexedDB session cleared');
 
-            console.log('🔴 Clearing localStorage...');
-            // Clear localStorage items that might contain session data
-            localStorage.removeItem('supabase.auth.token');
-            localStorage.removeItem('supabase.auth.refreshToken');
-            localStorage.removeItem('supabase.auth.codeVerifier');
-            localStorage.removeItem('supabase.auth.pkceVerifier');
-            // Clear all Supabase-related localStorage items
-            Object.keys(localStorage).forEach(key => {
+            console.log('🔴 Clearing sessionStorage...');
+            // Clear sessionStorage items that might contain session data
+            Object.keys(sessionStorage).forEach(key => {
                 if (key.startsWith('supabase.')) {
-                    localStorage.removeItem(key);
+                    sessionStorage.removeItem(key);
                 }
             });
-            console.log('✅ localStorage cleared');
-
-            console.log('🔴 Signing out from Firebase...');
-            // Also sign out from Firebase to prevent interference
-            try {
-                await signOut(auth);
-                console.log('✅ Firebase signOut completed');
-            } catch (firebaseError) {
-                console.log('⚠️ Firebase signOut failed (non-critical):', firebaseError);
-            }
+            console.log('✅ sessionStorage cleared');
 
             console.log('✅ Logout completed');
         } catch (error) {
@@ -647,87 +620,85 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setLoading(false);
         });
 
-        // Supabase auth state listener
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log("Supabase auth state changed:", event, "Supabase ID:", session?.user?.id, "Session:", session);
+        // Verify session using Edge Function
+        const verifySession = async () => {
+            try {
+                const { data, error } = await supabase.functions.invoke('auth-verify');
 
-            // Prevent re-authentication after explicit logout
-            if (explicitLogout && event === 'SIGNED_IN') {
-                console.log("⚠️ Preventing re-authentication after explicit logout");
-                setExplicitLogout(false); // Reset flag after preventing
-                return;
-            }
+                if (data?.success && data?.user) {
+                    console.log("✅ Session verified via Edge Function:", data.user.id, data.user.email);
 
-            if (session?.user) {
-                console.log("✅ Supabase user authenticated:", session.user.id, session.user.email);
+                    // Create a minimal User-like object for compatibility
+                    const verifiedUser = {
+                        uid: data.user.id,
+                        email: data.user.email || '',
+                        emailVerified: true,
+                        isAnonymous: false,
+                        metadata: { creationTime: new Date().toISOString(), lastSignInTime: new Date().toISOString() },
+                        providerData: [],
+                        refreshToken: '',
+                        tenantId: null,
+                        delete: async () => { },
+                        getIdToken: async () => '',
+                        getIdTokenResult: async () => ({}) as any,
+                        reload: async () => { },
+                        toJSON: () => ({ uid: data.user.id, email: data.user.email }),
+                        displayName: null,
+                        phoneNumber: null,
+                        photoURL: null,
+                        providerId: 'supabase'
+                    } as unknown as User;
 
-                // Create a minimal User-like object for compatibility
-                const supabaseUser = {
-                    uid: session.user.id,
-                    email: session.user.email || '',
-                    emailVerified: session.user.email_confirmed_at ? true : false,
-                    isAnonymous: false,
-                    metadata: { creationTime: session.user.created_at, lastSignInTime: session.user.last_sign_in_at },
-                    providerData: [],
-                    refreshToken: session.refresh_token || '',
-                    tenantId: null,
-                    delete: async () => { },
-                    getIdToken: async () => session.access_token || '',
-                    getIdTokenResult: async () => ({}) as any,
-                    reload: async () => { },
-                    toJSON: () => ({ uid: session.user.id, email: session.user.email }),
-                    displayName: session.user.user_metadata?.full_name || null,
-                    phoneNumber: session.user.phone || null,
-                    photoURL: session.user.user_metadata?.avatar_url || null,
-                    providerId: 'supabase'
-                } as unknown as User;
+                    setCurrentUser(verifiedUser);
 
-                setCurrentUser(supabaseUser);
+                    // Fetch profile from Supabase
+                    try {
+                        const { data: profileData, error } = await supabase
+                            .from('pilot_licensure_experience')
+                            .select('*')
+                            .eq('user_id', data.user.id)
+                            .single();
 
-                // Fetch profile from Supabase
-                try {
-                    const { data: profileData, error } = await supabase
-                        .from('pilot_licensure_experience')
-                        .select('*')
-                        .eq('user_id', session.user.id)
-                        .single();
-
-                    if (profileData && !error) {
-                        console.log("✅ Supabase profile fetched for user:", session.user.id);
-                        setUserProfile(profileData);
-                    } else {
-                        console.log("⚠️ No Supabase profile found for user:", session.user.id, "Creating default profile");
-                        // Create a default profile from Supabase auth data
+                        if (profileData && !error) {
+                            console.log("✅ Supabase profile fetched for user:", data.user.id);
+                            setUserProfile(profileData);
+                        } else {
+                            console.log("⚠️ No Supabase profile found for user:", data.user.id, "Creating default profile");
+                            const defaultProfile = {
+                                user_id: data.user.id,
+                                email: data.user.email,
+                                created_at: new Date().toISOString(),
+                                enrolled_programs: [],
+                                appAccess: []
+                            };
+                            setUserProfile(defaultProfile);
+                        }
+                    } catch (err) {
+                        console.error("❌ Error fetching Supabase profile:", err);
                         const defaultProfile = {
-                            user_id: session.user.id,
-                            email: session.user.email,
-                            created_at: session.user.created_at,
+                            user_id: data.user.id,
+                            email: data.user.email,
+                            created_at: new Date().toISOString(),
                             enrolled_programs: [],
                             appAccess: []
                         };
                         setUserProfile(defaultProfile);
                     }
-                } catch (err) {
-                    console.error("❌ Error fetching Supabase profile:", err);
-                    // Create a default profile on error
-                    const defaultProfile = {
-                        user_id: session.user.id,
-                        email: session.user.email,
-                        created_at: session.user.created_at,
-                        enrolled_programs: [],
-                        appAccess: []
-                    };
-                    setUserProfile(defaultProfile);
-                }
-            } else if (event === 'SIGNED_OUT') {
-                console.log("❌ Supabase user signed out");
-                // Only clear if Firebase is also not signed in
-                if (!auth.currentUser) {
+                } else {
+                    console.log("⚠️ No valid session found");
                     setCurrentUser(null);
                     setUserProfile(null);
                 }
+            } catch (err) {
+                console.log("⚠️ Session verification failed:", err);
+                setCurrentUser(null);
+                setUserProfile(null);
+            } finally {
+                setLoading(false);
             }
-        });
+        };
+
+        verifySession();
 
         return () => {
     };
