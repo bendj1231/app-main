@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../lib/firebase';
-import { collection, query, where, orderBy, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { supabase } from '../lib/supabase-auth';
 
 interface MentorLogEntry {

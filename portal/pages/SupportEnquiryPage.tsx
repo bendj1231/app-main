@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { UserProfile } from '../types/user';
 import { CloudBackground } from '../components/CloudBackground';
-import { 
-  collection, 
-  addDoc, 
-  query, 
-  where, 
-  orderBy, 
-  limit, 
-  getDocs,
-  serverTimestamp 
-} from 'firebase/firestore';
-import { db } from '../lib/firebase';
 
 interface SupportEnquiryPageProps {
   onBack: () => void;

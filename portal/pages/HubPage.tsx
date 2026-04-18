@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
-import { db } from '../lib/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 
 interface HubPageProps {
     onSelectCategory: (category: 'programs' | 'pathways' | 'applications') => void;

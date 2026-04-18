@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../lib/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 
 interface FlightLog {
   id: string;

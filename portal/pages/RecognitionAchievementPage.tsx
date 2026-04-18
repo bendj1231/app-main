@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../lib/firebase';
-import { collection, query, where, getDocs, getDoc, doc } from 'firebase/firestore';
 import { supabase } from '../lib/supabase-auth';
 import { Icons } from '../icons';
 

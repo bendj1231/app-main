@@ -3,7 +3,6 @@ import { Icons } from '../icons';
 import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
 import { supabase } from '../lib/supabase-auth';
-import { db } from '../lib/firebase';
 import PilotLicensureExperiencePage from './PilotLicensureExperiencePage';
 import { PathwaysCarousel } from '../components/PathwaysCarousel';
 import { PathwayStrategyCarousel } from '../components/PathwayStrategyCarousel';

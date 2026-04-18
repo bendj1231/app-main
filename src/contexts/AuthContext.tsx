@@ -25,6 +25,7 @@ interface AuthContextType {
     deleteAccount: (userId: string) => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
     getAuthHeaders: () => { 'X-CSRF-Token'?: string };
+    loginWithOAuth: (provider: 'google' | 'apple' | 'github') => Promise<any>;
     // MFA functions
     mfaEnabled: boolean;
     mfaSetupStep: 'none' | 'qr' | 'verify';
@@ -618,6 +619,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }
 
+    async function loginWithOAuth(provider: 'google' | 'apple' | 'github') {
+        try {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider,
+                options: {
+                    redirectTo: `${window.location.origin}/auth/callback`,
+                    queryParams: {
+                        access_type: 'offline',
+                        prompt: 'consent',
+                    }
+                }
+            });
+
+            if (error) {
+                console.error(`${provider} OAuth error:`, error);
+                throw new Error(`${provider} sign-in failed: ${error.message}`);
+            }
+
+            // OAuth will redirect, so we don't need to set state here
+            // The auth state change listener will handle the session
+            return data;
+        } catch (error) {
+            console.error(`${provider} OAuth login error:`, error);
+            throw error;
+        }
+    }
+
     async function resetPassword(email: string) {
         // Use Supabase auth for password reset
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -899,7 +927,8 @@ const value = {
     mfaVerify,
     mfaDisable,
     mfaGenerateBackupCodes,
-    mfaCheckStatus
+    mfaCheckStatus,
+    loginWithOAuth
 };
 
     return (
