@@ -822,7 +822,74 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     useEffect(() => {
-        // Verify session using Edge Function
+        // Listen for auth state changes from Supabase (handles OAuth redirects)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log('Auth state changed:', event, session?.user?.id);
+            
+            if (event === 'SIGNED_IN' && session?.user) {
+                // User signed in via OAuth
+                console.log('User signed in via OAuth:', session.user.id);
+                
+                const supabaseUser: SupabaseUser = {
+                    id: session.user.id,
+                    uid: session.user.id,
+                    email: session.user.email || '',
+                    display_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                    displayName: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                    email_confirmed_at: session.user.email_confirmed_at || new Date().toISOString(),
+                    created_at: session.user.created_at || new Date().toISOString(),
+                    updated_at: session.user.updated_at || new Date().toISOString()
+                };
+                
+                setCurrentUser(supabaseUser);
+                setExplicitLogoutInStorage(false); // Clear logout flag on sign-in
+                
+                // Fetch profile from Supabase
+                try {
+                    const { data: profileData, error } = await supabase
+                        .from('pilot_licensure_experience')
+                        .select('*')
+                        .eq('user_id', session.user.id)
+                        .single();
+
+                    if (profileData && !error) {
+                        console.log("✅ Profile fetched for OAuth user:", session.user.id);
+                        setUserProfile(profileData);
+                    } else {
+                        console.log("⚠️ No profile found for OAuth user:", session.user.id);
+                        // Create default profile
+                        const defaultProfile = {
+                            user_id: session.user.id,
+                            email: session.user.email,
+                            created_at: new Date().toISOString(),
+                            enrolled_programs: [],
+                            appAccess: []
+                        };
+                        setUserProfile(defaultProfile);
+                    }
+                } catch (err) {
+                    console.error("❌ Error fetching profile for OAuth user:", err);
+                }
+                
+                setLoading(false);
+            } else if (event === 'SIGNED_OUT') {
+                console.log('User signed out');
+                setCurrentUser(null);
+                setUserProfile(null);
+                setLoading(false);
+            } else if (event === 'TOKEN_REFRESHED') {
+                console.log('Token refreshed');
+                // Session is still valid, no action needed
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
+
+    useEffect(() => {
+        // Verify session using Edge Function (for initial load)
         const verifySession = async () => {
             // Check if user explicitly logged out - prevent session restoration
             if (isExplicitLogout()) {
