@@ -171,9 +171,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         program_interests: userData.programInterests,
                         pathway_interests: userData.pathwayInterests,
                         insight_interests: userData.insightInterests,
-                        // Additional ATLAS resume fields
-                        last_flown: userData.lastFlown || null,
+                        // Additional ATLAS resume fields (only those that exist in profiles table)
                         english_proficiency_level: userData.englishProficiencyLevel || null,
+                        license_expiry: userData.licenseExpiry || null,
+                        medical_expiry: userData.medicalExpiry || null,
+                        medical_country: userData.medicalCountry || null,
+                        medical_class: userData.medicalClass || null,
+                        radio_license_expiry: userData.radioLicenseExpiry || null,
+                        last_flown: userData.lastFlown || null,
                         job_experiences: userData.jobExperiences || []
                     })
                     .eq('id', userId);
@@ -223,9 +228,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         program_interests: userData.programInterests,
                         pathway_interests: userData.pathwayInterests,
                         insight_interests: userData.insightInterests,
-                        // Additional ATLAS resume fields
-                        last_flown: userData.lastFlown || null,
+                        // Additional ATLAS resume fields (only those that exist in profiles table)
                         english_proficiency_level: userData.englishProficiencyLevel || null,
+                        license_expiry: userData.licenseExpiry || null,
+                        medical_expiry: userData.medicalExpiry || null,
+                        medical_country: userData.medicalCountry || null,
+                        medical_class: userData.medicalClass || null,
+                        radio_license_expiry: userData.radioLicenseExpiry || null,
+                        last_flown: userData.lastFlown || null,
                         job_experiences: userData.jobExperiences || []
                     });
 
@@ -372,22 +382,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     full_legal_name: userData.fullName,
                     first_name: userData.fullName?.split(' ')[0] || '',
                     last_name: userData.fullName?.split(' ').slice(1).join(' ') || '',
-                    date_of_birth: userData.dob || null,
+                    middle_name: userData.middleName || null,
+                    date_of_birth: userData.dob || userData.dateOfBirth || null,
                     nationality: userData.nationality,
                     residing_country: userData.residingCountry,
                     flight_school_address: userData.flightSchoolAddress,
                     contact_number: userData.contactNumber,
-                    license_number: userData.licenseId,
+                    languages: Array.isArray(userData.languages) ? userData.languages : (userData.languages ? [userData.languages] : null),
+                    english_proficiency: userData.englishProficiencyLevel || null,
+                    license_number: userData.licenseId || userData.licenseNumber || null,
+                    license_expiry: userData.licenseExpiry || null,
                     country_of_license: userData.countryOfLicense,
                     current_flight_hours: userData.currentFlightHours,
-                    aircraft_ratings: userData.aircraftRatedOn ? [{ type: userData.aircraftRatedOn }] : [],
+                    aircraft_ratings: userData.aircraftRatedOn ? [{ aircraft_type: userData.aircraftRatedOn, rating_date: null, is_current: true }] : [],
                     experience_description: userData.experienceDescription,
-                    ratings: userData.ratings || [],
-                    aviation_pathways_interests: userData.pathwayInterests || [],
-                    pilot_job_positions_interests: userData.insightInterests || [],
-                    program_interests: userData.programInterests || [],
-                    insight_interests: userData.insightInterests || [],
-                    current_license: userData.ratings || [],
+                    ratings: Array.isArray(userData.ratings) ? userData.ratings : (userData.ratings ? [userData.ratings] : []),
+                    current_license: Array.isArray(userData.ratings) ? userData.ratings : (userData.ratings ? [userData.ratings] : []),
+                    // Medical information
+                    medical_expiry: userData.medicalExpiry || null,
+                    medical_country: userData.medicalCountry || null,
+                    medical_class: userData.medicalClass || null,
+                    radio_license_expiry: userData.radioLicenseExpiry || null,
+                    // Current occupation
+                    current_occupation: userData.currentOccupation || null,
+                    current_employer: userData.currentEmployer || null,
+                    current_position: userData.currentPosition || null,
+                    // Additional info
+                    countries_visited: parseInt(userData.countriesVisited || '0', 10) || 0,
+                    favorite_aircraft: userData.favoriteAircraft || null,
+                    why_become_pilot: userData.whyBecomePilot || null,
+                    other_skills: userData.otherSkills || null,
+                    // Job experiences
+                    job_experiences: Array.isArray(userData.jobExperiences) ? userData.jobExperiences : (userData.jobExperiences ? [userData.jobExperiences] : []),
+                    // Interests
+                    aviation_pathways_interests: Array.isArray(userData.pathwayInterests) ? userData.pathwayInterests : (userData.pathwayInterests ? [userData.pathwayInterests] : []),
+                    pilot_job_positions_interests: Array.isArray(userData.insightInterests) ? userData.insightInterests : (userData.insightInterests ? [userData.insightInterests] : []),
+                    program_interests: Array.isArray(userData.programInterests) ? userData.programInterests : (userData.programInterests ? [userData.programInterests] : []),
+                    insight_interests: Array.isArray(userData.insightInterests) ? userData.insightInterests : (userData.insightInterests ? [userData.insightInterests] : []),
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 }, { onConflict: 'user_id' });

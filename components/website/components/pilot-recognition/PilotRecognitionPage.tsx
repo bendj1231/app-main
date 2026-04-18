@@ -14,210 +14,175 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({ onBa
     // Magazine Rows Data
     const magazineRows = [
         {
-            title: "Centralized Data Repository",
-            desc: "A single, immutable source of truth for all your flight hours, certifications, and professional milestones. WingMentor acts as a secure ledger that consolidates your entire aviation career into one verified profile.",
-            bullets: ["Secure Ledger", "Cloud Sync", "Immutable Records"],
+            title: "Unified Aviation Identity",
+            desc: "Your complete aviation journey in one verified digital profile. WingMentor consolidates flight hours, certifications, mentorship, and career milestones into a single source of truth that travels with you throughout your professional life.",
+            bullets: ["Single Profile", "Career Timeline", "Cross-Platform"],
             image: IMAGES.LOGBOOK_IMG,
             reverse: false
         },
         {
-            title: "Verifiable Credentialing",
-            desc: "Cryptographically signed records that airlines and authorities can verify instantly. We eliminate logbook fraud by creating a digital chain of custody for every flight hour and training event.",
-            bullets: ["Instant Verification", "Authenticity Guaranteed", "Recruiter Trust"],
+            title: "Verified Professional Standing",
+            desc: "Every credential, flight hour, and achievement is cryptographically verified. Our blockchain-backed verification system creates an unbreakable chain of custody that airlines and regulatory bodies trust implicitly.",
+            bullets: ["Cryptographic Proof", "Real-Time Verification", "Industry Trust"],
             image: IMAGES.STORY_MAP_BG,
             reverse: true
         },
         {
-            title: "ATLAS Optimization",
-            desc: "Your profile is automatically optimized for airline AI recruitment systems (ATLAS). We ensure your specific talents are flagged and formatted to pass through automated HR filters.",
-            bullets: ["AI Screening Ready", "Global Standards", "Machine Readable"],
+            title: "AI-Native Career Intelligence",
+            desc: "Your profile is optimized for modern airline recruitment AI systems. We translate your experience into structured data that automated screening systems recognize, prioritize, and rank at the top of candidate pools.",
+            bullets: ["AI-Optimized", "Global Reach", "Smart Matching"],
             image: IMAGES.ANALYST_PROFILE_IMG,
             reverse: false
         },
         {
-            title: "Competency Analytics",
-            desc: "Transform raw technical skill into data-driven professional competencies. We map your performance against the CBTA framework, making you visible to global manufacturers like Airbus.",
-            bullets: ["Skill Mapping", "CBTA Framework", "Performance Metrics"],
+            title: "Competency-Based Recognition",
+            desc: "Beyond flight hours—we measure capability. Our competency framework maps your skills against industry standards like CBTA, highlighting strengths that matter to airlines: decision-making, leadership, technical expertise, and adaptability.",
+            bullets: ["Competency Mapping", "Skill Analytics", "Growth Tracking"],
             image: IMAGES.GAP_CAREER_TURBULENCE_IMG,
             reverse: true
         }
     ];
 
     const recognitionPillars = [
-        { title: "Audited Logging", value: "Every hour logged is cross-referenced with training records for absolute accuracy.", icon: CheckCircle2 },
-        { title: "Machine-Ready", value: "Your data is formatted for seamless extraction into legacy airline HR portals.", icon: (props: any) => <Zap {...props} /> },
-        { title: "Verified Badge", value: "Earn the digital 'Verified Pilot' status, a gold standard for professional credibility.", icon: Award },
-        { title: "Direct Pipeline", value: "Automatic visibility in the WingMentor recruiter search engine for partner airlines.", icon: Search }
+        { title: "Live Verification", value: "Real-time verification of credentials across the entire WingMentor ecosystem.", icon: CheckCircle2 },
+        { title: "AI Integration", value: "Seamless integration with airline AI screening and recruitment platforms.", icon: (props: any) => <Zap {...props} /> },
+        { title: "Verified Status", value: "Earn the globally recognized 'Verified Pilot' digital credential.", icon: Award },
+        { title: "Career Pipeline", value: "Direct visibility to our network of partner airline recruiters.", icon: Search }
     ];
 
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans text-left">
+        <div className="min-h-screen font-sans text-left" style={{ background: '#ffffff', color: '#0f172a' }}>
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section */}
-            <div className="pt-32 pb-20 px-6 bg-slate-50/50">
-                <div className="max-w-6xl mx-auto text-center relative z-20">
-                    <RevealOnScroll>
-                        <div className="flex justify-center items-center gap-4 mb-8">
-                            <Shield className="w-10 h-10 text-blue-600" />
-                        </div>
-                        <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
-                            RECOGNITION | ASSURANCE | SUPPORT
-                        </p>
-                        <h1 className="text-4xl md:text-7xl font-serif text-slate-900 leading-tight mb-8">
-                            Pilot Recognition <br />Systems
-                        </h1>
-                        <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
-                            We transform thousands of flight hours into verifiable professional credentials.
-                            Our digital recognition infrastructure is the bridge between training and airline-ready credibility.
-                        </p>
-                    </RevealOnScroll>
-                </div>
+            <div style={{ textAlign: 'center', paddingBottom: '3.5rem', paddingTop: '4rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                <RevealOnScroll>
+                    <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
+                    </div>
+                    <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                        PILOT RECOGNITION
+                    </div>
+                    <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                        Pilot Recognition
+                    </h1>
+                    <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto 2.5rem', maxWidth: '42rem' }}>
+                        Transform your flight hours into verifiable professional credentials. WingMentor creates a trusted digital identity that airlines recognize and recruiters seek—bridging the gap between your training and airline-ready credibility.
+                    </p>
+                </RevealOnScroll>
             </div>
 
             {/* Magazine Content Sections */}
-            <div className="py-12 px-6 max-w-6xl mx-auto space-y-24">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center', maxWidth: '42rem', margin: '0 auto', padding: '0 2rem' }}>
                 {magazineRows.map((row, idx) => (
-                    <div key={idx} className={`flex flex-col ${row.reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-16`}>
-                        <div className="md:w-1/2">
-                            <RevealOnScroll>
-                                <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
-                                    Feature {idx + 1}
-                                </p>
-                                <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                                    {row.title}
-                                </h2>
-                                <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                                    {row.desc}
-                                </p>
-                                <div className="space-y-3">
-                                    {row.bullets.map((bullet, i) => (
-                                        <div key={i} className="flex items-center gap-3">
-                                            <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" />
-                                            <span className="text-sm font-bold text-slate-600 tracking-wide uppercase">{bullet}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </RevealOnScroll>
-                        </div>
-                        <div className="md:w-1/2">
-                            <RevealOnScroll delay={200}>
-                                <div className="relative group p-[1px] bg-gradient-to-b from-slate-200 to-transparent rounded-[2rem]">
-                                    <div className="aspect-[4/3] w-full overflow-hidden rounded-[2rem] shadow-2xl relative">
-                                        <img
-                                            src={row.image}
-                                            alt={row.title}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                        />
-                                        <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                    <section key={idx} style={{ textAlign: 'center' }}>
+                        <RevealOnScroll>
+                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                                FEATURE {idx + 1}
+                            </div>
+                            <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
+                                {row.title}
+                            </h2>
+                            <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto 2.5rem' }}>
+                                {row.desc}
+                            </p>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+                                {row.bullets.map((bullet, i) => (
+                                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <CheckCircle2 style={{ width: '20px', height: '20px', color: '#2563eb' }} />
+                                        <span style={{ fontSize: '0.95rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', color: '#475569' }}>{bullet}</span>
                                     </div>
-                                </div>
-                            </RevealOnScroll>
-                        </div>
-                    </div>
+                                ))}
+                            </div>
+                        </RevealOnScroll>
+                    </section>
                 ))}
             </div>
 
-            {/* Cinematic Stewardship Section (Dark) */}
-            <div className="py-24 px-6 bg-[#050A30] text-white mt-24">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                        <div>
-                            <RevealOnScroll>
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">Audited Credibility</p>
-                                <h2 className="text-3xl md:text-5xl font-serif mb-8 leading-tight">
-                                    Beyond the Logbook: <br />Verified Competency
-                                </h2>
-                                <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
-                                    "Traditional logbooks only track time. Our recognition system tracks impact."
-                                </p>
-                                <div className="space-y-6">
-                                    <div className="flex items-start gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
-                                        <UserCheck className="w-6 h-6 text-blue-400 shrink-0" />
-                                        <p className="text-slate-300 text-sm font-sans leading-relaxed">
-                                            Every mentorship session, leadership role, and technical milestone is digitally cryptographically verified.
-                                        </p>
-                                    </div>
-                                    <div className="flex items-start gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
-                                        <Lock className="w-6 h-6 text-blue-400 shrink-0" />
-                                        <p className="text-slate-300 text-sm font-sans leading-relaxed">
-                                            Encrypted ledger technology ensures your professional data remains secure and immutable.
-                                        </p>
-                                    </div>
-                                </div>
-                            </RevealOnScroll>
+            {/* Cinematic Stewardship Section */}
+            <section style={{ textAlign: 'center', maxWidth: '42rem', margin: '4.5rem auto', padding: '0 2rem' }}>
+                <RevealOnScroll>
+                    <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                        PROFESSIONAL TRUST
+                    </div>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
+                        Verified Excellence, Recognized Globally
+                    </h2>
+                    <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto 2.5rem', fontStyle: 'italic' }}>
+                        "Your professional identity deserves more than a paper logbook—it deserves verification."
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: '36rem' }}>
+                            <UserCheck style={{ width: '24px', height: '24px', color: '#2563eb', flexShrink: 0 }} />
+                            <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0 }}>
+                                Every achievement, certification, and milestone is cryptographically verified and timestamped.
+                            </p>
                         </div>
-                        <div className="relative">
-                            <div className="aspect-[4/5] bg-slate-100 rounded-[3rem] overflow-hidden shadow-2xl">
-                                <img
-                                    src="https://lh3.googleusercontent.com/d/1lBYiMzvNPAkqmaAJjO_c1Bc3pAtLjwY1"
-                                    alt="Pilot Recognition System Architecture"
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-blue-900/40 mix-blend-overlay"></div>
-                                <div className="absolute bottom-6 left-6 right-6 p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-                                            <Award className="w-5 h-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-blue-200 tracking-wider uppercase">Status</p>
-                                            <p className="text-white font-bold">Verified Professional</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: '36rem' }}>
+                            <Lock style={{ width: '24px', height: '24px', color: '#2563eb', flexShrink: 0 }} />
+                            <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0 }}>
+                                Military-grade encryption protects your professional data while enabling instant verification.
+                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
+                </RevealOnScroll>
+            </section>
 
-            {/* Recognition Pillars (System Infrastructure) - Matching "Pillars" Style */}
-            <div className="py-24 px-6 max-w-7xl mx-auto bg-white">
-                <div className="text-center mb-16">
-                    <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-4">Infrastructure</p>
-                    <h2 className="text-3xl font-serif text-slate-900">System Architecture</h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {recognitionPillars.map((item, idx) => (
-                        <div key={idx} className="p-10 bg-slate-50/50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group">
-                            <div className="w-10 h-10 mb-8">
-                                {typeof item.icon === 'function' ? item.icon({ className: "w-8 h-8 text-blue-600 group-hover:scale-110 transition-transform" }) : <item.icon className="w-8 h-8 text-blue-600 group-hover:scale-110 transition-transform" />}
+            {/* Recognition Pillars (System Infrastructure) */}
+            <section style={{ textAlign: 'center', maxWidth: '42rem', margin: '4.5rem auto', padding: '0 2rem' }}>
+                <RevealOnScroll>
+                    <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                        INFRASTRUCTURE
+                    </div>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
+                        System Architecture
+                    </h2>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
+                        {recognitionPillars.map((item, idx) => (
+                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: '36rem' }}>
+                                <div style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    {typeof item.icon === 'function' ? item.icon({ style: { width: '24px', height: '24px', color: '#2563eb' } }) : React.createElement(item.icon, { style: { width: '24px', height: '24px', color: '#2563eb' } })}
+                                </div>
+                                <div style={{ textAlign: 'left' }}>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '0.25rem', color: '#0f172a', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{item.title}</h3>
+                                    <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>{item.value}</p>
+                                </div>
                             </div>
-                            <h3 className="text-lg font-bold mb-3 font-sans text-slate-800 tracking-widest uppercase">{item.title}</h3>
-                            <p className="text-slate-500 text-sm leading-relaxed font-sans">{item.value}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+                        ))}
+                    </div>
+                </RevealOnScroll>
+            </section>
 
             {/* Footer CTA */}
-            <div className="py-24 px-6 bg-slate-50 border-t border-slate-200">
-                <div className="max-w-4xl mx-auto text-center">
-                    <RevealOnScroll>
-                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6">Unlock Your Digital Credibility</h2>
-                        <p className="text-lg text-slate-600 mb-10 font-sans max-w-2xl mx-auto">
-                            Join the global network of recognized pilots. Completion of the WingMentor programs
-                            unlocks the "Verified" status across our recruiter-facing tools.
-                        </p>
-                        <div className="flex flex-wrap justify-center gap-6">
-                            <button
-                                onClick={() => onNavigate('become-member')}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-5 rounded-full font-bold text-lg transition-all shadow-xl hover:shadow-blue-500/20 font-sans"
-                            >
-                                Get Verified
-                            </button>
-                            <button
-                                onClick={onBack}
-                                className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-900 px-12 py-5 rounded-full font-bold text-lg transition-all font-sans"
-                            >
-                                Back to Directory
-                            </button>
-                        </div>
-                    </RevealOnScroll>
-                </div>
-            </div>
+            <section style={{ textAlign: 'center', maxWidth: '42rem', margin: '4.5rem auto', padding: '0 2rem', borderTop: '1px solid #e2e8f0', paddingTop: '4.5rem' }}>
+                <RevealOnScroll>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
+                        Build Your Verified Aviation Identity
+                    </h2>
+                    <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto 2.5rem' }}>
+                        Join thousands of pilots who have transformed their careers with WingMentor's recognition system.
+                        Start building your verified professional identity today.
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+                        <button
+                            onClick={() => onNavigate('become-member')}
+                            style={{ background: '#2563eb', color: '#ffffff', padding: '1rem 3rem', borderRadius: '9999px', fontWeight: 700, fontSize: '1.1rem', border: 'none', cursor: 'pointer', fontFamily: 'sans-serif', transition: 'background 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = '#1d4ed8'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = '#2563eb'}
+                        >
+                            Start Your Journey
+                        </button>
+                        <button
+                            onClick={onBack}
+                            style={{ background: 'transparent', color: '#0f172a', padding: '1rem 3rem', borderRadius: '9999px', fontWeight: 700, fontSize: '1.1rem', border: '1px solid #e2e8f0', cursor: 'pointer', fontFamily: 'sans-serif', transition: 'background 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
+                            Back to Directory
+                        </button>
+                    </div>
+                </RevealOnScroll>
+            </section>
         </div>
     );
 };

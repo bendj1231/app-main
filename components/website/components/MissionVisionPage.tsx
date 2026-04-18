@@ -34,9 +34,9 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             Mission & Vision
                         </h1>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                            We are not just building a platform; we are constructing the bridge that spans the
-                            most critical gap in modern aviation. Our commitment is to the pilot, the industry,
-                            and the future of flight safety.
+                            We are building the infrastructure that transforms flight hours into verified professional credentials.
+                            Our commitment is to the pilot's career journey, the industry's need for verifiable competency,
+                            and the future of aviation excellence.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -54,15 +54,15 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                                 Our Mission
                             </p>
                             <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Bridging the Competency Gap
+                                Transform Flight Hours into Verifiable Credentials
                             </h2>
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                To provide every aspiring pilot with the mentorship, tools, and industry pathways needed
-                                to transition from a licensed aviator to an airline-ready professional.
+                                To provide every pilot with a verified digital identity that airlines trust, recruiters recognize,
+                                and the aviation industry demands. We bridge the gap between training and airline-ready credibility.
                             </p>
                             <p className="text-base text-slate-700 leading-relaxed">
-                                We exist to eliminate the "low-timer" bottleneck by verifying competency, standardizing reports,
-                                and connecting talent directly with the operators who need them.
+                                We exist to eliminate uncertainty in pilot recruitment through cryptographically verified credentials,
+                                competency-based recognition, and direct connections with airline partners worldwide.
                             </p>
                         </RevealOnScroll>
                     </div>
@@ -96,15 +96,15 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                                 Our Vision
                             </p>
                             <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                A Unified Global Standard
+                                The Global Standard for Pilot Recognition
                             </h2>
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                To become the global authority in pilot verification and career progression, creating
-                                an ecosystem where merit, data, and preparation replace uncertainty in the hiring process.
+                                To become the definitive authority in pilot verification, creating a global ecosystem where
+                                verified competency, data-driven insights, and preparation replace uncertainty in aviation careers.
                             </p>
                             <p className="text-base text-slate-700 leading-relaxed">
-                                We visualize a future where the seamless integration of our ATLAS system and Foundational Program
-                                becomes the industry benchmark for pilot recruitment worldwide.
+                                We envision a future where WingMentor's recognition system and competency framework
+                                become the universal benchmark for pilot recruitment and professional advancement worldwide.
                             </p>
                         </RevealOnScroll>
                     </div>
@@ -139,23 +139,23 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
                             {
-                                title: "Connection",
-                                desc: "We believe in the power of the network. Every pilot is one introduction away from their dream career, and we facilitate that link.",
-                                icon: Users,
+                                title: "Verification",
+                                desc: "We believe in the power of verifiable truth. Every credential, flight hour, and achievement must be cryptographically verified to build trust in the aviation industry.",
+                                icon: Shield,
                                 color: "text-blue-600",
                                 bg: "bg-blue-50"
                             },
                             {
-                                title: "Attitude",
-                                desc: "Professionalism isn't just a behavior; it's a mindset. We cultivate the resilience and discipline required for the flight deck.",
-                                icon: Heart,
+                                title: "Competency",
+                                desc: "Beyond flight hours—we measure capability. Our competency framework maps skills against industry standards to recognize true professional readiness.",
+                                icon: Target,
                                 color: "text-red-600",
                                 bg: "bg-red-50"
                             },
                             {
-                                title: "Respect",
-                                desc: "For the uniform, for the standards, and for each other. We foster a community built on mutual support and ethical leadership.",
-                                icon: Shield,
+                                title: "Excellence",
+                                desc: "For the standards, for the career, for the future. We foster a community built on verified excellence, ethical leadership, and professional advancement.",
+                                icon: Globe,
                                 color: "text-emerald-600",
                                 bg: "bg-emerald-50"
                             }

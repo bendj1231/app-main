@@ -373,13 +373,13 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             const filePath = `${profileData.user_id}/${fileName}`;
 
             const { error: uploadError } = await supabase.storage
-                .from('profile-pics')
+                .from('profile pics')
                 .upload(filePath, file);
 
             if (uploadError) throw uploadError;
 
             const { data: { publicUrl } } = supabase.storage
-                .from('profile-pics')
+                .from('profile pics')
                 .getPublicUrl(filePath);
 
             const { error: updateError } = await supabase
@@ -546,7 +546,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             // Fetch profile image and basic user data from profiles table
             const { data: profileImage, error: imageError } = await supabase
                 .from('profiles')
-                .select('profile_image_url, full_name, display_name, email, current_flight_hours, overall_recognition_score')
+                .select('profile_image_url, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, ratings')
                 .eq('id', user.id)
                 .maybeSingle();
             
@@ -588,7 +588,18 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     email: profileImage.email || user.email || '',
                     total_hours: profileImage.current_flight_hours || 0,
                     overall_recognition_score: profileImage.overall_recognition_score || 0,
-                    current_occupation: 'STUDENT PILOT'
+                    current_occupation: 'STUDENT PILOT',
+                    license_type: profileImage.ratings?.join(', ') || 'None',
+                    license_id: profileImage.license_id || '',
+                    country_of_license: profileImage.country_of_license || '',
+                    type_ratings: profileImage.ratings || []
+                } : {}),
+                // Always include license data from profiles table
+                ...(profileImage ? {
+                    license_type: profileImage.ratings?.join(', ') || 'None',
+                    license_id: profileImage.license_id || '',
+                    country_of_license: profileImage.country_of_license || '',
+                    type_ratings: profileImage.ratings || []
                 } : {})
             };
             
@@ -845,16 +856,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     highestLicense = 'SPL';
                                                 }
 
-                                                // Extract license number if available (common format: CPL #123456)
-                                                const licenseMatch = license.match(/#\s*(\d+)/);
-                                                if (licenseMatch) {
-                                                    licenseNumber = ` #${licenseMatch[1]}`;
-                                                }
-
                                                 // Build license display string
                                                 let licenseDisplay = '';
                                                 if (highestLicense) {
-                                                    licenseDisplay = `${highestLicense}${licenseNumber}`;
+                                                    licenseDisplay = highestLicense;
+                                                }
+
+                                                // Add country of license if available
+                                                if (profileData?.country_of_license) {
+                                                    licenseDisplay += ` (${profileData.country_of_license})`;
                                                 }
 
                                                 // Add expiration date if available
@@ -907,7 +917,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         ].map(tile => (
                                             <div key={tile.label} style={{ background: 'rgba(255,255,255,0.9)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.4)' }}>
                                                 <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.12em', color: '#94a3b8', textTransform: 'uppercase' }}>{tile.label}</p>
-                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.35rem', fontWeight: 700, color: '#0f172a' }}>{tile.value}{tile.unverified && <span style={{ fontSize: '0.7rem', fontWeight: 500, color: '#f59e0b', marginLeft: '0.25rem' }}>(unverified)</span>}</p>
+                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.35rem', fontWeight: 700, color: '#0f172a' }}>{tile.value}</p>
+                                                {tile.unverified && <p style={{ margin: '0.25rem 0 0', fontSize: '0.7rem', fontWeight: 500, color: '#f59e0b' }}>(unverified)</p>}
+                                                {tile.unverified && <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: '0.25rem 0 0 0', fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>}
                                             </div>
                                         ))}
                                     </div>
@@ -927,6 +939,23 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     <div>
                                         <h3 style={{ margin: 0, fontSize: '1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Pilot Credentials</h3>
                                         <p style={{ margin: '0.35rem 0 0', color: '#64748b', fontSize: '0.85rem' }}>Licensing, hours, and access pass</p>
+                                        <button
+                                            onClick={() => onNavigate('pilot-licensure-experience')}
+                                            style={{
+                                                marginTop: '0.5rem',
+                                                padding: '0',
+                                                background: 'none',
+                                                border: 'none',
+                                                color: '#2563eb',
+                                                fontSize: '0.75rem',
+                                                fontWeight: 500,
+                                                cursor: 'pointer',
+                                                textDecoration: 'none',
+                                                textAlign: 'left'
+                                            }}
+                                        >
+                                            view details on licensure →
+                                        </button>
                                     </div>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.75rem' }}>
                                         {(() => {
@@ -945,6 +974,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                                             return [
                                                 { label: 'License Type', value: highestLicense },
+                                                { label: 'License Number', value: profileData?.license_id || 'Not specified' },
                                                 { label: 'License Status', value: profileData?.license_status || 'Not specified' },
                                                 { label: 'English Level', value: profileData?.english_proficiency_level || 'Not specified' },
                                                 { label: 'Career Stage', value: profileData?.career_stage || 'Not specified' }
@@ -963,6 +993,23 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     <div style={{ marginBottom: '0.75rem' }}>
                                         <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Readiness Snapshot</p>
                                         <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Resource & Availability</h3>
+                                        <button
+                                            onClick={() => onNavigate('pilot-licensure-experience')}
+                                            style={{
+                                                marginTop: '0.5rem',
+                                                padding: '0',
+                                                background: 'none',
+                                                border: 'none',
+                                                color: '#2563eb',
+                                                fontSize: '0.75rem',
+                                                fontWeight: 500,
+                                                cursor: 'pointer',
+                                                textDecoration: 'none',
+                                                textAlign: 'left'
+                                            }}
+                                        >
+                                            view details on readiness →
+                                        </button>
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                                         {[
@@ -988,25 +1035,73 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     boxShadow: '0 20px 45px rgba(15,23,42,0.08)'
                                 }}>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '0.35rem' }}>
-                                        {[
-                                            { title: 'Total Hours', value: profileData?.total_hours || 0, subtitle: 'Logged Hours', accent: '#0ea5e9', unverified: true },
-                                            { title: 'Recognition', value: profileData?.overall_recognition_score || 0, subtitle: 'Verified Score', accent: '#10b981' },
-                                            { title: 'Examination', value: profileData?.examination_score || 0, subtitle: 'Knowledge Test', accent: '#f59e0b' },
-                                            { title: 'Mentor Hours', value: profileData?.mentorship_hours || 0, subtitle: 'Engagement', accent: '#8b5cf6' }
-                                        ].map((stat, index) => (
-                                            <div key={stat.title} style={{ padding: '0.4rem 0.75rem', textAlign: 'center', position: 'relative' }}>
-                                                {index < 3 && (
-                                                    <span style={{
-                                                        position: 'absolute', top: '20%', right: 0,
-                                                        width: '1px', height: '60%',
-                                                        background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
-                                                    }} />
-                                                )}
-                                                <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>{stat.title}</p>
-                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: stat.accent }}>{stat.value}{stat.unverified && <span style={{ fontSize: '0.7rem', fontWeight: 500, color: '#f59e0b', marginLeft: '0.25rem' }}>(unverified)</span>}</p>
-                                                <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>{stat.subtitle}</p>
+                                        {/* Total Hours */}
+                                        <div style={{ padding: '0.4rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                                            <span style={{
+                                                position: 'absolute', top: '20%', right: 0,
+                                                width: '1px', height: '60%',
+                                                background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
+                                            }} />
+                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Total Hours</p>
+                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#0ea5e9' }}>{profileData?.total_hours || 0}</p>
+                                            <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Logged Hours</p>
+                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#f59e0b', fontWeight: 500 }}>(unverified)</p>
+                                            <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: 0, fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>
+                                        </div>
+
+                                        {/* Recognition */}
+                                        <div style={{ padding: '0.4rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                                            <span style={{
+                                                position: 'absolute', top: '20%', right: 0,
+                                                width: '1px', height: '60%',
+                                                background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
+                                            }} />
+                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Recognition</p>
+                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#10b981' }}>{profileData?.overall_recognition_score || 0}</p>
+                                            <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Verified Score</p>
+                                        </div>
+
+                                        {/* Recency Examination Score */}
+                                        <div style={{ padding: '0.4rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                                            <span style={{
+                                                position: 'absolute', top: '20%', right: 0,
+                                                width: '1px', height: '60%',
+                                                background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
+                                            }} />
+                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Recency Exam</p>
+                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ec4899' }}>{profileData?.recency_examination_score || 0}</p>
+                                            <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Recency Score</p>
+                                        </div>
+
+                                        {/* Nested Card for Examination and Mentor Hours */}
+                                        <div style={{
+                                            background: 'rgba(248,250,252,0.8)',
+                                            borderRadius: '16px',
+                                            padding: '0.75rem',
+                                            border: '1px solid rgba(226,232,240,0.8)',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: '0.5rem'
+                                        }}>
+                                            {/* Title */}
+                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, textAlign: 'center' }}>Foundation Program</p>
+                                            
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem' }}>
+                                                {/* Examination */}
+                                                <div style={{ textAlign: 'center' }}>
+                                                    <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Examination</p>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#f59e0b' }}>{profileData?.examination_score || 0}</p>
+                                                    <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#94a3b8' }}>Knowledge Test</p>
+                                                </div>
+
+                                                {/* Mentor Hours */}
+                                                <div style={{ textAlign: 'center' }}>
+                                                    <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Mentor Hours</p>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#8b5cf6' }}>{profileData?.mentorship_hours || 0}</p>
+                                                    <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#94a3b8' }}>Engagement</p>
+                                                </div>
                                             </div>
-                                        ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1177,7 +1272,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem', marginBottom: '1rem' }}>
                                                 <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Total Hours</p>
-                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.total_hours || 0} <span style={{ fontSize: '0.7rem', fontWeight: 500, color: '#f59e0b', marginLeft: '0.25rem' }}>(unverified)</span></p>
+                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.total_hours || 0}</p>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#f59e0b', fontWeight: 500 }}>(unverified)</p>
+                                                    <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: '0.25rem 0 0 0', fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>
                                                 </div>
                                                 <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Mentorship</p>
@@ -1793,8 +1890,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     <ExaminationResultsPage
                         onBack={() => setCurrentDocumentationPage(null)}
                         userProfile={profileData ? {
-                            firstName: profileData.first_name,
-                            lastName: profileData.last_name,
+                            firstName: profileData.full_name?.split(' ')[0] || profileData.display_name?.split(' ')[0] || '',
+                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || profileData.display_name?.split(' ').slice(1).join(' ') || '',
                             uid: profileData.id,
                             id: profileData.id
                         } : null}
@@ -1808,8 +1905,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         userProfile={profileData ? {
                             id: profileData.id,
                             uid: profileData.id,
-                            firstName: profileData.first_name,
-                            lastName: profileData.last_name,
+                            firstName: profileData.full_name?.split(' ')[0] || profileData.display_name?.split(' ')[0] || '',
+                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || profileData.display_name?.split(' ').slice(1).join(' ') || '',
                             email: profileData.email
                         } : null}
                     />
@@ -1822,8 +1919,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         userProfile={profileData ? {
                             id: profileData.id,
                             uid: profileData.id,
-                            firstName: profileData.first_name,
-                            lastName: profileData.last_name,
+                            firstName: profileData.full_name?.split(' ')[0] || profileData.display_name?.split(' ')[0] || '',
+                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || profileData.display_name?.split(' ').slice(1).join(' ') || '',
                             email: profileData.email
                         } : null}
                     />

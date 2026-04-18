@@ -64,13 +64,13 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onN
             const filePath = `profile-images/${fileName}`;
 
             const { error: uploadError } = await supabase.storage
-                .from('profile-images')
+                .from('profile pics')
                 .upload(filePath, file);
 
             if (uploadError) throw uploadError;
 
             const { data: { publicUrl } } = supabase.storage
-                .from('profile-images')
+                .from('profile pics')
                 .getPublicUrl(filePath);
 
             const { error: updateError } = await supabase

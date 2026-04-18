@@ -33,6 +33,9 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
     hours: '',
     remarks: ''
   });
+  const [showAircraftCarousel, setShowAircraftCarousel] = useState(false);
+  const [selectedAircraft, setSelectedAircraft] = useState<any>(null);
+  const [logbookFormat, setLogbookFormat] = useState<'standard' | 'compact' | 'detailed' | 'timeline'>('standard');
 
   useEffect(() => {
     fetchFlightLogs();
@@ -251,21 +254,42 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                 VERIFIED FLIGHT RECORD REGISTRY
               </p>
             </div>
-            <button
-              onClick={() => setShowAddForm(!showAddForm)}
-              style={{
-                padding: '0.75rem 1.5rem',
-                borderRadius: '999px',
-                border: 'none',
-                background: '#0ea5e9',
-                color: '#fff',
-                fontWeight: 600,
-                cursor: 'pointer',
-                fontSize: '0.875rem'
-              }}
-            >
-              {showAddForm ? 'CANCEL' : 'ADD FLIGHT ENTRY'}
-            </button>
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+              <button
+                onClick={() => setShowAddForm(!showAddForm)}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '999px',
+                  border: 'none',
+                  background: '#0ea5e9',
+                  color: '#fff',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: '0.875rem'
+                }}
+              >
+                {showAddForm ? 'CANCEL' : 'ADD FLIGHT ENTRY'}
+              </button>
+              <select
+                value={logbookFormat}
+                onChange={(e) => setLogbookFormat(e.target.value as any)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  borderRadius: '8px',
+                  border: '1px solid #cbd5e1',
+                  background: '#fff',
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                  color: '#0f172a',
+                  cursor: 'pointer'
+                }}
+              >
+                <option value="standard">Standard Format</option>
+                <option value="compact">Compact Format</option>
+                <option value="detailed">Detailed Format</option>
+                <option value="timeline">Timeline Format</option>
+              </select>
+            </div>
           </div>
 
           {/* Add Entry Form */}
@@ -323,7 +347,10 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   <input
                     type="text"
                     value={formData.registration}
-                    onChange={(e) => setFormData({ ...formData, registration: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, registration: e.target.value });
+                      setShowAircraftCarousel(e.target.value.length > 0);
+                    }}
                     placeholder="e.g., rpc1885"
                     style={{
                       width: '100%',
@@ -408,6 +435,57 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   />
                 </div>
               </div>
+
+              {/* Aircraft Carousel */}
+              {showAircraftCarousel && (
+                <div style={{
+                  marginTop: '1rem',
+                  padding: '1rem',
+                  background: '#fff',
+                  borderRadius: '8px',
+                  border: '1px solid #e2e8f0'
+                }}>
+                  <p style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
+                    Select Aircraft
+                  </p>
+                  <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+                    {[
+                      { type: 'C172', name: 'Cessna 172', image: '/images/aircraft/c172.png' },
+                      { type: 'C182', name: 'Cessna 182', image: '/images/aircraft/c182.png' },
+                      { type: 'PA28', name: 'Piper Cherokee', image: '/images/aircraft/pa28.png' },
+                      { type: 'B737', name: 'Boeing 737', image: '/images/aircraft/b737.png' },
+                      { type: 'A320', name: 'Airbus A320', image: '/images/aircraft/a320.png' },
+                      { type: 'C208', name: 'Cessna Caravan', image: '/images/aircraft/c208.png' },
+                    ].map((aircraft) => (
+                      <div
+                        key={aircraft.type}
+                        onClick={() => {
+                          setFormData({ ...formData, aircraftType: aircraft.type, registration: formData.registration || aircraft.type.toLowerCase() });
+                          setSelectedAircraft(aircraft);
+                          setShowAircraftCarousel(false);
+                        }}
+                        style={{
+                          minWidth: '120px',
+                          padding: '0.75rem',
+                          background: selectedAircraft?.type === aircraft.type ? '#e0f2fe' : '#f8fafc',
+                          border: selectedAircraft?.type === aircraft.type ? '2px solid #0ea5e9' : '1px solid #e2e8f0',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          textAlign: 'center'
+                        }}
+                      >
+                        <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.25rem' }}>
+                          {aircraft.type}
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#64748b' }}>
+                          {aircraft.name}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <button
                 onClick={handleAddEntry}
                 style={{
@@ -427,63 +505,285 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
             </div>
           )}
 
-          {/* Table */}
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
-                  <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>DATE</th>
-                  <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>TYPE</th>
-                  <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>IDENT</th>
-                  <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ROUTE</th>
-                  <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>CATEGORY</th>
-                  <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>DESCRIPTION</th>
-                  <th style={{ padding: '0.75rem', textAlign: 'right', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>TIME</th>
-                  <th style={{ padding: '0.75rem', textAlign: 'right', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>TOTAL</th>
-                  <th style={{ padding: '0.75rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ACTION</th>
-                </tr>
-              </thead>
-              <tbody>
+          {/* Recency Component */}
+          {flightLogs.length > 0 && (
+            <div style={{
+              background: '#f8fafc',
+              borderRadius: '12px',
+              padding: '1.5rem',
+              marginBottom: '2rem',
+              border: '1px solid #e2e8f0'
+            }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginBottom: '1rem' }}>
+                Recent Flights
+              </h3>
+              <div style={{ display: 'flex', gap: '0.75rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+                {flightLogs.slice(0, 5).map((log) => (
+                  <div
+                    key={log.id}
+                    onClick={() => setFormData({
+                      date: new Date().toISOString().split('T')[0],
+                      aircraftType: log.aircraftType,
+                      registration: log.registration || '',
+                      route: log.route || '',
+                      category: log.category || '',
+                      hours: '',
+                      remarks: log.remarks || ''
+                    })}
+                    style={{
+                      minWidth: '200px',
+                      padding: '1rem',
+                      background: '#fff',
+                      borderRadius: '8px',
+                      border: '1px solid #e2e8f0',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.borderColor = '#0ea5e9'}
+                    onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}
+                  >
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
+                      {log.date}
+                    </div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.25rem' }}>
+                      {log.aircraftType}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
+                      {log.registration || '-'}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>
+                      {log.hours.toFixed(1)}h
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Table - Standard Format */}
+          {logbookFormat === 'standard' && (
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+                    <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>DATE</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>TYPE</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>IDENT</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ROUTE</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>CATEGORY</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>DESCRIPTION</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'right', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>TIME</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'right', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>TOTAL</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={9} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                        Loading flight logs...
+                      </td>
+                    </tr>
+                  ) : flightLogs.length === 0 ? (
+                    <tr>
+                      <td colSpan={9} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                        No flight entries yet. Click "Add Flight Entry" to get started.
+                      </td>
+                    </tr>
+                  ) : (
+                    flightLogs.map((log) => (
+                      <tr key={log.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>
+                          {log.date}
+                        </td>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0ea5e9', fontWeight: 600 }}>
+                          {log.aircraftType}
+                        </td>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#64748b' }}>
+                          {log.registration || '-'}
+                        </td>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a' }}>
+                          {log.route || '-'}
+                        </td>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#10b981', fontWeight: 600, textTransform: 'uppercase' }}>
+                          {log.category || '-'}
+                        </td>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#64748b' }}>
+                          {log.remarks || '-'}
+                        </td>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a', textAlign: 'right' }}>
+                          {log.hours.toFixed(1)}
+                        </td>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0ea5e9', fontWeight: 700, textAlign: 'right' }}>
+                          {log.hours.toFixed(1)}
+                        </td>
+                        <td style={{ padding: '0.75rem', textAlign: 'center' }}>
+                          <button
+                            onClick={() => handleDeleteEntry(log.id)}
+                            style={{
+                              padding: '0.25rem 0.75rem',
+                              borderRadius: '6px',
+                              border: '1px solid #fca5a5',
+                              background: '#fef2f2',
+                              color: '#dc2626',
+                              fontSize: '0.75rem',
+                              fontWeight: 600,
+                              cursor: 'pointer'
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Compact Format */}
+          {logbookFormat === 'compact' && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+              {loading ? (
+                <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8', gridColumn: '1 / -1' }}>
+                  Loading flight logs...
+                </div>
+              ) : flightLogs.length === 0 ? (
+                <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8', gridColumn: '1 / -1' }}>
+                  No flight entries yet. Click "Add Flight Entry" to get started.
+                </div>
+              ) : (
+                flightLogs.map((log) => (
+                  <div key={log.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '1rem', border: '1px solid #e2e8f0' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>{log.date}</div>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0f172a' }}>{log.aircraftType}</div>
+                      </div>
+                      <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0ea5e9' }}>{log.hours.toFixed(1)}h</div>
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
+                      {log.registration || '-'} • {log.route || '-'}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                      {log.category || '-'}
+                    </div>
+                    <button
+                      onClick={() => handleDeleteEntry(log.id)}
+                      style={{
+                        padding: '0.25rem 0.75rem',
+                        borderRadius: '6px',
+                        border: '1px solid #fca5a5',
+                        background: '#fef2f2',
+                        color: '#dc2626',
+                        fontSize: '0.7rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        width: '100%'
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* Detailed Format */}
+          {logbookFormat === 'detailed' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {loading ? (
+                <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                  Loading flight logs...
+                </div>
+              ) : flightLogs.length === 0 ? (
+                <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                  No flight entries yet. Click "Add Flight Entry" to get started.
+                </div>
+              ) : (
+                flightLogs.map((log) => (
+                  <div key={log.id} style={{ background: '#f8fafc', borderRadius: '12px', padding: '1.5rem', border: '1px solid #e2e8f0' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                      <div>
+                        <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.25rem' }}>{log.date}</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a' }}>{log.aircraftType}</div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0ea5e9' }}>{log.hours.toFixed(1)}h</div>
+                        <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600, textTransform: 'uppercase' }}>{log.category || '-'}</div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                      <div>
+                        <div style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Registration</div>
+                        <div style={{ fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Route</div>
+                        <div style={{ fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>{log.route || '-'}</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Description</div>
+                        <div style={{ fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>{log.remarks || '-'}</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteEntry(log.id)}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        borderRadius: '6px',
+                        border: '1px solid #fca5a5',
+                        background: '#fef2f2',
+                        color: '#dc2626',
+                        fontSize: '0.875rem',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Delete Entry
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* Timeline Format */}
+          {logbookFormat === 'timeline' && (
+            <div style={{ position: 'relative', paddingLeft: '2rem' }}>
+              <div style={{ position: 'absolute', left: '0.5rem', top: '0', bottom: '0', width: '2px', background: '#e2e8f0' }}>
+                {flightLogs.map((log, index) => (
+                  <div key={log.id} style={{ position: 'absolute', left: '-4px', top: `${index * 140}px`, width: '10px', height: '10px', borderRadius: '50%', background: '#0ea5e9', border: '2px solid #fff', boxShadow: '0 0 0 2px #0ea5e9' }} />
+                ))}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 {loading ? (
-                  <tr>
-                    <td colSpan={9} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
-                      Loading flight logs...
-                    </td>
-                  </tr>
+                  <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                    Loading flight logs...
+                  </div>
                 ) : flightLogs.length === 0 ? (
-                  <tr>
-                    <td colSpan={9} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
-                      No flight entries yet. Click "Add Flight Entry" to get started.
-                    </td>
-                  </tr>
+                  <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                    No flight entries yet. Click "Add Flight Entry" to get started.
+                  </div>
                 ) : (
                   flightLogs.map((log) => (
-                    <tr key={log.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                      <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>
-                        {log.date}
-                      </td>
-                      <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0ea5e9', fontWeight: 600 }}>
-                        {log.aircraftType}
-                      </td>
-                      <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#64748b' }}>
-                        {log.registration || '-'}
-                      </td>
-                      <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a' }}>
-                        {log.route || '-'}
-                      </td>
-                      <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#10b981', fontWeight: 600, textTransform: 'uppercase' }}>
-                        {log.category || '-'}
-                      </td>
-                      <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#64748b' }}>
-                        {log.remarks || '-'}
-                      </td>
-                      <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a', textAlign: 'right' }}>
-                        {log.hours.toFixed(1)}
-                      </td>
-                      <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0ea5e9', fontWeight: 700, textAlign: 'right' }}>
-                        {log.hours.toFixed(1)}
-                      </td>
-                      <td style={{ padding: '0.75rem', textAlign: 'center' }}>
+                    <div key={log.id} style={{ background: '#f8fafc', borderRadius: '12px', padding: '1rem', border: '1px solid #e2e8f0', position: 'relative' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>{log.date}</div>
+                          <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>{log.aircraftType}</div>
+                        </div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0ea5e9' }}>{log.hours.toFixed(1)}h</div>
+                      </div>
+                      <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.5rem' }}>
+                        {log.registration || '-'} • {log.route || '-'}
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600, textTransform: 'uppercase' }}>
+                          {log.category || '-'}
+                        </div>
                         <button
                           onClick={() => handleDeleteEntry(log.id)}
                           style={{
@@ -499,13 +799,13 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                         >
                           Delete
                         </button>
-                      </td>
-                    </tr>
+                      </div>
+                    </div>
                   ))
                 )}
-              </tbody>
-            </table>
-          </div>
+              </div>
+            </div>
+          )}
 
           {/* Total Hours Summary */}
           {flightLogs.length > 0 && (

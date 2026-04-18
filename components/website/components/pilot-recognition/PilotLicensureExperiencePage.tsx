@@ -202,6 +202,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   // Pilot Interests State
   const [aviationPathwaysInterests, setAviationPathwaysInterests] = useState<string[]>([]);
   const [pilotJobPositionsInterests, setPilotJobPositionsInterests] = useState<string[]>([]);
+  const [programInterests, setProgramInterests] = useState<string[]>([]);
+  const [insightInterests, setInsightInterests] = useState<string[]>([]);
   
   // Form State
   const [isSaving, setIsSaving] = useState(false);
@@ -236,7 +238,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         // First, fetch from profiles table (account creation data)
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .select('full_name, display_name, phone, country, date_of_birth, email, onboarding_responses')
+          .select('full_name, display_name, phone, country, date_of_birth, email, onboarding_responses, nationality, flight_school_address, license_id, program_interests, pathway_interests, insight_interests')
           .eq('id', userId)
           .single();
 
@@ -244,9 +246,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         let initialData: any = {};
         
         if (profileError) {
-          console.log('No profile data found:', profileError);
+          console.log('❌ No profile data found:', profileError);
         } else if (profileData) {
-          console.log('Profile data loaded:', profileData);
+          console.log('✅ Profile data loaded:', profileData);
+          console.log('✅ Profile nationality:', profileData.nationality);
+          console.log('✅ Profile country:', profileData.country);
+          console.log('✅ Profile flight_school_address:', profileData.flight_school_address);
+          console.log('✅ Profile phone:', profileData.phone);
+          console.log('✅ Profile license_id:', profileData.license_id);
           
           // Extract from onboarding_responses JSONB as fallback
           const onboarding = profileData.onboarding_responses || {};
@@ -258,7 +265,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             fullLegalName: hasValue(profileData.full_name) ? profileData.full_name : (hasValue(onboarding.full_name) ? onboarding.full_name : ''),
             contactNumber: hasValue(profileData.phone) ? profileData.phone : (hasValue(onboarding.phone) ? onboarding.phone : ''),
             residingCountry: hasValue(profileData.country) ? profileData.country : (hasValue(onboarding.country) ? onboarding.country : ''),
-            dateOfBirth: hasValue(profileData.date_of_birth) ? profileData.date_of_birth : (hasValue(onboarding.date_of_birth) ? onboarding.date_of_birth : '')
+            dateOfBirth: hasValue(profileData.date_of_birth) ? profileData.date_of_birth : (hasValue(onboarding.date_of_birth) ? onboarding.date_of_birth : ''),
+            nationality: hasValue(profileData.nationality) ? profileData.nationality : (hasValue(onboarding.nationality) ? onboarding.nationality : ''),
+            flightSchoolAddress: hasValue(profileData.flight_school_address) ? profileData.flight_school_address : (hasValue(onboarding.flight_school_address) ? onboarding.flight_school_address : ''),
+            licenseNumber: hasValue(profileData.license_id) ? profileData.license_id : (hasValue(onboarding.license_id) ? onboarding.license_id : '')
           };
           
           // Parse display_name into first/last name (check for empty string)
@@ -316,7 +326,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         }
 
         if (error) {
-          console.log('No existing licensure data found:', error);
+          console.log('❌ No existing licensure data found:', error);
+          console.log('⚠️ Will use profile data as fallback');
           // Only use profile data as fallback if we haven't already set the values
           if (!fullLegalName) setFullLegalName(initialData.fullLegalName || '');
           if (!firstName) setFirstName(initialData.firstName || userProfile?.firstName || '');
@@ -325,23 +336,32 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           if (!residingCountry) setResidingCountry(initialData.residingCountry || '');
           if (!dateOfBirth) setDateOfBirth(initialData.dateOfBirth || '');
         } else if (data) {
-          console.log('Licensure data loaded:', data);
+          console.log('✅ Licensure data loaded:', data);
+          console.log('✅ Licensure nationality:', data.nationality);
+          console.log('✅ Licensure residing_country:', data.residing_country);
+          console.log('✅ Licensure flight_school_address:', data.flight_school_address);
+          console.log('✅ Licensure contact_number:', data.contact_number);
+          console.log('✅ Licensure license_number:', data.license_number);
+          console.log('✅ Licensure aviation_pathways_interests:', data.aviation_pathways_interests);
+          console.log('✅ Licensure pilot_job_positions_interests:', data.pilot_job_positions_interests);
+          console.log('✅ Licensure program_interests:', data.program_interests);
+          console.log('✅ Licensure insight_interests:', data.insight_interests);
           // Personal Info - use licensure data if available, fallback to profiles
           setFirstName(data.first_name || initialData.firstName || userProfile?.firstName || '');
           setMiddleName(data.middle_name || '');
           setLastName(data.last_name || initialData.lastName || userProfile?.lastName || '');
           setFullLegalName(data.full_legal_name || initialData.fullLegalName || '');
           setDateOfBirth(data.date_of_birth || initialData.dateOfBirth || '');
-          setNationality(data.nationality || '');
+          setNationality(data.nationality || initialData.nationality || '');
           setResidingCountry(data.residing_country || initialData.residingCountry || '');
           setContactNumber(data.contact_number || initialData.contactNumber || '');
-          setFlightSchoolAddress(data.flight_school_address || '');
+          setFlightSchoolAddress(data.flight_school_address || initialData.flightSchoolAddress || '');
           setLanguages(data.languages || '');
           setEnglishProficiency(data.english_proficiency || '');
 
           // License Info
           setCurrentLicenses(data.current_license || []);
-          setLicenseNumber(data.license_number || '');
+          setLicenseNumber(data.license_number || initialData.licenseNumber || '');
           setLicenseExpiry(data.license_expiry || '');
           setLicenseCountryOfIssue(data.license_country_of_issue || '');
 
@@ -369,16 +389,26 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           setOtherSkills(data.other_skills || '');
           setAviationPathwaysInterests(data.aviation_pathways_interests || []);
           setPilotJobPositionsInterests(data.pilot_job_positions_interests || []);
+          setProgramInterests(data.program_interests || initialData.programInterests || []);
+          setInsightInterests(data.insight_interests || initialData.insightInterests || []);
         }
         
         // Apply all profile data fallbacks if no licensure data was found
         if (!data) {
+          console.log('⚠️ No licensure data, using profile fallbacks');
+          console.log('⚠️ initialData:', initialData);
           setFullLegalName(initialData.fullLegalName || '');
           setFirstName(initialData.firstName || userProfile?.firstName || '');
           setLastName(initialData.lastName || userProfile?.lastName || '');
           setContactNumber(initialData.contactNumber || '');
           setResidingCountry(initialData.residingCountry || '');
           setDateOfBirth(initialData.dateOfBirth || '');
+          setNationality(initialData.nationality || '');
+          setFlightSchoolAddress(initialData.flightSchoolAddress || '');
+          setLicenseNumber(initialData.licenseNumber || '');
+          setProgramInterests(initialData.programInterests || []);
+          setAviationPathwaysInterests(initialData.pathwayInterests || []);
+          setInsightInterests(initialData.insightInterests || []);
         }
         
         // Mark data as loaded - the separate effect will handle hiding the loader after min time

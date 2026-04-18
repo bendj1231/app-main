@@ -642,6 +642,37 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                     />
                                                 </div>
                                             </div>
+
+                                            <div className="space-y-2.5 group">
+                                                <label className="text-sm font-semibold text-gray-700 mb-2 block">English Proficiency Level</label>
+                                                <div className="relative">
+                                                    <select
+                                                        className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                        value={englishProficiencyLevel}
+                                                        onChange={(e) => setEnglishProficiencyLevel(e.target.value)}
+                                                    >
+                                                        <option value="">Select English Proficiency</option>
+                                                        <option value="Level 1 (Elementary)">Level 1 (Elementary)</option>
+                                                        <option value="Level 2 (Pre-Intermediate)">Level 2 (Pre-Intermediate)</option>
+                                                        <option value="Level 3 (Intermediate)">Level 3 (Intermediate)</option>
+                                                        <option value="Level 4 (Upper Intermediate)">Level 4 (Upper Intermediate)</option>
+                                                        <option value="Level 5 (Advanced)">Level 5 (Advanced)</option>
+                                                        <option value="Level 6 (Expert)">Level 6 (Expert)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2.5 group">
+                                                <label className="text-sm font-semibold text-gray-700 mb-2 block">Last Flown Date</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type="date"
+                                                        value={lastFlown}
+                                                        onChange={(e) => setLastFlown(e.target.value)}
+                                                        className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div className="space-y-4">
@@ -1090,50 +1121,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                         <div className="h-px w-full bg-slate-100/80" />
 
-                                        {/* Foundation Program Notice */}
-                                        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mt-6">
-                                            <p className="text-sm font-semibold text-amber-800">
-                                                This section will be updated to your profile once enrolled in the foundation program
-                                            </p>
-                                        </div>
-
-                                        <div className="h-px w-full bg-slate-100/80" />
-
                                         {/* ATLAS Resume Fields */}
                                         <div className="relative bg-gradient-to-r from-slate-50/50 to-blue-50/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                                <div className="space-y-2.5 group">
-                                                    <label className="text-sm font-semibold text-gray-700 mb-2 block">English Proficiency Level</label>
-                                                    <div className="relative">
-                                                        <select
-                                                            disabled
-                                                            className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
-                                                            value={englishProficiencyLevel}
-                                                            onChange={(e) => setEnglishProficiencyLevel(e.target.value)}
-                                                        >
-                                                            <option value="">Select English Proficiency</option>
-                                                            <option value="Level 1 (Elementary)">Level 1 (Elementary)</option>
-                                                            <option value="Level 2 (Pre-Intermediate)">Level 2 (Pre-Intermediate)</option>
-                                                            <option value="Level 3 (Intermediate)">Level 3 (Intermediate)</option>
-                                                            <option value="Level 4 (Upper Intermediate)">Level 4 (Upper Intermediate)</option>
-                                                            <option value="Level 5 (Advanced)">Level 5 (Advanced)</option>
-                                                            <option value="Level 6 (Expert)">Level 6 (Expert)</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div className="space-y-2.5 group">
-                                                    <label className="text-sm font-semibold text-gray-700 mb-2 block">Last Flown Date</label>
-                                                    <div className="relative">
-                                                        <input
-                                                            type="date"
-                                                            disabled
-                                                            value={lastFlown}
-                                                            onChange={(e) => setLastFlown(e.target.value)}
-                                                            className="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
-                                                        />
-                                                    </div>
-                                                </div>
+                                                {/* English Proficiency Level and Last Flown Date moved to main section */}
                                             </div>
                                         </div>
                                     </>
