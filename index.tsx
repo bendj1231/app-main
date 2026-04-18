@@ -916,6 +916,9 @@ const App = () => {
         {currentPage === 'foundational-platform' && showDirectPlatformLoading && (
           <DirectPlatformLoadingScreen />
         )}
+        {currentPage === 'foundational-platform' && !showDirectPlatformLoading && (
+          <PlatformFoundationalProgramPage onNavigate={navigateTo} />
+        )}
       </div>
 
       {![
