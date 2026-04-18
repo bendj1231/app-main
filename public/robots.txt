@@ -1,0 +1,9 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://pilotrecognition.com/sitemap.xml
+
+# Disallow callback route (no need to index OAuth callback)
+Disallow: /callback
