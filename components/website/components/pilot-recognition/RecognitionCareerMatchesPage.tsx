@@ -58,17 +58,24 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
 
                 {/* Section 2: Recommended Pathways (Static Mock for SEO) */}
                 <div className="mb-16">
-                    <div className="text-center max-w-4xl mx-auto">
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                    <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
+                        <p style={{ margin: 0, fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>
                             Pathways to Partnered Cadet Programs
                         </p>
-                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
+                        <h2 style={{ 
+                            margin: '0.5rem 0 0', 
+                            fontSize: '3rem', 
+                            fontWeight: 'normal', 
+                            fontFamily: 'Georgia, serif', 
+                            color: '#0f172a', 
+                            letterSpacing: '-0.02em' 
+                        }}>
                             Recommended Pathways
                         </h2>
-                        <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                        <p style={{ margin: '0.5rem 0 0', color: '#475569', fontSize: '1rem' }}>
                             Explore career pathways matched to your profile
                         </p>
-                        <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                        <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.875rem' }}>
                             Discover cadet programs, airline partnerships, and career progression opportunities tailored to your experience level
                         </p>
                     </div>
