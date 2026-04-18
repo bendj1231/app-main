@@ -95,9 +95,6 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                         <p style={{ margin: '0.5rem 0 0', color: '#475569', fontSize: '1rem' }}>
                             Explore career pathways matched to your profile
                         </p>
-                        <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.875rem' }}>
-                            Discover cadet programs, airline partnerships, and career progression opportunities tailored to your experience level
-                        </p>
                     </div>
 
                     {/* Filters and Score */}
