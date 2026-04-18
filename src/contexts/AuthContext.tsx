@@ -551,7 +551,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('🔴 Logout function called');
         setExplicitLogout(true); // Set flag to prevent re-authentication
         try {
-            console.log('🔴 Clearing all local state first...');
+            console.log('🔴 Signing out from Supabase first...');
+            // Sign out from Supabase FIRST to invalidate the session
+            await supabase.auth.signOut().catch(err => {
+                console.log('⚠️ Supabase signOut failed:', err);
+            });
+            console.log('✅ Supabase signOut completed');
+
+            console.log('🔴 Clearing all local state...');
             // Clear all local state immediately to prevent any interference
             setCurrentUser(null);
             setUserProfile(null);
@@ -575,13 +582,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }
             });
             console.log('✅ localStorage cleared');
-
-            console.log('🔴 Signing out from Supabase...');
-            // Sign out from Supabase properly
-            await supabase.auth.signOut().catch(err => {
-                console.log('⚠️ Supabase signOut failed:', err);
-            });
-            console.log('✅ Supabase signOut completed');
 
             console.log('🔴 Signing out from Firebase...');
             // Also sign out from Firebase to prevent interference
