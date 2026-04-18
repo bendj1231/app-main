@@ -8,10 +8,11 @@ if (!supabaseAnonKey) {
   console.error('❌ VITE_SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY is not set in environment variables');
 }
 
-// Create a single shared Supabase client instance with localStorage persistence
+// Create a single shared Supabase client instance with sessionStorage persistence
+// sessionStorage is cleared when tab closes, preventing logout persistence issues
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: localStorage,
+    storage: sessionStorage,
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
