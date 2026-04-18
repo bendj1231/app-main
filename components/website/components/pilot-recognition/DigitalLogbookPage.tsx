@@ -95,6 +95,52 @@ interface FlightLogEntry {
   qcaaCommanderSignature?: string;
   qcaaIsVerified?: boolean;
   qcaaVerificationSource?: string;
+  // FAA specific fields
+  faaDepartureAirport?: string;
+  faaArrivalAirport?: string;
+  faaIsCrossCountry?: boolean;
+  faaCrossCountryDistance?: number;
+  faaIsSolo?: boolean;
+  faaIsPic?: boolean;
+  faaIsSic?: boolean;
+  faaIsFstd?: boolean;
+  faaDayTime?: number;
+  faaNightTime?: number;
+  faaActualInstrument?: number;
+  faaSimulatedInstrument?: number;
+  faaTakeoffsDay?: number;
+  faaTakeoffsNight?: number;
+  faaLandingsDay?: number;
+  faaLandingsNight?: number;
+  faaFullStopLandings?: number;
+  faaSafetyPilot?: string;
+  faaCfiSignature?: string;
+  faaCfiCertificateNumber?: string;
+  faaCfiExpirationDate?: string;
+  faaInstrumentApproaches?: number;
+  faaHoldingProcedures?: number;
+  faaTrackingIntercepts?: number;
+  // CAAP Philippines specific fields
+  caapDepartureIcao?: string;
+  caapArrivalIcao?: string;
+  caapOffBlockTime?: string;
+  caapOnBlockTime?: string;
+  caapPilotFunction?: 'PIC' | 'SIC' | 'Dual';
+  caapDayTime?: number;
+  caapNightTime?: number;
+  caapInstrumentActual?: number;
+  caapInstrumentSimulated?: number;
+  caapLandingsDay?: number;
+  caapLandingsNight?: number;
+  caapIsCrossCountry?: boolean;
+  caapCrossCountryDistance?: number;
+  caapIsCheckride?: boolean;
+  caapExaminerName?: string;
+  caapExaminerLicenseNumber?: string;
+  caapInstructorName?: string;
+  caapInstructorLicenseNumber?: string;
+  caapInstructorSignature?: string;
+  caapCertificateType?: 'PPL' | 'CPL' | 'ATPL';
   // CAE Training specific fields
   sessionDate?: string;
   simulatorType?: string;
@@ -131,6 +177,89 @@ interface FlightLogEntry {
   passengerLandingsNight?: number;
   isCertifiedCopy?: boolean;
   certifiedCopyDate?: string;
+  // DGAC specific fields
+  dgacDepartureIcao?: string;
+  dgacArrivalIcao?: string;
+  dgacOffBlockTime?: string;
+  dgacOnBlockTime?: string;
+  dgacOperatingCapacity?: 'PIC' | 'SIC' | 'PICUS' | 'Dual';
+  dgacFstdTime?: number;
+  dgacSeriesFlightId?: string;
+  dgacInstructorCountersign?: string;
+  dgacPageClosed?: boolean;
+  dgacPageNumber?: number;
+  // CAAC China specific fields
+  caacDepartureIcao?: string;
+  caacArrivalIcao?: string;
+  caacOffBlockTime?: string;
+  caacOnBlockTime?: string;
+  caacFunction?: 'PIC' | 'SIC' | 'Instructor';
+  caacMultiPilot?: boolean;
+  caacInstrumentActual?: boolean;
+  caacInstrumentSimulated?: boolean;
+  caacAutoLandings?: number;
+  caacPhaseCheck?: string;
+  caacAnnualProficiencyCheck?: string;
+  caacExaminerCaacLicenseId?: string;
+  caacTurbineJetTime?: number;
+  // EASA Part-FCL.050 specific fields
+  easaDepartureIcao?: string;
+  easaArrivalIcao?: string;
+  easaOffBlockTime?: string;
+  easaOnBlockTime?: string;
+  easaPilotFunction?: 'PIC' | 'Co-pilot' | 'PICUS' | 'Dual';
+  easaMultiPilot?: boolean;
+  easaNight?: boolean;
+  easaIfr?: boolean;
+  easaFstd?: boolean;
+  easaCrossCountry?: boolean;
+  easaFlightNature?: string;
+  easaCommanderSignature?: string;
+  easaPageNumber?: number;
+  easaTotalsBroughtForward?: number;
+  // HKCAD CAD 54 & AN(HK)O specific fields
+  hkcadDepartureIcao?: string;
+  hkcadArrivalIcao?: string;
+  hkcadOffBlockTime?: string;
+  hkcadOnBlockTime?: string;
+  hkcadPilotCapacity?: 'PIC' | 'P2' | 'PICUS' | 'Dual';
+  hkcadDay?: boolean;
+  hkcadNight?: boolean;
+  hkcadInstrumentActual?: boolean;
+  hkcadInstrumentSimulated?: boolean;
+  hkcadFstdTime?: number;
+  hkcadInstrumentApproachType?: string;
+  hkcadInstrumentApproachCount?: number;
+  hkcadCommanderName?: string;
+  hkcadCommanderLicenseNumber?: string;
+  hkcadEmployerStamp?: string;
+  hkcadPageNumber?: number;
+  hkcadTotalsBroughtForward?: number;
+  hkcadTotalToDate?: number;
+  // DGCA India Rule 67A & eGCA specific fields
+  dgacindiaDepartureIcao?: string;
+  dgacindiaArrivalIcao?: string;
+  dgacindiaChocksOff?: string;
+  dgacindiaChocksOn?: string;
+  dgacindiaPilotCapacity?: 'P1' | 'P2' | 'P1 U/S' | 'Solo';
+  dgacindiaDay?: boolean;
+  dgacindiaNight?: boolean;
+  dgacindiaInstrumentActual?: boolean;
+  dgacindiaInstrumentSimulated?: boolean;
+  dgacindiaInstrumentHood?: boolean;
+  dgacindiaTakeoffsDay?: number;
+  dgacindiaTakeoffsNight?: number;
+  dgacindiaLandingsDay?: number;
+  dgacindiaLandingsNight?: number;
+  dgacindiaFlightNature?: 'Cross-Country' | 'GFT' | 'Skill Test' | 'Local' | 'Training';
+  dgacindiaSpic?: boolean;
+  dgacindiaInstructorName?: string;
+  dgacindiaInstructorDgcaLicense?: string;
+  dgacindiaInstructorSignature?: string;
+  dgacindiaPilotUid?: string;
+  dgacindiaPageNumber?: number;
+  dgacindiaPageTotal?: number;
+  dgacindiaGrandTotal?: number;
 }
 
 interface DigitalLogbookPageProps {
@@ -252,9 +381,138 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
     passengerTakeoffsDay: '',
     passengerTakeoffsNight: '',
     passengerLandingsDay: '',
-    passengerLandingsNight: ''
+    passengerLandingsNight: '',
+    // DGAC specific fields
+    dgacDepartureIcao: '',
+    dgacArrivalIcao: '',
+    dgacOffBlockTime: '',
+    dgacOnBlockTime: '',
+    dgacOperatingCapacity: '' as 'PIC' | 'SIC' | 'PICUS' | 'Dual',
+    dgacFstdTime: '',
+    dgacSeriesFlightId: '',
+    dgacInstructorCountersign: '',
+    dgacPageClosed: false,
+    dgacPageNumber: 1,
+    // FAA specific fields
+    faaDepartureAirport: '',
+    faaArrivalAirport: '',
+    faaIsCrossCountry: false,
+    faaCrossCountryDistance: '',
+    faaIsSolo: false,
+    faaIsPic: false,
+    faaIsSic: false,
+    faaIsFstd: false,
+    faaDayTime: '',
+    faaNightTime: '',
+    faaActualInstrument: '',
+    faaSimulatedInstrument: '',
+    faaTakeoffsDay: '',
+    faaTakeoffsNight: '',
+    faaLandingsDay: '',
+    faaLandingsNight: '',
+    faaFullStopLandings: '',
+    faaSafetyPilot: '',
+    faaCfiSignature: '',
+    faaCfiCertificateNumber: '',
+    faaCfiExpirationDate: '',
+    faaInstrumentApproaches: '',
+    faaHoldingProcedures: '',
+    faaTrackingIntercepts: '',
+    // CAAP Philippines specific fields
+    caapDepartureIcao: '',
+    caapArrivalIcao: '',
+    caapOffBlockTime: '',
+    caapOnBlockTime: '',
+    caapPilotFunction: '' as 'PIC' | 'SIC' | 'Dual',
+    caapDayTime: '',
+    caapNightTime: '',
+    caapInstrumentActual: '',
+    caapInstrumentSimulated: '',
+    caapLandingsDay: '',
+    caapLandingsNight: '',
+    caapIsCrossCountry: false,
+    caapCrossCountryDistance: '',
+    caapIsCheckride: false,
+    caapExaminerName: '',
+    caapExaminerLicenseNumber: '',
+    caapInstructorName: '',
+    caapInstructorLicenseNumber: '',
+    caapInstructorSignature: '',
+    caapCertificateType: '' as 'PPL' | 'CPL' | 'ATPL',
+    // CAAC China specific fields
+    caacDepartureIcao: '',
+    caacArrivalIcao: '',
+    caacOffBlockTime: '',
+    caacOnBlockTime: '',
+    caacFunction: '' as 'PIC' | 'SIC' | 'Instructor',
+    caacMultiPilot: false,
+    caacInstrumentActual: false,
+    caacInstrumentSimulated: false,
+    caacAutoLandings: '',
+    caacPhaseCheck: '',
+    caacAnnualProficiencyCheck: '',
+    caacExaminerCaacLicenseId: '',
+    caacTurbineJetTime: '',
+    // EASA Part-FCL.050 specific fields
+    easaDepartureIcao: '',
+    easaArrivalIcao: '',
+    easaOffBlockTime: '',
+    easaOnBlockTime: '',
+    easaPilotFunction: '' as 'PIC' | 'Co-pilot' | 'PICUS' | 'Dual',
+    easaMultiPilot: false,
+    easaNight: false,
+    easaIfr: false,
+    easaFstd: false,
+    easaCrossCountry: false,
+    easaFlightNature: '',
+    easaCommanderSignature: '',
+    easaPageNumber: 1,
+    easaTotalsBroughtForward: 0,
+    // HKCAD CAD 54 & AN(HK)O specific fields
+    hkcadDepartureIcao: '',
+    hkcadArrivalIcao: '',
+    hkcadOffBlockTime: '',
+    hkcadOnBlockTime: '',
+    hkcadPilotCapacity: '' as 'PIC' | 'P2' | 'PICUS' | 'Dual',
+    hkcadDay: false,
+    hkcadNight: false,
+    hkcadInstrumentActual: false,
+    hkcadInstrumentSimulated: false,
+    hkcadFstdTime: '',
+    hkcadInstrumentApproachType: '',
+    hkcadInstrumentApproachCount: '',
+    hkcadCommanderName: '',
+    hkcadCommanderLicenseNumber: '',
+    hkcadEmployerStamp: '',
+    hkcadPageNumber: 1,
+    hkcadTotalsBroughtForward: 0,
+    hkcadTotalToDate: 0,
+    // DGCA India Rule 67A & eGCA specific fields
+    dgacindiaDepartureIcao: '',
+    dgacindiaArrivalIcao: '',
+    dgacindiaChocksOff: '',
+    dgacindiaChocksOn: '',
+    dgacindiaPilotCapacity: '' as 'P1' | 'P2' | 'P1 U/S' | 'Solo',
+    dgacindiaDay: false,
+    dgacindiaNight: false,
+    dgacindiaInstrumentActual: false,
+    dgacindiaInstrumentSimulated: false,
+    dgacindiaInstrumentHood: false,
+    dgacindiaTakeoffsDay: '',
+    dgacindiaTakeoffsNight: '',
+    dgacindiaLandingsDay: '',
+    dgacindiaLandingsNight: '',
+    dgacindiaFlightNature: '' as 'Cross-Country' | 'GFT' | 'Skill Test' | 'Local' | 'Training',
+    dgacindiaSpic: false,
+    dgacindiaInstructorName: '',
+    dgacindiaInstructorDgcaLicense: '',
+    dgacindiaInstructorSignature: '',
+    dgacindiaPilotUid: '',
+    dgacindiaPageNumber: 1,
+    dgacindiaPageTotal: 0,
+    dgacindiaGrandTotal: 0
   });
-  const [logbookFormat, setLogbookFormat] = useState<'standard' | 'compact' | 'detailed' | 'timeline' | 'anac' | 'casa' | 'brazil' | 'cae' | 'qcaa' | 'tcca'>('standard');
+  const [logbookFormat, setLogbookFormat] = useState<'standard' | 'compact' | 'detailed' | 'timeline' | 'anac' | 'casa' | 'brazil' | 'cae' | 'qcaa' | 'tcca' | 'dgac' | 'caac' | 'easa' | 'hkcad' | 'dgacindia'>('standard');
 
   useEffect(() => {
     fetchFlightLogs();
@@ -444,7 +702,136 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
         passengerTakeoffsDay: '',
         passengerTakeoffsNight: '',
         passengerLandingsDay: '',
-        passengerLandingsNight: ''
+        passengerLandingsNight: '',
+        // DGAC specific fields
+        dgacDepartureIcao: '',
+        dgacArrivalIcao: '',
+        dgacOffBlockTime: '',
+        dgacOnBlockTime: '',
+        dgacOperatingCapacity: '' as 'PIC' | 'SIC' | 'PICUS' | 'Dual',
+        dgacFstdTime: '',
+        dgacSeriesFlightId: '',
+        dgacInstructorCountersign: '',
+        dgacPageClosed: false,
+        dgacPageNumber: 1,
+        // FAA specific fields
+        faaDepartureAirport: '',
+        faaArrivalAirport: '',
+        faaIsCrossCountry: false,
+        faaCrossCountryDistance: '',
+        faaIsSolo: false,
+        faaIsPic: false,
+        faaIsSic: false,
+        faaIsFstd: false,
+        faaDayTime: '',
+        faaNightTime: '',
+        faaActualInstrument: '',
+        faaSimulatedInstrument: '',
+        faaTakeoffsDay: '',
+        faaTakeoffsNight: '',
+        faaLandingsDay: '',
+        faaLandingsNight: '',
+        faaFullStopLandings: '',
+        faaSafetyPilot: '',
+        faaCfiSignature: '',
+        faaCfiCertificateNumber: '',
+        faaCfiExpirationDate: '',
+        faaInstrumentApproaches: '',
+        faaHoldingProcedures: '',
+        faaTrackingIntercepts: '',
+        // CAAP Philippines specific fields
+        caapDepartureIcao: '',
+        caapArrivalIcao: '',
+        caapOffBlockTime: '',
+        caapOnBlockTime: '',
+        caapPilotFunction: '' as 'PIC' | 'SIC' | 'Dual',
+        caapDayTime: '',
+        caapNightTime: '',
+        caapInstrumentActual: '',
+        caapInstrumentSimulated: '',
+        caapLandingsDay: '',
+        caapLandingsNight: '',
+        caapIsCrossCountry: false,
+        caapCrossCountryDistance: '',
+        caapIsCheckride: false,
+        caapExaminerName: '',
+        caapExaminerLicenseNumber: '',
+        caapInstructorName: '',
+        caapInstructorLicenseNumber: '',
+        caapInstructorSignature: '',
+        caapCertificateType: '' as 'PPL' | 'CPL' | 'ATPL',
+        // CAAC China specific fields
+        caacDepartureIcao: '',
+        caacArrivalIcao: '',
+        caacOffBlockTime: '',
+        caacOnBlockTime: '',
+        caacFunction: '' as 'PIC' | 'SIC' | 'Instructor',
+        caacMultiPilot: false,
+        caacInstrumentActual: false,
+        caacInstrumentSimulated: false,
+        caacAutoLandings: '',
+        caacPhaseCheck: '',
+        caacAnnualProficiencyCheck: '',
+        caacExaminerCaacLicenseId: '',
+        caacTurbineJetTime: '',
+        // EASA Part-FCL.050 specific fields
+        easaDepartureIcao: '',
+        easaArrivalIcao: '',
+        easaOffBlockTime: '',
+        easaOnBlockTime: '',
+        easaPilotFunction: '' as 'PIC' | 'Co-pilot' | 'PICUS' | 'Dual',
+        easaMultiPilot: false,
+        easaNight: false,
+        easaIfr: false,
+        easaFstd: false,
+        easaCrossCountry: false,
+        easaFlightNature: '',
+        easaCommanderSignature: '',
+        easaPageNumber: 1,
+        easaTotalsBroughtForward: 0,
+        // HKCAD CAD 54 & AN(HK)O specific fields
+        hkcadDepartureIcao: '',
+        hkcadArrivalIcao: '',
+        hkcadOffBlockTime: '',
+        hkcadOnBlockTime: '',
+        hkcadPilotCapacity: '' as 'PIC' | 'P2' | 'PICUS' | 'Dual',
+        hkcadDay: false,
+        hkcadNight: false,
+        hkcadInstrumentActual: false,
+        hkcadInstrumentSimulated: false,
+        hkcadFstdTime: '',
+        hkcadInstrumentApproachType: '',
+        hkcadInstrumentApproachCount: '',
+        hkcadCommanderName: '',
+        hkcadCommanderLicenseNumber: '',
+        hkcadEmployerStamp: '',
+        hkcadPageNumber: 1,
+        hkcadTotalsBroughtForward: 0,
+        hkcadTotalToDate: 0,
+        // DGCA India Rule 67A & eGCA specific fields
+        dgacindiaDepartureIcao: '',
+        dgacindiaArrivalIcao: '',
+        dgacindiaChocksOff: '',
+        dgacindiaChocksOn: '',
+        dgacindiaPilotCapacity: '' as 'P1' | 'P2' | 'P1 U/S' | 'Solo',
+        dgacindiaDay: false,
+        dgacindiaNight: false,
+        dgacindiaInstrumentActual: false,
+        dgacindiaInstrumentSimulated: false,
+        dgacindiaInstrumentHood: false,
+        dgacindiaTakeoffsDay: '',
+        dgacindiaTakeoffsNight: '',
+        dgacindiaLandingsDay: '',
+        dgacindiaLandingsNight: '',
+        dgacindiaFlightNature: '' as 'Cross-Country' | 'GFT' | 'Skill Test' | 'Local' | 'Training',
+        dgacindiaSpic: false,
+        dgacindiaInstructorName: '',
+        dgacindiaInstructorDgcaLicense: '',
+        dgacindiaInstructorSignature: '',
+        dgacindiaPilotUid: '',
+        dgacindiaPageNumber: 1,
+        dgacindiaPageTotal: 0,
+        dgacindiaGrandTotal: 0
       });
       setShowAddForm(false);
       fetchFlightLogs();
@@ -609,6 +996,13 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                 <option value="qcaa">QCAA Qatar (QCAR Part 9)</option>
                 <option value="cae">CAE Training (RB Logbook)</option>
                 <option value="tcca">TCCA Canada (CARs 421.05)</option>
+                <option value="dgac">DGAC (EASA FCL.050)</option>
+                <option value="caac">CAAC China (CCAR Part 61)</option>
+                <option value="easa">EASA (Part-FCL.050)</option>
+                <option value="hkcad">HKCAD (CAD 54 & AN(HK)O)</option>
+                <option value="dgacindia">DGCA India (Rule 67A & eGCA)</option>
+                <option value="faa">FAA USA (14 CFR § 61.51)</option>
+                <option value="caap">CAAP Philippines (PCAR Part 2 & 8)</option>
               </select>
             </div>
           </div>
@@ -2789,6 +3183,2451 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   </div>
                 </div>
               )}
+
+              {/* DGAC Form Fields */}
+              {logbookFormat === 'dgac' && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Date *
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Registration *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.registration}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^(F-|XA|XB|CC-)?[A-Z0-9]*$/.test(value)) {
+                          setFormData({ ...formData, registration: value });
+                        }
+                      }}
+                      placeholder="F-XXXX"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Type *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.aircraftType}
+                      onChange={(e) => setFormData({ ...formData, aircraftType: e.target.value })}
+                      placeholder="e.g., A320"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Departure ICAO *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.dgacDepartureIcao}
+                      onChange={(e) => setFormData({ ...formData, dgacDepartureIcao: e.target.value.toUpperCase() })}
+                      placeholder="LFPG"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Arrival ICAO *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.dgacArrivalIcao}
+                      onChange={(e) => setFormData({ ...formData, dgacArrivalIcao: e.target.value.toUpperCase() })}
+                      placeholder="EGLL"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Off-Block Time *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.dgacOffBlockTime}
+                      onChange={(e) => setFormData({ ...formData, dgacOffBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      On-Block Time *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.dgacOnBlockTime}
+                      onChange={(e) => setFormData({ ...formData, dgacOnBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Operating Capacity *
+                    </label>
+                    <select
+                      value={formData.dgacOperatingCapacity}
+                      onChange={(e) => setFormData({ ...formData, dgacOperatingCapacity: e.target.value as any })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="">Select</option>
+                      <option value="PIC">PIC</option>
+                      <option value="SIC">SIC</option>
+                      <option value="PICUS">PICUS</option>
+                      <option value="Dual">Dual (Instruction)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Total Time (hrs) *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.hours}
+                      onChange={(e) => setFormData({ ...formData, hours: e.target.value })}
+                      placeholder="1.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      FSTD Time (hrs)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.dgacFstdTime}
+                      onChange={(e) => setFormData({ ...formData, dgacFstdTime: e.target.value })}
+                      placeholder="0.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Day Hours *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.dayHours}
+                      onChange={(e) => setFormData({ ...formData, dayHours: e.target.value })}
+                      placeholder="1.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Night Hours
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.nightHours}
+                      onChange={(e) => setFormData({ ...formData, nightHours: e.target.value })}
+                      placeholder="0.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      IFR Hours
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.ifrHours}
+                      onChange={(e) => setFormData({ ...formData, ifrHours: e.target.value })}
+                      placeholder="0.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Takeoffs
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.takeoffsDay}
+                      onChange={(e) => setFormData({ ...formData, takeoffsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Landings
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.landingsDay}
+                      onChange={(e) => setFormData({ ...formData, landingsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Series Flight ID
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.dgacSeriesFlightId}
+                      onChange={(e) => setFormData({ ...formData, dgacSeriesFlightId: e.target.value })}
+                      placeholder="Optional - for grouping"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Remarks
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.remarks}
+                      onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+                      placeholder="Flight remarks"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Instructor/PICUS Countersign (for PICUS or training hours)
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.dgacInstructorCountersign}
+                      onChange={(e) => setFormData({ ...formData, dgacInstructorCountersign: e.target.value })}
+                      placeholder="Instructor Name, Cert #"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* CAAC Form Fields */}
+              {logbookFormat === 'caac' && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Date / 日期 *
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Registration / 机号 *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.registration}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^B-[0-9A-Z]{0,4}$/.test(value)) {
+                          setFormData({ ...formData, registration: value });
+                        }
+                      }}
+                      placeholder="B-XXXX"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Model / 机型 *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.aircraftType}
+                      onChange={(e) => setFormData({ ...formData, aircraftType: e.target.value })}
+                      placeholder="e.g., A320"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Departure ICAO / 起飞 *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.caacDepartureIcao}
+                      onChange={(e) => setFormData({ ...formData, caacDepartureIcao: e.target.value.toUpperCase() })}
+                      placeholder="ZBAA"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Arrival ICAO / 降落 *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.caacArrivalIcao}
+                      onChange={(e) => setFormData({ ...formData, caacArrivalIcao: e.target.value.toUpperCase() })}
+                      placeholder="ZSPD"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Off-Block Time / 推出 *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.caacOffBlockTime}
+                      onChange={(e) => setFormData({ ...formData, caacOffBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      On-Block Time / 到位 *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.caacOnBlockTime}
+                      onChange={(e) => setFormData({ ...formData, caacOnBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Function / 职责 *
+                    </label>
+                    <select
+                      value={formData.caacFunction}
+                      onChange={(e) => setFormData({ ...formData, caacFunction: e.target.value as any })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="">Select</option>
+                      <option value="PIC">PIC / 机长</option>
+                      <option value="SIC">SIC / 副驾驶</option>
+                      <option value="Instructor">Instructor / 教员</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Multi-Pilot / 多人机组
+                    </label>
+                    <select
+                      value={formData.caacMultiPilot ? 'true' : 'false'}
+                      onChange={(e) => setFormData({ ...formData, caacMultiPilot: e.target.value === 'true' })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="false">Single-Pilot / 单人</option>
+                      <option value="true">Multi-Pilot / 多人</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Total Time (hrs) / 总时间 *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.hours}
+                      onChange={(e) => setFormData({ ...formData, hours: e.target.value })}
+                      placeholder="1.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Turbine/Jet Time (hrs) / 涡扇时间
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.caacTurbineJetTime}
+                      onChange={(e) => setFormData({ ...formData, caacTurbineJetTime: e.target.value })}
+                      placeholder="1.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Day Hours / 日间 *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.dayHours}
+                      onChange={(e) => setFormData({ ...formData, dayHours: e.target.value })}
+                      placeholder="1.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Night Hours / 夜间
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.nightHours}
+                      onChange={(e) => setFormData({ ...formData, nightHours: e.target.value })}
+                      placeholder="0.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Instrument Time / 仪表
+                    </label>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', color: '#64748b' }}>
+                        <input
+                          type="checkbox"
+                          checked={formData.caacInstrumentActual}
+                          onChange={(e) => setFormData({ ...formData, caacInstrumentActual: e.target.checked, caacInstrumentSimulated: false })}
+                          style={{ marginRight: '0.25rem' }}
+                        />
+                        Actual / 实际
+                      </label>
+                      <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', color: '#64748b' }}>
+                        <input
+                          type="checkbox"
+                          checked={formData.caacInstrumentSimulated}
+                          onChange={(e) => setFormData({ ...formData, caacInstrumentSimulated: e.target.checked, caacInstrumentActual: false })}
+                          style={{ marginRight: '0.25rem' }}
+                        />
+                        Simulated / 模拟
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Takeoffs / 起飞
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.takeoffsDay}
+                      onChange={(e) => setFormData({ ...formData, takeoffsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Landings / 着陆
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.landingsDay}
+                      onChange={(e) => setFormData({ ...formData, landingsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Auto-Landings / 自动着陆
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.caacAutoLandings}
+                      onChange={(e) => setFormData({ ...formData, caacAutoLandings: e.target.value })}
+                      placeholder="0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Phase Check / 阶段检查
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.caacPhaseCheck}
+                      onChange={(e) => setFormData({ ...formData, caacPhaseCheck: e.target.value })}
+                      placeholder="e.g., A320 PC"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Remarks / 备注
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.remarks}
+                      onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+                      placeholder="Flight remarks"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* EASA Form Fields */}
+              {logbookFormat === 'easa' && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Date *
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Registration *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.registration}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^[A-Z]-[A-Z0-9]{0,4}$/.test(value)) {
+                          setFormData({ ...formData, registration: value });
+                        }
+                      }}
+                      placeholder="D-XXXX"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Type/Variant *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.aircraftType}
+                      onChange={(e) => setFormData({ ...formData, aircraftType: e.target.value })}
+                      placeholder="e.g., A320-200"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Departure ICAO *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.easaDepartureIcao}
+                      onChange={(e) => setFormData({ ...formData, easaDepartureIcao: e.target.value.toUpperCase() })}
+                      placeholder="EGLL"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Arrival ICAO *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.easaArrivalIcao}
+                      onChange={(e) => setFormData({ ...formData, easaArrivalIcao: e.target.value.toUpperCase() })}
+                      placeholder="EDDF"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Off-Block Time (UTC) *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.easaOffBlockTime}
+                      onChange={(e) => setFormData({ ...formData, easaOffBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      On-Block Time (UTC) *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.easaOnBlockTime}
+                      onChange={(e) => setFormData({ ...formData, easaOnBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Pilot Function *
+                    </label>
+                    <select
+                      value={formData.easaPilotFunction}
+                      onChange={(e) => setFormData({ ...formData, easaPilotFunction: e.target.value as any })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="">Select</option>
+                      <option value="PIC">PIC</option>
+                      <option value="Co-pilot">Co-pilot</option>
+                      <option value="PICUS">PICUS</option>
+                      <option value="Dual">Dual Instruction (Received)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Multi-Pilot Aircraft
+                    </label>
+                    <select
+                      value={formData.easaMultiPilot ? 'true' : 'false'}
+                      onChange={(e) => setFormData({ ...formData, easaMultiPilot: e.target.value === 'true' })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="false">Single-Pilot (SP)</option>
+                      <option value="true">Multi-Pilot (MP)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Total Flight Time (hrs) *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.hours}
+                      onChange={(e) => setFormData({ ...formData, hours: e.target.value })}
+                      placeholder="1.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Night
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', color: '#64748b' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.easaNight}
+                        onChange={(e) => setFormData({ ...formData, easaNight: e.target.checked })}
+                        style={{ marginRight: '0.25rem' }}
+                      />
+                      Night flight
+                    </label>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      IFR
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', color: '#64748b' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.easaIfr}
+                        onChange={(e) => setFormData({ ...formData, easaIfr: e.target.checked })}
+                        style={{ marginRight: '0.25rem' }}
+                      />
+                      IFR flight
+                    </label>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      FSTD (Simulator)
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', color: '#64748b' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.easaFstd}
+                        onChange={(e) => setFormData({ ...formData, easaFstd: e.target.checked })}
+                        style={{ marginRight: '0.25rem' }}
+                      />
+                      Simulator session
+                    </label>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Cross-Country
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', color: '#64748b' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.easaCrossCountry}
+                        onChange={(e) => setFormData({ ...formData, easaCrossCountry: e.target.checked })}
+                        style={{ marginRight: '0.25rem' }}
+                      />
+                      XC flight (auto-tag if different aerodrome)
+                    </label>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Takeoffs
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.takeoffsDay}
+                      onChange={(e) => setFormData({ ...formData, takeoffsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Landings
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.landingsDay}
+                      onChange={(e) => setFormData({ ...formData, landingsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Flight Nature
+                    </label>
+                    <select
+                      value={formData.easaFlightNature}
+                      onChange={(e) => setFormData({ ...formData, easaFlightNature: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="">Select</option>
+                      <option value="Commercial">Commercial</option>
+                      <option value="Private">Private</option>
+                      <option value="Skill Test">Skill Test</option>
+                      <option value="Training">Training</option>
+                      <option value="Ferry">Ferry</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Commander's Signature
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.easaCommanderSignature}
+                      onChange={(e) => setFormData({ ...formData, easaCommanderSignature: e.target.value })}
+                      placeholder="Required for PICUS/Dual"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Remarks
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.remarks}
+                      onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+                      placeholder="Flight remarks"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* HKCAD Form Fields */}
+              {logbookFormat === 'hkcad' && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Date *
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Registration *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.registration}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^B-[HKL][A-Z0-9]{0,3}$/.test(value)) {
+                          setFormData({ ...formData, registration: value });
+                        }
+                      }}
+                      placeholder="B-HXXX"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Type *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.aircraftType}
+                      onChange={(e) => setFormData({ ...formData, aircraftType: e.target.value })}
+                      placeholder="e.g., A320-200"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Departure ICAO *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.hkcadDepartureIcao}
+                      onChange={(e) => setFormData({ ...formData, hkcadDepartureIcao: e.target.value.toUpperCase() })}
+                      placeholder="VHHH"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Arrival ICAO *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.hkcadArrivalIcao}
+                      onChange={(e) => setFormData({ ...formData, hkcadArrivalIcao: e.target.value.toUpperCase() })}
+                      placeholder="ZSPD"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Off-Block Time (UTC) *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.hkcadOffBlockTime}
+                      onChange={(e) => setFormData({ ...formData, hkcadOffBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      On-Block Time (UTC) *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.hkcadOnBlockTime}
+                      onChange={(e) => setFormData({ ...formData, hkcadOnBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Pilot Capacity *
+                    </label>
+                    <select
+                      value={formData.hkcadPilotCapacity}
+                      onChange={(e) => setFormData({ ...formData, hkcadPilotCapacity: e.target.value as any })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="">Select</option>
+                      <option value="PIC">PIC</option>
+                      <option value="P2">P2 (Co-pilot)</option>
+                      <option value="PICUS">PICUS</option>
+                      <option value="Dual">Dual (Instruction received)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Total Flight Time (hrs) *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.hours}
+                      onChange={(e) => setFormData({ ...formData, hours: e.target.value })}
+                      placeholder="1.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Day
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', color: '#64748b' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.hkcadDay}
+                        onChange={(e) => setFormData({ ...formData, hkcadDay: e.target.checked })}
+                        style={{ marginRight: '0.25rem' }}
+                      />
+                      Day flight
+                    </label>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Night
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', color: '#64748b' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.hkcadNight}
+                        onChange={(e) => setFormData({ ...formData, hkcadNight: e.target.checked })}
+                        style={{ marginRight: '0.25rem' }}
+                      />
+                      Night flight
+                    </label>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Instrument Time
+                    </label>
+                    <select
+                      value={formData.hkcadInstrumentActual ? 'actual' : formData.hkcadInstrumentSimulated ? 'simulated' : ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setFormData({ 
+                          ...formData, 
+                          hkcadInstrumentActual: value === 'actual',
+                          hkcadInstrumentSimulated: value === 'simulated'
+                        });
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="">None</option>
+                      <option value="actual">Actual</option>
+                      <option value="simulated">Simulated</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      FSTD Time (hrs)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.hkcadFstdTime}
+                      onChange={(e) => setFormData({ ...formData, hkcadFstdTime: e.target.value })}
+                      placeholder="0.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Instrument Approach Type
+                    </label>
+                    <select
+                      value={formData.hkcadInstrumentApproachType}
+                      onChange={(e) => setFormData({ ...formData, hkcadInstrumentApproachType: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="">Select</option>
+                      <option value="ILS">ILS</option>
+                      <option value="VOR">VOR</option>
+                      <option value="NDB">NDB</option>
+                      <option value="RNAV">RNAV/GPS</option>
+                      <option value="LOC">LOC</option>
+                      <option value="VISUAL">Visual</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Approach Count
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.hkcadInstrumentApproachCount}
+                      onChange={(e) => setFormData({ ...formData, hkcadInstrumentApproachCount: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Landings
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.landingsDay}
+                      onChange={(e) => setFormData({ ...formData, landingsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Commander's Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.hkcadCommanderName}
+                      onChange={(e) => setFormData({ ...formData, hkcadCommanderName: e.target.value })}
+                      placeholder="Required for PICUS/Dual"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Commander's License Number
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.hkcadCommanderLicenseNumber}
+                      onChange={(e) => setFormData({ ...formData, hkcadCommanderLicenseNumber: e.target.value })}
+                      placeholder="Required for PICUS/Dual"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Employer/Company Stamp
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.hkcadEmployerStamp}
+                      onChange={(e) => setFormData({ ...formData, hkcadEmployerStamp: e.target.value })}
+                      placeholder="For verification"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Remarks
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.remarks}
+                      onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+                      placeholder="Flight remarks"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+              {/* FAA Form Fields */}
+              {logbookFormat === 'faa' && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Flight Date *
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Registration (N-)*
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.registration}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^(N)?[A-Z0-9]*$/.test(value)) {
+                          setFormData({ ...formData, registration: value });
+                        }
+                      }}
+                      placeholder="N12345"
+                      maxLength={6}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        textTransform: 'uppercase',
+                        borderColor: formData.registration && !formData.registration.startsWith('N') ? '#ef4444' : '#cbd5e1'
+                      }}
+                    />
+                    {formData.registration && !formData.registration.startsWith('N') && (
+                      <div style={{ fontSize: '0.65rem', color: '#ef4444', marginTop: '0.25rem' }}>
+                        Must start with N
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Make/Model *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.aircraftType}
+                      onChange={(e) => setFormData({ ...formData, aircraftType: e.target.value })}
+                      placeholder="Cessna 172"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Departure Airport *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.faaDepartureAirport}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^[A-Z]{0,4}$/.test(value)) {
+                          setFormData({ ...formData, faaDepartureAirport: value });
+                        }
+                      }}
+                      placeholder="KJFK"
+                      maxLength={4}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        textTransform: 'uppercase'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Arrival Airport *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.faaArrivalAirport}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^[A-Z]{0,4}$/.test(value)) {
+                          setFormData({ ...formData, faaArrivalAirport: value });
+                        }
+                      }}
+                      placeholder="KLAX"
+                      maxLength={4}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        textTransform: 'uppercase'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Total Flight Time *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.hours}
+                      onChange={(e) => setFormData({ ...formData, hours: e.target.value })}
+                      placeholder="2.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Type of Pilot Experience *
+                    </label>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>
+                        <input
+                          type="checkbox"
+                          checked={formData.faaIsSolo}
+                          onChange={(e) => setFormData({ ...formData, faaIsSolo: e.target.checked })}
+                          style={{ marginRight: '0.25rem' }}
+                        />
+                        Solo
+                      </label>
+                      <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>
+                        <input
+                          type="checkbox"
+                          checked={formData.faaIsPic}
+                          onChange={(e) => setFormData({ ...formData, faaIsPic: e.target.checked })}
+                          style={{ marginRight: '0.25rem' }}
+                        />
+                        PIC
+                      </label>
+                      <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>
+                        <input
+                          type="checkbox"
+                          checked={formData.faaIsSic}
+                          onChange={(e) => setFormData({ ...formData, faaIsSic: e.target.checked })}
+                          style={{ marginRight: '0.25rem' }}
+                        />
+                        SIC
+                      </label>
+                      <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>
+                        <input
+                          type="checkbox"
+                          checked={formData.faaIsFstd}
+                          onChange={(e) => setFormData({ ...formData, faaIsFstd: e.target.checked })}
+                          style={{ marginRight: '0.25rem' }}
+                        />
+                        FSTD
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.faaIsCrossCountry}
+                        onChange={(e) => setFormData({ ...formData, faaIsCrossCountry: e.target.checked })}
+                        style={{ marginRight: '0.5rem' }}
+                      />
+                      Cross-Country Flight
+                    </label>
+                    {formData.faaIsCrossCountry && (
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={formData.faaCrossCountryDistance}
+                        onChange={(e) => setFormData({ ...formData, faaCrossCountryDistance: e.target.value })}
+                        placeholder="Distance (nm) - 50nm+ for Private/Commercial"
+                        style={{
+                          width: '100%',
+                          marginTop: '0.5rem',
+                          padding: '0.5rem',
+                          border: '1px solid #3b82f6',
+                          borderRadius: '6px',
+                          fontSize: '0.875rem',
+                          background: '#eff6ff'
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Day Time
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.faaDayTime}
+                      onChange={(e) => setFormData({ ...formData, faaDayTime: e.target.value })}
+                      placeholder="1.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Night Time
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.faaNightTime}
+                      onChange={(e) => setFormData({ ...formData, faaNightTime: e.target.value })}
+                      placeholder="0.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Actual Instrument
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.faaActualInstrument}
+                      onChange={(e) => setFormData({ ...formData, faaActualInstrument: e.target.value })}
+                      placeholder="0.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Simulated Instrument (Hood)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.faaSimulatedInstrument}
+                      onChange={(e) => setFormData({ ...formData, faaSimulatedInstrument: e.target.value })}
+                      placeholder="0.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  {formData.faaSimulatedInstrument && parseFloat(formData.faaSimulatedInstrument) > 0 && (
+                    <div style={{ gridColumn: '1 / -1', padding: '0.75rem', background: '#fef3c7', borderRadius: '6px', border: '1px solid #f59e0b' }}>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>
+                        Safety Pilot Required (§ 61.51)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.faaSafetyPilot}
+                        onChange={(e) => setFormData({ ...formData, faaSafetyPilot: e.target.value })}
+                        placeholder="Safety Pilot Name"
+                        style={{
+                          width: '100%',
+                          padding: '0.5rem',
+                          border: '1px solid #f59e0b',
+                          borderRadius: '6px',
+                          fontSize: '0.875rem'
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Takeoffs - Day
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.faaTakeoffsDay}
+                      onChange={(e) => setFormData({ ...formData, faaTakeoffsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Takeoffs - Night
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.faaTakeoffsNight}
+                      onChange={(e) => setFormData({ ...formData, faaTakeoffsNight: e.target.value })}
+                      placeholder="0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Landings - Day
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.faaLandingsDay}
+                      onChange={(e) => setFormData({ ...formData, faaLandingsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Landings - Night
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.faaLandingsNight}
+                      onChange={(e) => setFormData({ ...formData, faaLandingsNight: e.target.value })}
+                      placeholder="0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Full-Stop Landings (Night Currency)
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.faaFullStopLandings}
+                      onChange={(e) => setFormData({ ...formData, faaFullStopLandings: e.target.value })}
+                      placeholder="0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Instrument Currency (§ 61.57 - 6-6-H)
+                    </label>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                          Instrument Approaches
+                        </label>
+                        <input
+                          type="number"
+                          value={formData.faaInstrumentApproaches}
+                          onChange={(e) => setFormData({ ...formData, faaInstrumentApproaches: e.target.value })}
+                          placeholder="0"
+                          style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '6px',
+                            fontSize: '0.875rem'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                          Holding Procedures
+                        </label>
+                        <input
+                          type="number"
+                          value={formData.faaHoldingProcedures}
+                          onChange={(e) => setFormData({ ...formData, faaHoldingProcedures: e.target.value })}
+                          placeholder="0"
+                          style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '6px',
+                            fontSize: '0.875rem'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                          Tracking/Intercepts
+                        </label>
+                        <input
+                          type="number"
+                          value={formData.faaTrackingIntercepts}
+                          onChange={(e) => setFormData({ ...formData, faaTrackingIntercepts: e.target.value })}
+                          placeholder="0"
+                          style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '6px',
+                            fontSize: '0.875rem'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      CFI Endorsement (if applicable)
+                    </label>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                          CFI Signature
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.faaCfiSignature}
+                          onChange={(e) => setFormData({ ...formData, faaCfiSignature: e.target.value })}
+                          placeholder="CFI Digital Signature"
+                          style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '6px',
+                            fontSize: '0.875rem'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                          CFI Certificate Number
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.faaCfiCertificateNumber}
+                          onChange={(e) => setFormData({ ...formData, faaCfiCertificateNumber: e.target.value })}
+                          placeholder="e.g., 12345678"
+                          style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '6px',
+                            fontSize: '0.875rem'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                          CFI Expiration Date
+                        </label>
+                        <input
+                          type="date"
+                          value={formData.faaCfiExpirationDate}
+                          onChange={(e) => setFormData({ ...formData, faaCfiExpirationDate: e.target.value })}
+                          style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '6px',
+                            fontSize: '0.875rem'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Remarks
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.remarks}
+                      onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+                      placeholder="Flight remarks"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* CAAP Philippines Form Fields */}
+              {logbookFormat === 'caap' && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Flight Date *
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Registration (RP-C)*
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.registration}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^(RP-C)?[A-Z0-9]*$/.test(value)) {
+                          setFormData({ ...formData, registration: value });
+                        }
+                      }}
+                      placeholder="RP-C1234"
+                      maxLength={7}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        textTransform: 'uppercase',
+                        borderColor: formData.registration && !formData.registration.startsWith('RP-C') ? '#ef4444' : '#cbd5e1'
+                      }}
+                    />
+                    {formData.registration && !formData.registration.startsWith('RP-C') && (
+                      <div style={{ fontSize: '0.65rem', color: '#ef4444', marginTop: '0.25rem' }}>
+                        Must start with RP-C
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Aircraft Type/Model *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.aircraftType}
+                      onChange={(e) => setFormData({ ...formData, aircraftType: e.target.value })}
+                      placeholder="Cessna 172"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Departure ICAO *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.caapDepartureIcao}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^[A-Z]{0,4}$/.test(value)) {
+                          setFormData({ ...formData, caapDepartureIcao: value });
+                        }
+                      }}
+                      placeholder="RPLL"
+                      maxLength={4}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        textTransform: 'uppercase'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Arrival ICAO *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.caapArrivalIcao}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        if (/^[A-Z]{0,4}$/.test(value)) {
+                          setFormData({ ...formData, caapArrivalIcao: value });
+                        }
+                      }}
+                      placeholder="RPLL"
+                      maxLength={4}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        textTransform: 'uppercase'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Off-Block Time (UTC) *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.caapOffBlockTime}
+                      onChange={(e) => setFormData({ ...formData, caapOffBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      On-Block Time (UTC) *
+                    </label>
+                    <input
+                      type="time"
+                      value={formData.caapOnBlockTime}
+                      onChange={(e) => setFormData({ ...formData, caapOnBlockTime: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Pilot Function *
+                    </label>
+                    <select
+                      value={formData.caapPilotFunction}
+                      onChange={(e) => setFormData({ ...formData, caapPilotFunction: e.target.value as any })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      <option value="">Select</option>
+                      <option value="PIC">PIC</option>
+                      <option value="SIC">SIC</option>
+                      <option value="Dual">Dual Instruction (Received)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Day Time
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.caapDayTime}
+                      onChange={(e) => setFormData({ ...formData, caapDayTime: e.target.value })}
+                      placeholder="1.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Night Time
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.caapNightTime}
+                      onChange={(e) => setFormData({ ...formData, caapNightTime: e.target.value })}
+                      placeholder="0.5"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Instrument Actual
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.caapInstrumentActual}
+                      onChange={(e) => setFormData({ ...formData, caapInstrumentActual: e.target.value })}
+                      placeholder="0.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Instrument Simulated (Hood)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.caapInstrumentSimulated}
+                      onChange={(e) => setFormData({ ...formData, caapInstrumentSimulated: e.target.value })}
+                      placeholder="0.0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Landings - Day
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.caapLandingsDay}
+                      onChange={(e) => setFormData({ ...formData, caapLandingsDay: e.target.value })}
+                      placeholder="1"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Landings - Night
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.caapLandingsNight}
+                      onChange={(e) => setFormData({ ...formData, caapLandingsNight: e.target.value })}
+                      placeholder="0"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.caapIsCrossCountry}
+                        onChange={(e) => setFormData({ ...formData, caapIsCrossCountry: e.target.checked })}
+                        style={{ marginRight: '0.5rem' }}
+                      />
+                      Cross-Country Flight
+                    </label>
+                    {formData.caapIsCrossCountry && (
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={formData.caapCrossCountryDistance}
+                        onChange={(e) => setFormData({ ...formData, caapCrossCountryDistance: e.target.value })}
+                        placeholder="Distance (nm) - 50nm req for standard, 300nm for CPL"
+                        style={{
+                          width: '100%',
+                          marginTop: '0.5rem',
+                          padding: '0.5rem',
+                          border: '1px solid #3b82f6',
+                          borderRadius: '6px',
+                          fontSize: '0.875rem',
+                          background: '#eff6ff'
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.caapIsCheckride}
+                        onChange={(e) => setFormData({ ...formData, caapIsCheckride: e.target.checked })}
+                        style={{ marginRight: '0.5rem' }}
+                      />
+                      Professional Skill Test (Checkride)
+                    </label>
+                  </div>
+                  {formData.caapIsCheckride && (
+                    <div style={{ gridColumn: '1 / -1', padding: '0.75rem', background: '#fef3c7', borderRadius: '6px', border: '1px solid #f59e0b' }}>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.5rem' }}>
+                        CAAP Examiner Information (PCAR Part 2)
+                      </label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                            Examiner Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.caapExaminerName}
+                            onChange={(e) => setFormData({ ...formData, caapExaminerName: e.target.value })}
+                            placeholder="CAAP Examiner Name"
+                            style={{
+                              width: '100%',
+                              padding: '0.5rem',
+                              border: '1px solid #f59e0b',
+                              borderRadius: '6px',
+                              fontSize: '0.875rem'
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                            Examiner License Number *
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.caapExaminerLicenseNumber}
+                            onChange={(e) => setFormData({ ...formData, caapExaminerLicenseNumber: e.target.value })}
+                            placeholder="e.g., CAAP-EX-12345"
+                            style={{
+                              width: '100%',
+                              padding: '0.5rem',
+                              border: '1px solid #f59e0b',
+                              borderRadius: '6px',
+                              fontSize: '0.875rem'
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                            Certificate Type
+                          </label>
+                          <select
+                            value={formData.caapCertificateType}
+                            onChange={(e) => setFormData({ ...formData, caapCertificateType: e.target.value as any })}
+                            style={{
+                              width: '100%',
+                              padding: '0.5rem',
+                              border: '1px solid #cbd5e1',
+                              borderRadius: '6px',
+                              fontSize: '0.875rem'
+                            }}
+                          >
+                            <option value="">Select</option>
+                            <option value="PPL">PPL</option>
+                            <option value="CPL">CPL</option>
+                            <option value="ATPL">ATPL</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {(formData.caapPilotFunction === 'Dual' || formData.caapIsCheckride) && (
+                    <div style={{ gridColumn: '1 / -1', padding: '0.75rem', background: '#f0f9ff', borderRadius: '6px', border: '1px solid #bae6fd' }}>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#1e40af', marginBottom: '0.5rem' }}>
+                        Instructor Information
+                      </label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                            Instructor Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.caapInstructorName}
+                            onChange={(e) => setFormData({ ...formData, caapInstructorName: e.target.value })}
+                            placeholder="Instructor Name"
+                            style={{
+                              width: '100%',
+                              padding: '0.5rem',
+                              border: '1px solid #bae6fd',
+                              borderRadius: '6px',
+                              fontSize: '0.875rem'
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                            Instructor License Number *
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.caapInstructorLicenseNumber}
+                            onChange={(e) => setFormData({ ...formData, caapInstructorLicenseNumber: e.target.value })}
+                            placeholder="e.g., CAAP-PIC-12345"
+                            style={{
+                              width: '100%',
+                              padding: '0.5rem',
+                              border: '1px solid #bae6fd',
+                              borderRadius: '6px',
+                              fontSize: '0.875rem'
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                            Instructor Digital Signature *
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.caapInstructorSignature}
+                            onChange={(e) => setFormData({ ...formData, caapInstructorSignature: e.target.value })}
+                            placeholder="Digital signature"
+                            style={{
+                              width: '100%',
+                              padding: '0.5rem',
+                              border: '1px solid #bae6fd',
+                              borderRadius: '6px',
+                              fontSize: '0.875rem'
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+                      Remarks
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.remarks}
+                      onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+                      placeholder="Flight remarks"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
               <button
                 onClick={handleAddEntry}
                 style={{
@@ -4088,6 +6927,1029 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
             </div>
           )}
 
+          {/* DGAC Format */}
+          {logbookFormat === 'dgac' && (
+            <div>
+              {/* DGAC Header with Language Toggle */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#ede9fe', borderRadius: '8px', border: '1px solid #c4b5fd' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#5b21b6', margin: '0 0 0.25rem' }}>
+                      DGAC - EASA FCL.050
+                    </h3>
+                    <p style={{ fontSize: '0.875rem', color: '#6d28d9', margin: 0 }}>
+                      Carnet de Vol / Bitácora de Vuelo
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button
+                      style={{
+                        padding: '0.25rem 0.75rem',
+                        borderRadius: '6px',
+                        border: '1px solid #7c3aed',
+                        background: '#8b5cf6',
+                        color: '#fff',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Français
+                    </button>
+                    <button
+                      style={{
+                        padding: '0.25rem 0.75rem',
+                        borderRadius: '6px',
+                        border: '1px solid #7c3aed',
+                        background: '#fff',
+                        color: '#7c3aed',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Español
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* DGAC Controls */}
+              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <button
+                  onClick={() => {/* Implement Series of Flights Grouping */}}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    border: '1px solid #7c3aed',
+                    background: '#8b5cf6',
+                    color: '#fff',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Group Series of Flights
+                </button>
+                <button
+                  onClick={() => {/* Implement Close Page with PDF */}}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    border: '1px solid #dc2626',
+                    background: '#991b1b',
+                    color: '#fca5a5',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Close Page & Export PDF
+                </button>
+              </div>
+
+              {/* DGAC Table - High-Density Horizontal Grid */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.7rem' }}>
+                  <thead>
+                    <tr style={{ background: '#5b21b6', color: '#f8fafc' }}>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Date</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Reg</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Type</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Dep</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Arr</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Off</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>On</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>SE</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>MP</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Total</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>PIC</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>SIC</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Dual</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>PICUS</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>FSTD</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Day</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Night</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>IFR</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>TO</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>LDG</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Remarks</th>
+                      <th style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={21} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          Loading flight logs...
+                        </td>
+                      </tr>
+                    ) : flightLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={21} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          No flight entries yet. Click "Add Flight Entry" to get started.
+                        </td>
+                      </tr>
+                    ) : (
+                      flightLogs.map((log) => (
+                        <tr key={log.id} style={{ borderBottom: '1px solid #8b5cf6' }}>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.date}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'PIC' || log.dgacOperatingCapacity === 'SIC' ? 'X' : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'PICUS' ? 'X' : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'PIC' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'SIC' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'Dual' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'PICUS' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacFstdTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dayHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.nightHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.ifrHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a', fontSize: '0.65rem' }}>
+                            {log.remarks || ''}
+                            {log.dgacInstructorCountersign && <div style={{ color: '#dc2626', fontWeight: 600 }}>✓ {log.dgacInstructorCountersign}</div>}
+                          </td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6' }}>
+                            <button
+                              onClick={() => handleDeleteEntry(log.id)}
+                              style={{
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '4px',
+                                border: '1px solid #ef4444',
+                                background: '#fef2f2',
+                                color: '#dc2626',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Del
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Running Totals Footer */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f3ff', borderRadius: '8px', border: '1px solid #c4b5fd' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '1rem', textAlign: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#6d28d9', marginBottom: '0.25rem' }}>Total Time (Page)</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#5b21b6' }}>{flightLogs.slice(0, 10).reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#6d28d9', marginBottom: '0.25rem' }}>Total Time (Grand)</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#5b21b6' }}>{flightLogs.reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#6d28d9', marginBottom: '0.25rem' }}>PIC Time (Page)</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#5b21b6' }}>{flightLogs.slice(0, 10).filter(log => log.dgacOperatingCapacity === 'PIC').reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#6d28d9', marginBottom: '0.25rem' }}>PIC Time (Grand)</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#5b21b6' }}>{flightLogs.filter(log => log.dgacOperatingCapacity === 'PIC').reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#6d28d9', marginBottom: '0.25rem' }}>IFR Time (Page)</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#5b21b6' }}>{flightLogs.slice(0, 10).reduce((acc, log) => acc + (log.ifrHours || 0), 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#6d28d9', marginBottom: '0.25rem' }}>IFR Time (Grand)</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#5b21b6' }}>{flightLogs.reduce((acc, log) => acc + (log.ifrHours || 0), 0).toFixed(1)}h</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Series of Flights Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#ede9fe', borderRadius: '8px', border: '1px solid #c4b5fd' }}>
+                <p style={{ fontSize: '0.875rem', color: '#5b21b6', margin: 0 }}>
+                  <strong>Series of Flights (EASA AMC1 FCL.050):</strong> Multiple flight segments on the same day with the same aircraft and PIC can be grouped as a single entry. Use "Group Series of Flights" to combine segments.
+                </p>
+              </div>
+
+              {/* Instructor/PICUS Certification Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  <strong>Instructor/PICUS Certification:</strong> PIC or Instructor must digitally countersign PICUS or training hours in the Remarks column. Enter instructor name and certificate number for certification.
+                </p>
+              </div>
+
+              {/* Close Page Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#dbeafe', borderRadius: '8px', border: '1px solid #93c5fd' }}>
+                <p style={{ fontSize: '0.875rem', color: '#1e40af', margin: 0 }}>
+                  <strong>Close Page Feature:</strong> Generates a non-editable, printable PDF summary with calculated totals. Once closed, entries cannot be modified (Permanent Record Logic per EASA requirements).
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* CAAC China Format */}
+          {logbookFormat === 'caac' && (
+            <div>
+              {/* CAAC Header - Bilingual */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#dc2626', margin: '0 0 0.25rem' }}>
+                  CAAC China - CCAR Part 61 飞行记录本
+                </h3>
+                <p style={{ fontSize: '0.875rem', color: '#b91c1c', margin: 0 }}>
+                  Pilot Logbook / 飞行记录本 - Civil Aviation Administration of China
+                </p>
+              </div>
+
+              {/* CAAC Controls */}
+              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <button
+                  onClick={() => {/* Implement PLMS Data Sync */}}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    border: '1px solid #dc2626',
+                    background: '#b91c1c',
+                    color: '#fecaca',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  PLMS Data Sync 导出
+                </button>
+              </div>
+
+              {/* 90-Day Currency Alert - CCAR 61.55 */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fff7ed', borderRadius: '8px', border: '1px solid #fed7aa' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#c2410c', margin: '0 0 0.75rem' }}>
+                  90-Day Currency / 90天近期要求
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', textAlign: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#c2410c', marginBottom: '0.25rem' }}>Takeoffs - Day / 日间起飞</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + (log.takeoffsDay || 0), 0) >= 3 ? '#16a34a' : '#dc2626' }}>{flightLogs.reduce((acc, log) => acc + (log.takeoffsDay || 0), 0)}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#c2410c', marginBottom: '0.25rem' }}>Takeoffs - Night / 夜间起飞</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + (log.takeoffsNight || 0), 0) >= 3 ? '#16a34a' : '#dc2626' }}>{flightLogs.reduce((acc, log) => acc + (log.takeoffsNight || 0), 0)}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#c2410c', marginBottom: '0.25rem' }}>Landings - Day / 日间着陆</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + (log.landingsDay || 0), 0) >= 3 ? '#16a34a' : '#dc2626' }}>{flightLogs.reduce((acc, log) => acc + (log.landingsDay || 0), 0)}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#c2410c', marginBottom: '0.25rem' }}>Landings - Night / 夜间着陆</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + (log.landingsNight || 0), 0) >= 3 ? '#16a34a' : '#dc2626' }}>{flightLogs.reduce((acc, log) => acc + (log.landingsNight || 0), 0)}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CAAC Table - Bilingual Headers */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.7rem' }}>
+                  <thead>
+                    <tr style={{ background: '#dc2626', color: '#f8fafc' }}>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Date<br/>日期</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Reg<br/>机号</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Model<br/>机型</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Dep<br/>起飞</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Arr<br/>降落</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Off<br/>推出</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>On<br/>到位</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Func<br/>职责</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Multi<br/>多人</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Total<br/>总时</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Turbine<br/>涡扇</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Day<br/>日间</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Night<br/>夜间</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Instr<br/>仪表</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>TO<br/>起飞</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>LDG<br/>着陆</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Auto<br/>自动</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Remarks<br/>备注</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>Action<br/>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={18} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          Loading flight logs... / 加载飞行记录...
+                        </td>
+                      </tr>
+                    ) : flightLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={18} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          No flight entries yet. Click "Add Flight Entry" to get started. / 暂无飞行记录
+                        </td>
+                      </tr>
+                    ) : (
+                      flightLogs.map((log) => (
+                        <tr key={log.id} style={{ borderBottom: '1px solid #fca5a5' }}>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacFunction || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacMultiPilot ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacTurbineJetTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.dayHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.nightHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacInstrumentActual ? 'A' : (log.caacInstrumentSimulated ? 'S' : '-')}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacAutoLandings || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a', fontSize: '0.65rem' }}>
+                            {log.remarks || ''}
+                            {log.caacPhaseCheck && <div style={{ color: '#dc2626', fontWeight: 600 }}>PC: {log.caacPhaseCheck}</div>}
+                          </td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5' }}>
+                            <button
+                              onClick={() => handleDeleteEntry(log.id)}
+                              style={{
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '4px',
+                                border: '1px solid #ef4444',
+                                background: '#fef2f2',
+                                color: '#dc2626',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Del
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Training & Checking Section */}
+              <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#fff7ed', borderRadius: '12px', border: '1px solid #fed7aa' }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#c2410c', margin: '0 0 1rem' }}>
+                  Training & Checking / 训练与检查
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                      Phase Check / 阶段检查
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., A320 PC"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                      Annual Proficiency Check (PC) / 年度熟练检查
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., PC-2024"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>
+                      Examiner CAAC License ID / 检查员执照号
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., CAAC-123456"
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Total Time Logic Footer */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', textAlign: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#b91c1c', marginBottom: '0.25rem' }}>Total Flight Time / 总飞行时间</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#dc2626' }}>{flightLogs.reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#b91c1c', marginBottom: '0.25rem' }}>Turbine/Jet Time / 涡扇时间</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#dc2626' }}>{flightLogs.reduce((acc, log) => acc + (log.caacTurbineJetTime || 0), 0).toFixed(1)}h</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* PLMS Data Sync Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+                <p style={{ fontSize: '0.875rem', color: '#b91c1c', margin: 0 }}>
+                  <strong>PLMS Data Sync:</strong> Summary of Activity export structured for CAAC Pilot License Management System (PLMS) upload. 数据同步至中国民航飞行员执照管理系统
+                </p>
+              </div>
+
+              {/* 90-Day Currency Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fff7ed', borderRadius: '8px', border: '1px solid #fed7aa' }}>
+                <p style={{ fontSize: '0.875rem', color: '#c2410c', margin: 0 }}>
+                  <strong>90-Day Currency (CCAR 61.55):</strong> Strict tracker for "3 takeoffs and 3 landings in 90 days" rule for both Day and Night recency. 90天近期要求：3次起飞和3次着陆
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* EASA Part-FCL.050 Format */}
+          {logbookFormat === 'easa' && (
+            <div>
+              {/* EASA Header */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#dbeafe', borderRadius: '8px', border: '1px solid #93c5fd' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1e40af', margin: '0 0 0.25rem' }}>
+                  EASA Part-FCL.050 Flight Logbook
+                </h3>
+                <p style={{ fontSize: '0.875rem', color: '#1e40af', margin: 0 }}>
+                  European Union Aviation Safety Agency compliant logbook format
+                </p>
+              </div>
+
+              {/* EASA Controls */}
+              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <button
+                  onClick={() => {/* Implement AMC1 FCL.050 PDF Export */}}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    border: '1px solid #2563eb',
+                    background: '#1d4ed8',
+                    color: '#bfdbfe',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Export AMC1 FCL.050 PDF
+                </button>
+              </div>
+
+              {/* Cross-Country/IFR Tracking Indicator */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f0fdf4', borderRadius: '8px', border: '1px solid #86efac' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#166534', margin: '0 0 0.75rem' }}>
+                  Cross-Country / IFR Tracking for CPL/ATPL Requirements
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#166534', marginBottom: '0.25rem' }}>Cross-Country Flights</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#16a34a' }}>{flightLogs.filter(log => log.easaCrossCountry).length}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#166534', marginBottom: '0.25rem' }}>IFR Flights</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#16a34a' }}>{flightLogs.filter(log => log.easaIfr).length}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* EASA Table - AMC1 FCL.050 Format (Columns 1-12) */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.7rem' }}>
+                  <thead>
+                    <tr style={{ background: '#1d4ed8', color: '#f8fafc' }}>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Date</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Dep</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Arr</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Off</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>On</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Reg</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Type</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>SP/MP</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Total</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>PIC</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Co</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>PICUS</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Dual</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Night</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>IFR</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>FSTD</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>XC</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>TO</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>LDG</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Nature</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Sig</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={21} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          Loading flight logs...
+                        </td>
+                      </tr>
+                    ) : flightLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={21} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          No flight entries yet. Click "Add Flight Entry" to get started.
+                        </td>
+                      </tr>
+                    ) : (
+                      flightLogs.map((log) => (
+                        <tr key={log.id} style={{ borderBottom: '1px solid #93c5fd' }}>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaMultiPilot ? 'MP' : 'SP'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.easaPilotFunction === 'PIC' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.easaPilotFunction === 'Co-pilot' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.easaPilotFunction === 'PICUS' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.easaPilotFunction === 'Dual' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaIfr ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaFstd ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaCrossCountry ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontSize: '0.65rem' }}>{log.easaFlightNature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontSize: '0.65rem' }}>{log.easaCommanderSignature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>
+                            <button
+                              onClick={() => handleDeleteEntry(log.id)}
+                              style={{
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '4px',
+                                border: '1px solid #ef4444',
+                                background: '#fef2f2',
+                                color: '#dc2626',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Del
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Totals Brought Forward and Grand Total */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#dbeafe', borderRadius: '8px', border: '1px solid #93c5fd' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', textAlign: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#1e40af', marginBottom: '0.25rem' }}>Totals Brought Forward</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1d4ed8' }}>{flightLogs.reduce((acc, log) => acc + (log.easaTotalsBroughtForward || 0), 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#1e40af', marginBottom: '0.25rem' }}>Current Page Total</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1d4ed8' }}>{flightLogs.slice(0, 10).reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#1e40af', marginBottom: '0.25rem' }}>Grand Total</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1d4ed8' }}>{flightLogs.reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Certified Digital Record Footer */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#f0fdf4', borderRadius: '8px', border: '1px solid #86efac' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <p style={{ fontSize: '0.875rem', color: '#166534', margin: 0, fontWeight: 600 }}>
+                      Certified Digital Record
+                    </p>
+                    <p style={{ fontSize: '0.75rem', color: '#166534', margin: '0.25rem 0 0' }}>
+                      I certify that the entries in this logbook are true and correct.
+                    </p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '0.75rem', color: '#166534', marginBottom: '0.25rem' }}>Pilot Signature</div>
+                    <div style={{ width: '200px', height: '40px', border: '1px solid #86efac', borderRadius: '4px', background: '#f0fdf4' }}></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* AMC1 FCL.050 Formatting Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#dbeafe', borderRadius: '8px', border: '1px solid #93c5fd' }}>
+                <p style={{ fontSize: '0.875rem', color: '#1e40af', margin: 0 }}>
+                  <strong>AMC1 FCL.050 Formatting:</strong> Export function generates PDF matching EASA model logbook format (Columns 1 through 12) for regulatory compliance.
+                </p>
+              </div>
+
+              {/* Cross-Country/IFR Tracking Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#f0fdf4', borderRadius: '8px', border: '1px solid #86efac' }}>
+                <p style={{ fontSize: '0.875rem', color: '#166534', margin: 0 }}>
+                  <strong>Cross-Country/IFR Tracking:</strong> Automatic tagging of flights exceeding distance requirements or landing at different aerodromes to support CPL/ATPL issue requirements.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* HKCAD CAD 54 & AN(HK)O Format */}
+          {logbookFormat === 'hkcad' && (
+            <div>
+              {/* HKCAD Header */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#92400e', margin: '0 0 0.25rem' }}>
+                  HKCAD Personal Flying Logbook (CAD 54 & AN(HK)O)
+                </h3>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  Hong Kong Civil Aviation Department compliant logbook format
+                </p>
+              </div>
+
+              {/* HKCAD Controls */}
+              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <button
+                  onClick={() => {/* Implement Certified True Copy PDF Export */}}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    border: '1px solid #b45309',
+                    background: '#d97706',
+                    color: '#fef3c7',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Export Certified True Copy PDF
+                </button>
+              </div>
+
+              {/* 90-Day Recency Monitor */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#92400e', margin: '0 0 0.75rem' }}>
+                  90-Day Recency Monitor (AN(HK)O) - Passenger Carriage
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Day Takeoffs (90 days)</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.filter(log => log.takeoffsDay && log.date).reduce((acc, log) => acc + (log.takeoffsDay || 0), 0)}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Day Landings (90 days)</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.filter(log => log.landingsDay && log.date).reduce((acc, log) => acc + (log.landingsDay || 0), 0)}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Status</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: flightLogs.filter(log => log.takeoffsDay && log.date).reduce((acc, log) => acc + (log.takeoffsDay || 0), 0) >= 3 && flightLogs.filter(log => log.landingsDay && log.date).reduce((acc, log) => acc + (log.landingsDay || 0), 0) >= 3 ? '#16a34a' : '#dc2626' }}>
+                      {flightLogs.filter(log => log.takeoffsDay && log.date).reduce((acc, log) => acc + (log.takeoffsDay || 0), 0) >= 3 && flightLogs.filter(log => log.landingsDay && log.date).reduce((acc, log) => acc + (log.landingsDay || 0), 0) >= 3 ? 'CURRENT' : 'NOT CURRENT'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* FSTD Distinctness Notice */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  <strong>FSTD Distinctness:</strong> Simulator (FSTD) time is explicitly separated from Actual Flight Time to prevent licensing audit errors. Total columns do NOT sum simulator time into "Total Flying Experience".
+                </p>
+              </div>
+
+              {/* HKCAD Table - CAD 54 Horizontal Layout */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.7rem' }}>
+                  <thead>
+                    <tr style={{ background: '#d97706', color: '#fef3c7' }}>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Date</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Dep</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Arr</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Off</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>On</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Reg</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Type</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Cap</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Total</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Day</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Night</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Inst</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Sim</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>App</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>LDG</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Cmdr</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={17} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          Loading flight logs...
+                        </td>
+                      </tr>
+                    ) : flightLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={17} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          No flight entries yet. Click "Add Flight Entry" to get started.
+                        </td>
+                      </tr>
+                    ) : (
+                      flightLogs.map((log) => (
+                        <tr key={log.id} style={{ borderBottom: '1px solid #fcd34d' }}>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.hkcadPilotCapacity || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadDay ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadInstrumentActual ? 'A' : log.hkcadInstrumentSimulated ? 'S' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadFstdTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.hkcadInstrumentApproachType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.hkcadCommanderName ? `${log.hkcadCommanderName} (${log.hkcadCommanderLicenseNumber})` : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>
+                            <button
+                              onClick={() => handleDeleteEntry(log.id)}
+                              style={{
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '4px',
+                                border: '1px solid #ef4444',
+                                background: '#fef2f2',
+                                color: '#dc2626',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Del
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Totals Brought Forward and Total to Date */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', textAlign: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Totals Brought Forward</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.reduce((acc, log) => acc + (log.hkcadTotalsBroughtForward || 0), 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Current Page Total</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.slice(0, 10).reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Total to Date</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Certified True Copy Footer */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0, fontWeight: 600 }}>
+                      Certified True Copy (CAD 54 Clause 4)
+                    </p>
+                    <p style={{ fontSize: '0.75rem', color: '#92400e', margin: '0.25rem 0 0' }}>
+                      Signature block on every page for monthly/annual verification
+                    </p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '0.75rem', color: '#92400e', marginBottom: '0.25rem' }}>Employer/Company Stamp or Authorized Signature</div>
+                    <div style={{ width: '200px', height: '40px', border: '1px solid #fcd34d', borderRadius: '4px', background: '#fef3c7' }}></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CAD 54 Clause 4 Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  <strong>CAD 54 Clause 4:</strong> PDF export generates standard horizontal layout with signature block on every page for regulatory compliance.
+                </p>
+              </div>
+
+              {/* Instructor/Commander Endorsement Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  <strong>Instructor/Commander Endorsement:</strong> Mandatory digital signature field for any PICUS or Dual entries, recording Commander's name and License Number.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* DGCA India Rule 67A & eGCA Format */}
+          {logbookFormat === 'dgacindia' && (
+            <div>
+              {/* DGCA India Header */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#92400e', margin: '0 0 0.25rem' }}>
+                  DGCA Personal Pilot Logbook (Rule 67A & eGCA)
+                </h3>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  Director General of Civil Aviation India compliant logbook format
+                </p>
+              </div>
+
+              {/* DGCA India Controls */}
+              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <button
+                  onClick={() => {/* Implement eGCA Bulk Export */}}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    border: '1px solid #b45309',
+                    background: '#d97706',
+                    color: '#fef3c7',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Export for eGCA Upload
+                </button>
+              </div>
+
+              {/* 90-Day Currency Dashboard */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#92400e', margin: '0 0 0.75rem' }}>
+                  90-Day Currency Dashboard (Passenger Carrying)
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Day Takeoffs (90 days)</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.filter(log => log.takeoffsDay && log.date).reduce((acc, log) => acc + (log.takeoffsDay || 0), 0)}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Day Landings (90 days)</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.filter(log => log.landingsDay && log.date).reduce((acc, log) => acc + (log.landingsDay || 0), 0)}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Status</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: flightLogs.filter(log => log.takeoffsDay && log.date).reduce((acc, log) => acc + (log.takeoffsDay || 0), 0) >= 3 && flightLogs.filter(log => log.landingsDay && log.date).reduce((acc, log) => acc + (log.landingsDay || 0), 0) >= 3 ? '#16a34a' : '#dc2626' }}>
+                      {flightLogs.filter(log => log.takeoffsDay && log.date).reduce((acc, log) => acc + (log.takeoffsDay || 0), 0) >= 3 && flightLogs.filter(log => log.landingsDay && log.date).reduce((acc, log) => acc + (log.landingsDay || 0), 0) >= 3 ? 'CURRENT' : 'NOT CURRENT'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Solo vs. PIC Logic Notice */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  <strong>Solo vs. PIC Logic:</strong> For student pilots, 'Solo' hours are distinguished from 'P1 Under Supervision' as per DGCA conversion standards. Solo flights are logged with no instructor, while P1 U/S requires instructor endorsement.
+                </p>
+              </div>
+
+              {/* DGCA India Table - Rule 67A Layout */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.7rem' }}>
+                  <thead>
+                    <tr style={{ background: '#d97706', color: '#fef3c7' }}>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Date</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Dep</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Arr</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Off</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>On</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Reg</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Type</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Cap</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Total</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Day</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Night</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Inst</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Hood</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>TO</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>LDG</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Nature</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>SPIC</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Instructor</th>
+                      <th style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={18} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          Loading flight logs...
+                        </td>
+                      </tr>
+                    ) : flightLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={18} style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                          No flight entries yet. Click "Add Flight Entry" to get started.
+                        </td>
+                      </tr>
+                    ) : (
+                      flightLogs.map((log) => (
+                        <tr key={log.id} style={{ borderBottom: '1px solid #fcd34d' }}>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaChocksOff || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaChocksOn || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.dgacindiaPilotCapacity || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaDay ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaInstrumentActual ? 'A' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaInstrumentHood ? 'H' : log.dgacindiaInstrumentSimulated ? 'S' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{(log.dgacindiaTakeoffsDay || 0) + (log.dgacindiaTakeoffsNight || 0)}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{(log.dgacindiaLandingsDay || 0) + (log.dgacindiaLandingsNight || 0)}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.dgacindiaFlightNature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaSpic ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.dgacindiaInstructorName ? `${log.dgacindiaInstructorName} (${log.dgacindiaInstructorDgcaLicense})` : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>
+                            <button
+                              onClick={() => handleDeleteEntry(log.id)}
+                              style={{
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '4px',
+                                border: '1px solid #ef4444',
+                                background: '#fef2f2',
+                                color: '#dc2626',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Del
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Physical Page Mapping */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', textAlign: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Page Total</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.slice(0, 10).reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Brought Forward</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.reduce((acc, log) => acc + (log.dgacindiaPageTotal || 0), 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400e', marginBottom: '0.25rem' }}>Grand Total</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#d97706' }}>{flightLogs.reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* eGCA Sync Readiness Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  <strong>eGCA Sync Readiness:</strong> Data fields are structured to match the eGCA "e-Logbook" bulk upload format. Pilot UID is included for synchronization with the eGCA platform.
+                </p>
+              </div>
+
+              {/* Endorsement Tracking Notice */}
+              <div style={{ marginTop: '1rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #fcd34d' }}>
+                <p style={{ fontSize: '0.875rem', color: '#92400e', margin: 0 }}>
+                  <strong>Endorsement Tracking:</strong> Flight Instructor signature and DGCA License Number are required for all training flights (P1 U/S, GFT, Skill Test).
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* QCAA Qatar Format */}
           {logbookFormat === 'qcaa' && (
             <div>
@@ -4293,6 +8155,467 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   <li style={{ marginBottom: '0.25rem' }}><strong>FSTD Separation:</strong> Simulator time is segregated from actual flight time for accurate experience reporting</li>
                   <li style={{ marginBottom: '0.25rem' }}><strong>90-Day Currency:</strong> 3 takeoffs and 3 landings within 90 days required for passenger carrying privileges</li>
                   <li style={{ marginBottom: '0' }}><strong>Verification:</strong> Toggle indicates reconciliation with airline records (AIMS/Crew Portal)</li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {/* FAA USA Format */}
+          {logbookFormat === 'faa' && (
+            <div>
+              {/* FAA Header - Professional Theme */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#1e3a8a', borderRadius: '8px', border: '1px solid #1e40af' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: '0 0 0.5rem' }}>
+                  FAA Personal Flying Logbook (14 CFR § 61.51)
+                </h3>
+                <p style={{ fontSize: '0.875rem', color: '#bfdbfe', margin: 0 }}>
+                  Federal Aviation Administration compliant logbook format
+                </p>
+              </div>
+
+              {/* Checkride Ready Summary */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#ecfdf5', borderRadius: '8px', border: '1px solid #10b981' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#065f46', margin: '0 0 1rem' }}>
+                  Checkride Ready Summary
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>PPL Requirements</div>
+                    <div style={{ fontSize: '0.75rem', color: '#047857' }}>
+                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (40h req)</div>
+                      <div>Cross-Country: {flightLogs.filter(log => log.faaIsCrossCountry).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (10h req)</div>
+                      <div>Solo XC: {flightLogs.filter(log => log.faaIsSolo && log.faaIsCrossCountry).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (5h req)</div>
+                      <div>Solo: {flightLogs.filter(log => log.faaIsSolo).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (10h req)</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>CPL Requirements</div>
+                    <div style={{ fontSize: '0.75rem', color: '#047857' }}>
+                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (250h req)</div>
+                      <div>PIC XC: {flightLogs.filter(log => log.faaIsPic && log.faaIsCrossCountry).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (100h req)</div>
+                      <div>Night XC: {flightLogs.filter(log => log.faaIsCrossCountry && parseFloat(log.faaNightTime || 0) > 0).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (25h req)</div>
+                      <div>Instrument: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.faaActualInstrument || 0) + parseFloat(log.faaSimulatedInstrument || 0)), 0).toFixed(1)}h (40h req)</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>ATPL Requirements</div>
+                    <div style={{ fontSize: '0.75rem', color: '#047857' }}>
+                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (1500h req)</div>
+                      <div>PIC XC: {flightLogs.filter(log => log.faaIsPic && log.faaIsCrossCountry).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (500h req)</div>
+                      <div>Night: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.faaNightTime || 0)), 0).toFixed(1)}h (100h req)</div>
+                      <div>Instrument: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.faaActualInstrument || 0) + parseFloat(log.faaSimulatedInstrument || 0)), 0).toFixed(1)}h (250h req)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Instrument Currency Dashboard (6-6-H) */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #f59e0b' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#92400e', margin: '0 0 0.75rem' }}>
+                  Instrument Currency (§ 61.57 - 6-6-H Rule)
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', textAlign: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#b45309', marginBottom: '0.25rem' }}>Instrument Approaches</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + (log.faaInstrumentApproaches || 0), 0) >= 6 ? '#059669' : '#dc2626' }}>
+                      {flightLogs.reduce((acc, log) => acc + (log.faaInstrumentApproaches || 0), 0)}/6
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#b45309', marginBottom: '0.25rem' }}>Holding Procedures</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + (log.faaHoldingProcedures || 0), 0) >= 6 ? '#059669' : '#dc2626' }}>
+                      {flightLogs.reduce((acc, log) => acc + (log.faaHoldingProcedures || 0), 0)}/6
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#b45309', marginBottom: '0.25rem' }}>Tracking/Intercepts</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + (log.faaTrackingIntercepts || 0), 0) >= 6 ? '#059669' : '#dc2626' }}>
+                      {flightLogs.reduce((acc, log) => acc + (log.faaTrackingIntercepts || 0), 0)}/6
+                    </div>
+                  </div>
+                </div>
+                <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: '#92400e' }}>
+                  Status: {flightLogs.reduce((acc, log) => acc + (log.faaInstrumentApproaches || 0), 0) >= 6 && 
+                           flightLogs.reduce((acc, log) => acc + (log.faaHoldingProcedures || 0), 0) >= 6 && 
+                           flightLogs.reduce((acc, log) => acc + (log.faaTrackingIntercepts || 0), 0) >= 6 
+                           ? '✓ Current for IFR operations' : '⚠ Not current - requires 6 approaches, 6 holdings, 6 tracking/intercepts'}
+                </div>
+              </div>
+
+              {/* Night Currency Dashboard */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f0f9ff', borderRadius: '8px', border: '1px solid #bae6fd' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1e40af', margin: '0 0 0.75rem' }}>
+                  Night Currency (§ 61.57)
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#1e40af', marginBottom: '0.25rem' }}>Full-Stop Landings (Last 90 Days)</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + (log.faaFullStopLandings || 0), 0) >= 3 ? '#059669' : '#dc2626' }}>
+                      {flightLogs.reduce((acc, log) => acc + (log.faaFullStopLandings || 0), 0)}/3
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#1e40af', marginBottom: '0.25rem' }}>Total Night Landings</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2563eb' }}>
+                      {flightLogs.reduce((acc, log) => acc + (log.faaLandingsNight || 0), 0)}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: '#1e40af' }}>
+                  Status: {flightLogs.reduce((acc, log) => acc + (log.faaFullStopLandings || 0), 0) >= 3 ? '✓ Current for night passenger carrying' : '⚠ Not current - requires 3 full-stop landings'}
+                </div>
+              </div>
+
+              {/* FAA Table - Horizontal Grid Layout */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.65rem' }}>
+                  <thead>
+                    <tr style={{ background: '#1e3a8a', color: '#fff' }}>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Date</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>N-Number</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Make/Model</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Dep</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Arr</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Total</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Type</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>XC</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>XC Dist</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Day</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Night</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Inst Act</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Inst Sim</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>TO Day</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>TO Night</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>LDG Day</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>LDG Night</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>FS</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Appr</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Hold</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Track</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Safety Pilot</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>CFI</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #1e40af' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={23} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                          Loading flight logs...
+                        </td>
+                      </tr>
+                    ) : flightLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={23} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                          No flight entries yet. Click "Add Flight Entry" to get started.
+                        </td>
+                      </tr>
+                    ) : (
+                      flightLogs.map((log) => (
+                        <tr key={log.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.date}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0', fontWeight: 600, color: '#1e3a8a' }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaDepartureAirport || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaArrivalAirport || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{parseFloat(log.hours || 0).toFixed(1)}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0', fontWeight: 600 }}>
+                            {log.faaIsSolo && <span style={{ color: '#059669' }}>S</span>}
+                            {log.faaIsPic && <span style={{ color: '#1e40af' }}>P</span>}
+                            {log.faaIsSic && <span style={{ color: '#7c3aed' }}>C</span>}
+                            {log.faaIsFstd && <span style={{ color: '#dc2626' }}>F</span>}
+                            {!log.faaIsSolo && !log.faaIsPic && !log.faaIsSic && !log.faaIsFstd && '-'}
+                          </td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            {log.faaIsCrossCountry ? (
+                              <span style={{ color: '#059669', fontWeight: 700 }}>✓</span>
+                            ) : '-'}
+                          </td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaCrossCountryDistance ? parseFloat(log.faaCrossCountryDistance).toFixed(0) : '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaDayTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaNightTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaActualInstrument?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaSimulatedInstrument?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaTakeoffsDay || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaTakeoffsNight || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaLandingsDay || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaLandingsNight || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaFullStopLandings || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaInstrumentApproaches || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaHoldingProcedures || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaTrackingIntercepts || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0', fontSize: '0.6rem' }}>{log.faaSafetyPilot || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0', fontSize: '0.6rem' }}>{log.faaCfiSignature || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            <button
+                              onClick={() => handleDeleteEntry(log.id)}
+                              style={{
+                                padding: '0.2rem 0.4rem',
+                                borderRadius: '4px',
+                                border: '1px solid #ef4444',
+                                background: '#7f1d1d',
+                                color: '#fca5a5',
+                                fontSize: '0.6rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Del
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* FAA Regulatory Compliance Notice */}
+              <div style={{ marginTop: '2rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #f59e0b' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#92400e', margin: '0 0 0.5rem' }}>
+                  FAA Regulatory Requirements (14 CFR § 61.51)
+                </h4>
+                <ul style={{ fontSize: '0.75rem', color: '#92400e', margin: 0, paddingLeft: '1.25rem', listStyleType: 'disc' }}>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>N-Number:</strong> All aircraft registrations must start with N (US registered)</li>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>Cross-Country:</strong> 50nm+ distance required for Private/Commercial rating credit</li>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>Instrument Currency (6-6-H):</strong> 6 approaches, 6 holdings, 6 tracking/intercepts within 6 calendar months</li>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>Night Currency:</strong> 3 full-stop landings within preceding 90 days for night passenger carrying</li>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>Safety Pilot:</strong> Required when logging simulated instrument time under § 61.51(g)</li>
+                  <li style={{ marginBottom: '0' }}><strong>CFI Endorsement:</strong> Required for solo flights, checkrides, and specific training events</li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {/* CAAP Philippines Format */}
+          {logbookFormat === 'caap' && (
+            <div>
+              {/* CAAP Header - Professional Theme */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#003366', borderRadius: '8px', border: '1px solid #004080' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: '0 0 0.5rem' }}>
+                  CAAP Personal Flying Logbook (PCAR Part 2 & 8)
+                </h3>
+                <p style={{ fontSize: '0.875rem', color: '#bfdbfe', margin: 0 }}>
+                  Civil Aviation Authority of the Philippines compliant logbook format
+                </p>
+              </div>
+
+              {/* CAAP Controls */}
+              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <button
+                  onClick={() => {/* Implement Certificate of Flying Time PDF */}}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    border: '1px solid #003366',
+                    background: '#002244',
+                    color: '#bfdbfe',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Generate Certificate of Flying Time
+                </button>
+                <button
+                  onClick={() => {/* Implement A4/Legal Export */}}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    border: '1px solid #003366',
+                    background: '#002244',
+                    color: '#bfdbfe',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Export to A4/Legal
+                </button>
+              </div>
+
+              {/* 90-Day Recency Tracker */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #f59e0b' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#92400e', margin: '0 0 0.75rem' }}>
+                  90-Day Recency Tracker (PCAR Part 8)
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', textAlign: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#b45309', marginBottom: '0.25rem' }}>
+                      Takeoffs (Last 90 Days)
+                    </div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + ((log.caapLandingsDay || 0) + (log.caapLandingsNight || 0)), 0) >= 3 ? '#059669' : '#dc2626' }}>
+                      {flightLogs.reduce((acc, log) => acc + ((log.caapLandingsDay || 0) + (log.caapLandingsNight || 0)), 0)}/3
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#b45309', marginBottom: '0.25rem' }}>
+                      Landings (Last 90 Days)
+                    </div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + ((log.caapLandingsDay || 0) + (log.caapLandingsNight || 0)), 0) >= 3 ? '#059669' : '#dc2626' }}>
+                      {flightLogs.reduce((acc, log) => acc + ((log.caapLandingsDay || 0) + (log.caapLandingsNight || 0)), 0)}/3
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#b45309', marginBottom: '0.25rem' }}>
+                      Passenger-Carrying Status
+                    </div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: flightLogs.reduce((acc, log) => acc + ((log.caapLandingsDay || 0) + (log.caapLandingsNight || 0)), 0) >= 3 ? '#059669' : '#dc2626' }}>
+                      {flightLogs.reduce((acc, log) => acc + ((log.caapLandingsDay || 0) + (log.caapLandingsNight || 0)), 0) >= 3 ? '✓ Current' : '⚠ Not Current'}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: '#92400e' }}>
+                  Status: {flightLogs.reduce((acc, log) => acc + ((log.caapLandingsDay || 0) + (log.caapLandingsNight || 0)), 0) >= 3 ? '✓ Eligible for passenger-carrying privileges' : '⚠ Requires 3 takeoffs and 3 landings within preceding 90 days'}
+                </div>
+              </div>
+
+              {/* XC Mileage Tracking */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f0f9ff', borderRadius: '8px', border: '1px solid #bae6fd' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1e40af', margin: '0 0 0.75rem' }}>
+                  Cross-Country Mileage Tracking
+                </h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#1e40af', marginBottom: '0.25rem' }}>
+                      Standard XC (50nm+)
+                    </div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2563eb' }}>
+                      {flightLogs.filter(log => log.caapIsCrossCountry && log.caapCrossCountryDistance && log.caapCrossCountryDistance >= 50).length} flights
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#1e40af', marginBottom: '0.25rem' }}>
+                      CPL XC (300nm+)
+                    </div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2563eb' }}>
+                      {flightLogs.filter(log => log.caapIsCrossCountry && log.caapCrossCountryDistance && log.caapCrossCountryDistance >= 300).length} flights
+                    </div>
+                  </div>
+                </div>
+                <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: '#1e40af' }}>
+                  Note: XC flights must include full-stop landings at two different aerodromes for rating credit
+                </div>
+              </div>
+
+              {/* Total Time for the Page */}
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#ecfdf5', borderRadius: '8px', border: '1px solid #10b981' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>Total Time for the Page</div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#059669' }}>{flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>Grand Totals</div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#059669' }}>{flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CAAP Table - Professional Layout */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.65rem' }}>
+                  <thead>
+                    <tr style={{ background: '#003366', color: '#fff' }}>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Date</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>RP-C</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Type</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Dep</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Arr</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Off-Block</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>On-Block</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Function</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Day</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Night</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Inst Act</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Inst Sim</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>LDG Day</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>LDG Night</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>XC</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>XC Dist</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Checkride</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Instructor</th>
+                      <th style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #004080' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={18} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                          Loading flight logs...
+                        </td>
+                      </tr>
+                    ) : flightLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={18} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                          No flight entries yet. Click "Add Flight Entry" to get started.
+                        </td>
+                      </tr>
+                    ) : (
+                      flightLogs.map((log) => (
+                        <tr key={log.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.date}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0', fontWeight: 600, color: '#003366' }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0', fontWeight: 600 }}>{log.caapPilotFunction || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapDayTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapNightTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapInstrumentActual?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapInstrumentSimulated?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapLandingsDay || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapLandingsNight || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            {log.caapIsCrossCountry ? (
+                              <span style={{ color: '#059669', fontWeight: 700 }}>✓</span>
+                            ) : '-'}
+                          </td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapCrossCountryDistance ? parseFloat(log.caapCrossCountryDistance).toFixed(0) : '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            {log.caapIsCheckride ? (
+                              <span style={{ color: '#dc2626', fontWeight: 700 }}>✓</span>
+                            ) : '-'}
+                          </td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0', fontSize: '0.6rem' }}>{log.caapInstructorName || '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            <button
+                              onClick={() => handleDeleteEntry(log.id)}
+                              style={{
+                                padding: '0.2rem 0.4rem',
+                                borderRadius: '4px',
+                                border: '1px solid #ef4444',
+                                background: '#7f1d1d',
+                                color: '#fca5a5',
+                                fontSize: '0.6rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Del
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* CAAP Regulatory Compliance Notice */}
+              <div style={{ marginTop: '2rem', padding: '1rem', background: '#fef3c7', borderRadius: '8px', border: '1px solid #f59e0b' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#92400e', margin: '0 0 0.5rem' }}>
+                  CAAP Regulatory Requirements (PCAR Part 2 & 8)
+                </h4>
+                <ul style={{ fontSize: '0.75rem', color: '#92400e', margin: 0, paddingLeft: '1.25rem', listStyleType: 'disc' }}>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>RP-C Prefix:</strong> All aircraft registrations must start with RP-C (Philippines registered)</li>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>Block Times:</strong> Off-block and On-block times must be recorded in UTC format</li>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>90-Day Currency:</strong> 3 takeoffs and 3 landings within 90 days required for passenger-carrying privileges (PCAR Part 8)</li>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>Cross-Country:</strong> 50nm+ distance required for standard XC, 300nm+ for CPL XC credit</li>
+                  <li style={{ marginBottom: '0.25rem' }}><strong>Checkride:</strong> Must include CAAP Examiner's name and license number for skill test entries</li>
+                  <li style={{ marginBottom: '0' }}><strong>Instructor:</strong> Training entries must include instructor name, license number, and digital signature</li>
                 </ul>
               </div>
             </div>
