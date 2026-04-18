@@ -130,7 +130,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         setError('');
         try {
             const authUrl = generateGoogleAuthUrl({
-                redirectUri: `${window.location.origin}/auth/callback`,
+                redirectUri: `${window.location.origin}/callback`,
                 prompt: 'consent',
             });
             // Redirect to Google's OAuth authorization page

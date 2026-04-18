@@ -1185,7 +1185,7 @@ root.render(
     <AuthProvider>
       <ToastProvider>
         <Routes>
-          <Route path="/auth/callback" element={<OAuthCallback />} />
+          <Route path="/callback" element={<OAuthCallback />} />
           <Route path="/*" element={
             <>
               <App />
