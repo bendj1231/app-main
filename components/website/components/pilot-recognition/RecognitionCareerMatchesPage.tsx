@@ -101,9 +101,9 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                     </div>
 
                     {/* Filters and Score */}
-                    <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', marginBottom: '0.5rem' }}>
                         {/* Filters on left */}
-                        <div style={{ display: 'flex', gap: '1rem' }}>
+                        <div style={{ position: 'absolute', left: '1.5rem', display: 'flex', flexDirection: 'row', gap: '1rem' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '0.5rem', background: 'rgba(239, 68, 68, 0.15)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', transition: 'all 0.3s ease' }}>
                                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444', boxShadow: '0 0 8px rgba(239, 68, 68, 0.5)' }}></div>
                                 <span style={{ fontSize: '0.7rem', color: '#ef4444', fontWeight: 600 }}>Low Match</span>
@@ -122,35 +122,35 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                             </div>
                         </div>
 
-                        {/* Swipe instruction and Overall Profile Score on right */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <p style={{ 
-                                fontSize: '0.875rem', 
-                                color: '#94a3b8', 
-                                fontStyle: 'italic',
-                                margin: 0
-                            }}>
-                                Swipe left and right or click to select a card
+                        {/* Swipe instruction centered */}
+                        <p style={{ 
+                            fontSize: '0.875rem', 
+                            color: '#94a3b8', 
+                            fontStyle: 'italic',
+                            margin: 0
+                        }}>
+                            Swipe left and right or click to select a card
+                        </p>
+
+                        {/* Overall Profile Score on right */}
+                        <div style={{ position: 'absolute', right: '1.5rem', background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(241,245,249,0.8))', padding: '0.75rem 1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.5)', boxShadow: '0 4px 12px rgba(15,23,42,0.1)', cursor: 'help', minWidth: '220px', textAlign: 'right' }}>
+                            <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.125rem' }}>
+                                Overall Profile Score
                             </p>
-                            <div style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(241,245,249,0.8))', padding: '0.75rem 1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.5)', boxShadow: '0 4px 12px rgba(15,23,42,0.1)', cursor: 'help', minWidth: '220px', textAlign: 'right' }}>
-                                <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.125rem' }}>
-                                    Overall Profile Score
-                                </p>
-                                <div style={{ fontSize: '0.6rem', color: '#64748b' }}>
-                                    <div style={{ marginBottom: '0.0625rem' }}>
-                                        Flight Hours: 200 <span style={{ fontSize: '0.6rem', fontWeight: 500, color: '#f59e0b' }}>(unverified)</span>
-                                    </div>
-                                    <div style={{ marginBottom: '0.0625rem' }}>
-                                        Recency: N/A
-                                    </div>
-                                    <div>
-                                        Recognition: 0
-                                    </div>
+                            <div style={{ fontSize: '0.6rem', color: '#64748b' }}>
+                                <div style={{ marginBottom: '0.0625rem' }}>
+                                    Flight Hours: 200 <span style={{ fontSize: '0.6rem', fontWeight: 500, color: '#f59e0b' }}>(unverified)</span>
                                 </div>
-                                <h3 style={{ margin: 0, fontSize: '2rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#0f172a', lineHeight: 1 }}>
-                                    0
-                                </h3>
+                                <div style={{ marginBottom: '0.0625rem' }}>
+                                    Recency: N/A
+                                </div>
+                                <div>
+                                    Recognition: 0
+                                </div>
                             </div>
+                            <h3 style={{ margin: 0, fontSize: '2rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#0f172a', lineHeight: 1 }}>
+                                0
+                            </h3>
                         </div>
                     </div>
 
