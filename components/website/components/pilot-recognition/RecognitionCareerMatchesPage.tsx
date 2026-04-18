@@ -101,41 +101,56 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                     </div>
 
                     {/* Filters and Score */}
-                    <div className="flex justify-center items-center gap-4 mb-6 flex-wrap">
-                        <div className="flex items-center gap-2 px-4 py-2 bg-red-50 border border-red-200 rounded-lg">
-                            <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                            <span className="text-sm font-medium text-red-600">Low Match</span>
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-lg">
-                            <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-                            <span className="text-sm font-medium text-amber-600">Middle Match</span>
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-lg">
-                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                            <span className="text-sm font-medium text-green-600">High Match</span>
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg">
-                            <div className="w-2 h-2 rounded-full bg-slate-400"></div>
-                            <span className="text-sm font-medium text-slate-600">All</span>
-                        </div>
-                    </div>
-
-                    <p className="text-center text-sm text-slate-400 italic mb-4">
-                        Swipe left and right or click to select a card
-                    </p>
-
-                    {/* Overall Profile Score */}
-                    <div className="flex justify-end mb-6">
-                        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-right">
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                Overall Profile Score
-                            </p>
-                            <div className="text-xs text-slate-600 mb-1">
-                                <div>Flight Hours: 200 <span className="font-bold text-amber-600">(unverified)</span></div>
-                                <div>Recency: N/A</div>
-                                <div>Recognition: 0</div>
+                    <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        {/* Filters on left */}
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '0.5rem', background: 'rgba(239, 68, 68, 0.15)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', transition: 'all 0.3s ease' }}>
+                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444', boxShadow: '0 0 8px rgba(239, 68, 68, 0.5)' }}></div>
+                                <span style={{ fontSize: '0.7rem', color: '#ef4444', fontWeight: 600 }}>Low Match</span>
                             </div>
-                            <div className="text-4xl font-serif text-slate-900">0</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '0.5rem', background: 'rgba(245, 158, 11, 0.15)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(245, 158, 11, 0.3)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', transition: 'all 0.3s ease' }}>
+                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b', boxShadow: '0 0 8px rgba(245, 158, 11, 0.5)' }}></div>
+                                <span style={{ fontSize: '0.7rem', color: '#f59e0b', fontWeight: 600 }}>Middle Match</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '0.5rem', background: 'rgba(34, 197, 94, 0.15)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(34, 197, 94, 0.3)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', transition: 'all 0.3s ease' }}>
+                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px rgba(34, 197, 94, 0.5)' }}></div>
+                                <span style={{ fontSize: '0.7rem', color: '#22c55e', fontWeight: 600 }}>High Match</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '0.5rem', background: 'rgba(148, 163, 184, 0.15)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(148, 163, 184, 0.3)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', transition: 'all 0.3s ease' }}>
+                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#94a3b8', boxShadow: '0 0 8px rgba(148, 163, 184, 0.5)' }}></div>
+                                <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 600 }}>All</span>
+                            </div>
+                        </div>
+
+                        {/* Swipe instruction and Overall Profile Score on right */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <p style={{ 
+                                fontSize: '0.875rem', 
+                                color: '#94a3b8', 
+                                fontStyle: 'italic',
+                                margin: 0
+                            }}>
+                                Swipe left and right or click to select a card
+                            </p>
+                            <div style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(241,245,249,0.8))', padding: '0.75rem 1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.5)', boxShadow: '0 4px 12px rgba(15,23,42,0.1)', cursor: 'help', minWidth: '220px', textAlign: 'right' }}>
+                                <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.125rem' }}>
+                                    Overall Profile Score
+                                </p>
+                                <div style={{ fontSize: '0.6rem', color: '#64748b' }}>
+                                    <div style={{ marginBottom: '0.0625rem' }}>
+                                        Flight Hours: 200 <span style={{ fontSize: '0.6rem', fontWeight: 500, color: '#f59e0b' }}>(unverified)</span>
+                                    </div>
+                                    <div style={{ marginBottom: '0.0625rem' }}>
+                                        Recency: N/A
+                                    </div>
+                                    <div>
+                                        Recognition: 0
+                                    </div>
+                                </div>
+                                <h3 style={{ margin: 0, fontSize: '2rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#0f172a', lineHeight: 1 }}>
+                                    0
+                                </h3>
+                            </div>
                         </div>
                     </div>
 
