@@ -116,9 +116,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                             Strategic Career Guidance
                         </p>
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
-                            Airline Expectations & Requirements
-                            <br />
-                            <span className="text-3xl md:text-5xl">Search Engine</span>
+                            Airline Requirements Search
                         </h1>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
                             Understanding what airlines really look for in pilot candidates—beyond the 1,500-hour requirement.
