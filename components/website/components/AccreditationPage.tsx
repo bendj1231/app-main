@@ -20,19 +20,19 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
     const partnershipTiles = [
         {
             title: "Airbus Head of Training",
-            desc: "Supported by Airbus Head of Training in EBT CBTA, ensuring alignment with the highest international standards in evidence-based training and competency-based training and assessment.",
+            desc: "Supported by Airbus Head of Training in EBT CBTA, ensuring alignment with the highest international standards in evidence-based training and competency-based training and assessment. Our partnership provides direct access to <strong>AIRBUS 9 core competencies</strong> framework, ensuring that verified competencies translate directly to operational readiness for leading manufacturers worldwide.",
         },
         {
             title: "Etihad Cadet Program",
-            desc: "Strategic partnership with Etihad Cadet Program and Head of Training, providing direct access to flagship carrier expectations and training standards.",
+            desc: "Strategic partnership with Etihad Cadet Program and Head of Training, providing direct access to flagship carrier expectations and training standards. This collaboration ensures our pilots are prepared for the exacting requirements of major carriers, with pathway matching that aligns verified competencies with <strong>cadet program opportunities</strong> and direct airline recruitment channels.",
         },
         {
             title: "Verified Competency Database",
-            desc: "Access to verified data on pilot professional competencies through our PilotRecognition platform, including EBT CBTA AIRBUS 9 core competencies and behavioral assessments.",
+            desc: "Access to verified data on pilot professional competencies through our PilotRecognition platform, including <strong>EBT CBTA AIRBUS 9 core competencies</strong> and behavioral assessments. Our <strong>blockchain-verifiable certifications</strong> provide operators with confidence in pilot credentials, while our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> ensures standardized presentation across global recruitment systems.",
         },
         {
             title: "Direct Industry Connections",
-            desc: "Platform access for operators to post jobs and airline expectations, connecting directly to 5000+ pilots seeking opportunities in the aviation industry.",
+            desc: "Platform access for operators to post jobs and airline expectations, connecting directly to 5000+ pilots seeking opportunities in the aviation industry. Through our <strong>Pilot Terminal</strong> social network and <strong>enterprise integration</strong>, operators can access candidates with verified competencies, recognition scores, and pathway interests, creating a transparent and efficient recruitment marketplace.",
         }
     ];
 
@@ -52,9 +52,12 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
                             RECOGNITION | ASSURANCE | SUPPORT
                         </p>
-                        <h1 className="text-4xl md:text-7xl font-serif text-slate-900 leading-tight mb-8">
+                        <h1 className="text-4xl md:text-7xl font-serif text-slate-900 leading-tight mb-4">
                             Accreditation & Recognition
                         </h1>
+                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                            Industry Alignment | Global Standards | Professional Excellence
+                        </span>
                         <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
                             WingMentor is the aviation industry’s first Competency Assurance Network. We are connecting all pilots,
                             whether you are a low-timer searching for pathways or a seasoned captain seeking new opportunities.
@@ -67,20 +70,25 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
             <div className="py-12 px-6 max-w-6xl mx-auto space-y-24">
 
                 {/* Row 1: Etihad Museum Milestone (Text Left, Image Right) - Now at Top */}
+                <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                    <RevealOnScroll>
+                        <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                            HISTORIC EVENT
+                        </p>
+                        <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                            The First Aviation Career Fair at Etihad Museum
+                        </h2>
+                    </RevealOnScroll>
+                </div>
+
                 <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
                     <div className="md:w-1/2">
                         <RevealOnScroll>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
-                                HISTORIC EVENT
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                                The First Aviation Career Fair <br />at Etihad Museum
-                            </h2>
                             <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                                On <strong>January 21st</strong>, WingMentor marked a historic milestone by attending the first-ever aviation career fair hosted at the prestigious <strong>Etihad Museum</strong> in the UAE.
+                                On <strong>January 21st</strong>, WingMentor marked a historic milestone by attending the first-ever aviation career fair hosted at the prestigious <strong>Etihad Museum</strong> in the UAE. This event brought together leading aviation bodies, airlines, and training providers, creating a unique platform for direct engagement between aspiring pilots and industry leaders.
                             </p>
                             <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
-                                Representing the next generation of flight training excellence, we stood alongside industry pioneers to bridge the gap between education and employment. This event was not just a career fair; it was a verification of our mission to ensure that every pilot graduating into the market is recognized, assured, and supported by the world's leading aviation bodies.
+                                Representing the next generation of flight training excellence, we stood alongside industry pioneers to bridge the gap between education and employment. This event was not just a career fair; it was a verification of our mission to ensure that every pilot graduating into the market is recognized, assured, and supported by the world's leading aviation bodies. Our presence at the Etihad Museum demonstrated our commitment to <strong>EBT CBTA-aligned assessment</strong> and competency-based recognition.
                             </p>
                             <div className="p-6 bg-blue-50/50 rounded-2xl border border-blue-100/50 max-w-lg">
                                 <p className="text-blue-900 text-sm font-semibold mb-1">Impact & Vision</p>
@@ -105,19 +113,24 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 </div>
 
                 {/* Row 2: Industry Stewardship (Text Only) */}
-                <div className="max-w-4xl mx-auto">
+                <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                     <RevealOnScroll>
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
+                        <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
                             Stewardship
                         </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            The Essential Go-Between <br />for Pilots & Industry
+                        <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                            The Essential Go-Between for Pilots & Industry
                         </h2>
+                    </RevealOnScroll>
+                </div>
+
+                <div className="max-w-4xl mx-auto">
+                    <RevealOnScroll>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            WingMentor is not a training organization; we are the essential bridge connecting pilots and the aviation industry, linking the world's leading airline bodies with elite talent. Our proprietary pilot database is rigorously vetted and screened to ensure that every pilot within our network is seen, recognized, and fully understands the critical expectations of the modern airline industry.
+                            WingMentor is not a training organization; we are the essential bridge connecting pilots and the aviation industry, linking the world's leading airline bodies with elite talent. Our proprietary pilot database is rigorously vetted and screened to ensure that every pilot within our network is seen, recognized, and fully understands the critical expectations of the modern airline industry. Through our <strong>PilotRecognition platform</strong>, we provide <strong>ATS-compatible ATLAS Aviation CV formatting</strong> that presents pilot credentials in the standardized format preferred by major airlines worldwide.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            By serving as a unifying standard, we bridge the gap between individual skill and institutional requirements, creating a universally recognized benchmark of competency. Our programs are aligned with <strong>AIRBUS 9 core competencies</strong> and supported by industry leaders, ensuring that verified competencies translate directly to operational readiness.
+                            By serving as a unifying standard, we bridge the gap between individual skill and institutional requirements, creating a universally recognized benchmark of competency. Our programs are aligned with <strong>AIRBUS 9 core competencies</strong> and supported by industry leaders, ensuring that verified competencies translate directly to operational readiness. Our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> provides assurance that our recognition framework meets the exacting standards required by leading manufacturers and operators.
                         </p>
 
                         <div className="flex items-start gap-4 p-6 bg-slate-50 rounded-2xl border border-slate-100">
@@ -130,20 +143,25 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 </div>
 
                 {/* Row 3: Global Standards (Text Only) */}
-                <div className="max-w-4xl mx-auto pb-12">
+                <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                     <RevealOnScroll>
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 text-center">
+                        <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
                             Global Standards
                         </p>
-                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-10 leading-tight text-center">
-                            Excellence in <br />Global Industry Connection
+                        <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                            Excellence in Global Industry Connection
                         </h2>
+                    </RevealOnScroll>
+                </div>
+
+                <div className="max-w-4xl mx-auto pb-12">
+                    <RevealOnScroll>
                         <div className="space-y-6 mb-12">
                             <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans text-center">
-                                WingMentor is not a training organization; we are the essential "go-between" for pilots and the aviation industry, connecting the world's leading bodies with elite talent.
+                                WingMentor is not a training organization; we are the essential "go-between" for pilots and the aviation industry, connecting the world's leading bodies with elite talent. Our platform provides <strong>AI-powered pathway matching</strong> that analyzes pilot profiles against operator requirements, ensuring that connections lead to meaningful career opportunities.
                             </p>
                             <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans text-center">
-                                Our proprietary pilot database is rigorously vetted and screened to ensure that every pilot within our network is seen, recognized, and fully understands the critical expectations of the modern airline industry. By serving as a unifying standard, we bridge the gap between individual skill and institutional requirements, creating a universally recognized benchmark of competency.
+                                Our proprietary pilot database is rigorously vetted and screened to ensure that every pilot within our network is seen, recognized, and fully understands the critical expectations of the modern airline industry. By serving as a unifying standard, we bridge the gap between individual skill and institutional requirements, creating a universally recognized benchmark of competency through our <strong>blockchain-verifiable certifications</strong> and <strong>EBT-aligned assessments</strong>.
                             </p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -167,15 +185,20 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 </div>
 
                 {/* Row 4: Guardians of the Profession */}
+                <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                    <RevealOnScroll>
+                        <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                            Industry Stewardship
+                        </p>
+                        <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                            Guardians of the Profession
+                        </h2>
+                    </RevealOnScroll>
+                </div>
+
                 <div className="max-w-6xl mx-auto pb-12">
                     <RevealOnScroll>
                         <div className="text-center mb-12">
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
-                                Industry Stewardship
-                            </p>
-                            <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">
-                                Guardians of the Profession
-                            </h2>
                             <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans max-w-3xl mx-auto">
                                 We view our role as more than a service provider. We are custodians of the pilot profession, dedicated to raising safety standards, advocating for aircrew, and preparing the next generation for a sustainable future.
                             </p>
@@ -190,7 +213,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                                 <h3 className="text-lg font-bold text-slate-900 mb-2">ELEVATING STANDARDS</h3>
                                 <p className="text-sm font-bold text-blue-700 mb-4">EBT & Safety Alignment</p>
                                 <p className="text-sm text-slate-600 leading-relaxed">
-                                    The era of "box-ticking" training is over. We champion Evidence-Based Training (EBT) and Competency-Based Training & Assessment (CBTA) as the only way forward for global aviation safety. By integrating these methodologies into our Foundational Program, we ensure that even low-time pilots are developing the resilience and decision-making skills required by modern flight decks.
+                                    The era of "box-ticking" training is over. We champion Evidence-Based Training (EBT) and Competency-Based Training & Assessment (CBTA) as the only way forward for global aviation safety. By integrating these methodologies into our Foundational Program through our partnership with <strong>Airbus Head of Training</strong>, we ensure that even low-time pilots are developing the resilience and decision-making skills required by modern flight decks.
                                 </p>
                             </div>
 
@@ -202,7 +225,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                                 <h3 className="text-lg font-bold text-slate-900 mb-2">THE VOICE OF THE PILOT</h3>
                                 <p className="text-sm font-bold text-blue-700 mb-4">Pilot Advocacy</p>
                                 <p className="text-sm text-slate-600 leading-relaxed">
-                                    In a profit-driven industry, the voice of the pilot can be drowned out. We serve as an independent advocate, representing the interests of our members to regulators, airlines, and flight schools. We push for fair hiring practices, transparent career pathways, and mental health support, ensuring that the human element remains at the center of aviation.
+                                    In a profit-driven industry, the voice of the pilot can be drowned out. We serve as an independent advocate, representing the interests of our members to regulators, airlines, and flight schools. Through our <strong>Pilot Terminal</strong> social network and <strong>enterprise integration</strong>, we push for fair hiring practices, transparent career pathways, and mental health support, ensuring that the human element remains at the center of aviation. Our <strong>AI-powered pathway matching</strong> system provides objective competency assessment, reducing bias in recruitment decisions.
                                 </p>
                             </div>
 
@@ -214,7 +237,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                                 <h3 className="text-lg font-bold text-slate-900 mb-2">FUTURE READY</h3>
                                 <p className="text-sm font-bold text-blue-700 mb-4">Vision 2030</p>
                                 <p className="text-sm text-slate-600 leading-relaxed">
-                                    Aviation is changing. From sustainable fuels to single-pilot operations and urban air mobility, we are preparing our pilots for the flight deck of tomorrow. Our stewardship involves anticipating these shifts and updating our curriculum continuously, ensuring a WingMentor pilot is always ahead of the curve.
+                                    Aviation is changing. From sustainable fuels to single-pilot operations and urban air mobility, we are preparing our pilots for the flight deck of tomorrow. Our stewardship involves anticipating these shifts and updating our competency frameworks continuously. Through our partnership with <strong>Archer Aviation</strong> and other eVTOL leaders, we ensure a WingMentor pilot is always ahead of the curve, ready for emerging pathways in electric aviation, autonomous systems, and sustainable operations.
                                 </p>
                             </div>
                         </div>
@@ -223,11 +246,18 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
             </div>
 
             {/* Strategic Partnerships Grid - Matches "Pillars of Professional Growth" */}
-            <div className="py-24 px-6 max-w-7xl mx-auto border-t border-slate-50 mt-12">
-                <div className="text-center mb-16">
-                    <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-4">Collaboration</p>
-                    <h2 className="text-3xl md:text-5xl font-serif text-slate-900">Pilot Recognition</h2>
-                </div>
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Collaboration
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Pilot Recognition
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
+            <div className="py-12 px-6 max-w-7xl mx-auto border-t border-slate-50">
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {partnershipTiles.map((tile, idx) => (
