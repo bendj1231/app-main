@@ -946,7 +946,7 @@ const App = () => {
           />
         )}
         {currentPage === 'programs' && (
-          <ProgramsPage
+          <ProgramsPathwaysPage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
             onLogin={navigateToPortal}
@@ -1257,7 +1257,7 @@ root.render(
           <Route path="/airline-expectations" element={<AirlineExpectationsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/discover-pathways" element={<PathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
-          <Route path="/programs" element={<ProgramsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/programs" element={<ProgramsPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/transition-program" element={<TransitionProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/airbus-aligned-ebt-cbta-programs" element={<EBTCBTAPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
