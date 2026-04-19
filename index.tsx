@@ -715,6 +715,14 @@ const App = () => {
           />
         )}
 
+        {currentPage === 'digital-logbook-directory' && (
+          <DigitalLogbookDirectoryPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+
         {currentPage === 'air-taxi-pathways' && (
           <AirTaxiPathwaysPage
             onBack={() => navigateTo('home')}
@@ -962,7 +970,7 @@ const App = () => {
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
         'pilot-recognition', 'pilot-recognition-profile', 'recognition-career-matches', 'air-taxi-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
-        'pilot-gap', 'website'
+        'pilot-gap', 'website', 'digital-logbook-directory'
       ].includes(currentPage) && (
           <div className={`layout-wrapper ${loading ? 'content-loading' : 'content-ready'}`}>
             {!loading && (
