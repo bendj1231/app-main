@@ -835,7 +835,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 'verification': 'pilot-recognition',
                 'w1000-suite': 'w1000-suite',
                 'expectations': 'airline-expectations',
-                'examination': 'pilot-recognition',
+                'examination': 'examination-results-directory',
                 'atpl-game': 'w1000-suite',
                 'cv-builder': 'pilot-recognition',
                 'community': 'become-member',

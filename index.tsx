@@ -715,6 +715,14 @@ const App = () => {
           />
         )}
 
+        {currentPage === 'examination-results-directory' && (
+          <ExaminationResultsDirectoryPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+
         {currentPage === 'digital-logbook-directory' && (
           <DigitalLogbookDirectoryPage
             onBack={() => navigateTo('home')}
@@ -970,7 +978,7 @@ const App = () => {
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
         'pilot-recognition', 'pilot-recognition-profile', 'recognition-career-matches', 'air-taxi-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
-        'pilot-gap', 'website', 'digital-logbook-directory'
+        'pilot-gap', 'website', 'digital-logbook-directory', 'examination-results-directory'
       ].includes(currentPage) && (
           <div className={`layout-wrapper ${loading ? 'content-loading' : 'content-ready'}`}>
             {!loading && (
@@ -1282,6 +1290,7 @@ root.render(
           <Route path="/contact-support" element={<ContactSupportPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/download" element={<DownloadPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/examination-results" element={<ExaminationResultsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/examination-results-directory" element={<ExaminationResultsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/digital-logbook-directory" element={<DigitalLogbookDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/settings" element={<SettingsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/*" element={

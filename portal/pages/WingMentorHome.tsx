@@ -20,6 +20,7 @@ import { WingMentorNetworkPage } from './WingMentorNetworkPage';
 import LogbookPage from './LogbookPage';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { TermsAndConditionsPage } from './TermsAndConditionsPage';
+import ExaminationResultsDirectoryPage from '../../components/website/components/ExaminationResultsDirectoryPage';
 import AtlasResumePage from './AtlasResumePage';
 import PrintableResumePage from './PrintableResumePage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -261,6 +262,7 @@ export type MainView =
   | 'private-sector'
   | 'pilot-licensure-experience'
   | 'examination-results'
+  | 'examination-results-directory'
   | 'logbook'
   | 'digital-logbook'
   | 'digital-logbook-directory'
@@ -3937,6 +3939,8 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         );
       case 'examination-results':
         return <ExaminationResultsPage onBack={() => setMainView('recognition')} userProfile={userProfile} />;
+      case 'examination-results-directory':
+        return <ExaminationResultsDirectoryPage onBack={() => setMainView('programs')} onNavigate={(page) => setMainView(page as MainView)} onLogin={() => {}} />;
       case 'pilot-portfolio':
         return (
           <DashboardPage 
