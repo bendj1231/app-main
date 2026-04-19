@@ -722,80 +722,74 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 </p>
             </div>
 
-            {/* Information Gate Container */}
-            <div className="relative">
-                {/* Gated Sections (Blurred) */}
-                <div className="blur-[12px] opacity-20 pointer-events-none select-none transition-all duration-700">
-                    {/* Core Expectations Grid */}
-                    <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
-                        <RevealOnScroll>
-                            <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                                Assessment Framework
-                            </p>
-                            <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                                The Four Pillars of Assessment
-                            </h2>
-                        </RevealOnScroll>
-                    </div>
+            {/* Core Expectations Grid */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Assessment Framework
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        The Four Pillars of Assessment
+                    </h2>
+                </RevealOnScroll>
+            </div>
 
-                    <div className="py-12 px-6 max-w-7xl mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {coreExpectations.map((item, idx) => (
-                                <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start min-h-[350px]">
-                                    <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
-                                        <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
+            <div className="py-12 px-6 max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {coreExpectations.map((item, idx) => (
+                        <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start min-h-[350px]">
+                            <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
+                                <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
+                            </div>
+                            <h3 className="text-2xl font-serif text-slate-900 mb-4">{item.title}</h3>
+                            <p className="text-slate-600 mb-8 leading-relaxed text-sm font-sans">{item.desc}</p>
+                            <div className="space-y-3 mt-auto w-full">
+                                {item.bullets.map((bullet, i) => (
+                                    <div key={i} className="flex items-center gap-2 text-xs font-bold text-slate-400 tracking-wider">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                                        {bullet}
                                     </div>
-                                    <h3 className="text-2xl font-serif text-slate-900 mb-4">{item.title}</h3>
-                                    <p className="text-slate-600 mb-8 leading-relaxed text-sm font-sans">{item.desc}</p>
-                                    <div className="space-y-3 mt-auto w-full">
-                                        {item.bullets.map((bullet, i) => (
-                                            <div key={i} className="flex items-center gap-2 text-xs font-bold text-slate-400 tracking-wider">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
-                                                {bullet}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    ))}
+                </div>
+            </div>
 
-                    {/* Cinematic Section (Dark) */}
-                    <div className="py-24 px-6 bg-[#050A30] text-white">
-                        <div className="max-w-7xl mx-auto">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                                <div>
-                                    <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">Real-World Assessment</p>
-                                    <h2 className="text-3xl md:text-5xl font-serif mb-8 leading-tight">
-                                        Beyond the 1,500 Hours: <br />The Evidence Filter
-                                    </h2>
-                                    <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
-                                        "Meeting the minimum is the entry ticket. Competency is the invitation to the flight deck."
-                                    </p>
-                                    <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
-                                        Airlines are moving toward Evidence-Based Training (EBT) screening. Our insight from
-                                        training leadership at global carriers ensures you understand the 9 core competencies
-                                        before you ever walk into the assessment center.
-                                    </p>
-                                </div>
-                                <div className="relative">
-                                    <div className="aspect-[4/3] bg-slate-100 rounded-[3rem] overflow-hidden shadow-2xl relative">
-                                        <img
-                                            src="https://images.unsplash.com/photo-1520437358207-323b43b50729?q=80&w=2940&auto=format&fit=crop"
-                                            alt="Airline Flight Deck Assessment"
-                                            className="w-full h-full object-cover"
-                                        />
-                                        <div className="absolute inset-0 bg-blue-900/30 mix-blend-multiply"></div>
-                                    </div>
-                                </div>
+            {/* Cinematic Section (Dark) */}
+            <div className="py-24 px-6 bg-[#050A30] text-white">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                        <div>
+                            <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">Real-World Assessment</p>
+                            <h2 className="text-3xl md:text-5xl font-serif mb-8 leading-tight">
+                                Beyond the 1,500 Hours: <br />The Evidence Filter
+                            </h2>
+                            <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
+                                "Meeting the minimum is the entry ticket. Competency is the invitation to the flight deck."
+                            </p>
+                            <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
+                                Airlines are moving toward Evidence-Based Training (EBT) screening. Our insight from
+                                training leadership at global carriers ensures you understand the 9 core competencies
+                                before you ever walk into the assessment center.
+                            </p>
+                        </div>
+                        <div className="relative">
+                            <div className="aspect-[4/3] bg-slate-100 rounded-[3rem] overflow-hidden shadow-2xl relative">
+                                <img
+                                    src="https://images.unsplash.com/photo-1520437358207-323b43b50729?q=80&w=2940&auto=format&fit=crop"
+                                    alt="Airline Flight Deck Assessment"
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-blue-900/30 mix-blend-multiply"></div>
                             </div>
                         </div>
                     </div>
-
                 </div>
+            </div>
 
-                {/* Article Section 1 */}
-                <div className="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Article Section 1 */}
+            <div className="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="order-2 md:order-1">
                         <img
                             src="https://images.unsplash.com/photo-1559628376-f3fe5f782a2e?q=80&w=2000&auto=format&fit=crop"
@@ -830,52 +824,43 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                     </div>
                 </div>
 
-                {/* Gated Content Blur Wrapper */}
-                <div className="relative">
-                    <div className="absolute inset-0 z-20 bg-gradient-to-t from-white via-white/95 to-transparent h-full backdrop-blur-[2px] pointer-events-none"></div>
+            {/* Assessment Pipeline */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Selection Process
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Modern Assessment Stages
+                    </h2>
+                </RevealOnScroll>
+            </div>
 
-                    {/* Blurred Content */}
-                    <div className="opacity-30 blur-sm pointer-events-none select-none grayscale-[50%]">
-                        {/* Assessment Pipeline (Visual Placeholder for Gated Content) */}
-                        <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
-                            <RevealOnScroll>
-                                <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                                    Selection Process
-                                </p>
-                                <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                                    Modern Assessment Stages
-                                </h2>
-                            </RevealOnScroll>
+            <div className="py-12 px-4 max-w-7xl mx-auto">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-4">
+                    {assessmentPipeline.map((item, idx) => (
+                        <div key={idx} className="p-2 md:p-6 bg-slate-50 border border-slate-100 rounded-lg md:rounded-[2rem] min-h-[120px] md:min-h-[220px]">
+                            <div className="absolute top-1.5 right-2 md:top-4 md:right-6 font-serif text-lg md:text-4xl text-slate-200">0{idx + 1}</div>
+                            <item.icon className="w-3.5 h-3.5 md:w-8 md:h-8 text-blue-600 mb-1 md:mb-6" />
+                            <h3 className="text-[9px] md:text-base font-bold mb-0.5 md:mb-3 font-sans text-slate-800 uppercase tracking-widest">{item.title}</h3>
+                            <p className="text-slate-500 text-[7px] md:text-sm leading-tight md:leading-relaxed font-sans">{item.value}</p>
                         </div>
-
-                        <div className="py-12 px-4 max-w-7xl mx-auto">
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-4">
-                                {assessmentPipeline.map((item, idx) => (
-                                    <div key={idx} className="p-2 md:p-6 bg-slate-50 border border-slate-100 rounded-lg md:rounded-[2rem] min-h-[120px] md:min-h-[220px]">
-                                        <div className="absolute top-1.5 right-2 md:top-4 md:right-6 font-serif text-lg md:text-4xl text-slate-200">0{idx + 1}</div>
-                                        <item.icon className="w-3.5 h-3.5 md:w-8 md:h-8 text-blue-600 mb-1 md:mb-6" />
-                                        <h3 className="text-[9px] md:text-base font-bold mb-0.5 md:mb-3 font-sans text-slate-800 uppercase tracking-widest">{item.title}</h3>
-                                        <p className="text-slate-500 text-[7px] md:text-sm leading-tight md:leading-relaxed font-sans">{item.value}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
+            </div>
 
-                {/* Back button and small decoration (from AboutPage) */}
-                <div className="py-12 flex flex-col items-center gap-12">
-                    <button
-                        onClick={onBack}
-                        className="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-xl"
-                    >
-                        <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                        Back to Home
-                    </button>
+            {/* Back button and small decoration (from AboutPage) */}
+            <div className="py-12 flex flex-col items-center gap-12">
+                <button
+                    onClick={onBack}
+                    className="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-xl"
+                >
+                    <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                    Back to Home
+                </button>
 
-                    <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
-                        <Shield className="w-6 h-6 text-slate-300" />
-                    </div>
+                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-slate-300" />
                 </div>
             </div>
         </div>
