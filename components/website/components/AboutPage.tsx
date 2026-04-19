@@ -212,6 +212,25 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         }
     ];
 
+    const governanceContent = [
+        {
+            title: "Governance",
+            description: "Our governance framework is the backbone of trust within the WingMentor ecosystem. We are committed to regulatory compliance, data ethics, and absolute transparency in all our partnerships."
+        },
+        {
+            title: "Regulatory Compliance",
+            description: "Our curriculum and reporting structures are built to align with ICAO, EASA, and GCAA standards. We don't just \"teach\" flying; we document competency in a language that global regulators and airlines understand. This ensures that your WingMentor profile is a recognized asset, whether you are applying to a carrier in the UAE, Europe, or beyond."
+        },
+        {
+            title: "Data Ethics & Privacy",
+            description: "Your flight records and career data are sensitive assets. We employ bank-grade encryption and strict access controls to ensure your information is only seen by the recruiters you authorize. We never sell your data to third parties. Our business model is built on your career success, not on monetizing your personal information."
+        },
+        {
+            title: "Partner Transparency",
+            description: "We maintain clear, published agreements with all our airline and ATO partners. Key terms regarding hiring pathways, discount structures, and data usage are open for review. This transparency ensures that when we recommend a pathway, it is because it is the best option for your career, not because of a hidden incentive."
+        }
+    ];
+
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
@@ -414,6 +433,48 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             <div key={idx} className="space-y-2">
                                 <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
                                 <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Governance Header - Same styling as Programs */}
+            <div className="mb-16">
+                <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        INTEGRITY & COMPLIANCE
+                    </p>
+                    <h2 style={{
+                        margin: '0.5rem 0 0',
+                        fontSize: '4rem',
+                        fontWeight: 'normal',
+                        fontFamily: 'Georgia, serif',
+                        color: '#0f172a',
+                        letterSpacing: '-0.02em'
+                    }}>
+                        Governance
+                    </h2>
+                    <p style={{ margin: '0.5rem 0 0', color: '#475569', fontSize: '1.1rem' }}>
+                        Trust, transparency, and regulatory compliance
+                    </p>
+                </div>
+            </div>
+
+            {/* Governance Content */}
+            <div className="py-12 px-6 max-w-6xl mx-auto space-y-16">
+                <div className="text-center max-w-4xl mx-auto">
+                    <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                        Governance
+                    </p>
+                    <h2 className="text-2xl md:text-3xl font-serif text-slate-900 mb-8">
+                        Governance Framework
+                    </h2>
+                    <div className="text-left space-y-8">
+                        {governanceContent.map((item, idx) => (
+                            <div key={idx} className="space-y-2">
+                                <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
+                                <p className="text-base text-slate-700 leading-relaxed">{item.description}</p>
                             </div>
                         ))}
                     </div>
