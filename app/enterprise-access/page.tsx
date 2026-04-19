@@ -31,49 +31,33 @@ const EnterpriseAccessPage = () => {
         message: '',
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        // Format the email body
-        const emailBody = `
-Enterprise Access Request
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/enterprise-access`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
 
-Contact Information:
-- Name: ${formData.name}
-- Email: ${formData.email}
-- Phone: ${formData.phone}
+            const result = await response.json();
 
-Company Information:
-- Company: ${formData.company}
-- Role: ${formData.role}
-- Website: ${formData.website}
-- Company Size: ${formData.companySize}
-- Country: ${formData.country}
-
-Organization Type:
-- Airline Operator: ${formData.operator ? 'Yes' : 'No'}
-- Aircraft Manufacturer: ${formData.manufacturer ? 'Yes' : 'No'}
-- ATO / Training Provider: ${formData.ato ? 'Yes' : 'No'}
-- Type Rating Center: ${formData.typeRatingProvider ? 'Yes' : 'No'}
-- Airline Recruiter: ${formData.airlineRecruiter ? 'Yes' : 'No'}
-- Staffing Firm: ${formData.staffingFirm ? 'Yes' : 'No'}
-- Recruitment Agency: ${formData.recruitmentAgency ? 'Yes' : 'No'}
-
-Partnership Interest:
-- What do you do: ${formData.businessType}
-- Partnership Interest: ${formData.partnershipInterest}
-- Pathway Interests: ${formData.pathwayInterests.join(', ')}
-- Custom Pathway: ${formData.customPathway || 'N/A'}
-- Timeline: ${formData.timeline}
-- Data Input Requirements: ${formData.dataInput || 'N/A'}
-
-Additional Information:
-- Partnership Goals: ${formData.message}
-        `.trim();
-
-        // Open email client with pre-filled data
-        const mailtoLink = `mailto:enterprise@pilotrecognition.com?subject=Enterprise Access Request - ${formData.company}&body=${encodeURIComponent(emailBody)}`;
-        window.location.href = mailtoLink;
+            if (response.ok) {
+                alert('Thank you for your interest! Your request has been sent successfully.');
+            } else {
+                throw new Error(result.error || 'Failed to send email');
+            }
+        } catch (error) {
+            console.error('Error sending email:', error);
+            alert('There was an error sending your request. Please try again or contact us directly at enterprise@pilotrecognition.com');
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -104,6 +88,17 @@ Additional Information:
     return (
         <div className="min-h-screen bg-slate-900 py-12 px-4">
             <div className="max-w-4xl mx-auto">
+                {/* Back Button */}
+                <button
+                    onClick={() => window.history.back()}
+                    className="mb-6 flex items-center gap-2 text-white hover:text-blue-200 transition-colors"
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span>Back</span>
+                </button>
+
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
