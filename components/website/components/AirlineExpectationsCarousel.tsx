@@ -1920,12 +1920,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
           {/* Discover Pathways Button */}
           <button
             onClick={() => {
-              if (currentUser) {
-                // Pass the current airline data to the page
-                onNavigate?.('airline-expectations', currentAirline);
-              } else {
-                setShowModal(true);
-              }
+              onNavigate?.('airline-expectations');
             }}
             className="px-8 py-3 bg-white border border-slate-200 text-slate-800 font-semibold rounded-full shadow-sm hover:bg-slate-50 hover:shadow-md transition-all duration-300 flex items-center gap-2 mx-auto group"
           >
@@ -1937,63 +1932,17 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
 
       {/* Bottom Description */}
       <div className="max-w-4xl mx-auto px-6 mt-12 pt-8 border-t border-slate-100">
+        <p className="text-base md:text-lg text-slate-700 leading-relaxed text-center mb-4">
+          Explore detailed expectations, requirements, and career progression opportunities from leading airlines worldwide. Each airline profile provides comprehensive insights into <strong>salary ranges</strong>, <strong>required flight hours</strong>, <strong>type ratings</strong>, and <strong>unique benefits</strong> to help you make informed career decisions. Our <strong>AI-powered pathway matching</strong> system analyzes your verified PilotRecognition profile against airline requirements to identify optimal career opportunities.
+        </p>
         <p className="text-sm text-slate-600 leading-relaxed text-center mb-3">
-          Explore detailed expectations, requirements, and career progression opportunities from leading airlines worldwide. Each airline profile provides insights into salary ranges, required flight hours, type ratings, and unique benefits to help you make informed career decisions.
+          Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that the airline expectations we provide align with the exacting standards required by leading manufacturers and operators. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> presents your credentials in the standardized format preferred by major airlines worldwide, while our <strong>blockchain-verifiable certifications</strong> provide operators with confidence in your verified competencies.
         </p>
         <p className="text-xs text-slate-400 text-center">
-          Swipe through to discover airline-specific requirements and compare opportunities across global carriers.
+          Swipe through to discover airline-specific requirements and compare opportunities across global carriers. Our platform connects you directly to 5000+ pilots and operators through our <strong>Pilot Terminal</strong> social network and <strong>enterprise integration</strong>, creating a transparent and efficient recruitment marketplace.
         </p>
       </div>
     </div>
-
-    {/* Newsletter Modal for Non-Logged In Users */}
-    {showModal && (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-black/50" onClick={() => setShowModal(false)} />
-        <div className="relative z-10 bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
-          <button
-            onClick={() => setShowModal(false)}
-            className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
-          >
-            <X size={20} />
-          </button>
-
-          <div className="text-center">
-            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-slate-50">
-              <img
-                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                alt="WingMentor Logo"
-                className="w-16 h-16 object-contain"
-              />
-            </div>
-
-            <h3 className="text-2xl font-bold text-slate-800 mb-2 font-serif">
-              ATC calling : pilot ident required!
-            </h3>
-            <p className="text-slate-600 mb-6 leading-relaxed">
-              join today for free and unlock detailed insights into carrier requirements, salary ranges, and career progression opportunities.
-            </p>
-
-            <button
-              onClick={() => {
-                setShowModal(false);
-                onLogin?.();
-              }}
-              className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all mb-3"
-            >
-              Become a Member
-            </button>
-
-            <button
-              onClick={() => setShowModal(false)}
-              className="w-full bg-slate-100 text-slate-700 font-semibold py-3 rounded-xl hover:bg-slate-200 transition-all"
-            >
-              Maybe Later
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
     </>
   );
 };
