@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Mail, Users, Shield, Zap, Activity, CheckCircle2, BarChart3, Brain, Globe } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -21,11 +21,6 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
             {/* Header Section - matching the About Page style */}
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
-                    <img
-                        src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                        alt="WingMentor Logo"
-                        className="mx-auto w-64 h-auto object-contain mb-2"
-                    />
                     <div className="flex justify-center items-center gap-4 mb-4">
                         <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto opacity-70" />
                         <div className="w-px h-6 bg-slate-300"></div>
@@ -43,67 +38,31 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                 </div>
             </div>
 
-            {/* Visible Content - Magazine Hook (Alternating Rows) */}
-            <div className="py-12 px-6 max-w-7xl mx-auto space-y-24">
-                {/* Row 1: Intro + Cockpit Integration */}
-                <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
-                    <div className="md:w-1/2 space-y-8 text-left md:text-justify order-2 md:order-1">
+            {/* Visible Content */}
+            <div className="py-12 px-6 max-w-4xl mx-auto space-y-24">
+                {/* Row 1: Intro */}
+                <div className="text-center">
+                    <RevealOnScroll>
                         <div className="hidden md:block mb-8">
                             <img src="/images/accreditation-4.png" alt="Airbus" className="h-16 w-auto opacity-90" />
                         </div>
-                        <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans first-letter:text-5xl first-letter:font-serif first-letter:text-slate-900 first-letter:mr-3 first-letter:float-left">
+                        <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans">
                             HINFACT represents the next evolution in pilot training—a seamless integration of real-time biometric and cognitive monitoring directly into the Airbus cockpit environment. By leveraging advanced eye-tracking and workload analysis, we bridge the critical gap between subjective instructor assessment and objective, data-driven performance metrics.
                         </p>
-                    </div>
-                    <div className="md:w-1/2 order-1 md:order-2">
-                        <RevealOnScroll>
-                            <div className="relative group">
-                                <div className="absolute inset-0 bg-blue-600 rounded-[2rem] translate-x-4 translate-y-4 -z-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-500"></div>
-                                <img
-                                    src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2940&auto-format&fit=crop"
-                                    alt="Airbus Cockpit Integration"
-                                    className="w-full h-auto object-cover rounded-[2rem] shadow-2xl aspect-[4/3]"
-                                />
-                                <div className="absolute bottom-6 left-6 right-6 p-4 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-white/50">
-                                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                                        <Activity className="w-4 h-4 text-blue-600" />
-                                        Cockpit Integration
-                                    </h3>
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+                    </RevealOnScroll>
                 </div>
 
                 {/* Row 2: Analytics + EBT Context */}
-                <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
-                    <div className="md:w-1/2 order-1">
-                        <RevealOnScroll delay={200}>
-                            <div className="relative group">
-                                <div className="absolute inset-0 bg-slate-900 rounded-[2rem] -translate-x-4 translate-y-4 -z-10 group-hover:-translate-x-2 group-hover:translate-y-2 transition-transform duration-500"></div>
-                                <img
-                                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto-format&fit=crop"
-                                    alt="Data Analytics"
-                                    className="w-full h-auto object-cover rounded-[2rem] shadow-2xl aspect-[4/3]"
-                                />
-                                <div className="absolute bottom-6 left-6 right-6 p-4 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-white/50">
-                                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                                        <BarChart3 className="w-4 h-4 text-blue-600" />
-                                        Performance Analytics
-                                    </h3>
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2 space-y-8 text-left md:text-justify order-2">
+                <div className="text-center">
+                    <RevealOnScroll>
                         <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans">
                             This integration provides WingMentor pilots with unprecedented access to the same Evidence-Based Training (EBT) tools used by the world's leading carriers. Whether you are preparing for a command upgrade or your initial airline assessment, understanding your own cognitive performance metrics—from visual scan patterns to mental workload capacity—is the key to mastering the modern flight deck.
                         </p>
-                        <div className="flex items-center gap-4 pt-4 border-t border-slate-200">
+                        <div className="flex items-center justify-center gap-4 pt-4 border-t border-slate-200">
                             <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Validated By</div>
                             <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto opacity-60 mix-blend-multiply" />
                         </div>
-                    </div>
+                    </RevealOnScroll>
                 </div>
             </div>
 
@@ -130,14 +89,14 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                                     </p>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
                                         {[
-                                            { icon: BarChart3, label: "Eye-Tracking Analytics" },
-                                            { icon: Brain, label: "Cognitive Load Mapping" },
-                                            { icon: Activity, label: "Workload Assessment" },
-                                            { icon: Shield, label: "SOP Compliance" }
-                                        ].map((item, idx) => (
+                                            "Eye-Tracking Analytics",
+                                            "Cognitive Load Mapping",
+                                            "Workload Assessment",
+                                            "SOP Compliance"
+                                        ].map((label, idx) => (
                                             <div key={idx} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                <item.icon className="w-4 h-4 text-blue-600" />
-                                                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">{item.label}</span>
+                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                                                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">{label}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -153,7 +112,7 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                                         />
                                         <div className="absolute top-6 right-6 p-4 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-white/50">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <Activity className="w-4 h-4 text-green-500 animate-pulse" />
+                                                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                                                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Sync Status</span>
                                             </div>
                                             <div className="text-lg font-bold text-slate-900">ACTIVE</div>
@@ -183,16 +142,10 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                         <div className="py-16 px-6 max-w-6xl mx-auto">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="p-10 bg-slate-50 border border-slate-100 rounded-3xl flex flex-col items-center md:items-start text-center md:text-left">
-                                    <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8">
-                                        <Mail className="w-8 h-8 text-blue-600" />
-                                    </div>
                                     <h3 className="text-2xl font-bold mb-4 text-slate-900">Technical Support</h3>
                                 </div>
 
                                 <div className="p-10 bg-slate-50 border border-slate-100 rounded-3xl flex flex-col items-center md:items-start text-center md:text-left">
-                                    <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8">
-                                        <Users className="w-8 h-8 text-slate-900" />
-                                    </div>
                                     <h3 className="text-2xl font-bold mb-4 text-slate-900">EBT Consultation</h3>
                                 </div>
                             </div>
@@ -200,17 +153,12 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                     </div>
                 </div>
 
-                {/* Gateway Card (Shifted Up for immediate impact) */}
+                {/* Gateway Card */}
                 <div className="absolute inset-x-0 bottom-0 z-30 flex flex-col items-center pb-32 bg-gradient-to-t from-white via-white/80 to-transparent pt-32 h-full justify-center">
                     <div className="w-full max-w-4xl px-6 -mt-32">
                         <RevealOnScroll delay={100}>
                             <div className="relative bg-white border border-slate-200 rounded-3xl p-8 md:p-16 flex flex-col items-center text-center shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]">
                                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
-                                    <img
-                                        src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                        alt="WingMentor Logo"
-                                        className="h-12 w-auto object-contain"
-                                    />
                                     <div className="hidden md:block w-px h-8 bg-slate-300"></div>
                                     <div className="flex items-center gap-3 opacity-80">
                                         <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto mix-blend-multiply" />

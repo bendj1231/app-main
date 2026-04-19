@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Shield, Lock, Eye, Scale, FileCheck, Landmark } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -43,128 +43,71 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
             </div>
 
             {/* Section 1: Regulatory Compliance */}
-            <div className="py-12 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Scale className="w-8 h-8 text-slate-600" />
-                            </div>
-                            <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.3em] mb-2">
-                                Universal Standards
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Regulatory Compliance
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Our curriculum and reporting structures are built to align with ICAO, EASA, and GCAA
-                                standards. We don't just "teach" flying; we document competency in a language that
-                                global regulators and airlines understand.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                This ensures that your WingMentor profile is a recognized asset, whether you are
-                                applying to a carrier in the UAE, Europe, or beyond.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-slate-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Regulatory Compliance"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-12 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.3em] mb-2">
+                            Universal Standards
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Regulatory Compliance
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            Our curriculum and reporting structures are built to align with ICAO, EASA, and GCAA
+                            standards. We don't just "teach" flying; we document competency in a language that
+                            global regulators and airlines understand.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            This ensures that your WingMentor profile is a recognized asset, whether you are
+                            applying to a carrier in the UAE, Europe, or beyond.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Section 2: Data Ethics */}
-            <div className="py-20 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Lock className="w-8 h-8 text-blue-600" />
-                            </div>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                Privacy First
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Data Ethics & Privacy
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Your flight records and career data are sensitive assets. We employ bank-grade
-                                encryption and strict access controls to ensure your information is only seen by
-                                the recruiters you authorize.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                We never sell your data to third parties. Our business model is built on your career
-                                success, not on monetizing your personal information.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-blue-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Data Security"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-20 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                            Privacy First
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Data Ethics & Privacy
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            Your flight records and career data are sensitive assets. We employ bank-grade
+                            encryption and strict access controls to ensure your information is only seen by
+                            the recruiters you authorize.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            We never sell your data to third parties. Our business model is built on your career
+                            success, not on monetizing your personal information.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Section 3: Partner Transparency */}
-            <div className="py-20 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Eye className="w-8 h-8 text-emerald-600" />
-                            </div>
-                            <p className="text-xs font-bold text-emerald-700 uppercase tracking-[0.3em] mb-2">
-                                Clear Agreements
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Partner Transparency
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                We maintain clear, published agreements with all our airline and ATO partners. Key
-                                terms regarding hiring pathways, discount structures, and data usage are open for
-                                review.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                This transparency ensures that when we recommend a pathway, it is because it is the
-                                best option for your career, not because of a hidden incentive.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-emerald-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Transparency"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-20 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-emerald-700 uppercase tracking-[0.3em] mb-2">
+                            Clear Agreements
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Partner Transparency
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            We maintain clear, published agreements with all our airline and ATO partners. Key
+                            terms regarding hiring pathways, discount structures, and data usage are open for
+                            review.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            This transparency ensures that when we recommend a pathway, it is because it is the
+                            best option for your career, not because of a hidden incentive.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 

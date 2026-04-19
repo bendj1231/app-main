@@ -65,6 +65,7 @@ const OAuthCallback: React.FC = () => {
 
         console.log(`[${timestamp}] [OAUTH CALLBACK] Supabase session created successfully`);
         console.log(`[${timestamp}] [OAUTH CALLBACK] User ID:`, sessionData.user?.id);
+        console.log(`[${timestamp}] [OAUTH CALLBACK] User email:`, sessionData.user?.email);
         console.log(`[${timestamp}] [OAUTH CALLBACK] Session data:`, JSON.stringify(sessionData, null, 2));
 
         // Success - redirect to home page

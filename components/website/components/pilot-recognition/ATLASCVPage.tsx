@@ -1,6 +1,7 @@
 import React from 'react';
-import { ArrowLeft, Globe, Zap, Target } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
+import { RevealOnScroll } from '../../RevealOnScroll';
 
 interface ATLASCVPageProps {
     onBack: () => void;
@@ -38,39 +39,10 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
             </div>
 
             {/* Main Content Section */}
-            <div className="py-12 px-6 max-w-6xl mx-auto space-y-24">
-
-                {/* Row 1: The Standard (Text Left, Image Right) */}
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                            Industry Standard
-                        </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            The Professional Format for Modern Aviation
-                        </h2>
-                        <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            The <strong>ATLAS Aviation CV</strong> is more than a document; it is a standardized data protocol designed specifically for aviation professionals. Unlike generic CVs, it aligns your experience with EBT/CBTA frameworks, ensuring that airlines can instantly evaluate your operational readiness.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed font-sans">
-                            This format is <strong>AI-optimized</strong> for Applicant Tracking Systems (ATS), ensuring your application passes automated screening and reaches human reviewers. It transforms your raw hours into meaningful competency markers.
-                        </p>
-                    </div>
-                    <div className="md:w-1/2">
-                        <div className="relative w-full mx-auto group">
-                            <div className="absolute inset-0 bg-blue-600 rounded-[2.5rem] rotate-3 group-hover:rotate-1 transition-transform duration-500 opacity-10"></div>
-                            <img
-                                src="https://lh3.googleusercontent.com/d/1wPEIiMRj4fW34_NIQKRnzCf8KNhdD1TC"
-                                alt="ATLAS CV Format"
-                                className="w-full h-auto object-cover rounded-[2.5rem] shadow-2xl relative z-10"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Row 2: Why it Matters (Image Left, Text Right) */}
-                <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
+            <div className="py-12 px-6 max-w-4xl mx-auto space-y-24">
+                {/* Row 1: Why it Matters */}
+                <div className="text-center">
+                    <RevealOnScroll>
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mb-2">
                             Competitive Advantage
                         </p>
@@ -81,10 +53,10 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                             The ATLAS format bridges the gap between pilot application and airline expectation. It is recognized by recruitment agencies and aviation organizations worldwide as the professional standard for presenting pilot credentials.
                         </p>
 
-                        <div className="space-y-6 text-left">
+                        <div className="space-y-6 text-left max-w-2xl mx-auto">
                             <div className="flex gap-4">
                                 <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
-                                    <Globe className="w-5 h-5 text-blue-600" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-slate-900 mb-1">Global Recognition</h4>
@@ -93,7 +65,7 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                             </div>
                             <div className="flex gap-4">
                                 <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
-                                    <Zap className="w-5 h-5 text-blue-600" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-slate-900 mb-1">ATS Optimization</h4>
@@ -102,7 +74,7 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                             </div>
                             <div className="flex gap-4">
                                 <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
-                                    <Target className="w-5 h-5 text-blue-600" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-slate-900 mb-1">Competency-Based</h4>
@@ -110,22 +82,12 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="md:w-1/2">
-                        <div className="relative w-full mx-auto group">
-                            <div className="absolute inset-0 bg-slate-900 rounded-[2.5rem] -rotate-3 group-hover:-rotate-1 transition-transform duration-500 opacity-5"></div>
-                            <img
-                                src="https://lh3.googleusercontent.com/d/1Ars9ou0JcoloGv-W18gvJ1G0eWrdFNAu"
-                                alt="Global Recognition"
-                                className="w-full h-auto object-cover rounded-[2.5rem] shadow-2xl relative z-10"
-                            />
-                        </div>
-                    </div>
+                    </RevealOnScroll>
                 </div>
 
-                {/* Row 3: What's Included (Text Left, Image Right) */}
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
+                {/* Row 2: CV Components */}
+                <div className="text-center">
+                    <RevealOnScroll>
                         <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
                             CV Components
                         </p>
@@ -133,10 +95,10 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                             Comprehensive Documentation
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            The ATLAS format is comprehensive yet concise, presenting all critical information in a standardized structure that airlines expect and understand. It removes the guesswork for recruiters.
+                            The ATLAS format is comprehensive yet concise, presenting all critical information in a standardized structure that airlines expect and understand.
                         </p>
 
-                        <div className="grid grid-cols-1 gap-3">
+                        <div className="grid grid-cols-1 gap-3 max-w-2xl mx-auto">
                             {[
                                 { title: "Personal Information", desc: "Professional details, licenses, ratings, medical status" },
                                 { title: "Flight Experience", desc: "Total hours, PIC, multi-engine, type-specific breakdown" },
@@ -154,62 +116,53 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                                 </div>
                             ))}
                         </div>
-                    </div>
-                    <div className="md:w-1/2">
-                        <div className="relative w-full mx-auto group">
-                            <div className="absolute inset-0 bg-blue-100 rounded-[2.5rem] rotate-2 group-hover:-rotate-1 transition-transform duration-500 opacity-20"></div>
-                            <img
-                                src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2940&auto-format&fit=crop"
-                                alt="Comprehensive Documentation"
-                                className="w-full h-auto object-cover rounded-[2.5rem] shadow-2xl relative z-10 aspect-[4/5]"
-                            />
-                        </div>
-                    </div>
+                    </RevealOnScroll>
                 </div>
 
-                {/* Row 4: Tools & Builder (Image Left, Text Right) */}
-                <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mb-2">
-                            Professional Tools
+            </div>
+
+            {/* Member Access Gateway */}
+            <div className="py-24 px-6 bg-slate-50 border-y border-slate-200">
+                <div className="max-w-4xl mx-auto text-center">
+                    <RevealOnScroll>
+                        <div className="flex justify-center items-center gap-4 mb-8">
+                            <img
+                                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                                alt="WingMentor Logo"
+                                className="h-12 w-auto object-contain"
+                            />
+                            <div className="w-px h-8 bg-slate-300"></div>
+                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Standardization</p>
+                        </div>
+
+                        <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
+                            Member Access Only
                         </p>
+
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            WingMentor's ATLAS CV Builder
+                            Unlock the Full <br /> ATLAS Standard
                         </h2>
-                        <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            Creating an ATLAS-compliant CV from scratch is complex. WingMentor's CV builder automates the process, ensuring your CV meets all formatting standards while optimizing it for both ATS systems and human reviewers.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
-                            Your ATLAS CV automatically syncs with the WingMentor Pilot Database, creating a verifiable, industry-recognized profile that airlines can access directly.
+
+                        <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
+                            Detailed documentation standards, builder access, and full competency breakdowns are reserved for verified members.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <button
-                                onClick={() => onNavigate('contact-support')}
-                                className="px-8 py-4 bg-blue-900 text-white font-bold rounded-xl hover:bg-blue-800 transition-colors shadow-lg uppercase tracking-wider text-xs"
+                                onClick={() => onNavigate('become-member')}
+                                className="px-8 py-4 bg-[#050A30] hover:bg-[#070D3D] text-white font-bold rounded-xl transition-colors shadow-lg uppercase tracking-wider text-xs"
                             >
-                                Start Building
+                                Become a Member
                             </button>
                             <button
-                                onClick={() => onNavigate('transition-program')}
-                                className="px-8 py-4 bg-slate-100 text-slate-900 font-bold rounded-xl hover:bg-slate-200 transition-colors uppercase tracking-wider text-xs flex items-center justify-center gap-2"
+                                onClick={onLogin}
+                                className="px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 font-bold rounded-xl transition-colors border border-slate-200 uppercase tracking-wider text-xs"
                             >
-                                Learn More <ArrowLeft className="w-4 h-4 rotate-180" />
+                                Login to Read More
                             </button>
                         </div>
-                    </div>
-                    <div className="md:w-1/2">
-                        <div className="relative w-full mx-auto group">
-                            <div className="absolute inset-0 bg-slate-900 rounded-[2.5rem] -rotate-2 group-hover:rotate-1 transition-transform duration-500 opacity-5"></div>
-                            <img
-                                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2940&auto-format&fit=crop"
-                                alt="CV Builder Tool"
-                                className="w-full h-auto object-cover rounded-[2.5rem] shadow-2xl relative z-10"
-                            />
-                        </div>
-                    </div>
+                    </RevealOnScroll>
                 </div>
-
             </div>
 
             {/* Footer CTA - Clean & Simple */}
@@ -221,13 +174,6 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                     <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
                         Stop using generic CVs that get filtered out. Switch to the industry standard.
                     </p>
-                    <button
-                        onClick={onBack}
-                        className="group inline-flex items-center gap-2 px-8 py-4 bg-white border border-slate-200 text-slate-900 font-bold rounded-full hover:border-slate-300 hover:shadow-lg transition-all"
-                    >
-                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                        Back to Home
-                    </button>
                 </div>
             </div>
         </div>

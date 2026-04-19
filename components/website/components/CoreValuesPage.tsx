@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Users, Heart, Shield, Share2, Award, Handshake } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -43,125 +43,68 @@ export const CoreValuesPage: React.FC<CoreValuesPageProps> = ({
             </div>
 
             {/* Value 1: Connection */}
-            <div className="py-12 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Share2 className="w-8 h-8 text-blue-600" />
-                            </div>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                The Power of Network
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Connection
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Aviation is a small world, but it can feel vast and lonely when you are starting out.
-                                We believe that meaningful connection is the antidote to career stagnation.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                By connecting low-timers with captains, and captains with operators, we create a
-                                circular economy of mentorship where wisdom is passed down and opportunity is passed up.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-blue-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Connection"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-12 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                            The Power of Network
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Connection
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            Aviation is a small world, but it can feel vast and lonely when you are starting out.
+                            We believe that meaningful connection is the antidote to career stagnation.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            By connecting low-timers with captains, and captains with operators, we create a
+                            circular economy of mentorship where wisdom is passed down and opportunity is passed up.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Value 2: Attitude */}
-            <div className="py-20 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Award className="w-8 h-8 text-red-600" />
-                            </div>
-                            <p className="text-xs font-bold text-red-700 uppercase tracking-[0.3em] mb-2">
-                                The Professional Mindset
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Attitude
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Skills can be taught, but attitude is chosen. We champion the pilots who show up early,
-                                prepare thoroughly, and own their mistakes.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                A WingMentor pilot doesn't just fly the plane; they manage the operation with
-                                humility, resilience, and an unshakeable commitment to safety standards.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-red-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1517999818671-50e50882e5b8?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Professional Attitude"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-20 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-red-700 uppercase tracking-[0.3em] mb-2">
+                            The Professional Mindset
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Attitude
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            Skills can be taught, but attitude is chosen. We champion the pilots who show up early,
+                            prepare thoroughly, and own their mistakes.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            A WingMentor pilot doesn't just fly the plane; they manage the operation with
+                            humility, resilience, and an unshakeable commitment to safety standards.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Value 3: Respect */}
-            <div className="py-20 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Handshake className="w-8 h-8 text-emerald-600" />
-                            </div>
-                            <p className="text-xs font-bold text-emerald-700 uppercase tracking-[0.3em] mb-2">
-                                Mutual & Self Respect
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Respect
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Respect for the uniform, respect for the regulations, and respect for our peers.
-                                In a multi-crew environment, respect is the foundation of effective communication.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                We foster a culture where every voice is heard, from the cadet to the captain,
-                                creating a safer and more inclusive cockpit for everyone.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-emerald-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1559523161-0cff43f25377?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Respect"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-20 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-emerald-700 uppercase tracking-[0.3em] mb-2">
+                            Mutual & Self Respect
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Respect
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            Respect for the uniform, respect for the regulations, and respect for our peers.
+                            In a multi-crew environment, respect is the foundation of effective communication.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            We foster a culture where every voice is heard, from the cadet to the captain,
+                            creating a safer and more inclusive cockpit for everyone.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 

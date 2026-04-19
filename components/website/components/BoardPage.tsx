@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Shield, Users, Award, Target, Globe, Briefcase, Zap, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -15,37 +15,33 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
             name: "Executive Leadership",
             role: "Strategic Direction",
             desc: "The executive board oversees the platform's global expansion and alignment with ICAO standards.",
-            icon: Target,
             bullets: ["Global Expansion", "Regulatory Liaison", "Financial Oversight"]
         },
         {
             name: "Airlines Advisory",
             role: "Flagship Alignment",
             desc: "Active captains and training heads from major carriers ensure our syllabus meets real-world entry standards.",
-            icon: Shield,
             bullets: ["Etihad/Emirates Standards", "EBT Integration", "Hiring Analytics"]
         },
         {
             name: "Tech Innovators",
             role: "Digital Ecosystem",
             desc: "Visionaries in AI and data extraction who lead the development of our ATLAS and Pilot Recognition systems.",
-            icon: Zap,
             bullets: ["AI Data Extraction", "Blockchain Verification", "Mobile First"]
         },
         {
             name: "Operations Board",
             role: "Program Delivery",
             desc: "Managing the logistics of our Fujairah-based ATPL and global network of partner flight schools.",
-            icon: Globe,
             bullets: ["School Audits", "Candidate Vetting", "Resource Allocation"]
         }
     ];
 
     const pipelineSteps = [
-        { title: "Strategic Audit", value: "Annual review of board goals against industry flight shortages and shifts.", icon: Shield },
-        { title: "Partner Selection", value: "Board-level vetting of flagship carriers and manufacturing partners.", icon: Briefcase },
-        { title: "Policy Formation", value: "Creating the governance frameworks for pilot data security and ethics.", icon: Shield },
-        { title: "Industry Impact", value: "Measuring the success rate of WingMentor members in the global market.", icon: Award }
+        { title: "Strategic Audit", value: "Annual review of board goals against industry flight shortages and shifts." },
+        { title: "Partner Selection", value: "Board-level vetting of flagship carriers and manufacturing partners." },
+        { title: "Policy Formation", value: "Creating the governance frameworks for pilot data security and ethics." },
+        { title: "Industry Impact", value: "Measuring the success rate of WingMentor members in the global market." }
     ];
 
     return (
@@ -56,9 +52,6 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <div className="flex justify-center items-center gap-4 mb-8">
-                            <Users className="w-12 h-12 text-blue-600" />
-                        </div>
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
                             Executive Leadership
                         </p>
@@ -78,9 +71,6 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {boardMembers.map((item, idx) => (
                         <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start">
-                            <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
-                                <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
-                            </div>
                             <div className="flex flex-col mb-4">
                                 <span className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">{item.role}</span>
                                 <h3 className="text-2xl font-serif text-slate-900">{item.name}</h3>
@@ -119,11 +109,9 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                                 </p>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                        <CheckCircle2 className="w-5 h-5 text-blue-400" />
                                         <span className="text-slate-300 text-sm font-sans">Strategic 2030 Vision Alignment</span>
                                     </div>
                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                        <CheckCircle2 className="w-5 h-5 text-blue-400" />
                                         <span className="text-slate-300 text-sm font-sans">Industry-Wide Advocacy Network</span>
                                     </div>
                                 </div>
@@ -131,11 +119,6 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                         </div>
                         <div className="relative">
                             <div className="aspect-video bg-slate-900 rounded-[3rem] overflow-hidden shadow-2xl relative border border-white/10 flex items-center justify-center p-12">
-                                <img
-                                    src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                    alt="WingMentor Leadership"
-                                    className="w-full h-auto opacity-50 grayscale brightness-200"
-                                />
                                 <div className="absolute inset-0 bg-blue-900/20 mix-blend-overlay"></div>
                             </div>
                         </div>
@@ -150,7 +133,6 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                     {pipelineSteps.map((item, idx) => (
                         <div key={idx} className="p-10 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group relative">
                             <div className="absolute top-6 right-8 font-serif text-4xl text-slate-200 group-hover:text-blue-50 transition-colors">0{idx + 1}</div>
-                            {typeof item.icon === 'function' ? item.icon({}) : <item.icon className="w-8 h-8 text-blue-600 mb-8 transition-transform group-hover:scale-110" />}
                             <h3 className="text-lg font-bold mb-3 font-sans text-slate-800 uppercase tracking-widest">{item.title}</h3>
                             <p className="text-slate-500 text-sm leading-relaxed font-sans">{item.value}</p>
                         </div>

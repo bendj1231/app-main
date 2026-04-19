@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Shield, Award, Target, Globe, Briefcase, Zap, CheckCircle2, Users, BookOpen, MessageSquare } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -14,34 +14,30 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
         {
             title: "Safety Board",
             desc: "Expert-led reviews of operational safety protocols and the integration of Hinfact human factors analytics.",
-            icon: Shield,
             bullets: ["Incident Analysis", "Human Factors", "Safety Culture"]
         },
         {
             title: "Curriculum Review",
             desc: "Ensuring our training pathways, from ATPL to Transition, match the latest GCAA and EASA syllabus updates.",
-            icon: BookOpen,
             bullets: ["Syllabus Mapping", "EBT Integration", "Partner Feedback"]
         },
         {
             title: "Pilot Advocacy",
             desc: "Serving as the voice for experienced and new pilots, ensuring the industry hears their needs and challenges.",
-            icon: MessageSquare,
             bullets: ["Career Support", "Mental Health", "Industry Feedback"]
         },
         {
             title: "Technology Committe",
             desc: "Focusing on the advancement of the W1000 suite, ATLAS AI, and our Pilot Recognition scoring algorithms.",
-            icon: Zap,
             bullets: ["AI Development", "Data Security", "UI/UX Stewardship"]
         }
     ];
 
     const pipelineSteps = [
-        { title: "Member Selection", value: "Identifying top industry experts to lead each specialized committee.", icon: Users },
-        { title: "Monthly Review", value: "Regular board-level meetings to review committee findings and impact.", icon: target => <Target className="w-5 h-5 text-blue-600" /> },
-        { title: "Strategy Updates", value: "Translating committee insights into platform and program improvements.", icon: Briefcase },
-        { title: "Industry Reporting", value: "Publishing anonymized findings to improve global aviation standards.", icon: Award }
+        { title: "Member Selection", value: "Identifying top industry experts to lead each specialized committee." },
+        { title: "Monthly Review", value: "Regular board-level meetings to review committee findings and impact." },
+        { title: "Strategy Updates", value: "Translating committee insights into platform and program improvements." },
+        { title: "Industry Reporting", value: "Publishing anonymized findings to improve global aviation standards." }
     ];
 
     return (
@@ -52,9 +48,6 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <div className="flex justify-center items-center gap-4 mb-8">
-                            <Users className="w-12 h-12 text-blue-600" />
-                        </div>
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
                             Specialized Expertise
                         </p>
@@ -74,9 +67,6 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {committeeGroups.map((item, idx) => (
                         <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start">
-                            <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
-                                <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
-                            </div>
                             <h3 className="text-2xl font-serif text-slate-900 mb-4">{item.title}</h3>
                             <p className="text-slate-600 mb-8 leading-relaxed text-sm font-sans">{item.desc}</p>
                             <div className="space-y-3 mt-auto w-full">
@@ -112,11 +102,9 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
                                 </p>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                        <CheckCircle2 className="w-5 h-5 text-blue-400" />
                                         <span className="text-slate-300 text-sm font-sans">10+ Tier-1 Airline Captain Consultants</span>
                                     </div>
                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                        <CheckCircle2 className="w-5 h-5 text-blue-400" />
                                         <span className="text-slate-300 text-sm font-sans">Direct Liaison with Airbus Human Factors Dept.</span>
                                     </div>
                                 </div>
@@ -124,7 +112,6 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
                         </div>
                         <div className="relative">
                             <div className="aspect-square bg-slate-100 rounded-[3rem] overflow-hidden shadow-2xl border border-white/10 relative p-12 flex items-center justify-center bg-[#050A30]">
-                                <Users className="w-48 h-48 text-blue-600 opacity-20" />
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="text-center">
                                         <p className="text-white font-bold text-5xl mb-2 font-serif tracking-tighter">Verified</p>
@@ -144,7 +131,6 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
                     {pipelineSteps.map((item, idx) => (
                         <div key={idx} className="p-10 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group relative">
                             <div className="absolute top-6 right-8 font-serif text-4xl text-slate-200 group-hover:text-blue-50 transition-colors">0{idx + 1}</div>
-                            {typeof item.icon === 'function' ? item.icon({}) : <item.icon className="w-8 h-8 text-blue-600 mb-8 transition-transform group-hover:scale-110" />}
                             <h3 className="text-lg font-bold mb-3 font-sans text-slate-800 uppercase tracking-widest">{item.title}</h3>
                             <p className="text-slate-500 text-sm leading-relaxed font-sans">{item.value}</p>
                         </div>
