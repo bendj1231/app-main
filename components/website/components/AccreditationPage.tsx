@@ -165,6 +165,61 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                         </div>
                     </RevealOnScroll>
                 </div>
+
+                {/* Row 4: Guardians of the Profession */}
+                <div className="max-w-6xl mx-auto pb-12">
+                    <RevealOnScroll>
+                        <div className="text-center mb-12">
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
+                                Industry Stewardship
+                            </p>
+                            <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">
+                                Guardians of the Profession
+                            </h2>
+                            <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans max-w-3xl mx-auto">
+                                We view our role as more than a service provider. We are custodians of the pilot profession, dedicated to raising safety standards, advocating for aircrew, and preparing the next generation for a sustainable future.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {/* Elevating Standards */}
+                            <div className="p-8 bg-white border border-slate-100 rounded-2xl hover:shadow-xl transition-all">
+                                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                                    <Shield className="w-6 h-6 text-blue-600" />
+                                </div>
+                                <h3 className="text-lg font-bold text-slate-900 mb-2">ELEVATING STANDARDS</h3>
+                                <p className="text-sm font-bold text-blue-700 mb-4">EBT & Safety Alignment</p>
+                                <p className="text-sm text-slate-600 leading-relaxed">
+                                    The era of "box-ticking" training is over. We champion Evidence-Based Training (EBT) and Competency-Based Training & Assessment (CBTA) as the only way forward for global aviation safety. By integrating these methodologies into our Foundational Program, we ensure that even low-time pilots are developing the resilience and decision-making skills required by modern flight decks.
+                                </p>
+                            </div>
+
+                            {/* The Voice of the Pilot */}
+                            <div className="p-8 bg-white border border-slate-100 rounded-2xl hover:shadow-xl transition-all">
+                                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                                    <Users className="w-6 h-6 text-blue-600" />
+                                </div>
+                                <h3 className="text-lg font-bold text-slate-900 mb-2">THE VOICE OF THE PILOT</h3>
+                                <p className="text-sm font-bold text-blue-700 mb-4">Pilot Advocacy</p>
+                                <p className="text-sm text-slate-600 leading-relaxed">
+                                    In a profit-driven industry, the voice of the pilot can be drowned out. We serve as an independent advocate, representing the interests of our members to regulators, airlines, and flight schools. We push for fair hiring practices, transparent career pathways, and mental health support, ensuring that the human element remains at the center of aviation.
+                                </p>
+                            </div>
+
+                            {/* Future Ready */}
+                            <div className="p-8 bg-white border border-slate-100 rounded-2xl hover:shadow-xl transition-all">
+                                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                                    <Zap className="w-6 h-6 text-blue-600" />
+                                </div>
+                                <h3 className="text-lg font-bold text-slate-900 mb-2">FUTURE READY</h3>
+                                <p className="text-sm font-bold text-blue-700 mb-4">Vision 2030</p>
+                                <p className="text-sm text-slate-600 leading-relaxed">
+                                    Aviation is changing. From sustainable fuels to single-pilot operations and urban air mobility, we are preparing our pilots for the flight deck of tomorrow. Our stewardship involves anticipating these shifts and updating our curriculum continuously, ensuring a WingMentor pilot is always ahead of the curve.
+                                </p>
+                            </div>
+                        </div>
+                    </RevealOnScroll>
+                </div>
             </div>
 
             {/* Strategic Partnerships Grid - Matches "Pillars of Professional Growth" */}
