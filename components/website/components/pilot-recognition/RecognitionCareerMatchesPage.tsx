@@ -17,14 +17,14 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
     const [selectedPathway, setSelectedPathway] = useState<{ title: string; subtitle: string } | null>(null);
 
     const pathways = [
-        { title: 'Envoy Air Pilot Cadet Program', subtitle: 'Envoy Air (American Airlines Group)', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-        { title: 'CAE Philippines Type Rating Center', subtitle: 'CAE Philippines (PAAT)', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1565514020176-792dd98c6d6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-        { title: 'SkyWest Airlines Cadet Program', subtitle: 'SkyWest Airlines', match: 80, pr: 0, image: 'https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-        { title: 'Zipline Flight Operations', subtitle: 'Zipline International', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-        { title: 'Drone Delivery Pilot', subtitle: 'Wing (Alphabet)', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1579829366248-204fe8413f31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-        { title: 'MLG Pilotless Drone Ops', subtitle: 'MLG (Medical Logistics Group)', match: 79, pr: 0, image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-        { title: 'Cathay Pacific Cadet Pilot Programme', subtitle: 'Cathay Pacific Airways', match: 75, pr: 0, image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-        { title: 'Cebu Pacific Cadet Pilot Program', subtitle: 'Cebu Pacific', match: 60, pr: 0, image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }
+        { title: 'Envoy Air Pilot Cadet Program', subtitle: 'Envoy Air (American Airlines Group)', match: 80, pr: 0, image: 'https://www.envoyair.com/wp-content/uploads/2024/03/IMG_CadetProgram_MeganSnow.jpg' },
+        { title: 'CAE Philippines Type Rating Center', subtitle: 'CAE Philippines (PAAT)', match: 80, pr: 0, image: 'https://airhex.com/images/airline-logos/cae.png' },
+        { title: 'SkyWest Airlines Cadet Program', subtitle: 'SkyWest Airlines', match: 80, pr: 0, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/SkyWest_Airlines_logo.svg/2560px-SkyWest_Airlines_logo.svg.png' },
+        { title: 'Zipline Flight Operations', subtitle: 'Zipline International', match: 79, pr: 0, image: 'https://airhex.com/images/airline-logos/zipline.png' },
+        { title: 'Drone Delivery Pilot', subtitle: 'Wing (Alphabet)', match: 79, pr: 0, image: 'https://airhex.com/images/airline-logos/wing.png' },
+        { title: 'MLG Pilotless Drone Ops', subtitle: 'MLG (Medical Logistics Group)', match: 79, pr: 0, image: 'https://airhex.com/images/airline-logos/mgl.png' },
+        { title: 'Cathay Pacific Cadet Pilot Programme', subtitle: 'Cathay Pacific Airways', match: 75, pr: 0, image: 'https://airhex.com/images/airline-logos/cathay-pacific.png' },
+        { title: 'Cebu Pacific Cadet Pilot Program', subtitle: 'Cebu Pacific', match: 60, pr: 0, image: 'https://airhex.com/images/airline-logos/cebu-pacific.png' }
     ];
 
     // Initialize selected pathway to first one
