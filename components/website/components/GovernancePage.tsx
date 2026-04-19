@@ -56,13 +56,23 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                     </h2>
                     <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Our curriculum and reporting structures are built to align with ICAO, EASA, and GCAA
+                            Our curriculum and reporting structures are built to align with <strong>ICAO</strong>, <strong>EASA</strong>, and <strong>GCAA</strong>
                             standards. We don't just "teach" flying; we document competency in a language that
-                            global regulators and airlines understand.
+                            global regulators and airlines understand. Our assessment framework is designed to translate
+                            pilot competencies into <strong>regulatory-compliant documentation</strong> that facilitates seamless
+                            career progression across international jurisdictions.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            This ensures that your WingMentor profile is a recognized asset, whether you are
+                            applying to a carrier in the UAE, Europe, or beyond. The <strong>ATS-compatible ATLAS Aviation CV</strong>
+                            formatting integrated into our platform ensures your credentials are presented in the standardized
+                            format preferred by major airlines and recruitment systems worldwide.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            This ensures that your WingMentor profile is a recognized asset, whether you are
-                            applying to a carrier in the UAE, Europe, or beyond.
+                            Our alignment with <strong>AIRBUS 9 core competencies</strong> and <strong>EBT CBTA</strong> principles
+                            provides assurance that your documented competencies meet the exacting standards required by
+                            leading manufacturers and operators. This regulatory alignment extends to our Foundational Program,
+                            which serves as a foundational prerequisite for our EBT CBTA-aligned flagship Transition Program.
                         </p>
                     </div>
                 </RevealOnScroll>
@@ -82,13 +92,22 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             Data Security
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Your flight records and career data are sensitive assets. We employ bank-grade
-                            encryption and strict access controls to ensure your information is only seen by
-                            the recruiters you authorize.
+                            Your flight records and career data are sensitive assets. We employ <strong>bank-grade encryption</strong>
+                            and strict access controls to ensure your information is only seen by the recruiters you authorize.
+                            Our platform utilizes <strong>AES-256 encryption</strong> for data at rest and TLS 1.3 for data in transit,
+                            ensuring your personal information remains protected throughout its lifecycle.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            We never sell your data to third parties. Our business model is built on your career
+                            success, not on monetizing your personal information. Unlike many job platforms that profit from
+                            selling candidate data to recruiters, we maintain a <strong>user-centric revenue model</strong> where
+                            our success is directly tied to your professional advancement and career achievements.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            We never sell your data to third parties. Our business model is built on your career
-                            success, not on monetizing your personal information.
+                            Your <strong>PilotRecognition Profile</strong> operates on a <strong>blockchain-verifiable certification</strong>
+                            system, giving you control over who accesses your credentials. You can revoke access at any time,
+                            and our transparent audit logs allow you to track exactly which operators have viewed your profile.
+                            This puts you in complete control of your professional data throughout your aviation career journey.
                         </p>
                     </div>
                 </RevealOnScroll>
@@ -109,12 +128,25 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             We maintain clear, published agreements with all our airline and ATO partners. Key
-                            terms regarding hiring pathways, discount structures, and data usage are open for
-                            review.
+                            terms regarding <strong>hiring pathways</strong>, <strong>discount structures</strong>, and <strong>data usage</strong> are open for
+                            review. Our partnership agreements are designed to eliminate ambiguity and ensure that
+                            pilots understand exactly what they're getting when they enroll in a pathway or program.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            This transparency ensures that when we recommend a pathway, it is because it is the
+                            best option for your career, not because of a hidden incentive. Unlike recruitment agencies
+                            that may prioritize commissions over candidate fit, our recommendations are based on
+                            <strong>objective competency matching</strong> between your verified PilotRecognition profile and
+                            operator requirements.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            This transparency ensures that when we recommend a pathway, it is because it is the
-                            best option for your career, not because of a hidden incentive.
+                            Our pathway matching system operates on <strong>AI-powered algorithms</strong> that analyze your
+                            flight hours, certifications, competencies, and career goals to identify the most suitable
+                            opportunities. When operators post opportunities through our platform, they agree to our
+                            transparent terms, ensuring fair and equitable access for all qualified pilots. This commitment
+                            to transparency extends to our <strong>enterprise integration</strong> with operators, where job
+                            postings and pathway details are publicly visible on Pilot Terminal, creating an open marketplace
+                            for aviation career opportunities.
                         </p>
                     </div>
                 </RevealOnScroll>
