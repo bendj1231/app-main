@@ -712,30 +712,6 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 </p>
             </div>
 
-            {/* WingMentor Newsletter Card */}
-            <div className="py-8 px-6 max-w-4xl mx-auto">
-                <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
-                    <div className="flex flex-col md:flex-row items-center gap-6">
-                        <div className="flex-shrink-0">
-                            <img
-                                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                alt="WingMentor Logo"
-                                className="w-24 h-24 object-contain"
-                            />
-                        </div>
-                        <div className="flex-grow text-center md:text-left">
-                            <h3 className="text-xl font-bold text-slate-900 mb-2">Unlock Your Full Potential</h3>
-                            <p className="text-slate-600 leading-relaxed mb-4">
-                                Become a WingMentor member to gain exclusive access to airline expectations, compare your profile against industry standards, and receive personalized career guidance from aviation experts.
-                            </p>
-                            <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
-                                Become a Member
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* Information Gate Container */}
             <div className="relative">
                 {/* Gated Sections (Blurred) */}
@@ -853,44 +829,6 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                                     </div>
                                 ))}
                             </div>
-                        </div>
-                    </div>
-
-                    {/* Newsletter / Unlock Card - Positioned over the blur */}
-                    <div className="absolute inset-0 z-30 flex items-center justify-center pt-20">
-                        <div className="w-full max-w-4xl px-6">
-                            <RevealOnScroll delay={100}>
-                                <div className="relative bg-white border border-slate-200 rounded-3xl p-8 md:p-16 flex flex-col items-center text-center shadow-2xl">
-                                    <img
-                                        src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                        alt="WingMentor Logo"
-                                        className="w-40 h-auto object-contain mb-6"
-                                    />
-
-                                    <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
-                                        Newsletter & Hub Access
-                                    </p>
-
-                                    <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                                        Unlock Full Industry <br /> Intelligence
-                                    </h2>
-
-                                    <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
-                                        Subscribe to our newsletter to unlock the full "Airline Expectations" analysis and gain access to strategic career intelligence.
-                                    </p>
-
-                                    <div className="flex w-full max-w-md gap-4">
-                                        <input
-                                            type="email"
-                                            placeholder="Enter your email address"
-                                            className="flex-1 px-6 py-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all"
-                                        />
-                                        <button className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-600/20 active:scale-95">
-                                            Subscribe
-                                        </button>
-                                    </div>
-                                </div>
-                            </RevealOnScroll>
                         </div>
                     </div>
                 </div>

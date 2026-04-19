@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Target, Eye, Heart, Shield, Users, Globe } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -33,97 +33,117 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
                             Mission & Vision
                         </h1>
-                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                            We are building the infrastructure that transforms flight hours into verified professional credentials.
-                            Our commitment is to the pilot's career journey, the industry's need for verifiable competency,
-                            and the future of aviation excellence.
+                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
+                            As the aviation industry's first <strong>PilotRecognition-based platform</strong>, operated by WM Pilot Group,
+                            we bridge the <strong>Pilot Gap in Recognition, Experience, and Pilot Risk Management</strong> through
+                            recognition-based profiling and accredited experience programs aligned with <strong>EBT CBTA AIRBUS 9 core competencies</strong>.
                         </p>
                     </RevealOnScroll>
                 </div>
             </div>
 
             {/* Mission Section */}
-            <div className="py-12 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Target className="w-8 h-8 text-blue-600" />
-                            </div>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                Our Mission
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Transform Flight Hours into Verifiable Credentials
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                To provide every pilot with a verified digital identity that airlines trust, recruiters recognize,
-                                and the aviation industry demands. We bridge the gap between training and airline-ready credibility.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                We exist to eliminate uncertainty in pilot recruitment through cryptographically verified credentials,
-                                competency-based recognition, and direct connections with airline partners worldwide.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <img
-                                    src="https://images.unsplash.com/photo-1542296332-2e44a99cfef0?auto=format&fit=crop&q=80&w=1600"
-                                    alt="Pilot Mentorship"
-                                    className="w-full rounded-[2.5rem] shadow-2xl object-cover aspect-[4/3]"
-                                />
-                                <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-slate-100 hidden md:block">
-                                    <p className="text-3xl font-bold text-blue-600 font-serif">100%</p>
-                                    <p className="text-xs uppercase tracking-widest text-slate-500">Commitment</p>
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-12 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                            Our Mission
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Bridge the Pilot Gap Through Recognition
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            To address the aviation industry's most significant challenge—professional <strong>Recognition</strong>.
+                            Pilots invest <strong>$50,000 USD</strong> in training and <strong>4 years</strong> in education,
+                            yet face outdated job platforms and informal searches. We provide a verified PilotRecognition platform
+                            that demonstrates actual professional capabilities through <strong>EBT CBTA aligned assessments</strong>
+                            and <strong>50 hours of verifiable mentorship</strong>.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            Through strategic partnerships with <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>,
+                            and industry leaders, we deliver accredited experience programs that align with global aviation standards,
+                            ensuring pilots gain the recognition they deserve and operators find candidates they can trust.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Vision Section */}
-            <div className="py-20 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
+            <div className="py-20 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-purple-700 uppercase tracking-[0.3em] mb-2">
+                            Our Vision
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            The Global Standard for Pilot Recognition
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            To become the definitive authority in pilot verification, creating a global ecosystem where
+                            <strong>ATS-compatible ATLAS Aviation CV formatting</strong>, <strong>blockchain verifiable certifications</strong>,
+                            and <strong>AI-powered pathway matching</strong> replace uncertainty in aviation careers.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            We envision a future where WingMentor's recognition system, powered by <strong>50+ AI agents</strong>
+                            providing real-time industry intelligence, becomes the universal benchmark for pilot recruitment.
+                            Our <strong>Pilot Terminal</strong> social network and <strong>PilotRecogAI</strong> will connect
+                            <strong>5000+ pilots</strong> directly with operators, manufacturers, and training providers worldwide.
+                        </p>
+                    </RevealOnScroll>
+                </div>
+            </div>
+
+            {/* What We Do Section */}
+            <div className="py-20 px-6 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-16">
                         <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Eye className="w-8 h-8 text-purple-600" />
-                            </div>
-                            <p className="text-xs font-bold text-purple-700 uppercase tracking-[0.3em] mb-2">
-                                Our Vision
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                Comprehensive Ecosystem
                             </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                The Global Standard for Pilot Recognition
+                            <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
+                                How We Transform Aviation Careers
                             </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                To become the definitive authority in pilot verification, creating a global ecosystem where
-                                verified competency, data-driven insights, and preparation replace uncertainty in aviation careers.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                We envision a future where WingMentor's recognition system and competency framework
-                                become the universal benchmark for pilot recruitment and professional advancement worldwide.
+                            <p className="text-slate-600 max-w-2xl mx-auto">
+                                From foundational training to career pathways, we provide the complete infrastructure for professional pilot development
                             </p>
                         </RevealOnScroll>
                     </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <img
-                                    src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1600"
-                                    alt="Global Aviation Vision"
-                                    className="w-full rounded-[2.5rem] shadow-2xl object-cover aspect-[4/3]"
-                                />
-                            </div>
-                        </RevealOnScroll>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {[
+                            {
+                                title: "Foundational Program",
+                                desc: "EBT CBTA aligned training addressing the Pilot Gap through 5 modules, W1000 application access, examinations, and 50 hours of verifiable mentorship"
+                            },
+                            {
+                                title: "PilotRecognition Profile",
+                                desc: "Recognition-based flight logbooks where every hour contributes to your score, with live tracking and intelligent pathway matching based on verified competencies"
+                            },
+                            {
+                                title: "Pathway Matching",
+                                desc: "AI-powered career guidance connecting pilots to cadet programs, type ratings, business aviation, eVTOL, and specialized operations with predictive analytics"
+                            },
+                            {
+                                title: "Pilot Terminal",
+                                desc: "Professional network platform with 50+ AI agents providing real-time industry intelligence, job discovery, and direct connections with operators worldwide"
+                            }
+                        ].map((item, idx) => (
+                            <RevealOnScroll key={idx}>
+                                <div className="bg-white p-8 rounded-3xl border border-slate-100 hover:shadow-xl transition-all h-full">
+                                    <h3 className="text-lg font-bold text-slate-900 mb-3">{item.title}</h3>
+                                    <p className="text-slate-600 leading-relaxed text-sm">
+                                        {item.desc}
+                                    </p>
+                                </div>
+                            </RevealOnScroll>
+                        ))}
                     </div>
                 </div>
             </div>
 
             {/* Core Values Section */}
-            <div className="py-20 px-6 bg-slate-50">
+            <div className="py-20 px-6 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-16">
                         <RevealOnScroll>
@@ -140,35 +160,61 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                         {[
                             {
                                 title: "Verification",
-                                desc: "We believe in the power of verifiable truth. Every credential, flight hour, and achievement must be cryptographically verified to build trust in the aviation industry.",
-                                icon: Shield,
-                                color: "text-blue-600",
-                                bg: "bg-blue-50"
+                                desc: "We believe in the power of verifiable truth. Every credential, flight hour, and achievement is cryptographically verified through blockchain technology to build trust in the aviation industry."
                             },
                             {
-                                title: "Competency",
-                                desc: "Beyond flight hours—we measure capability. Our competency framework maps skills against industry standards to recognize true professional readiness.",
-                                icon: Target,
-                                color: "text-red-600",
-                                bg: "bg-red-50"
+                                title: "Competency-Based",
+                                desc: "Beyond flight hours—we measure capability. Our EBT CBTA aligned framework maps skills against AIRBUS 9 core competencies to recognize true professional readiness and behavioral competence."
                             },
                             {
-                                title: "Excellence",
-                                desc: "For the standards, for the career, for the future. We foster a community built on verified excellence, ethical leadership, and professional advancement.",
-                                icon: Globe,
-                                color: "text-emerald-600",
-                                bg: "bg-emerald-50"
+                                title: "Industry Aligned",
+                                desc: "Supported by Airbus Head of Training in EBT CBTA and Etihad Cadet Program, our programs align with the highest international standards. We foster a community built on verified excellence and ethical leadership."
                             }
                         ].map((item, idx) => (
                             <RevealOnScroll key={idx}>
-                                <div className="bg-white p-10 rounded-3xl border border-slate-100 hover:shadow-xl transition-all h-full">
-                                    <div className={`w-14 h-14 ${item.bg} rounded-2xl flex items-center justify-center mb-6`}>
-                                        <item.icon className={`w-7 h-7 ${item.color}`} />
-                                    </div>
+                                <div className="bg-slate-50 p-10 rounded-3xl border border-slate-100 hover:shadow-xl transition-all h-full">
                                     <h3 className="text-xl font-bold text-slate-900 mb-4">{item.title}</h3>
                                     <p className="text-slate-600 leading-relaxed text-sm">
                                         {item.desc}
                                     </p>
+                                </div>
+                            </RevealOnScroll>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Industry Partners Section */}
+            <div className="py-20 px-6 bg-slate-900 text-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-400 uppercase tracking-[0.3em] mb-2">
+                                Strategic Alliances
+                            </p>
+                            <h2 className="text-3xl md:text-5xl font-serif mb-4">
+                                Industry-Aligned Standards
+                            </h2>
+                            <p className="text-slate-300 max-w-2xl mx-auto">
+                                Our programs are developed in collaboration with global aviation leaders to ensure alignment with the highest industry standards
+                            </p>
+                        </RevealOnScroll>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        {[
+                            "AIRBUS",
+                            "Etihad",
+                            "Archer",
+                            "MLG",
+                            "Cebu Pacific",
+                            "WCC Pilot Academy",
+                            "CAE Philippines",
+                            "Envoy Air"
+                        ].map((partner, idx) => (
+                            <RevealOnScroll key={idx}>
+                                <div className="bg-slate-800 p-6 rounded-2xl hover:bg-slate-700 transition-all">
+                                    <p className="font-bold text-lg">{partner}</p>
                                 </div>
                             </RevealOnScroll>
                         ))}

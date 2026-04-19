@@ -126,26 +126,37 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     };
 
     const handleGoogleSignIn = async () => {
+        const timestamp = new Date().toISOString();
+        console.log(`[${timestamp}] [GOOGLE OAUTH] Starting Google sign-in process`);
         setOAuthLoading(true);
         setError('');
+
         try {
             const redirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/callback`;
-            console.log('Google OAuth redirect URI:', redirectUri);
-            console.log('Window location origin:', window.location.origin);
-            
+            console.log(`[${timestamp}] [GOOGLE OAUTH] Redirect URI:`, redirectUri);
+            console.log(`[${timestamp}] [GOOGLE OAUTH] Window location origin:`, window.location.origin);
+            console.log(`[${timestamp}] [GOOGLE OAUTH] Current URL:`, window.location.href);
+
             const authUrl = generateGoogleAuthUrl({
                 redirectUri: redirectUri,
                 prompt: 'consent',
             });
-            
-            console.log('Google OAuth auth URL:', authUrl);
+
+            console.log(`[${timestamp}] [GOOGLE OAUTH] Generated auth URL:`, authUrl);
+            console.log(`[${timestamp}] [GOOGLE OAUTH] About to redirect to Google OAuth page`);
+            console.log(`[${timestamp}] [GOOGLE OAUTH] oauthLoading state set to: true`);
+
             // Redirect to Google's OAuth authorization page
             window.location.href = authUrl;
         } catch (err: any) {
-            console.error('Google Sign-In failed:', err);
+            const errorTimestamp = new Date().toISOString();
+            console.error(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] Google Sign-In failed:`, err);
+            console.error(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] Error message:`, err.message);
+            console.error(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] Error stack:`, err.stack);
             setError(err.message || 'Google Sign-In failed. Please try again.');
             addToast('error', 'Google Sign-In Failed', err.message || 'Google Sign-In failed. Please try again.');
             setOAuthLoading(false);
+            console.log(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] oauthLoading state reset to: false`);
         }
     };
 

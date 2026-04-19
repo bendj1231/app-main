@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Globe, Shield, Users, Leaf, Plane, BarChart3 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -43,127 +43,70 @@ export const IndustryStewardshipPage: React.FC<IndustryStewardshipPageProps> = (
             </div>
 
             {/* Section 1: Safety Standards */}
-            <div className="py-12 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Shield className="w-8 h-8 text-blue-600" />
-                            </div>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                Eleveating Standards
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                EBT & Safety Alignment
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                The era of "box-ticking" training is over. We champion Evidence-Based Training (EBT)
-                                and Competency-Based Training & Assessment (CBTA) as the only way forward for global aviation safety.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                By integrating these methodologies into our Foundational Program, we ensure that
-                                even low-time pilots are developing the resilience and decision-making skills
-                                required by modern flight decks.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-blue-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1559297434-fae8a1916a79?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Safety Standards"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-12 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                            Eleveating Standards
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            EBT & Safety Alignment
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            The era of "box-ticking" training is over. We champion Evidence-Based Training (EBT)
+                            and Competency-Based Training & Assessment (CBTA) as the only way forward for global aviation safety.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            By integrating these methodologies into our Foundational Program, we ensure that
+                            even low-time pilots are developing the resilience and decision-making skills
+                            required by modern flight decks.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Section 2: Pilot Advocacy */}
-            <div className="py-20 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-indigo-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Users className="w-8 h-8 text-indigo-600" />
-                            </div>
-                            <p className="text-xs font-bold text-indigo-700 uppercase tracking-[0.3em] mb-2">
-                                The Voice of the Pilot
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Pilot Advocacy
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                In a profit-driven industry, the voice of the pilot can be drowned out. We serve as
-                                an independent advocate, representing the interests of our members to regulators,
-                                airlines, and flight schools.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                We push for fair hiring practices, transparent career pathways, and mental health
-                                support, ensuring that the human element remains at the center of aviation.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-indigo-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Pilot Advocacy"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-20 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-indigo-700 uppercase tracking-[0.3em] mb-2">
+                            The Voice of the Pilot
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Pilot Advocacy
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            In a profit-driven industry, the voice of the pilot can be drowned out. We serve as
+                            an independent advocate, representing the interests of our members to regulators,
+                            airlines, and flight schools.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            We push for fair hiring practices, transparent career pathways, and mental health
+                            support, ensuring that the human element remains at the center of aviation.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Section 3: 2030 Vision */}
-            <div className="py-20 px-6 max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2 text-center md:text-left">
-                        <RevealOnScroll>
-                            <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6 mx-auto md:mx-0">
-                                <Globe className="w-8 h-8 text-emerald-600" />
-                            </div>
-                            <p className="text-xs font-bold text-emerald-700 uppercase tracking-[0.3em] mb-2">
-                                Future Ready
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                                Vision 2030
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Aviation is changing. From sustainable fuels to single-pilot operations and urban
-                                air mobility, we are preparing our pilots for the flight deck of tomorrow.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                Our stewardship involves anticipating these shifts and updating our curriculum
-                                continuously, ensuring a WingMentor pilot is always ahead of the curve.
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <div className="relative w-full max-w-md mx-auto">
-                                <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-emerald-600/10 mix-blend-multiply"></div>
-                                    <img
-                                        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600"
-                                        alt="Future Vision"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+            <div className="py-20 px-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-emerald-700 uppercase tracking-[0.3em] mb-2">
+                            Future Ready
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
+                            Vision 2030
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            Aviation is changing. From sustainable fuels to single-pilot operations and urban
+                            air mobility, we are preparing our pilots for the flight deck of tomorrow.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            Our stewardship involves anticipating these shifts and updating our curriculum
+                            continuously, ensuring a WingMentor pilot is always ahead of the curve.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 

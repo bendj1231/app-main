@@ -25,8 +25,15 @@ export interface GoogleAuthCodeResult {
  * @returns The complete authorization URL
  */
 export function generateGoogleAuthUrl(params: GoogleAuthUrlParams): string {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] [GOOGLE OAUTH] Generating auth URL`);
+  console.log(`[${timestamp}] [GOOGLE OAUTH] Params:`, JSON.stringify(params, null, 2));
+  console.log(`[${timestamp}] [GOOGLE OAUTH] Client ID:`, GOOGLE_OAUTH_CONFIG.clientId);
+  console.log(`[${timestamp}] [GOOGLE OAUTH] Authorization endpoint:`, GOOGLE_OAUTH_CONFIG.authorizationEndpoint);
+  console.log(`[${timestamp}] [GOOGLE OAUTH] Scopes:`, GOOGLE_OAUTH_CONFIG.scopes);
+
   const { clientId, authorizationEndpoint, scopes } = GOOGLE_OAUTH_CONFIG;
-  
+
   const authParams = new URLSearchParams({
     client_id: clientId,
     redirect_uri: params.redirectUri,
@@ -34,20 +41,29 @@ export function generateGoogleAuthUrl(params: GoogleAuthUrlParams): string {
     scope: scopes.join(' '),
   });
 
+  console.log(`[${timestamp}] [GOOGLE OAUTH] Base auth params:`, Object.fromEntries(authParams.entries()));
+
   // Optional parameters
   if (params.state) {
     authParams.append('state', params.state);
+    console.log(`[${timestamp}] [GOOGLE OAUTH] State parameter added:`, params.state);
   }
 
   if (params.loginHint) {
     authParams.append('login_hint', params.loginHint);
+    console.log(`[${timestamp}] [GOOGLE OAUTH] Login hint added:`, params.loginHint);
   }
 
   if (params.prompt) {
     authParams.append('prompt', params.prompt);
+    console.log(`[${timestamp}] [GOOGLE OAUTH] Prompt parameter added:`, params.prompt);
   }
 
-  return `${authorizationEndpoint}?${authParams.toString()}`;
+  const finalUrl = `${authorizationEndpoint}?${authParams.toString()}`;
+  console.log(`[${timestamp}] [GOOGLE OAUTH] Final auth URL generated:`, finalUrl);
+  console.log(`[${timestamp}] [GOOGLE OAUTH] URL length:`, finalUrl.length);
+
+  return finalUrl;
 }
 
 /**
@@ -56,16 +72,34 @@ export function generateGoogleAuthUrl(params: GoogleAuthUrlParams): string {
  * @returns Object containing the code or error
  */
 export function extractCodeFromUrl(url: string): GoogleAuthCodeResult {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] [GOOGLE OAUTH] extractCodeFromUrl called`);
+  console.log(`[${timestamp}] [GOOGLE OAUTH] Input URL:`, url);
+  console.log(`[${timestamp}] [GOOGLE OAUTH] URL length:`, url.length);
+
   try {
     const urlObj = new URL(url);
     const code = urlObj.searchParams.get('code');
     const error = urlObj.searchParams.get('error');
+    const state = urlObj.searchParams.get('state');
 
-    return {
+    console.log(`[${timestamp}] [GOOGLE OAUTH] URL parsed successfully`);
+    console.log(`[${timestamp}] [GOOGLE OAUTH] Code: ${code ? code.substring(0, 20) + '...' : 'null'}`);
+    console.log(`[${timestamp}] [GOOGLE OAUTH] Error:`, error);
+    console.log(`[${timestamp}] [GOOGLE OAUTH] State:`, state);
+    console.log(`[${timestamp}] [GOOGLE OAUTH] All search params:`, Object.fromEntries(urlObj.searchParams.entries()));
+
+    const result = {
       code,
       error,
     };
+
+    console.log(`[${timestamp}] [GOOGLE OAUTH] Returning result:`, result);
+    return result;
   } catch (e) {
+    console.error(`[${timestamp}] [GOOGLE OAUTH ERROR] Failed to parse URL`);
+    console.error(`[${timestamp}] [GOOGLE OAUTH ERROR] Error:`, e);
+    console.error(`[${timestamp}] [GOOGLE OAUTH ERROR] Error message:`, e instanceof Error ? e.message : String(e));
     return {
       code: null,
       error: 'Invalid URL format',

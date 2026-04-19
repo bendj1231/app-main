@@ -18,15 +18,23 @@ const OAuthCallback: React.FC = () => {
 
   useEffect(() => {
     const handleOAuthCallback = async () => {
+      const timestamp = new Date().toISOString();
+      console.log(`[${timestamp}] [OAUTH CALLBACK] OAuth callback handler started`);
+      console.log(`[${timestamp}] [OAUTH CALLBACK] Current URL:`, window.location.href);
+      console.log(`[${timestamp}] [OAUTH CALLBACK] Search params:`, Object.fromEntries(searchParams.entries()));
+
       try {
         // Extract authorization code from URL
         const code = searchParams.get('code');
         const error = searchParams.get('error');
         const errorDescription = searchParams.get('error_description');
+        const state = searchParams.get('state');
+
+        console.log(`[${timestamp}] [OAUTH CALLBACK] Extracted params - code: ${code ? code.substring(0, 10) + '...' : 'null'}, error: ${error}, state: ${state}`);
 
         // Handle OAuth errors from Google
         if (error) {
-          console.error('OAuth error:', error, errorDescription);
+          console.error(`[${timestamp}] [OAUTH CALLBACK ERROR] OAuth error from Google:`, error, errorDescription);
           setErrorMessage(errorDescription || error || 'Authentication failed');
           setStatus('error');
           return;
@@ -34,36 +42,51 @@ const OAuthCallback: React.FC = () => {
 
         // Check if authorization code is present
         if (!code) {
-          console.error('No authorization code found in URL');
+          console.error(`[${timestamp}] [OAUTH CALLBACK ERROR] No authorization code found in URL`);
+          console.error(`[${timestamp}] [OAUTH CALLBACK ERROR] Full URL params:`, window.location.search);
           setErrorMessage('No authorization code received');
           setStatus('error');
           return;
         }
 
-        console.log('Authorization code received:', code.substring(0, 10) + '...');
+        console.log(`[${timestamp}] [OAUTH CALLBACK] Authorization code received, length: ${code.length}`);
+        console.log(`[${timestamp}] [OAUTH CALLBACK] Code prefix: ${code.substring(0, 20)}...`);
 
         // Set OAuth session flag to skip CSRF validation
         sessionStorage.setItem('oauth_session', 'true');
+        console.log(`[${timestamp}] [OAUTH CALLBACK] OAuth session flag set in sessionStorage`);
 
         // Call Agent 2's token exchange function
         const redirectUri = `${window.location.origin}/auth/callback`;
+        console.log(`[${timestamp}] [OAUTH CALLBACK] About to call exchangeCodeForSupabaseSession`);
+        console.log(`[${timestamp}] [OAUTH CALLBACK] Redirect URI:`, redirectUri);
+
         const { data: sessionData } = await exchangeCodeForSupabaseSession(code, redirectUri);
 
-        console.log('Supabase session created successfully:', sessionData.user?.id);
+        console.log(`[${timestamp}] [OAUTH CALLBACK] Supabase session created successfully`);
+        console.log(`[${timestamp}] [OAUTH CALLBACK] User ID:`, sessionData.user?.id);
+        console.log(`[${timestamp}] [OAUTH CALLBACK] Session data:`, JSON.stringify(sessionData, null, 2));
 
         // Success - redirect to home page
         setStatus('success');
+        console.log(`[${timestamp}] [OAUTH CALLBACK] Status set to success, preparing to redirect`);
         setTimeout(() => {
+          console.log(`[${timestamp}] [OAUTH CALLBACK] Redirecting to home page`);
           navigate('/', { replace: true });
         }, 500);
 
       } catch (err) {
-        console.error('Error processing OAuth callback:', err);
+        const errorTimestamp = new Date().toISOString();
+        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error processing OAuth callback:`, err);
+        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error name:`, err instanceof Error ? err.name : 'Unknown');
+        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error message:`, err instanceof Error ? err.message : String(err));
+        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error stack:`, err instanceof Error ? err.stack : 'No stack available');
         setErrorMessage(err instanceof Error ? err.message : 'An unexpected error occurred');
         setStatus('error');
       }
     };
 
+    console.log(`[${new Date().toISOString()}] [OAUTH CALLBACK] useEffect triggered, calling handleOAuthCallback`);
     handleOAuthCallback();
   }, [searchParams, navigate]);
 
