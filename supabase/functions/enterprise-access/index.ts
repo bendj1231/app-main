@@ -1,53 +1,27 @@
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { 
-  SecurityMiddleware, 
-  RATE_LIMIT_CONFIGS, 
-  Logger, 
-  PerformanceMonitor, 
-  generateRequestId 
-} from '../_shared/security-middleware.ts'
+// Setup type definitions for built-in Supabase Runtime APIs
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-serve(async (req) => {
-  const requestId = generateRequestId()
-  PerformanceMonitor.startTimer(requestId)
-  
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+
+Deno.serve(async (req: Request) => {
   try {
-    Logger.info('Enterprise access request started', { method: req.method }, requestId)
-    
-    // Rate limiting check
-    const clientId = SecurityMiddleware.getClientIdentifier(req)
-    const rateLimitResult = SecurityMiddleware.checkRateLimit(
-      `enterprise-access:${clientId}`,
-      RATE_LIMIT_CONFIGS.signup // Use same rate limit as signup
-    )
-
-    if (!rateLimitResult.allowed) {
-      Logger.warn('Rate limit exceeded', { clientId }, requestId)
-      return SecurityMiddleware.createResponse({
-        error: 'Too many submissions. Please try again later.',
-        retryAfter: rateLimitResult.resetTime
-      }, 429, { 'Retry-After': '3600' })
-    }
-
-    // CSRF protection for POST requests
-    if (req.method === 'POST') {
-      if (!SecurityMiddleware.validateCSRFToken(req)) {
-        Logger.warn('Invalid CSRF token', {}, requestId)
-        return SecurityMiddleware.createErrorResponse('Invalid CSRF token', 403, requestId)
-      }
+    if (req.method !== 'POST') {
+      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+        status: 405,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     const formData = await req.json()
 
     // Input validation
     if (!formData.email || !formData.company || !formData.name) {
-      Logger.warn('Missing required fields', {}, requestId)
-      return SecurityMiddleware.createErrorResponse('Name, email, and company are required', 400, requestId)
-    }
-
-    if (!SecurityMiddleware.isValidEmail(formData.email)) {
-      Logger.warn('Invalid email format', { email: formData.email }, requestId)
-      return SecurityMiddleware.createErrorResponse('Invalid email format', 400, requestId)
+      return new Response(JSON.stringify({ error: 'Name, email, and company are required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     // Format the email body
@@ -90,8 +64,10 @@ Additional Information:
     // Send email using Resend API
     const resendApiKey = Deno.env.get('RESEND_API_KEY')
     if (!resendApiKey) {
-      Logger.error('RESEND_API_KEY not configured', {}, requestId)
-      return SecurityMiddleware.createErrorResponse('Email service not configured', 500, requestId)
+      return new Response(JSON.stringify({ error: 'Email service not configured' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     const resendResponse = await fetch('https://api.resend.com/emails', {
@@ -107,34 +83,39 @@ Additional Information:
         text: emailBody,
         reply_to: formData.email,
       }),
-    });
+    })
 
     if (!resendResponse.ok) {
       const errorText = await resendResponse.text()
-      Logger.error('Resend API error', { status: resendResponse.status, error: errorText }, requestId)
-      return SecurityMiddleware.createErrorResponse('Failed to send email', 500, requestId)
+      console.error('Resend API error:', errorText)
+      return new Response(JSON.stringify({ error: 'Failed to send email' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     const resendData = await resendResponse.json()
-    Logger.info('Email sent successfully', { emailId: resendData.id }, requestId)
+    console.log('Email sent successfully:', resendData.id)
 
-    const response = SecurityMiddleware.createResponse({
-      success: true,
-      message: 'Your request has been sent successfully',
-      emailId: resendData.id
-    })
-
-    // Set CSRF token for future requests
-    const csrfToken = SecurityMiddleware.generateCSRFToken()
-    SecurityMiddleware.setCSRFCookie(response, csrfToken)
-    response.headers.append('X-CSRF-Token', csrfToken)
-
-    PerformanceMonitor.endTimer(requestId)
-    return response
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: 'Your request has been sent successfully',
+        emailId: resendData.id
+      }),
+      { 
+        headers: { 
+          'Content-Type': 'application/json',
+          'Connection': 'keep-alive'
+        } 
+      }
+    )
 
   } catch (error) {
-    Logger.error('Unexpected error', { error: error.message }, requestId)
-    PerformanceMonitor.endTimer(requestId)
-    return SecurityMiddleware.createErrorResponse('An unexpected error occurred', 500, requestId)
+    console.error('Unexpected error:', error)
+    return new Response(JSON.stringify({ error: 'An unexpected error occurred' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
 })
