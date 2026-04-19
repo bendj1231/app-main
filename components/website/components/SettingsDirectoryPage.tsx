@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut } from 'lucide-react';
+import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal } from 'lucide-react';
 
 interface SettingsDirectoryPageProps {
     onBack: () => void;
@@ -22,6 +22,12 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
                 { name: 'Privacy & Security', icon: Shield, description: 'Control your data and security settings', action: 'privacy' },
                 { name: 'Appearance', icon: Palette, description: 'Customize your display preferences', action: 'appearance' },
                 { name: 'Language & Region', icon: Globe, description: 'Set your language and region', action: 'language' },
+            ]
+        },
+        {
+            title: 'Systems',
+            items: [
+                { name: 'Pilot Terminal', icon: Terminal, description: 'AI Agent Communication Network', action: 'pilot-terminal-settings' },
             ]
         },
         {

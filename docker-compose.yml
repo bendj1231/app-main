@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  # Service Router
+  service-router:
+    build:
+      context: .
+      dockerfile: Dockerfile.router
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVICES=matching,coaching,prediction,consensus,social,demand
+      - MATCHING_SERVICE_ENDPOINT=http://matching-service:3001
+      - COACHING_SERVICE_ENDPOINT=http://coaching-service:3002
+      - PREDICTION_SERVICE_ENDPOINT=http://prediction-service:3003
+      - CONSENSUS_SERVICE_ENDPOINT=http://consensus-service:3004
+      - SOCIAL_SERVICE_ENDPOINT=http://social-service:3005
+      - DEMAND_SERVICE_ENDPOINT=http://demand-service:3006
+    depends_on:
+      - matching-service
+      - coaching-service
+      - prediction-service
+      - consensus-service
+      - social-service
+      - demand-service
+    networks:
+      - router-network
+    restart: unless-stopped
+
+  # Matching Service
+  matching-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.matching
+    environment:
+      - AI_ACCOUNT=matching@pilotrecognition.com
+      - GROQ_API_KEY=${GROQ_API_KEY_1}
+      - AI_PROVIDER=groq
+      - SERVICE_PORT=3001
+    ports:
+      - "3001:3001"
+    networks:
+      - network-1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Coaching Service
+  coaching-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.coaching
+    environment:
+      - AI_ACCOUNT=coaching@pilotrecognition.com
+      - OPENAI_API_KEY=${OPENAI_API_KEY_1}
+      - GROQ_API_KEY=${GROQ_API_KEY_2}
+      - AI_PROVIDER=openai
+      - SERVICE_PORT=3002
+    ports:
+      - "3002:3002"
+    networks:
+      - network-2
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Prediction Service
+  prediction-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.prediction
+    environment:
+      - AI_ACCOUNT=prediction@pilotrecognition.com
+      - HF_TOKEN=${HF_TOKEN_1}
+      - GROQ_API_KEY=${GROQ_API_KEY_3}
+      - AI_PROVIDER=huggingface
+      - SERVICE_PORT=3003
+    ports:
+      - "3003:3003"
+    networks:
+      - network-3
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Consensus Service
+  consensus-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.consensus
+    environment:
+      - AI_ACCOUNT=consensus@pilotrecognition.com
+      - GROQ_API_KEY=${GROQ_API_KEY_4}
+      - HF_TOKEN=${HF_TOKEN_2}
+      - OPENAI_API_KEY=${OPENAI_API_KEY_2}
+      - AI_PROVIDER=multi
+      - SERVICE_PORT=3004
+    ports:
+      - "3004:3004"
+    networks:
+      - network-4
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Social Proof Service
+  social-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.social
+    environment:
+      - AI_ACCOUNT=social@pilotrecognition.com
+      - GROQ_API_KEY=${GROQ_API_KEY_5}
+      - AI_PROVIDER=groq
+      - SERVICE_PORT=3005
+    ports:
+      - "3005:3005"
+    networks:
+      - network-5
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Demand Service
+  demand-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.demand
+    environment:
+      - AI_ACCOUNT=demand@pilotrecognition.com
+      - HF_TOKEN=${HF_TOKEN_3}
+      - GROQ_API_KEY=${GROQ_API_KEY_6}
+      - AI_PROVIDER=huggingface
+      - SERVICE_PORT=3006
+    ports:
+      - "3006:3006"
+    networks:
+      - network-6
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  router-network:
+  network-1:
+  network-2:
+  network-3:
+  network-4:
+  network-5:
+  network-6:

@@ -20,6 +20,7 @@ import {
     AppWindow,
     LayoutDashboard
 } from 'lucide-react';
+import PilotTerminalDashboard from '@/components/website/components/pilot-terminal/PilotTerminalDashboard';
 
 interface DashboardPageProps {
     onNavigate: (page: string) => void;
@@ -72,6 +73,8 @@ const ExpandableGlassItem: React.FC<ExpandableGlassItemProps> = ({ title, icon: 
 };
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
+    const [showPilotTerminal, setShowPilotTerminal] = useState(false);
+
     return (
         <div className="min-h-screen p-8 text-white relative">
             {/* Background decoration */}
@@ -203,6 +206,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                                         </div>
                                         <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                     </div>
+
+                                    <div onClick={() => setShowPilotTerminal(true)} className="p-3 bg-black/20 rounded-xl border border-white/5 hover:border-white/20 transition-all cursor-pointer flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <Terminal size={16} className="text-purple-400" />
+                                            <div>
+                                                <span className="text-sm font-bold text-slate-200 block">Pilot Terminal</span>
+                                                <span className="text-[10px] text-slate-500">AI Agent Communication Network</span>
+                                            </div>
+                                        </div>
+                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -210,6 +224,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
                 </div>
             </div>
+
+            {/* Pilot Terminal Modal */}
+            {showPilotTerminal && (
+                <div className="fixed inset-0 z-50 bg-black bg-opacity-50">
+                    <div className="relative h-full">
+                        <button 
+                            onClick={() => setShowPilotTerminal(false)}
+                            className="absolute top-4 right-4 z-10 text-white text-2xl hover:text-gray-300 transition-colors"
+                        >
+                            ✕
+                        </button>
+                        <PilotTerminalDashboard />
+                    </div>
+                </div>
+            )}
 
             <style>{`
                 @keyframes scaleUp {
