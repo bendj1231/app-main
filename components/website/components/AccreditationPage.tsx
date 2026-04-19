@@ -19,20 +19,20 @@ const ACCREDITATION_5_URL = "/images/accreditation-5.png";
 export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, onNavigate, onLogin }) => {
     const partnershipTiles = [
         {
-            title: "UAE GCAA Career Fair 2026",
-            desc: "Meeting face-to-face with industry pioneers and global aviation experts to shape the future of pilot training.",
+            title: "Airbus Head of Training",
+            desc: "Supported by Airbus Head of Training in EBT CBTA, ensuring alignment with the highest international standards in evidence-based training and competency-based training and assessment.",
         },
         {
-            title: "Etihad Airways Consultation",
-            desc: "Direct engagement with the Head of Training at Etihad Airways to align our standards with flagship carrier demands.",
+            title: "Etihad Cadet Program",
+            desc: "Strategic partnership with Etihad Cadet Program and Head of Training, providing direct access to flagship carrier expectations and training standards.",
         },
         {
-            title: "Airbus EBT Division",
-            desc: "Collaborating with Airbus to integrate Evidence-Based Training analytics and human factors into our pathways.",
+            title: "Verified Competency Database",
+            desc: "Access to verified data on pilot professional competencies through our PilotRecognition platform, including EBT CBTA AIRBUS 9 core competencies and behavioral assessments.",
         },
         {
-            title: "Archer Aviation & eVTOL",
-            desc: "Positioning our pilots at the forefront of the urban air mobility revolution through direct manufacturer links.",
+            title: "Direct Industry Connections",
+            desc: "Platform access for operators to post jobs and airline expectations, connecting directly to 5000+ pilots seeking opportunities in the aviation industry.",
         }
     ];
 
