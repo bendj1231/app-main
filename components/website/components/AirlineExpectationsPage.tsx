@@ -68,25 +68,25 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
     const coreExpectations = [
         {
             title: "Technical Mastery",
-            desc: "Beyond handling skills, airlines assess your mastery of automation, systems logic, and manual flight path management.",
+            desc: "Beyond handling skills, airlines assess your mastery of automation, systems logic, and manual flight path management. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that technical competencies align with the exacting standards required by leading manufacturers. Our <strong>9 core competencies framework</strong> specifically addresses technical proficiency through competencies like <strong>aircraft systems knowledge</strong>, <strong>automation management</strong>, and <strong>manual flying skills</strong>.",
             icon: Cpu,
             bullets: ["Automation Logic", "Manual Precision", "Systems Mastery"]
         },
         {
             title: "Behavioral Competency",
-            desc: "Evaluations focus on your ability to work within a crew, demonstrating CRM, leadership, and effective communication.",
+            desc: "Evaluations focus on your ability to work within a crew, demonstrating CRM, leadership, and effective communication. Our Foundational Program's <strong>50 hours of verifiable logged effort-based mentorship</strong> ensures that behavioral competencies are developed through practical experience. The <strong>CRM (Crew Resource Management)</strong> competency specifically evaluates your ability to communicate respectfully, listen actively, and contribute constructively to crew decisions.",
             icon: Users,
             bullets: ["CRM Excellence", "Decision Making", "Balanced Leadership"]
         },
         {
             title: "Cognitive Resilience",
-            desc: "Assessment of situational awareness, workload management, and the ability to solve complex problems under pressure.",
+            desc: "Assessment of situational awareness, workload management, and the ability to solve complex problems under pressure. Through our <strong>EBT CBTA-aligned assessment framework</strong>, we evaluate cognitive competencies including <strong>situational awareness</strong>, <strong>workload management</strong>, and <strong>decision making</strong> under pressure. Our recognition-based profiling provides objective assessment of these cognitive markers, giving operators confidence in your ability to handle demanding operational scenarios.",
             icon: Brain,
             bullets: ["Mental Math", "Situational Awareness", "Workload Management"]
         },
         {
             title: "Professional Persona",
-            desc: "Your commitment to the airline's values, safety culture, and long-term professional development/career stewardship.",
+            desc: "Your commitment to the airline's values, safety culture, and long-term professional development/career stewardship. We foster a culture of respect where every voice is heard, from the cadet to the captain. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.",
             icon: Shield,
             bullets: ["Safety Culture", "Company Fit", "Ethics & Integrity"]
         }
@@ -94,7 +94,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
 
     const assessmentPipeline = [
         { title: "Screening", value: "Initial digital audit of your ATLAS CV and minimum legal credentials.", icon: Search },
-        { title: "Psychometrics", value: "Advanced testing of cognitive ability, spatial awareness, and personality fit.", icon: target => <Target className="w-5 h-5 text-blue-600" /> },
+        { title: "Psychometrics", value: "Advanced testing of cognitive ability, spatial awareness, and personality fit.", icon: Target },
         { title: "Technical/HR", value: "Multi-stage interviews focusing on competency-based responses and SOP knowledge.", icon: Briefcase },
         { title: "Simulator Audit", value: "Practical demonstration of EBT/CBTA competencies in a multi-crew environment.", icon: Zap }
     ];
@@ -115,12 +115,18 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                             Strategic Career Guidance
                         </p>
-                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
+                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
                             Airline Requirements Search
                         </h1>
+                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                            Requirements | Expectations | Career Pathways
+                        </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
                             Understanding what airlines really look for in pilot candidates—beyond the 1,500-hour requirement.
-                            We bridge the gap between "having the hours" and "being the right candidate."
+                            We bridge the gap between "having the hours" and "being the right candidate." Through our <strong>AI-powered pathway matching</strong> system,
+                            we analyze your verified PilotRecognition profile against airline requirements to identify optimal career opportunities.
+                            Our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> ensures that the expectations we provide
+                            align with the exacting standards required by leading manufacturers and operators.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -717,13 +723,23 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 {/* Gated Sections (Blurred) */}
                 <div className="blur-[12px] opacity-20 pointer-events-none select-none transition-all duration-700">
                     {/* Core Expectations Grid */}
+                    <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                        <RevealOnScroll>
+                            <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                                Assessment Framework
+                            </p>
+                            <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                                The Four Pillars of Assessment
+                            </h2>
+                        </RevealOnScroll>
+                    </div>
+
                     <div className="py-12 px-6 max-w-7xl mx-auto">
-                        <h2 className="text-3xl font-serif text-slate-900 mb-16 text-center">The Four Pillars of Assessment</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {coreExpectations.map((item, idx) => (
                                 <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start min-h-[350px]">
                                     <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
-                                        {typeof item.icon === 'function' ? item.icon({}) : <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />}
+                                        <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
                                     </div>
                                     <h3 className="text-2xl font-serif text-slate-900 mb-4">{item.title}</h3>
                                     <p className="text-slate-600 mb-8 leading-relaxed text-sm font-sans">{item.desc}</p>
@@ -817,13 +833,23 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                     {/* Blurred Content */}
                     <div className="opacity-30 blur-sm pointer-events-none select-none grayscale-[50%]">
                         {/* Assessment Pipeline (Visual Placeholder for Gated Content) */}
+                        <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                            <RevealOnScroll>
+                                <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                                    Selection Process
+                                </p>
+                                <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                                    Modern Assessment Stages
+                                </h2>
+                            </RevealOnScroll>
+                        </div>
+
                         <div className="py-12 px-4 max-w-7xl mx-auto">
-                            <h2 className="text-2xl md:text-3xl font-serif text-slate-900 mb-8 md:mb-12 text-center font-bold">Modern Assessment Stages</h2>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-4">
                                 {assessmentPipeline.map((item, idx) => (
                                     <div key={idx} className="p-2 md:p-6 bg-slate-50 border border-slate-100 rounded-lg md:rounded-[2rem] min-h-[120px] md:min-h-[220px]">
                                         <div className="absolute top-1.5 right-2 md:top-4 md:right-6 font-serif text-lg md:text-4xl text-slate-200">0{idx + 1}</div>
-                                        {typeof item.icon === 'function' ? item.icon({}) : <item.icon className="w-3.5 h-3.5 md:w-8 md:h-8 text-blue-600 mb-1 md:mb-6" />}
+                                        <item.icon className="w-3.5 h-3.5 md:w-8 md:h-8 text-blue-600 mb-1 md:mb-6" />
                                         <h3 className="text-[9px] md:text-base font-bold mb-0.5 md:mb-3 font-sans text-slate-800 uppercase tracking-widest">{item.title}</h3>
                                         <p className="text-slate-500 text-[7px] md:text-sm leading-tight md:leading-relaxed font-sans">{item.value}</p>
                                     </div>
