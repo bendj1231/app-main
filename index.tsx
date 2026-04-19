@@ -651,8 +651,8 @@ const App = () => {
           />
         )}
         {currentPage === 'pilot-gap' && (
-          <PilotGapInfoPage
-            onBack={() => navigateTo('home')}
+          <PilotGapAboutPage
+            onBack={() => navigateTo('about')}
             onNavigate={navigateTo}
             onLogin={navigateToPortal}
           />
