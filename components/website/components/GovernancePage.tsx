@@ -51,7 +51,7 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
                         Universal Standards
                     </p>
-                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '4rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                         Regulatory Compliance
                     </h2>
                     <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
@@ -83,7 +83,7 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
                         Privacy First
                     </p>
-                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '4rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                         Data Ethics & Privacy
                     </h2>
                     <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
@@ -118,7 +118,7 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
                         Clear Agreements
                     </p>
-                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '4rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                         Partner Transparency
                     </h2>
                     <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
