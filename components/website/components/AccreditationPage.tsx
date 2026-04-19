@@ -21,22 +21,18 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
         {
             title: "UAE GCAA Career Fair 2026",
             desc: "Meeting face-to-face with industry pioneers and global aviation experts to shape the future of pilot training.",
-            icon: Users,
         },
         {
             title: "Etihad Airways Consultation",
             desc: "Direct engagement with the Head of Training at Etihad Airways to align our standards with flagship carrier demands.",
-            icon: Plane,
         },
         {
             title: "Airbus EBT Division",
             desc: "Collaborating with Airbus to integrate Evidence-Based Training analytics and human factors into our pathways.",
-            icon: Building2,
         },
         {
             title: "Archer Aviation & eVTOL",
             desc: "Positioning our pilots at the forefront of the urban air mobility revolution through direct manufacturer links.",
-            icon: Zap,
         }
     ];
 
@@ -182,7 +178,6 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {partnershipTiles.map((tile, idx) => (
                         <div key={idx} className="p-10 bg-slate-50/50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group">
-                            <tile.icon className="w-8 h-8 text-blue-600 mb-8 transition-transform group-hover:scale-110" />
                             <h3 className="text-lg font-bold mb-3 font-sans text-slate-800 tracking-wide uppercase">{tile.title}</h3>
                             <p className="text-slate-500 text-sm leading-relaxed font-sans">{tile.desc}</p>
                         </div>
