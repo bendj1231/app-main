@@ -14,25 +14,25 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
         {
             name: "Executive Leadership",
             role: "Strategic Direction",
-            desc: "The executive board oversees the platform's global expansion and alignment with ICAO standards.",
+            desc: "The executive board oversees the platform's global expansion and alignment with ICAO standards. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that strategic direction aligns with the exacting standards required by leading manufacturers worldwide. Our <strong>AI-powered pathway matching</strong> system provides data-driven insights for global expansion decisions.",
             bullets: ["Global Expansion", "Regulatory Liaison", "Financial Oversight"]
         },
         {
             name: "Airlines Advisory",
             role: "Flagship Alignment",
-            desc: "Active captains and training heads from major carriers ensure our syllabus meets real-world entry standards.",
+            desc: "Active captains and training heads from major carriers ensure our programs meet real-world entry standards. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that syllabus development aligns with flagship carrier expectations. Our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of pilot readiness for airline recruitment.",
             bullets: ["Etihad/Emirates Standards", "EBT Integration", "Hiring Analytics"]
         },
         {
             name: "Tech Innovators",
             role: "Digital Ecosystem",
-            desc: "Visionaries in AI and data extraction who lead the development of our ATLAS and Pilot Recognition systems.",
+            desc: "Visionaries in AI and data extraction who lead the development of our <strong>ATLAS AI</strong> and Pilot Recognition systems. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
             bullets: ["AI Data Extraction", "Blockchain Verification", "Mobile First"]
         },
         {
             name: "Operations Board",
             role: "Program Delivery",
-            desc: "Managing the logistics of our Fujairah-based ATPL and global network of partner flight schools.",
+            desc: "Managing the logistics of our Fujairah-based programs and global network of partner flight schools. We foster a culture of respect where every voice is heard, from the cadet to the captain. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.",
             bullets: ["School Audits", "Candidate Vetting", "Resource Allocation"]
         }
     ];
@@ -52,22 +52,41 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
+                        <img
+                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                            alt="WingMentor Logo"
+                            className="mx-auto w-64 h-auto object-contain mb-2"
+                        />
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
                             Executive Leadership
                         </p>
-                        <h1 className="text-4xl md:text-7xl font-serif text-slate-900 leading-tight mb-8">
+                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
                             Our Board
                         </h1>
-                        <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
+                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                            Strategic Direction | Industry Alignment | Global Expansion
+                        </span>
+                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
                             WingMentor is guided by a diverse board of airline captains, technology pioneers,
-                            and regulatory experts committed to solving the global pilot shortage.
+                            and regulatory experts committed to solving the global pilot shortage. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our board governance aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
             </div>
 
             {/* Board Features Grid */}
-            <div className="py-24 px-6 max-w-7xl mx-auto">
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Board Structure
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Leadership Excellence
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
+            <div className="py-12 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {boardMembers.map((item, idx) => (
                         <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start">
@@ -90,45 +109,55 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
             </div>
 
             {/* Cinematic Section (Dark) */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#60A5FA', fontWeight: 600 }}>
+                        Global Stewardship
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: 'white' }}>
+                        Leading the Next Era of Aviation
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
             <div className="py-24 px-6 bg-[#050A30] text-white">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                        <div>
-                            <RevealOnScroll>
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">Global Stewardship</p>
-                                <h2 className="text-3xl md:text-5xl font-serif mb-8 leading-tight">
-                                    Leading the Next <br />Era of Aviation
-                                </h2>
-                                <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
-                                    "Our board doesn't just manage a platform; we manage a promise to the next generation of aviators."
-                                </p>
-                                <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
-                                    Through direct consultation with Flagship Carriers and ICAO delegates, our board ensures
-                                    that every WingMentor program is legally recognized, ethically sound, and industry-aligned.
-                                    We are the voice of the pilot inside the boardroom.
-                                </p>
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                        <span className="text-slate-300 text-sm font-sans">Strategic 2030 Vision Alignment</span>
-                                    </div>
-                                    <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                        <span className="text-slate-300 text-sm font-sans">Industry-Wide Advocacy Network</span>
-                                    </div>
+                    <div>
+                        <RevealOnScroll>
+                            <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
+                                "Our board doesn't just manage a platform; we manage a promise to the next generation of aviators."
+                            </p>
+                            <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
+                                Through direct consultation with Flagship Carriers and ICAO delegates, our board ensures
+                                that every WingMentor program is legally recognized, ethically sound, and industry-aligned.
+                                We are the voice of the pilot inside the boardroom.
+                            </p>
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                                    <span className="text-slate-300 text-sm font-sans">Strategic 2030 Vision Alignment</span>
                                 </div>
-                            </RevealOnScroll>
-                        </div>
-                        <div className="relative">
-                            <div className="aspect-video bg-slate-900 rounded-[3rem] overflow-hidden shadow-2xl relative border border-white/10 flex items-center justify-center p-12">
-                                <div className="absolute inset-0 bg-blue-900/20 mix-blend-overlay"></div>
+                                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                                    <span className="text-slate-300 text-sm font-sans">Industry-Wide Advocacy Network</span>
+                                </div>
                             </div>
-                        </div>
+                        </RevealOnScroll>
                     </div>
                 </div>
             </div>
 
             {/* Pipeline Steps */}
-            <div className="py-24 px-6 max-w-7xl mx-auto">
-                <h2 className="text-3xl font-serif text-slate-900 mb-16 text-center">Board Governance Pipeline</h2>
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Governance Process
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Board Governance Pipeline
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
+            <div className="py-12 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {pipelineSteps.map((item, idx) => (
                         <div key={idx} className="p-10 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group relative">
