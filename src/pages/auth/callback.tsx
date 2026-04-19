@@ -73,7 +73,7 @@ const OAuthCallback: React.FC = () => {
         console.log(`[${timestamp}] [OAUTH CALLBACK] Status set to success, preparing to redirect`);
         setTimeout(() => {
           console.log(`[${timestamp}] [OAUTH CALLBACK] Redirecting to home page`);
-          navigate('/', { replace: true });
+          window.location.href = '/';
         }, 500);
 
       } catch (err) {
@@ -135,7 +135,7 @@ const OAuthCallback: React.FC = () => {
             {errorMessage}
           </p>
           <button
-            onClick={() => navigate('/', { replace: true })}
+            onClick={() => window.location.href = '/'}
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
           >
             Return to Home
