@@ -68,6 +68,48 @@ const OAuthCallback: React.FC = () => {
         console.log(`[${timestamp}] [OAUTH CALLBACK] User email:`, sessionData.user?.email);
         console.log(`[${timestamp}] [OAUTH CALLBACK] Session data:`, JSON.stringify(sessionData, null, 2));
 
+        // Create user profile if it doesn't exist (non-critical)
+        try {
+            console.log(`[${timestamp}] [OAUTH CALLBACK] Creating user profile...`);
+            const { supabase } = await import('../../lib/supabase');
+            const { data: existingProfile, error: profileCheckError } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('id', sessionData.user?.id)
+                .single();
+
+            if (profileCheckError && profileCheckError.code !== 'PGRST116') {
+                console.warn(`[${timestamp}] [OAUTH CALLBACK] Profile check error:`, profileCheckError);
+            }
+
+            if (!existingProfile) {
+                console.log(`[${timestamp}] [OAUTH CALLBACK] Creating new profile for user:`, sessionData.user?.id);
+                const { error: profileCreateError } = await supabase
+                    .from('profiles')
+                    .insert({
+                        id: sessionData.user?.id,
+                        email: sessionData.user?.email,
+                        display_name: sessionData.user?.user_metadata?.full_name || sessionData.user?.email?.split('@')[0],
+                        full_name: sessionData.user?.user_metadata?.full_name,
+                        role: 'mentee',
+                        status: 'active',
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    });
+
+                if (profileCreateError) {
+                    console.error(`[${timestamp}] [OAUTH CALLBACK] Profile creation error:`, profileCreateError);
+                } else {
+                    console.log(`[${timestamp}] [OAUTH CALLBACK] Profile created successfully`);
+                }
+            } else {
+                console.log(`[${timestamp}] [OAUTH CALLBACK] Profile already exists`);
+            }
+        } catch (profileError) {
+            console.error(`[${timestamp}] [OAUTH CALLBACK] Profile creation failed (non-critical):`, profileError);
+            // Don't fail the entire OAuth flow if profile creation fails
+        }
+
         // Success - redirect to home page
         setStatus('success');
         console.log(`[${timestamp}] [OAUTH CALLBACK] Status set to success, preparing to redirect`);
