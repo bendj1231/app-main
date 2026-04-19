@@ -1672,27 +1672,29 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
           alt="WingMentor Logo"
           className="mx-auto w-56 h-auto object-contain mb-4"
         />
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-serif text-slate-900 mb-3">
-          Airline Expectations.
+        <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
+          Strategic Career Intelligence
+        </p>
+        <h2 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
+          Airline Expectations
         </h2>
-        <div className="flex items-center justify-center gap-3">
-          <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100">
-            AIRLINE EXPECTATIONS UPDATE
-          </span>
-          <span className="text-[10px] text-slate-400">
-            Latest opportunities and industry news
-          </span>
-        </div>
+        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+          Requirements | Expectations | Career Pathways
+        </span>
       </div>
 
       {/* Regional Selector and Description */}
       <div className="w-full px-8 py-4">
-        <p className="text-center text-slate-600 text-base mb-2 max-w-3xl mx-auto">
-          Explore detailed expectations, requirements, and career progression opportunities from leading airlines worldwide. Each airline profile provides insights into salary ranges, required flight hours, type ratings, and unique benefits to help you make informed career decisions.
+        <p className="text-center text-slate-700 text-base md:text-lg mb-4 max-w-3xl mx-auto leading-relaxed">
+          Explore detailed expectations, requirements, and career progression opportunities from leading airlines worldwide. Each airline profile provides comprehensive insights into <strong>salary ranges</strong>, <strong>required flight hours</strong>, <strong>type ratings</strong>, and <strong>unique benefits</strong> to help you make informed career decisions. Our <strong>AI-powered pathway matching</strong> system analyzes your verified PilotRecognition profile against airline requirements to identify optimal career opportunities.
         </p>
-        <p className="text-center text-slate-400 text-sm mb-4 max-w-3xl mx-auto">
-          Swipe through to discover airline-specific requirements and compare opportunities across global carriers.
+        <p className="text-center text-slate-600 text-sm mb-4 max-w-3xl mx-auto leading-relaxed">
+          Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that the airline expectations we provide align with the exacting standards required by leading manufacturers and operators. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> presents your credentials in the standardized format preferred by major airlines worldwide.
         </p>
+      </div>
+
+      {/* Regional Selector */}
+      <div className="w-full px-8 py-4">
         <div className="flex justify-center gap-3 flex-wrap">
           {['All', 'Asia', 'Europe', 'Americas', 'Oceania', 'Africa', 'Middle East'].map((region) => (
             <button
