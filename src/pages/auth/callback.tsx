@@ -42,6 +42,9 @@ const OAuthCallback: React.FC = () => {
 
         console.log('Authorization code received:', code.substring(0, 10) + '...');
 
+        // Set OAuth session flag to skip CSRF validation
+        sessionStorage.setItem('oauth_session', 'true');
+
         // Call Agent 2's token exchange function
         const redirectUri = `${window.location.origin}/auth/callback`;
         const { data: sessionData } = await exchangeCodeForSupabaseSession(code, redirectUri);

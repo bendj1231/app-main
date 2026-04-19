@@ -212,12 +212,14 @@ serve(async (req) => {
     Logger.info('Token verification started', { method: req.method }, requestId)
 
     // CSRF protection - verify CSRF token from header matches cookie
+    // Skip CSRF validation for OAuth sessions (check for OAuth session indicator)
+    const isOAuthSession = req.headers.get('X-OAuth-Session') === 'true'
     const csrfToken = req.headers.get('X-CSRF-Token')
     const cookieHeader = req.headers.get('Cookie')
     const cookieToken = cookieHeader?.match(/csrf-token=([^;]+)/)?.[1]
     
-    if (!csrfToken || !cookieToken || csrfToken !== cookieToken) {
-      Logger.warn('CSRF token validation failed', { hasHeader: !!csrfToken, hasCookie: !!cookieToken }, requestId)
+    if (!isOAuthSession && (!csrfToken || !cookieToken || csrfToken !== cookieToken)) {
+      Logger.warn('CSRF token validation failed', { hasHeader: !!csrfToken, hasCookie: !!cookieToken, isOAuthSession }, requestId)
       return SecurityMiddleware.createErrorResponse('Invalid CSRF token', 403, requestId)
     }
     

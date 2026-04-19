@@ -65,9 +65,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     // Helper function to include CSRF token in requests
-    const getAuthHeaders = () => {
+    const getAuthHeaders = (isOAuthSession = false) => {
         const token = csrfToken || getCsrfTokenFromCookies();
-        return token ? { 'X-CSRF-Token': token } : {};
+        const headers: Record<string, string> = token ? { 'X-CSRF-Token': token } : {};
+        if (isOAuthSession) {
+            headers['X-OAuth-Session'] = 'true';
+        }
+        return headers;
     };
 
     // Helper function to check if user explicitly logged out
@@ -901,8 +905,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
 
             try {
+                // Check if user just came from OAuth callback
+                const isOAuthSession = sessionStorage.getItem('oauth_session') === 'true';
+                
                 const { data, error } = await supabase.functions.invoke('auth-verify', {
-                    headers: getAuthHeaders()
+                    headers: getAuthHeaders(isOAuthSession)
                 });
 
                 if (data?.success && data?.user) {
