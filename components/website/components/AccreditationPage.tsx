@@ -108,43 +108,30 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                     </div>
                 </div>
 
-                {/* Row 2: Industry Stewardship (Image Left, Text Right) */}
-                <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16">
-                    <div className="md:w-1/2">
-                        <RevealOnScroll>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
-                                Stewardship
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                                Our Journey to <br />Industry Leadership
-                            </h2>
-                            <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                                WingMentor is proudly part of the <strong>WM Pilot Group</strong>, a collective dedicated to advancing aviation excellence.
-                                We are a bridge and a link between pilots and the aviation industry, connecting the world's leading airline bodies with elite talent.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                                Beyond providing various pathways for pilot experience building and accredited credential programs, we are actively shaping the future of aviation policy. Along with our flagship applications and our proprietary pilot recognition database, our committee members sit on advisory boards that influence regulatory training standards, ensuring that the voice of the modern pilot is heard in the halls of rule-making bodies.
-                            </p>
+                {/* Row 2: Industry Stewardship (Text Only) */}
+                <div className="max-w-4xl mx-auto">
+                    <RevealOnScroll>
+                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
+                            Stewardship
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
+                            Our Journey to <br />Industry Leadership
+                        </h2>
+                        <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
+                            WingMentor is proudly part of the <strong>WM Pilot Group</strong>, a collective dedicated to advancing aviation excellence.
+                            We are a bridge and a link between pilots and the aviation industry, connecting the world's leading airline bodies with elite talent.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
+                            Beyond providing various pathways for pilot experience building and accredited credential programs, we are actively shaping the future of aviation policy. Along with our flagship applications and our proprietary pilot recognition database, our committee members sit on advisory boards that influence regulatory training standards, ensuring that the voice of the modern pilot is heard in the halls of rule-making bodies.
+                        </p>
 
-                            <div className="flex items-start gap-4 p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                                <CheckCircle2 className="w-6 h-6 text-blue-600 shrink-0" />
-                                <p className="text-slate-600 text-sm font-sans leading-relaxed">
-                                    Making the connection between pilot & Industry Expectations, demands & Pilot Recognition easier like never before.
-                                </p>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
-                    <div className="md:w-1/2">
-                        <RevealOnScroll delay={200}>
-                            <div className="relative group p-8 bg-slate-50/50 rounded-[2rem] border border-slate-100 flex items-center justify-center aspect-video">
-                                <img
-                                    src={IMAGES.ACCREDITATION_5}
-                                    alt="WM Pilot Group Logo"
-                                    className="w-3/4 h-auto object-contain drop-shadow-xl transition-all duration-700 group-hover:scale-105"
-                                />
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+                        <div className="flex items-start gap-4 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                            <CheckCircle2 className="w-6 h-6 text-blue-600 shrink-0" />
+                            <p className="text-slate-600 text-sm font-sans leading-relaxed">
+                                Making the connection between pilot & Industry Expectations, demands & Pilot Recognition easier like never before.
+                            </p>
+                        </div>
+                    </RevealOnScroll>
                 </div>
 
                 {/* Row 3: Global Standards (Text Only) */}
