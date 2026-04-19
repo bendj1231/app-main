@@ -22,11 +22,6 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                            alt="WingMentor Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-2"
-                        />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
                             Professional Aviation Standardization
                         </p>
@@ -150,16 +145,6 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
             <div className="py-24 px-6 bg-slate-50 border-y border-slate-200">
                 <div className="max-w-4xl mx-auto text-center">
                     <RevealOnScroll>
-                        <div className="flex justify-center items-center gap-4 mb-8">
-                            <img
-                                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                alt="WingMentor Logo"
-                                className="h-12 w-auto object-contain"
-                            />
-                            <div className="w-px h-8 bg-slate-300"></div>
-                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Standardization</p>
-                        </div>
-
                         <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
                             Detailed documentation standards, builder access, and full competency breakdowns are reserved for verified members. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
