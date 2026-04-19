@@ -1,27 +1,58 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+interface reqPayload {
+  name: string;
+  email: string;
+  phone?: string;
+  company: string;
+  role?: string;
+  website?: string;
+  companySize?: string;
+  country?: string;
+  operator?: boolean;
+  manufacturer?: boolean;
+  ato?: boolean;
+  typeRatingProvider?: boolean;
+  airlineRecruiter?: boolean;
+  staffingFirm?: boolean;
+  recruitmentAgency?: boolean;
+  businessType?: string;
+  partnershipInterest?: string;
+  pathwayInterests?: string[];
+  customPathway?: string;
+  timeline?: string;
+  dataInput?: string;
+  message?: string;
+}
+
+console.info('enterprise-access server started');
 
 Deno.serve(async (req: Request) => {
   try {
     if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-        status: 405,
-        headers: { 'Content-Type': 'application/json' }
-      })
+      const data = { error: 'Method not allowed' };
+      return new Response(
+        JSON.stringify(data),
+        { 
+          status: 405,
+          headers: { 'Content-Type': 'application/json', 'Connection': 'keep-alive' }
+        }
+      );
     }
 
-    const formData = await req.json()
+    const formData: reqPayload = await req.json();
 
     // Input validation
     if (!formData.email || !formData.company || !formData.name) {
-      return new Response(JSON.stringify({ error: 'Name, email, and company are required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      })
+      const data = { error: 'Name, email, and company are required' };
+      return new Response(
+        JSON.stringify(data),
+        { 
+          status: 400,
+          headers: { 'Content-Type': 'application/json', 'Connection': 'keep-alive' }
+        }
+      );
     }
 
     // Format the email body
@@ -59,15 +90,19 @@ Partnership Interest:
 
 Additional Information:
 - Partnership Goals: ${formData.message || 'N/A'}
-    `.trim()
+    `.trim();
 
     // Send email using Resend API
-    const resendApiKey = Deno.env.get('RESEND_API_KEY')
+    const resendApiKey = Deno.env.get('RESEND_API_KEY');
     if (!resendApiKey) {
-      return new Response(JSON.stringify({ error: 'Email service not configured' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      })
+      const data = { error: 'Email service not configured' };
+      return new Response(
+        JSON.stringify(data),
+        { 
+          status: 500,
+          headers: { 'Content-Type': 'application/json', 'Connection': 'keep-alive' }
+        }
+      );
     }
 
     const resendResponse = await fetch('https://api.resend.com/emails', {
@@ -83,39 +118,44 @@ Additional Information:
         text: emailBody,
         reply_to: formData.email,
       }),
-    })
+    });
 
     if (!resendResponse.ok) {
-      const errorText = await resendResponse.text()
-      console.error('Resend API error:', errorText)
-      return new Response(JSON.stringify({ error: 'Failed to send email' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      })
+      const errorText = await resendResponse.text();
+      console.error('Resend API error:', errorText);
+      const data = { error: 'Failed to send email' };
+      return new Response(
+        JSON.stringify(data),
+        { 
+          status: 500,
+          headers: { 'Content-Type': 'application/json', 'Connection': 'keep-alive' }
+        }
+      );
     }
 
-    const resendData = await resendResponse.json()
-    console.log('Email sent successfully:', resendData.id)
+    const resendData = await resendResponse.json();
+    console.log('Email sent successfully:', resendData.id);
+
+    const data = {
+      success: true,
+      message: 'Your request has been sent successfully',
+      emailId: resendData.id
+    };
 
     return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Your request has been sent successfully',
-        emailId: resendData.id
-      }),
-      { 
-        headers: { 
-          'Content-Type': 'application/json',
-          'Connection': 'keep-alive'
-        } 
-      }
-    )
+      JSON.stringify(data),
+      { headers: { 'Content-Type': 'application/json', 'Connection': 'keep-alive' }}
+    );
 
   } catch (error) {
-    console.error('Unexpected error:', error)
-    return new Response(JSON.stringify({ error: 'An unexpected error occurred' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    })
+    console.error('Unexpected error:', error);
+    const data = { error: 'An unexpected error occurred' };
+    return new Response(
+      JSON.stringify(data),
+      { 
+        status: 500,
+        headers: { 'Content-Type': 'application/json', 'Connection': 'keep-alive' }
+      }
+    );
   }
-})
+});
