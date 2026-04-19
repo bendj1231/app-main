@@ -435,6 +435,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <li><a onClick={() => onNavigate('recognition-career-matches')} className="hover:text-white cursor-pointer transition-colors">Pathways</a></li>
                                 <li><a href="https://pilotterminal.com" target="_blank" rel="noopener noreferrer" className="hover:text-white cursor-pointer transition-colors">Pilot Terminal</a></li>
                                 <li><a onClick={() => onNavigate('about')} className="hover:text-white cursor-pointer transition-colors">Foundation Program</a></li>
+                                <li><a onClick={() => onNavigate('pilot-gap-about')} className="hover:text-white cursor-pointer transition-colors">What is the Pilot Gap?</a></li>
                             </ul>
                         </div>
                         <div>

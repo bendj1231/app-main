@@ -119,6 +119,7 @@ import { MembershipBenefitsPage } from './components/website/components/Membersh
 import { DownloadPage } from './components/website/components/DownloadPage'; // New Import
 import ExaminationResultsDirectoryPage from './components/website/components/ExaminationResultsDirectoryPage';
 import { DigitalLogbookDirectoryPage } from './components/website/components/DigitalLogbookDirectoryPage';
+import { PilotGapAboutPage } from './components/website/components/PilotGapAboutPage';
 import { useAuth } from './src/contexts/AuthContext'; // New Import
 import { LoginModal } from './components/website/components/LoginModal';
 import { SettingsDirectoryPage } from './components/website/components/SettingsDirectoryPage';
@@ -657,6 +658,14 @@ const App = () => {
           />
         )}
 
+        {currentPage === 'pilot-gap-about' && (
+          <PilotGapAboutPage
+            onBack={() => navigateTo('about')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+
         {currentPage === 'accreditation' && (
           <AccreditationPage onBack={() => navigateTo('home')} onNavigate={navigateTo} onLogin={navigateToPortal} />
         )}
@@ -978,7 +987,7 @@ const App = () => {
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
         'pilot-recognition', 'pilot-recognition-profile', 'recognition-career-matches', 'air-taxi-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
-        'pilot-gap', 'website', 'digital-logbook-directory', 'examination-results-directory'
+        'pilot-gap', 'website', 'digital-logbook-directory', 'examination-results-directory', 'pilot-gap-about'
       ].includes(currentPage) && (
           <div className={`layout-wrapper ${loading ? 'content-loading' : 'content-ready'}`}>
             {!loading && (
@@ -1292,6 +1301,7 @@ root.render(
           <Route path="/examination-results" element={<ExaminationResultsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/examination-results-directory" element={<ExaminationResultsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/digital-logbook-directory" element={<DigitalLogbookDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/pilot-gap-about" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/settings" element={<SettingsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/*" element={
             <>
