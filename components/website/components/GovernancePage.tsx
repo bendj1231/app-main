@@ -30,9 +30,12 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                             Integrity & Compliance
                         </p>
-                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
+                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
                             Governance
                         </h1>
+                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                            Compliance | Ethics | Transparency
+                        </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
                             Our governance framework is the backbone of trust within the WingMentor ecosystem.
                             We are committed to regulatory compliance, data ethics, and absolute transparency
@@ -43,15 +46,15 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
             </div>
 
             {/* Section 1: Regulatory Compliance */}
-            <div className="py-12 px-6 max-w-4xl mx-auto">
-                <div className="text-center">
-                    <RevealOnScroll>
-                        <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.3em] mb-2">
-                            Universal Standards
-                        </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                            Regulatory Compliance
-                        </h2>
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Universal Standards
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '4rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Regulatory Compliance
+                    </h2>
+                    <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             Our curriculum and reporting structures are built to align with ICAO, EASA, and GCAA
                             standards. We don't just "teach" flying; we document competency in a language that
@@ -61,20 +64,23 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             This ensures that your WingMentor profile is a recognized asset, whether you are
                             applying to a carrier in the UAE, Europe, or beyond.
                         </p>
-                    </RevealOnScroll>
-                </div>
+                    </div>
+                </RevealOnScroll>
             </div>
 
             {/* Section 2: Data Ethics */}
-            <div className="py-20 px-6 max-w-4xl mx-auto">
-                <div className="text-center">
-                    <RevealOnScroll>
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                            Privacy First
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Privacy First
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '4rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Data Ethics & Privacy
+                    </h2>
+                    <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
+                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
+                            Data Security
                         </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                            Data Ethics & Privacy
-                        </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             Your flight records and career data are sensitive assets. We employ bank-grade
                             encryption and strict access controls to ensure your information is only seen by
@@ -84,20 +90,23 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             We never sell your data to third parties. Our business model is built on your career
                             success, not on monetizing your personal information.
                         </p>
-                    </RevealOnScroll>
-                </div>
+                    </div>
+                </RevealOnScroll>
             </div>
 
             {/* Section 3: Partner Transparency */}
-            <div className="py-20 px-6 max-w-4xl mx-auto">
-                <div className="text-center">
-                    <RevealOnScroll>
-                        <p className="text-xs font-bold text-emerald-700 uppercase tracking-[0.3em] mb-2">
-                            Clear Agreements
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Clear Agreements
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '4rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Partner Transparency
+                    </h2>
+                    <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
+                        <p className="text-xs font-bold text-emerald-700 uppercase tracking-[0.3em] mb-4">
+                            Transparency
                         </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                            Partner Transparency
-                        </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             We maintain clear, published agreements with all our airline and ATO partners. Key
                             terms regarding hiring pathways, discount structures, and data usage are open for
@@ -107,8 +116,8 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             This transparency ensures that when we recommend a pathway, it is because it is the
                             best option for your career, not because of a hidden incentive.
                         </p>
-                    </RevealOnScroll>
-                </div>
+                    </div>
+                </RevealOnScroll>
             </div>
 
             {/* Back button */}
