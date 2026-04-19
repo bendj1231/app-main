@@ -6,11 +6,23 @@ const supabaseUrl = Deno.env.get('SUPABASE_URL')!
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 
 Deno.serve(async (req: Request) => {
+  // CORS headers
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  }
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
   try {
     if (req.method !== 'POST') {
       return new Response(JSON.stringify({ error: 'Method not allowed' }), {
         status: 405,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       })
     }
 
@@ -20,7 +32,7 @@ Deno.serve(async (req: Request) => {
     if (!formData.email || !formData.company || !formData.name) {
       return new Response(JSON.stringify({ error: 'Name, email, and company are required' }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       })
     }
 
@@ -66,7 +78,7 @@ Additional Information:
     if (!resendApiKey) {
       return new Response(JSON.stringify({ error: 'Email service not configured' }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       })
     }
 
@@ -90,7 +102,7 @@ Additional Information:
       console.error('Resend API error:', errorText)
       return new Response(JSON.stringify({ error: 'Failed to send email' }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       })
     }
 
@@ -105,6 +117,7 @@ Additional Information:
       }),
       { 
         headers: { 
+          ...corsHeaders,
           'Content-Type': 'application/json',
           'Connection': 'keep-alive'
         } 
@@ -115,7 +128,7 @@ Additional Information:
     console.error('Unexpected error:', error)
     return new Response(JSON.stringify({ error: 'An unexpected error occurred' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     })
   }
 })
