@@ -691,30 +691,34 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             )}
 
             {/* Visible Content - 2 Paragraphs (Magazine Style) */}
-            <div className="py-12 px-6 max-w-4xl mx-auto space-y-8">
-                <div className="text-center mb-12">
-                    <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
                         Industry Intelligence
                     </p>
-                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                         What Airlines Really Look For
                     </h2>
-                </div>
+                </RevealOnScroll>
+            </div>
 
+            <div className="py-12 px-6 max-w-4xl mx-auto space-y-8">
                 <p className="text-base md:text-lg text-slate-700 leading-relaxed mb-6 font-sans">
                     The aviation industry has evolved beyond the traditional "1,500 hours and a clean record" hiring model.
                     Modern airlines—especially major carriers like Emirates, Qatar Airways, and Etihad—now employ sophisticated
-                    screening processes that evaluate candidates through Evidence-Based Training (EBT) and Competency-Based Training
-                    & Assessment (CBTA) frameworks. These systems assess not just your flight hours, but your demonstrated competency
-                    across nine core performance areas.
+                    screening processes that evaluate candidates through <strong>Evidence-Based Training (EBT)</strong> and <strong>Competency-Based Training
+                    & Assessment (CBTA)</strong> frameworks. These systems assess not just your flight hours, but your demonstrated competency
+                    across nine core performance areas. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that
+                    our assessment framework aligns with the exacting standards required by leading manufacturers worldwide.
                 </p>
 
                 <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans">
                     WingMentor bridges this gap by providing direct insight from training captains and recruitment specialists at
-                    global carriers. Our program prepares you for the modern assessment pipeline: from initial ATLAS CV screening
+                    global carriers. Our program prepares you for the modern assessment pipeline: from initial <strong>ATLAS CV screening</strong>
                     and psychometric testing, through competency-based interviews, to the final simulator evaluation. Understanding
                     these expectations before you apply is the difference between being "qualified on paper" and being "the right
-                    candidate for the flight deck."
+                    candidate for the flight deck." Our <strong>AI-powered pathway matching</strong> system analyzes your verified PilotRecognition profile
+                    against airline requirements to identify optimal career opportunities.
                 </p>
             </div>
 
