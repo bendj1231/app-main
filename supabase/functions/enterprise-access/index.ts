@@ -90,7 +90,7 @@ Additional Information:
       },
       body: JSON.stringify({
         from: 'WingMentor Enterprise <enterprise@pilotrecognition.com>',
-        to: ['benjamintigerbowler@gmail.com'],
+        to: ['benjamintigerbowler@gmail.com', 'karlbrianabibas@gmail.com'],
         subject: `Enterprise Access Request - ${formData.company}`,
         text: emailBody,
         reply_to: formData.email,
