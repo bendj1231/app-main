@@ -10,6 +10,7 @@ const emailRouting: Record<string, string | string[]> = {
   'kb@pilotrecognition.com': 'karlbrianabibas@gmail.com',
   'support@pilotrecognition.com': ['karlbrianabibas@gmail.com', 'benjamintigerbowler@gmail.com'],
   'contact@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
+  'enterprise@pilotrecognition.com': 'benjamintigerbowler@gmail.com',
 };
 
 // Display name mapping for forwarded emails
