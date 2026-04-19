@@ -111,20 +111,19 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                             Stewardship
                         </p>
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            Our Journey to <br />Industry Leadership
+                            The Essential Go-Between <br />for Pilots & Industry
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            WingMentor is proudly part of the <strong>WM Pilot Group</strong>, a collective dedicated to advancing aviation excellence.
-                            We are a bridge and a link between pilots and the aviation industry, connecting the world's leading airline bodies with elite talent.
+                            WingMentor is not a training organization; we are the essential bridge connecting pilots and the aviation industry, linking the world's leading airline bodies with elite talent. Our proprietary pilot database is rigorously vetted and screened to ensure that every pilot within our network is seen, recognized, and fully understands the critical expectations of the modern airline industry.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            Beyond providing various pathways for pilot experience building and accredited credential programs, we are actively shaping the future of aviation policy. Along with our flagship applications and our proprietary pilot recognition database, our committee members sit on advisory boards that influence regulatory training standards, ensuring that the voice of the modern pilot is heard in the halls of rule-making bodies.
+                            By serving as a unifying standard, we bridge the gap between individual skill and institutional requirements, creating a universally recognized benchmark of competency. Our programs are aligned with <strong>AIRBUS 9 core competencies</strong> and supported by industry leaders, ensuring that verified competencies translate directly to operational readiness.
                         </p>
 
                         <div className="flex items-start gap-4 p-6 bg-slate-50 rounded-2xl border border-slate-100">
                             <CheckCircle2 className="w-6 h-6 text-blue-600 shrink-0" />
                             <p className="text-slate-600 text-sm font-sans leading-relaxed">
-                                Making the connection between pilot & Industry Expectations, demands & Pilot Recognition easier like never before.
+                                Universal alignment with International Civil Aviation Organization and global industry benchmarks through verified competency data and PilotRecognition profiles.
                             </p>
                         </div>
                     </RevealOnScroll>
