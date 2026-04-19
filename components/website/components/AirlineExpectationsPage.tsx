@@ -738,9 +738,6 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {coreExpectations.map((item, idx) => (
                         <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start min-h-[350px]">
-                            <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
-                                <item.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
-                            </div>
                             <h3 className="text-2xl font-serif text-slate-900 mb-4">{item.title}</h3>
                             <p className="text-slate-600 mb-8 leading-relaxed text-sm font-sans">{item.desc}</p>
                             <div className="space-y-3 mt-auto w-full">
@@ -865,7 +862,6 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                     {assessmentPipeline.map((item, idx) => (
                         <div key={idx} className="p-2 md:p-6 bg-slate-50 border border-slate-100 rounded-lg md:rounded-[2rem] min-h-[120px] md:min-h-[220px]">
                             <div className="absolute top-1.5 right-2 md:top-4 md:right-6 font-serif text-lg md:text-4xl text-slate-200">0{idx + 1}</div>
-                            <item.icon className="w-3.5 h-3.5 md:w-8 md:h-8 text-blue-600 mb-1 md:mb-6" />
                             <h3 className="text-[9px] md:text-base font-bold mb-0.5 md:mb-3 font-sans text-slate-800 uppercase tracking-widest">{item.title}</h3>
                             <p className="text-slate-500 text-[7px] md:text-sm leading-tight md:leading-relaxed font-sans">{item.value}</p>
                         </div>
@@ -873,19 +869,14 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 </div>
             </div>
 
-            {/* Back button and small decoration (from AboutPage) */}
+            {/* Back button (from AboutPage) */}
             <div className="py-12 flex flex-col items-center gap-12">
                 <button
                     onClick={onBack}
-                    className="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-xl"
+                    className="px-8 py-4 bg-slate-900 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-xl"
                 >
-                    <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                     Back to Home
                 </button>
-
-                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-slate-300" />
-                </div>
             </div>
         </div>
     );
