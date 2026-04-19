@@ -24,6 +24,7 @@ import AtlasResumePage from './AtlasResumePage';
 import PrintableResumePage from './PrintableResumePage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { MentorLogbookPage } from './MentorLogbookPage';
+import { DigitalLogbookDirectoryPage } from '../../components/website/components/DigitalLogbookDirectoryPage';
 import { PathwayCarousel } from '../components/PathwayCarousel';
 import { getUserTrack, getTrackConfig, canAccessPage, getRedirectPage } from '../config/accessControl';
 import { getEnrollmentStatus, supabase } from '../lib/supabase-auth';
@@ -262,6 +263,7 @@ export type MainView =
   | 'examination-results'
   | 'logbook'
   | 'digital-logbook'
+  | 'digital-logbook-directory'
   | 'mentor-logbook'
   | 'atlas-resume'
   | 'printable-resume'
@@ -3964,6 +3966,8 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         return <LogbookPage onBack={() => setMainView('pilot-portfolio')} userProfile={userProfile} />;
       case 'digital-logbook':
         return <DigitalLogbookPage onBack={() => setMainView('pilot-portfolio')} userProfile={userProfile ?? undefined} />;
+      case 'digital-logbook-directory':
+        return <DigitalLogbookDirectoryPage onBack={() => setMainView('programs')} onNavigate={(page) => setMainView(page as MainView)} onLogin={() => {}} />;
       case 'mentor-logbook':
         return <MentorLogbookPage onBack={() => setMainView('pilot-portfolio')} userProfile={userProfile ?? undefined} />;
       case 'atlas-resume':
