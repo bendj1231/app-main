@@ -757,14 +757,21 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             </div>
 
             {/* Cinematic Section (Dark) */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#60A5FA', fontWeight: 600 }}>
+                        Real-World Assessment
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: 'white' }}>
+                        Beyond the 1,500 Hours: The Evidence Filter
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
             <div className="py-24 px-6 bg-[#050A30] text-white">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                         <div>
-                            <p className="text-xs font-bold tracking-[0.4em] uppercase text-blue-400 mb-6">Real-World Assessment</p>
-                            <h2 className="text-3xl md:text-5xl font-serif mb-8 leading-tight">
-                                Beyond the 1,500 Hours: <br />The Evidence Filter
-                            </h2>
                             <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
                                 "Meeting the minimum is the entry ticket. Competency is the invitation to the flight deck."
                             </p>
@@ -789,40 +796,85 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             </div>
 
             {/* Article Section 1 */}
-            <div className="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div className="order-2 md:order-1">
-                        <img
-                            src="https://images.unsplash.com/photo-1559628376-f3fe5f782a2e?q=80&w=2000&auto=format&fit=crop"
-                            alt="Airline Culture"
-                            className="rounded-3xl shadow-2xl w-full h-[400px] object-cover"
-                        />
-                    </div>
-                    <div className="order-1 md:order-2">
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">Cultural Fit Assessment</p>
-                        <h2 className="text-3xl font-serif text-slate-900 mb-6">Beyond The Cockpit:<br />Flagship Carrier Culture</h2>
-                        <p className="text-slate-600 text-lg leading-relaxed">
-                            Airlines aren't just hiring pilots; they're hiring future captains and brand ambassadors. Major carriers invest heavily in their corporate identity, and they expect their flight deck crew to embody these values. Our assessment preparation goes beyond technical skills to ensure you demonstrate the professional persona, leadership qualities, and cultural alignment that recruiters at top-tier airlines effectively mandate.
-                        </p>
-                    </div>
-                </div>
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Cultural Fit Assessment
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Beyond The Cockpit: Flagship Carrier Culture
+                    </h2>
+                </RevealOnScroll>
+            </div>
 
-                {/* Article Section 2 */}
-                <div className="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
-                    <div>
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">Technical vs. Non-Technical</p>
-                        <h2 className="text-3xl font-serif text-slate-900 mb-6">The Competency Balance</h2>
-                        <p className="text-slate-600 text-lg leading-relaxed">
-                            While technical proficiency is non-negotiable, the deciding factor in modern airline recruitment often lies in non-technical competencies. Decision-making, situational awareness, and communication are scrutinized under the microscope of EBT frameworks. We provide the strategies to articulate your experience in the language of these competencies, turning your flight hours into a compelling narrative of safety and leadership.
-                        </p>
-                    </div>
-                    <div>
-                        <img
-                            src="https://images.unsplash.com/photo-1483450389192-3d3a4d715df9?q=80&w=2000&auto=format&fit=crop"
-                            alt="Cockpit Teamwork"
-                            className="rounded-3xl shadow-2xl w-full h-[400px] object-cover"
-                        />
-                    </div>
+            <div className="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div className="order-2 md:order-1">
+                    <img
+                        src="https://images.unsplash.com/photo-1559628376-f3fe5f782a2e?q=80&w=2000&auto=format&fit=crop"
+                        alt="Airline Culture"
+                        className="rounded-3xl shadow-2xl w-full h-[400px] object-cover"
+                    />
                 </div>
+                <div className="order-1 md:order-2">
+                    <p className="text-slate-600 text-lg leading-relaxed mb-4">
+                        Airlines aren't just hiring pilots; they're hiring future captains and brand ambassadors. Major carriers invest heavily in their corporate identity, and they expect their flight deck crew to embody these values. Our assessment preparation goes beyond technical skills to ensure you demonstrate the <strong>professional persona</strong>, <strong>leadership qualities</strong>, and <strong>cultural alignment</strong> that recruiters at top-tier airlines effectively mandate.
+                    </p>
+                    <p className="text-slate-600 text-lg leading-relaxed">
+                        Through our partnership with <strong>Etihad Cadet Program</strong> and <strong>Airbus Head of Training</strong>, we provide direct insight into the cultural expectations of leading carriers. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.
+                    </p>
+                </div>
+            </div>
+
+            {/* Article Section 2 */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Competency Framework
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        The Competency Balance
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
+            <div className="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
+                <div>
+                    <p className="text-slate-600 text-lg leading-relaxed mb-4">
+                        While technical proficiency is non-negotiable, the deciding factor in modern airline recruitment often lies in non-technical competencies. Decision-making, situational awareness, and communication are scrutinized under the microscope of EBT frameworks. We provide the strategies to articulate your experience in the language of these competencies, turning your flight hours into a compelling narrative of safety and leadership.
+                    </p>
+                    <p className="text-slate-600 text-lg leading-relaxed">
+                        Through our <strong>EBT CBTA-aligned assessment framework</strong>, we evaluate both technical and non-technical competencies including <strong>situational awareness</strong>, <strong>workload management</strong>, and <strong>decision making</strong> under pressure. Our recognition-based profiling provides objective assessment of these cognitive markers, giving operators confidence in your ability to handle demanding operational scenarios. Our <strong>9 core competencies framework</strong> specifically addresses the balance between technical mastery and behavioral excellence.
+                    </p>
+                </div>
+                <div>
+                    <img
+                        src="https://images.unsplash.com/photo-1483450389192-3d3a4d715df9?q=80&w=2000&auto=format&fit=crop"
+                        alt="Cockpit Teamwork"
+                        className="rounded-3xl shadow-2xl w-full h-[400px] object-cover"
+                    />
+                </div>
+            </div>
+
+            {/* Cockpit Teamwork Section */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Crew Resource Management
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Cockpit Teamwork Excellence
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
+            <div className="py-12 px-6 max-w-7xl mx-auto mb-24">
+                <p className="text-slate-600 text-lg leading-relaxed mb-4 text-center">
+                    Effective cockpit teamwork is the foundation of aviation safety. Through our <strong>Foundational Program's 50 hours of verifiable logged effort-based mentorship</strong>, we develop the <strong>CRM (Crew Resource Management)</strong> competencies that modern airlines demand. Our training focuses on communication, leadership, and decision-making in a multi-crew environment, ensuring you can contribute effectively to flight deck operations from day one.
+                </p>
+                <p className="text-slate-600 text-lg leading-relaxed text-center">
+                    Our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates your ability to communicate respectfully, listen actively, and contribute constructively to crew decisions. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that our CRM training aligns with the exacting standards required by leading manufacturers worldwide. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated teamwork competencies match airline requirements.
+                </p>
+            </div>
 
             {/* Assessment Pipeline */}
             <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
