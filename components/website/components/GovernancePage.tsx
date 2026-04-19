@@ -57,10 +57,9 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                     <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             Our curriculum and reporting structures are built to align with <strong>ICAO</strong>, <strong>EASA</strong>, and <strong>GCAA</strong>
-                            standards. We don't just "teach" flying; we document competency in a language that
-                            global regulators and airlines understand. Our assessment framework is designed to translate
-                            pilot competencies into <strong>regulatory-compliant documentation</strong> that facilitates seamless
-                            career progression across international jurisdictions.
+                            standards. We document competency in a language that global regulators and airlines understand.
+                            Our assessment framework is designed to translate pilot competencies into <strong>regulatory-compliant documentation</strong>
+                            that facilitates seamless career progression across international jurisdictions.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             This ensures that your WingMentor profile is a recognized asset, whether you are
