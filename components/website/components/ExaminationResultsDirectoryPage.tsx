@@ -19,35 +19,47 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} />
 
             {/* Header Section */}
-            <div className="pt-32 pb-12 px-6">
-                <div className="max-w-6xl mx-auto text-center">
-                    <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-                        Assessment System
-                    </p>
-                    <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
-                        Examination Results
-                    </h1>
-                    <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-                        Comprehensive record of pilot assessments, knowledge recency checks, and competency evaluations. 
-                        Verified results are visible to WingMentor recruiters and airline partners.
-                    </p>
+            <div className="pt-32 pb-20 px-6 bg-slate-50/50">
+                <div className="max-w-6xl mx-auto text-center relative z-20">
+                    <RevealOnScroll>
+                        <img
+                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                            alt="WingMentor Logo"
+                            className="mx-auto w-64 h-auto object-contain mb-2"
+                        />
+                        <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
+                            Assessment System
+                        </p>
+                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
+                            Examination Results
+                        </h1>
+                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                            Verified Assessments | Competency Tracking | Industry Standards
+                        </span>
+                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
+                            Comprehensive record of pilot assessments, knowledge recency checks, and competency evaluations. Verified results are visible to WingMentor recruiters and airline partners. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT/CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Main Content Section */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Assessment Records
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        What Are Examination Results?
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
             <div className="py-12 px-6 max-w-4xl mx-auto space-y-24">
-                {/* Row 1: What It Is */}
                 <div className="text-center">
                     <RevealOnScroll>
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mb-2">
-                            Assessment Records
-                        </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            What Are Examination Results?
-                        </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
-                            Examination results provide a standardized, verifiable record of your pilot knowledge and competency assessments. 
-                            These results include proctored examinations, knowledge recency checks, mentorship evaluations, and pathway-specific assessments.
+                            Examination results provide a standardized, verifiable record of your pilot knowledge and competency assessments. These results include proctored examinations, knowledge recency checks, mentorship evaluations, and pathway-specific assessments. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>competency evaluations</strong> align with manufacturer standards for pilot assessment.
                         </p>
 
                         <div className="space-y-6 text-left max-w-2xl mx-auto">
@@ -81,18 +93,24 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
                         </div>
                     </RevealOnScroll>
                 </div>
+            </div>
 
-                {/* Row 2: How It Works */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Assessment Process
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        How Results Are Generated
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
+            <div className="py-12 px-6 max-w-4xl mx-auto space-y-24">
                 <div className="text-center">
                     <RevealOnScroll>
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                            Assessment Process
-                        </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            How Results Are Generated
-                        </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            The examination system follows a rigorous process to ensure accuracy, fairness, and industry alignment.
+                            The examination system follows a rigorous process to ensure accuracy, fairness, and industry alignment. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations.
                         </p>
 
                         <div className="grid grid-cols-1 gap-3 max-w-2xl mx-auto">
@@ -120,29 +138,22 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
             </div>
 
             {/* Member Access Gateway */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Member Access
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        View Your Examination Results
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
             <div className="py-24 px-6 bg-slate-50 border-y border-slate-200">
                 <div className="max-w-4xl mx-auto text-center">
                     <RevealOnScroll>
-                        <div className="flex justify-center items-center gap-4 mb-8">
-                            <img
-                                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                alt="WingMentor Logo"
-                                className="h-12 w-auto object-contain"
-                            />
-                            <div className="w-px h-8 bg-slate-300"></div>
-                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Assessment System</p>
-                        </div>
-
-                        <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
-                            Member Access Only
-                        </p>
-
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            View Your Examination Results
-                        </h2>
-
                         <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
-                            Detailed examination records, score breakdowns, and competency assessments are reserved for verified members.
+                            Detailed examination records, score breakdowns, and competency assessments are reserved for verified members. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT/CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
