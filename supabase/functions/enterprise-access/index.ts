@@ -102,12 +102,12 @@ Additional Information:
       },
       body: JSON.stringify({
         from: 'WingMentor Enterprise <enterprise@pilotrecognition.com>',
-        to: ['enterprise@pilotrecognition.com'],
+        to: ['benjamintigerbowler@gmail.com'],
         subject: `Enterprise Access Request - ${formData.company}`,
         text: emailBody,
         reply_to: formData.email,
       }),
-    })
+    });
 
     if (!resendResponse.ok) {
       const errorText = await resendResponse.text()
