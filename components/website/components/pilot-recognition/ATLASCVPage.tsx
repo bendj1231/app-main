@@ -19,38 +19,47 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section */}
-            <div className="pt-32 pb-12 px-6">
+            <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
-                    <img
-                        src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                        alt="WingMentor Logo"
-                        className="mx-auto w-64 h-auto object-contain mb-2"
-                    />
-                    <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-                        Professional Aviation Standardization
-                    </p>
-                    <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
-                        The ATLAS Aviation CV
-                    </h1>
-                    <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-                        The globally recognized, AI-optimized format that presents your experience, competencies, and qualifications in the standardized structure preferred by international airlines.
-                    </p>
+                    <RevealOnScroll>
+                        <img
+                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                            alt="WingMentor Logo"
+                            className="mx-auto w-64 h-auto object-contain mb-2"
+                        />
+                        <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
+                            Professional Aviation Standardization
+                        </p>
+                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
+                            The ATLAS Aviation CV
+                        </h1>
+                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                            Global Recognition | ATS Optimization | Competency-Based
+                        </span>
+                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
+                            The globally recognized, AI-optimized format that presents your experience, competencies, and qualifications in the standardized structure preferred by international airlines. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Main Content Section */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Competitive Advantage
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Why the ATLAS Format Sets You Apart
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
             <div className="py-12 px-6 max-w-4xl mx-auto space-y-24">
-                {/* Row 1: Why it Matters */}
                 <div className="text-center">
                     <RevealOnScroll>
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mb-2">
-                            Competitive Advantage
-                        </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            Why the ATLAS Format Sets You Apart
-                        </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
-                            The ATLAS format bridges the gap between pilot application and airline expectation. It is recognized by recruitment agencies and aviation organizations worldwide as the professional standard for presenting pilot credentials.
+                            The ATLAS format bridges the gap between pilot application and airline expectation. It is recognized by recruitment agencies and aviation organizations worldwide as the professional standard for presenting pilot credentials. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
 
                         <div className="space-y-6 text-left max-w-2xl mx-auto">
@@ -86,16 +95,21 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                 </div>
 
                 {/* Row 2: CV Components */}
-                <div className="text-center">
+                <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                     <RevealOnScroll>
-                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                        <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
                             CV Components
                         </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
+                        <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                             Comprehensive Documentation
                         </h2>
+                    </RevealOnScroll>
+                </div>
+
+                <div className="text-center">
+                    <RevealOnScroll>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            The ATLAS format is comprehensive yet concise, presenting all critical information in a standardized structure that airlines expect and understand.
+                            The ATLAS format is comprehensive yet concise, presenting all critical information in a standardized structure that airlines expect and understand. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
 
                         <div className="grid grid-cols-1 gap-3 max-w-2xl mx-auto">
@@ -122,6 +136,17 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
             </div>
 
             {/* Member Access Gateway */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Member Access
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Unlock the Full ATLAS Standard
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
             <div className="py-24 px-6 bg-slate-50 border-y border-slate-200">
                 <div className="max-w-4xl mx-auto text-center">
                     <RevealOnScroll>
@@ -135,16 +160,8 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Standardization</p>
                         </div>
 
-                        <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
-                            Member Access Only
-                        </p>
-
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                            Unlock the Full <br /> ATLAS Standard
-                        </h2>
-
                         <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
-                            Detailed documentation standards, builder access, and full competency breakdowns are reserved for verified members.
+                            Detailed documentation standards, builder access, and full competency breakdowns are reserved for verified members. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
