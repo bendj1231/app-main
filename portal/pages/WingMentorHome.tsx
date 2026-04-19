@@ -3920,7 +3920,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           <PilotProfilePage 
             onBack={() => setMainView('dashboard')} 
             onViewLogbook={() => setMainView('logbook')}
-            onViewDigitalLogbook={() => setMainView('digital-logbook')}
+            onViewDigitalLogbook={() => setMainView('digital-logbook-directory')}
             onViewMentorLogbook={() => setMainView('mentor-logbook')}
             onViewAtlas={() => setMainView('atlas-resume')}
             onViewRecognition={() => setMainView('recognition')}
@@ -3946,7 +3946,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           <DashboardPage 
             onBack={() => setMainView('dashboard')} 
             onViewLogbook={() => setMainView('logbook')}
-            onViewDigitalLogbook={() => setMainView('digital-logbook')}
+            onViewDigitalLogbook={() => setMainView('digital-logbook-directory')}
             onViewMentorLogbook={() => setMainView('mentor-logbook')}
             onViewAtlas={() => setMainView('atlas-resume')}
             onViewRecognition={() => setMainView('recognition')}
