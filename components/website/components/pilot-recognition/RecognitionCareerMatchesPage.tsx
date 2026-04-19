@@ -78,7 +78,7 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
 
                 {/* Section 2: Recommended Pathways (Static Mock for SEO) */}
                 <div className="mb-16">
-                    <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '-1rem' }}>
+                    <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '-1rem', marginBottom: '2rem' }}>
                         <p style={{ margin: 0, fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>
                             Discover Recommended Pathways
                         </p>
