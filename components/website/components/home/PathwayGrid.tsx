@@ -1131,7 +1131,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                     </p>
                     <div className="flex items-center gap-4 md:gap-5">
                         <a
-                            href="https://tiktok.com/@pilotrecognition"
+                            href="https://www.tiktok.com/@pilotrecognition?is_from_webapp=1&sender_device=pc"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300"
