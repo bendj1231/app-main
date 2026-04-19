@@ -151,27 +151,21 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 // OAuth Callback Component
 const OAuthCallback = () => {
   useEffect(() => {
-    // Handle OAuth callback logic here
-    // This will process the callback from OAuth provider
+    // Redirect to the proper OAuth callback handler at /auth/callback
+    // This handles both hash and query parameters
     const handleCallback = async () => {
+      const currentUrl = window.location.href;
+      const searchParams = window.location.search;
       const hash = window.location.hash;
-      const params = new URLSearchParams(hash.substring(1));
-      const accessToken = params.get('access_token');
-      const refreshToken = params.get('refresh_token');
-      const error = params.get('error');
-      const errorDescription = params.get('error_description');
 
-      if (error) {
-        console.error('OAuth error:', error, errorDescription);
-        // Redirect to home with error
-        window.location.href = '/?error=' + encodeURIComponent(errorDescription || error);
-        return;
-      }
-
-      if (accessToken && refreshToken) {
-        // Store tokens or send them to your backend
-        console.log('OAuth successful, tokens received');
-        // Redirect to home or dashboard
+      // If we have query parameters (Google OAuth), redirect to /auth/callback
+      if (searchParams) {
+        window.location.href = `/auth/callback${searchParams}${hash}`;
+      } else if (hash) {
+        // If we have hash parameters, redirect to /auth/callback with hash
+        window.location.href = `/auth/callback${hash}`;
+      } else {
+        // No parameters, redirect to home
         window.location.href = '/';
       }
     };

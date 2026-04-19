@@ -893,7 +893,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     useEffect(() => {
-        // Verify session using Edge Function (for initial load)
+        // Verify session using Supabase native session check (bypassing Edge Function due to 403 errors)
         const verifySession = async () => {
             // Check if user explicitly logged out - prevent session restoration
             if (isExplicitLogout()) {
@@ -905,26 +905,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
 
             try {
-                // Check if user just came from OAuth callback
-                const isOAuthSession = sessionStorage.getItem('oauth_session') === 'true';
-                
-                const { data, error } = await supabase.functions.invoke('auth-verify', {
-                    headers: getAuthHeaders(isOAuthSession)
-                });
+                // Use Supabase native session check instead of Edge Function
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
-                if (data?.success && data?.user) {
-                    console.log("✅ Session verified via Edge Function:", data.user.id, data.user.email);
+                if (sessionError) {
+                    console.log("⚠️ Session check error:", sessionError);
+                    setCurrentUser(null);
+                    setUserProfile(null);
+                    setLoading(false);
+                    return;
+                }
+
+                if (session?.user) {
+                    console.log("✅ Session verified via Supabase:", session.user.id, session.user.email);
 
                     // Create SupabaseUser object
                     const verifiedUser: SupabaseUser = {
-                        id: data.user.id,
-                        uid: data.user.id,
-                        email: data.user.email || '',
-                        display_name: data.user.email?.split('@')[0],
-                        displayName: data.user.email?.split('@')[0],
-                        email_confirmed_at: new Date().toISOString(),
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString()
+                        id: session.user.id,
+                        uid: session.user.id,
+                        email: session.user.email || '',
+                        display_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                        displayName: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                        email_confirmed_at: session.user.email_confirmed_at || new Date().toISOString(),
+                        created_at: session.user.created_at || new Date().toISOString(),
+                        updated_at: session.user.updated_at || new Date().toISOString()
                     };
 
                     setCurrentUser(verifiedUser);
@@ -934,17 +938,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         const { data: profileData, error } = await supabase
                             .from('pilot_licensure_experience')
                             .select('*')
-                            .eq('user_id', data.user.id)
+                            .eq('user_id', session.user.id)
                             .single();
 
                         if (profileData && !error) {
-                            console.log("✅ Supabase profile fetched for user:", data.user.id);
+                            console.log("✅ Supabase profile fetched for user:", session.user.id);
                             setUserProfile(profileData);
                         } else {
-                            console.log("⚠️ No Supabase profile found for user:", data.user.id, "Creating default profile");
+                            console.log("⚠️ No Supabase profile found for user:", session.user.id, "Creating default profile");
                             const defaultProfile = {
-                                user_id: data.user.id,
-                                email: data.user.email,
+                                user_id: session.user.id,
+                                email: session.user.email,
                                 created_at: new Date().toISOString(),
                                 enrolled_programs: [],
                                 appAccess: []
@@ -954,8 +958,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     } catch (err) {
                         console.error("❌ Error fetching Supabase profile:", err);
                         const defaultProfile = {
-                            user_id: data.user.id,
-                            email: data.user.email,
+                            user_id: session.user.id,
+                            email: session.user.email,
                             created_at: new Date().toISOString(),
                             enrolled_programs: [],
                             appAccess: []
