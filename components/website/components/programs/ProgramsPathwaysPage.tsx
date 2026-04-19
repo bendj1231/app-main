@@ -17,7 +17,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     const corePrograms = [
         {
             title: "Foundational Program",
-            desc: "The literal foundation of our pilot organization. Bridging the gap from 'I have a license' to 'I am a professional'.",
+            desc: "The literal foundation of our pilot organization. Bridging the gap from 'I have a license' to 'I am a professional'. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, our <strong>50 hours of verifiable mentorship</strong> provides the <strong>EBT CBTA-aligned assessment framework</strong> that modern airlines demand. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match airline requirements.",
             target: "foundational-program",
             icon: GraduationCap,
             color: "text-blue-600",
@@ -25,7 +25,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Transition Program",
-            desc: "Designed for instructors and low-timers seeking to transition into multi-crew and jet environments.",
+            desc: "Designed for instructors and low-timers seeking to transition into multi-crew and jet environments. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates the CRM and multi-crew competencies that modern airlines require. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
             target: "transition-program",
             icon: Target,
             color: "text-red-600",
@@ -33,7 +33,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Emirates ATPL Pathway",
-            desc: "A specialized track for pilots seeking an Emirates‑standard ATPL and GCAA licensing standards.",
+            desc: "A specialized track for pilots seeking an Emirates-standard ATPL and GCAA licensing standards. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.",
             target: "emirates-atpl",
             icon: Globe,
             color: "text-emerald-600",
@@ -44,7 +44,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     const pathways = [
         {
             title: "Air Taxi & eVTOL",
-            desc: "Preparing pilots for the emerging eVTOL and Urban Air Mobility (UAM) sectors.",
+            desc: "Preparing pilots for the emerging eVTOL and Urban Air Mobility (UAM) sectors. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that pathway development aligns with manufacturer standards for urban air mobility. Our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates the competencies required for advanced air mobility operations.",
             target: "emerging-air-taxi",
             icon: Zap,
             color: "text-purple-600",
@@ -52,7 +52,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Private Charter",
-            desc: "Direct links to private jet operators and specialized business aviation training.",
+            desc: "Direct links to private jet operators and specialized business aviation training. We foster a culture of respect where every voice is heard, from the cadet to the captain. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.",
             target: "private-charter-pathways",
             icon: Briefcase,
             color: "text-amber-600",
@@ -60,7 +60,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Seaplane & Float Ops",
-            desc: "Specialized training for island transfers and amphibious flight deck handling.",
+            desc: "Specialized training for island transfers and amphibious flight deck handling. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that program development aligns with manufacturer standards for specialized operations. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match operator requirements.",
             target: "about_programs",
             icon: Navigation,
             color: "text-cyan-600",
@@ -68,7 +68,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Unmanned Systems",
-            desc: "Focusing on large-scale BVLOS operations and heavy-lift unmanned logistics.",
+            desc: "Focusing on large-scale BVLOS operations and heavy-lift unmanned logistics. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
             target: "piloted-drones",
             icon: Cpu,
             color: "text-slate-600",
@@ -76,7 +76,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Cargo Transportation",
-            desc: "Supply chain resilience and heavy logistics for the global feeder network.",
+            desc: "Supply chain resilience and heavy logistics for the global feeder network. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that pathway development aligns with flagship carrier expectations. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match cargo operator requirements.",
             target: "about_programs",
             icon: Layers,
             color: "text-zinc-600",
@@ -87,7 +87,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     const systems = [
         {
             title: "Pilot Recognition",
-            desc: "The industry's first Competency Assurance Network. Your skills, verified and recognized.",
+            desc: "The industry's first Competency Assurance Network. Your skills, verified and recognized. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of pilot readiness across technical and non-technical domains. Our <strong>blockchain-verifiable certifications</strong> provide pilots with cutting-edge tools for career advancement.",
             target: "pilot-recognition",
             icon: Award,
             color: "text-indigo-600",
@@ -95,7 +95,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "ATLAS CV Systems",
-            desc: "Modernizing pilot profiles to meet manufacturer and recruiter data-driven standards.",
+            desc: "Modernizing pilot profiles to meet manufacturer and recruiter data-driven standards. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> and <strong>AI-powered pathway matching</strong> system provide pilots with cutting-edge tools for career advancement.",
             target: "atlas-cv",
             icon: FileText,
             color: "text-sky-600",
@@ -103,7 +103,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "EBT & CBTA Programs",
-            desc: "Evidence-Based Training familiarization using integrated Airbus and Hinfact analytics.",
+            desc: "Evidence-Based Training familiarization using integrated Airbus and Hinfact analytics. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match airline requirements.",
             target: "ebt-cbta",
             icon: LayoutGrid,
             color: "text-rose-600",
@@ -137,37 +137,54 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-400 mb-6 font-sans">
                             Directory
                         </p>
-                        <h1 className="text-4xl md:text-7xl font-serif text-white leading-tight mb-8">
+                        <h1 className="text-4xl md:text-6xl font-serif text-white leading-tight mb-4">
                             Programs & Pathways
                         </h1>
-                        <p className="max-w-3xl mx-auto text-lg md:text-xl text-white/80 leading-relaxed font-sans">
-                            A comprehensive ecosystem designed to bridge the pilot gap. Explore our core foundational training,
-                            specialized career pathways, and industry-leading recognition systems.
+                        <span className="text-3xl md:text-4xl mt-1 leading-none text-white" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                            Foundational | Transition | Specialized
+                        </span>
+                        <p className="max-w-3xl mx-auto text-base md:text-lg text-white/90 leading-relaxed font-sans mt-6">
+                            A comprehensive ecosystem designed to bridge the pilot gap. Explore our core foundational programs,
+                            specialized career pathways, and industry-leading recognition systems. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
             </div>
 
             {/* Core Programs Section */}
-            <div className="py-24 px-6 max-w-7xl mx-auto">
-                <div className="mb-16">
-                    <h2 className="text-3xl font-serif text-slate-900 mb-4 px-2">Core Programs</h2>
-                    <div className="w-20 h-1 bg-blue-600 mx-2"></div>
-                </div>
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Program Structure
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Core Programs
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
+            <div className="py-12 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {corePrograms.map((prog, idx) => (
-                        <ProgramCard key={idx} {...prog} onClick={() => onNavigate(prog.target)} />
+                        <ProgramCard key={idx} title={prog.title} desc={prog.desc} color={prog.color} onClick={() => onNavigate(prog.target)} />
                     ))}
                 </div>
             </div>
 
             {/* Pathways Section */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#60A5FA', fontWeight: 600 }}>
+                        Career Opportunities
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: 'white' }}>
+                        Aviation Pathways
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
             <div className="py-24 px-6 bg-[#050A30] text-white">
                 <div className="max-w-7xl mx-auto">
-                    <div className="mb-16">
-                        <h2 className="text-3xl font-serif text-white mb-4">Aviation Pathways</h2>
-                        <div className="w-20 h-1 bg-blue-500"></div>
-                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {pathways.map((prog, idx) => (
                             <div
@@ -175,9 +192,6 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
                                 onClick={() => onNavigate(prog.target)}
                                 className="group bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-all cursor-pointer"
                             >
-                                <div className={`w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform`}>
-                                    <prog.icon className="w-7 h-7" />
-                                </div>
                                 <h3 className="text-xl font-bold mb-4 font-sans">{prog.title}</h3>
                                 <p className="text-slate-400 text-sm leading-relaxed mb-6 font-sans">{prog.desc}</p>
                                 <div className="flex items-center text-blue-400 text-sm font-bold uppercase tracking-widest gap-2 font-sans">
@@ -190,14 +204,21 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
             </div>
 
             {/* Systems Section */}
-            <div className="py-24 px-6 max-w-7xl mx-auto">
-                <div className="mb-16">
-                    <h2 className="text-3xl font-serif text-slate-900 mb-4 px-2">Ecosystem Systems</h2>
-                    <div className="w-20 h-1 bg-blue-600 mx-2"></div>
-                </div>
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Technology Ecosystem
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Ecosystem Systems
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
+            <div className="py-12 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {systems.map((prog, idx) => (
-                        <ProgramCard key={idx} {...prog} onClick={() => onNavigate(prog.target)} />
+                        <ProgramCard key={idx} title={prog.title} desc={prog.desc} color={prog.color} onClick={() => onNavigate(prog.target)} />
                     ))}
                 </div>
             </div>
@@ -219,14 +240,11 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     );
 };
 
-const ProgramCard = ({ title, desc, icon: Icon, color, bg, onClick }: any) => (
+const ProgramCard = ({ title, desc, color, onClick }: any) => (
     <div
         onClick={onClick}
         className="group bg-white border border-slate-200 p-8 rounded-3xl hover:shadow-2xl hover:border-blue-200 transition-all cursor-pointer"
     >
-        <div className={`w-14 h-14 rounded-2xl ${bg} flex items-center justify-center mb-6 ${color} group-hover:rotate-6 transition-all`}>
-            <Icon className="w-7 h-7" />
-        </div>
         <h3 className="text-xl font-bold text-slate-900 mb-4 font-sans">{title}</h3>
         <p className="text-slate-600 text-sm leading-relaxed mb-6 font-sans">{desc}</p>
         <div className={`flex items-center ${color} text-sm font-bold uppercase tracking-widest gap-2 font-sans`}>
