@@ -19,67 +19,32 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
 
     // User behavior tracking (dating-site style personalization)
     const trackPathwayInteraction = (pathway: any, interactionType: 'view' | 'click' | 'like' | 'dislike') => {
-        const trackingData = JSON.parse(localStorage.getItem('pathwayBehaviorTracking') || '{}');
-        const pathwayId = pathway.title;
-        
-        if (!trackingData[pathwayId]) {
-            trackingData[pathwayId] = {
-                viewCount: 0,
-                clickCount: 0,
-                lastViewed: null,
-                totalViewTime: 0,
-                interactions: []
-            };
-        }
-
-        trackingData[pathwayId][interactionType === 'view' ? 'viewCount' : 'clickCount']++;
-        trackingData[pathwayId].lastViewed = new Date().toISOString();
-        trackingData[pathwayId].interactions.push({
-            type: interactionType,
-            timestamp: new Date().toISOString()
-        });
-
-        localStorage.setItem('pathwayBehaviorTracking', JSON.stringify(trackingData));
-    };
-
-    // Adjust user preference weights based on behavior (dating-site learning algorithm)
-    const adjustWeightsBasedOnBehavior = () => {
-        const trackingData = JSON.parse(localStorage.getItem('pathwayBehaviorTracking') || '{}');
-        const pathwayIds = Object.keys(trackingData);
-        
-        if (pathwayIds.length === 0) return userPreferenceWeights;
-
-        // Analyze which pathway types user prefers
-        const typePreferences: { [key: string]: number } = {};
-        pathwayIds.forEach(id => {
-            const data = trackingData[id];
-            const pathway = pathways.find(p => p.title === id);
-            if (pathway) {
-                const type = pathway.type || 'unknown';
-                typePreferences[type] = (typePreferences[type] || 0) + data.clickCount;
+        try {
+            const trackingData = JSON.parse(localStorage.getItem('pathwayBehaviorTracking') || '{}');
+            const pathwayId = pathway.title;
+            
+            if (!trackingData[pathwayId]) {
+                trackingData[pathwayId] = {
+                    viewCount: 0,
+                    clickCount: 0,
+                    lastViewed: null,
+                    totalViewTime: 0,
+                    interactions: []
+                };
             }
-        });
 
-        // Adjust weights based on preferences
-        const adjustedWeights = { ...userPreferenceWeights };
-        const totalInteractions = pathwayIds.reduce((sum, id) => sum + trackingData[id].clickCount, 0);
-        
-        if (totalInteractions > 5) {
-            // User has enough interaction data to personalize
-            // Increase weight for categories user engages with most
-            const preferredType = Object.entries(typePreferences).sort((a, b) => b[1] - a[1])[0];
-            if (preferredType && preferredType[0] !== 'unknown') {
-                // Slightly adjust career alignment weight for preferred types
-                adjustedWeights.careerAlignmentWeight = Math.min(0.15, adjustedWeights.careerAlignmentWeight + 0.05);
-                adjustedWeights.hoursWeight = Math.max(0.25, adjustedWeights.hoursWeight - 0.05);
-            }
+            trackingData[pathwayId][interactionType === 'view' ? 'viewCount' : 'clickCount']++;
+            trackingData[pathwayId].lastViewed = new Date().toISOString();
+            trackingData[pathwayId].interactions.push({
+                type: interactionType,
+                timestamp: new Date().toISOString()
+            });
+
+            localStorage.setItem('pathwayBehaviorTracking', JSON.stringify(trackingData));
+        } catch (e) {
+            console.error('localStorage error:', e);
         }
-
-        return adjustedWeights;
     };
-
-    // Load personalized weights
-    const personalizedWeights = adjustWeightsBasedOnBehavior();
 
     const pathways = [
         { title: 'Envoy Air Pilot Cadet Program', subtitle: 'Envoy Air (American Airlines Group)', match: 94, pr: 0, image: 'https://www.envoyair.com/wp-content/uploads/2024/03/IMG_CadetProgram_MeganSnow.jpg', requirements: ['40+ hrs', 'CPL', 'Class 1 Medical', 'US Citizen/Perm Resident'], type: 'Cadet Program', salary: 'Financial assistance + guaranteed FO position' },
@@ -144,6 +109,60 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
         { title: 'Aerial Surveillance & Intel Pathway', subtitle: 'Government & Security Contractors', match: 86, pr: 0, image: 'https://cdn.prod.website-files.com/692fd066ee17d3dbb4a3c663/6966cb5ac521befde4d6b818_64343287e557aaecdaa2aaac_02d2f99fdfc8244b75d5b37839674333ab452aa54b89ec98af755e964f4923990053a8035ac4a68f29df5646bc6ca0ef1721a3c7be38e384443cf0c5186e6f37f8b5e90785c9723546f7e01cd676057e2058af389232c88992f8b96a3c734b384d6fc2b9.png', requirements: ['2,500+ hrs TT', 'Security Clearance', 'ISR Experience', 'Multi-Engine Rated'], type: 'Intelligence Operations', salary: '$80,000 - $120,000/year' }
     ];
 
+    // User preference weights (stored in local storage for personalization)
+    const userPreferenceWeights = {
+        hoursWeight: 0.35,
+        recognitionWeight: 0.25,
+        licenseWeight: 0.20,
+        medicalWeight: 0.10,
+        careerAlignmentWeight: 0.05,
+        locationWeight: 0.05
+    };
+
+    // Adjust user preference weights based on behavior (dating-site learning algorithm)
+    const adjustWeightsBasedOnBehavior = () => {
+        try {
+            const trackingData = JSON.parse(localStorage.getItem('pathwayBehaviorTracking') || '{}');
+            const pathwayIds = Object.keys(trackingData);
+            
+            if (pathwayIds.length === 0) return userPreferenceWeights;
+
+            // Analyze which pathway types user prefers
+            const typePreferences: { [key: string]: number } = {};
+            pathwayIds.forEach(id => {
+                const data = trackingData[id];
+                const pathway = pathways.find(p => p.title === id);
+                if (pathway) {
+                    const type = pathway.type || 'unknown';
+                    typePreferences[type] = (typePreferences[type] || 0) + data.clickCount;
+                }
+            });
+
+            // Adjust weights based on preferences
+            const adjustedWeights = { ...userPreferenceWeights };
+            const totalInteractions = pathwayIds.reduce((sum, id) => sum + trackingData[id].clickCount, 0);
+            
+            if (totalInteractions > 5) {
+                // User has enough interaction data to personalize
+                // Increase weight for categories user engages with most
+                const preferredType = Object.entries(typePreferences).sort((a, b) => b[1] - a[1])[0];
+                if (preferredType && preferredType[0] !== 'unknown') {
+                    // Slightly adjust career alignment weight for preferred types
+                    adjustedWeights.careerAlignmentWeight = Math.min(0.15, adjustedWeights.careerAlignmentWeight + 0.05);
+                    adjustedWeights.hoursWeight = Math.max(0.25, adjustedWeights.hoursWeight - 0.05);
+                }
+            }
+
+            return adjustedWeights;
+        } catch (e) {
+            console.error('localStorage error in adjustWeightsBasedOnBehavior:', e);
+            return userPreferenceWeights;
+        }
+    };
+
+    // Load personalized weights
+    const personalizedWeights = adjustWeightsBasedOnBehavior();
+
     // ATLAS Resume Mock Data
     const atlasResume = {
         totalFlightHours: 200,
@@ -161,16 +180,6 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
         languageProficiency: ['english', 'native'],
         riskTolerance: 'moderate',
         workLifeBalancePreference: 'balanced'
-    };
-
-    // User preference weights (stored in local storage for personalization)
-    const userPreferenceWeights = {
-        hoursWeight: 0.35,
-        recognitionWeight: 0.25,
-        licenseWeight: 0.20,
-        medicalWeight: 0.10,
-        careerAlignmentWeight: 0.05,
-        locationWeight: 0.05
     };
 
     // Calculate multi-dimensional match score (dating-site algorithm)

@@ -86,6 +86,7 @@ import { AirlineExpectationsPage } from './components/website/components/Airline
 import { ATLASCVPage } from './components/website/components/pilot-recognition/ATLASCVDirectoryPage';
 import { FoundationalProgramApplicationPage } from './components/website/components/programs/FoundationalProgramApplicationDirectoryPage';
 import { TransitionProgramApplicationPage } from './components/website/components/programs/TransitionProgramApplicationDirectoryPage';
+import EnterpriseAccessPage from './app/enterprise-access/page';
 
 import { BoardPage } from './components/website/components/BoardPage';
 import { GovernancePage } from './components/website/components/GovernancePage';
@@ -1272,6 +1273,7 @@ root.render(
           <Route path="/w1000-suite" element={<W1000SuitePage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/membership-benefits" element={<MembershipBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Other Pages */}
+          <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
           <Route path="/accreditation" element={<AccreditationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/contact-support" element={<ContactSupportPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/download" element={<DownloadPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />

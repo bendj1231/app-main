@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2 } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
@@ -7,6 +8,7 @@ import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 import { PilotJourneyScroll } from '../pilot-recognition/PilotJourneyScroll';
 import { IMAGES } from '../../../../src/lib/website-constants';
 import { SmokeShader } from '../../../ui/smoke-shader';
+import { SkyCloudShader } from '../../../ui/sky-cloud-shader';
 import { PathwayGrid } from './PathwayGrid';
 
 interface HomePageProps {
@@ -47,11 +49,6 @@ const navItems = [
     { name: 'Accreditation', target: 'accreditation' },
     { name: 'Contact', target: 'dashboard' },
 ];
-
-// Auto-Cycling Tabs Component
-interface AutoCyclingTabsProps {
-    onJoinUs?: () => void;
-}
 
 // Animated Header Component for Join Section
 const AnimatedHeader: React.FC = () => {
@@ -95,343 +92,306 @@ const AnimatedHeader: React.FC = () => {
     );
 };
 
-const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = ({ onJoinUs }) => {
-    const [activeTab, setActiveTab] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
+const tabsData = [
+    {
+        id: 'programs',
+        label: 'Programs',
+        content: (
+            <div className="space-y-4">
+                <div className="bg-slate-50/20 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-slate-200">
+                    <div className="mb-4 pb-3 border-b border-slate-200">
+                        <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1">Foundation Program</h3>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest">Building Your Aviation Foundation</p>
+                    </div>
 
-    const tabs = [
-        {
-            id: 'programs',
-            label: 'Programs',
-            content: (
-                <div className="space-y-6">
-                    <div className="bg-slate-50/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-slate-200">
-                        <div className="mb-6 pb-4 border-b border-slate-200">
-                            <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-1">Foundation Program</h3>
-                            <p className="text-xs text-slate-500 uppercase tracking-widest">Building Your Aviation Foundation</p>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
-                                <h4 className="font-bold text-slate-900 mb-2 text-sm">50 Hour Certification</h4>
-                                <p className="text-xs text-slate-600 leading-relaxed mb-3">
-                                    Comprehensive mentorship program combining <strong>20 hours of structured supervision</strong> with <strong>30 hours of official mentorship</strong> from industry veterans.
-                                </p>
-                                <ul className="text-[10px] text-slate-500 space-y-1.5">
-                                    <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> Certificate of Accomplishment</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> Official mentorship documentation</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> EBT/CBTA competency baseline</li>
-                                </ul>
-                            </div>
-
-                            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
-                                <h4 className="font-bold text-slate-900 mb-2 text-sm">W1000 Application</h4>
-                                <p className="text-xs text-slate-600 leading-relaxed mb-3">
-                                    Next-generation avionics suite inspired by the G1000 system. Full simulator room access for comprehensive flight training scenarios.
-                                </p>
-                                <ul className="text-[10px] text-slate-500 space-y-1.5">
-                                    <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> IFR simulation environments</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> VFR practice scenarios</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> Checkride preparation modules</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> EBT CBTA Airbus-aligned training</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200 mb-4">
-                            <h4 className="font-bold text-slate-900 mb-3 text-sm">Examination Terminal</h4>
-                            <p className="text-xs text-slate-600 leading-relaxed mb-3">
-                                Advanced examination platform featuring FAA and CAAP practice tests with real-time performance analytics. Track your progress across all aviation knowledge areas.
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                        <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 border border-slate-200">
+                            <h4 className="font-bold text-slate-900 mb-2 text-xs">50 Hour Certification</h4>
+                            <p className="text-xs text-slate-600 leading-relaxed mb-2">
+                                Comprehensive mentorship program combining <strong>20 hours of structured supervision</strong> with <strong>30 hours of official mentorship</strong> from industry veterans.
                             </p>
-                            <div className="grid grid-cols-3 gap-2">
-                                <div className="bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
-                                    <p className="text-[10px] font-bold text-slate-700">ATPL</p>
-                                    <p className="text-[10px] text-slate-500">Airline Transport</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
-                                    <p className="text-[10px] font-bold text-slate-700">CPL</p>
-                                    <p className="text-[10px] text-slate-500">Commercial</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
-                                    <p className="text-[10px] font-bold text-slate-700">IR/ME</p>
-                                    <p className="text-[10px] text-slate-500">Instrument/Multi</p>
-                                </div>
-                            </div>
+                            <ul className="text-[9px] text-slate-500 space-y-1">
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> Certificate of Accomplishment</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> Official mentorship documentation</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> EBT/CBTA competency baseline</li>
+                            </ul>
                         </div>
 
-                        <div className="bg-slate-100/50 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
-                            <h4 className="font-bold text-slate-900 mb-2 text-sm">Portfolio Development & Airline Oversight</h4>
-                            <p className="text-xs text-slate-600 leading-relaxed">
-                                All program data is systematically collected into your professional portfolio: examination performance metrics, EBT/CBTA skill assessments, mentorship session evaluations, and a comprehensive interview with <strong>Airbus representative oversight</strong>. This creates your official Pilot Recognition Profile — a verified credential recognized across the aviation industry.
+                        <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 border border-slate-200">
+                            <h4 className="font-bold text-slate-900 mb-2 text-xs">W1000 Application</h4>
+                            <p className="text-xs text-slate-600 leading-relaxed mb-2">
+                                Next-generation avionics suite inspired by the G1000 system. Full simulator room access for comprehensive flight training scenarios.
                             </p>
+                            <ul className="text-[9px] text-slate-500 space-y-1">
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> IFR simulation environments</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> VFR practice scenarios</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> Checkride preparation modules</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">-</span> EBT CBTA Airbus-aligned training</li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-            )
-        },
-        {
-            id: 'recognition',
-            label: 'Recognition',
-            content: (
-                <div className="space-y-6">
-                    <div className="bg-slate-50/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-slate-200">
-                        <div className="mb-6 pb-4 border-b border-slate-200">
-                            <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-1">Pilot Recognition Profile</h3>
-                            <p className="text-xs text-slate-500 uppercase tracking-widest">Your Professional Aviation Identity</p>
-                        </div>
 
-                        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-slate-200 mb-6">
-                            <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                The PRP is a <strong>comprehensive, living document</strong> that evolves with your aviation career. It presents a complete picture of who you are as a pilot — verified, standardized, and ready for airline recruitment systems.
-                            </p>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <div className="text-center p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                    <p className="text-lg font-bold text-slate-800">Scores</p>
-                                    <p className="text-[10px] text-slate-500">Examination Performance</p>
-                                </div>
-                                <div className="text-center p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                    <p className="text-lg font-bold text-slate-800">Skills</p>
-                                    <p className="text-[10px] text-slate-500">EBT/CBTA Ratings</p>
-                                </div>
-                                <div className="text-center p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                    <p className="text-lg font-bold text-slate-800">Hours</p>
-                                    <p className="text-[10px] text-slate-500">Flight Time Logged</p>
-                                </div>
-                                <div className="text-center p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                    <p className="text-lg font-bold text-slate-800">Status</p>
-                                    <p className="text-[10px] text-slate-500">Current Competency</p>
-                                </div>
+                    <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 border border-slate-200 mb-3">
+                        <h4 className="font-bold text-slate-900 mb-2 text-xs">Examination Terminal</h4>
+                        <p className="text-xs text-slate-600 leading-relaxed mb-2">
+                            Advanced examination platform featuring FAA and CAAP practice tests with real-time performance analytics.
+                        </p>
+                        <div className="grid grid-cols-3 gap-2">
+                            <div className="bg-slate-50/20 rounded-lg p-2 text-center border border-slate-100">
+                                <p className="text-[9px] font-bold text-slate-700">ATPL</p>
+                                <p className="text-[9px] text-slate-500">Airline Transport</p>
                             </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
-                                <h4 className="font-bold text-slate-900 mb-3 text-sm">Performance Tracking</h4>
-                                <ul className="text-xs text-slate-600 space-y-2">
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 mt-0.5">-</span>
-                                        <span>Real-time examination performance analytics with trend analysis</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 mt-0.5">-</span>
-                                        <span>EBT/CBTA competency assessments aligned with Airbus standards</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 mt-0.5">-</span>
-                                        <span>Mentorship session documentation and evaluation scores</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 mt-0.5">-</span>
-                                        <span>Structured interview assessments with industry representatives</span>
-                                    </li>
-                                </ul>
+                            <div className="bg-slate-50/20 rounded-lg p-2 text-center border border-slate-100">
+                                <p className="text-[9px] font-bold text-slate-700">CPL</p>
+                                <p className="text-[9px] text-slate-500">Commercial</p>
                             </div>
-
-                            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
-                                <h4 className="font-bold text-slate-900 mb-3 text-sm">Flight Data Integration</h4>
-                                <ul className="text-xs text-slate-600 space-y-2">
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 mt-0.5">-</span>
-                                        <span>Real-world flight log integration with automatic hour tracking</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 mt-0.5">-</span>
-                                        <span>Monthly recurrence tracking to maintain mentor fitness</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 mt-0.5">-</span>
-                                        <span>Aircraft type ratings and currency status monitoring</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 mt-0.5">-</span>
-                                        <span>Operational history across all aviation sectors</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="bg-slate-100/50 backdrop-blur-sm rounded-xl p-5 border border-slate-200">
-                            <h4 className="font-bold text-slate-900 mb-3 text-sm">ATS-Compatible Atlas CV Format</h4>
-                            <p className="text-xs text-slate-600 leading-relaxed mb-3">
-                                Your PRP automatically generates an <strong>Applicant Tracking System (ATS) compatible</strong> CV using the industry-standard Atlas format. All major airlines use ATS systems to screen candidates — your WingMentor profile is optimized to pass these filters.
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                                <span className="px-3 py-1 bg-white/80 rounded-full text-[10px] font-medium text-slate-600 border border-slate-200">Airline-Ready Formatting</span>
-                                <span className="px-3 py-1 bg-white/80 rounded-full text-[10px] font-medium text-slate-600 border border-slate-200">Keyword Optimized</span>
-                                <span className="px-3 py-1 bg-white/80 rounded-full text-[10px] font-medium text-slate-600 border border-slate-200">Machine Readable</span>
-                                <span className="px-3 py-1 bg-white/80 rounded-full text-[10px] font-medium text-slate-600 border border-slate-200">PDF Export</span>
+                            <div className="bg-slate-50/20 rounded-lg p-2 text-center border border-slate-100">
+                                <p className="text-[9px] font-bold text-slate-700">IR/ME</p>
+                                <p className="text-[9px] text-slate-500">Instrument/Multi</p>
                             </div>
                         </div>
                     </div>
+
+                    <div className="bg-slate-100/30 backdrop-blur-sm rounded-xl p-3 border border-slate-200">
+                        <h4 className="font-bold text-slate-900 mb-2 text-xs">Portfolio Development & Airline Oversight</h4>
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                            All program data is systematically collected into your professional portfolio with <strong>Airbus representative oversight</strong>. This creates your official Pilot Recognition Profile — a verified credential recognized across the aviation industry.
+                        </p>
+                    </div>
                 </div>
-            )
-        },
-        {
-            id: 'pathways',
-            label: 'Pathways',
-            content: (
-                <div className="space-y-6">
-                    <div className="bg-slate-50/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-slate-200">
-                        <div className="mb-6 pb-4 border-b border-slate-200">
-                            <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-1">Pilot Job Database & Pathways</h3>
-                            <p className="text-xs text-slate-500 uppercase tracking-widest">From Profile to Career</p>
-                        </div>
+            </div>
+        )
+    },
+    {
+        id: 'recognition',
+        label: 'Recognition',
+        content: (
+            <div className="space-y-4">
+                <div className="bg-slate-50/20 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-slate-200">
+                    <div className="mb-4 pb-3 border-b border-slate-200">
+                        <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1">Pilot Recognition Profile</h3>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest">Your Professional Aviation Identity</p>
+                    </div>
 
-                        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-slate-200 mb-6">
-                            <h4 className="font-bold text-slate-900 mb-4 text-sm">Available Career Pathways</h4>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 text-center">
-                                    <p className="text-sm font-bold text-slate-800 mb-1">Private Jets</p>
-                                    <p className="text-[10px] text-slate-500">VIP Charter & Corporate</p>
-                                    <p className="text-[10px] text-blue-600 mt-2 font-medium">Avg: 2,500 hrs</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 text-center">
-                                    <p className="text-sm font-bold text-slate-800 mb-1">Cargo</p>
-                                    <p className="text-[10px] text-slate-500">Logistics & Freighter</p>
-                                    <p className="text-[10px] text-blue-600 mt-2 font-medium">Avg: 1,500 hrs</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 text-center">
-                                    <p className="text-sm font-bold text-slate-800 mb-1">Instructor</p>
-                                    <p className="text-[10px] text-slate-500">Training & Development</p>
-                                    <p className="text-[10px] text-blue-600 mt-2 font-medium">Avg: 500 hrs + CFI</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 text-center">
-                                    <p className="text-sm font-bold text-slate-800 mb-1">Air Taxi</p>
-                                    <p className="text-[10px] text-slate-500">eVTOL & Urban Air</p>
-                                    <p className="text-[10px] text-blue-600 mt-2 font-medium">Avg: 200 hrs</p>
-                                </div>
+                    <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-slate-200 mb-4">
+                        <p className="text-xs text-slate-700 leading-relaxed mb-3">
+                            The PRP is a <strong>comprehensive, living document</strong> that evolves with your aviation career. It presents a complete picture of who you are as a pilot — verified, standardized, and ready for airline recruitment systems.
+                        </p>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <div className="text-center p-2 bg-slate-50/20 rounded-lg border border-slate-100">
+                                <p className="text-base font-bold text-slate-800">Scores</p>
+                                <p className="text-[9px] text-slate-500">Examination Performance</p>
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-center">
-                                    <p className="text-xs font-bold text-slate-700">Commercial Airline</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-center">
-                                    <p className="text-xs font-bold text-slate-700">Air Ambulance</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-center">
-                                    <p className="text-xs font-bold text-slate-700">Agricultural</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-center">
-                                    <p className="text-xs font-bold text-slate-700">Survey & Patrol</p>
-                                </div>
+                            <div className="text-center p-2 bg-slate-50/20 rounded-lg border border-slate-100">
+                                <p className="text-base font-bold text-slate-800">Skills</p>
+                                <p className="text-[9px] text-slate-500">EBT/CBTA Ratings</p>
                             </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-slate-200">
-                                <h4 className="font-bold text-slate-900 mb-4 text-sm">Smart Job Matching System</h4>
-                                <p className="text-xs text-slate-600 leading-relaxed mb-3">
-                                    Our matching engine continuously scans the job market and cross-references opportunities with your Pilot Recognition Profile. When a position matches your qualifications, you'll receive an immediate notification with application guidance.
-                                </p>
-                                <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
-                                    <p className="text-[10px] text-slate-600">
-                                        <strong>Example:</strong> Your PRP shows 800 hrs, CPL, and IFR rating. The system identifies you as a match for Air Taxi positions requiring 200+ hrs and provides a direct application pathway.
-                                    </p>
-                                </div>
+                            <div className="text-center p-2 bg-slate-50/20 rounded-lg border border-slate-100">
+                                <p className="text-base font-bold text-slate-800">Hours</p>
+                                <p className="text-[9px] text-slate-500">Flight Experience</p>
                             </div>
-
-                            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-slate-200">
-                                <h4 className="font-bold text-slate-900 mb-4 text-sm">Gap Analysis Engine</h4>
-                                <ul className="text-xs text-slate-600 space-y-2">
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 font-medium">1.</span>
-                                        <span><strong>Hours Analysis:</strong> Compares your logged time against pathway requirements</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 font-medium">2.</span>
-                                        <span><strong>Skills Gap:</strong> Identifies missing ratings or type certifications</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 font-medium">3.</span>
-                                        <span><strong>Interview Prep:</strong> Shows competency areas needing improvement</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-600 font-medium">4.</span>
-                                        <span><strong>Strategy:</strong> Provides step-by-step roadmap to qualify</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="bg-slate-100/50 backdrop-blur-sm rounded-xl p-5 border border-slate-200">
-                            <h4 className="font-bold text-slate-900 mb-3 text-sm">Personalized Strategy Recommendations</h4>
-                            <p className="text-xs text-slate-600 leading-relaxed mb-4">
-                                Based on your PRP data, WingMentor provides customized career roadmaps. If you want to pursue Private Jet pathways but lack the required hours, the system will recommend specific training modules, mentorship sessions, and transitional roles to build your profile.
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                                <span className="px-3 py-1 bg-white/80 rounded-full text-[10px] font-medium text-slate-600 border border-slate-200">Real-Time Matching</span>
-                                <span className="px-3 py-1 bg-white/80 rounded-full text-[10px] font-medium text-slate-600 border border-slate-200">Gap Reports</span>
-                                <span className="px-3 py-1 bg-white/80 rounded-full text-[10px] font-medium text-slate-600 border border-slate-200">Career Roadmaps</span>
-                                <span className="px-3 py-1 bg-white/80 rounded-full text-[10px] font-medium text-slate-600 border border-slate-200">Direct Applications</span>
+                            <div className="text-center p-2 bg-slate-50/20 rounded-lg border border-slate-100">
+                                <p className="text-base font-bold text-slate-800">CV</p>
+                                <p className="text-[9px] text-slate-500">ATS-Optimized Profile</p>
                             </div>
                         </div>
                     </div>
+
+                    <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-slate-200 mb-4">
+                        <h4 className="font-bold text-slate-900 mb-2 text-xs">Industry Recognition Standards</h4>
+                        <p className="text-xs text-slate-600 leading-relaxed mb-2">
+                            WingMentor follows EASA, FAA, and ICAO standards for pilot competency verification.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">EASA Compliant</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">FAA Aligned</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">ICAO Standards</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Airbus Partner</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-100/30 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
+                        <h4 className="font-bold text-slate-900 mb-2 text-xs">ATS-Compatible Atlas CV Format</h4>
+                        <p className="text-xs text-slate-600 leading-relaxed mb-2">
+                            Your PRP automatically generates an <strong>ATS compatible</strong> CV using the industry-standard Atlas format.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Airline-Ready Formatting</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Keyword Optimized</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Machine Readable</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">PDF Export</span>
+                        </div>
+                    </div>
                 </div>
-            )
-        }
-    ];
+            </div>
+        )
+    },
+    {
+        id: 'pathways',
+        label: 'Pathways',
+        content: (
+            <div className="space-y-4">
+                <div className="bg-slate-50/20 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-slate-200">
+                    <div className="mb-4 pb-3 border-b border-slate-200">
+                        <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1">Pilot Job Database & Pathways</h3>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest">From Profile to Career</p>
+                    </div>
+
+                    <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-slate-200 mb-4">
+                        <h4 className="font-bold text-slate-900 mb-3 text-xs">Available Career Pathways</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+                            <div className="bg-slate-50/20 rounded-xl p-3 border border-slate-200 text-center">
+                                <p className="text-xs font-bold text-slate-800 mb-1">Private Jets</p>
+                                <p className="text-[9px] text-slate-500">VIP Charter & Corporate</p>
+                                <p className="text-[9px] text-blue-600 mt-1 font-medium">Avg: 2,500 hrs</p>
+                            </div>
+                            <div className="bg-slate-50/20 rounded-xl p-3 border border-slate-200 text-center">
+                                <p className="text-xs font-bold text-slate-800 mb-1">Cargo</p>
+                                <p className="text-[9px] text-slate-500">Logistics & Freighter</p>
+                                <p className="text-[9px] text-blue-600 mt-1 font-medium">Avg: 1,500 hrs</p>
+                            </div>
+                            <div className="bg-slate-50/20 rounded-xl p-3 border border-slate-200 text-center">
+                                <p className="text-xs font-bold text-slate-800 mb-1">Instructor</p>
+                                <p className="text-[9px] text-slate-500">Training & Development</p>
+                                <p className="text-[9px] text-blue-600 mt-1 font-medium">Avg: 500 hrs + CFI</p>
+                            </div>
+                            <div className="bg-slate-50/20 rounded-xl p-3 border border-slate-200 text-center">
+                                <p className="text-xs font-bold text-slate-800 mb-1">Air Taxi</p>
+                                <p className="text-[9px] text-slate-500">eVTOL & Urban Air</p>
+                                <p className="text-[9px] text-blue-600 mt-1 font-medium">Avg: 200 hrs</p>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <div className="bg-slate-50/20 rounded-xl p-2 border border-slate-200 text-center">
+                                <p className="text-[10px] font-bold text-slate-700">Commercial Airline</p>
+                            </div>
+                            <div className="bg-slate-50/20 rounded-xl p-2 border border-slate-200 text-center">
+                                <p className="text-[10px] font-bold text-slate-700">Air Ambulance</p>
+                            </div>
+                            <div className="bg-slate-50/20 rounded-xl p-2 border border-slate-200 text-center">
+                                <p className="text-[10px] font-bold text-slate-700">Agricultural</p>
+                            </div>
+                            <div className="bg-slate-50/20 rounded-xl p-2 border border-slate-200 text-center">
+                                <p className="text-[10px] font-bold text-slate-700">Survey & Patrol</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                        <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
+                            <h4 className="font-bold text-slate-900 mb-2 text-xs">Smart Job Matching System</h4>
+                            <p className="text-xs text-slate-600 leading-relaxed mb-2">
+                                Our matching engine continuously scans the job market and cross-references opportunities with your Pilot Recognition Profile.
+                            </p>
+                            <div className="bg-slate-50/20 rounded-lg p-2 border border-slate-100">
+                                <p className="text-[9px] text-slate-600">
+                                    <strong>Example:</strong> Your PRP shows 800 hrs, CPL, and IFR rating. The system identifies you as a match for Air Taxi positions.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
+                            <h4 className="font-bold text-slate-900 mb-2 text-xs">Gap Analysis Engine</h4>
+                            <ul className="text-[10px] text-slate-600 space-y-1">
+                                <li className="flex items-start gap-1">
+                                    <span className="text-blue-600 font-bold">1.</span>
+                                    <span><strong>Hours Analysis:</strong> Compares your logged time against pathway requirements</span>
+                                </li>
+                                <li className="flex items-start gap-1">
+                                    <span className="text-blue-600 font-bold">2.</span>
+                                    <span><strong>Skills Gap:</strong> Identifies missing ratings or type certifications</span>
+                                </li>
+                                <li className="flex items-start gap-1">
+                                    <span className="text-blue-600 font-bold">3.</span>
+                                    <span><strong>Recommendations:</strong> Suggests specific training modules</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-100/30 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
+                        <h4 className="font-bold text-slate-900 mb-2 text-xs">Personalized Strategy Recommendations</h4>
+                        <p className="text-xs text-slate-600 leading-relaxed mb-2">
+                            Based on your PRP data, WingMentor provides customized career roadmaps.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Real-Time Matching</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Gap Reports</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Career Roadmaps</span>
+                            <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Direct Applications</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+];
+
+interface AutoCyclingTabsProps {
+    onJoinUs: () => void;
+}
+
+const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = React.memo(({ onJoinUs }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
-        if (isHovered) return;
-
         const interval = setInterval(() => {
-            setActiveTab((prev) => (prev + 1) % tabs.length);
+            setCurrentIndex((prev) => (prev + 1) % tabsData.length);
         }, 4000);
 
         return () => clearInterval(interval);
-    }, [isHovered, tabs.length]);
+    }, [tabsData.length]);
+
+    const goToPrevious = () => {
+        setCurrentIndex((prev) => (prev - 1 + tabsData.length) % tabsData.length);
+    };
+
+    const goToNext = () => {
+        setCurrentIndex((prev) => (prev + 1) % tabsData.length);
+    };
 
     return (
-        <div
-            className="w-full mt-4"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            {/* Tab Navigation */}
-            <div className="flex justify-center gap-2 mb-6">
-                {tabs.map((tab, index) => (
-                    <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(index)}
-                        className={`px-6 py-3 text-sm font-bold uppercase tracking-widest transition-all duration-300 border ${
-                            activeTab === index
-                                ? 'bg-slate-900 text-white border-slate-900'
-                                : 'bg-white/50 backdrop-blur-sm text-slate-600 border-slate-200 hover:bg-slate-100'
-                        }`}
-                    >
-                        {tab.label}
-                    </button>
-                ))}
-            </div>
+        <div className="w-full mt-4 relative">
+            {/* Glassy UI Navigation Arrows */}
+            <button
+                onClick={goToPrevious}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-8 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
+            >
+                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-white" />
+            </button>
 
-            {/* Tab Content */}
-            <div className="relative overflow-hidden bg-white/70 backdrop-blur-md border border-slate-200">
-                <div className="p-6 md:p-8">
-                    <div className="transition-all duration-500 ease-in-out">
-                        {tabs[activeTab].content}
-                    </div>
-                </div>
+            <button
+                onClick={goToNext}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-8 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
+            >
+                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-white" />
+            </button>
 
-                {/* Progress indicator */}
-                <div className="h-0.5 bg-slate-100">
-                    <div
-                        className="h-full bg-blue-500/50 transition-all duration-300"
-                        style={{ width: `${((activeTab + 1) / tabs.length) * 100}%` }}
-                    />
+            {/* Card Container - Static */}
+            <div className="bg-white/70 backdrop-blur-md border border-slate-200 rounded-2xl overflow-hidden shadow-xl">
+                <div className="p-4 md:p-6 relative overflow-hidden h-[600px] md:h-[650px]">
+                    {/* Content - Auto-shuffles */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentIndex}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3 }}
+                            className="w-full h-full"
+                        >
+                            {tabsData[currentIndex].content}
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </div>
-
-            {/* Shuffle indicator */}
-            <p className="text-center text-[10px] text-slate-400 mt-4 uppercase tracking-widest">
-                {isHovered ? 'Auto-shuffle paused' : 'Auto-shuffling tabs'}
-            </p>
 
             {/* Become a Member Button */}
             {onJoinUs && (
-                <div className="flex justify-center mt-8">
+                <div className="flex justify-center mt-4">
                     <button
                         onClick={onJoinUs}
-                        className="px-8 py-3 bg-slate-900 text-white text-sm font-bold uppercase tracking-widest hover:bg-slate-800 transition-colors border border-slate-900"
+                        className="px-8 py-3 bg-slate-900 text-white text-sm font-bold uppercase tracking-widest hover:bg-slate-800 transition-colors border border-slate-900 rounded-lg"
                     >
                         Become A Member
                     </button>
@@ -439,7 +399,7 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = ({ onJoinUs }) => {
             )}
         </div>
     );
-};
+});
 
 export const HomePage: React.FC<HomePageProps> = ({
     onJoinUs,
@@ -464,30 +424,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [activeCategory, setActiveCategory] = useState<
         'all' | 'program' | 'systems_automation' | 'network' | 'application' | 'pathways'
     >('all');
-    const [currentFaq, setCurrentFaq] = useState(0);
     const scrollPositionRef = useRef(0);
-
-    const faqItems = [
-        {
-            question: "What is the Pilot Gap?",
-            answer: "It's the critical experience void between basic commercial licensing and the elite standards required by major airlines. We bridge this through verified operational experience and industry-standard EBT/CBTA training modules."
-        },
-        {
-            question: "How does membership work?",
-            answer: "Membership is free and provides restricted community access to our strategic intelligence hub, expert mentorship, and professional-grade applications usually reserved for airline flight decks."
-        },
-        {
-            question: "Is WingMentor accredited?",
-            answer: "Yes. Our pathways are supported by key industry players including Airbus partners, and our documentation mirrors the regulatory requirements of governing bodies like the FAA, CAAP, and GCAA."
-        },
-        {
-            question: "What are the career pathways?",
-            answer: "We offer direct routes into major airlines, private sector operators, and emerging aviation segments like the Air Taxi sector (AAM), ensuring your hours are recognized by top recruiters."
-        }
-    ];
-
-    const nextFaq = () => setCurrentFaq((prev) => (prev + 1) % faqItems.length);
-    const prevFaq = () => setCurrentFaq((prev) => (prev - 1 + faqItems.length) % faqItems.length);
 
     const allSlides: Slide[] = [
         {
@@ -1131,26 +1068,26 @@ export const HomePage: React.FC<HomePageProps> = ({
                                             
                                             {/* Flight Hours Grid */}
                                             <div className="grid grid-cols-2 gap-2 mb-4">
-                                                <div className="bg-slate-50 rounded-lg p-3 text-center">
+                                                <div className="bg-slate-50/20 rounded-lg p-3 text-center">
                                                     <p className="text-[10px] text-slate-500 mb-1">Total Hours</p>
                                                     <p className="text-lg font-bold text-slate-900">{totalHours || 0}</p>
                                                 </div>
-                                                <div className="bg-slate-50 rounded-lg p-3 text-center">
+                                                <div className="bg-slate-50/20 rounded-lg p-3 text-center">
                                                     <p className="text-[10px] text-slate-500 mb-1">Mentorship</p>
                                                     <p className="text-lg font-bold text-slate-900">{mentorshipHours || 0}</p>
                                                 </div>
-                                                <div className="bg-slate-50 rounded-lg p-3 text-center">
+                                                <div className="bg-slate-50/20 rounded-lg p-3 text-center">
                                                     <p className="text-[10px] text-slate-500 mb-1">Foundation</p>
                                                     <p className="text-lg font-bold text-slate-900">{foundationProgress || 0}%</p>
                                                 </div>
-                                                <div className="bg-slate-50 rounded-lg p-3 text-center">
+                                                <div className="bg-slate-50/20 rounded-lg p-3 text-center">
                                                     <p className="text-[10px] text-slate-500 mb-1">Recognition</p>
                                                     <p className="text-lg font-bold text-slate-900">{overallRecognitionScore || 0}</p>
                                                 </div>
                                             </div>
 
                                             {/* Type & Status */}
-                                            <div className="bg-slate-50 rounded-lg p-3 mb-3">
+                                            <div className="bg-slate-50/20 rounded-lg p-3 mb-3">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <span className="text-xs text-slate-500">Type</span>
                                                     <span className="text-xs font-bold text-slate-900">{isLoggedIn ? 'Professional Pilot' : 'Commercial Pilot'}</span>
@@ -1199,15 +1136,15 @@ export const HomePage: React.FC<HomePageProps> = ({
                                             <h6 className="text-sm font-bold text-slate-900 mb-4">Resource & Availability</h6>
                                             
                                             <div className="space-y-3">
-                                                <div className="bg-slate-50 rounded-lg p-3 flex justify-between items-center">
+                                                <div className="bg-slate-50/20 rounded-lg p-3 flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">Medical Certificate</span>
                                                     <span className="text-xs font-bold text-emerald-600">{isLoggedIn ? 'Valid Until Aug 2026' : 'Not Available'}</span>
                                                 </div>
-                                                <div className="bg-slate-50 rounded-lg p-3 flex justify-between items-center">
+                                                <div className="bg-slate-50/20 rounded-lg p-3 flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">Last Flown</span>
                                                     <span className="text-xs font-bold text-slate-900">{lastFlown || 'Not Available'}</span>
                                                 </div>
-                                                <div className="bg-slate-50 rounded-lg p-3 flex justify-between items-center">
+                                                <div className="bg-slate-50/20 rounded-lg p-3 flex justify-between items-center">
                                                     <span className="text-xs text-slate-500">Recognition Score</span>
                                                     <span className="text-xs font-bold text-slate-900">{overallRecognitionScore || 0}/100</span>
                                                 </div>
@@ -1258,7 +1195,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     </div>
                                 </div>
 
-                                <div className="bg-slate-50 px-6 py-3 border-t border-slate-200">
+                                <div className="bg-slate-50/20 px-6 py-3 border-t border-slate-200">
                                     <p className="text-[10px] text-slate-500 text-center">
                                         This ATLAS-formatted CV is machine-readable by airline ATS systems and includes verified competency data from the WingMentor Foundation Program.
                                     </p>
@@ -1413,216 +1350,90 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
                 </div>
 
-                {/* Join The Network Section (High-Fidelity Redesign) */}
-                <div className="relative py-16 md:py-32 px-4 md:px-6 overflow-hidden">
-                    {/* High-Fidelity Background: Modern Flight Deck */}
-                    <div className="absolute inset-0 z-0">
-                        <img
-                            src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=2669&auto=format&fit=crop"
-                            alt="Modern Flight Deck"
-                            className="w-full h-full object-cover"
-                        />
-                        {/* Dark Overlay with Blur */}
-                        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#050A30] via-transparent to-[#050A30]"></div>
+                {/* Join The Network Section - Simplified */}
+                <div className="relative py-8 md:py-12 px-4 md:px-6 bg-slate-900 overflow-hidden" id="join-network-section">
+                    
+                    {/* Sky Cloud Shader Background - Based on Godot Sky Shader */}
+                    <div className="absolute inset-0 z-0 h-full w-full">
+                        <SkyCloudShader />
                     </div>
 
                     <div className="max-w-7xl mx-auto relative z-10">
-                        <div className="text-center mb-24">
-                            <RevealOnScroll delay={100}>
-                                {/* Animated Cycling Header */}
+                        <div className="text-center mb-8">
                                 <AnimatedHeader />
-                                
-                                <p className="text-xl md:text-2xl text-blue-300 font-medium tracking-wide mb-8">
-                                    Your Journey Starts Here
-                                </p>
-                                <p className="text-xl text-blue-100/70 max-w-3xl mx-auto leading-relaxed font-light italic">
-                                    "From verified logbook audits to global airline visibility, start your journey into legalized pilot recognition."
-                                </p>
-                            </RevealOnScroll>
                         </div>
 
-                        <div className="max-w-6xl mx-auto">
-                            <RevealOnScroll delay={200}>
-                                <div className="relative group p-[1px] bg-gradient-to-b from-slate-200 to-transparent rounded-[3rem]">
-                                    <div className="absolute inset-0 bg-white/40 rounded-[3rem] blur-3xl transition-all duration-500 group-hover:bg-blue-100/20"></div>
-                                    <div className="relative bg-white border border-slate-100 rounded-[3rem] p-12 md:py-20 md:px-24 flex flex-col items-center text-center shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]">
+                        <div className="max-w-6xl mx-auto space-y-6">
+                            {/* Card 1: Become A Member - Simplified */}
+                            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col items-center text-center shadow-xl">
+                                <img
+                                    src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                                    alt="WingMentor Logo"
+                                    className="w-32 h-auto object-contain mb-3 opacity-90"
+                                />
 
-                                        <img
-                                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                            alt="WingMentor Logo"
-                                            className="w-72 h-auto object-contain mb-8 opacity-90"
-                                        />
+                                <p className="text-[9px] font-bold tracking-[0.3em] uppercase text-blue-900 mb-2">
+                                    Pilot Database Recognition & Network Access
+                                </p>
+                                <h2 className="text-xl md:text-3xl font-serif text-white mb-4 leading-tight">
+                                    Become A Member To Access
+                                </h2>
 
-                                        <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
-                                            Pilot Database Recognition & Network Access
+                                {/* Auto-Cycling Tabs Component */}
+                                <AutoCyclingTabs onJoinUs={onJoinUs} />
+
+                                {/* Become a Member Button - Simplified */}
+                                <div className="mt-4 w-full max-w-md flex flex-col items-center">
+                                    <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-blue-900 mb-2 animate-pulse">Join the Pilot Network & Get Recognized</span>
+                                    <button
+                                        onClick={onJoinUs}
+                                        className="w-full bg-[#050A30] hover:bg-[#070D3D] text-white py-3 rounded-xl font-bold uppercase tracking-[0.15em] transition-all shadow-lg shadow-blue-900/10 hover:shadow-blue-900/30 flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-95 border border-white/10"
+                                    >
+                                        Become a Member
+                                    </button>
+                                    <div className="mt-3 flex items-center justify-center gap-4">
+                                        <span className="text-slate-300 text-[9px] font-bold uppercase tracking-[0.15em]">Verified Access</span>
+                                        <div className="w-0.5 h-0.5 rounded-full bg-slate-300"></div>
+                                        <span className="text-slate-300 text-[9px] font-bold uppercase tracking-[0.15em]">Restricted Community</span>
+                                    </div>
+                                    <div className="mt-3 max-w-md bg-white/5 p-2 rounded-lg border border-white/10">
+                                        <p className="text-[8px] text-slate-300 font-medium tracking-tight leading-relaxed text-center">
+                                            Service fees apply for professional awards, certifications, and program completions.
                                         </p>
-                                        <h2 className="text-4xl md:text-6xl font-serif text-slate-900 mb-12 leading-tight">
-                                            Become A Member To Access
-                                        </h2>
-
-                                        {/* Auto-Cycling Tabs Component */}
-                                        <AutoCyclingTabs onJoinUs={onJoinUs} />
-
-                                        {/* Verifiable and Accredited Experience Section */}
-                                        <div className="mt-12 pt-12 border-t border-slate-100 w-full text-center">
-                                            <h4 className="text-[10px] font-bold text-blue-700 uppercase tracking-[0.4em] mb-8">
-                                                Verifiable and Accredited Experience
-                                            </h4>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-                                                <div className="group/pillar">
-                                                    <h4 className="text-[11px] font-bold text-[#050A30] uppercase tracking-widest mb-3 flex items-center gap-3">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-[#050A30]"></div>
-                                                        Leadership Skills
-                                                    </h4>
-                                                    <p className="text-slate-600 text-xs leading-relaxed font-sans">
-                                                        Master the <strong className="text-slate-900 font-semibold">Foundational Program</strong> & <strong className="text-slate-900 font-semibold">Mentorship Certification</strong>. Develop a flight instructor mindset, specializing in problem-solving through professional consultation and observation.
-                                                    </p>
-                                                </div>
-                                                <div className="group/pillar">
-                                                    <h4 className="text-[11px] font-bold text-[#050A30] uppercase tracking-widest mb-3 flex items-center gap-3">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-[#050A30]"></div>
-                                                        Pilot Recognition
-                                                    </h4>
-                                                    <p className="text-slate-600 text-xs leading-relaxed font-sans">
-                                                        Gain industry recognition <strong className="text-slate-900 font-semibold">prior to major investments</strong>. Master airline expectations and type rating requirements instead of investing blindly in your future.
-                                                    </p>
-                                                </div>
-                                                <div className="group/pillar">
-                                                    <h4 className="text-[11px] font-bold text-[#050A30] uppercase tracking-widest mb-3 flex items-center gap-3">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-[#050A30]"></div>
-                                                        Unity & Support
-                                                    </h4>
-                                                    <p className="text-slate-600 text-xs leading-relaxed font-sans">
-                                                        A network dedicated to supporting pilots. Find <strong className="text-slate-900 font-semibold">strategic pathways</strong> and get connected through industry relations and the diverse people within our program.
-                                                    </p>
-                                                </div>
-                                                <div className="group/pillar">
-                                                    <h4 className="text-[11px] font-bold text-[#050A30] uppercase tracking-widest mb-3 flex items-center gap-3">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-[#050A30]"></div>
-                                                        Accredited Experience
-                                                    </h4>
-                                                    <p className="text-slate-600 text-xs leading-relaxed font-sans">
-                                                        Transform your operational history into a <strong className="text-slate-900 font-semibold">verifiable competency record</strong>, accredited by partners and recognized by top recruiters.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Bridging the Gap Section - Inner Card Section */}
-                                        <div className="mt-20 pt-20 border-t border-slate-100 w-full flex flex-col items-center">
-                                            <img
-                                                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                                alt="WingMentor Logo"
-                                                className="w-48 h-auto object-contain mb-8 opacity-70"
-                                            />
-                                            <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
-                                                Connecting Pilots to the Aviation Industry
-                                            </p>
-                                            <h3 className="text-4xl md:text-6xl font-serif text-slate-900 mb-12 leading-tight tracking-tight">
-                                                Bridging the Pilot Gap
-                                            </h3>
-
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 text-left w-full max-w-5xl mx-auto">
-                                                <div className="space-y-8">
-                                                    <div className="flex items-start gap-5 group/item p-4 -mx-4 rounded-2xl transition-all duration-500 hover:bg-slate-50/50">
-                                                        <div className="mt-1.5 w-2 h-2 rounded-full bg-[#050A30] flex-shrink-0"></div>
-                                                        <div>
-                                                            <h4 className="font-bold text-[#050A30] uppercase tracking-[0.2em] text-xs mb-2 transition-colors">Pathways</h4>
-                                                            <p className="text-slate-600 text-[14px] leading-relaxed font-sans">Strategic placement into <strong className="text-slate-900 font-semibold">Commercial Airlines, Private Jet (VIP), Air Taxi (eVTOL)</strong>, and Unmanned Systems. We solve the "Experience Gap" by facilitating direct-to-industry transitions through verified operational history.</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-start gap-5 group/item p-4 -mx-4 rounded-2xl transition-all duration-500 hover:bg-slate-50/50">
-                                                        <div className="mt-1.5 w-2 h-2 rounded-full bg-[#050A30] flex-shrink-0"></div>
-                                                        <div>
-                                                            <h4 className="font-bold text-[#050A30] uppercase tracking-[0.2em] text-xs mb-2 transition-colors">Programs</h4>
-                                                            <div className="space-y-4">
-                                                                <div>
-                                                                    <p className="text-blue-800 font-bold text-[10px] uppercase tracking-widest mb-1.5">Foundational Tier</p>
-                                                                    <p className="text-slate-600 text-[14px] leading-relaxed font-sans">High-impact recognition for <strong className="text-slate-900 font-semibold">Leadership, CRM</strong>, and <strong className="text-slate-900 font-semibold">Flight Instructor Readiness</strong>, establishing a verified baseline required for elite carrier recruitment.</p>
-                                                                </div>
-                                                                <div>
-                                                                    <p className="text-blue-800 font-bold text-[10px] uppercase tracking-widest mb-1.5">Transition Tier</p>
-                                                                    <p className="text-slate-600 text-[14px] leading-relaxed font-sans">Advanced <strong className="text-slate-900 font-semibold">EBT & CBTA Familiarization</strong>, aligning your performance metrics to the global standards demanded by manufacturers like <strong className="text-slate-900 font-semibold">Airbus</strong>.</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-8">
-                                                    <div className="flex items-start gap-5 group/item p-4 -mx-4 rounded-2xl transition-all duration-500 hover:bg-slate-50/50">
-                                                        <div className="mt-1.5 w-2 h-2 rounded-full bg-[#050A30] flex-shrink-0"></div>
-                                                        <div>
-                                                            <h4 className="font-bold text-[#050A30] uppercase tracking-[0.2em] text-xs mb-2 transition-colors">Applications</h4>
-                                                            <p className="text-slate-600 text-[14px] leading-relaxed font-sans">Direct access to our proprietary ecosystem: <strong className="text-slate-900 font-semibold">W1000 Glass Cockpit Suite</strong>, Gleims Examination Terminal, and the <strong className="text-slate-900 font-semibold">Black Box</strong> intelligence repository for real-world simulation.</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-start gap-5 group/item p-4 -mx-4 rounded-2xl transition-all duration-500 hover:bg-slate-50/50">
-                                                        <div className="mt-1.5 w-2 h-2 rounded-full bg-[#050A30] flex-shrink-0"></div>
-                                                        <div>
-                                                            <h4 className="font-bold text-[#050A30] uppercase tracking-[0.2em] text-xs mb-2 transition-colors">Systems</h4>
-                                                            <p className="text-slate-600 text-[14px] leading-relaxed font-sans"><strong className="text-slate-900 font-semibold">ATLAS-Compliant AI CV</strong> profiling and permanent placement within the industry-standard <strong className="text-slate-900 font-semibold">Verified Pilot Database</strong>, transforming raw hours into data-driven competency markers.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="mt-16 w-full max-w-lg flex flex-col items-center">
-                                            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-blue-600 mb-4 animate-pulse">Join the Pilot Network & Get Recognized</span>
-                                            <button
-                                                onClick={onJoinUs}
-                                                className="w-full bg-[#050A30] hover:bg-[#070D3D] text-white py-6 rounded-2xl font-bold uppercase tracking-[0.2em] transition-all shadow-xl shadow-blue-900/10 hover:shadow-blue-900/30 flex items-center justify-center gap-4 hover:scale-[1.02] active:scale-98 border border-white/10"
-                                            >
-                                                Become a Member <i className="fas fa-arrow-right text-xs opacity-50"></i>
-                                            </button>
-                                            <div className="mt-6 flex items-center justify-center gap-6">
-                                                <span className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Verified Access</span>
-                                                <div className="w-1 h-1 rounded-full bg-slate-200"></div>
-                                                <span className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Restricted Community</span>
-                                            </div>
-                                            <div className="mt-8 max-w-2xl bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                                <p className="text-[10px] text-slate-500 font-medium tracking-tight leading-relaxed text-center">
-                                                    Service fees apply for professional awards, certifications, and program completions. Please consult our official documentation regarding pathway enrollment, system database screening fees, and administrative processing requirements according to regulatory standards.
-                                                </p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                            </RevealOnScroll>
+                            </div>
                         </div>
 
                         {/* Footer Note: Progressive Pathway */}
                         {/* Footer Note: Progressive Pathway */}
-                        <div className="text-center mt-8 mb-12 max-w-3xl mx-auto">
-                            <p className="text-blue-200/60 italic text-sm md:text-base leading-relaxed">
-                                <span className="text-blue-400 font-bold block mb-2 not-italic uppercase tracking-widest text-xs">Progressive Pathway Recommendation</span>
-                                Doing the Foundational Program first, rather than going straight to the Transition Program & Airline Familiarizations, will give you a <strong className="text-white">preferred edge</strong> towards the beneficial and <strong className="text-white">recognizability</strong> within the WingMentor Pilot Database.
+                        <div className="text-center mt-4 mb-6 max-w-3xl mx-auto">
+                            <p className="text-white italic text-xs md:text-sm leading-relaxed">
+                                <span className="text-blue-900 font-bold block mb-1 not-italic uppercase tracking-widest text-[10px]">Progressive Pathway Recommendation</span>
+                                Doing the Foundational Program first will give you a <strong className="text-white">preferred edge</strong> within the WingMentor Pilot Database.
                             </p>
                         </div>
 
 
                         {/* Section 3: The Why (For Airlines & ATOs) */}
-                        <div className="mt-24 mb-16 text-center max-w-4xl mx-auto relative z-10 px-4">
-                            <RevealOnScroll delay={400}>
-                                <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-md rounded-2xl p-8 border border-white/5 shadow-xl">
-                                    <h3 className="text-xl md:text-3xl font-sans font-bold text-white mb-4">
-                                        Airlines, Operators, or Regulatory Authorities?
-                                    </h3>
-                                    <p className="text-zinc-300 text-lg leading-relaxed mb-8">
-                                        WingMentor provides an industry-standard database of candidates vetted through EBT CBTA familiarization and Hinfact. We serve Major Carriers, Private Sector Operators, and Governing Bodies (FAA/CAAP) to streamline "Airline-Ready" talent acquisition.
-                                    </p>
-                                    <button className="inline-flex items-center justify-center px-8 py-3 text-sm font-bold text-white uppercase tracking-widest transition-all duration-200 bg-white/10 border border-white/20 rounded-lg hover:bg-white/20 hover:border-white/40 group">
+                        <div className="mt-8 mb-6 text-center max-w-4xl mx-auto relative z-10 px-4">
+                            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                                <h3 className="text-lg md:text-2xl font-sans font-bold text-slate-900 mb-3">
+                                    Airlines, Operators, or Regulatory Authorities?
+                                </h3>
+                                <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+                                    WingMentor provides an industry-standard database of candidates vetted through EBT CBTA familiarization and Hinfact.
+                                </p>
+                                <button onClick={() => window.location.href = '/enterprise-access'} className="inline-flex items-center justify-center px-6 py-2 text-xs font-bold text-white uppercase tracking-widest bg-slate-900 border border-slate-900 rounded-lg group">
                                         <span>Contact for Enterprise Access</span>
                                         <i className="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform"></i>
                                     </button>
-                                </div>
-                            </RevealOnScroll>
+                            </div>
                         </div>
 
                         {/* User Agreement */}
-                        <div className="text-center relative z-10 pb-12">
-                            <p className="text-slate-400/60 text-xs uppercase tracking-widest">
+                        <div className="text-center relative z-10 pb-6">
+                            <p className="text-slate-400/60 text-[10px] uppercase tracking-widest">
                                 By joining, you agree to the <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors underline decoration-slate-300 underline-offset-4">Privacy Policy</a> & <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors underline decoration-slate-300 underline-offset-4">User Agreement</a>
                             </p>
                         </div>
@@ -1631,172 +1442,43 @@ export const HomePage: React.FC<HomePageProps> = ({
 
 
 
-                {/* Frequently Asked Questions Section (Carousel) */}
-                <div className="relative bg-[#0A1138] py-24 px-6 overflow-hidden">
-                    <div className="max-w-6xl mx-auto relative z-10">
-                        <RevealOnScroll delay={100}>
-                            <div className="relative group">
-                                {/* Glassy Background Glow */}
-                                <div className="absolute inset-0 bg-white/5 rounded-3xl blur-2xl transition-all duration-500 group-hover:bg-white/10"></div>
-
-                                <div className="relative bg-white border border-slate-200 rounded-3xl p-8 md:py-10 md:px-20 flex flex-col items-center text-center shadow-2xl min-h-[350px] justify-center">
-
-                                    {/* Navigation Chevrons */}
-                                    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 md:px-8 pointer-events-none">
-                                        <button
-                                            onClick={prevFaq}
-                                            className="w-12 h-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:scale-110 transition-all pointer-events-auto shadow-sm active:scale-95"
-                                        >
-                                            <ChevronLeft className="w-6 h-6" />
-                                        </button>
-                                        <button
-                                            onClick={nextFaq}
-                                            className="w-12 h-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:scale-110 transition-all pointer-events-auto shadow-sm active:scale-95"
-                                        >
-                                            <ChevronRight className="w-6 h-6" />
-                                        </button>
-                                    </div>
-
-                                    <img
-                                        src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-                                        alt="WingMentor Logo"
-                                        className="w-64 h-auto object-contain mb-4 opacity-80"
-                                    />
-
-                                    <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
-                                        Support & Guidance
-                                    </p>
-
-                                    {/* Animated Content Wrapper */}
-                                    <div className="relative w-full overflow-hidden mb-6">
-                                        <div
-                                            key={currentFaq}
-                                            className="animate-in fade-in slide-in-from-bottom-4 duration-700 flex flex-col items-center"
-                                        >
-                                            <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4 leading-tight max-w-3xl">
-                                                {faqItems[currentFaq].question}
-                                            </h2>
-
-                                            <p className="text-slate-600 text-base md:text-lg max-w-2xl leading-relaxed">
-                                                {faqItems[currentFaq].answer}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {/* Pagination Dots */}
-                                    <div className="flex gap-3 mb-6">
-                                        {faqItems.map((_, idx) => (
-                                            <button
-                                                key={idx}
-                                                onClick={() => setCurrentFaq(idx)}
-                                                className={`h-1.5 transition-all duration-500 rounded-full ${currentFaq === idx ? 'w-8 bg-blue-600' : 'w-2 bg-slate-200 hover:bg-slate-300'
-                                                    }`}
-                                            />
-                                        ))}
-                                    </div>
-
-                                    <div className="flex flex-col items-center w-full max-w-md">
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-blue-600 mb-2 animate-pulse">Join the Pilot Network & Get Recognized</span>
-                                        <div className="flex flex-col sm:flex-row gap-4 w-full relative z-20">
-                                            <button
-                                                onClick={onJoinUs}
-                                                className="flex-1 bg-[#050A30] hover:bg-[#070D3D] text-white py-4 rounded-xl font-bold uppercase tracking-widest transition-all shadow-lg hover:shadow-blue-900/30 hover:scale-[1.02] active:scale-95 border border-white/10"
-                                            >
-                                                Become a Member
-                                            </button>
-                                            <button
-                                                onClick={() => onNavigate('dashboard')}
-                                                className="flex-1 bg-white hover:bg-slate-50 text-slate-900 py-4 rounded-xl font-bold uppercase tracking-widest transition-all border border-slate-200 hover:border-slate-300 hover:scale-[1.02] active:scale-95 shadow-sm"
-                                            >
-                                                Visit FAQ Center
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
-                </div>
             </div>
             {/* Footer */}
-            <footer className="relative bg-black text-white py-24 px-6 overflow-hidden">
-
-                <div className="max-w-7xl mx-auto relative z-10">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-16">
-                        {/* Logo & About Us */}
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-3">
-                                <div className="w-16 h-16 flex items-center justify-center overflow-hidden">
-                                    <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="Logo" className="w-full h-full object-contain" />
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="text-white text-lg font-bold tracking-tighter leading-none uppercase">WingMentor</span>
-                                    <span className="text-white/60 text-[10px] uppercase tracking-widest font-light italic">Pilot Recognition & WingMentor Pathways</span>
-                                </div>
-                            </div>
-                            <p className="text-gray-300 leading-relaxed text-sm max-w-sm">
-                                WingMentor provides comprehensive Pilot Recognition & WingMentor Pathways: bridging the gap between training and career excellence through methodology and verifiable experience.
-                            </p>
-                            <div className="flex gap-4">
-                                <a href="#" className="text-white/60 hover:text-white transition-colors"><i className="fab fa-facebook-f"></i></a>
-                                <a href="#" className="text-white/60 hover:text-white transition-colors"><i className="fab fa-twitter"></i></a>
-                                <a href="#" className="text-white/60 hover:text-white transition-colors"><i className="fab fa-linkedin-in"></i></a>
-                            </div>
+            <footer className="bg-slate-900 text-white py-12 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid md:grid-cols-4 gap-8 mb-8">
+                        <div>
+                            <h3 className="font-bold text-lg mb-4">WingMentor</h3>
+                            <p className="text-slate-400 text-sm">The Aviation Industry's First Pilot Recognition-Based Platform</p>
                         </div>
-
-                        {/* Important Links */}
-                        <div className="md:pl-12">
-                            <h3 className="text-xl font-bold mb-8 uppercase tracking-widest text-blue-400">Important Links</h3>
-                            <ul className="space-y-4">
-                                {navItems.map((item) => (
-                                    <li key={item.name}>
-                                        <button
-                                            onClick={() => onNavigate(item.target)}
-                                            className="text-gray-400 hover:text-white transition-colors uppercase text-sm tracking-widest font-semibold"
-                                        >
-                                            {item.name}
-                                        </button>
-                                    </li>
-                                ))}
+                        <div>
+                            <h3 className="font-bold text-lg mb-4">Platform</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><a onClick={() => onNavigate('pilot-recognition')} className="hover:text-white cursor-pointer transition-colors">Pilot Recognition</a></li>
+                                <li><a onClick={() => onNavigate('recognition-career-matches')} className="hover:text-white cursor-pointer transition-colors">Pathways</a></li>
+                                <li><a href="https://pilotterminal.com" target="_blank" rel="noopener noreferrer" className="hover:text-white cursor-pointer transition-colors">Pilot Terminal</a></li>
+                                <li><a onClick={() => onNavigate('about')} className="hover:text-white cursor-pointer transition-colors">Foundation Program</a></li>
                             </ul>
                         </div>
-
-                        {/* Contact Us */}
                         <div>
-                            <h3 className="text-xl font-bold mb-8 uppercase tracking-widest text-blue-400">Contact Us</h3>
-                            <div className="space-y-6 text-gray-300">
-                                <div className="flex items-start gap-4">
-                                    <span className="text-blue-400 mt-1"><i className="fas fa-envelope"></i></span>
-                                    <div>
-                                        <p className="text-xs uppercase text-white/40 font-bold tracking-widest mb-1">Email Now</p>
-                                        <p className="text-sm font-semibold">wingmentorprogram@gmail.com</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <span className="text-blue-400 mt-1"><i className="fas fa-phone"></i></span>
-                                    <div>
-                                        <p className="text-xs uppercase text-white/40 font-bold tracking-widest mb-1">Call Support</p>
-                                        <p className="text-sm font-semibold">+971 55 519 5391</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <span className="text-blue-400 mt-1"><i className="fas fa-map-marker-alt"></i></span>
-                                    <div>
-                                        <p className="text-xs uppercase text-white/40 font-bold tracking-widest mb-1">Office Location</p>
-                                        <p className="text-sm font-semibold">Global Operations (UAE, EU, PH)</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <h3 className="font-bold text-lg mb-4">Contact</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><a href="mailto:wingmentorprogram@gmail.com" className="hover:text-white cursor-pointer transition-colors">wingmentorprogram@gmail.com</a></li>
+                                <li><a href="mailto:wmpilotgroup@gmail.com" className="hover:text-white cursor-pointer transition-colors">wmpilotgroup@gmail.com</a></li>
+                                <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-lg mb-4">Legal</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><a href="/privacy-policy" className="hover:text-white cursor-pointer transition-colors">Privacy Policy</a></li>
+                                <li><a href="/terms-of-service" className="hover:text-white cursor-pointer transition-colors">Terms of Service</a></li>
+                                <li><a href="/cookie-policy" className="hover:text-white cursor-pointer transition-colors">Cookie Policy</a></li>
+                            </ul>
                         </div>
                     </div>
-
-                    {/* Bottom Bar */}
-                    <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
-                        <p>&copy; {new Date().getFullYear()} WingMentor Pilot Recognition & WingMentor Pathways. All rights reserved.</p>
-                        <div className="flex gap-8">
-                            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-                        </div>
+                    <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
+                        <p>&copy; 2024 WingMentor - WM Pilot Group. All rights reserved.</p>
                     </div>
                 </div>
             </footer>

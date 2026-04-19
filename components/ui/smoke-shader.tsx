@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 interface SmokeShaderProps {
     className?: string;
+    enhancedClouds?: boolean;
 }
 
 const hash = (x: number, y: number) => {
@@ -96,7 +97,7 @@ const drawCloudLobe = (
     ctx.restore();
 };
 
-export const SmokeShader: React.FC<SmokeShaderProps> = ({ className = '' }) => {
+export const SmokeShader: React.FC<SmokeShaderProps> = ({ className = '', enhancedClouds = false }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number>();
     const timeRef = useRef(0);
@@ -120,20 +121,22 @@ export const SmokeShader: React.FC<SmokeShaderProps> = ({ className = '' }) => {
         const noiseCtx = noiseCanvas.getContext('2d');
         if (!noiseCtx) return;
 
-        const plumes: Plume[] = Array.from({ length: 58 }).map(() => ({
+        const plumeCount = enhancedClouds ? 85 : 58;
+        const plumes: Plume[] = Array.from({ length: plumeCount }).map(() => ({
             x: Math.random() * 2.8 - 1.4,
             y: Math.random() * 2.0 - 1.0,
             z: Math.random() * 2.2 + 1.0,
             radius: 170 + Math.random() * 280,
             drift: (Math.random() - 0.5) * 0.4,
             speed: 0.09 + Math.random() * 0.13,
-            alpha: 0.11 + Math.random() * 0.16,
+            alpha: enhancedClouds ? 0.14 + Math.random() * 0.18 : 0.11 + Math.random() * 0.16,
             phase: Math.random() * Math.PI * 2,
             tone: Math.random(),
             age: Math.random(),
         }));
 
-        const airyStreams: AiryStream[] = Array.from({ length: 10 }).map(() => ({
+        const streamCount = enhancedClouds ? 16 : 10;
+        const airyStreams: AiryStream[] = Array.from({ length: streamCount }).map(() => ({
             x: Math.random() * canvas.width,
             y: canvas.height * (0.28 + Math.random() * 0.34),
             speed: 18 + Math.random() * 24,
@@ -142,14 +145,15 @@ export const SmokeShader: React.FC<SmokeShaderProps> = ({ className = '' }) => {
             thickness: 8 + Math.random() * 16,
         }));
 
-        const nearPlumes: Plume[] = Array.from({ length: 14 }).map(() => ({
+        const nearPlumeCount = enhancedClouds ? 22 : 14;
+        const nearPlumes: Plume[] = Array.from({ length: nearPlumeCount }).map(() => ({
             x: Math.random() * 1.8 - 0.9,
             y: Math.pow(Math.random(), 1.2) * 1.9 - 0.95,
             z: Math.random() * 0.7 + 0.45,
             radius: 170 + Math.random() * 300,
             drift: (Math.random() - 0.5) * 0.35,
             speed: 0.24 + Math.random() * 0.26,
-            alpha: 0.18 + Math.random() * 0.2,
+            alpha: enhancedClouds ? 0.22 + Math.random() * 0.24 : 0.18 + Math.random() * 0.2,
             phase: Math.random() * Math.PI * 2,
             tone: Math.random(),
             age: Math.random(),
