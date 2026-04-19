@@ -19,182 +19,94 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section - matching the About Page style */}
-            <div className="pt-32 pb-12 px-6">
+            <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
-                    <div className="flex justify-center items-center gap-4 mb-4">
-                        <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto opacity-70" />
-                        <div className="w-px h-6 bg-slate-300"></div>
-                        <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700">
+                    <RevealOnScroll>
+                        <img
+                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                            alt="WingMentor Logo"
+                            className="mx-auto w-64 h-auto object-contain mb-2"
+                        />
+                        <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
                             HINFACT AIRBUS INTEGRATION
                         </p>
-                    </div>
-                    <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
-                        Human Factors Quantified
-                    </h1>
-                    <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-                        Pioneering the future of aviation safety through direct integration with Airbus EBT/CBTA frameworks.
-                        We provide the data-driven blueprint for pilot competency and human factors analytics.
-                    </p>
+                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
+                            Human Factors Quantified
+                        </h1>
+                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                            Real-time Monitoring | Cognitive Analytics | EBT Alignment
+                        </span>
+                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
+                            Pioneering the future of aviation safety through direct integration with Airbus EBT/CBTA frameworks. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>Hinfact human factors analytics</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 
             {/* Visible Content */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        The Innovation
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Real-time Pilot Monitoring & Analytics
+                    </h2>
+                </RevealOnScroll>
+            </div>
+
             <div className="py-12 px-6 max-w-4xl mx-auto space-y-24">
-                {/* Row 1: Intro */}
                 <div className="text-center">
                     <RevealOnScroll>
-                        <div className="hidden md:block mb-8">
-                            <img src="/images/accreditation-4.png" alt="Airbus" className="h-16 w-auto opacity-90" />
-                        </div>
                         <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-                            HINFACT represents the next evolution in pilot training—a seamless integration of real-time biometric and cognitive monitoring directly into the Airbus cockpit environment. By leveraging advanced eye-tracking and workload analysis, we bridge the critical gap between subjective instructor assessment and objective, data-driven performance metrics.
+                            HINFACT represents the next evolution in pilot training—a seamless integration of real-time biometric and cognitive monitoring directly into the Airbus cockpit environment. By leveraging advanced eye-tracking and workload analysis, we bridge the critical gap between subjective instructor assessment and objective, data-driven performance metrics. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>Hinfact human factors analytics</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
 
-                {/* Row 2: Analytics + EBT Context */}
                 <div className="text-center">
                     <RevealOnScroll>
                         <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-                            This integration provides WingMentor pilots with unprecedented access to the same Evidence-Based Training (EBT) tools used by the world's leading carriers. Whether you are preparing for a command upgrade or your initial airline assessment, understanding your own cognitive performance metrics—from visual scan patterns to mental workload capacity—is the key to mastering the modern flight deck.
+                            This integration provides WingMentor pilots with unprecedented access to the same Evidence-Based Training (EBT) tools used by the world's leading carriers. Whether you are preparing for a command upgrade or your initial airline assessment, understanding your own cognitive performance metrics—from visual scan patterns to mental workload capacity—is the key to mastering the modern flight deck. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations.
                         </p>
-                        <div className="flex items-center justify-center gap-4 pt-4 border-t border-slate-200">
-                            <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Validated By</div>
-                            <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto opacity-60 mix-blend-multiply" />
-                        </div>
                     </RevealOnScroll>
                 </div>
             </div>
 
-            {/* Gated Sections (Blurred) */}
-            <div className="relative">
-                <div className="blur-[12px] opacity-30 pointer-events-none select-none transition-all duration-700">
-                    {/* Content Sections - magazine layout */}
-                    <div className="py-12 px-6 max-w-6xl mx-auto space-y-24">
+            {/* Member Access Section */}
+            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
+                <RevealOnScroll>
+                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
+                        Member Access
+                    </p>
+                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
+                        Access HINFACT Intelligence
+                    </h2>
+                </RevealOnScroll>
+            </div>
 
-                        {/* Row 1: Technology - text left, image right */}
-                        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                            <div className="md:w-1/2 text-center md:text-left">
-                                <RevealOnScroll>
-                                    <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                        The Innovation
-                                    </p>
-                                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 leading-tight">
-                                        Real-time Pilot Monitoring & Analytics
-                                    </h2>
-                                    <p className="text-base text-slate-700 leading-relaxed mb-6">
-                                        HINFACT is more than just a monitoring tool; it's a revolutionary way to understand pilot performance.
-                                        By tracking cognitive load, visual scanning patterns, and decision-making efficiency, we provide an objective
-                                        baseline for Evidence-Based Training (EBT).
-                                    </p>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-                                        {[
-                                            "Eye-Tracking Analytics",
-                                            "Cognitive Load Mapping",
-                                            "Workload Assessment",
-                                            "SOP Compliance"
-                                        ].map((label, idx) => (
-                                            <div key={idx} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
-                                                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">{label}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </RevealOnScroll>
-                            </div>
-                            <div className="md:w-1/2">
-                                <RevealOnScroll>
-                                    <div className="relative w-full max-w-md mx-auto">
-                                        <img
-                                            src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2940&auto-format&fit=crop"
-                                            alt="Airbus Cockpit Integration"
-                                            className="w-full rounded-[2.5rem] shadow-2xl object-cover aspect-[4/5]"
-                                        />
-                                        <div className="absolute top-6 right-6 p-4 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-white/50">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Sync Status</span>
-                                            </div>
-                                            <div className="text-lg font-bold text-slate-900">ACTIVE</div>
-                                        </div>
-                                    </div>
-                                </RevealOnScroll>
-                            </div>
+            <div className="py-24 px-6 bg-slate-50 border-y border-slate-200">
+                <div className="max-w-4xl mx-auto text-center">
+                    <RevealOnScroll>
+                        <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
+                            Full access to Hinfact integration data, EBT analytics, and Airbus specific training modules is reserved for verified members. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>Hinfact human factors analytics</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button
+                                onClick={() => onNavigate('become-member')}
+                                className="px-8 py-4 bg-[#050A30] hover:bg-[#070D3D] text-white font-bold rounded-xl transition-colors shadow-lg uppercase tracking-wider text-xs"
+                            >
+                                Become a Member
+                            </button>
+                            <button
+                                onClick={() => onNavigate('dashboard')}
+                                className="px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 font-bold rounded-xl transition-colors border border-slate-200 uppercase tracking-wider text-xs"
+                            >
+                                Login to Read More
+                            </button>
                         </div>
-
-                        {/* Integration Summary Section */}
-                        <div className="py-24 bg-slate-50 border-y border-slate-100 px-6 rounded-[3rem]">
-                            <div className="max-w-4xl mx-auto text-center">
-                                <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-4">
-                                    Data Intelligence
-                                </p>
-                                <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-8 leading-tight">
-                                    Bridging Subjectivity with Objective Performance
-                                </h2>
-                                <p className="text-base md:text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
-                                    WingMentor leverages the Hinfact Airbus applications to transform subjective instructor observations into
-                                    objective, actionable data points.
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Support section */}
-                        <div className="py-16 px-6 max-w-6xl mx-auto">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="p-10 bg-slate-50 border border-slate-100 rounded-3xl flex flex-col items-center md:items-start text-center md:text-left">
-                                    <h3 className="text-2xl font-bold mb-4 text-slate-900">Technical Support</h3>
-                                </div>
-
-                                <div className="p-10 bg-slate-50 border border-slate-100 rounded-3xl flex flex-col items-center md:items-start text-center md:text-left">
-                                    <h3 className="text-2xl font-bold mb-4 text-slate-900">EBT Consultation</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Gateway Card */}
-                <div className="absolute inset-x-0 bottom-0 z-30 flex flex-col items-center pb-32 bg-gradient-to-t from-white via-white/80 to-transparent pt-32 h-full justify-center">
-                    <div className="w-full max-w-4xl px-6 -mt-32">
-                        <RevealOnScroll delay={100}>
-                            <div className="relative bg-white border border-slate-200 rounded-3xl p-8 md:p-16 flex flex-col items-center text-center shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]">
-                                <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
-                                    <div className="hidden md:block w-px h-8 bg-slate-300"></div>
-                                    <div className="flex items-center gap-3 opacity-80">
-                                        <img src="/images/accreditation-4.png" alt="Airbus" className="h-6 w-auto mix-blend-multiply" />
-                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Integration</span>
-                                    </div>
-                                </div>
-
-                                <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-blue-700 mb-2">
-                                    Member Application Status
-                                </p>
-
-                                <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                                    Access HINFACT <br /> Intelligence
-                                </h2>
-
-                                <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
-                                    Full access to Hinfact integration data, EBT analytics, and Airbus specific training modules is reserved for verified members.
-                                </p>
-
-                                <div className="flex flex-col items-center w-full max-w-sm gap-4">
-                                    <button
-                                        onClick={() => onNavigate('become-member')}
-                                        className="w-full bg-[#050A30] hover:bg-[#070D3D] text-white py-4 rounded-xl font-bold uppercase tracking-widest transition-all shadow-lg hover:shadow-blue-900/30 hover:scale-[1.02] active:scale-95 border border-white/10"
-                                    >
-                                        Become a Member
-                                    </button>
-                                    <button
-                                        onClick={() => onNavigate('dashboard')}
-                                        className="w-full bg-white hover:bg-slate-50 text-slate-900 py-4 rounded-xl font-bold uppercase tracking-widest transition-all border border-slate-200 hover:border-blue-200 hover:text-blue-700"
-                                    >
-                                        Login to Read More
-                                    </button>
-                                </div>
-                            </div>
-                        </RevealOnScroll>
-                    </div>
+                    </RevealOnScroll>
                 </div>
             </div>
 
