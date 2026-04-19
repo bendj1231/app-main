@@ -781,16 +781,6 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                                 before you ever walk into the assessment center.
                             </p>
                         </div>
-                        <div className="relative">
-                            <div className="aspect-[4/3] bg-slate-100 rounded-[3rem] overflow-hidden shadow-2xl relative">
-                                <img
-                                    src="https://images.unsplash.com/photo-1520437358207-323b43b50729?q=80&w=2940&auto=format&fit=crop"
-                                    alt="Airline Flight Deck Assessment"
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-blue-900/30 mix-blend-multiply"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -807,22 +797,13 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 </RevealOnScroll>
             </div>
 
-            <div className="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div className="order-2 md:order-1">
-                    <img
-                        src="https://images.unsplash.com/photo-1559628376-f3fe5f782a2e?q=80&w=2000&auto=format&fit=crop"
-                        alt="Airline Culture"
-                        className="rounded-3xl shadow-2xl w-full h-[400px] object-cover"
-                    />
-                </div>
-                <div className="order-1 md:order-2">
-                    <p className="text-slate-600 text-lg leading-relaxed mb-4">
-                        Airlines aren't just hiring pilots; they're hiring future captains and brand ambassadors. Major carriers invest heavily in their corporate identity, and they expect their flight deck crew to embody these values. Our assessment preparation goes beyond technical skills to ensure you demonstrate the <strong>professional persona</strong>, <strong>leadership qualities</strong>, and <strong>cultural alignment</strong> that recruiters at top-tier airlines effectively mandate.
-                    </p>
-                    <p className="text-slate-600 text-lg leading-relaxed">
-                        Through our partnership with <strong>Etihad Cadet Program</strong> and <strong>Airbus Head of Training</strong>, we provide direct insight into the cultural expectations of leading carriers. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.
-                    </p>
-                </div>
+            <div className="py-12 px-6 max-w-7xl mx-auto">
+                <p className="text-slate-600 text-lg leading-relaxed mb-4">
+                    Airlines aren't just hiring pilots; they're hiring future captains and brand ambassadors. Major carriers invest heavily in their corporate identity, and they expect their flight deck crew to embody these values. Our assessment preparation goes beyond technical skills to ensure you demonstrate the <strong>professional persona</strong>, <strong>leadership qualities</strong>, and <strong>cultural alignment</strong> that recruiters at top-tier airlines effectively mandate.
+                </p>
+                <p className="text-slate-600 text-lg leading-relaxed">
+                    Through our partnership with <strong>Etihad Cadet Program</strong> and <strong>Airbus Head of Training</strong>, we provide direct insight into the cultural expectations of leading carriers. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.
+                </p>
             </div>
 
             {/* Article Section 2 */}
@@ -837,22 +818,13 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 </RevealOnScroll>
             </div>
 
-            <div className="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
-                <div>
-                    <p className="text-slate-600 text-lg leading-relaxed mb-4">
-                        While technical proficiency is non-negotiable, the deciding factor in modern airline recruitment often lies in non-technical competencies. Decision-making, situational awareness, and communication are scrutinized under the microscope of EBT frameworks. We provide the strategies to articulate your experience in the language of these competencies, turning your flight hours into a compelling narrative of safety and leadership.
-                    </p>
-                    <p className="text-slate-600 text-lg leading-relaxed">
-                        Through our <strong>EBT CBTA-aligned assessment framework</strong>, we evaluate both technical and non-technical competencies including <strong>situational awareness</strong>, <strong>workload management</strong>, and <strong>decision making</strong> under pressure. Our recognition-based profiling provides objective assessment of these cognitive markers, giving operators confidence in your ability to handle demanding operational scenarios. Our <strong>9 core competencies framework</strong> specifically addresses the balance between technical mastery and behavioral excellence.
-                    </p>
-                </div>
-                <div>
-                    <img
-                        src="https://images.unsplash.com/photo-1483450389192-3d3a4d715df9?q=80&w=2000&auto=format&fit=crop"
-                        alt="Cockpit Teamwork"
-                        className="rounded-3xl shadow-2xl w-full h-[400px] object-cover"
-                    />
-                </div>
+            <div className="py-12 px-6 max-w-7xl mx-auto mb-24">
+                <p className="text-slate-600 text-lg leading-relaxed mb-4">
+                    While technical proficiency is non-negotiable, the deciding factor in modern airline recruitment often lies in non-technical competencies. Decision-making, situational awareness, and communication are scrutinized under the microscope of EBT frameworks. We provide the strategies to articulate your experience in the language of these competencies, turning your flight hours into a compelling narrative of safety and leadership.
+                </p>
+                <p className="text-slate-600 text-lg leading-relaxed">
+                    Through our <strong>EBT CBTA-aligned assessment framework</strong>, we evaluate both technical and non-technical competencies including <strong>situational awareness</strong>, <strong>workload management</strong>, and <strong>decision making</strong> under pressure. Our recognition-based profiling provides objective assessment of these cognitive markers, giving operators confidence in your ability to handle demanding operational scenarios. Our <strong>9 core competencies framework</strong> specifically addresses the balance between technical mastery and behavioral excellence.
+                </p>
             </div>
 
             {/* Cockpit Teamwork Section */}
