@@ -22,6 +22,11 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
+                        <img
+                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                            alt="WingMentor Logo"
+                            className="mx-auto w-64 h-auto object-contain mb-2"
+                        />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
                             Professional Aviation Standardization
                         </p>
