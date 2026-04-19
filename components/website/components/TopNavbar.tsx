@@ -266,7 +266,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'Pilot Recognition Profile', target: 'pilot-recognition', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
                 { name: 'Recognition Career Matches', target: 'recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] },
                 { name: 'Examination Results', target: 'examination-results', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
-                { name: 'Digital Logbook', target: 'digital-logbook', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
+                { name: 'Digital Logbook', target: 'digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
             ]
         },
         {

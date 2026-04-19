@@ -118,6 +118,7 @@ import { W1000SuitePage } from './components/website/components/W1000SuiteDirect
 import { MembershipBenefitsPage } from './components/website/components/MembershipBenefitsDirectoryPage';
 import { DownloadPage } from './components/website/components/DownloadPage'; // New Import
 import ExaminationResultsDirectoryPage from './components/website/components/ExaminationResultsDirectoryPage';
+import { DigitalLogbookDirectoryPage } from './components/website/components/DigitalLogbookDirectoryPage';
 import { useAuth } from './src/contexts/AuthContext'; // New Import
 import { LoginModal } from './components/website/components/LoginModal';
 import { SettingsDirectoryPage } from './components/website/components/SettingsDirectoryPage';
@@ -1273,6 +1274,7 @@ root.render(
           <Route path="/contact-support" element={<ContactSupportPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/download" element={<DownloadPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/examination-results" element={<ExaminationResultsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/digital-logbook-directory" element={<DigitalLogbookDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/settings" element={<SettingsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/*" element={
             <>
