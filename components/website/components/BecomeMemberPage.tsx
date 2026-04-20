@@ -13,7 +13,7 @@ interface BecomeMemberPageProps {
 
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
-    const { signup } = useAuth();
+    const { signup, currentUser } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -69,6 +69,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     useEffect(() => {
         console.log('📋 signupSuccess state changed:', signupSuccess);
     }, [signupSuccess]);
+
+    // Pre-fill email with current user's email if logged in via OAuth
+    useEffect(() => {
+        if (currentUser?.email && !email) {
+            console.log('Pre-filling email with OAuth email:', currentUser.email);
+            setEmail(currentUser.email);
+        }
+    }, [currentUser, email]);
 
     const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
     const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
@@ -389,7 +397,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             </div>
                                         </div>
                                         <div className="space-y-2.5 group">
-                                            <label className="text-sm font-semibold text-gray-700 mb-2 block">Email Address</label>
+                                            <label className="text-sm font-semibold text-gray-700 mb-2 block">
+                                                Email Address
+                                                {currentUser && <span className="ml-2 text-xs text-blue-600 font-normal">(from your Google account)</span>}
+                                            </label>
                                             <div className="relative">
                                                 <input
                                                     type="email"
@@ -398,7 +409,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                     required
+                                                    readOnly={!!currentUser}
+                                                    style={currentUser ? { backgroundColor: '#f3f4f6', cursor: 'not-allowed' } : {}}
                                                 />
+                                                {currentUser && (
+                                                    <div className="text-xs text-gray-500 mt-1">
+                                                        Email is linked to your Google account and cannot be changed
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="space-y-2.5 group">
