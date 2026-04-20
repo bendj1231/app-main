@@ -115,7 +115,7 @@ const OAuthCallback: React.FC = () => {
         console.log(`[${timestamp}] [OAUTH CALLBACK] Status set to success, preparing to redirect`);
         setTimeout(() => {
           console.log(`[${timestamp}] [OAUTH CALLBACK] Redirecting to home page`);
-          window.location.href = '/';
+          window.location.href = window.location.origin;
         }, 500);
 
       } catch (err) {
