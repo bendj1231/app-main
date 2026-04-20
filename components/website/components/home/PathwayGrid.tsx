@@ -1770,8 +1770,8 @@ const GridCard: React.FC<GridCardProps> = ({
                                         {displaySubtitle.length > 45 ? displaySubtitle.slice(0, 42) + '...' : displaySubtitle}
                                     </p>
                                 </div>
-                                {/* Glassy button for pathway-specific cards in home view only */}
-                                {currentViewKey === 'home' && ['cargo', 'charter', 'cadet', 'air-taxi'].includes(card.id) && (
+                                {/* Glassy button for category cards in home view only */}
+                                {currentViewKey === 'home' && ['programs', 'pilot-recognition', 'pathways'].includes(card.id) && (
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault();
