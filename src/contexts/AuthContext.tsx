@@ -63,11 +63,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [mfaSetupData, setMfaSetupData] = useState<{ secret?: string; qrCodeURL?: string }>({});
 
     // OAuth account check state
-    const [oauthAccountCheck, setOauthAccountCheck] = useState<{ checking: boolean; hasAccount: boolean | null }>({ checking: false, hasAccount: null });
+    const [oauthAccountCheck, setOauthAccountCheck] = useState<{ checking: boolean; hasAccount: boolean | null }>(() => {
+        // Load from sessionStorage on mount
+        const saved = sessionStorage.getItem('oauthAccountCheck');
+        return saved ? JSON.parse(saved) : { checking: false, hasAccount: null };
+    });
+
+    // Persist oauthAccountCheck to sessionStorage whenever it changes
+    useEffect(() => {
+        sessionStorage.setItem('oauthAccountCheck', JSON.stringify(oauthAccountCheck));
+    }, [oauthAccountCheck]);
 
     // Function to reset OAuth account check state
     const resetOauthAccountCheck = () => {
         setOauthAccountCheck({ checking: false, hasAccount: null });
+        sessionStorage.removeItem('oauthAccountCheck');
     };
 
     // Activity logging
