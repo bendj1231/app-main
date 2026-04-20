@@ -319,7 +319,7 @@ const App = () => {
       description: 'Understanding the pilot shortage gap in the aviation industry. Learn about the career transition challenge and how WingMentor helps bridge the gap.'
     },
     'programs': {
-      title: 'Programs & Pathways | Pilot Training & Development | Pilot Recognition',
+      title: 'Pilot Recognition-Based Programs & Development | Pilot Recognition',
       description: 'Comprehensive aviation programs including Foundation Program, Transition Program, and AIRBUS Aligned EBT CBTA Programs for pilot career development.'
     },
     'foundational-program': {
