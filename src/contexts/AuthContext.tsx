@@ -69,15 +69,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return saved ? JSON.parse(saved) : { checking: false, hasAccount: null };
     });
 
+    // Flag to track if we've already shown the modal for this session
+    const [oauthModalShown, setOauthModalShown] = useState(() => {
+        return sessionStorage.getItem('oauthModalShown') === 'true';
+    });
+
     // Persist oauthAccountCheck to sessionStorage whenever it changes
     useEffect(() => {
         sessionStorage.setItem('oauthAccountCheck', JSON.stringify(oauthAccountCheck));
     }, [oauthAccountCheck]);
 
+    // Persist oauthModalShown flag
+    useEffect(() => {
+        if (oauthModalShown) {
+            sessionStorage.setItem('oauthModalShown', 'true');
+        }
+    }, [oauthModalShown]);
+
     // Function to reset OAuth account check state
     const resetOauthAccountCheck = () => {
         setOauthAccountCheck({ checking: false, hasAccount: null });
         sessionStorage.removeItem('oauthAccountCheck');
+        setOauthModalShown(false);
+        sessionStorage.removeItem('oauthModalShown');
     };
 
     // Activity logging
@@ -867,68 +881,93 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (event === 'SIGNED_IN' && session?.user) {
                 // User signed in via OAuth
                 console.log('User signed in via OAuth:', session.user.id);
-                console.log('Starting account check...');
+                console.log('oauthModalShown flag:', oauthModalShown);
 
-                // Start account check
-                setOauthAccountCheck({ checking: true, hasAccount: null });
-                console.log('Set oauthAccountCheck to checking: true');
+                // Only check account if we haven't already shown the modal in this session
+                if (!oauthModalShown) {
+                    console.log('Starting account check...');
+                    setOauthModalShown(true);
 
-                const supabaseUser: SupabaseUser = {
-                    id: session.user.id,
-                    uid: session.user.id,
-                    email: session.user.email || '',
-                    display_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
-                    displayName: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
-                    email_confirmed_at: session.user.email_confirmed_at || new Date().toISOString(),
-                    created_at: session.user.created_at || new Date().toISOString(),
-                    updated_at: session.user.updated_at || new Date().toISOString()
-                };
+                    // Start account check
+                    setOauthAccountCheck({ checking: true, hasAccount: null });
+                    console.log('Set oauthAccountCheck to checking: true');
 
-                setCurrentUser(supabaseUser);
-                setExplicitLogoutInStorage(false); // Clear logout flag on sign-in
+                    const supabaseUser: SupabaseUser = {
+                        id: session.user.id,
+                        uid: session.user.id,
+                        email: session.user.email || '',
+                        display_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                        displayName: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                        email_confirmed_at: session.user.email_confirmed_at || new Date().toISOString(),
+                        created_at: session.user.created_at || new Date().toISOString(),
+                        updated_at: session.user.updated_at || new Date().toISOString()
+                    };
 
-                // Check if user has an existing account profile
-                try {
-                    console.log('Checking profile for user:', session.user.id);
-                    const { data: profileData, error } = await supabase
-                        .from('pilot_licensure_experience')
-                        .select('*')
-                        .eq('user_id', session.user.id)
-                        .single();
+                    setCurrentUser(supabaseUser);
+                    setExplicitLogoutInStorage(false); // Clear logout flag on sign-in
 
-                    console.log('Profile check result:', { profileData, error });
+                    // Check if user has an existing account profile
+                    try {
+                        console.log('Checking profile for user:', session.user.id);
+                        const { data: profileData, error } = await supabase
+                            .from('pilot_licensure_experience')
+                            .select('*')
+                            .eq('user_id', session.user.id)
+                            .single();
 
-                    if (profileData && !error) {
-                        console.log("✅ Profile found for OAuth user:", session.user.id);
-                        setUserProfile(profileData);
-                        setOauthAccountCheck({ checking: false, hasAccount: true });
-                        console.log('Set oauthAccountCheck to hasAccount: true');
-                    } else {
-                        console.log("⚠️ No profile found for OAuth user:", session.user.id);
+                        console.log('Profile check result:', { profileData, error });
+
+                        if (profileData && !error) {
+                            console.log("✅ Profile found for OAuth user:", session.user.id);
+                            setUserProfile(profileData);
+                            setOauthAccountCheck({ checking: false, hasAccount: true });
+                            console.log('Set oauthAccountCheck to hasAccount: true');
+                        } else {
+                            console.log("⚠️ No profile found for OAuth user:", session.user.id);
+                            setOauthAccountCheck({ checking: false, hasAccount: false });
+                            console.log('Set oauthAccountCheck to hasAccount: false');
+                            // Create default profile
+                            const defaultProfile = {
+                                user_id: session.user.id,
+                                email: session.user.email,
+                                created_at: new Date().toISOString(),
+                                enrolled_programs: [],
+                                appAccess: []
+                            };
+                            setUserProfile(defaultProfile);
+                        }
+                    } catch (err) {
+                        console.error("❌ Error checking profile for OAuth user:", err);
                         setOauthAccountCheck({ checking: false, hasAccount: false });
-                        console.log('Set oauthAccountCheck to hasAccount: false');
-                        // Create default profile
-                        const defaultProfile = {
-                            user_id: session.user.id,
-                            email: session.user.email,
-                            created_at: new Date().toISOString(),
-                            enrolled_programs: [],
-                            appAccess: []
-                        };
-                        setUserProfile(defaultProfile);
+                        console.log('Set oauthAccountCheck to hasAccount: false due to error');
                     }
-                } catch (err) {
-                    console.error("❌ Error checking profile for OAuth user:", err);
-                    setOauthAccountCheck({ checking: false, hasAccount: false });
-                    console.log('Set oauthAccountCheck to hasAccount: false due to error');
-                }
 
-                setLoading(false);
+                    setLoading(false);
+                } else {
+                    // User already signed in, just set the user without checking account
+                    const supabaseUser: SupabaseUser = {
+                        id: session.user.id,
+                        uid: session.user.id,
+                        email: session.user.email || '',
+                        display_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                        displayName: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                        email_confirmed_at: session.user.email_confirmed_at || new Date().toISOString(),
+                        created_at: session.user.created_at || new Date().toISOString(),
+                        updated_at: session.user.updated_at || new Date().toISOString()
+                    };
+
+                    setCurrentUser(supabaseUser);
+                    setExplicitLogoutInStorage(false);
+                    setLoading(false);
+                }
             } else if (event === 'SIGNED_OUT') {
                 console.log('User signed out');
                 setCurrentUser(null);
                 setUserProfile(null);
                 setLoading(false);
+                // Reset OAuth modal flag on logout
+                setOauthModalShown(false);
+                sessionStorage.removeItem('oauthModalShown');
             } else if (event === 'TOKEN_REFRESHED') {
                 console.log('Token refreshed');
                 // Session is still valid, no action needed
