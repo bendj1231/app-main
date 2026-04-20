@@ -3403,6 +3403,21 @@ exports.calculateRecognitionProfile = onRequest(async (req, res) => {
     const totalRecognition = await calculateRecognitionScore(profile, supabase);
     const { timeDecayCoefficient } = await calculateTimeDecayLogic(profile);
 
+    // Log recognition score to score_history table for growth trajectory analysis
+    try {
+      await supabase
+        .from('score_history')
+        .insert({
+          user_id: userId,
+          score_type: 'recognition',
+          score_value: totalRecognition,
+          calculated_at: new Date().toISOString(),
+        });
+    } catch (error) {
+      console.error('Failed to log score history:', error);
+      // Non-critical error, don't block the response
+    }
+
     // Programs (P)
     const programsScore = (profile.technical_skills_score || 0) +
                         (profile.interview_score || 0) +
