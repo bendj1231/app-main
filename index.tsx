@@ -414,10 +414,10 @@ const App = () => {
   useEffect(() => {
     console.log('oauthAccountCheck state:', oauthAccountCheck);
     if (oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount === true) {
-      console.log('Auto-dismissing modal in 5 seconds and navigating to welcome page');
+      console.log('Auto-dismissing modal in 5 seconds and navigating to welcome_guide page');
       const timer = setTimeout(() => {
         resetOauthAccountCheck();
-        navigateTo('welcome');
+        navigateTo('welcome_guide');
       }, 5000);
       return () => clearTimeout(timer);
     }
