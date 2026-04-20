@@ -753,8 +753,9 @@ const App = () => {
                   Create an account through the Become a Member page to get started.
                 </p>
                 <button
-                  onClick={() => {
-                    // Only reset account check state, keep oauthModalShown flag to prevent re-checking on tab switch
+                  onClick={async () => {
+                    // Log user out before navigating to become-member to prevent logged in state confusion
+                    await logout();
                     resetOauthAccountCheckOnly();
                     navigateTo('become-member');
                   }}
