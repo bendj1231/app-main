@@ -1488,7 +1488,7 @@ const GridCard: React.FC<GridCardProps> = ({
                     ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) ? (
                         // Member Journey Animation (only when not logged in)
                         <MemberJourneyAnimation />
-                    ) : (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && !card.isCarouselWhenLoggedIn) ? (
+                    ) : (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn) ? (
                         // Discover card when logged in - use single image without carousel
                         <img
                             src={displayImage || card.image}
