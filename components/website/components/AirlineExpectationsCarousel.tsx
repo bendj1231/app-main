@@ -701,7 +701,7 @@ const airlines: Airline[] = [
     salaryRange: '$40,000 - $75,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Mumbai Hub', 'Star Alliance', 'Historic Carrier'],
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/f_auto,q_auto,w_800/airline-expectations/air-india.png',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689695/f_auto,q_auto,w_800/airline-expectations/air-india-new.jpg',
     description: 'Air India is Indias flag carrier now part of Tata Group. Star Alliance member with extensive international network from Mumbai and Delhi.'
   },
   {
