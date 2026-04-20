@@ -12,11 +12,11 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://assets.wego.com/image/upload/w_1200,c_fill,f_auto,fl_lossy,q_auto:good,g_auto/v1680149402/flights/airlines_hero/5H_1.jpg';
-  const tempPath = path.join(__dirname, '../temp-fly540.jpg');
-  const publicId = 'fly540';
+  const url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4iJ4R-nGGHZB75ggWPUYl840X5EUprimUzw&s';
+  const tempPath = path.join(__dirname, '../temp-samoa-airlines.jpg');
+  const publicId = 'samoa-airlines';
 
-  console.log(`📥 Downloading fly540.jpg from ${url}...`);
+  console.log(`📥 Downloading samoa-airlines.jpg from ${url}...`);
 
   try {
     // Download the file
@@ -77,5 +77,5 @@ async function downloadAndUpload() {
 }
 
 downloadAndUpload()
-  .then(() => console.log('\n✅ fly540.jpg uploaded successfully!'))
+  .then(() => console.log('\n✅ samoa-airlines.jpg uploaded successfully!'))
   .catch((error) => console.error('\n❌ Failed:', error.message));
