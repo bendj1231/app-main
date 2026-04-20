@@ -130,7 +130,6 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'discover',
-            videoUrl: '/images/My Movie 3 - 720WebShareName.mov',
             images: ['/images/w1000.png', '/images/airlinesexpectations.png', '/images/atlascv.png'],
             image: '/images/w1000.png',
             loggedInImages: ['/images/foundational-program.png'],
@@ -149,8 +148,8 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             enrolledBadge: 'Enrolled',
             accentColor: 'from-emerald-500/80 to-teal-400/80',
             isCarousel: true,
-            isCarouselWhenLoggedIn: true,
-            isCarouselWhenEnrolled: true,
+            isCarouselWhenLoggedIn: false,
+            isCarouselWhenEnrolled: false,
             hasArrows: false,
             animationIndices: [1, 2],
             enrollNow: true,
@@ -427,7 +426,6 @@ const dummyCards = [
     },
     {
         id: 'discover',
-        videoUrl: '/images/My Movie 3 - 720WebShareName.mov',
         images: [
             '/images/w1000.png',
             '/images/airlinesexpectations.png',
@@ -450,8 +448,8 @@ const dummyCards = [
         enrolledBadge: 'Enrolled',
         accentColor: 'from-emerald-500/80 to-teal-400/80',
         isCarousel: true,
-        isCarouselWhenLoggedIn: true,
-        isCarouselWhenEnrolled: true,
+        isCarouselWhenLoggedIn: false,
+        isCarouselWhenEnrolled: false,
         hasArrows: false,
         animationIndices: [1, 2], // Index 1 (Expectations) and 2 (Digital Logbook) use animations
         enrollNow: true,
