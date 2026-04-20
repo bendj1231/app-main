@@ -88,6 +88,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Function to reset account check state only, without removing oauthModalShown flag
     const resetOauthAccountCheckOnly = () => {
         setOauthAccountCheck({ checking: false, hasAccount: null });
+        // Ensure oauthModalShown is set to true to prevent re-checking on tab switch
+        setOauthModalShown(true);
+        localStorage.setItem('oauthModalShown', 'true');
     };
 
     // Activity logging
