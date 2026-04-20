@@ -36,6 +36,9 @@ interface AuthContextType {
     mfaDisable: (code: string) => Promise<void>;
     mfaGenerateBackupCodes: () => Promise<string[]>;
     mfaCheckStatus: () => Promise<boolean>;
+    // OAuth account check
+    oauthAccountCheck: { checking: boolean; hasAccount: boolean | null };
+    resetOauthAccountCheck: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -58,6 +61,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [mfaEnabled, setMfaEnabled] = useState(false);
     const [mfaSetupStep, setMfaSetupStep] = useState<'none' | 'qr' | 'verify'>('none');
     const [mfaSetupData, setMfaSetupData] = useState<{ secret?: string; qrCodeURL?: string }>({});
+
+    // OAuth account check state
+    const [oauthAccountCheck, setOauthAccountCheck] = useState<{ checking: boolean; hasAccount: boolean | null }>({ checking: false, hasAccount: null });
+
+    // Function to reset OAuth account check state
+    const resetOauthAccountCheck = () => {
+        setOauthAccountCheck({ checking: false, hasAccount: null });
+    };
 
     // Activity logging
     const { logLogin, logLogout, logProfileUpdate } = useUserActivityLog();
@@ -846,7 +857,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (event === 'SIGNED_IN' && session?.user) {
                 // User signed in via OAuth
                 console.log('User signed in via OAuth:', session.user.id);
-                
+
+                // Start account check
+                setOauthAccountCheck({ checking: true, hasAccount: null });
+
                 const supabaseUser: SupabaseUser = {
                     id: session.user.id,
                     uid: session.user.id,
@@ -857,11 +871,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     created_at: session.user.created_at || new Date().toISOString(),
                     updated_at: session.user.updated_at || new Date().toISOString()
                 };
-                
+
                 setCurrentUser(supabaseUser);
                 setExplicitLogoutInStorage(false); // Clear logout flag on sign-in
-                
-                // Fetch profile from Supabase
+
+                // Check if user has an existing account profile
                 try {
                     const { data: profileData, error } = await supabase
                         .from('pilot_licensure_experience')
@@ -870,10 +884,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         .single();
 
                     if (profileData && !error) {
-                        console.log("✅ Profile fetched for OAuth user:", session.user.id);
+                        console.log("✅ Profile found for OAuth user:", session.user.id);
                         setUserProfile(profileData);
+                        setOauthAccountCheck({ checking: false, hasAccount: true });
                     } else {
                         console.log("⚠️ No profile found for OAuth user:", session.user.id);
+                        setOauthAccountCheck({ checking: false, hasAccount: false });
                         // Create default profile
                         const defaultProfile = {
                             user_id: session.user.id,
@@ -885,9 +901,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         setUserProfile(defaultProfile);
                     }
                 } catch (err) {
-                    console.error("❌ Error fetching profile for OAuth user:", err);
+                    console.error("❌ Error checking profile for OAuth user:", err);
+                    setOauthAccountCheck({ checking: false, hasAccount: false });
                 }
-                
+
                 setLoading(false);
             } else if (event === 'SIGNED_OUT') {
                 console.log('User signed out');
@@ -1019,7 +1036,10 @@ const value = {
     mfaDisable,
     mfaGenerateBackupCodes,
     mfaCheckStatus,
-    loginWithOAuth
+    loginWithOAuth,
+    // OAuth account check
+    oauthAccountCheck,
+    resetOauthAccountCheck
 };
 
     return (

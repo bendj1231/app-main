@@ -408,7 +408,17 @@ const App = () => {
   const [foundationProgress, setFoundationProgress] = useState(0);
   const [examinationScore, setExaminationScore] = useState(0);
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
-  const { currentUser, logout } = useAuth(); // Get current user and logout function
+  const { currentUser, logout, oauthAccountCheck, resetOauthAccountCheck } = useAuth(); // Get current user, logout, and OAuth account check
+
+  // Auto-dismiss OAuth result modal for existing accounts after 2 seconds
+  useEffect(() => {
+    if (oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount === true) {
+      const timer = setTimeout(() => {
+        resetOauthAccountCheck();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [oauthAccountCheck, resetOauthAccountCheck]);
 
   // Fetch user's enrollment status from Supabase
   useEffect(() => {
@@ -616,6 +626,146 @@ const App = () => {
             >
               Reload Page
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* OAuth Account Check Modal */}
+      {oauthAccountCheck.checking && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(15, 23, 42, 0.9)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: '20px',
+            padding: '40px',
+            maxWidth: '500px',
+            width: '100%',
+            textAlign: 'center',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+          }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              border: '4px solid #e2e8f0',
+              borderTopColor: '#3b82f6',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+              margin: '0 auto 24px'
+            }}></div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#1e293b', marginBottom: '12px' }}>
+              Checking your account...
+            </h2>
+            <p style={{ color: '#64748b', lineHeight: '1.6' }}>
+              Please wait while we verify your account status.
+            </p>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          </div>
+        </div>
+      )}
+
+      {/* OAuth Account Result Modal */}
+      {oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount !== null && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(15, 23, 42, 0.9)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: '20px',
+            padding: '40px',
+            maxWidth: '500px',
+            width: '100%',
+            textAlign: 'center',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+          }}>
+            {oauthAccountCheck.hasAccount ? (
+              <>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #10b981, #059669)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 24px'
+                }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#1e293b', marginBottom: '12px' }}>
+                  Account Found!
+                </h2>
+                <p style={{ color: '#64748b', lineHeight: '1.6', marginBottom: '24px' }}>
+                  Logging you in to your account please wait shortly...
+                </p>
+              </>
+            ) : (
+              <>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 24px'
+                }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                  </svg>
+                </div>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#1e293b', marginBottom: '12px' }}>
+                  New Account
+                </h2>
+                <p style={{ color: '#64748b', lineHeight: '1.6', marginBottom: '24px' }}>
+                  Create an account through the Become a Member page to get started.
+                </p>
+                <button
+                  onClick={() => navigateTo('become-member')}
+                  style={{
+                    background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                    color: 'white',
+                    border: 'none',
+                    padding: '14px 28px',
+                    borderRadius: '12px',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  Go to Become a Member
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
