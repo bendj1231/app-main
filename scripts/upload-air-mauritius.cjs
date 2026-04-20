@@ -12,8 +12,8 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://miro.medium.com/1*JhTgkpIhMfQ5BVOBDzexoQ.jpeg';
-  const tempPath = path.join(__dirname, '../temp-air-mauritius.jpg');
+  const url = 'https://aviationweek.com/sites/default/files/2025-08/air_mauritius_a330_source_rob_finlayson.png';
+  const tempPath = path.join(__dirname, '../temp-air-mauritius.png');
   const publicId = 'air-mauritius';
 
   console.log(`📥 Downloading Air Mauritius image from ${url}...`);
