@@ -806,7 +806,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 margin: '0 auto'
                             }}>
                                 <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600, marginBottom: '0.5rem' }}>
-                                    V12 Ferrari Engine
+                                    Wingmentor Recognition Engine PR
                                 </p>
                                 <div style={{ fontSize: '3rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>
                                     {recognitionScore.totalRecognition.toFixed(1)}%
