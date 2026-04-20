@@ -1678,43 +1678,21 @@ const GridCard: React.FC<GridCardProps> = ({
                                     Explore
                                 </button>
                             )}
-                            {/* Glassy button for pilot-recognition card */}
-                            {card.id === 'pilot-recognition' && (
+                            {/* Glassy button for member card only */}
+                            {card.id === 'member' && (
                                 <button
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        onNavigate('pilot-recognition');
+                                        if (isLoggedIn) {
+                                            onNavigate('portal');
+                                        } else {
+                                            onNavigate('become-member');
+                                        }
                                     }}
                                     className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                                 >
-                                    Learn More
-                                </button>
-                            )}
-                            {/* Glassy button for pathways card */}
-                            {card.id === 'pathways' && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onNavigate('pathways');
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    View
-                                </button>
-                            )}
-                            {/* Glassy button for pathway-specific cards */}
-                            {['cargo', 'charter', 'cadet', 'air-taxi'].includes(card.id) && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onClick();
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    {isLoggedIn ? 'Access' : 'Learn More'}
+                                    {isLoggedIn ? 'Access Portal' : 'Join Now'}
                                 </button>
                             )}
                         </div>
