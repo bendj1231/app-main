@@ -57,7 +57,7 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                         <div className="relative w-full mx-auto">
                             <div className="aspect-video bg-slate-100 rounded-3xl overflow-hidden shadow-lg relative group">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1rZLzWxCpouDAIoNRFxeli5GDa3lhGyr2"
+                                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776689980/f_auto,q_auto,w_1200/pathways/air-taxi-evtol.jpg"
                                     alt="Air Taxi eVTOL"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
