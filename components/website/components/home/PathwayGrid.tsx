@@ -147,9 +147,9 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             badge: null,
             accentColor: 'from-emerald-500/80 to-teal-400/80',
             isCarousel: true,
-            isCarouselWhenLoggedIn: false,
-            isCarouselWhenEnrolled: false,
-            hasArrows: true,
+            isCarouselWhenLoggedIn: true,
+            isCarouselWhenEnrolled: true,
+            hasArrows: false,
             animationIndices: [1, 2],
         },
         {
@@ -445,9 +445,9 @@ const dummyCards = [
         badge: null,
         accentColor: 'from-emerald-500/80 to-teal-400/80',
         isCarousel: true,
-        isCarouselWhenLoggedIn: false,
-        isCarouselWhenEnrolled: false,
-        hasArrows: true,
+        isCarouselWhenLoggedIn: true,
+        isCarouselWhenEnrolled: true,
+        hasArrows: false,
         animationIndices: [1, 2], // Index 1 (Expectations) and 2 (Digital Logbook) use animations
     },
     {
