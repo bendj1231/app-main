@@ -130,29 +130,27 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'discover',
-            images: ['/images/w1000.png', '/images/airlinesexpectations.png', '/images/atlascv.png'],
-            image: '/images/w1000.png',
+            images: ['/images/foundational-program.png'],
+            image: '/images/foundational-program.png',
             loggedInImages: ['/images/foundational-program.png'],
             loggedInImage: '/images/foundational-program.png',
             enrolledImage: '/images/foundational-program.png',
             enrolledImages: ['/images/foundational-program.png'],
-            title: 'Discover Programs',
+            title: 'Foundation Program Enroll',
             loggedInTitle: 'Enroll on Foundation Program',
             enrolledTitle: 'Foundation Program Access',
-            dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
-            subtitle: 'Explore W1000 application, Expectations, and Examination Terminal',
+            dynamicTitles: [],
+            subtitle: 'Start your aviation career with comprehensive training and mentorship',
             loggedInSubtitle: 'Start your aviation career with comprehensive training and mentorship',
             enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
             icon: Map,
             badge: null,
-            enrolledBadge: 'Enrolled',
             accentColor: 'from-emerald-500/80 to-teal-400/80',
-            isCarousel: true,
-            isCarouselWhenLoggedIn: false,
-            isCarouselWhenEnrolled: false,
+            isCarousel: false,
+            isCarouselWhenLoggedIn: true,
+            isCarouselWhenEnrolled: true,
             hasArrows: false,
-            animationIndices: [1, 2],
-            enrollNow: true,
+            animationIndices: [],
         },
         {
             id: 'programs',
@@ -426,33 +424,27 @@ const dummyCards = [
     },
     {
         id: 'discover',
-        images: [
-            '/images/w1000.png',
-            '/images/airlinesexpectations.png',
-            '/images/atlascv.png',
-        ],
-        image: '/images/w1000.png',
+        images: ['/images/foundational-program.png'],
+        image: '/images/foundational-program.png',
         loggedInImages: ['/images/foundational-program.png'],
         loggedInImage: '/images/foundational-program.png',
         enrolledImages: ['/images/foundational-program.png'],
         enrolledImage: '/images/foundational-program.png',
-        title: 'Discover Programs',
+        title: 'Foundation Program Enroll',
         loggedInTitle: 'Enroll on Foundation Program',
         enrolledTitle: 'Foundation Program Access',
-        dynamicTitles: ['W1000', 'Expectations', 'Digital Logbook'],
-        subtitle: 'Explore W1000 application, Expectations, and Examination Terminal',
+        dynamicTitles: [],
+        subtitle: 'Start your aviation career with comprehensive training and mentorship',
         loggedInSubtitle: 'Start your aviation career with comprehensive training and mentorship',
         enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
         icon: Map,
         badge: null,
-        enrolledBadge: 'Enrolled',
         accentColor: 'from-emerald-500/80 to-teal-400/80',
-        isCarousel: true,
-        isCarouselWhenLoggedIn: false,
-        isCarouselWhenEnrolled: false,
+        isCarousel: false,
+        isCarouselWhenLoggedIn: true,
+        isCarouselWhenEnrolled: true,
         hasArrows: false,
-        animationIndices: [1, 2], // Index 1 (Expectations) and 2 (Digital Logbook) use animations
-        enrollNow: true,
+        animationIndices: [],
     },
     {
         id: 'programs',
@@ -1269,16 +1261,14 @@ const GridCard: React.FC<GridCardProps> = ({
     
     // Determine if we should use carousel for enrolled/logged in state
     const shouldUseEnrolledCarousel = isEnrolledInFoundation && card.isCarouselWhenEnrolled && card.enrolledImages;
-    const shouldUseLoggedInCarousel = isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn && card.loggedInImages && card.id !== 'discover';
+    const shouldUseLoggedInCarousel = isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn && card.loggedInImages;
     
     // Get the images array to use for carousel
     const carouselImages = shouldUseEnrolledCarousel
         ? card.enrolledImages
         : shouldUseLoggedInCarousel
             ? card.loggedInImages
-            : (card.id === 'discover' && isLoggedIn)
-                ? [card.loggedInImage || card.image]
-                : card.images;
+            : card.images;
 
     // Determine which single image to use (not carousel)
     const displayImage = isEnrolledInFoundation && card.enrolledImage
@@ -1287,8 +1277,8 @@ const GridCard: React.FC<GridCardProps> = ({
             ? card.loggedInImage
             : card.image;
 
-    // For discover card, disable carousel when logged in
-    const shouldUseCarousel = card.id === 'discover' && isLoggedIn
+    // For discover card, respect the isCarouselWhenLoggedIn flag
+    const shouldUseCarousel = (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn)
         ? false
         : (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn)
             ? !!carouselImages
@@ -1493,16 +1483,16 @@ const GridCard: React.FC<GridCardProps> = ({
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent pointer-events-none" />
                             )}
                         </div>
-                    ) : card.id === 'discover' && isLoggedIn ? (
-                        // Discover card when logged in - use single image without carousel
-                        <img
-                            src="/images/foundational-program.png"
-                            alt={card.title}
-                            className="w-full h-full object-cover object-center"
-                        />
                     ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) ? (
                         // Member Journey Animation (only when not logged in)
                         <MemberJourneyAnimation />
+                    ) : (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn) ? (
+                        // Discover card when logged in - use single image without carousel
+                        <img
+                            src={displayImage || card.image}
+                            alt={card.title}
+                            className="w-full h-full object-cover object-center"
+                        />
                     ) : shouldUseLoggedInCarousel && carouselImages ? (
                         // Carousel when logged in
                         <div className="relative w-full h-full">
