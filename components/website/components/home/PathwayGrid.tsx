@@ -234,7 +234,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'cargo',
-            image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/f_auto,q_auto,w_800/pathways/cargo-operations.png',
             title: 'Cargo Operations',
             subtitle: 'Freight, logistics, and global supply chain aviation roles',
             icon: Briefcase,
@@ -243,7 +243,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'charter',
-            image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689902/f_auto,q_auto,w_800/pathways/private-charter.jpg',
             title: 'Private Charter',
             subtitle: 'Business aviation and private jet operations worldwide',
             icon: Users,
@@ -261,7 +261,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'air-taxi',
-            image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689980/f_auto,q_auto,w_800/pathways/air-taxi-evtol.jpg',
             title: 'Air Taxi & eVTOL',
             subtitle: 'Urban air mobility and next-generation aviation',
             icon: Zap,
