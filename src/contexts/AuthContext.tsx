@@ -673,8 +673,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function loginWithOAuth(provider: 'google' | 'apple' | 'github') {
         try {
-            const redirectUri = `${window.location.origin}/auth/callback`;
-            console.log(`[${provider} OAuth] Starting OAuth with redirect URI:`, redirectUri);
+            // Use Supabase's default callback handler
+            const redirectUri = `https://gkbhgrozrzhalnjherfu.supabase.co/auth/v1/callback`;
+            console.log(`[${provider} OAuth] Starting OAuth with Supabase default callback:`, redirectUri);
 
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider,
