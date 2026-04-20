@@ -3,7 +3,6 @@ import { X, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useToast } from '@/src/components/ui/toast';
 import { validateEmail, validateSimplePassword } from '@/src/lib/validation';
-import { generateGoogleAuthUrl } from '@/src/lib/google-oauth';
 
 // Google SVG icon
 const GoogleIcon = () => (
@@ -127,27 +126,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
     const handleGoogleSignIn = async () => {
         const timestamp = new Date().toISOString();
-        console.log(`[${timestamp}] [GOOGLE OAUTH] Starting Google sign-in process`);
+        console.log(`[${timestamp}] [GOOGLE OAUTH] Starting Google sign-in process with Supabase`);
         setOAuthLoading(true);
         setError('');
 
         try {
-            const redirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/callback`;
-            console.log(`[${timestamp}] [GOOGLE OAUTH] Redirect URI:`, redirectUri);
-            console.log(`[${timestamp}] [GOOGLE OAUTH] Window location origin:`, window.location.origin);
-            console.log(`[${timestamp}] [GOOGLE OAUTH] Current URL:`, window.location.href);
-
-            const authUrl = generateGoogleAuthUrl({
-                redirectUri: redirectUri,
-                prompt: 'consent',
-            });
-
-            console.log(`[${timestamp}] [GOOGLE OAUTH] Generated auth URL:`, authUrl);
-            console.log(`[${timestamp}] [GOOGLE OAUTH] About to redirect to Google OAuth page`);
-            console.log(`[${timestamp}] [GOOGLE OAUTH] oauthLoading state set to: true`);
-
-            // Redirect to Google's OAuth authorization page
-            window.location.href = authUrl;
+            console.log(`[${timestamp}] [GOOGLE OAUTH] Calling loginWithOAuth with provider: google`);
+            await loginWithOAuth('google');
+            console.log(`[${timestamp}] [GOOGLE OAUTH] OAuth initiated successfully`);
+            // Supabase handles the redirect automatically
         } catch (err: any) {
             const errorTimestamp = new Date().toISOString();
             console.error(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] Google Sign-In failed:`, err);
