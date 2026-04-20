@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import { supabase } from '@/src/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit } from 'lucide-react';
 import { Skeleton } from '@/src/components/ui/skeleton';
+import { NavigationSchema } from './seo/NavigationSchema';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -312,6 +313,20 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
     return (
         <>
+            <NavigationSchema 
+                items={[
+                    { name: 'Home', url: '/' },
+                    { name: 'About', url: '/about' },
+                    { name: 'Programs', url: '/programs' },
+                    { name: 'Pathways', url: '/discover-pathways' },
+                    { name: 'Pilot Recognition', url: '/pilot-recognition' },
+                    { name: 'Applications', url: '/pilot-recognition' },
+                    { name: 'Membership', url: '/become-member' },
+                    { name: 'Contact', url: '/contact-support' }
+                ]}
+                siteName="Pilot Recognition"
+                siteUrl="https://pilotrecognition.com"
+            />
             <nav
                 className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isLight
                     ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
