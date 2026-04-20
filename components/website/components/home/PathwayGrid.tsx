@@ -1625,8 +1625,8 @@ const GridCard: React.FC<GridCardProps> = ({
                 {isLargeCard && (
                     <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'}`}>
                         <div className="flex items-center gap-3 mb-2">
-                            {/* Hide title/subtitle for second image of discover card when logged in */}
-                            {!(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
+                            {/* Hide title/subtitle for discover card when logged out and hovered */}
+                            {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
                                 <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide">
                                     {card.dynamicTitles && currentDynamicTitle ? (
                                         <>
@@ -1708,8 +1708,8 @@ const GridCard: React.FC<GridCardProps> = ({
                                 </button>
                             )}
                         </div>
-                        {/* Hide subtitle for second image of discover card when logged in */}
-                        {!(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
+                        {/* Hide subtitle for discover card when logged out and hovered, or for second image when logged in */}
+                        {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
                             <p className="text-white/90 text-xs md:text-sm truncate">
                                 {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
                             </p>
