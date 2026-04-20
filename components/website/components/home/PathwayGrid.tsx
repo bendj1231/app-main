@@ -130,6 +130,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'discover',
+            videoUrl: '/images/My Movie 3 - 720WebShareName.mov',
             images: ['/images/w1000.png', '/images/airlinesexpectations.png', '/images/atlascv.png'],
             image: '/images/w1000.png',
             loggedInImages: ['/images/foundational-program.png'],
@@ -426,6 +427,7 @@ const dummyCards = [
     },
     {
         id: 'discover',
+        videoUrl: '/images/My Movie 3 - 720WebShareName.mov',
         images: [
             '/images/w1000.png',
             '/images/airlinesexpectations.png',
