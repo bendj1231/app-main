@@ -172,7 +172,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'pathways',
-            image: '/images/grok-image-6c3347bc-ed6e-4c84-9e71-dca4df5d2c70.png',
+            image: '/images/airline-operations.png',
             title: 'Pathways',
             subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
             icon: ShoppingBag,
@@ -466,7 +466,7 @@ const dummyCards = [
     },
     {
         id: 'pathways',
-        image: '/images/grok-image-6c3347bc-ed6e-4c84-9e71-dca4df5d2c70.png',
+        image: '/images/airline-operations.png',
         title: 'Pathways',
         subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
         icon: ShoppingBag,
