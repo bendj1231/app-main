@@ -857,9 +857,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (event === 'SIGNED_IN' && session?.user) {
                 // User signed in via OAuth
                 console.log('User signed in via OAuth:', session.user.id);
+                console.log('Starting account check...');
 
                 // Start account check
                 setOauthAccountCheck({ checking: true, hasAccount: null });
+                console.log('Set oauthAccountCheck to checking: true');
 
                 const supabaseUser: SupabaseUser = {
                     id: session.user.id,
@@ -877,19 +879,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                 // Check if user has an existing account profile
                 try {
+                    console.log('Checking profile for user:', session.user.id);
                     const { data: profileData, error } = await supabase
                         .from('pilot_licensure_experience')
                         .select('*')
                         .eq('user_id', session.user.id)
                         .single();
 
+                    console.log('Profile check result:', { profileData, error });
+
                     if (profileData && !error) {
                         console.log("✅ Profile found for OAuth user:", session.user.id);
                         setUserProfile(profileData);
                         setOauthAccountCheck({ checking: false, hasAccount: true });
+                        console.log('Set oauthAccountCheck to hasAccount: true');
                     } else {
                         console.log("⚠️ No profile found for OAuth user:", session.user.id);
                         setOauthAccountCheck({ checking: false, hasAccount: false });
+                        console.log('Set oauthAccountCheck to hasAccount: false');
                         // Create default profile
                         const defaultProfile = {
                             user_id: session.user.id,
@@ -903,6 +910,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 } catch (err) {
                     console.error("❌ Error checking profile for OAuth user:", err);
                     setOauthAccountCheck({ checking: false, hasAccount: false });
+                    console.log('Set oauthAccountCheck to hasAccount: false due to error');
                 }
 
                 setLoading(false);

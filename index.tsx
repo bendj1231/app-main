@@ -412,7 +412,9 @@ const App = () => {
 
   // Auto-dismiss OAuth result modal for existing accounts after 2 seconds
   useEffect(() => {
+    console.log('oauthAccountCheck state:', oauthAccountCheck);
     if (oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount === true) {
+      console.log('Auto-dismissing modal in 2 seconds');
       const timer = setTimeout(() => {
         resetOauthAccountCheck();
       }, 2000);
