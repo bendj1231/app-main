@@ -1282,13 +1282,15 @@ const GridCard: React.FC<GridCardProps> = ({
             : card.image;
 
     // For discover card, respect the isCarouselWhenLoggedIn flag
-    const shouldUseCarousel = (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn)
-        ? !!carouselImages
-        : shouldUseLoggedInCarousel
+    const shouldUseCarousel = (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn)
+        ? false
+        : (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn)
             ? !!carouselImages
-            : shouldUseEnrolledCarousel
+            : shouldUseLoggedInCarousel
                 ? !!carouselImages
-                : card.isCarousel && card.images;
+                : shouldUseEnrolledCarousel
+                    ? !!carouselImages
+                    : card.isCarousel && card.images;
     
     // Get current dynamic title for discover card (only when not logged in)
     const currentDynamicTitle = (card.id === 'discover' && !isLoggedIn) 
