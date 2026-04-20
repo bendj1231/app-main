@@ -49,36 +49,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
 
-    // Fetch recognition score from Firebase function
-    useEffect(() => {
-        const fetchRecognitionScore = async () => {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user?.id) {
-                    setLoadingScore(true);
-                    setScoreError(null);
-                    const response = await fetch(
-                        `https://us-central1-pilotrecognition-recognition.cloudfunctions.net/calculateRecognitionProfile?userId=${user.id}&useBasicFormula=false`
-                    );
-                    const data = await response.json();
-                    
-                    if (data.error) {
-                        setScoreError(data.error);
-                    } else {
-                        setRecognitionScore(data);
-                    }
-                }
-            } catch (err) {
-                setScoreError('Failed to fetch recognition score');
-                console.error('Error fetching recognition score:', err);
-            } finally {
-                setLoadingScore(false);
-            }
-        };
-
-        fetchRecognitionScore();
-    }, []);
-
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
         const wingmentorCard = recommendedPathways.find(p => p.id === 'wingmentor-intro');
@@ -689,6 +659,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 console.log('[11] Pathways set in state, count:', pathwaysData.pathways.length);
             } else {
                 console.error('[ERROR] No pathways in response:', pathwaysData);
+            }
+
+            // Extract recognition score from Edge Function response
+            if (pathwaysData.recognitionProfile) {
+                setRecognitionScore({
+                    totalRecognition: pathwaysData.recognitionProfile.recognition_score || pathwaysData.recognitionProfile.overall_recognition_score || 0,
+                    breakdown: pathwaysData.recognitionProfile.breakdown
+                });
+                console.log('[RECOGNITION SCORE] Score extracted from Edge Function:', pathwaysData.recognitionProfile.recognition_score || pathwaysData.recognitionProfile.overall_recognition_score);
             }
         } catch (error) {
             console.error('[ERROR] Error in fetchProfileData:', error);
