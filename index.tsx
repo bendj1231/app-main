@@ -410,15 +410,15 @@ const App = () => {
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
   const { currentUser, logout, oauthAccountCheck, resetOauthAccountCheck } = useAuth(); // Get current user, logout, and OAuth account check
 
-  // Auto-dismiss OAuth result modal for existing accounts after 2 seconds and navigate to welcome page
+  // Auto-dismiss OAuth result modal for existing accounts after 5 seconds and navigate to welcome page
   useEffect(() => {
     console.log('oauthAccountCheck state:', oauthAccountCheck);
     if (oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount === true) {
-      console.log('Auto-dismissing modal in 2 seconds and navigating to welcome page');
+      console.log('Auto-dismissing modal in 5 seconds and navigating to welcome page');
       const timer = setTimeout(() => {
         resetOauthAccountCheck();
         navigateTo('welcome');
-      }, 2000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [oauthAccountCheck, resetOauthAccountCheck]);
