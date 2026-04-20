@@ -97,6 +97,7 @@ import { CoreValuesPage } from './components/website/components/CoreValuesPage';
 import { IndustryStewardshipPage } from './components/website/components/IndustryStewardshipPage';
 import { FoundationalProgramPage } from './components/website/components/programs/FoundationalProgramPage';
 import { ProgramBenefitsPage } from './components/website/components/programs/ProgramBenefitsPage';
+import { NewsUpdatesPage } from './components/website/components/programs/NewsUpdatesPage';
 import { PlatformFoundationalProgramPage } from './components/website/components/programs/PlatformFoundationalProgramPage';
 import { PlatformTransitionProgramPage } from './components/website/components/programs/PlatformTransitionProgramPage';
 import { FoundationalVerificationPage } from './components/website/components/programs/FoundationalVerificationPage';
@@ -350,6 +351,10 @@ const App = () => {
     'program-benefits': {
       title: 'Program Benefits | Pilot Recognition-Based Development | Pilot Recognition',
       description: 'Discover comprehensive program benefits including accredited recognition, verified mentorship, EBT CBTA alignment, industry networking, career acceleration, global opportunities, continuous growth, and profile verification.'
+    },
+    'news-updates': {
+      title: 'News & Updates | Latest Program Developments | Pilot Recognition',
+      description: 'Stay informed about the latest developments, partnerships, and achievements in our pilot recognition-based programs including AIRBUS partnership expansion, Etihad Aviation Training integration, and AI-powered pathway matching.'
     }
   };
 
@@ -1350,6 +1355,7 @@ root.render(
           <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/programs" element={<ProgramsPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/program-benefits" element={<ProgramBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/news-updates" element={<NewsUpdatesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/transition-program" element={<TransitionProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/airbus-aligned-ebt-cbta-programs" element={<EBTCBTAPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />

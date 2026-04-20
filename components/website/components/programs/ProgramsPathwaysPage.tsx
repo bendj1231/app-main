@@ -39,6 +39,14 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
             icon: Award,
             color: "text-purple-600",
             bg: "bg-purple-50"
+        },
+        {
+            title: "News & Updates",
+            desc: "Stay informed about the latest developments, partnerships, and achievements in our pilot recognition-based programs. Get updates on AIRBUS partnership expansion, Etihad Aviation Training integration, and AI-powered pathway matching.",
+            target: "news-updates",
+            icon: FileText,
+            color: "text-green-600",
+            bg: "bg-green-50"
         }
     ];
 
