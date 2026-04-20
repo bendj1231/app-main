@@ -42,7 +42,7 @@ const airlines: Airline[] = [
     salaryRange: '$120,000 - $250,000/year',
     flightHours: '4,000+ hrs TT',
     tags: ['5-Star Airline', 'Tax-Free', 'Worldwide Routes'],
-    image: '/images/airline-expectations/qatar-airways.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/qatar-airways.jpg',
     description: 'Qatar Airways is renowned for its exceptional service standards and global network spanning over 160 destinations. With competitive tax-free salary packages, modern aircraft fleet, and rapid career progression opportunities.',
     fleet: 'Boeing 777, 787, Airbus A350, A380 - One of the youngest fleets globally with an average age of just 5 years'
   },
@@ -53,7 +53,7 @@ const airlines: Airline[] = [
     salaryRange: '$120,000 - $180,000/year',
     flightHours: '3,000+ hrs TT',
     tags: ['Premium Carrier', 'Asian Hub', 'Great Benefits'],
-    image: '/images/airline-expectations/singapore-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/singapore-airlines.jpg',
     description: 'Singapore Airlines maintains one of the highest service standards globally, offering comprehensive benefits and a strategic Asian hub location. The airline provides excellent training and career development opportunities.',
     fleet: 'Airbus A350, A380, Boeing 777, 787 - Operating one of the worlds most modern fleets with cutting-edge cabin technology'
   },
@@ -64,7 +64,7 @@ const airlines: Airline[] = [
     salaryRange: '$110,000 - $160,000/year',
     flightHours: '2,500+ hrs TT',
     tags: ['5-Star Airline', 'Asian Network', 'Career Growth'],
-    image: '/images/airline-expectations/cathay-pacific.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
     description: 'Cathay Pacific offers a dynamic work environment with extensive Asian network coverage and strong career progression pathways. The airline is known for its professional development programs.',
     fleet: 'Airbus A350, A330, Boeing 777 - Modern wide-body fleet focused on long-haul Asian and trans-Pacific routes'
   },
@@ -75,7 +75,7 @@ const airlines: Airline[] = [
     salaryRange: '$130,000 - $280,000/year',
     flightHours: '4,000+ hrs TT',
     tags: ['5-Star Airline', 'Global Network', 'Tax-Free'],
-    image: '/images/airline-expectations/emirates.png',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png',
     description: 'Emirates operates one of the largest Airbus A380 and Boeing 777 fleets, offering unmatched global connectivity. The airline provides exceptional training facilities and career advancement opportunities.',
     fleet: 'Airbus A380, Boeing 777 - Worlds largest operator of both A380 and 777 aircraft with 250+ wide-bodies'
   },
@@ -85,7 +85,7 @@ const airlines: Airline[] = [
     location: 'UAE',
     salaryRange: '$115,000 - $200,000/year',
     flightHours: '2,500+ hrs TT',
-    image: '/images/airline-expectations/etihad-airways-new.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/etihad-airways-new.jpg',
     tags: ['Premium Airline', 'Abu Dhabi Hub', 'Modern Fleet'],
     description: 'Etihad Airways provides competitive tax-free packages from its Abu Dhabi base. The airline features a modern fleet and growing global network with focus on premium service standards.',
     fleet: 'Boeing 787, 777, Airbus A350, A380 - Modern fuel-efficient fleet with state-of-the-art cabins and sustainable aviation focus'
@@ -97,7 +97,7 @@ const airlines: Airline[] = [
     salaryRange: '$90,000 - $160,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['European Leader', 'Star Alliance', 'Career Stability'],
-    image: '/images/airline-expectations/lufthansa.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/lufthansa.jpg',
     description: 'Lufthansa is Europes largest airline and a founding member of Star Alliance. It offers excellent career stability, comprehensive benefits, and opportunities to fly to over 200 destinations worldwide.',
     fleet: 'Airbus A350, A330, Boeing 747-8, 777 - Mixed fleet with both modern twins and iconic 747 operations'
   },
@@ -108,7 +108,7 @@ const airlines: Airline[] = [
     salaryRange: '$85,000 - $150,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Legacy Carrier', 'Heathrow Hub', 'Global Network'],
-    image: '/images/airline-expectations/british-airways.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/british-airways.jpg',
     description: 'British Airways operates from its hub at London Heathrow, offering pilots access to a vast global network. The airline provides competitive European salaries and excellent training programs.',
     fleet: 'Boeing 777, 787, Airbus A350, A380 - Flag carrier with diverse long-haul fleet and A380 operations'
   },
@@ -119,7 +119,7 @@ const airlines: Airline[] = [
     salaryRange: '$80,000 - $140,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['French Flagship', 'CDG Hub', 'European Routes'],
-    image: '/images/airline-expectations/air-france.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg',
     description: 'Air France is the French flag carrier with a rich history dating back to 1933. Pilots enjoy working in a multicultural environment with excellent French employment benefits and protections.',
     fleet: 'Boeing 777, 787, Airbus A350, A330 - Modern wide-body fleet serving global destinations from Paris'
   },
@@ -130,7 +130,7 @@ const airlines: Airline[] = [
     salaryRange: '$75,000 - $135,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Dutch Legacy', 'Amsterdam Hub', 'Efficient Operations'],
-    image: '/images/airline-expectations/klm.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/klm.jpg',
     description: 'KLM Royal Dutch Airlines is the oldest airline still operating under its original name. Known for efficient operations and excellent pilot relations, it offers a stable European career path.',
     fleet: 'Boeing 777, 787, Airbus A330 - Efficient mixed fleet with strong focus on sustainability and biofuel initiatives'
   },
@@ -141,7 +141,7 @@ const airlines: Airline[] = [
     salaryRange: '$95,000 - $155,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Premium Service', 'Swiss Quality', 'Zurich Hub'],
-    image: '/images/airline-expectations/swiss.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/swiss.jpg',
     description: 'Swiss International Air Lines combines traditional Swiss quality with modern aviation standards. Pilots benefit from excellent working conditions and the prestigious Swiss aviation heritage.',
     fleet: 'Airbus A320 family, A330, A340 - Premium narrow and wide-body fleet serving European and intercontinental routes'
   },
@@ -152,7 +152,7 @@ const airlines: Airline[] = [
     salaryRange: '$70,000 - $130,000/year',
     flightHours: '2,000+ hrs TT',
     tags: ['Fast Growing', 'Istanbul Hub', '120+ Countries'],
-    image: '/images/airline-expectations/turkish-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/turkish-airlines.jpg',
     description: 'Turkish Airlines flies to more countries than any other airline. With its modern Istanbul Airport hub, it offers pilots exposure to diverse international routes and rapid fleet expansion.',
     fleet: 'Boeing 737, 777, 787, Airbus A320, A330, A350 - One of the largest fleets globally with 400+ aircraft serving 120+ countries'
   },
@@ -163,7 +163,7 @@ const airlines: Airline[] = [
     salaryRange: '$100,000 - $170,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['5-Star Airline', 'Tokyo Hub', 'Japanese Quality'],
-    image: '/images/airline-expectations/ana.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/ana.jpg',
     description: 'ANA is Japans largest airline and a 5-star carrier renowned for exceptional service. Pilots benefit from Japanese precision, excellent training, and access to key Asian markets.',
     fleet: 'Boeing 777, 787, Airbus A380, A320 - Japans largest fleet with extensive Dreamliner operations and unique A380 configurations'
   },
@@ -174,7 +174,7 @@ const airlines: Airline[] = [
     salaryRange: '$95,000 - $165,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Premium Service', 'Tokyo Hub', 'Domestic + International'],
-    image: '/images/airline-expectations/japan-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/japan-airlines.jpg',
     description: 'Japan Airlines represents the finest in Japanese hospitality combined with aviation excellence. The airline offers pilots diverse flying between extensive domestic and international networks.',
     fleet: 'Boeing 737, 767, 777, 787, Airbus A350 - Diverse fleet offering pilots experience across multiple aircraft types'
   },
@@ -185,7 +185,7 @@ const airlines: Airline[] = [
     salaryRange: '$85,000 - $150,000/year',
     flightHours: '2,000+ hrs TT',
     tags: ['Seoul Hub', 'North American Routes', 'Growing Fleet'],
-    image: '/images/airline-expectations/korean-air.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/korean-air.jpg',
     description: 'Korean Air is South Koreas flagship carrier with a strong presence on trans-Pacific routes. Pilots enjoy competitive Asian compensation and a modern, expanding aircraft fleet.'
   },
   {
@@ -195,7 +195,7 @@ const airlines: Airline[] = [
     salaryRange: '$80,000 - $140,000/year',
     flightHours: '1,800+ hrs TT',
     tags: ['Star Alliance', 'Incheon Hub', 'Service Excellence'],
-    image: '/images/airline-expectations/asiana-airlines.webp',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/asiana-airlines.webp',
     description: 'Asiana Airlines is known for outstanding service quality and safety standards. The airline provides pilots with excellent training and opportunities on both regional and long-haul routes.'
   },
   {
@@ -205,7 +205,7 @@ const airlines: Airline[] = [
     salaryRange: '$60,000 - $110,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Bangkok Hub', 'Southeast Asian Network', 'Royal Service'],
-    image: '/images/airline-expectations/thai-airways.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/thai-airways.jpg',
     description: 'Thai Airways offers a unique blend of Thai hospitality and international aviation standards. Pilots enjoy living in Thailand while flying to destinations across Asia and beyond.'
   },
   {
@@ -215,7 +215,7 @@ const airlines: Airline[] = [
     salaryRange: '$55,000 - $100,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['KL Hub', 'Southeast Asia', 'OneWorld Member'],
-    image: '/images/airline-expectations/malaysia-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/malaysia-airlines.jpg',
     description: 'Malaysia Airlines connects Southeast Asia with the world from its Kuala Lumpur hub. The airline offers pilots competitive compensation and exposure to diverse Asian markets.'
   },
   {
@@ -225,7 +225,7 @@ const airlines: Airline[] = [
     salaryRange: '$50,000 - $95,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Jakarta Hub', 'Archipelago Network', 'Growing Market'],
-    image: '/images/airline-expectations/garuda-indonesia.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/garuda-indonesia.jpg',
     description: 'Garuda Indonesia serves the worlds largest archipelago nation. Pilots benefit from rapid fleet modernization and the opportunity to fly across one of Earths most diverse geographic areas.'
   },
   {
@@ -235,7 +235,7 @@ const airlines: Airline[] = [
     salaryRange: '$45,000 - $90,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Manila Hub', 'Pacific Routes', 'Historic Carrier'],
-    image: '/images/airline-expectations/philippine-airlines.webp',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/philippine-airlines.webp',
     description: 'Philippine Airlines is Asias oldest commercial airline. It offers pilots a unique base in the Philippines with growing international connections to North America and Asia.'
   },
   {
@@ -245,7 +245,7 @@ const airlines: Airline[] = [
     salaryRange: '$50,000 - $95,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Hanoi Hub', 'Growing Economy', 'Modern Fleet'],
-    image: '/images/airline-expectations/vietnam-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/vietnam-airlines.jpg',
     description: 'Vietnam Airlines represents one of Asias fastest-growing economies. The airline is rapidly modernizing its fleet and expanding international routes, offering pilots excellent growth opportunities.'
   },
   {
@@ -255,7 +255,7 @@ const airlines: Airline[] = [
     salaryRange: '$70,000 - $120,000/year',
     flightHours: '2,000+ hrs TT',
     tags: ['Beijing Hub', 'Largest Market', 'Star Alliance'],
-    image: '/images/airline-expectations/air-china.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/air-china.jpg',
     description: 'Air China is the flag carrier of the Peoples Republic of China and the worlds largest aviation market. Pilots have access to an unmatched domestic network and growing international presence.'
   },
   {
@@ -265,7 +265,7 @@ const airlines: Airline[] = [
     salaryRange: '$65,000 - $115,000/year',
     flightHours: '1,800+ hrs TT',
     tags: ['Shanghai Hub', 'Skyteam Member', 'Major Player'],
-    image: '/images/airline-expectations/china-eastern.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/china-eastern.jpg',
     description: 'China Eastern Airlines operates from Shanghai, connecting China with the world. The airline offers pilots opportunities in one of the fastest-growing aviation markets globally.'
   },
   {
@@ -275,7 +275,7 @@ const airlines: Airline[] = [
     salaryRange: '$60,000 - $110,000/year',
     flightHours: '1,800+ hrs TT',
     tags: ['Guangzhou Hub', 'Largest Fleet', 'Asia Focus'],
-    image: '/images/airline-expectations/china-southern.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/china-southern.jpg',
     description: 'China Southern operates Chinas largest fleet with extensive Asian coverage. Pilots benefit from modern aircraft and the opportunity to fly within the dynamic Chinese aviation sector.'
   },
   {
@@ -285,7 +285,7 @@ const airlines: Airline[] = [
     salaryRange: '$110,000 - $250,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['US Legacy', 'Atlanta Hub', 'Largest Airline'],
-    image: '/images/airline-expectations/delta.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/delta.jpg',
     description: 'Delta is the worlds largest airline by revenue and fleet size. It offers pilots industry-leading compensation, excellent benefits, and a vast domestic and international network from its Atlanta hub.',
     fleet: 'Airbus A220, A320, A330, A350, Boeing 737, 757, 767, 777 - Industry-leading fleet diversity with modern Airbus A350 operations'
   },
@@ -296,7 +296,7 @@ const airlines: Airline[] = [
     salaryRange: '$100,000 - $230,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Worlds Largest', 'Dallas Hub', 'Oneworld Leader'],
-    image: '/images/airline-expectations/american-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/american-airlines.jpg',
     description: 'American Airlines is the worlds largest airline by fleet size and passengers carried. Pilots enjoy extensive route options and competitive US major airline compensation packages.',
     fleet: 'Airbus A320, A321, Boeing 737, 777, 787 - Largest fleet in the world with 900+ aircraft including flagship 787 Dreamliners'
   },
@@ -307,7 +307,7 @@ const airlines: Airline[] = [
     salaryRange: '$105,000 - $240,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Global Network', 'Chicago Hub', 'Star Alliance'],
-    image: '/images/airline-expectations/united.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/united.jpg',
     description: 'United Airlines offers one of the most comprehensive global networks. With hubs across the US and Star Alliance membership, pilots have unmatched international flying opportunities.',
     fleet: 'Airbus A319, A320, Boeing 737, 757, 767, 777, 787 - Global network carrier with extensive wide-body fleet for international routes'
   },
@@ -318,7 +318,7 @@ const airlines: Airline[] = [
     salaryRange: '$95,000 - $200,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Low Cost Leader', 'Domestic Focus', 'Great Culture'],
-    image: '/images/airline-expectations/southwest.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/southwest.jpg',
     description: 'Southwest Airlines is the worlds largest low-cost carrier. Known for excellent pilot relations and unique company culture, it offers pilots stable domestic routes and profit-sharing benefits.'
   },
   {
@@ -328,7 +328,7 @@ const airlines: Airline[] = [
     salaryRange: '$90,000 - $180,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['West Coast', 'Seattle Hub', 'Award Winning'],
-    image: '/images/airline-expectations/alaska-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/alaska-airlines.jpg',
     description: 'Alaska Airlines is consistently rated among the best US airlines. With its Seattle hub and West Coast focus, it offers pilots a unique blend of domestic and Pacific Northwest flying.'
   },
   {
@@ -338,7 +338,7 @@ const airlines: Airline[] = [
     salaryRange: '$85,000 - $170,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['New York Hub', 'Transcontinental', 'Modern Experience'],
-    image: '/images/airline-expectations/jetblue.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/jetblue.jpg',
     description: 'JetBlue Airways revolutionized US domestic travel with its premium economy approach. Based in New York, it offers pilots modern aircraft and transcontinental premium routes.'
   },
   {
@@ -348,7 +348,7 @@ const airlines: Airline[] = [
     salaryRange: '$80,000 - $160,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Toronto Hub', 'Star Alliance', 'Transatlantic'],
-    image: '/images/airline-expectations/air-canada.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/air-canada.jpg',
     description: 'Air Canada is Canadas flag carrier and largest airline. Pilots enjoy flying to over 200 destinations worldwide and excellent Canadian employment benefits and protections.'
   },
   {
@@ -358,7 +358,7 @@ const airlines: Airline[] = [
     salaryRange: '$70,000 - $140,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Calgary Hub', 'Canadian Leader', 'Growing International'],
-    image: '/images/airline-expectations/westjet.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/westjet.jpg',
     description: 'WestJet is Canadas second-largest airline and growing internationally. It offers pilots a more relaxed Canadian work environment with expanding long-haul opportunities.'
   },
   {
@@ -368,7 +368,7 @@ const airlines: Airline[] = [
     salaryRange: '$95,000 - $180,000/year',
     flightHours: '2,000+ hrs TT',
     tags: ['Sydney Hub', 'Oneworld', 'Safest Airline'],
-    image: '/images/airline-expectations/qantas.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/qantas.jpg',
     description: 'Qantas is Australias flag carrier and one of the worlds safest airlines. Known for its Sydney-London Kangaroo Route, it offers pilots iconic long-haul flying and excellent safety culture.'
   },
   {
@@ -378,7 +378,7 @@ const airlines: Airline[] = [
     salaryRange: '$75,000 - $145,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Brisbane Hub', 'Competitive Service', 'Domestic Network'],
-    image: '/images/airline-expectations/virgin-australia.png',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/virgin-australia.png',
     description: 'Virgin Australia brings competitive service to the Australian market. Pilots enjoy modern aircraft and a focus on customer experience within the vast Australian domestic network.'
   },
   {
@@ -388,7 +388,7 @@ const airlines: Airline[] = [
     salaryRange: '$60,000 - $120,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Santiago Hub', 'South America', 'Largest Regional'],
-    image: '/images/airline-expectations/latam.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/latam.jpg',
     description: 'LATAM is Latin Americas largest airline group. From Santiago, pilots access an unmatched South American network combined with growing long-haul international routes.'
   },
   {
@@ -398,7 +398,7 @@ const airlines: Airline[] = [
     salaryRange: '$55,000 - $110,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Bogota Hub', 'Star Alliance', 'Historic Airline'],
-    image: '/images/airline-expectations/avianca.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/avianca.jpg',
     description: 'Avianca is one of the worlds oldest continuously operating airlines. Its Bogota hub provides pilots access to diverse South American and growing North American destinations.'
   },
   {
@@ -408,7 +408,7 @@ const airlines: Airline[] = [
     salaryRange: '$50,000 - $100,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Mexico City Hub', 'Skyteam', 'Regional Leader'],
-    image: '/images/airline-expectations/aeromexico.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/aeromexico.jpg',
     description: 'Aeromexico connects Latin America with the world from Mexico City. As a Skyteam member, it offers pilots codeshare opportunities and exposure to the dynamic Mexican market.'
   },
   {
@@ -418,7 +418,7 @@ const airlines: Airline[] = [
     salaryRange: '$65,000 - $125,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Panama Hub', 'Hub Americas', 'Star Alliance'],
-    image: '/images/airline-expectations/copa-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/copa-airlines.jpg',
     description: 'Copa Airlines operates the Hub of the Americas in Panama. Pilots benefit from the strategic location connecting North and South America with efficient narrowbody operations.'
   },
   {
@@ -428,7 +428,7 @@ const airlines: Airline[] = [
     salaryRange: '$55,000 - $105,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Sao Paulo Hub', 'Low Cost Brazil', 'Domestic Leader'],
-    image: '/images/airline-expectations/gol.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/gol.jpg',
     description: 'GOL is Brazils largest domestic airline. It offers pilots the opportunity to fly within one of the worlds most geographically diverse countries with excellent South American connections.'
   },
   {
@@ -438,7 +438,7 @@ const airlines: Airline[] = [
     salaryRange: '$70,000 - $130,000/year',
     flightHours: '2,000+ hrs TT',
     tags: ['Tel Aviv Hub', 'Middle East', 'Security Expert'],
-    image: '/images/airline-expectations/el-al.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/el-al.jpg',
     description: 'El Al is Israels flag carrier known for exceptional security standards. Pilots benefit from unique Middle Eastern operations and diverse international routes from Tel Aviv.'
   },
   {
@@ -448,7 +448,7 @@ const airlines: Airline[] = [
     salaryRange: '$50,000 - $95,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Amman Hub', 'Oneworld', 'Middle East Gateway'],
-    image: '/images/airline-expectations/royal-jordanian.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/royal-jordanian.jpg',
     description: 'Royal Jordanian serves as a bridge between East and West from Amman. The airline offers pilots unique Middle Eastern operations with Oneworld alliance benefits.'
   },
   {
@@ -458,7 +458,7 @@ const airlines: Airline[] = [
     salaryRange: '$80,000 - $140,000/year',
     flightHours: '2,500+ hrs TT',
     tags: ['Jeddah Hub', 'Skyteam', 'Growing Network'],
-    image: '/images/airline-expectations/saudia.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/saudia.jpg',
     description: 'Saudia is Saudi Arabias flag carrier undergoing rapid transformation. Pilots have opportunities in a rapidly modernizing fleet with growing international destinations.'
   },
   {
@@ -468,7 +468,7 @@ const airlines: Airline[] = [
     salaryRange: '$45,000 - $85,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Cairo Hub', 'Star Alliance', 'African Network'],
-    image: '/images/airline-expectations/egyptair.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776687052/airline-expectations/egypt-air.jpg',
     description: 'EgyptAir connects Africa with the world from historic Cairo. Pilots benefit from unique African operations and ancient history while flying modern aircraft across diverse international routes.'
   },
   {
@@ -478,7 +478,7 @@ const airlines: Airline[] = [
     salaryRange: '$50,000 - $90,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Addis Ababa Hub', 'Star Alliance', 'African Leader'],
-    image: '/images/airline-expectations/ethiopian-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/ethiopian-airlines.jpg',
     description: 'Ethiopian Airlines is Africas largest and most successful airline. From Addis Ababa, pilots access the continents most extensive network with modern Boeing and Airbus aircraft.'
   },
   {
@@ -488,7 +488,7 @@ const airlines: Airline[] = [
     salaryRange: '$40,000 - $80,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Johannesburg Hub', 'Star Alliance', 'Southern Africa'],
-    image: '/images/airline-expectations/south-african-airways.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/south-african-airways.jpg',
     description: 'South African Airways connects the African continent from Johannesburg. Pilots enjoy diverse flying opportunities across Africa and international routes with Star Alliance benefits.'
   },
   // Additional European Airlines
@@ -499,7 +499,7 @@ const airlines: Airline[] = [
     salaryRange: '$65,000 - $115,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Madrid Hub', 'Oneworld', 'Latin America Routes'],
-    image: '/images/airline-expectations/iberia.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/iberia.jpg',
     description: 'Iberia is Spains flagship carrier with strong connections to Latin America. Pilots benefit from excellent Spanish employment benefits and extensive transatlantic operations.'
   },
   {
@@ -509,7 +509,7 @@ const airlines: Airline[] = [
     salaryRange: '$55,000 - $100,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Rome Hub', 'Skyteam', 'Mediterranean Network'],
-    image: '/images/airline-expectations/ita-airways.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/ita-airways.jpg',
     description: 'ITA Airways represents the rebirth of Italian aviation. Operating from Rome with modern Airbus fleet, offering pilots Mediterranean and intercontinental routes.'
   },
   {
@@ -519,7 +519,7 @@ const airlines: Airline[] = [
     salaryRange: '$60,000 - $110,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Vienna Hub', 'Star Alliance', 'Eastern Europe'],
-    image: '/images/airline-expectations/austrian-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/austrian-airlines.jpg',
     description: 'Austrian Airlines serves as the gateway to Eastern Europe from Vienna. Part of Lufthansa Group with excellent European career development opportunities.'
   },
   {
@@ -529,7 +529,7 @@ const airlines: Airline[] = [
     salaryRange: '$58,000 - $105,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Brussels Hub', 'Star Alliance', 'Africa Routes'],
-    image: '/images/airline-expectations/brussels-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/brussels-airlines.jpg',
     description: 'Brussels Airlines is Belgiums flagship carrier with extensive African network. Part of Lufthansa Group offering pilots unique African and European routes.'
   },
   {
@@ -539,7 +539,7 @@ const airlines: Airline[] = [
     salaryRange: '$55,000 - $100,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Copenhagen Hub', 'Star Alliance', 'Nordic Network'],
-    image: '/images/airline-expectations/sas.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/sas.jpg',
     description: 'SAS serves Scandinavia with Copenhagen, Oslo and Stockholm hubs. Known for excellent pilot work-life balance and strong Nordic labor protections.'
   },
   {
@@ -549,7 +549,7 @@ const airlines: Airline[] = [
     salaryRange: '$50,000 - $95,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Helsinki Hub', 'Oneworld', 'Asia Routes'],
-    image: '/images/airline-expectations/finnair.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/finnair.jpg',
     description: 'Finnair offers the shortest route between Europe and Asia via Helsinki. Modern Airbus A350 fleet with excellent focus on Asian markets.'
   },
   {
@@ -559,7 +559,7 @@ const airlines: Airline[] = [
     salaryRange: '$45,000 - $85,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Lisbon Hub', 'Star Alliance', 'Brazil Routes'],
-    image: '/images/airline-expectations/tap-portugal.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/tap-portugal.jpg',
     description: 'TAP Portugal connects Europe to Brazil and Africa from Lisbon. Known for warm Portuguese culture and growing international network.'
   },
   {
@@ -569,7 +569,7 @@ const airlines: Airline[] = [
     salaryRange: '$40,000 - $75,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Athens Hub', 'Star Alliance', 'Island Network'],
-    image: '/images/airline-expectations/aegean.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/aegean.jpg',
     description: 'Aegean Airlines is Greeces largest carrier with extensive island network. Star Alliance member offering pilots unique Mediterranean flying.'
   },
   {
@@ -579,7 +579,7 @@ const airlines: Airline[] = [
     salaryRange: '$40,000 - $75,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Warsaw Hub', 'Star Alliance', 'Eastern Europe'],
-    image: '/images/airline-expectations/lot-polish.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/lot-polish.jpg',
     description: 'LOT Polish Airlines is Eastern Europes leading carrier. Growing long-haul network with Boeing 787 Dreamliners from Warsaw Chopin Airport.'
   },
   {
@@ -589,7 +589,7 @@ const airlines: Airline[] = [
     salaryRange: '$35,000 - $65,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Prague Hub', 'Skyteam', 'Central Europe'],
-    image: '/images/airline-expectations/czech-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/czech-airlines.jpg',
     description: 'Czech Airlines serves Central Europe from historic Prague. One of the worlds oldest airlines with growing European network.'
   },
   {
@@ -599,7 +599,7 @@ const airlines: Airline[] = [
     salaryRange: '$45,000 - $80,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Low Cost', 'Oslo Hub', 'Transatlantic'],
-    image: '/images/airline-expectations/norwegian.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/norwegian.jpg',
     description: 'Norwegian revolutionized low-cost transatlantic travel. Rebuilt fleet offering pilots extensive European and long-haul operations.'
   },
   {
@@ -609,7 +609,7 @@ const airlines: Airline[] = [
     salaryRange: '$50,000 - $90,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Reykjavik Hub', 'Iceland', 'North Atlantic'],
-    image: '/images/airline-expectations/icelandair.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/icelandair.jpg',
     description: 'Icelandair offers unique North Atlantic operations via Reykjavik. Pilots experience challenging weather operations and stunning scenery.'
   },
   // Additional Asian Airlines
@@ -620,7 +620,7 @@ const airlines: Airline[] = [
     salaryRange: '$70,000 - $120,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Regional', 'Hong Kong Hub', 'Asia Network'],
-    image: '/images/airline-expectations/cathay-dragon.webp',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-dragon.webp',
     description: 'Cathay Dragon served regional Asian destinations from Hong Kong. Now integrated into Cathay Pacific with excellent regional opportunities.'
   },
   {
@@ -630,7 +630,7 @@ const airlines: Airline[] = [
     salaryRange: '$45,000 - $80,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Low Cost', 'Hong Kong Hub', 'Asia Routes'],
-    image: '/images/airline-expectations/hk-express.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/hk-express.jpg',
     description: 'HK Express is Hong Kongs low-cost carrier. Part of Cathay Pacific group offering pilots dynamic short-haul Asian operations.'
   },
   {
@@ -640,7 +640,7 @@ const airlines: Airline[] = [
     salaryRange: '$50,000 - $90,000/year',
     flightHours: '1,200+ hrs TT',
     tags: ['Low Cost', 'Singapore Hub', 'Long Haul LCC'],
-    image: '/images/airline-expectations/scoot.webp',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/scoot.webp',
     description: 'Scoot is Singapore Airlines low-cost subsidiary. Operates Boeing 787 long-haul low-cost routes across Asia and beyond.'
   },
   {
@@ -650,7 +650,7 @@ const airlines: Airline[] = [
     salaryRange: '$45,000 - $80,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Low Cost', 'Singapore Hub', 'Regional'],
-    image: '/images/airline-expectations/jetstar-asia.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/jetstar-asia.jpg',
     description: 'Jetstar Asia serves regional Southeast Asian markets. Part of Qantas Group offering pilots diverse Asian low-cost operations.'
   },
   {
@@ -660,7 +660,7 @@ const airlines: Airline[] = [
     salaryRange: '$40,000 - $70,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Low Cost', 'Osaka Hub', 'Domestic Japan'],
-    image: '/images/airline-expectations/peach-aviation.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/peach-aviation.jpg',
     description: 'Peach Aviation is Japans leading low-cost carrier. Based in Osaka with extensive domestic and regional Asian network.'
   },
   {
@@ -670,7 +670,7 @@ const airlines: Airline[] = [
     salaryRange: '$35,000 - $65,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Low Cost', 'Shanghai Hub', 'Largest LCC'],
-    image: '/images/airline-expectations/spring-airlines.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/spring-airlines.jpg',
     description: 'Spring Airlines is Chinas largest low-cost carrier. Based in Shanghai with extensive domestic Chinese network.'
   },
   {
@@ -680,7 +680,7 @@ const airlines: Airline[] = [
     salaryRange: '$30,000 - $60,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Low Cost', 'Delhi Hub', 'Indias Largest'],
-    image: '/images/airline-expectations/indigo.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/indigo.jpg',
     description: 'IndiGo is Indias largest airline by passengers. Fast-growing low-cost carrier with extensive domestic and international network.'
   },
   {
@@ -690,7 +690,7 @@ const airlines: Airline[] = [
     salaryRange: '$40,000 - $75,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Mumbai Hub', 'Star Alliance', 'Historic Carrier'],
-    image: '/images/airline-expectations/air-india.png',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/air-india.png',
     description: 'Air India is Indias flag carrier now part of Tata Group. Star Alliance member with extensive international network from Mumbai and Delhi.'
   },
   {
@@ -700,7 +700,7 @@ const airlines: Airline[] = [
     salaryRange: '$25,000 - $50,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Low Cost', 'Delhi Hub', 'Budget Carrier'],
-    image: '/images/airline-expectations/spicejet.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/spicejet.jpg',
     description: 'SpiceJet is one of Indias leading low-cost carriers. Operating Boeing 737s across extensive Indian domestic network.'
   },
   {
@@ -710,7 +710,7 @@ const airlines: Airline[] = [
     salaryRange: '$30,000 - $55,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Low Cost', 'Kochi Hub', 'Gulf Routes'],
-    image: '/images/airline-expectations/air-india-express.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/air-india-express.jpg',
     description: 'Air India Express serves Gulf routes from Kerala. Low-cost subsidiary connecting Indian workers to Middle East destinations.'
   },
   {
@@ -720,28 +720,8 @@ const airlines: Airline[] = [
     salaryRange: '$20,000 - $40,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Manila Hub', 'Low Cost', 'Largest Philippine LCC'],
-    image: '/images/airline-expectations/cebu-pacific.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cebu-pacific.jpg',
     description: 'Cebu Pacific is the Philippines largest low-cost carrier. Operating from Manila with extensive domestic and growing international network across Asia.'
-  },
-  {
-    id: 'airasia',
-    name: 'AirAsia',
-    location: 'Malaysia',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Kuala Lumpur Hub', 'Largest LCC Asia', 'Award Winning'],
-    image: '/images/airline-expectations/airasia-x.jpg',
-    description: 'AirAsia is Asias largest low-cost carrier by passengers. Based in Kuala Lumpur with extensive Southeast Asian network and multiple subsidiary airlines.'
-  },
-  {
-    id: 'pakistan',
-    name: 'PIA Pakistan',
-    location: 'Pakistan',
-    salaryRange: '$25,000 - $50,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Karachi Hub', 'Historic', 'Asia Routes'],
-    image: '/images/airline-expectations/pia.jpg',
-    description: 'PIA is Pakistans flag carrier with historic significance. Operating from Karachi with focus on Middle East and Asian routes.'
   },
   {
     id: 'srilankan',
@@ -750,18 +730,8 @@ const airlines: Airline[] = [
     salaryRange: '$30,000 - $60,000/year',
     flightHours: '1,500+ hrs TT',
     tags: ['Colombo Hub', 'Oneworld', 'Indian Ocean'],
-    image: '/images/airline-expectations/srilankan.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/srilankan-airlines.jpg',
     description: 'SriLankan Airlines serves as the Indian Ocean hub from Colombo. Oneworld member with excellent Asian and Middle East connections.'
-  },
-  {
-    id: 'biman',
-    name: 'Biman Bangladesh',
-    location: 'Bangladesh',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Dhaka Hub', 'National Carrier', 'Gulf Routes'],
-    image: '/images/airline-expectations/biman-bangladesh.jpg',
-    description: 'Biman Bangladesh is the national carrier of Bangladesh. Operating from Dhaka with focus on Middle East and Asian routes.'
   },
   {
     id: 'nepal',
@@ -770,493 +740,18 @@ const airlines: Airline[] = [
     salaryRange: '$20,000 - $40,000/year',
     flightHours: '1,000+ hrs TT',
     tags: ['Kathmandu Hub', 'Mountain Flying', 'Regional'],
-    image: '/images/airline-expectations/nepal.jpg',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/nepal-airlines.jpg',
     description: 'Nepal Airlines operates in challenging Himalayan terrain. Unique mountain flying experience from Kathmandu to regional destinations.'
   },
-  // Additional Middle East Airlines
   {
-    id: 'flynas',
-    name: 'Flynas',
-    location: 'Saudi Arabia',
-    salaryRange: '$40,000 - $70,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Low Cost', 'Riyadh Hub', 'Domestic Saudi'],
-    image: '/images/airline-expectations/flynas.jpg',
-    description: 'Flynas is Saudi Arabias leading low-cost carrier. Operating domestic and regional routes with growing international presence.'
-  },
-  {
-    id: 'flydubai',
-    name: 'FlyDubai',
-    location: 'UAE',
-    salaryRange: '$45,000 - $80,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Low Cost', 'Dubai Hub', 'Regional Network'],
-    image: '/images/airline-expectations/flydubai.jpg',
-    description: 'FlyDubai is Dubais low-cost carrier complementing Emirates. Extensive regional network across Middle East, Africa and Asia.'
-  },
-  {
-    id: 'airarabia',
-    name: 'Air Arabia',
-    location: 'UAE',
-    salaryRange: '$35,000 - $65,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Low Cost', 'Sharjah Hub', 'Regional LCC'],
-    image: '/images/airline-expectations/air-arabia.jpg',
-    description: 'Air Arabia is the Middle Easts largest low-cost carrier. Based in Sharjah with extensive regional and international network.'
-  },
-  {
-    id: 'oman',
-    name: 'Oman Air',
-    location: 'Oman',
-    salaryRange: '$50,000 - $90,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Muscat Hub', 'Premium Service', 'Growing Network'],
-    image: '/images/airline-expectations/oman-air.jpg',
-    description: 'Oman Air offers premium service from Muscat. Growing international network with focus on European and Asian destinations.'
-  },
-  {
-    id: 'kuwait',
-    name: 'Kuwait Airways',
-    location: 'Kuwait',
-    salaryRange: '$45,000 - $85,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Kuwait Hub', 'National Carrier', 'Regional'],
-    image: '/images/airline-expectations/kuwait-airways.jpg',
-    description: 'Kuwait Airways is the national carrier of Kuwait. Operating from Kuwait City with regional and international network.'
-  },
-  {
-    id: 'gulf',
-    name: 'Gulf Air',
-    location: 'Bahrain',
-    salaryRange: '$40,000 - $75,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Bahrain Hub', 'Historic', 'Middle East'],
-    image: '/images/airline-expectations/gulf-air.jpg',
-    description: 'Gulf Air is Bahrainis national carrier. One of the regions oldest airlines with strong European and Asian connections.'
-  },
-  // Additional American Airlines
-  {
-    id: 'frontier',
-    name: 'Frontier Airlines',
-    location: 'United States',
-    salaryRange: '$35,000 - $70,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Denver Hub', 'Domestic US'],
-    image: '/images/airline-expectations/frontier.jpg',
-    description: 'Frontier is an ultra low-cost carrier based in Denver. Extensive domestic US network with Airbus A320 family aircraft.'
-  },
-  {
-    id: 'spirit',
-    name: 'Spirit Airlines',
-    location: 'United States',
-    salaryRange: '$35,000 - $70,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Fort Lauderdale', 'Domestic US'],
-    image: '/images/airline-expectations/spirit.jpg',
-    description: 'Spirit is the largest ultra low-cost carrier in the US. Based in Fort Lauderdale with extensive domestic and Latin American network.'
-  },
-  {
-    id: 'allegiant',
-    name: 'Allegiant Air',
-    location: 'United States',
-    salaryRange: '$40,000 - $75,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Las Vegas', 'Leisure Focus'],
-    image: '/images/airline-expectations/allegiant.jpg',
-    description: 'Allegiant specializes in leisure travel from underserved cities. Unique business model connecting small cities to vacation destinations.'
-  },
-  {
-    id: 'hawaiian',
-    name: 'Hawaiian Airlines',
-    location: 'United States',
-    salaryRange: '$50,000 - $95,000/year',
-    flightHours: '1,200+ hrs TT',
-    tags: ['Honolulu Hub', 'Pacific Network', 'Island Flying'],
-    image: '/images/airline-expectations/hawaiian.jpg',
-    description: 'Hawaiian Airlines is Hawaiis flagship carrier. Unique island-hopping operations combined with long-haul Pacific and US mainland routes.'
-  },
-  {
-    id: 'sun',
-    name: 'Sun Country',
-    location: 'United States',
-    salaryRange: '$35,000 - $70,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Low Cost', 'Minneapolis', 'Seasonal'],
-    image: '/images/airline-expectations/sun.jpg',
-    description: 'Sun Country operates from Minneapolis with seasonal focus. Low-cost leisure carrier serving vacation destinations across Americas.'
-  },
-  {
-    id: 'silver',
-    name: 'Silver Airways',
-    location: 'United States',
-    salaryRange: '$30,000 - $55,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Regional', 'Florida', 'Caribbean Routes'],
-    image: '/images/airline-expectations/silver.jpg',
-    description: 'Silver Airways connects Florida to Caribbean and Bahamas. Regional turboprop operations with ATR aircraft.'
-  },
-  {
-    id: 'cape',
-    name: 'Cape Air',
-    location: 'United States',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '500+ hrs TT',
-    tags: ['Regional', 'New England', 'Island Routes'],
-    image: '/images/airline-expectations/cape.jpg',
-    description: 'Cape Air serves New England islands and regional routes. Turboprop and small aircraft operations with unique coastal flying.'
-  },
-  {
-    id: 'porter',
-    name: 'Porter Airlines',
-    location: 'Canada',
-    salaryRange: '$35,000 - $65,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Regional', 'Toronto Island', 'Premium Service'],
-    image: '/images/airline-expectations/porter.jpg',
-    description: 'Porter operates from Toronto Island Airport with premium service. Growing jet fleet serving Canadian and US destinations.'
-  },
-  {
-    id: 'flair',
-    name: 'Flair Airlines',
-    location: 'Canada',
-    salaryRange: '$30,000 - $55,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Edmonton', 'Domestic Canada'],
-    image: '/images/airline-expectations/flair.jpg',
-    description: 'Flair is Canadas ultra low-cost carrier. Growing domestic Canadian network with competitive pricing and expanding fleet.'
-  },
-  {
-    id: 'swoop',
-    name: 'Swoop',
-    location: 'Canada',
-    salaryRange: '$30,000 - $55,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Hamilton', 'WestJet Subsidiary'],
-    image: '/images/airline-expectations/swoop.jpg',
-    description: 'Swoop is WestJets ultra low-cost subsidiary. Operating from Hamilton with domestic Canadian and US sun destinations.'
-  },
-  // Additional Latin American Airlines
-  {
-    id: 'azul',
-    name: 'Azul Brazilian',
-    location: 'Brazil',
-    salaryRange: '$35,000 - $65,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Low Cost', 'Campinas Hub', 'Domestic Brazil'],
-    image: '/images/airline-expectations/azul.jpg',
-    description: 'Azul is Brazils largest airline by destinations. Low-cost model with extensive domestic network from Campinas Viracopos.'
-  },
-  {
-    id: 'interjet',
-    name: 'Interjet',
-    location: 'Mexico',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Low Cost', 'Mexico City', 'Sukhoi Fleet'],
-    image: '/images/airline-expectations/interjet.jpg',
-    description: 'Interjet was Mexicos low-cost carrier with Russian Sukhoi fleet. Currently restructuring with plans for future growth.'
-  },
-  {
-    id: 'volaris',
-    name: 'Volaris',
-    location: 'Mexico',
-    salaryRange: '$30,000 - $55,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Guadalajara', 'Domestic Mexico'],
-    image: '/images/airline-expectations/volaris.jpg',
-    description: 'Volaris is Mexicos largest ultra low-cost carrier. Extensive domestic Mexican network with growing US operations.'
-  },
-  {
-    id: 'vivaaerobus',
-    name: 'VivaAerobus',
-    location: 'Mexico',
-    salaryRange: '$25,000 - $50,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Monterrey', 'Domestic Mexico'],
-    image: '/images/airline-expectations/vivaaerobus.jpg',
-    description: 'VivaAerobus operates from Monterrey with ultra low-cost model. Growing domestic Mexican and US border city network.'
-  },
-  {
-    id: 'jetsmart',
-    name: 'JetSMART',
-    location: 'Chile',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Santiago', 'South America'],
-    image: '/images/airline-expectations/jetsmart.jpg',
-    description: 'JetSMART is Chiles ultra low-cost carrier. Indigo Partners backed airline with growing South American network.'
-  },
-  {
-    id: 'sky',
-    name: 'Sky Airline',
-    location: 'Chile',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Low Cost', 'Santiago', 'Regional Chile'],
-    image: '/images/airline-expectations/sky.jpg',
-    description: 'Sky Airline is Chiles second largest low-cost carrier. Operating Airbus A320neo aircraft across Chile and neighboring countries.'
-  },
-  {
-    id: 'boacolombia',
-    name: 'Viva Air Colombia',
-    location: 'Colombia',
-    salaryRange: '$20,000 - $40,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Ultra Low Cost', 'Medellin', 'Domestic Colombia'],
-    image: '/images/airline-expectations/boacolombia.jpg',
-    description: 'Viva Air Colombia operates ultra low-cost model from Medellin. Domestic Colombian network with competitive pricing.'
-  },
-  {
-    id: 'easyfly',
-    name: 'EasyFly',
-    location: 'Colombia',
-    salaryRange: '$20,000 - $35,000/year',
-    flightHours: '500+ hrs TT',
-    tags: ['Regional', 'Bogota', 'Turboprop'],
-    image: '/images/airline-expectations/easyfly.jpg',
-    description: 'EasyFly serves regional Colombian routes with turboprops. Connecting smaller cities to major hubs across Colombia.'
-  },
-  {
-    id: 'satena',
-    name: 'Satena',
-    location: 'Colombia',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Regional', 'Bogota', 'Government Owned'],
-    image: '/images/airline-expectations/satena.jpg',
-    description: 'Satena is Colombias government regional airline. Serving remote and underserved areas with essential air connectivity.'
-  },
-  // Additional African Airlines
-  {
-    id: 'kenya',
-    name: 'Kenya Airways',
-    location: 'Kenya',
-    salaryRange: '$30,000 - $60,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Nairobi Hub', 'Skyteam', 'East Africa'],
-    image: '/images/airline-expectations/kenya.jpg',
-    description: 'Kenya Airways is East Africas leading carrier. Skyteam member with hub in Nairobi connecting Africa to the world.'
-  },
-  {
-    id: 'rwandair',
-    name: 'RwandAir',
-    location: 'Rwanda',
-    salaryRange: '$25,000 - $50,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Kigali Hub', 'Growing', 'East Africa'],
-    image: '/images/airline-expectations/rwandair.jpg',
-    description: 'RwandAir is one of Africas fastest-growing airlines. Modern fleet with expanding African and international network from Kigali.'
-  },
-  {
-    id: 'airmauritius',
-    name: 'Air Mauritius',
-    location: 'Mauritius',
-    salaryRange: '$35,000 - $65,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Mauritius Hub', 'Island Paradise', 'Indian Ocean'],
-    image: '/images/airline-expectations/airmauritius.jpg',
-    description: 'Air Mauritius serves the island paradise of Mauritius. Connecting Indian Ocean gem to Europe, Asia and Africa.'
-  },
-  {
-    id: 'airseychelles',
-    name: 'Air Seychelles',
-    location: 'Seychelles',
-    salaryRange: '$30,000 - $55,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Seychelles Hub', 'Island Carrier', 'Indian Ocean'],
-    image: '/images/airline-expectations/airseychelles.jpg',
-    description: 'Air Seychelles operates from the stunning Seychelles islands. Connecting this tropical paradise to international destinations.'
-  },
-  {
-    id: 'lam',
-    name: 'LAM Mozambique',
-    location: 'Mozambique',
-    salaryRange: '$20,000 - $40,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Maputo Hub', 'National Carrier', 'Southern Africa'],
-    image: '/images/airline-expectations/lam.jpg',
-    description: 'LAM is Mozambiques national carrier. Operating from Maputo with regional African routes and domestic network.'
-  },
-  {
-    id: 'airnamibia',
-    name: 'Air Namibia',
-    location: 'Namibia',
+    id: 'biman',
+    name: 'Biman Bangladesh',
+    location: 'Bangladesh',
     salaryRange: '$25,000 - $45,000/year',
     flightHours: '1,500+ hrs TT',
-    tags: ['Windhoek Hub', 'National Carrier', 'Southwest Africa'],
-    image: '/images/airline-expectations/airnamibia.jpg',
-    description: 'Air Namibia connects the vast landscapes of Namibia. Operating from Windhoek with European and African routes.'
-  },
-  {
-    id: 'botswana',
-    name: 'Air Botswana',
-    location: 'Botswana',
-    salaryRange: '$20,000 - $40,000/year',
-    flightHours: '1,200+ hrs TT',
-    tags: ['Gaborone Hub', 'National Carrier', 'Botswana'],
-    image: '/images/airline-expectations/botswana.jpg',
-    description: 'Air Botswana is the national carrier of Botswana. Operating from Gaborone with regional African routes.'
-  },
-  {
-    id: 'zambia',
-    name: 'Zambia Airways',
-    location: 'Zambia',
-    salaryRange: '$20,000 - $35,000/year',
-    flightHours: '1,200+ hrs TT',
-    tags: ['Lusaka Hub', 'National Carrier', 'Zambia'],
-    image: '/images/airline-expectations/zambia.jpg',
-    description: 'Zambia Airways is the revitalized national carrier of Zambia. Operating from Lusaka with regional and international ambitions.'
-  },
-  {
-    id: 'airtanzania',
-    name: 'Air Tanzania',
-    location: 'Tanzania',
-    salaryRange: '$20,000 - $35,000/year',
-    flightHours: '1,200+ hrs TT',
-    tags: ['Dar es Salaam', 'National Carrier', 'East Africa'],
-    image: '/images/airline-expectations/airtanzania.jpg',
-    description: 'Air Tanzania is the national carrier of Tanzania. Operating from Dar es Salaam with growing African network.'
-  },
-  {
-    id: 'ulend',
-    name: 'Uganda Airlines',
-    location: 'Uganda',
-    salaryRange: '$20,000 - $35,000/year',
-    flightHours: '1,200+ hrs TT',
-    tags: ['Entebbe Hub', 'National Carrier', 'East Africa'],
-    image: '/images/airline-expectations/ulend.jpg',
-    description: 'Uganda Airlines is the revived national carrier of Uganda. Operating from Entebbe with modern Airbus fleet and regional network.'
-  },
-  {
-    id: 'malawian',
-    name: 'Malawi Airlines',
-    location: 'Malawi',
-    salaryRange: '$15,000 - $30,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Lilongwe Hub', 'Regional', 'East Africa'],
-    image: '/images/airline-expectations/malawian.jpg',
-    description: 'Malawi Airlines serves the warm heart of Africa. Operating from Lilongwe with regional East African routes.'
-  },
-  // Additional Oceanian Airlines
-  {
-    id: 'airnz',
-    name: 'Air New Zealand',
-    location: 'New Zealand',
-    salaryRange: '$55,000 - $100,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Auckland Hub', 'Star Alliance', 'Pacific Network'],
-    image: '/images/airline-expectations/airnz.jpg',
-    description: 'Air New Zealand is consistently rated worlds best airline. Operating from Auckland with extensive Pacific and long-haul network.'
-  },
-  {
-    id: 'fiji',
-    name: 'Fiji Airways',
-    location: 'Fiji',
-    salaryRange: '$35,000 - $65,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Nadi Hub', 'Oneworld Connect', 'South Pacific'],
-    image: '/images/airline-expectations/fiji.jpg',
-    description: 'Fiji Airways serves as the gateway to the South Pacific. Oneworld Connect partner with modern Airbus A350 fleet.'
-  },
-  {
-    id: 'aircalin',
-    name: 'Aircalin',
-    location: 'New Caledonia',
-    salaryRange: '$35,000 - $65,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Noumea Hub', 'French Pacific', 'Regional'],
-    image: '/images/airline-expectations/aircalin.jpg',
-    description: 'Aircalin is New Caledonias international airline. Connecting French Pacific territory to Australia, New Zealand and Asia.'
-  },
-  {
-    id: 'polynesian',
-    name: 'Air Tahiti',
-    location: 'French Polynesia',
-    salaryRange: '$30,000 - $55,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Papeete Hub', 'Island Network', 'French Polynesia'],
-    image: '/images/airline-expectations/polynesian.jpg',
-    description: 'Air Tahiti operates the stunning inter-island network of French Polynesia. Turboprop operations connecting paradise islands.'
-  },
-  {
-    id: 'tahitinui',
-    name: 'Air Tahiti Nui',
-    location: 'French Polynesia',
-    salaryRange: '$40,000 - $75,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Papeete Hub', 'Long Haul', 'Boeing 787'],
-    image: '/images/airline-expectations/air-tahiti-nui.jpg',
-    description: 'Air Tahiti Nui connects Tahiti to the world. Operating Boeing 787 Dreamliners on long-haul routes to Paris, Tokyo and Los Angeles.'
-  },
-  {
-    id: 'samoa',
-    name: 'Samoa Airways',
-    location: 'Samoa',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Apia Hub', 'South Pacific', 'Regional'],
-    image: '/images/airline-expectations/samoa-airways.jpg',
-    description: 'Samoa Airways serves the Polynesian nation of Samoa. Operating from Apia with connections to New Zealand and Australia.'
-  },
-  {
-    id: 'tonga',
-    name: 'Real Tonga',
-    location: 'Tonga',
-    salaryRange: '$20,000 - $35,000/year',
-    flightHours: '500+ hrs TT',
-    tags: ['Nuku alofa', 'Domestic', 'Tonga'],
-    image: '/images/airline-expectations/real-tonga.jpg',
-    description: 'Real Tonga operates domestic services in the Kingdom of Tonga. Connecting Tongatapu to outer islands across the archipelago.'
-  },
-  {
-    id: 'vanuatu',
-    name: 'Air Vanuatu',
-    location: 'Vanuatu',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Port Vila', 'Vanuatu', 'South Pacific'],
-    image: '/images/airline-expectations/air-vanuatu.jpg',
-    description: 'Air Vanuatu serves the island nation of Vanuatu. Operating from Port Vila with international and domestic network.'
-  },
-  {
-    id: 'solomons',
-    name: 'Solomon Airlines',
-    location: 'Solomon Islands',
-    salaryRange: '$20,000 - $40,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Honiara Hub', 'Solomon Islands', 'Regional'],
-    image: '/images/airline-expectations/solomon-airlines.jpg',
-    description: 'Solomon Airlines connects the Solomon Islands. Operating from Honiara with regional Pacific routes.'
-  },
-  {
-    id: 'png',
-    name: 'Air Niugini',
-    location: 'Papua New Guinea',
-    salaryRange: '$25,000 - $45,000/year',
-    flightHours: '1,500+ hrs TT',
-    tags: ['Port Moresby', 'PNG', 'Pacific Network'],
-    image: '/images/airline-expectations/air-niugini.jpg',
-    description: 'Air Niugini is Papua New Guineas national carrier. Operating from Port Moresby with challenging terrain operations.'
-  },
-  {
-    id: 'nauru',
-    name: 'Nauru Airlines',
-    location: 'Nauru',
-    salaryRange: '$20,000 - $35,000/year',
-    flightHours: '1,000+ hrs TT',
-    tags: ['Yaren Hub', 'Pacific Island', 'Regional'],
-    image: '/images/airline-expectations/nauru-airlines.jpg',
-    description: 'Nauru Airlines serves the worlds smallest island nation. Connecting Nauru to Australia and Pacific islands.'
-  },
-  {
-    id: 'kiribati',
-    name: 'Air Kiribati',
-    location: 'Kiribati',
-    salaryRange: '$15,000 - $30,000/year',
-    flightHours: '500+ hrs TT',
-    tags: ['Tarawa Hub', 'Pacific Island', 'Domestic'],
-    image: '/images/airline-expectations/air-kiribati.jpg',
-    description: 'Air Kiribati serves the scattered islands of Kiribati. Essential air service connecting atolls across the equatorial Pacific.'
+    tags: ['Dhaka Hub', 'National Carrier', 'Gulf Routes'],
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/bangladesh-biman.jpg',
+    description: 'Biman Bangladesh is the national carrier of Bangladesh. Operating from Dhaka with focus on Middle East and Asian routes.'
   }
 ];
 
