@@ -237,7 +237,6 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                         </div>
                     </div>
                 </div>
-            </div>
 
             {/* Readable Content */}
             <div className="py-12 px-6 max-w-6xl mx-auto space-y-16">
