@@ -1702,6 +1702,19 @@ const GridCard: React.FC<GridCardProps> = ({
                                     View
                                 </button>
                             )}
+                            {/* Glassy button for pathway-specific cards */}
+                            {['cargo', 'charter', 'cadet', 'air-taxi'].includes(card.id) && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onClick();
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    {isLoggedIn ? 'Access' : 'Learn More'}
+                                </button>
+                            )}
                         </div>
                         {/* Hide subtitle for discover card when logged out and hovered, or for second image when logged in */}
                         {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
