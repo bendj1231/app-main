@@ -3,6 +3,7 @@ import { ArrowLeft, Target, Users, Brain, Award, CheckCircle2, Briefcase, Shield
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
+import { AirlineExpectationsCarousel } from './AirlineExpectationsCarousel';
 
 interface Airline {
   id: string;
@@ -137,6 +138,9 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                     </RevealOnScroll>
                 </div>
             </div>
+
+            {/* Airline Expectations Carousel */}
+            <AirlineExpectationsCarousel onNavigate={onNavigate} onLogin={onLogin} />
 
             {/* Selected Airline Hero Section - Netflix-style */}
             {selectedAirline && (
