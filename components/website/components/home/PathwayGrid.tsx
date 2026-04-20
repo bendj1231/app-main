@@ -1743,7 +1743,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                             e.stopPropagation();
                                             onClick();
                                         }}
-                                        className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs font-medium hover:bg-white/30 transition-all duration-300 shadow-lg flex-shrink-0"
+                                        className="px-3 py-1 bg-white/30 backdrop-blur-md border-2 border-white/40 rounded-full text-white text-xs font-bold hover:bg-white/40 transition-all duration-300 shadow-xl flex-shrink-0"
                                     >
                                         {isLoggedIn ? 'Access' : 'Learn More'}
                                     </button>
