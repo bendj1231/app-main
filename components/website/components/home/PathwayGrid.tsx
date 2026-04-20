@@ -234,7 +234,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'cargo',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/f_auto,q_auto,w_800/pathways/cargo-operations.png',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/pathways/cargo-operations.png',
             title: 'Cargo Operations',
             subtitle: 'Freight, logistics, and global supply chain aviation roles',
             icon: Briefcase,
@@ -243,7 +243,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'charter',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689902/f_auto,q_auto,w_800/pathways/private-charter.jpg',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689902/pathways/private-charter.jpg',
             title: 'Private Charter',
             subtitle: 'Business aviation and private jet operations worldwide',
             icon: Users,
@@ -252,7 +252,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'cadet',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776690048/f_auto,q_auto,w_800/pathways/cadet-programs.jpg',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776690048/pathways/cadet-programs.jpg',
             title: 'Cadet Programs',
             subtitle: 'Structured training pathways from zero to airline-ready',
             icon: GraduationCap,
@@ -261,7 +261,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'air-taxi',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689980/f_auto,q_auto,w_800/pathways/air-taxi-evtol.jpg',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689980/pathways/air-taxi-evtol.jpg',
             title: 'Air Taxi & eVTOL',
             subtitle: 'Urban air mobility and next-generation aviation',
             icon: Zap,
