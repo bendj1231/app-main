@@ -1276,7 +1276,9 @@ const GridCard: React.FC<GridCardProps> = ({
         ? card.enrolledImages
         : shouldUseLoggedInCarousel
             ? card.loggedInImages
-            : card.images;
+            : (card.id === 'discover' && isLoggedIn)
+                ? [card.loggedInImage || card.image]
+                : card.images;
 
     // Determine which single image to use (not carousel)
     const displayImage = isEnrolledInFoundation && card.enrolledImage
@@ -1493,16 +1495,11 @@ const GridCard: React.FC<GridCardProps> = ({
                         </div>
                     ) : card.id === 'discover' && isLoggedIn ? (
                         // Discover card when logged in - use single image without carousel
-                        (() => {
-                            console.log('🔵 Discover card logged in condition triggered:', { cardId: card.id, isLoggedIn });
-                            return (
-                                <img
-                                    src="/images/foundational-program.png"
-                                    alt={card.title}
-                                    className="w-full h-full object-cover object-center"
-                                />
-                            );
-                        })()
+                        <img
+                            src="/images/foundational-program.png"
+                            alt={card.title}
+                            className="w-full h-full object-cover object-center"
+                        />
                     ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) ? (
                         // Member Journey Animation (only when not logged in)
                         <MemberJourneyAnimation />
