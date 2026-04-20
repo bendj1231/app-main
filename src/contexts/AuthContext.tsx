@@ -673,11 +673,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function loginWithOAuth(provider: 'google' | 'apple' | 'github') {
         try {
-            console.log(`[${provider} OAuth] Starting OAuth with Supabase default redirect URI`);
+            const redirectUri = `${window.location.origin}/auth/callback`;
+            console.log(`[${provider} OAuth] Starting OAuth with redirect URI:`, redirectUri);
 
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider,
                 options: {
+                    redirectTo: redirectUri,
                     queryParams: {
                         access_type: 'offline',
                         prompt: 'consent',
@@ -696,8 +698,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             // Extract redirect_uri from the URL for debugging
             try {
                 const urlObj = new URL(data.url);
-                const redirectUri = urlObj.searchParams.get('redirect_uri');
-                console.log(`[${provider} OAuth] redirect_uri parameter:`, redirectUri);
+                const redirectUriParam = urlObj.searchParams.get('redirect_uri');
+                console.log(`[${provider} OAuth] redirect_uri parameter:`, redirectUriParam);
             } catch (e) {
                 console.error(`[${provider} OAuth] Failed to parse redirect URL:`, e);
             }
