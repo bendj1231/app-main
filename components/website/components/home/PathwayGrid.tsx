@@ -234,7 +234,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'cargo',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/pathways/cargo-operations.png',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/c_fill,w_800,h_600,g_center/v1776689839/pathways/cargo-operations.png',
             title: 'Cargo Operations',
             subtitle: 'Freight, logistics, and global supply chain aviation roles',
             icon: Briefcase,

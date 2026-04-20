@@ -38,7 +38,7 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
             <div className="py-12 px-6 max-w-6xl mx-auto space-y-16">
 
                 {/* Section 1: The Cargo Sector */}
-                <div className="flex flex-col items-center gap-2 md:gap-4">
+                <div className="flex flex-col items-center gap-10 md:gap-16">
                     <div className="w-full text-center">
                         <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
                             The Cargo Advantage
@@ -55,7 +55,7 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
                     </div>
                     <div className="w-full max-w-4xl">
                         <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/pathways/cargo-operations.png"
+                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/f_auto,q_auto,w_1200/pathways/cargo-operations.png"
                             alt="Cargo Aircraft Operations"
                             className="w-full h-auto rounded-2xl shadow-xl"
                         />
