@@ -1268,12 +1268,19 @@ const GridCard: React.FC<GridCardProps> = ({
     const shouldUseLoggedInCarousel = isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn && card.loggedInImages;
     
     // Get the images array to use for carousel
-    const carouselImages = shouldUseEnrolledCarousel 
-        ? card.enrolledImages 
-        : shouldUseLoggedInCarousel 
-            ? card.loggedInImages 
+    const carouselImages = shouldUseEnrolledCarousel
+        ? card.enrolledImages
+        : shouldUseLoggedInCarousel
+            ? card.loggedInImages
             : card.images;
-    
+
+    // Determine which single image to use (not carousel)
+    const displayImage = isEnrolledInFoundation && card.enrolledImage
+        ? card.enrolledImage
+        : isLoggedIn && !isEnrolledInFoundation && card.loggedInImage
+            ? card.loggedInImage
+            : card.image;
+
     // For discover card, respect the isCarouselWhenLoggedIn flag
     const shouldUseCarousel = (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn)
         ? !!carouselImages
@@ -1556,10 +1563,10 @@ const GridCard: React.FC<GridCardProps> = ({
                                 ))}
                             </div>
                         </div>
-                    ) : card.image || currentImage ? (
+                    ) : displayImage || currentImage ? (
                         // Single image
-                        <img 
-                            src={currentImage || card.image} 
+                        <img
+                            src={currentImage || displayImage}
                             alt={card.title}
                             style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : 'center' }}
                             className={`
