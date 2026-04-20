@@ -691,6 +691,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
 
             console.log(`[${provider} OAuth] OAuth initiated, redirect URL:`, data.url);
+            console.log(`[${provider} OAuth] Extracting redirect_uri from URL...`);
+
+            // Extract redirect_uri from the URL for debugging
+            try {
+                const urlObj = new URL(data.url);
+                const redirectUri = urlObj.searchParams.get('redirect_uri');
+                console.log(`[${provider} OAuth] redirect_uri parameter:`, redirectUri);
+            } catch (e) {
+                console.error(`[${provider} OAuth] Failed to parse redirect URL:`, e);
+            }
+
             // OAuth will redirect, so we don't need to set state here
             // The auth state change listener will handle the session
             return data;
