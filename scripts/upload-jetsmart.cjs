@@ -12,8 +12,8 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://cdn.airlineratings.com/media/343d5df3-3dbf-4881-8280-eb5b5c4533b8.png';
-  const tempPath = path.join(__dirname, '../temp-jetsmart.png');
+  const url = 'https://flyinginireland.com/wp-content/uploads/2022/06/JetSMART-A320-1.jpeg';
+  const tempPath = path.join(__dirname, '../temp-jetsmart.jpg');
   const publicId = 'jetsmart';
 
   console.log(`📥 Downloading JetSmart image from ${url}...`);
