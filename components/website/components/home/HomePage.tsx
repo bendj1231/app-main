@@ -717,6 +717,44 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* Gradient Fade Below Shader - After Discover More */}
             <div className="relative w-full h-32 bg-gradient-to-b from-transparent via-slate-200/50 to-white z-40 pointer-events-none -mt-32"></div>
 
+            {/* About Us section - Moved above iPad section */}
+            <div className="relative bg-white pt-24 pb-12 px-6">
+                <div className="max-w-6xl mx-auto text-center relative z-20">
+                    <RevealOnScroll delay={100}>
+                        <img
+                            src={IMAGES.LOGO}
+                            alt="WingMentor Logo"
+                            className="mx-auto w-48 md:w-64 h-auto object-contain mb-8 opacity-90"
+                        />
+                        <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
+                            ABOUT US
+                        </p>
+                        <h2 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
+                            Industry-First Accredited Pilot Experience & Recognition Programs
+                        </h2>
+                        <p className="text-xl font-medium tracking-wide text-slate-700 italic mb-10">
+                            Bridging the Gap Between License and Career
+                        </p>
+
+                        <div className="max-w-4xl mx-auto space-y-8 mb-12">
+                            <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+                                WingMentor is the aviation industry's first Competency Assurance Network, designed to solve the critical "experience gap" in the modern pilot market. We are connecting all pilots, whether you are a low-timer pilot looking for pathways, a seasoned instructor looking for evolution in their current career, or a time-constrained airline captain looking for opportunities. We are speaking in direct relation with various Airlines, manufacturers, emerging air taxis, and many more. Making the connection between pilot & Industry Expectations, demands & Pilot Recognition easier like never before.
+                            </p>
+                            <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+                                Through our proprietary Verified Pilot Database and ATLAS-compliant profiling, we transform raw flight hours into data-driven professional competencies recognized by manufacturers and recruiters. By facilitating direct access to industry veterans and "hidden" job markets, WingMentor ensures that pilots don't just graduate—they transition seamlessly into the cockpit with the insights, network, and credibility the industry demands.
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={() => onNavigate('accreditation')}
+                            className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group"
+                        >
+                            LEARN MORE ABOUT OUR ACCREDITATIONS AND SUPPORT PROVIDED <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                    </RevealOnScroll>
+                </div>
+            </div>
+
             {/* Pilot Journey Scroll Animation - iPad/Tablet Section */}
             <PilotJourneyScroll onNavigate={onNavigate} />
 
@@ -1282,44 +1320,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     ))}
                                 </div>
                             </div>
-                        </RevealOnScroll>
-                    </div>
-                </div>
-
-                {/* About Us section - Restored */}
-                <div className="relative bg-white pt-24 pb-12 px-6">
-                    <div className="max-w-6xl mx-auto text-center relative z-20">
-                        <RevealOnScroll delay={100}>
-                            <img
-                                src={IMAGES.LOGO}
-                                alt="WingMentor Logo"
-                                className="mx-auto w-48 md:w-64 h-auto object-contain mb-8 opacity-90"
-                            />
-                            <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
-                                ABOUT US
-                            </p>
-                            <h2 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
-                                Industry-First Accredited Pilot Experience & Recognition Programs
-                            </h2>
-                            <p className="text-xl font-medium tracking-wide text-slate-700 italic mb-10">
-                                Bridging the Gap Between License and Career
-                            </p>
-
-                            <div className="max-w-4xl mx-auto space-y-8 mb-12">
-                                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                                    WingMentor is the aviation industry's first Competency Assurance Network, designed to solve the critical "experience gap" in the modern pilot market. We are connecting all pilots, whether you are a low-timer pilot looking for pathways, a seasoned instructor looking for evolution in their current career, or a time-constrained airline captain looking for opportunities. We are speaking in direct relation with various Airlines, manufacturers, emerging air taxis, and many more. Making the connection between pilot & Industry Expectations, demands & Pilot Recognition easier like never before.
-                                </p>
-                                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                                    Through our proprietary Verified Pilot Database and ATLAS-compliant profiling, we transform raw flight hours into data-driven professional competencies recognized by manufacturers and recruiters. By facilitating direct access to industry veterans and "hidden" job markets, WingMentor ensures that pilots don't just graduate—they transition seamlessly into the cockpit with the insights, network, and credibility the industry demands.
-                                </p>
-                            </div>
-
-                            <button
-                                onClick={() => onNavigate('accreditation')}
-                                className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group"
-                            >
-                                LEARN MORE ABOUT OUR ACCREDITATIONS AND SUPPORT PROVIDED <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </button>
                         </RevealOnScroll>
                     </div>
                 </div>
