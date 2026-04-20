@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://ttgasia.2017.ttgasia.com/wp-content/uploads/sites/2/2020/02/SriLankan-Airlines.jpg';
+  const url = 'https://etimg.etb2bimg.com/photo/90908830.cms';
   const tempPath = path.join(__dirname, '../temp-srilankan-airlines.jpg');
   const publicId = 'srilankan-airlines';
 
