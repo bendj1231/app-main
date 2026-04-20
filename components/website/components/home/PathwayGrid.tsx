@@ -1491,10 +1491,10 @@ const GridCard: React.FC<GridCardProps> = ({
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent pointer-events-none" />
                             )}
                         </div>
-                    ) : (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn) ? (
+                    ) : (card.id === 'discover' && isLoggedIn) ? (
                         // Discover card when logged in - use single image without carousel
                         <img
-                            src={card.loggedInImage || card.image}
+                            src={isEnrolledInFoundation ? card.enrolledImage : card.loggedInImage || card.image}
                             alt={card.title}
                             className="w-full h-full object-cover object-center"
                         />
