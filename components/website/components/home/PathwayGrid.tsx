@@ -1759,7 +1759,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             px-4 py-2 md:px-5 md:py-2.5 transition-all duration-300
                             ${isHovered ? 'bg-slate-300/25 border-white/35' : ''}
                         `}>
-                            <div className="flex items-center">
+                            <div className="flex items-center gap-2">
                                 <div className="flex-1 min-w-0">
                                     <h3 className="font-medium text-white text-sm md:text-base truncate tracking-wide">
                                         {displayTitle}
@@ -1768,6 +1768,19 @@ const GridCard: React.FC<GridCardProps> = ({
                                         {displaySubtitle.length > 45 ? displaySubtitle.slice(0, 42) + '...' : displaySubtitle}
                                     </p>
                                 </div>
+                                {/* Glassy button for pathway-specific cards in small cards */}
+                                {['cargo', 'charter', 'cadet', 'air-taxi'].includes(card.id) && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            onClick();
+                                        }}
+                                        className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs font-medium hover:bg-white/30 transition-all duration-300 shadow-lg flex-shrink-0"
+                                    >
+                                        {isLoggedIn ? 'Access' : 'Learn More'}
+                                    </button>
+                                )}
                             </div>
                             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                         </div>
