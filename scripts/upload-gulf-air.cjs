@@ -12,11 +12,11 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://www.travelandtourworld.com/wp-content/uploads/2025/08/LAM-2.jpg';
-  const tempPath = path.join(__dirname, '../temp-lam-mozambique.jpg');
-  const publicId = 'lam-mozambique';
+  const url = 'https://www.logisticsmiddleeast.com/2021/07/Gulf-Air_10.jpg';
+  const tempPath = path.join(__dirname, '../temp-gulf-air.jpg');
+  const publicId = 'gulf-air';
 
-  console.log(`📥 Downloading LAM Mozambique image from ${url}...`);
+  console.log(`📥 Downloading Gulf Air image from ${url}...`);
 
   try {
     // Download the file
@@ -77,5 +77,5 @@ async function downloadAndUpload() {
 }
 
 downloadAndUpload()
-  .then(() => console.log('\n✅ LAM Mozambique image uploaded successfully!'))
+  .then(() => console.log('\n✅ Gulf Air image uploaded successfully!'))
   .catch((error) => console.error('\n❌ Failed:', error.message));
