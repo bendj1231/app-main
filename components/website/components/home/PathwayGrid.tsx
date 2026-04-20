@@ -1576,7 +1576,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : 'center' }}
                             className={`
                                 w-full h-full object-cover
-                                ${isHovered ? 'scale-110' : ''}
+                                ${isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}
                             `}
                         />
                     ) : null}
