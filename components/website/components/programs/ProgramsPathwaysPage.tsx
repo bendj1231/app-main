@@ -103,6 +103,14 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
             bg: "bg-indigo-50"
         },
         {
+            title: "Digital Flight Logbook",
+            desc: "View your complete collection of licenses, flight hours, certifications, and professional milestones. Our digital logbook provides live tracking of your hours where every hour contributes to your Pilot Recognition Score, transforming your logbook into a meaningful career development tool.",
+            target: "digital-logbook-directory",
+            icon: FileText,
+            color: "text-green-600",
+            bg: "bg-green-50"
+        },
+        {
             title: "ATLAS CV Systems",
             desc: "Modernizing pilot profiles to meet manufacturer and recruiter data-driven standards. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> and <strong>AI-powered pathway matching</strong> system provide pilots with cutting-edge tools for career advancement.",
             target: "atlas-cv",
