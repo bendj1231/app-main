@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -8,6 +8,11 @@ import { PilotLicensureExperiencePage } from './PilotLicensureExperiencePage';
 interface PilotRecognitionProfilePageProps {
     onNavigate: (page: string) => void;
     onBack?: () => void;
+}
+
+interface RecognitionScore {
+    totalRecognition: number;
+    breakdown?: any;
 }
 
 const CategorySection: React.FC<{ title: string; description?: string; children: React.ReactNode }> = ({ title, description, children }) => (
@@ -40,6 +45,39 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [deletingAccount, setDeletingAccount] = useState(false);
     const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
     const [advancedMetricsOpen, setAdvancedMetricsOpen] = useState<'B' | 'L' | 'S' | null>(null);
+    const [recognitionScore, setRecognitionScore] = useState<RecognitionScore | null>(null);
+    const [loadingScore, setLoadingScore] = useState(false);
+    const [scoreError, setScoreError] = useState<string | null>(null);
+
+    // Fetch recognition score from Firebase function
+    useEffect(() => {
+        const fetchRecognitionScore = async () => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user?.id) {
+                    setLoadingScore(true);
+                    setScoreError(null);
+                    const response = await fetch(
+                        `https://us-central1-pilotrecognition-recognition.cloudfunctions.net/calculateRecognitionProfile?userId=${user.id}&useBasicFormula=false`
+                    );
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        setScoreError(data.error);
+                    } else {
+                        setRecognitionScore(data);
+                    }
+                }
+            } catch (err) {
+                setScoreError('Failed to fetch recognition score');
+                console.error('Error fetching recognition score:', err);
+            } finally {
+                setLoadingScore(false);
+            }
+        };
+
+        fetchRecognitionScore();
+    }, []);
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -768,6 +806,38 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0.5rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal', textAlign: 'center' }}>
                         Pilot Profile
                     </h1>
+
+                    {/* Recognition Score Display */}
+                    <div style={{ marginTop: '1.5rem' }}>
+                        {loadingScore ? (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
+                                <Loader2 style={{ width: 24, height: 24, animation: 'spin 1s linear infinite' }} />
+                                <span style={{ color: '#64748b', fontSize: '0.875rem' }}>Loading your recognition score...</span>
+                            </div>
+                        ) : scoreError ? (
+                            <div style={{ color: '#ef4444', fontSize: '0.875rem', textAlign: 'center' }}>{scoreError}</div>
+                        ) : recognitionScore ? (
+                            <div style={{
+                                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(248, 250, 252, 0.1))',
+                                borderRadius: '16px',
+                                padding: '1.5rem',
+                                border: '1px solid rgba(59, 130, 246, 0.2)',
+                                textAlign: 'center',
+                                maxWidth: '400px',
+                                margin: '0 auto'
+                            }}>
+                                <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600, marginBottom: '0.5rem' }}>
+                                    V12 Ferrari Engine
+                                </p>
+                                <div style={{ fontSize: '3rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>
+                                    {recognitionScore.totalRecognition.toFixed(1)}%
+                                </div>
+                                <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
+                                    Recognition Score
+                                </p>
+                            </div>
+                        ) : null}
+                    </div>
                 </header>
 
                 <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem' }}>
