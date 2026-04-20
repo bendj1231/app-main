@@ -67,13 +67,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Flag to track if we've already shown the modal for this session
     const [oauthModalShown, setOauthModalShown] = useState(() => {
-        return sessionStorage.getItem('oauthModalShown') === 'true';
+        return localStorage.getItem('oauthModalShown') === 'true';
     });
 
-    // Persist oauthModalShown flag only
+    // Persist oauthModalShown flag to localStorage
     useEffect(() => {
         if (oauthModalShown) {
-            sessionStorage.setItem('oauthModalShown', 'true');
+            localStorage.setItem('oauthModalShown', 'true');
         }
     }, [oauthModalShown]);
 
@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const resetOauthAccountCheck = () => {
         setOauthAccountCheck({ checking: false, hasAccount: null });
         setOauthModalShown(false);
-        sessionStorage.removeItem('oauthModalShown');
+        localStorage.removeItem('oauthModalShown');
     };
 
     // Activity logging
@@ -973,7 +973,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setLoading(false);
                 // Reset OAuth modal flag on logout
                 setOauthModalShown(false);
-                sessionStorage.removeItem('oauthModalShown');
+                localStorage.removeItem('oauthModalShown');
             } else if (event === 'TOKEN_REFRESHED') {
                 console.log('Token refreshed');
                 // Session is still valid, no action needed
