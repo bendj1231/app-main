@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowLeft, Award, Shield, CheckCircle2, Zap, Search, UserCheck, Lock } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
+import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 
 interface PilotRecognitionPageProps {
     onBack: () => void;
@@ -15,7 +16,12 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
     onLogin
 }) => {
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'Pilot Recognition', url: '/pilot-recognition' }
+            ]} />
+            <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section */}
@@ -209,5 +215,6 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                 </div>
             </div>
         </div>
+        </>
     );
 };

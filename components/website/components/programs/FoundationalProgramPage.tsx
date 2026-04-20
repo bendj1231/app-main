@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { MentorshipLogbookAnimation } from './MentorshipLogbookAnimation';
 import { ProgramStages } from './ProgramStages';
+import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 
 interface FoundationalProgramPageProps {
     onBack: () => void;
@@ -16,7 +17,13 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
     onLogin
 }) => {
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'Programs', url: '/programs' },
+                { name: 'Foundational Program', url: '/foundational-program' }
+            ]} />
+            <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out', paddingBottom: '4rem' }}>
@@ -309,5 +316,6 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                 </button>
             </div>
         </div>
+        </>
     );
 };

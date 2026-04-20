@@ -10,6 +10,7 @@ import { IMAGES } from '../../../../src/lib/website-constants';
 import { SmokeShader } from '../../../ui/smoke-shader';
 import { SkyCloudShader } from '../../../ui/sky-cloud-shader';
 import { PathwayGrid } from './PathwayGrid';
+import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 
 interface HomePageProps {
     onJoinUs: () => void;
@@ -690,7 +691,11 @@ export const HomePage: React.FC<HomePageProps> = ({
     }, []);
 
     return (
-        <div className="relative min-h-screen font-sans bg-black overflow-x-hidden">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' }
+            ]} />
+            <div className="relative min-h-screen font-sans bg-black overflow-x-hidden">
             {/* Navigation Bar */}
             <TopNavbar
                 onNavigate={onNavigate}
@@ -1485,5 +1490,6 @@ export const HomePage: React.FC<HomePageProps> = ({
 
 
         </div>
+        </>
     );
 };

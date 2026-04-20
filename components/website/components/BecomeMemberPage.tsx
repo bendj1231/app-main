@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, ChevronDown, ChevronUp, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 
 interface BecomeMemberPageProps {
     onBack: () => void;
@@ -148,7 +149,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'Become a Member', url: '/become-member' }
+            ]} />
+            <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
             {/* Background decorative elements */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/30 rounded-full blur-[120px]" />
@@ -1250,5 +1256,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 </div>
             </div>
         </div>
+        </>
     );
 };

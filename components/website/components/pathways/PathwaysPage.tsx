@@ -3,6 +3,7 @@ import { Zap, Briefcase, Navigation, Cpu, Layers, ChevronRight } from 'lucide-re
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
+import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 
 interface PathwaysPageProps {
     onBack: () => void;
@@ -59,7 +60,12 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
     ];
 
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'Pathways', url: '/discover-pathways' }
+            ]} />
+            <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section with Hero Image */}
@@ -140,5 +146,6 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
                 </div>
             </div>
         </div>
+        </>
     );
 };

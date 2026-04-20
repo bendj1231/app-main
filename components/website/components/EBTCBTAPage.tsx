@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowLeft, GraduationCap, Brain, Users, Target, Award, CheckCircle2, Lightbulb, TrendingUp, Plane, Zap, Globe, Shield } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
+import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 
 interface EBTCBTAPageProps {
     onBack: () => void;
@@ -41,7 +42,13 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
     ];
 
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans text-left">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'Programs', url: '/programs' },
+                { name: 'EBT CBTA Programs', url: '/airbus-aligned-ebt-cbta-programs' }
+            ]} />
+            <div className="min-h-screen bg-white text-slate-900 font-sans text-left">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section */}
@@ -191,5 +198,6 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
                 </div>
             </div>
         </div>
+        </>
     );
 };

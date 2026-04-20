@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from './RevealOnScroll';
+import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 
 interface PilotGapAboutPageProps {
     onBack: () => void;
@@ -15,7 +16,13 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
     onLogin
 }) => {
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'About', url: '/about' },
+                { name: 'What is the Pilot Gap?', url: '/what-is-the-pilot-gap' }
+            ]} />
+            <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section */}
@@ -151,5 +158,6 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                 </button>
             </div>
         </div>
+        </>
     );
 };

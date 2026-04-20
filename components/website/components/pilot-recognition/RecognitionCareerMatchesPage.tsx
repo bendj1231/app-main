@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Target, Briefcase, Users, TrendingUp, CheckCircle2, Search, Award, Building2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
+import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 
 interface RecognitionCareerMatchesPageProps {
     onBack: () => void;
@@ -310,7 +311,13 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
     }, [pathwaysWithMatches]);
 
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'Pilot Recognition', url: '/pilot-recognition' },
+                { name: 'Career Matches', url: '/recognition-career-matches' }
+            ]} />
+            <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section */}
@@ -1146,5 +1153,6 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
                 </button>
             </div>
         </div>
+        </>
     );
 };

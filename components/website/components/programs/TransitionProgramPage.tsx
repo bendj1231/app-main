@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
+import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 
 interface TransitionProgramPageProps {
     onBack: () => void;
@@ -14,7 +15,13 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
     onLogin
 }) => {
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'Programs', url: '/programs' },
+                { name: 'Transition Program', url: '/transition-program' }
+            ]} />
+            <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section */}
@@ -371,5 +378,6 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                 </button>
             </div>
         </div>
+        </>
     );
 };

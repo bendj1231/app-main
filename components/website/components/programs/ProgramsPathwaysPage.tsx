@@ -2,6 +2,7 @@ import React from 'react';
 import { Shield, Target, GraduationCap, Plane, Cpu, Briefcase, Award, FileText, LayoutGrid, ChevronRight, Globe, Layers, Navigation, Zap } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
+import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 
 interface ProgramsPathwaysPageProps {
     onBack: () => void;
@@ -112,7 +113,12 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     ];
 
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans">
+        <>
+            <BreadcrumbSchema items={[
+                { name: 'Home', url: '/' },
+                { name: 'Programs & Pathways', url: '/programs' }
+            ]} />
+            <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             {/* Header Section with Hero Image */}
@@ -237,6 +243,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
                 </div>
             </div>
         </div>
+        </>
     );
 };
 
