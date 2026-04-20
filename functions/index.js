@@ -3399,6 +3399,9 @@ exports.calculateRecognitionProfile = onRequest(async (req, res) => {
     }
 
     // Ultra-Advanced Formula: R = [Σ(Pᵢ) + Σ(Eⱼ×Tₖ) + Σ(Bₗ) + Σ(Lₘ) + Σ(Sₙ)]
+    // Use normalized helper function for percentage-based scoring
+    const totalRecognition = await calculateRecognitionScore(profile, supabase);
+    const { timeDecayCoefficient } = await calculateTimeDecayLogic(profile);
 
     // Programs (P)
     const programsScore = (profile.technical_skills_score || 0) +
@@ -3408,7 +3411,6 @@ exports.calculateRecognitionProfile = onRequest(async (req, res) => {
                         (profile.simulation_score || 0);
 
     // Experience with Time Decay (E × T)
-    const { timeDecayCoefficient } = await calculateTimeDecayLogic(profile);
     const experienceScore = ((profile.total_flight_time || 0) +
                              (profile.pic_time || 0) +
                              (profile.multi_engine_time || 0) +
@@ -3438,17 +3440,15 @@ exports.calculateRecognitionProfile = onRequest(async (req, res) => {
                         (profile.skills_type_rating_diversity || 0) +
                         (profile.skills_instrument_approaches || 0);
 
-    const totalRecognition = programsScore + experienceScore + behavioralScore + languageScore + skillsScore;
-
     return res.json({
       formula: 'ultra-advanced',
-      totalRecognition: Math.round(totalRecognition * 100) / 100,
+      totalRecognition,
       breakdown: {
-        programs: Math.round(programsScore * 100) / 100,
-        experience: Math.round(experienceScore * 100) / 100,
-        behavioral: Math.round(behavioralScore * 100) / 100,
-        language: Math.round(languageScore * 100) / 100,
-        specializedSkills: Math.round(skillsScore * 100) / 100
+        programs: programsScore,
+        experience: experienceScore,
+        behavioral: behavioralScore,
+        language: languageScore,
+        specializedSkills: skillsScore
       },
       timeDecayCoefficient
     });
@@ -3569,42 +3569,223 @@ async function calculateTimeDecayLogic(profile) {
   return { timeDecayCoefficient: coefficient };
 }
 
-// Helper function for recognition score calculation
-async function calculateRecognitionScore(profile) {
+// Helper function for recognition score calculation (normalized to percentage out of 100)
+async function calculateRecognitionScore(profile, supabaseClient) {
+  const supabase = supabaseClient || createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+  // Programs (P₁-P₅): each 0-100, max 500, weight 20%
   const programsScore = (profile.technical_skills_score || 0) +
                       (profile.interview_score || 0) +
                       (profile.consultation_score || 0) +
                       (profile.examination_score || 0) +
                       (profile.simulation_score || 0);
+  const programsPercentage = Math.min(100, programsScore / 5); // Normalize to 0-100
 
+  // Experience (E₁-E₆ + Personal Data): normalized based on typical ranges, weight 20%
   const { timeDecayCoefficient } = await calculateTimeDecayLogic(profile);
-  const experienceScore = ((profile.total_flight_time || 0) +
+  
+  // Flight hours (E₁-E₆)
+  const flightHoursScore = ((profile.total_flight_time || 0) +
                            (profile.pic_time || 0) +
                            (profile.multi_engine_time || 0) +
                            (profile.turbine_time || 0) +
                            (profile.ifr_time || 0) +
                            (profile.night_time || 0)) * timeDecayCoefficient;
+  
+  // Ratings quality and quantity
+  const ratings = profile.ratings || [];
+  const ratingsCount = ratings.length;
+  const highValueRatings = ratings.filter(r => ['atpl', 'cpl', 'multi_engine', 'instrument'].includes(r?.toLowerCase?.())).length;
+  const ratingsScore = (ratingsCount * 5) + (highValueRatings * 10);
+  
+  // License validity (check expiry dates)
+  const licenseExpiry = profile.license_expiry ? new Date(profile.license_expiry) : null;
+  const medicalExpiry = profile.medical_expiry ? new Date(profile.medical_expiry) : null;
+  const now = new Date();
+  const licenseValid = licenseExpiry && licenseExpiry > now;
+  const medicalValid = medicalExpiry && medicalExpiry > now;
+  const licenseValidityScore = (licenseValid ? 20 : 0) + (medicalValid ? 20 : 0);
+  
+  // Recency (how current is the pilot - based on last_flown)
+  const lastFlown = profile.last_flown ? new Date(profile.last_flown) : null;
+  let recencyScore = 0;
+  if (lastFlown) {
+    const daysSinceLastFlight = Math.floor((now - lastFlown) / (1000 * 60 * 60 * 24));
+    if (daysSinceLastFlight <= 30) recencyScore = 30; // Very current
+    else if (daysSinceLastFlight <= 90) recencyScore = 20; // Current
+    else if (daysSinceLastFlight <= 180) recencyScore = 10; // Somewhat current
+    else recencyScore = 0; // Not current
+  }
+  
+  // Foundation program completion (counts as experience)
+  const foundationProgress = profile.foundation_progress || 0;
+  const foundationScore = foundationProgress * 0.5; // 0-50 points based on progress
+  
+  // Certifications (if any stored in job_experiences or similar)
+  const jobExperiences = profile.job_experiences || [];
+  const certificationsCount = jobExperiences.filter(j => j?.certifications?.length > 0).length;
+  const certificationsScore = certificationsCount * 5;
+  
+  // Total experience score
+  const totalExperienceScore = flightHoursScore + ratingsScore + licenseValidityScore + recencyScore + foundationScore + certificationsScore;
+  
+  // Normalize experience: 0-15000 maps to 0-100 (increased range to account for additional factors)
+  const experiencePercentage = Math.min(100, totalExperienceScore / 150);
 
+  // Behavioral (B₁-B₆): each 0-100, max 600, weight 15% (reduced from 20%)
   const behavioralScore = (profile.behavioral_sjt_score || 0) +
                          (profile.behavioral_psychometric_score || 0) +
                          (profile.behavioral_cognitive_workload || 0) +
                          (profile.behavioral_stress_management || 0) +
                          (profile.behavioral_decision_making || 0) +
                          (profile.behavioral_crm_assessment || 0);
+  const behavioralPercentage = Math.min(100, behavioralScore / 6); // Normalize to 0-100
 
+  // Language (L₁-L₄): max 100, weight 10% (reduced from 15%)
   const icaoPoints = { '6': 30, '5': 25, '4': 20, 'None': 0 };
   const languageScore = (icaoPoints[profile.language_icao_level] || 0) +
                        (profile.language_cultural_adaptability || 0) +
                        (profile.language_international_experience ? 20 : 0) +
                        (profile.language_cross_cultural_comm || 0);
+  const languagePercentage = Math.min(100, languageScore); // Already 0-100
 
+  // Skills (S₁-S₅): each 0-100, max 500, weight 10% (reduced from 15%)
   const skillsScore = (profile.skills_weather_ops || 0) +
                       (profile.skills_terrain_complexity || 0) +
                       (profile.skills_emergency_procedures || 0) +
                       (profile.skills_type_rating_diversity || 0) +
                       (profile.skills_instrument_approaches || 0);
+  const skillsPercentage = Math.min(100, skillsScore / 5); // Normalize to 0-100
 
-  return programsScore + experienceScore + behavioralScore + languageScore + skillsScore;
+  // Phase 1: Baseline scoring for new profiles
+  // Give pilots 64-73% baseline just for completing profile + basic assessments
+  // Formula: Baseline = 64% + (Program Score × 0.18) (max 73%)
+  const hasBasicProfile = profile.email && profile.full_name && profile.date_of_birth;
+  const hasProgramData = programsScore > 0;
+  
+  let baselineScore = 0;
+  if (hasBasicProfile) {
+    baselineScore = 64; // Base score for completing profile
+    if (hasProgramData) {
+      // Add bonus for program assessments (max 9% to reach 73%)
+      baselineScore += Math.min(9, programsPercentage * 0.18);
+    }
+  }
+
+  // Engagement (E₇-E₁₀): 10% weight
+  // Fetch engagement data from new tables
+  const { data: learningHours, error: learningError } = await supabase
+    .from('learning_hours')
+    .select('hours_completed')
+    .eq('user_id', profile.id);
+  
+  const { data: forumPosts, error: forumError } = await supabase
+    .from('forum_participation')
+    .select('likes_received, helpful_votes')
+    .eq('user_id', profile.id);
+  
+  const { data: events, error: eventsError } = await supabase
+    .from('event_attendance')
+    .select('duration_hours')
+    .eq('user_id', profile.id);
+  
+  // Calculate engagement score
+  const totalLearningHours = (learningHours || []).reduce((sum, h) => sum + (h.hours_completed || 0), 0);
+  const totalForumLikes = (forumPosts || []).reduce((sum, f) => sum + (f.likes_received || 0) + (f.helpful_votes || 0), 0);
+  const totalEventHours = (events || []).reduce((sum, e) => sum + (e.duration_hours || 0), 0);
+  
+  const engagementScore = Math.min(100, (totalLearningHours * 0.5) + (totalForumLikes * 0.2) + (totalEventHours * 2));
+  const engagementPercentage = engagementScore;
+
+  // Consistency (C₁-C₅): 10% weight
+  // Fetch consistency data from activity log and completion tracking
+  const { data: activityLogs, error: activityError } = await supabase
+    .from('user_activity_log')
+    .select('created_at')
+    .eq('user_id', profile.id)
+    .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()); // Last 30 days
+  
+  const { data: completions, error: completionError } = await supabase
+    .from('completion_tracking')
+    .select('status, completion_percentage')
+    .eq('user_id', profile.id);
+  
+  // Calculate consistency score
+  const loginCount = (activityLogs || []).filter(a => a.activity_type === 'login').length;
+  const completedItems = (completions || []).filter(c => c.status === 'completed').length;
+  const avgCompletionPercentage = completions && completions.length > 0 
+    ? completions.reduce((sum, c) => sum + (c.completion_percentage || 0), 0) / completions.length 
+    : 0;
+  
+  const consistencyScore = Math.min(100, (loginCount * 3) + (completedItems * 5) + (avgCompletionPercentage * 0.3));
+  const consistencyPercentage = consistencyScore;
+
+  // Growth Trajectory (G₁-G₃): 5% weight
+  // Fetch growth data from score history and learning metrics
+  const { data: scoreHistory, error: scoreHistoryError } = await supabase
+    .from('score_history')
+    .select('score_value, calculated_at')
+    .eq('user_id', profile.id)
+    .gte('calculated_at', new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString()) // Last 90 days
+    .order('calculated_at', { ascending: true });
+  
+  const { data: learningMetrics, error: learningMetricsError } = await supabase
+    .from('learning_metrics')
+    .select('total_hours_to_complete, difficulty_level')
+    .eq('user_id', profile.id);
+  
+  // Calculate growth trajectory score
+  let improvementRate = 0;
+  if (scoreHistory && scoreHistory.length >= 2) {
+    const oldestScore = scoreHistory[0].score_value || 0;
+    const newestScore = scoreHistory[scoreHistory.length - 1].score_value || 0;
+    improvementRate = newestScore - oldestScore;
+  }
+  
+  const avgLearningSpeed = learningMetrics && learningMetrics.length > 0
+    ? learningMetrics.reduce((sum, m) => sum + (m.total_hours_to_complete || 0), 0) / learningMetrics.length
+    : 0;
+  
+  const growthScore = Math.min(100, (improvementRate * 10) + (100 - avgLearningSpeed) + (learningMetrics?.length || 0) * 2);
+  const growthPercentage = growthScore;
+
+  // Network Value (N₁-N₄): 5% weight
+  // Fetch network data from peer endorsements and alumni network
+  const { data: peerEndorsements, error: endorsementsError } = await supabase
+    .from('peer_endorsements')
+    .select('rating, endorsement_type')
+    .eq('endorsee_id', profile.id);
+  
+  const { data: alumniNetwork, error: alumniError } = await supabase
+    .from('alumni_network')
+    .select('professional_value, interaction_frequency')
+    .eq('user_id', profile.id);
+  
+  // Calculate network value score
+  const avgEndorsementRating = peerEndorsements && peerEndorsements.length > 0
+    ? peerEndorsements.reduce((sum, e) => sum + (e.rating || 0), 0) / peerEndorsements.length
+    : 0;
+  
+  const highValueConnections = (alumniNetwork || []).filter(a => a.professional_value >= 4).length;
+  const networkScore = Math.min(100, (avgEndorsementRating * 10) + (highValueConnections * 5) + (peerEndorsements?.length || 0) * 2);
+  const networkPercentage = networkScore;
+
+  // Weighted average to get final percentage out of 100
+  // Adjusted weights: Programs 17%, Experience 17%, Behavioral 11%, Language 8%, Skills 8%, Baseline 20%, Engagement 8%, Consistency 6%, Growth 5%, Network 5%
+  const weightedScore = (programsPercentage * 0.17) +
+                       (experiencePercentage * 0.17) +
+                       (behavioralPercentage * 0.11) +
+                       (languagePercentage * 0.08) +
+                       (skillsPercentage * 0.08) +
+                       baselineScore +
+                       (engagementPercentage * 0.08) +
+                       (consistencyPercentage * 0.06) +
+                       (growthPercentage * 0.05) +
+                       (networkPercentage * 0.05);
+
+  return Math.round(weightedScore * 100) / 100;
 }
 
 // V12 Ferrari Engine - Master Cross-Project Integration
@@ -3646,7 +3827,7 @@ exports.calculateCompletePathwayMatch = onRequest(async (req, res) => {
     }
 
     // Calculate all components
-    const recognitionScore = await calculateRecognitionScore(profile.data);
+    const recognitionScore = await calculateRecognitionScore(profile.data, supabase);
     const { timeDecayCoefficient } = await calculateTimeDecayLogic(profile.data);
 
     // Multipliers (boost probability)
@@ -3667,7 +3848,27 @@ exports.calculateCompletePathwayMatch = onRequest(async (req, res) => {
     const numerator = recognitionScore * M * A * G;
     const denominator = V * C * F;
     const pathwayProbability = (numerator / denominator) * Rf * D;
-    const clampedProbability = Math.max(0, Math.min(100, pathwayProbability));
+    
+    // Cap at 97% for realistic probabilities (never 100% in real life)
+    const clampedProbability = Math.max(0, Math.min(97, pathwayProbability));
+
+    // Determine recommendation based on realistic ranges
+    let recommendation;
+    if (Rf === 0) {
+      recommendation = 'Cannot proceed - Regulatory/Medical gatekeeper failed';
+    } else if (clampedProbability === 0) {
+      recommendation = 'No data - Complete profile to get assessment';
+    } else if (clampedProbability < 50) {
+      recommendation = 'Low chance - Not current, needs practice and improvement';
+    } else if (clampedProbability < 64) {
+      recommendation = 'Moderate chance - Good but needs improvement';
+    } else if (clampedProbability < 73) {
+      recommendation = 'Average chance - New profile with data but no history yet';
+    } else if (clampedProbability < 85) {
+      recommendation = 'High chance - Strong candidate with good track record';
+    } else {
+      recommendation = 'Very high chance - Effort-based top achiever';
+    }
 
     return res.json({
       pathwayProbability: Math.round(clampedProbability * 100) / 100,
@@ -3678,10 +3879,37 @@ exports.calculateCompletePathwayMatch = onRequest(async (req, res) => {
           score: Math.round(recognitionScore * 100) / 100,
           breakdown: {
             programs: Math.round((profile.data.technical_skills_score || 0) + (profile.data.interview_score || 0) + (profile.data.consultation_score || 0) + (profile.data.examination_score || 0) + (profile.data.simulation_score || 0) * 100) / 100,
-            experience: Math.round(((profile.data.total_flight_time || 0) + (profile.data.pic_time || 0) + (profile.data.multi_engine_time || 0) + (profile.data.turbine_time || 0) + (profile.data.ifr_time || 0) + (profile.data.night_time || 0)) * timeDecayCoefficient * 100) / 100,
+            experience: {
+              flightHours: Math.round(((profile.data.total_flight_time || 0) + (profile.data.pic_time || 0) + (profile.data.multi_engine_time || 0) + (profile.data.turbine_time || 0) + (profile.data.ifr_time || 0) + (profile.data.night_time || 0)) * timeDecayCoefficient * 100) / 100,
+              ratings: (profile.data.ratings || []).length,
+              licenseValid: profile.data.license_valid ? true : false,
+              medicalValid: profile.data.medical_valid ? true : false,
+              recency: profile.data.last_flown || 'N/A',
+              foundationProgress: profile.data.foundation_progress || 0
+            },
             behavioral: Math.round((profile.data.behavioral_sjt_score || 0) + (profile.data.behavioral_psychometric_score || 0) + (profile.data.behavioral_cognitive_workload || 0) + (profile.data.behavioral_stress_management || 0) + (profile.data.behavioral_decision_making || 0) + (profile.data.behavioral_crm_assessment || 0) * 100) / 100,
             language: Math.round((profile.data.language_cultural_adaptability || 0) + (profile.data.language_international_experience ? 20 : 0) + (profile.data.language_cross_cultural_comm || 0) + (profile.data.language_icao_level === '6' ? 30 : profile.data.language_icao_level === '5' ? 25 : profile.data.language_icao_level === '4' ? 20 : 0) * 100) / 100,
-            specializedSkills: Math.round((profile.data.skills_weather_ops || 0) + (profile.data.skills_terrain_complexity || 0) + (profile.data.skills_emergency_procedures || 0) + (profile.data.skills_type_rating_diversity || 0) + (profile.data.skills_instrument_approaches || 0) * 100) / 100
+            specializedSkills: Math.round((profile.data.skills_weather_ops || 0) + (profile.data.skills_terrain_complexity || 0) + (profile.data.skills_emergency_procedures || 0) + (profile.data.skills_type_rating_diversity || 0) + (profile.data.skills_instrument_approaches || 0) * 100) / 100,
+            engagement: {
+              learningHours: 0, // Will be calculated from learning_hours table
+              forumParticipation: 0, // Will be calculated from forum_participation table
+              eventAttendance: 0 // Will be calculated from event_attendance table
+            },
+            consistency: {
+              loginFrequency: 0, // Will be calculated from user_activity_log table
+              completionRate: 0, // Will be calculated from completion_tracking table
+              goalCompletion: 0 // Will be calculated from goal_tracking table
+            },
+            growth: {
+              improvementRate: 0, // Will be calculated from score_history table
+              learningSpeed: 0, // Will be calculated from learning_metrics table
+              adaptability: 0 // Will be calculated from cross-training success
+            },
+            network: {
+              peerEndorsements: 0, // Will be calculated from peer_endorsements table
+              mentorshipQuality: 0, // Will be calculated from mentor_tier and endorsements
+              alumniConnections: 0 // Will be calculated from alumni_network table
+            }
           },
           timeDecayCoefficient
         },
@@ -3705,7 +3933,7 @@ exports.calculateCompletePathwayMatch = onRequest(async (req, res) => {
           rawProbability: Math.round(pathwayProbability * 100) / 100
         }
       },
-      recommendations: Rf === 0 ? 'Cannot proceed - Regulatory/Medical gatekeeper failed' : clampedProbability >= 70 ? 'High match - Strong recommendation' : clampedProbability >= 50 ? 'Moderate match - Consider' : 'Low match - Not recommended'
+      recommendations: recommendation
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
