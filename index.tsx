@@ -299,6 +299,92 @@ const App = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedAirline, setSelectedAirline] = useState<any>(null);
+
+  // Page metadata mapping for unique titles and descriptions
+  const pageMetadata: { [key: string]: { title: string; description: string } } = {
+    'home': {
+      title: 'Pilot Recognition - Aviation Industry’s First Pilot Recognition-Based Platform',
+      description: 'Provide & Seek Recognition for aspiring and experienced pilots foreshadowed in the industry. Solving the pilot shortage with direct relations from AIRBUS and Etihad Aviation Training.'
+    },
+    'airline-expectations': {
+      title: 'Airline Expectations - Search Airline Requirements | Pilot Recognition',
+      description: 'Search airline requirements and expectations for pilot candidates. Discover carrier culture, entry requirements, and fleet planning information.'
+    },
+    'discover-pathways': {
+      title: 'Discover Pathways - Aviation Career Opportunities | Pilot Recognition',
+      description: 'Discover aviation career pathways including Air Taxi & eVTOL, Private Charter, Cargo Transportation, and more. Find your path in aviation.'
+    },
+    'what-is-the-pilot-gap': {
+      title: 'What is the Pilot Gap? | Aviation Industry Challenge | Pilot Recognition',
+      description: 'Understanding the pilot shortage gap in the aviation industry. Learn about the career transition challenge and how WingMentor helps bridge the gap.'
+    },
+    'programs': {
+      title: 'Programs & Pathways | Pilot Training & Development | Pilot Recognition',
+      description: 'Comprehensive aviation programs including Foundation Program, Transition Program, and AIRBUS Aligned EBT CBTA Programs for pilot career development.'
+    },
+    'foundational-program': {
+      title: 'Foundational Program - Accredited Pilot Development | Pilot Recognition',
+      description: 'Accredited Pilot Development Foundation Program for leadership, career development, and industry familiarization through verified mentorship.'
+    },
+    'transition-program': {
+      title: 'Transition Program - Airline Career Transition | Pilot Recognition',
+      description: 'Transition Program for career pilots moving to new aviation sectors. Includes Atlas CV optimization and airline interview preparation.'
+    },
+    'airbus-aligned-ebt-cbta-programs': {
+      title: 'AIRBUS Aligned EBT CBTA Programs | Evidence-Based Training | Pilot Recognition',
+      description: 'AIRBUS-aligned Evidence-Based Training and Competency-Based Training and Assessment programs for pilot development and airline readiness.'
+    },
+    'pilot-recognition': {
+      title: 'Pilot Recognition System | Verified Pilot Profile | Pilot Recognition',
+      description: 'Pilot Recognition System that validates and recognizes pilot achievements, certifications, and experience across the aviation industry.'
+    },
+    'recognition-career-matches': {
+      title: 'Recognition Career Matches - AI-Powered Pilot Job Matching | Pilot Recognition',
+      description: 'Recognition-based career matching that connects pilot recognition profiles with aviation career opportunities using AI-powered matching.'
+    },
+    'become-member': {
+      title: 'Become a Member - Join Pilot Recognition | Aviation Career Development',
+      description: 'Join Pilot Recognition to access comprehensive aviation career development programs, mentorship, and industry connections.'
+    }
+  };
+
+  // Update document title and meta description based on current page
+  useEffect(() => {
+    const metadata = pageMetadata[currentPage] || pageMetadata['home'];
+    
+    // Update document title
+    document.title = metadata.title;
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', metadata.description);
+    }
+    
+    // Update Open Graph title
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', metadata.title);
+    }
+    
+    // Update Open Graph description
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) {
+      ogDescription.setAttribute('content', metadata.description);
+    }
+    
+    // Update Twitter title
+    const twitterTitle = document.querySelector('meta[property="twitter:title"]');
+    if (twitterTitle) {
+      twitterTitle.setAttribute('content', metadata.title);
+    }
+    
+    // Update Twitter description
+    const twitterDescription = document.querySelector('meta[property="twitter:description"]');
+    if (twitterDescription) {
+      twitterDescription.setAttribute('content', metadata.description);
+    }
+  }, [currentPage]);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [appError, setAppError] = useState<string | null>(null);
   const [directToEnrollment, setDirectToEnrollment] = useState(false);
