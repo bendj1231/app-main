@@ -1,8 +1,9 @@
-import React from 'react';
-import { ArrowLeft, Award, Shield, CheckCircle2, Zap, Search, UserCheck, Lock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Award, Shield, CheckCircle2, Zap, Search, UserCheck, Lock, Loader2 } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface PilotRecognitionPageProps {
     onBack: () => void;
@@ -10,11 +11,62 @@ interface PilotRecognitionPageProps {
     onLogin: () => void;
 }
 
+interface RecognitionScore {
+    pathwayProbability: number;
+    engine: string;
+    formula: string;
+    components: {
+        recognition: {
+            score: number;
+            breakdown: any;
+            timeDecayCoefficient: number;
+        };
+        multipliers: any;
+        denominators: any;
+        gatekeeper: any;
+        calculation: any;
+    };
+    recommendations: string;
+}
+
 export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
     onBack,
     onNavigate,
     onLogin
 }) => {
+    const { currentUser } = useAuth();
+    const [recognitionScore, setRecognitionScore] = useState<RecognitionScore | null>(null);
+    const [loadingScore, setLoadingScore] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (currentUser?.id) {
+            fetchRecognitionScore(currentUser.id);
+        }
+    }, [currentUser]);
+
+    const fetchRecognitionScore = async (userId: string) => {
+        setLoadingScore(true);
+        setError(null);
+        try {
+            const response = await fetch(
+                `https://us-central1-pilotrecognition-recognition.cloudfunctions.net/calculateRecognitionProfile?userId=${userId}&useBasicFormula=false`
+            );
+            const data = await response.json();
+            
+            if (data.error) {
+                setError(data.error);
+            } else {
+                setRecognitionScore(data);
+            }
+        } catch (err) {
+            setError('Failed to fetch recognition score');
+            console.error('Error fetching recognition score:', err);
+        } finally {
+            setLoadingScore(false);
+        }
+    };
+
     return (
         <>
             <BreadcrumbSchema items={[
@@ -41,6 +93,120 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                     <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-700 mb-6">
                         Recognition-Based Profile
                     </p>
+
+                    {/* Recognition Score Display - Only when logged in */}
+                    {currentUser && (
+                        <div className="mt-8 bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-8 shadow-xl border border-blue-100">
+                            {loadingScore ? (
+                                <div className="flex items-center justify-center gap-3">
+                                    <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                                    <span className="text-slate-600">Loading your recognition score...</span>
+                                </div>
+                            ) : error ? (
+                                <div className="text-red-600">{error}</div>
+                            ) : recognitionScore ? (
+                                <div className="space-y-6">
+                                    <div className="text-center">
+                                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                            V12 Ferrari Engine
+                                        </p>
+                                        <div className="text-6xl font-bold text-slate-900 mb-2">
+                                            {recognitionScore.totalRecognition.toFixed(1)}%
+                                        </div>
+                                        <p className="text-sm text-slate-600">
+                                            Recognition Score
+                                        </p>
+                                    </div>
+
+                                    {/* 10-Component Breakdown */}
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8">
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Programs</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {recognitionScore.breakdown?.programs || 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">17%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Experience</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {typeof recognitionScore.breakdown?.experience === 'object' 
+                                                    ? recognitionScore.breakdown.experience.ratings || 0
+                                                    : recognitionScore.breakdown?.experience || 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">17%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Behavioral</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {recognitionScore.breakdown?.behavioral || 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">11%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Language</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {recognitionScore.breakdown?.language || 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">8%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Skills</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {recognitionScore.breakdown?.specializedSkills || 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">8%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Baseline</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                64-73%
+                                            </p>
+                                            <p className="text-xs text-slate-500">20%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Engagement</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {typeof recognitionScore.breakdown?.engagement === 'object'
+                                                    ? recognitionScore.breakdown.engagement.learningHours || 0
+                                                    : 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">8%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Consistency</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {typeof recognitionScore.breakdown?.consistency === 'object'
+                                                    ? recognitionScore.breakdown.consistency.loginFrequency || 0
+                                                    : 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">6%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Growth</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {typeof recognitionScore.breakdown?.growth === 'object'
+                                                    ? recognitionScore.breakdown.growth.improvementRate || 0
+                                                    : 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">5%</p>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                                            <p className="text-xs font-bold text-blue-700 uppercase mb-1">Network</p>
+                                            <p className="text-2xl font-bold text-slate-900">
+                                                {typeof recognitionScore.breakdown?.network === 'object'
+                                                    ? recognitionScore.breakdown.network.peerEndorsements || 0
+                                                    : 0}
+                                            </p>
+                                            <p className="text-xs text-slate-500">5%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
+                        </div>
+                    )}
+                </div>
+            </div>
                     <div className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 space-y-12 pt-12">
                         <div>
                             <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-3">
