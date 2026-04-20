@@ -754,6 +754,8 @@ const App = () => {
                 </p>
                 <button
                   onClick={() => {
+                    // Reset account check but keep oauthModalShown flag in localStorage to prevent re-checking
+                    localStorage.setItem('oauthModalShown', 'true');
                     resetOauthAccountCheck();
                     navigateTo('become-member');
                   }}
