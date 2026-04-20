@@ -1488,6 +1488,13 @@ const GridCard: React.FC<GridCardProps> = ({
                     ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) ? (
                         // Member Journey Animation (only when not logged in)
                         <MemberJourneyAnimation />
+                    ) : (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && !card.isCarouselWhenLoggedIn) ? (
+                        // Discover card when logged in - use single image without carousel
+                        <img
+                            src={displayImage || card.image}
+                            alt={card.title}
+                            className="w-full h-full object-cover object-center"
+                        />
                     ) : shouldUseLoggedInCarousel && carouselImages ? (
                         // Carousel when logged in
                         <div className="relative w-full h-full">
@@ -1496,8 +1503,8 @@ const GridCard: React.FC<GridCardProps> = ({
                                     absolute inset-0 w-full h-full transition-all duration-1000
                                     ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}
                                 `}>
-                                    <img 
-                                        src={img} 
+                                    <img
+                                        src={img}
                                         alt={`${card.title} ${idx + 1}`}
                                         className={`
                                             w-full h-full object-cover object-center
@@ -1509,11 +1516,11 @@ const GridCard: React.FC<GridCardProps> = ({
                             {/* Carousel Indicators */}
                             <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                                 {carouselImages.map((_, idx) => (
-                                    <div 
+                                    <div
                                         key={idx}
                                         className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                            idx === currentImageIndex 
-                                                ? 'bg-white w-4' 
+                                            idx === currentImageIndex
+                                                ? 'bg-white w-4'
                                                 : 'bg-white/50'
                                         }`}
                                     />
