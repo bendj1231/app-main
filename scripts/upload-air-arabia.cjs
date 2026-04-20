@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://upload.wikimedia.org/wikipedia/commons/8/8c/A6-ANY_%40_DME%2C_2022-02-23.jpg';
+  const url = 'https://content.presspage.com/uploads/1724/066a4a00-56a4-4824-af0a-fb07fc13bf7e/1920_image-2.jpg?10000';
   const tempPath = path.join(__dirname, '../temp-air-arabia.jpg');
   const publicId = 'air-arabia';
 
