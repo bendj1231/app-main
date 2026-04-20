@@ -1602,21 +1602,16 @@ const GridCard: React.FC<GridCardProps> = ({
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                // Navigate to portal with direct enrollment flag when logged in, otherwise use carousel navigation
+                                // Navigate to portal with direct enrollment flag when logged in, otherwise navigate to become-member
                                 if (isLoggedIn) {
                                     onNavigate('portal?directToEnrollment=true');
                                 } else {
-                                    const pageMap: Record<number, string> = {
-                                        0: 'w1000-suite',      // W1000
-                                        1: 'airline-expectations',  // Expectations
-                                        2: 'pilot-recognition',    // Digital Logbook
-                                    };
-                                    onNavigate(pageMap[currentImageIndex] || 'airline-expectations');
+                                    onNavigate('become-member');
                                 }
                             }}
                             className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                         >
-                            {isLoggedIn ? 'Enroll Now' : 'Discover'}
+                            {isLoggedIn ? 'Enroll Now' : 'Enroll'}
                         </button>
                     </div>
                 )}
