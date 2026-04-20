@@ -829,6 +829,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 'corporate': 'pathways',
                 'air-taxi': 'pathways',
                 'digital-logbook': 'digital-logbook-directory',
+                'profile-matched-jobs': 'recognition-career-matches',
                 'credentials': 'pilot-recognition',
                 'milestones': 'pilot-recognition',
                 'badges': 'pilot-recognition',
