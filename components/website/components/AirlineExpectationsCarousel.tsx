@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { IMAGES } from '../../../src/lib/website-constants';
 import { useAuth } from '../../../src/contexts/AuthContext';
 import { supabase } from '../../../shared/lib/supabase';
+import { AirlineDetailModal } from './AirlineDetailModal';
 
 interface AirlineExpectationsCarouselProps {
   onNavigate?: (page: string) => void;
@@ -776,6 +777,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
   const [isFading, setIsFading] = useState(false);
   const [contentVisible, setContentVisible] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [selectedAirlineModal, setSelectedAirlineModal] = useState<Airline | null>(null);
   const [matchScores, setMatchScores] = useState<{ [key: string]: { matchPercentage: number; prScore: number } }>({});
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
@@ -1336,8 +1338,11 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
 
                         {/* Bottom Row - Button and Tags */}
                         <div className="flex items-center justify-between gap-3">
-                          <button 
-                            onClick={() => goToCard(index)}
+                          <button
+                            onClick={() => {
+                              setIsAutoScrolling(false);
+                              setSelectedAirlineModal(airline);
+                            }}
                             className="px-5 py-2.5 bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white text-[11px] font-semibold rounded-full transition-all duration-300 flex items-center gap-2 group"
                           >
                             Discover Expectations
@@ -1428,7 +1433,8 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
           {/* Discover Pathways Button */}
           <button
             onClick={() => {
-              onNavigate?.('airline-expectations');
+              setIsAutoScrolling(false);
+              setSelectedAirlineModal(currentAirline);
             }}
             className="px-8 py-3 bg-white border border-slate-200 text-slate-800 font-semibold rounded-full shadow-sm hover:bg-slate-50 hover:shadow-md transition-all duration-300 flex items-center gap-2 mx-auto group"
           >
@@ -1450,6 +1456,19 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
           Swipe through to discover airline-specific requirements and compare opportunities across global carriers. Our platform connects you directly to 5000+ pilots and operators through our <strong>Pilot Terminal</strong> social network and <strong>enterprise integration</strong>, creating a transparent and efficient recruitment marketplace.
         </p>
       </div>
+
+      {/* Airline Detail Modal */}
+      {selectedAirlineModal && (
+        <AirlineDetailModal
+          airline={selectedAirlineModal}
+          matchScore={getMatchScore(selectedAirlineModal)}
+          prScore={getPRScore(selectedAirlineModal)}
+          onClose={() => {
+            setSelectedAirlineModal(null);
+            setIsAutoScrolling(true);
+          }}
+        />
+      )}
     </div>
     </>
   );
