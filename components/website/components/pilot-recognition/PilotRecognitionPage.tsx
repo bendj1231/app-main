@@ -207,7 +207,8 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                     )}
                 </div>
             </div>
-                    <div className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 space-y-12 pt-12">
+
+            <div className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 space-y-12 pt-12">
                         <div>
                             <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-3">
                                 The Problem
