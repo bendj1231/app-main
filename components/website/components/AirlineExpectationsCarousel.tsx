@@ -1666,10 +1666,10 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
       <div className="relative w-full bg-white py-12 overflow-hidden">
       {/* Header - Centered */}
       <div className="w-full px-8 mb-8 text-center">
-        {/* WingMentor Logo */}
+        {/* Airline Expectations Image */}
         <img
-          src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
-          alt="WingMentor Logo"
+          src="/images/grok-image-6c3347bc-ed6e-4c84-9e71-dca4df5d2c70.png"
+          alt="Airline Expectations"
           className="mx-auto w-56 h-auto object-contain mb-4"
         />
         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
