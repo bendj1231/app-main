@@ -462,6 +462,17 @@ const airlines: Airline[] = [
     description: 'Saudia is Saudi Arabias flag carrier undergoing rapid transformation. Pilots have opportunities in a rapidly modernizing fleet with growing international destinations.'
   },
   {
+    id: 'omanair',
+    name: 'Oman Air',
+    location: 'Oman',
+    salaryRange: '$65,000 - $120,000/year',
+    flightHours: '2,000+ hrs TT',
+    tags: ['Muscat Hub', 'Oneworld', 'Growing Fleet'],
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776687736/airline-expectations/oman-air.webp',
+    description: 'Oman Air is the national carrier of Oman. Operating from Muscat with a growing Boeing 787 Dreamliner fleet, offering pilots opportunities in the dynamic Middle East market.',
+    fleet: 'Boeing 787 Dreamliner, 737 - Modern fleet with excellent career progression in the Gulf region'
+  },
+  {
     id: 'egyptair',
     name: 'EgyptAir',
     location: 'Egypt',
