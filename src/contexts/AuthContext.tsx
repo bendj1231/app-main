@@ -673,14 +673,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function loginWithOAuth(provider: 'google' | 'apple' | 'github') {
         try {
-            const redirectUri = `${window.location.origin}/auth/callback`;
-            console.log(`[${provider} OAuth] Redirect URI:`, redirectUri);
-            console.log(`[${provider} OAuth] Window location origin:`, window.location.origin);
+            console.log(`[${provider} OAuth] Starting OAuth with Supabase default redirect URI`);
 
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider,
                 options: {
-                    redirectTo: redirectUri,
                     queryParams: {
                         access_type: 'offline',
                         prompt: 'consent',
@@ -693,6 +690,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 throw new Error(`${provider} sign-in failed: ${error.message}`);
             }
 
+            console.log(`[${provider} OAuth] OAuth initiated, redirect URL:`, data.url);
             // OAuth will redirect, so we don't need to set state here
             // The auth state change listener will handle the session
             return data;
