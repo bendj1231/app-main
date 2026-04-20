@@ -1285,8 +1285,8 @@ const GridCard: React.FC<GridCardProps> = ({
             ? card.loggedInImage
             : card.image;
 
-    // For discover card, respect the isCarouselWhenLoggedIn flag
-    const shouldUseCarousel = (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn)
+    // For discover card, disable carousel when logged in
+    const shouldUseCarousel = card.id === 'discover' && isLoggedIn
         ? false
         : (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn)
             ? !!carouselImages
