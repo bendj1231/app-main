@@ -408,7 +408,7 @@ const App = () => {
   const [foundationProgress, setFoundationProgress] = useState(0);
   const [examinationScore, setExaminationScore] = useState(0);
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
-  const { currentUser, logout, oauthAccountCheck, resetOauthAccountCheck } = useAuth(); // Get current user, logout, and OAuth account check
+  const { currentUser, logout, oauthAccountCheck, resetOauthAccountCheck, resetOauthAccountCheckOnly } = useAuth(); // Get current user, logout, and OAuth account check
 
   // Auto-dismiss OAuth result modal for existing accounts after 5 seconds and navigate to home page
   useEffect(() => {
@@ -754,9 +754,8 @@ const App = () => {
                 </p>
                 <button
                   onClick={() => {
-                    // Reset account check but keep oauthModalShown flag in localStorage to prevent re-checking
-                    localStorage.setItem('oauthModalShown', 'true');
-                    resetOauthAccountCheck();
+                    // Only reset account check state, keep oauthModalShown flag to prevent re-checking on tab switch
+                    resetOauthAccountCheckOnly();
                     navigateTo('become-member');
                   }}
                   style={{

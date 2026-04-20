@@ -39,6 +39,7 @@ interface AuthContextType {
     // OAuth account check
     oauthAccountCheck: { checking: boolean; hasAccount: boolean | null };
     resetOauthAccountCheck: () => void;
+    resetOauthAccountCheckOnly: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -82,6 +83,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setOauthAccountCheck({ checking: false, hasAccount: null });
         setOauthModalShown(false);
         localStorage.removeItem('oauthModalShown');
+    };
+
+    // Function to reset account check state only, without removing oauthModalShown flag
+    const resetOauthAccountCheckOnly = () => {
+        setOauthAccountCheck({ checking: false, hasAccount: null });
     };
 
     // Activity logging
@@ -1102,7 +1108,8 @@ const value = {
     loginWithOAuth,
     // OAuth account check
     oauthAccountCheck,
-    resetOauthAccountCheck
+    resetOauthAccountCheck,
+    resetOauthAccountCheckOnly
 };
 
     return (
