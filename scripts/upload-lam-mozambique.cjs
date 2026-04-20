@@ -12,8 +12,8 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://www.travelandtourworld.com/wp-content/uploads/2025/08/LAM-2.jpg';
-  const tempPath = path.join(__dirname, '../temp-lam-mozambique.jpg');
+  const url = 'https://aviationweek.com/sites/default/files/styles/crop_freeform/public/2025-12/lam_dash_8_400_source_rob_finlayson.png?itok=_TqdWFQi';
+  const tempPath = path.join(__dirname, '../temp-lam-mozambique.png');
   const publicId = 'lam-mozambique';
 
   console.log(`📥 Downloading LAM Mozambique image from ${url}...`);
