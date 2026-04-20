@@ -897,9 +897,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 // User signed in via OAuth
                 console.log('User signed in via OAuth:', session.user.id);
                 console.log('oauthModalShown flag:', oauthModalShown);
+                console.log('oauthModalShown from localStorage:', localStorage.getItem('oauthModalShown'));
 
                 // Only check account if we haven't already shown the modal in this session
-                if (!oauthModalShown) {
+                // Check localStorage directly to handle tab switches
+                const modalShownInStorage = localStorage.getItem('oauthModalShown') === 'true';
+                if (!oauthModalShown && !modalShownInStorage) {
                     console.log('Starting account check...');
                     setOauthModalShown(true);
 
