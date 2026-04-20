@@ -55,7 +55,7 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
                     </div>
                     <div className="w-full max-w-4xl">
                         <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/f_auto,q_auto,w_1200/pathways/cargo-operations.png"
+                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/pathways/cargo-operations.png"
                             alt="Cargo Aircraft Operations"
                             className="w-full h-auto rounded-2xl shadow-xl"
                         />

@@ -57,7 +57,7 @@ export const PrivateCharterPathwaysPage: React.FC<PrivateCharterPathwaysPageProp
                         <div className="relative w-full mx-auto">
                             <div className="aspect-video bg-slate-100 rounded-3xl overflow-hidden shadow-lg relative group">
                                 <img
-                                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776689902/f_auto,q_auto,w_1200/pathways/private-charter.jpg"
+                                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776689902/pathways/private-charter.jpg"
                                     alt="Private Charter Aircraft"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
