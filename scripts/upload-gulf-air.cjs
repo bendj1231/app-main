@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://www.logisticsmiddleeast.com/2021/07/Gulf-Air_10.jpg';
+  const url = 'https://www.ainonline.com/cdn-cgi/image/width=3840,format=webp,quality=95/https://backend.ainonline.com/sites/default/files/styles/fpsc_1200x630/public/uploads/2015/09/_gf-aircraftweb.jpg?h=78aab1d8&itok=pv9pfCrK';
   const tempPath = path.join(__dirname, '../temp-gulf-air.jpg');
   const publicId = 'gulf-air';
 
