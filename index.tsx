@@ -753,7 +753,10 @@ const App = () => {
                   Create an account through the Become a Member page to get started.
                 </p>
                 <button
-                  onClick={() => navigateTo('become-member')}
+                  onClick={() => {
+                    resetOauthAccountCheck();
+                    navigateTo('become-member');
+                  }}
                   style={{
                     background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
                     color: 'white',
