@@ -63,7 +63,7 @@ export const ProgramBenefitsPage: React.FC<ProgramBenefitsPageProps> = ({
             <BreadcrumbSchema items={[
                 { name: 'Home', url: '/' },
                 { name: 'Programs', url: '/programs' },
-                { name: 'Program Benefits', url: '/program-benefits' }
+                { name: 'Program Benefits', url: '/benefits' }
             ]} />
             <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />

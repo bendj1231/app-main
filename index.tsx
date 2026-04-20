@@ -348,7 +348,7 @@ const App = () => {
       title: 'Become a Member - Join Pilot Recognition | Aviation Career Development',
       description: 'Join Pilot Recognition to access comprehensive aviation career development programs, mentorship, and industry connections.'
     },
-    'program-benefits': {
+    'benefits': {
       title: 'Program Benefits | Pilot Recognition-Based Development | Pilot Recognition',
       description: 'Discover comprehensive program benefits including accredited recognition, verified mentorship, EBT CBTA alignment, industry networking, career acceleration, global opportunities, continuous growth, and profile verification.'
     },
@@ -1048,6 +1048,20 @@ const App = () => {
             onLogin={navigateToPortal}
           />
         )}
+        {currentPage === 'benefits' && (
+          <ProgramBenefitsPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
+        {currentPage === 'news-updates' && (
+          <NewsUpdatesPage
+            onBack={() => navigateTo('home')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
+          />
+        )}
         {currentPage === 'pathways' && (
           <PathwaysPage
             onBack={() => navigateTo('home')}
@@ -1354,7 +1368,7 @@ root.render(
           <Route path="/discover-pathways" element={<PathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/programs" element={<ProgramsPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
-          <Route path="/program-benefits" element={<ProgramBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/benefits" element={<ProgramBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/news-updates" element={<NewsUpdatesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/transition-program" element={<TransitionProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />

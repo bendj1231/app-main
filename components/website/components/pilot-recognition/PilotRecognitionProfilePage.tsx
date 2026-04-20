@@ -39,6 +39,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [deletingAccount, setDeletingAccount] = useState(false);
     const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
+    const [advancedMetricsOpen, setAdvancedMetricsOpen] = useState<'B' | 'L' | 'S' | null>(null);
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -1880,6 +1881,182 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                 </div>
                             )}
+
+                            {/* Advanced Recognition Metrics Section */}
+                            <div style={{ marginTop: '2rem' }}>
+                                <div style={{ 
+                                    padding: '1.5rem', 
+                                    background: 'linear-gradient(135deg, rgba(255,255,255,0.92), rgba(241,245,249,0.82))', 
+                                    borderRadius: '1rem', 
+                                    border: '1px solid rgba(255,255,255,0.45)', 
+                                    boxShadow: '0 20px 45px rgba(15,23,42,0.08)'
+                                }}>
+                                    <div style={{ marginBottom: '1.5rem' }}>
+                                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>
+                                            Advanced Recognition Metrics
+                                        </p>
+                                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
+                                            Expanded Formula Variables
+                                        </h3>
+                                        <p style={{ margin: '0', fontSize: '0.85rem', color: '#64748b', lineHeight: 1.5 }}>
+                                            Detailed breakdown of behavioral, language, and specialized skills metrics used in pathway matching calculations.
+                                        </p>
+                                    </div>
+
+                                    {/* Reveal Buttons */}
+                                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                                        {[
+                                            { id: 'B', label: 'Behavioral (B)', description: 'CRM & Decision-Making' },
+                                            { id: 'L', label: 'Language (L)', description: 'Cultural Fit' },
+                                            { id: 'S', label: 'Skills (S)', description: 'Specialized Operations' }
+                                        ].map((metric) => (
+                                            <button
+                                                key={metric.id}
+                                                onClick={() => setAdvancedMetricsOpen(advancedMetricsOpen === metric.id ? null : metric.id as 'B' | 'L' | 'S')}
+                                                style={{
+                                                    padding: '0.75rem 1.25rem',
+                                                    borderRadius: '0.5rem',
+                                                    border: '1px solid rgba(37, 99, 235, 0.2)',
+                                                    background: advancedMetricsOpen === metric.id ? 'linear-gradient(135deg, #3b82f6, #2563eb)' : 'rgba(255,255,255,0.9)',
+                                                    color: advancedMetricsOpen === metric.id ? 'white' : '#0f172a',
+                                                    fontSize: '0.85rem',
+                                                    fontWeight: 600,
+                                                    cursor: 'pointer',
+                                                    transition: 'all 0.2s ease',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    boxShadow: advancedMetricsOpen === metric.id ? '0 4px 12px rgba(37, 99, 235, 0.3)' : '0 2px 8px rgba(15, 23, 42, 0.05)'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    if (advancedMetricsOpen !== metric.id) {
+                                                        e.currentTarget.style.borderColor = 'rgba(37, 99, 235, 0.4)';
+                                                        e.currentTarget.style.background = 'rgba(37, 99, 235, 0.05)';
+                                                    }
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    if (advancedMetricsOpen !== metric.id) {
+                                                        e.currentTarget.style.borderColor = 'rgba(37, 99, 235, 0.2)';
+                                                        e.currentTarget.style.background = 'rgba(255,255,255,0.9)';
+                                                    }
+                                                }}
+                                            >
+                                                {metric.label}
+                                                <ChevronRight style={{ 
+                                                    width: 16, 
+                                                    height: 16, 
+                                                    transition: 'transform 0.2s ease',
+                                                    transform: advancedMetricsOpen === metric.id ? 'rotate(90deg)' : 'rotate(0deg)'
+                                                }} />
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {/* Dropdown Content */}
+                                    {advancedMetricsOpen === 'B' && (
+                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(255,255,255,0.95)', borderRadius: '0.75rem', border: '1px solid rgba(37, 99, 235, 0.15)' }}>
+                                            <p style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', letterSpacing: '0.15em', color: '#2563eb', textTransform: 'uppercase', fontWeight: 700 }}>
+                                                Behavioral & CRM Index (B)
+                                            </p>
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                                                {[
+                                                    { label: 'Situational Judgment Test', value: profileData?.behavioral_sjt_score || 0, key: 'behavioral_sjt_score' },
+                                                    { label: 'Psychometric Profile', value: profileData?.behavioral_psychometric_score || 0, key: 'behavioral_psychometric_score' },
+                                                    { label: 'Cognitive Workload', value: profileData?.behavioral_cognitive_workload || 0, key: 'behavioral_cognitive_workload' },
+                                                    { label: 'Stress Management', value: profileData?.behavioral_stress_management || 0, key: 'behavioral_stress_management' },
+                                                    { label: 'Decision-Making', value: profileData?.behavioral_decision_making || 0, key: 'behavioral_decision_making' },
+                                                    { label: 'CRM Assessment', value: profileData?.behavioral_crm_assessment || 0, key: 'behavioral_crm_assessment' }
+                                                ].map((item) => (
+                                                    <div key={item.key} style={{ background: 'rgba(248, 250, 252, 0.8)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(226, 232, 240, 0.6)' }}>
+                                                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>{item.label}</p>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                            <div style={{ flex: 1, height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+                                                                <div style={{ 
+                                                                    width: `${item.value}%`, 
+                                                                    height: '100%', 
+                                                                    background: item.value >= 70 ? '#22c55e' : item.value >= 40 ? '#f59e0b' : '#ef4444',
+                                                                    borderRadius: '3px',
+                                                                    transition: 'width 0.3s ease'
+                                                                }} />
+                                                            </div>
+                                                            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', minWidth: '35px' }}>{item.value}%</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {advancedMetricsOpen === 'L' && (
+                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(255,255,255,0.95)', borderRadius: '0.75rem', border: '1px solid rgba(37, 99, 235, 0.15)' }}>
+                                            <p style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', letterSpacing: '0.15em', color: '#2563eb', textTransform: 'uppercase', fontWeight: 700 }}>
+                                                Language & Cultural Fit (L)
+                                            </p>
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                                                {[
+                                                    { label: 'ICAO English Level', value: profileData?.language_icao_level || 'Not Set', key: 'language_icao_level', isText: true },
+                                                    { label: 'Cultural Adaptability', value: profileData?.language_cultural_adaptability || 0, key: 'language_cultural_adaptability' },
+                                                    { label: 'International Experience', value: profileData?.language_international_experience ? 'Yes' : 'No', key: 'language_international_experience', isText: true },
+                                                    { label: 'Cross-Cultural Comm', value: profileData?.language_cross_cultural_comm || 0, key: 'language_cross_cultural_comm' }
+                                                ].map((item) => (
+                                                    <div key={item.key} style={{ background: 'rgba(248, 250, 252, 0.8)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(226, 232, 240, 0.6)' }}>
+                                                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>{item.label}</p>
+                                                        {item.isText ? (
+                                                            <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{item.value}</p>
+                                                        ) : (
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                                <div style={{ flex: 1, height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+                                                                    <div style={{ 
+                                                                        width: `${item.value}%`, 
+                                                                        height: '100%', 
+                                                                        background: item.value >= 70 ? '#22c55e' : item.value >= 40 ? '#f59e0b' : '#ef4444',
+                                                                        borderRadius: '3px',
+                                                                        transition: 'width 0.3s ease'
+                                                                    }} />
+                                                                </div>
+                                                                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', minWidth: '35px' }}>{item.value}%</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {advancedMetricsOpen === 'S' && (
+                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(255,255,255,0.95)', borderRadius: '0.75rem', border: '1px solid rgba(37, 99, 235, 0.15)' }}>
+                                            <p style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', letterSpacing: '0.15em', color: '#2563eb', textTransform: 'uppercase', fontWeight: 700 }}>
+                                                Specialized Skills Index (S)
+                                            </p>
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                                                {[
+                                                    { label: 'Weather Operations', value: profileData?.skills_weather_ops || 0, key: 'skills_weather_ops' },
+                                                    { label: 'Terrain Complexity', value: profileData?.skills_terrain_complexity || 0, key: 'skills_terrain_complexity' },
+                                                    { label: 'Emergency Procedures', value: profileData?.skills_emergency_procedures || 0, key: 'skills_emergency_procedures' },
+                                                    { label: 'Type Rating Diversity', value: profileData?.skills_type_rating_diversity || 0, key: 'skills_type_rating_diversity' },
+                                                    { label: 'Instrument Approaches', value: profileData?.skills_instrument_approaches || 0, key: 'skills_instrument_approaches' }
+                                                ].map((item) => (
+                                                    <div key={item.key} style={{ background: 'rgba(248, 250, 252, 0.8)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(226, 232, 240, 0.6)' }}>
+                                                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>{item.label}</p>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                            <div style={{ flex: 1, height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+                                                                <div style={{ 
+                                                                    width: `${item.value}%`, 
+                                                                    height: '100%', 
+                                                                    background: item.value >= 70 ? '#22c55e' : item.value >= 40 ? '#f59e0b' : '#ef4444',
+                                                                    borderRadius: '3px',
+                                                                    transition: 'width 0.3s ease'
+                                                                }} />
+                                                            </div>
+                                                            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', minWidth: '35px' }}>{item.value}%</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                     </div>
                 </section>
             </main>

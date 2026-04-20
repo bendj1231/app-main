@@ -19,7 +19,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         {
             title: "Foundational Program",
             desc: "The literal foundation of our pilot organization. Bridging the gap from 'I have a license' to 'I am a professional'. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, our <strong>50 hours of verifiable mentorship</strong> provides the <strong>EBT CBTA-aligned assessment framework</strong> that modern airlines demand. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match airline requirements.",
-            target: "foundational-program",
+            target: "become-member",
             icon: GraduationCap,
             color: "text-blue-600",
             bg: "bg-blue-50"
@@ -35,7 +35,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         {
             title: "Program Benefits",
             desc: "Discover comprehensive benefits including accredited recognition, verified mentorship, EBT CBTA alignment, industry networking, career acceleration, global opportunities, continuous growth, and profile verification. Transform your aviation career with our recognition-based programs.",
-            target: "program-benefits",
+            target: "benefits",
             icon: Award,
             color: "text-purple-600",
             bg: "bg-purple-50"
@@ -188,7 +188,14 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
             <div className="py-12 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {corePrograms.map((prog, idx) => (
-                        <ProgramCard key={idx} title={prog.title} desc={prog.desc} color={prog.color} onClick={() => onNavigate(prog.target)} />
+                        <ProgramCard 
+                            key={idx} 
+                            title={prog.title} 
+                            desc={prog.desc} 
+                            color={prog.color} 
+                            onClick={() => onNavigate(prog.target)}
+                            onLearnMore={prog.title === "Foundational Program" ? () => onNavigate('foundational-program') : undefined}
+                        />
                     ))}
                 </div>
             </div>
@@ -263,15 +270,27 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     );
 };
 
-const ProgramCard = ({ title, desc, color, onClick }: any) => (
+const ProgramCard = ({ title, desc, color, onClick, onLearnMore }: any) => (
     <div
         onClick={onClick}
         className="group bg-white border border-slate-200 p-8 rounded-3xl hover:shadow-2xl hover:border-blue-200 transition-all cursor-pointer"
     >
         <h3 className="text-xl font-bold text-slate-900 mb-4 font-sans">{title}</h3>
         <p className="text-slate-600 text-sm leading-relaxed mb-6 font-sans">{desc}</p>
-        <div className={`flex items-center ${color} text-sm font-bold uppercase tracking-widest gap-2 font-sans`}>
-            Learn More <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </div>
+        {onLearnMore ? (
+            <div
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onLearnMore();
+                }}
+                className={`flex items-center ${color} text-sm font-bold uppercase tracking-widest gap-2 font-sans cursor-pointer hover:opacity-80`}
+            >
+                Learn More <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+        ) : (
+            <div className={`flex items-center ${color} text-sm font-bold uppercase tracking-widest gap-2 font-sans`}>
+                Learn More <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+        )}
     </div>
 );
