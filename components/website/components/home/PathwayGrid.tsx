@@ -1269,7 +1269,7 @@ const GridCard: React.FC<GridCardProps> = ({
     
     // Determine if we should use carousel for enrolled/logged in state
     const shouldUseEnrolledCarousel = isEnrolledInFoundation && card.isCarouselWhenEnrolled && card.enrolledImages;
-    const shouldUseLoggedInCarousel = isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn && card.loggedInImages;
+    const shouldUseLoggedInCarousel = isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn && card.loggedInImages && card.id !== 'discover';
     
     // Get the images array to use for carousel
     const carouselImages = shouldUseEnrolledCarousel
