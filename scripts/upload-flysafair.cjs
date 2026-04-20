@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://upload.wikimedia.org/wikipedia/commons/2/26/FlySafair%2C_Boeing_737-4Q8%2C_ZS-JRK_%2818771626569%29.jpg';
+  const url = 'https://aviationweek.com/sites/default/files/styles/crop_freeform/public/2026-02/flysafair_boeing_737_source_trevisan_aviation_images_alamy.jpg?itok=2I4KAYlW';
   const tempPath = path.join(__dirname, '../temp-flysafair.jpg');
   const publicId = 'flysafair';
 
