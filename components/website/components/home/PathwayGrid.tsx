@@ -1493,23 +1493,11 @@ const GridCard: React.FC<GridCardProps> = ({
                         </div>
                     ) : card.id === 'discover' && isLoggedIn ? (
                         // Discover card when logged in - use single image without carousel
-                        (() => {
-                            console.log('🔵 Discover card logged in rendering:', {
-                                cardId: card.id,
-                                isLoggedIn,
-                                isEnrolledInFoundation,
-                                enrolledImage: card.enrolledImage,
-                                loggedInImage: card.loggedInImage,
-                                defaultImage: card.image
-                            });
-                            return (
-                                <img
-                                    src={isEnrolledInFoundation ? card.enrolledImage : card.loggedInImage || card.image}
-                                    alt={card.title}
-                                    className="w-full h-full object-cover object-center"
-                                />
-                            );
-                        })()
+                        <img
+                            src="/images/foundational-program.png"
+                            alt={card.title}
+                            className="w-full h-full object-cover object-center"
+                        />
                     ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) ? (
                         // Member Journey Animation (only when not logged in)
                         <MemberJourneyAnimation />
