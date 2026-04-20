@@ -131,7 +131,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'discover',
             images: ['/images/w1000.png', '/images/airlinesexpectations.png', '/images/atlascv.png'],
-            image: '/images/foundational-program.png',
+            image: '/images/w1000.png',
             loggedInImages: ['/images/foundational-program.png'],
             loggedInImage: '/images/foundational-program.png',
             enrolledImage: '/images/foundational-program.png',
@@ -431,7 +431,7 @@ const dummyCards = [
             '/images/airlinesexpectations.png',
             '/images/atlascv.png',
         ],
-        image: '/images/foundational-program.png',
+        image: '/images/w1000.png',
         loggedInImages: ['/images/foundational-program.png'],
         loggedInImage: '/images/foundational-program.png',
         enrolledImages: ['/images/foundational-program.png'],
