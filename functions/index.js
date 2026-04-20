@@ -1067,6 +1067,193 @@ exports.updatePortfolioSettings = onRequest(async (req, res) => {
   }
 });
 
+// Digital Flight Logbook Functions
+
+// Get flight logs for a user
+exports.getFlightLogs = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    const { data, error } = await supabase
+      .from('pilot_flight_logs')
+      .select('*')
+      .eq('user_id', userId)
+      .order('date', { ascending: false });
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.json({ data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Add a new flight log entry
+exports.addFlightLog = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { userId, date, aircraft_type, registration, route, category, hours, remarks } = req.body;
+
+    if (!userId || !date) {
+      return res.status(400).json({ error: 'userId and date required' });
+    }
+
+    const { data, error } = await supabase
+      .from('pilot_flight_logs')
+      .insert({
+        user_id: userId,
+        date,
+        aircraft_type,
+        registration,
+        route,
+        category: category || 'flight',
+        hours,
+        remarks,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.status(201).json({ data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Update a flight log entry
+exports.updateFlightLog = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'PUT') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { logId, date, aircraft_type, registration, route, category, hours, remarks } = req.body;
+
+    if (!logId) {
+      return res.status(400).json({ error: 'logId required' });
+    }
+
+    const { data, error } = await supabase
+      .from('pilot_flight_logs')
+      .update({
+        date,
+        aircraft_type,
+        registration,
+        route,
+        category,
+        hours,
+        remarks,
+      })
+      .eq('id', logId)
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.json({ data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete a flight log entry
+exports.deleteFlightLog = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'DELETE') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { logId } = req.body;
+
+    if (!logId) {
+      return res.status(400).json({ error: 'logId required' });
+    }
+
+    const { error } = await supabase
+      .from('pilot_flight_logs')
+      .delete()
+      .eq('id', logId);
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.json({ success: true });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 // Generate shareable portfolio link
 exports.sharePortfolio = onRequest(async (req, res) => {
   const supabase = createClient(
