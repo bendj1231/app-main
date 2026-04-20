@@ -12,11 +12,11 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://ttgasia.2017.ttgasia.com/wp-content/uploads/sites/2/2020/02/SriLankan-Airlines.jpg';
-  const tempPath = path.join(__dirname, '../temp-srilankan-airlines.jpg');
-  const publicId = 'srilankan-airlines';
+  const url = 'https://global.discourse-cdn.com/infiniteflight/original/3X/7/7/774e378bf4bda6dbb44c237ff914ef738417ebdb.jpg';
+  const tempPath = path.join(__dirname, '../temp-scoot.jpg');
+  const publicId = 'scoot';
 
-  console.log(`📥 Downloading Sri Lankan Airlines image from ${url}...`);
+  console.log(`📥 Downloading Scoot image from ${url}...`);
 
   try {
     // Download the file
@@ -77,5 +77,5 @@ async function downloadAndUpload() {
 }
 
 downloadAndUpload()
-  .then(() => console.log('\n✅ Sri Lankan Airlines image uploaded successfully!'))
+  .then(() => console.log('\n✅ Scoot image uploaded successfully!'))
   .catch((error) => console.error('\n❌ Failed:', error.message));
