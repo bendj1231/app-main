@@ -677,7 +677,10 @@ const App = () => {
       )}
 
       {/* OAuth Account Result Modal */}
-      {oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount !== null && (
+      {oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount !== null && (() => {
+        console.log('Rendering OAuth result modal, hasAccount:', oauthAccountCheck.hasAccount);
+        return true;
+      })() && (
         <div style={{
           position: 'fixed',
           top: 0,
