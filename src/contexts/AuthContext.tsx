@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { indexedDB } from '../lib/indexedDB';
 import { createManagementAPI } from '../lib/supabase-management';
+import { useUserActivityLog } from '../hooks/useUserActivityLog';
 
 interface SupabaseUser {
     id: string;
@@ -57,6 +58,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [mfaEnabled, setMfaEnabled] = useState(false);
     const [mfaSetupStep, setMfaSetupStep] = useState<'none' | 'qr' | 'verify'>('none');
     const [mfaSetupData, setMfaSetupData] = useState<{ secret?: string; qrCodeURL?: string }>({});
+
+    // Activity logging
+    const { logLogin, logLogout, logProfileUpdate } = useUserActivityLog();
 
     // Helper function to get CSRF token from cookies
     const getCsrfTokenFromCookies = (): string | null => {
@@ -555,6 +559,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             console.log("User signed in via Supabase:", data.user.id);
 
+            // Log login activity
+            await logLogin(data.user.id);
+
             // Set currentUser state with Supabase user data
             const supabaseUser: SupabaseUser = {
                 id: data.user.id,
@@ -604,6 +611,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function logout() {
         console.log('🔴 Logout function called');
+        
+        // Log logout activity before clearing state
+        if (currentUser) {
+            await logLogout(currentUser.id);
+        }
+        
         setExplicitLogoutInStorage(true); // Set flag to prevent re-authentication
         setCsrfToken(null); // Clear CSRF token
         setCurrentUser(null); // Clear current user
