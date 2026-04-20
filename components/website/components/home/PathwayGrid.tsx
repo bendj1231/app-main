@@ -226,7 +226,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'commercial-airlines',
             image: '/images/grok-image-6c3347bc-ed6e-4c84-9e71-dca4df5d2c70.png',
-            title: 'Commercial Airlines',
+            title: 'Airline Expectations',
             subtitle: 'Major carriers, regional airlines, and international opportunities',
             icon: Plane,
             badge: 'High Demand',
