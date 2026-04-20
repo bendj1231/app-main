@@ -53,6 +53,13 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
                             <strong>Why Choose Cargo?</strong> The cargo sector offers faster career progression, diverse fleet types, and often lower hour requirements compared to passenger airlines. With the explosive growth of e-commerce and global trade, demand for qualified cargo pilots continues to rise.
                         </p>
                     </div>
+                    <div className="w-full max-w-4xl">
+                        <img
+                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776689839/f_auto,q_auto,w_1200/pathways/cargo-operations.png"
+                            alt="Cargo Aircraft Operations"
+                            className="w-full h-auto rounded-2xl shadow-xl"
+                        />
+                    </div>
                 </div>
             </div>
 
