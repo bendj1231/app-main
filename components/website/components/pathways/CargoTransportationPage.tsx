@@ -38,7 +38,7 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
             <div className="py-12 px-6 max-w-6xl mx-auto space-y-16">
 
                 {/* Section 1: The Cargo Sector */}
-                <div className="flex flex-col items-center gap-6 md:gap-8">
+                <div className="flex flex-col items-center gap-2 md:gap-4">
                     <div className="w-full text-center">
                         <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
                             The Cargo Advantage
