@@ -96,6 +96,7 @@ import { MissionVisionPage } from './components/website/components/MissionVision
 import { CoreValuesPage } from './components/website/components/CoreValuesPage';
 import { IndustryStewardshipPage } from './components/website/components/IndustryStewardshipPage';
 import { FoundationalProgramPage } from './components/website/components/programs/FoundationalProgramPage';
+import { ProgramBenefitsPage } from './components/website/components/programs/ProgramBenefitsPage';
 import { PlatformFoundationalProgramPage } from './components/website/components/programs/PlatformFoundationalProgramPage';
 import { PlatformTransitionProgramPage } from './components/website/components/programs/PlatformTransitionProgramPage';
 import { FoundationalVerificationPage } from './components/website/components/programs/FoundationalVerificationPage';
@@ -345,6 +346,10 @@ const App = () => {
     'become-member': {
       title: 'Become a Member - Join Pilot Recognition | Aviation Career Development',
       description: 'Join Pilot Recognition to access comprehensive aviation career development programs, mentorship, and industry connections.'
+    },
+    'program-benefits': {
+      title: 'Program Benefits | Pilot Recognition-Based Development | Pilot Recognition',
+      description: 'Discover comprehensive program benefits including accredited recognition, verified mentorship, EBT CBTA alignment, industry networking, career acceleration, global opportunities, continuous growth, and profile verification.'
     }
   };
 
@@ -1344,6 +1349,7 @@ root.render(
           <Route path="/discover-pathways" element={<PathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/programs" element={<ProgramsPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/program-benefits" element={<ProgramBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/transition-program" element={<TransitionProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/airbus-aligned-ebt-cbta-programs" element={<EBTCBTAPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />

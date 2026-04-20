@@ -33,12 +33,12 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
             bg: "bg-red-50"
         },
         {
-            title: "Emirates ATPL Pathway",
-            desc: "A specialized track for pilots seeking an Emirates-standard ATPL and GCAA licensing standards. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.",
-            target: "emirates-atpl",
-            icon: Globe,
-            color: "text-emerald-600",
-            bg: "bg-emerald-50"
+            title: "Program Benefits",
+            desc: "Discover comprehensive benefits including accredited recognition, verified mentorship, EBT CBTA alignment, industry networking, career acceleration, global opportunities, continuous growth, and profile verification. Transform your aviation career with our recognition-based programs.",
+            target: "program-benefits",
+            icon: Award,
+            color: "text-purple-600",
+            bg: "bg-purple-50"
         }
     ];
 
