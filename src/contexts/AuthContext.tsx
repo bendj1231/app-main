@@ -673,10 +673,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function loginWithOAuth(provider: 'google' | 'apple' | 'github') {
         try {
+            const redirectUri = `${window.location.origin}/auth/callback`;
+            console.log(`[${provider} OAuth] Redirect URI:`, redirectUri);
+            console.log(`[${provider} OAuth] Window location origin:`, window.location.origin);
+
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider,
                 options: {
-                    redirectTo: `${window.location.origin}/auth/callback`,
+                    redirectTo: redirectUri,
                     queryParams: {
                         access_type: 'offline',
                         prompt: 'consent',
