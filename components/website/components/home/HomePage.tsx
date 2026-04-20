@@ -1459,10 +1459,19 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div>
                             <h3 className="font-bold text-lg mb-4">Platform</h3>
                             <ul className="space-y-2 text-slate-400 text-sm">
-                                <li><a onClick={() => onNavigate('pilot-recognition')} className="hover:text-white cursor-pointer transition-colors">Pilot Recognition</a></li>
-                                <li><a onClick={() => onNavigate('recognition-career-matches')} className="hover:text-white cursor-pointer transition-colors">Pathways</a></li>
-                                <li><a href="https://pilotterminal.com" target="_blank" rel="noopener noreferrer" className="hover:text-white cursor-pointer transition-colors">Pilot Terminal</a></li>
-                                <li><a onClick={() => onNavigate('about')} className="hover:text-white cursor-pointer transition-colors">Foundation Program</a></li>
+                                <li><a href="/pilot-recognition" className="hover:text-white cursor-pointer transition-colors">Pilot Recognition</a></li>
+                                <li><a href="/recognition-career-matches" className="hover:text-white cursor-pointer transition-colors">Pathways</a></li>
+                                <li><a href="/programs" className="hover:text-white cursor-pointer transition-colors">Programs</a></li>
+                                <li><a href="/airline-expectations" className="hover:text-white cursor-pointer transition-colors">Airline Expectations</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-lg mb-4">Programs</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><a href="/foundational-program" className="hover:text-white cursor-pointer transition-colors">Foundation Program</a></li>
+                                <li><a href="/transition-program" className="hover:text-white cursor-pointer transition-colors">Transition Program</a></li>
+                                <li><a href="/airbus-aligned-ebt-cbta-programs" className="hover:text-white cursor-pointer transition-colors">EBT CBTA</a></li>
+                                <li><a href="/become-member" className="hover:text-white cursor-pointer transition-colors">Become a Member</a></li>
                             </ul>
                         </div>
                         <div>
