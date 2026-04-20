@@ -62,24 +62,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [mfaSetupStep, setMfaSetupStep] = useState<'none' | 'qr' | 'verify'>('none');
     const [mfaSetupData, setMfaSetupData] = useState<{ secret?: string; qrCodeURL?: string }>({});
 
-    // OAuth account check state
-    const [oauthAccountCheck, setOauthAccountCheck] = useState<{ checking: boolean; hasAccount: boolean | null }>(() => {
-        // Load from sessionStorage on mount
-        const saved = sessionStorage.getItem('oauthAccountCheck');
-        return saved ? JSON.parse(saved) : { checking: false, hasAccount: null };
-    });
+    // OAuth account check state - NOT persisted to sessionStorage to prevent stuck modal on refresh
+    const [oauthAccountCheck, setOauthAccountCheck] = useState<{ checking: boolean; hasAccount: boolean | null }>({ checking: false, hasAccount: null });
 
     // Flag to track if we've already shown the modal for this session
     const [oauthModalShown, setOauthModalShown] = useState(() => {
         return sessionStorage.getItem('oauthModalShown') === 'true';
     });
 
-    // Persist oauthAccountCheck to sessionStorage whenever it changes
-    useEffect(() => {
-        sessionStorage.setItem('oauthAccountCheck', JSON.stringify(oauthAccountCheck));
-    }, [oauthAccountCheck]);
-
-    // Persist oauthModalShown flag
+    // Persist oauthModalShown flag only
     useEffect(() => {
         if (oauthModalShown) {
             sessionStorage.setItem('oauthModalShown', 'true');
@@ -89,7 +80,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Function to reset OAuth account check state
     const resetOauthAccountCheck = () => {
         setOauthAccountCheck({ checking: false, hasAccount: null });
-        sessionStorage.removeItem('oauthAccountCheck');
         setOauthModalShown(false);
         sessionStorage.removeItem('oauthModalShown');
     };
