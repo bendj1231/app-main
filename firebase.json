@@ -1,13 +1,14 @@
 {
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20"
+  },
   "projects": {
     "default": "pilotrecognition-airline",
     "programs": "pilotrecognition-programs",
     "pathways": "pilotrecognition-pathways",
     "recognition": "pilotrecognition-recognition",
     "airline": "pilotrecognition-airline",
-    "pilotterminal": "pilotrecognition-pilotterminal",
-    "wingmentor": "wingmentor-ab3ad"
-  },
-  "targets": {},
-  "etags": {}
+    "pilotterminal": "pilotrecognition-pilotterminal"
+  }
 }
