@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 async function downloadAndUpload() {
-  const url = 'https://upload.wikimedia.org/wikipedia/commons/5/54/Royal_Nepal_Airlines_Boeing_757-200_MRD-2.jpg';
+  const url = 'https://encdn.ratopati.com/media/news/twin-ottar_BO9YpxddXq.webp';
   const tempPath = path.join(__dirname, '../temp-nepal-airlines.jpg');
   const publicId = 'nepal-airlines';
 
