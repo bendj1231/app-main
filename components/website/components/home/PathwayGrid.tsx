@@ -234,7 +234,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'cargo',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/c_fill,w_800,h_600,g_center/v1776689839/pathways/cargo-operations.png',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/c_fill,w_800,h_600,g_center/v1776692676/pathways/cargo-operations.jpg',
             title: 'Cargo Operations',
             subtitle: 'Freight, logistics, and global supply chain aviation roles',
             icon: Briefcase,
@@ -1665,21 +1665,56 @@ const GridCard: React.FC<GridCardProps> = ({
                                     Enroll Now!
                                 </button>
                             )}
-                            {/* Glassy button for member card only */}
-                            {card.id === 'member' && (
+                            {/* Glassy button for programs card */}
+                            {card.id === 'programs' && (
                                 <button
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        if (isLoggedIn) {
-                                            onNavigate('portal');
-                                        } else {
-                                            onNavigate('become-member');
-                                        }
+                                        onNavigate('programs');
                                     }}
                                     className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                                 >
-                                    {isLoggedIn ? 'Access Portal' : 'Join Now'}
+                                    Explore
+                                </button>
+                            )}
+                            {/* Glassy button for pilot-recognition card */}
+                            {card.id === 'pilot-recognition' && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate('pilot-recognition');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    Learn More
+                                </button>
+                            )}
+                            {/* Glassy button for pathways card */}
+                            {card.id === 'pathways' && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate('pathways');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    View
+                                </button>
+                            )}
+                            {/* Glassy button for pathway-specific cards */}
+                            {['cargo', 'charter', 'cadet', 'air-taxi'].includes(card.id) && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onClick();
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    {isLoggedIn ? 'Access' : 'Learn More'}
                                 </button>
                             )}
                         </div>
@@ -1735,7 +1770,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                         {displaySubtitle.length > 45 ? displaySubtitle.slice(0, 42) + '...' : displaySubtitle}
                                     </p>
                                 </div>
-                                {/* Glassy button for category cards in home view only */}
+                                {/* Glassy button for home view bottom row cards only */}
                                 {currentViewKey === 'home' && ['programs', 'pilot-recognition', 'pathways'].includes(card.id) && (
                                     <button
                                         onClick={(e) => {
@@ -1743,7 +1778,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                             e.stopPropagation();
                                             onClick();
                                         }}
-                                        className="px-3 py-1 bg-white/30 backdrop-blur-md border-2 border-white/40 rounded-full text-white text-xs font-bold hover:bg-white/40 transition-all duration-300 shadow-xl flex-shrink-0"
+                                        className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs font-medium hover:bg-white/30 transition-all duration-300 shadow-lg flex-shrink-0"
                                     >
                                         {isLoggedIn ? 'Access' : 'Learn More'}
                                     </button>
