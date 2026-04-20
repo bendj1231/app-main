@@ -320,7 +320,7 @@ const App = () => {
     },
     'programs': {
       title: 'Programs & Pathways | Pilot Programs & Development | Pilot Recognition',
-      description: 'Pilot Recognition-Based Programs & Development | Pilot Recognition'
+      description: 'Comprehensive pilot recognition-based programs and development pathways including Foundation Program, Transition Program, and AIRBUS Aligned EBT CBTA Programs for career advancement in the aviation industry.'
     },
     'foundational-program': {
       title: 'Foundational Program - Accredited Pilot Development | Pilot Recognition',
