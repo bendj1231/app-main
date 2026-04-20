@@ -1494,7 +1494,7 @@ const GridCard: React.FC<GridCardProps> = ({
                     ) : (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn) ? (
                         // Discover card when logged in - use single image without carousel
                         <img
-                            src={displayImage || card.image}
+                            src={card.loggedInImage || card.image}
                             alt={card.title}
                             className="w-full h-full object-cover object-center"
                         />
