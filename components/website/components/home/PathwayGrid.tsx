@@ -183,7 +183,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
     programs: [
         {
             id: 'foundation',
-            videoUrl: '/fp.mp4',
+            videoUrl: '/images/My Movie 3 - 720WebShareName.mov',
             title: 'Foundation Program',
             enrolledTitle: 'Foundation Program Access',
             subtitle: 'Start your pilot journey with structured mentorship and guidance',
@@ -272,7 +272,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
     'pilot-recognition': [
         {
             id: 'pilot-recognition',
-            videoUrl: '/images/My Movie 3 - 720WebShareName.mov',
+            videoUrl: '/fp.mp4',
             title: 'Pilot Recognition',
             subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
             icon: Compass,
@@ -821,7 +821,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 'pathways': 'pathways',
                 'foundation': 'foundational-program',
                 'benefits': 'program-benefits',
-                'news': 'programs',
+                'news': 'news-updates',
                 'learn-more': 'foundational-program',
                 'commercial-airlines': 'pathways',
                 'cargo': 'pathways',
