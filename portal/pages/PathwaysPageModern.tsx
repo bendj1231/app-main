@@ -3336,7 +3336,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           {selectedCarouselPathway && (() => {
             const reqMatches = analyzeRequirementAlignment(selectedCarouselPathway, recognitionProfile);
             return (
-              <div className="w-full max-w-4xl mt-6">
+              <div className="w-full max-w-4xl mt-6 mx-auto">
                 <div className="text-center mb-4">
                   <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>Requirements & Profile Alignment</h3>
                   <p className={`${subText} text-sm`}>How your profile aligns with this pathway's requirements</p>
