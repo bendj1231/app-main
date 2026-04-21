@@ -293,7 +293,7 @@ interface PathwayJob {
 interface PathwayData {
   id: string;
   name: string;
-  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'airtaxi-drones';
+  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'type-rating' | 'airtaxi-drones';
   airline: string;
   description: string;
   image: string;
@@ -939,6 +939,86 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80'
     }
   ],
+  'type-rating': [
+    {
+      id: 'wingmentor-intro-type-rating',
+      title: 'Pathways to Type Rating',
+      company: 'WingMentor',
+      matchPercentage: 100,
+      location: 'Global',
+      type: 'Introduction',
+      salary: 'Direct entry pathways for type rating completion',
+      requirements: ['CPL + ME/IR', 'Foundation Program Graduate', 'Partner Airline Eligible'],
+      tags: ['Direct Entry', 'Partner Airlines', 'Career Progression'],
+      postedAt: 'Featured',
+      image: 'wingmentor-white'
+    },
+    {
+      id: 'disc-type-1',
+      title: 'CAE Philippines Type Rating Center',
+      company: 'CAE',
+      matchPercentage: 93,
+      location: 'Manila, Philippines',
+      type: 'Type Rating Center',
+      salary: 'Contact for pricing',
+      requirements: ['CPL + IR', 'Medical Class 1', 'English Proficient'],
+      tags: ['A320/B737 Simulators', 'EASA/CAA Approved', 'Modern Facility'],
+      postedAt: 'Open Enrollment',
+      image: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp'
+    },
+    {
+      id: 'disc-type-2',
+      title: 'ATPL Pathway',
+      company: 'Various ATOs',
+      matchPercentage: 90,
+      location: 'Global',
+      type: 'License Pathway',
+      salary: 'Contact for pricing',
+      requirements: ['CPL + ME/IR', '1,500+ hrs TT', 'ATPL Theory Pass'],
+      tags: ['Airline Transport License', 'Career Progression', 'Command Prep'],
+      postedAt: 'Always Available',
+      image: 'https://www.flightdeckfriend.com/wp-content/uploads/2021/01/Pilot-Assessment-Example-Technical-Exam-710x375.jpeg'
+    },
+    {
+      id: 'disc-type-3',
+      title: 'Multi Engine Rating Pathway',
+      company: 'Flight Training Organizations',
+      matchPercentage: 95,
+      location: 'Global',
+      type: 'Rating Pathway',
+      salary: '$8,000 - $15,000',
+      requirements: ['PPL or CPL', 'Single Engine Experience', 'Class 2 Medical'],
+      tags: ['ME Rating', 'Multi-Engine Command', 'Career Step'],
+      postedAt: 'Always Available',
+      image: 'https://cdn.prod.website-files.com/67b7f6762c0ae79aa3b1f3b0/6813ec96ef44eea3df482f3d_N53TW%203.jpg'
+    },
+    {
+      id: 'disc-type-4',
+      title: 'Instrument Rating Pathway',
+      company: 'IFR Training Centers',
+      matchPercentage: 97,
+      location: 'Global',
+      type: 'Rating Pathway',
+      salary: '$10,000 - $18,000',
+      requirements: ['PPL or CPL', '50+ hrs Cross-Country', 'Class 2 Medical'],
+      tags: ['IFR Operations', 'All Weather Flying', 'Essential Rating'],
+      postedAt: 'Always Available',
+      image: 'https://media.pea.com/wp-content/uploads/2023/06/altfull-view-of-G1000-Avionics-of-Cessna-172-1024x607.jpeg'
+    },
+    {
+      id: 'disc-type-5',
+      title: 'UPRT Rating Pathway',
+      company: 'UPRT Training Providers',
+      matchPercentage: 88,
+      location: 'Various Locations',
+      type: 'Training Pathway',
+      salary: '$3,000 - $5,000',
+      requirements: ['CPL or ATPL', 'Spin Awareness', 'EASA/FAA Compliant'],
+      tags: ['Upset Recovery', 'Loss of Control', 'Safety Critical'],
+      postedAt: 'Open Enrollment',
+      image: 'https://i.vimeocdn.com/video/1769783286-138fb27314025852ea22110de052d224665fcb0d82fad22a16f48a77d0001cc7-d?f=webp'
+    }
+  ],
   'airtaxi-drones': [
     {
       id: 'wingmentor-intro-evtol',
@@ -1013,7 +1093,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
 // Transform real job data to PathwayData format
 const transformJobToPathway = (job: typeof jobApplicationListings[0], index: number): PathwayData => {
   // Determine category based on job characteristics
-  // Categories: airline-pathways, cadet-programme, private, privateSector, cargo, airtaxi-drones
+  // Categories: airline-pathways, cadet-programme, private, privateSector, cargo, type-rating, airtaxi-drones
   let category: PathwayData['category'] = 'cadet-programme';
   const title = job.title.toLowerCase();
   const aircraft = job.aircraft.toLowerCase();
@@ -1058,6 +1138,14 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
            company.includes('kalitta') || company.includes('southern air') || company.includes('amazon') ||
            title.includes('freight') || title.includes('logistics')) {
     category = 'cargo';
+  }
+  // TYPE RATING: Type rating pathways, training centers, license pathways
+  else if (title.includes('type rating') || title.includes('rating') || title.includes('atpl') ||
+           title.includes('multi engine') || title.includes('instrument') || title.includes('uprt') ||
+           company.includes('cae') || company.includes('flight safety') || company.includes('simcom') ||
+           title.includes('instructor') || title.includes('cbta') || title.includes('cat i') ||
+           title.includes('cat ii') || title.includes('cat iii')) {
+    category = 'type-rating';
   }
   // AIRTAXI & DRONES: Emerging AirTaxi & Drones Pathway
   else if (title.includes('evtol') || title.includes('air taxi') || title.includes('electric') ||
@@ -1457,6 +1545,7 @@ const PathwayCard: React.FC<{
     private: 'from-amber-600 to-amber-400',
     'privateSector': 'from-orange-600 to-orange-400',
     cargo: 'from-emerald-600 to-emerald-400',
+    'type-rating': 'from-pink-600 to-pink-400',
   };
 
   const textColor = isDarkMode ? 'text-slate-300' : 'text-slate-700';
@@ -2025,7 +2114,7 @@ const CategoryFilter: React.FC<{
   categoryLabels: Record<string, string>;
 }> = ({ active, onChange, isDarkMode = true, categoryLabels }) => {
   // Always show all categories, maintaining order
-  const orderedCategories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'airtaxi-drones'];
+  const orderedCategories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
   
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
@@ -2398,6 +2487,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(1000); // Show all jobs and discovery pathways
   const [matchFilter, setMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
+  const [viewFilter, setViewFilter] = useState<'all' | 'jobs' | 'pathways'>('all');
   const [positionFilter, setPositionFilter] = useState<'all' | 'Captain' | 'Fighter Pilot' | 'First Officer' | 'Flight Instructor' | 'Pilot Cadet'>('all');
   const [isPositionDropdownOpen, setIsPositionDropdownOpen] = useState(false);
   const [expandedGapAnalysis, setExpandedGapAnalysis] = useState(true);
@@ -2422,6 +2512,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     'private': 'Type Rating',
     'privateSector': 'Private Sector',
     'cargo': 'Cargo',
+    'type-rating': 'Type Rating Pathways',
     'airtaxi-drones': 'AirTaxi & Drones'
   };
 
@@ -2472,7 +2563,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const allPathways = [...dynamicPathways];
   
   // Always show all portal categories regardless of data
-  const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'airtaxi-drones'];
+  const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
 
   const filteredPathways = allPathways.filter(pathway => {
     let matchesCategory = activeCategory === 'all' || pathway.category === activeCategory;
@@ -2502,6 +2593,18 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       }
     }
 
+    // View filter - Jobs vs Pathways
+    let matchesViewFilter = true;
+    if (viewFilter !== 'all') {
+      // Jobs are from jobApplicationListings (have url), Pathways are from static data (no url)
+      const isJob = !!pathway.url;
+      if (viewFilter === 'jobs') {
+        matchesViewFilter = isJob;
+      } else if (viewFilter === 'pathways') {
+        matchesViewFilter = !isJob;
+      }
+    }
+
     // Job position filtering
     let matchesPositionFilter = true;
     if (positionFilter !== 'all') {
@@ -2525,7 +2628,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       }
     }
     
-    return matchesCategory && matchesSearch && matchesMatchFilter && matchesPositionFilter;
+    return matchesCategory && matchesSearch && matchesMatchFilter && matchesPositionFilter && matchesViewFilter;
   });
 
   const loopedPathways = filteredPathways.length > 0
@@ -2862,6 +2965,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   { key: 'private', label: 'Type Rating' },
                   { key: 'privateSector', label: 'Private Sector' },
                   { key: 'cargo', label: 'Cargo' },
+                  { key: 'type-rating', label: 'Type Rating Pathways' },
                   { key: 'airtaxi-drones', label: 'AirTaxi & Drones' },
                 ].map((cat) => (
                   <button
@@ -2898,6 +3002,32 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                           ? 'bg-purple-500 text-white'
                           : isDarkMode 
                             ? 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80' 
+                            : 'bg-white/80 text-slate-600 hover:bg-slate-100/80'
+                    }`}
+                    >
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* View Filter - Jobs vs Pathways */}
+              <div className="flex items-center gap-2">
+                <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>View:</span>
+                <div className="flex gap-1">
+                  {[
+                    { key: 'all', label: 'All' },
+                    { key: 'jobs', label: 'Available Jobs' },
+                    { key: 'pathways', label: 'Available Pathways' },
+                  ].map((filter) => (
+                    <button
+                      key={filter.key}
+                      onClick={() => setViewFilter(filter.key as typeof viewFilter)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all shadow-lg backdrop-blur ${
+                        viewFilter === filter.key
+                          ? 'bg-green-500 text-white'
+                          : isDarkMode
+                            ? 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80'
                             : 'bg-white/80 text-slate-600 hover:bg-slate-100/80'
                     }`}
                     >
