@@ -795,7 +795,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
       try {
         // Get the current Supabase session to get the user ID
         const { data: { session } } = await supabase.auth.getSession();
-        
+
         if (!session?.user?.id) {
           setMatchScores({});
           return;
@@ -808,6 +808,20 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
 
         if (error) {
           console.error('Error fetching match scores:', error);
+          // Fallback: use Firebase intelligence if available
+          if (airlineIntelligence.airlineMatches?.airlineMatches) {
+            const scoresMap: { [key: string]: { matchPercentage: number; prScore: number } } = {};
+            airlineIntelligence.airlineMatches.airlineMatches.forEach((match: any) => {
+              const airlineId = mapAirlineNameToId(match.name);
+              if (airlineId) {
+                scoresMap[airlineId] = {
+                  matchPercentage: match.matchPct,
+                  prScore: 0
+                };
+              }
+            });
+            setMatchScores(scoresMap);
+          }
           return;
         }
 
@@ -827,11 +841,25 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
         }
       } catch (error) {
         console.error('Error fetching match scores:', error);
+        // Fallback to Firebase intelligence
+        if (airlineIntelligence.airlineMatches?.airlineMatches) {
+          const scoresMap: { [key: string]: { matchPercentage: number; prScore: number } } = {};
+          airlineIntelligence.airlineMatches.airlineMatches.forEach((match: any) => {
+            const airlineId = mapAirlineNameToId(match.name);
+            if (airlineId) {
+              scoresMap[airlineId] = {
+                matchPercentage: match.matchPct,
+                prScore: 0
+              };
+            }
+          });
+          setMatchScores(scoresMap);
+        }
       }
     };
 
     fetchMatchScores();
-  }, []);
+  }, [airlineIntelligence.airlineMatches]);
 
   // Map airline name to airline ID
   const mapAirlineNameToId = (airlineName: string): string | null => {
