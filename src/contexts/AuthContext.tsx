@@ -912,12 +912,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 console.log('User signed in via OAuth:', session.user.id);
                 console.log('oauthModalShown flag:', oauthModalShown);
                 console.log('oauthModalShown from localStorage:', localStorage.getItem('oauthModalShown'));
+                console.log('currentUser state:', currentUser?.id);
 
-                // Only check account if we haven't already shown the modal in this session
-                // Check localStorage directly to handle tab switches
+                // Only check account if:
+                // 1. We haven't already shown the modal in this session
+                // 2. The user is not already set (prevents duplicate checks on tab switch)
+                // 3. The user ID is different (new user signing in)
                 const modalShownInStorage = localStorage.getItem('oauthModalShown') === 'true';
-                if (!oauthModalShown && !modalShownInStorage) {
-                    console.log('Starting account check...');
+                const isNewUser = !currentUser || currentUser.id !== session.user.id;
+                
+                if (!oauthModalShown && !modalShownInStorage && isNewUser) {
+                    console.log('Starting account check for new user...');
                     setOauthModalShown(true);
 
                     // Start account check
@@ -991,7 +996,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                     setLoading(false);
                 } else {
-                    // User already signed in, just set the user without checking account
+                    // User already signed in or same user, just set the user without checking account
+                    console.log('User already authenticated or same user, skipping account check');
                     const supabaseUser: SupabaseUser = {
                         id: session.user.id,
                         uid: session.user.id,
@@ -1024,7 +1030,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return () => {
             subscription.unsubscribe();
         };
-    }, []);
+    }, [currentUser, oauthModalShown]);
 
     useEffect(() => {
         // Verify session using Supabase native session check (bypassing Edge Function due to 403 errors)
