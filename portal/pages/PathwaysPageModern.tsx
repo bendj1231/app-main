@@ -386,84 +386,6 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       tags: ['Career Progression', 'Global Opportunities', 'Major Airlines'],
       postedAt: 'Featured',
       image: 'wingmentor-white'
-    },
-    {
-      id: 'disc-airline-2',
-      title: 'United Airlines Captain',
-      company: 'United Airlines',
-      matchPercentage: 95,
-      location: 'Chicago, IL / Denver, CO / San Francisco, CA',
-      type: 'Major Airline',
-      salary: '$250,000 - $350,000/year',
-      requirements: ['4000+ hrs TT', 'B737/B777 Type Rating', 'PIC Time', 'US Citizen'],
-      tags: ['Major Carrier', 'Widebody Fleet', 'International Routes', 'Union Benefits'],
-      postedAt: 'Access',
-      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780360/airline-logos/airline-logos/united.svg'
-    },
-    {
-      id: 'disc-airline-3',
-      title: 'American Airlines First Officer',
-      company: 'American Airlines',
-      matchPercentage: 94,
-      location: 'Dallas, TX / Charlotte, NC / Phoenix, AZ',
-      type: 'Major Airline',
-      salary: '$145,000 - $195,000/year',
-      requirements: ['1500+ hrs TT', 'ATPL', 'B737/A320 Type Rating', 'US Citizen/Perm Resident'],
-      tags: ['Major Carrier', 'Largest Fleet', 'Domestic & International', 'Flow Programs'],
-      postedAt: 'Hiring Now',
-      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'
-    },
-    {
-      id: 'disc-airline-6',
-      title: 'Alaska Airlines First Officer',
-      company: 'Alaska Airlines',
-      matchPercentage: 91,
-      location: 'Seattle, WA / Anchorage, AK / Portland, OR',
-      type: 'Major Airline',
-      salary: '$130,000 - $170,000/year',
-      requirements: ['1500+ hrs TT', 'B737 Type Rating', 'US Citizen'],
-      tags: ['West Coast Focus', 'Alaska Routes', 'Career Growth', 'Profit Sharing'],
-      postedAt: 'Access',
-      image: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/54/Alaska_Airlines_logo_2014.svg/1200px-Alaska_Airlines_logo_2014.svg.png'
-    },
-    {
-      id: 'disc-airline-7',
-      title: 'British Airways First Officer',
-      company: 'British Airways',
-      matchPercentage: 90,
-      location: 'London Heathrow / London Gatwick',
-      type: 'Major Airline',
-      salary: '£65,000 - £85,000/year',
-      requirements: ['1500+ hrs TT', 'EASA ATPL', 'A320/B777 Type Rating', 'UK/EU Citizen'],
-      tags: ['Flag Carrier', 'Global Network', 'Premium Brand', 'Career Progression'],
-      postedAt: 'Check Website',
-      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/british-airways.jpg'
-    },
-    {
-      id: 'disc-airline-8',
-      title: 'Lufthansa First Officer',
-      company: 'Lufthansa',
-      matchPercentage: 89,
-      location: 'Frankfurt / Munich / Hamburg',
-      type: 'Major Airline',
-      salary: '€75,000 - €95,000/year',
-      requirements: ['1500+ hrs TT', 'EASA ATPL', 'A320/B747 Type Rating', 'German/EU Citizen'],
-      tags: ['Flag Carrier', 'European Network', 'Premium Service', 'Training Excellence'],
-      postedAt: 'Access',
-      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/lufthansa.jpg'
-    },
-    {
-      id: 'disc-airline-9',
-      title: 'Air France First Officer',
-      company: 'Air France',
-      matchPercentage: 88,
-      location: 'Paris Charles de Gaulle / Paris Orly',
-      type: 'Major Airline',
-      salary: '€70,000 - €90,000/year',
-      requirements: ['1500+ hrs TT', 'EASA ATPL', 'A320/A350 Type Rating', 'French/EU Citizen'],
-      tags: ['Flag Carrier', 'Global Routes', 'Premium Brand', 'Career Growth'],
-      postedAt: 'Check Website',
-      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg'
     }
   ],
   'cadet-programme': [
@@ -808,19 +730,6 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       tags: ['Silver Service', 'Worldwide Operations', 'Tax-Free Options'],
       postedAt: 'Access',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80'
-    },
-    {
-      id: 'disc-privsec-3',
-      title: 'Flexjet First Officer',
-      company: 'Flexjet',
-      matchPercentage: 89,
-      location: 'Columbus, OH / Various',
-      type: 'Fractional',
-      salary: '$120,000 - $150,000/year',
-      requirements: ['1,500+ hrs TT', 'Type Rating Preferred', 'US Citizen'],
-      tags: ['Premium Fleet', 'Career Growth', 'Great Benefits'],
-      postedAt: 'Access',
-      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'
     }
   ],
   cargo: [
@@ -901,19 +810,6 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       tags: ['B747 Fleet', 'Global Operations', 'Competitive Pay'],
       postedAt: 'Hiring Now',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80'
-    },
-    {
-      id: 'disc-cargopath-3',
-      title: 'Southern Air First Officer',
-      company: 'Southern Air',
-      matchPercentage: 85,
-      location: 'Norwalk, CT / Global',
-      type: 'Cargo Entry Level',
-      salary: '$140,000 - $180,000/year',
-      requirements: ['1,500+ hrs TT', 'Multi-Engine IR', 'US Citizen'],
-      tags: ['Entry Level', 'Career Growth', 'Great Training'],
-      postedAt: 'Access',
-      image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80'
     }
   ],
   'type-rating': [
