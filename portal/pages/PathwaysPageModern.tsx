@@ -3172,26 +3172,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           <div className="flex justify-center">
             <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
           </div>
-          <div className="flex flex-wrap justify-center mt-3 gap-3">
-            {[
-              { label: 'Airline Expectations', page: 'portal-airline-expectations', fallback: '/airline-expectations' },
-              { label: 'Aircraft Type-Ratings', page: 'type-rating-search', fallback: '/type-rating-search' },
-              { label: 'Pilot Pathways', page: 'pathways', fallback: '/pathways' },
-              { label: 'Job Listings', page: 'job-listings', fallback: '/job-listings' },
-            ].map(({ label, page, fallback }) => (
-              <button
-                key={page}
-                onClick={() => onNavigate ? onNavigate(page) : (window.location.href = fallback)}
-                className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                  isDarkMode
-                    ? 'bg-sky-600 hover:bg-sky-700 text-white'
-                    : 'bg-sky-500 hover:bg-sky-600 text-white'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
           <div className="flex justify-center">
             <CategoryFilter
               active={activeCategory}

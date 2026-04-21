@@ -113,6 +113,7 @@ import { ProgramsPage } from './components/website/components/programs/ProgramsP
 import { PathwaysPage } from './components/website/components/pathways/PathwaysPage';
 import { PathwaysPageModern } from './portal/pages/PathwaysPageModern';
 import { PortalAirlineExpectationsPage } from './portal/pages/PortalAirlineExpectationsPage';
+import { PortalPageHeader } from './portal/components/PortalPageHeader';
 const PortalWrapper = lazy(() => import('./components/website/components/portal/PortalWrapper').then(m => ({ default: m.PortalWrapper })));
 import { DirectEnrollmentLoadingScreen } from './components/website/components/home/DirectEnrollmentLoadingScreen';
 import { DirectPlatformLoadingScreen } from './components/website/components/home/DirectPlatformLoadingScreen';
@@ -1252,13 +1253,28 @@ const App = () => {
           />
         )}
         {currentPage === 'pathways-modern' && (
-          <PathwaysPageModern isDarkMode={true} onNavigate={navigateTo} />
+          <div className="min-h-screen bg-slate-950">
+            <PortalPageHeader onNavigate={navigateTo} activePage="pathways-modern" />
+            <PathwaysPageModern isDarkMode={true} onNavigate={navigateTo} />
+          </div>
         )}
         {currentPage === 'portal-airline-expectations' && (
-          <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} isDarkMode={false} />
+          <div className="min-h-screen bg-slate-50">
+            <PortalPageHeader onNavigate={navigateTo} activePage="portal-airline-expectations" />
+            <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} isDarkMode={false} />
+          </div>
         )}
         {currentPage === 'type-rating-search' && (
-          <TypeRatingSearchPage />
+          <div className="min-h-screen bg-slate-950">
+            <PortalPageHeader onNavigate={navigateTo} activePage="type-rating-search" />
+            <TypeRatingSearchPage />
+          </div>
+        )}
+        {currentPage === 'job-listings' && (
+          <div className="min-h-screen bg-slate-950">
+            <PortalPageHeader onNavigate={navigateTo} activePage="job-listings" />
+            <div className="flex items-center justify-center py-32 text-slate-400 text-lg">Job Listings coming soon</div>
+          </div>
         )}
         {currentPage === 'pathways-modern-light' && (
           <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />
