@@ -71,7 +71,6 @@ const CLOUDINARY_AIRLINES: Record<string, string> = {
 const FALLBACK_IMAGES: Record<string, string> = {
   'cadet-programme': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
   'cargo': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
-  'cargoPathways': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
   'private': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
   'privateSector': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
   'airtaxi-drones': 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
@@ -294,7 +293,7 @@ interface PathwayJob {
 interface PathwayData {
   id: string;
   name: string;
-  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'cargoPathways' | 'airtaxi-drones';
+  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'airtaxi-drones';
   airline: string;
   description: string;
   image: string;
@@ -850,7 +849,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
   cargo: [
     {
       id: 'wingmentor-intro-cargo',
-      title: 'Pathways to Airline Expectations',
+      title: 'Pathways to Cargo Operations',
       company: 'WingMentor',
       matchPercentage: 100,
       location: 'Global',
@@ -897,23 +896,8 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       salary: '$220,000 - $300,000/year',
       requirements: ['3,000+ hrs TT', 'B747/B777 Type', 'International Exp'],
       tags: ['ACMI Leader', 'Global Network', 'Growth Opportunity'],
-      postedAt: 'Check Website',
-      image: 'https://images.unsplash.com/photo-1542296332-2e44a1998db5?w=800&q=80'
-    }
-  ],
-  cargoPathways: [
-    {
-      id: 'wingmentor-intro-cargopathways',
-      title: 'Pathways to Cargo Pathways',
-      company: 'WingMentor',
-      matchPercentage: 100,
-      location: 'Global',
-      type: 'Introduction',
-      salary: 'Direct entry pathways for foundation program completion and description',
-      requirements: ['CPL + ME/IR', 'Foundation Program Graduate', 'Partner Airline Eligible'],
-      tags: ['Direct Entry', 'Partner Airlines', 'Career Progression'],
-      postedAt: 'Featured',
-      image: 'wingmentor-white'
+      postedAt: 'Hiring Now',
+      image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80'
     },
     {
       id: 'disc-cargopath-1',
@@ -1029,7 +1013,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
 // Transform real job data to PathwayData format
 const transformJobToPathway = (job: typeof jobApplicationListings[0], index: number): PathwayData => {
   // Determine category based on job characteristics
-  // Categories: airline-pathways, cadet-programme, private, privateSector, cargo, cargoPathways, airtaxi-drones
+  // Categories: airline-pathways, cadet-programme, private, privateSector, cargo, airtaxi-drones
   let category: PathwayData['category'] = 'cadet-programme';
   const title = job.title.toLowerCase();
   const aircraft = job.aircraft.toLowerCase();
@@ -1068,14 +1052,8 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
            company.includes('global jet') || company.includes('fractional') || company.includes('ownership')) {
     category = 'privateSector';
   }
-  // CARGO PATHWAYS: Dedicated cargo airline career programs, cargo operations
-  else if (title.includes('cargo') && (title.includes('pathway') || title.includes('program') || title.includes('career')) ||
-           company.includes('cargo') && (title.includes('pathway') || title.includes('program')) ||
-           title.includes('freight') && (title.includes('pathway') || title.includes('program'))) {
-    category = 'cargoPathways';
-  }
   // CARGO: Airline Expectations - freight and logistics operations
-  else if (title.includes('cargo') || company.includes('cargo') || company.includes('atlas') || 
+  else if (title.includes('cargo') || company.includes('cargo') || company.includes('atlas') ||
            company.includes('fedex') || company.includes('ups') || company.includes('dhl') ||
            company.includes('kalitta') || company.includes('southern air') || company.includes('amazon') ||
            title.includes('freight') || title.includes('logistics')) {
@@ -1479,7 +1457,6 @@ const PathwayCard: React.FC<{
     private: 'from-amber-600 to-amber-400',
     'privateSector': 'from-orange-600 to-orange-400',
     cargo: 'from-emerald-600 to-emerald-400',
-    'cargoPathways': 'from-green-600 to-green-400',
   };
 
   const textColor = isDarkMode ? 'text-slate-300' : 'text-slate-700';
@@ -2048,7 +2025,7 @@ const CategoryFilter: React.FC<{
   categoryLabels: Record<string, string>;
 }> = ({ active, onChange, isDarkMode = true, categoryLabels }) => {
   // Always show all categories, maintaining order
-  const orderedCategories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'cargoPathways', 'airtaxi-drones'];
+  const orderedCategories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'airtaxi-drones'];
   
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
@@ -2440,12 +2417,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const categoryLabels: Record<string, string> = {
     'all': 'All',
     'recommended': 'Recommended',
-    'airline-pathways': 'Airline',
+    'airline-pathways': 'Airline Careers',
     'cadet-programme': 'Cadet Programs',
     'private': 'Type Rating',
     'privateSector': 'Private Sector',
     'cargo': 'Cargo',
-    'cargoPathways': 'Cargo',
     'airtaxi-drones': 'AirTaxi & Drones'
   };
 
@@ -2496,7 +2472,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const allPathways = [...dynamicPathways];
   
   // Always show all portal categories regardless of data
-  const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'cargoPathways', 'airtaxi-drones'];
+  const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'airtaxi-drones'];
 
   const filteredPathways = allPathways.filter(pathway => {
     let matchesCategory = activeCategory === 'all' || pathway.category === activeCategory;
@@ -2885,8 +2861,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   { key: 'cadet-programme', label: 'Cadet Programs' },
                   { key: 'private', label: 'Type Rating' },
                   { key: 'privateSector', label: 'Private Sector' },
-                  { key: 'cargo', label: 'Airline Expectations' },
-                  { key: 'cargoPathways', label: 'Cargo Pathways' },
+                  { key: 'cargo', label: 'Cargo' },
                   { key: 'airtaxi-drones', label: 'AirTaxi & Drones' },
                 ].map((cat) => (
                   <button
