@@ -588,7 +588,7 @@ const App = () => {
   };
 
   const navigateToPortal = () => {
-    setCurrentPage('portal');
+    setCurrentPage('pathways-modern-light');
   };
 
   const navigateToMainAppHome = () => {
