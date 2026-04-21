@@ -2812,11 +2812,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           const cur = filteredPathways[closest];
           return cur || fp;
         });
-      }, 80);
+        // Snap to center the closest card
+        scrollToCarouselIndex(closest, 'smooth');
+      }, 150);
     };
     container.addEventListener('scroll', onScroll, { passive: true });
     return () => { container.removeEventListener('scroll', onScroll); clearTimeout(tid); };
-  }, [filteredPathways.length]);
+  }, [filteredPathways.length, scrollToCarouselIndex]);
 
   // Reset cockpit activation when pathway changes
   useEffect(() => {
