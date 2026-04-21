@@ -2601,7 +2601,22 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Simple scroll function like PortalAirlineExpectationsPage
   const scrollCarousel = (dir: 'left' | 'right') => {
-    carouselRef.current?.scrollBy({ left: dir === 'left' ? -640 : 640, behavior: 'smooth' });
+    const container = carouselRef.current;
+    if (!container || filteredPathways.length === 0) return;
+    
+    // Scroll by fixed amount
+    container.scrollBy({ left: dir === 'left' ? -640 : 640, behavior: 'smooth' });
+    
+    // Select the next/previous card based on current selection
+    const currentIndex = filteredPathways.findIndex(p => p.id === selectedCarouselPathway?.id);
+    if (currentIndex === -1) return;
+    
+    let newIndex = dir === 'left' ? currentIndex - 1 : currentIndex + 1;
+    // Clamp to valid range
+    if (newIndex < 0) newIndex = 0;
+    if (newIndex >= filteredPathways.length) newIndex = filteredPathways.length - 1;
+    
+    setSelectedCarouselPathway(filteredPathways[newIndex]);
   };
 
   // Reset cockpit activation when pathway changes
