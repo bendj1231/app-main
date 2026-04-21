@@ -112,6 +112,7 @@ import { ProgramsPathwaysPage } from './components/website/components/programs/P
 import { ProgramsPage } from './components/website/components/programs/ProgramsPage';
 import { PathwaysPage } from './components/website/components/pathways/PathwaysPage';
 import { PathwaysPageModern } from './portal/pages/PathwaysPageModern';
+import { PortalAirlineExpectationsPage } from './portal/pages/PortalAirlineExpectationsPage';
 const PortalWrapper = lazy(() => import('./components/website/components/portal/PortalWrapper').then(m => ({ default: m.PortalWrapper })));
 import { DirectEnrollmentLoadingScreen } from './components/website/components/home/DirectEnrollmentLoadingScreen';
 import { DirectPlatformLoadingScreen } from './components/website/components/home/DirectPlatformLoadingScreen';
@@ -1252,6 +1253,9 @@ const App = () => {
         )}
         {currentPage === 'pathways-modern' && (
           <PathwaysPageModern isDarkMode={true} onNavigate={navigateTo} />
+        )}
+        {currentPage === 'portal-airline-expectations' && (
+          <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} isDarkMode={true} />
         )}
         {currentPage === 'pathways-modern-light' && (
           <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />
