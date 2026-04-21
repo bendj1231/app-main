@@ -2619,7 +2619,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     // Calculate scroll position to center the card under SELECTED PATHWAY text
     // The carousel has padding: calc(50vw - 300px) to center content
     const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-    const scrollPos = cardCenter - (window.innerWidth / 2) + 50; // Center card above SELECTED PATHWAY
+    const scrollPos = cardCenter - (window.innerWidth / 2) + 120; // Center card above SELECTED PATHWAY
     container.scrollTo({ left: scrollPos, behavior });
   }, []);
 
