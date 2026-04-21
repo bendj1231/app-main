@@ -6141,3 +6141,573 @@ exports.expressInterest = onRequest(async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
+
+// ============================================================================
+// PATHWAYS PROJECT FUNCTIONS — deployed to pilotrecognition-pathways
+// Full WingMentor R-Formula: R = [Σ(Pᵢ×wᵢ) + Σ(Eⱼ×Tₖ×wⱼ) + Σ(Bₗ×wₗ) + Σ(Lₘ×wₘ) + Σ(Sₙ×wₙ)]
+// ============================================================================
+
+// Helper: CORS headers for all pathways functions
+const setPathwaysCors = (res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+};
+
+// Helper: Compute full R-formula score from a Supabase profile row
+const computeRFormula = (profile) => {
+  // --- P: Programs factor (max 100, weight 20%) ---
+  const techSkills   = parseFloat(profile.technical_skills_score) || 0;
+  const interviewSc  = parseFloat(profile.interview_score) || 0;
+  const consultSc    = parseFloat(profile.consultation_score) || 0;
+  const simSc        = parseFloat(profile.simulation_score) || 0;
+  const examSc       = parseFloat(profile.examination_score) || 0;
+  const P = Math.min(100, (techSkills + interviewSc + consultSc + simSc + examSc) / 5);
+
+  // --- E×T: Experience × Time Decay factor (max 100, weight 35%) ---
+  const totalHours  = parseFloat(profile.total_flight_hours) || parseFloat(profile.current_flight_hours) || 0;
+  const timeDecay   = parseFloat(profile.time_decay_coefficient) || 1.0;
+  // Logarithmic hours scale: 0h=0, 200h=40, 1500h=70, 5000h=90, 10000h=100
+  const hoursScore  = totalHours === 0 ? 0 : Math.min(100, Math.round(20 + Math.log10(Math.max(1, totalHours)) * 20));
+  const ET = Math.min(100, hoursScore * timeDecay);
+
+  // --- B: Behavioral factor (max 100, weight 20%) ---
+  const crmSc       = parseFloat(profile.behavioral_crm_assessment) || 0;
+  const decisionSc  = parseFloat(profile.behavioral_decision_making) || 0;
+  const stressSc    = parseFloat(profile.behavioral_stress_management) || 0;
+  const sjtSc       = parseFloat(profile.behavioral_sjt_score) || 0;
+  const psychoSc    = parseFloat(profile.behavioral_psychometric_score) || 0;
+  const cogSc       = parseFloat(profile.behavioral_cognitive_workload) || 0;
+  const bScores     = [crmSc, decisionSc, stressSc, sjtSc, psychoSc, cogSc].filter(s => s > 0);
+  const B = bScores.length > 0 ? Math.min(100, bScores.reduce((a, b) => a + b, 0) / bScores.length) : 50;
+
+  // --- L: Language factor (max 100, weight 10%) ---
+  const icaoRaw     = (profile.language_icao_level || profile.english_proficiency_level || 'None').toString();
+  const icaoNum     = parseInt(icaoRaw.replace(/\D/g, '')) || 0;
+  const icaoScore   = icaoNum >= 6 ? 100 : icaoNum === 5 ? 88 : icaoNum === 4 ? 72 : icaoNum === 3 ? 45 : 20;
+  const cultAdapt   = parseFloat(profile.language_cultural_adaptability) || 0;
+  const crossComm   = parseFloat(profile.language_cross_cultural_comm) || 0;
+  const intlExp     = profile.language_international_experience ? 20 : 0;
+  const lScores     = [icaoScore, cultAdapt, crossComm].filter(s => s > 0);
+  const L = Math.min(100, (lScores.reduce((a, b) => a + b, 0) / Math.max(lScores.length, 1)) + intlExp);
+
+  // --- S: Specialized Skills factor (max 100, weight 15%) ---
+  const weatherSc   = parseFloat(profile.skills_weather_ops) || 0;
+  const terrainSc   = parseFloat(profile.skills_terrain_complexity) || 0;
+  const emergSc     = parseFloat(profile.skills_emergency_procedures) || 0;
+  const trDivSc     = parseFloat(profile.skills_type_rating_diversity) || 0;
+  const instrSc     = parseFloat(profile.skills_instrument_approaches) || 0;
+  const medClass    = (profile.medical_class || '').toString();
+  const medScore    = medClass.includes('1') ? 100 : medClass.includes('2') ? 75 : 40;
+  const typeRatings = profile.ratings || [];
+  const trBonus     = Math.min(20, typeRatings.length * 5);
+  const sRaw        = [weatherSc, terrainSc, emergSc, trDivSc, instrSc].filter(s => s > 0);
+  const S = Math.min(100, (sRaw.length > 0 ? sRaw.reduce((a, b) => a + b, 0) / sRaw.length : medScore * 0.5) + trBonus);
+
+  // --- Weighted composite (0–100) ---
+  const totalScore = Math.round(P * 0.20 + ET * 0.35 + B * 0.20 + L * 0.10 + S * 0.15);
+
+  // Profile completeness: how many key fields are filled
+  const keyFields = ['total_flight_hours', 'medical_class', 'language_icao_level', 'behavioral_crm_assessment',
+    'technical_skills_score', 'ratings', 'country', 'english_proficiency_level'];
+  const filled = keyFields.filter(f => {
+    const v = profile[f];
+    return v !== null && v !== undefined && v !== '' && v !== 0 && !(Array.isArray(v) && v.length === 0);
+  }).length;
+  const profileCompleteness = Math.round((filled / keyFields.length) * 100);
+
+  // Rank label
+  const rankLabel = totalScore >= 85 ? 'Elite' : totalScore >= 70 ? 'Advanced' : totalScore >= 55 ? 'Developing' : totalScore >= 35 ? 'Building' : 'Foundation';
+
+  return { P, ET, B, L, S, totalScore, profileCompleteness, rankLabel, totalHours, typeRatings, icaoScore };
+};
+
+// F1: pathways_calculateFullScore
+// Returns the full R-formula breakdown for a user, with score history trend
+exports.pathways_calculateFullScore = onRequest(async (req, res) => {
+  setPathwaysCors(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+  try {
+    const userId = req.query.userId || req.body.userId;
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (profileError || !profile) return res.status(404).json({ error: 'Profile not found' });
+
+    const scores = computeRFormula(profile);
+
+    // Score history for velocity calculation
+    const { data: history } = await supabase
+      .from('score_history')
+      .select('score_value, calculated_at')
+      .eq('user_id', userId)
+      .eq('score_type', 'recognition')
+      .order('calculated_at', { ascending: false })
+      .limit(6);
+
+    // Calculate month-over-month velocity
+    let scoreVelocity = 0;
+    let velocityLabel = '';
+    if (history && history.length >= 2) {
+      const latest = parseFloat(history[0].score_value) || 0;
+      const previous = parseFloat(history[history.length - 1].score_value) || 0;
+      scoreVelocity = Math.round(latest - previous);
+      velocityLabel = scoreVelocity > 0 ? `↑ +${scoreVelocity}% this period` : scoreVelocity < 0 ? `↓ ${scoreVelocity}% this period` : 'Stable';
+    }
+
+    // Insights: what's pulling score down
+    const insights = [];
+    if (scores.B < 50) insights.push({ factor: 'Behavioral', message: 'Complete the CRM & SJT assessment to unlock behavioral scores', impact: 'high' });
+    if (scores.P < 40) insights.push({ factor: 'Programs', message: 'Enroll in a WingMentor program to boost your Programs score', impact: 'high' });
+    if (scores.L < 60) insights.push({ factor: 'Language', message: 'Your ICAO language level is limiting matches with premium airlines', impact: 'medium' });
+    if (scores.S < 50) insights.push({ factor: 'Skills', message: 'Add your type ratings and specialized skills to improve match accuracy', impact: 'medium' });
+    if (scores.ET < 50) insights.push({ factor: 'Experience', message: 'Build flight hours or update your last-flown date to improve recency', impact: 'high' });
+
+    return res.json({
+      success: true,
+      totalScore: scores.totalScore,
+      rankLabel: scores.rankLabel,
+      profileCompleteness: scores.profileCompleteness,
+      breakdown: { P: Math.round(scores.P), ET: Math.round(scores.ET), B: Math.round(scores.B), L: Math.round(scores.L), S: Math.round(scores.S) },
+      scoreVelocity,
+      velocityLabel,
+      scoreHistory: (history || []).map(h => ({ value: parseFloat(h.score_value), date: h.calculated_at })).reverse(),
+      insights,
+      totalHours: scores.totalHours,
+      typeRatings: scores.typeRatings,
+      icaoLevel: scores.icaoScore
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// F2: pathways_getJobMatches
+// Scores a batch of job listings against the full R-formula and returns blind spot picks
+exports.pathways_getJobMatches = onRequest(async (req, res) => {
+  setPathwaysCors(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+  try {
+    const { userId, jobListings } = req.body;
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+    if (!jobListings || !Array.isArray(jobListings)) return res.status(400).json({ error: 'jobListings array required' });
+
+    const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
+    if (!profile) return res.status(404).json({ error: 'Profile not found' });
+
+    const scores = computeRFormula(profile);
+    const userHours = scores.totalHours;
+    const userTRs = (scores.typeRatings || []).map(t => t.toLowerCase());
+    const pathwayInterests = profile.pathway_interests || [];
+
+    const scoredJobs = jobListings.map(job => {
+      // Hours component (40 pts)
+      const flightTimeText = (job.flightTime || '').replace(/,/g, '');
+      const reqHoursMatch = flightTimeText.match(/(\d{3,5})/);
+      const reqHours = reqHoursMatch ? parseInt(reqHoursMatch[1]) : 0;
+      let hoursScore = 0;
+      if (reqHours === 0 || userHours >= reqHours) hoursScore = 40;
+      else if (userHours >= reqHours * 0.80) hoursScore = 32;
+      else if (userHours >= reqHours * 0.60) hoursScore = 20;
+      else if (userHours >= reqHours * 0.40) hoursScore = 10;
+      else hoursScore = 3;
+      const hoursGap = reqHours > userHours ? reqHours - userHours : 0;
+
+      // Type rating component (25 pts)
+      const trReq = (job.typeRating || '').toLowerCase();
+      let trScore = 0;
+      let missingRating = null;
+      if (!trReq || trReq === 'not required' || trReq === 'n/a') {
+        trScore = 25;
+      } else if (userTRs.some(tr => trReq.includes(tr) || tr.includes(trReq.split(' ')[0]))) {
+        trScore = 25;
+      } else {
+        trScore = userTRs.length > 0 ? 8 : 0;
+        missingRating = job.typeRating;
+      }
+
+      // Behavioral fit component (20 pts) — uses pilot's B score weighted by role
+      const roleText = (job.role || job.title || '').toLowerCase();
+      const isCaptain = roleText.includes('captain') || roleText.includes('commander');
+      const bThreshold = isCaptain ? 65 : 45; // captains need higher CRM
+      const bScore = Math.round((scores.B / 100) * (scores.B >= bThreshold ? 20 : 12));
+
+      // Language / location component (15 pts)
+      const lScore = Math.round((scores.L / 100) * 15);
+
+      const raw = hoursScore + trScore + bScore + lScore;
+      const matchPct = Math.max(45, Math.min(99, Math.round((raw / 100) * 100)));
+
+      // Blind spot detection: high match but category not in pilot's stated interests
+      const jobCategory = job.role || job.category || '';
+      const isBlindSpot = matchPct >= 78 && !pathwayInterests.some(interest =>
+        jobCategory.toLowerCase().includes(interest.toLowerCase()) ||
+        interest.toLowerCase().includes(jobCategory.toLowerCase())
+      );
+
+      return {
+        jobId: job.id || `${job.company}-${job.title}`.replace(/\s+/g, '-').toLowerCase(),
+        title: job.title,
+        company: job.company,
+        matchPct,
+        hoursGap,
+        missingRating,
+        blindSpotScore: isBlindSpot ? matchPct : 0,
+        isBlindSpot,
+        breakdown: { hours: hoursScore, typeRating: trScore, behavioral: bScore, language: lScore },
+        hiringStatus: job.status || 'moderate'
+      };
+    });
+
+    // Sort by match descending
+    scoredJobs.sort((a, b) => b.matchPct - a.matchPct);
+
+    // Blind spot picks: top 3 blind spots
+    const blindSpotPicks = scoredJobs
+      .filter(j => j.isBlindSpot)
+      .sort((a, b) => b.blindSpotScore - a.blindSpotScore)
+      .slice(0, 3);
+
+    // Summary stats
+    const above75 = scoredJobs.filter(j => j.matchPct >= 75).length;
+    const above90 = scoredJobs.filter(j => j.matchPct >= 90).length;
+
+    return res.json({
+      success: true,
+      totalJobs: scoredJobs.length,
+      matchesAbove75: above75,
+      matchesAbove90: above90,
+      scoredJobs,
+      blindSpotPicks,
+      pilotScore: { totalScore: scores.totalScore, B: Math.round(scores.B), L: Math.round(scores.L) }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// F3: pathways_getPathwayRoadmap
+// Returns 4-step career roadmap for a selected pathway including ETA and program recommendations
+exports.pathways_getPathwayRoadmap = onRequest(async (req, res) => {
+  setPathwaysCors(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+  try {
+    const { userId, pathway } = req.body;
+    if (!userId || !pathway) return res.status(400).json({ error: 'userId and pathway required' });
+
+    const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
+    if (!profile) return res.status(404).json({ error: 'Profile not found' });
+
+    const scores = computeRFormula(profile);
+
+    // Pull enrolled programs for gap-closing recommendations
+    const { data: enrollments } = await supabase
+      .from('enrollments')
+      .select('*')
+      .eq('user_id', userId);
+
+    const { data: programProgress } = await supabase
+      .from('program_progress')
+      .select('*')
+      .eq('user_id', userId);
+
+    // Parse pathway requirements
+    const reqHoursText = (pathway.requirements?.totalHours || 0).toString();
+    const reqHours = parseInt(reqHoursText) || 0;
+    const userHours = scores.totalHours;
+    const hoursGap = Math.max(0, reqHours - userHours);
+
+    // ETA calculation: assume 80 flight hours per month for active pilot
+    const hoursPerMonth = 80;
+    const etaMonths = hoursGap > 0 ? Math.ceil(hoursGap / hoursPerMonth) : 0;
+
+    // Gap analysis per dimension
+    const gaps = [];
+    if (hoursGap > 0) gaps.push({ dimension: 'Flight Hours', current: userHours, required: reqHours, gap: hoursGap, status: hoursGap > 500 ? 'far' : 'close', suggestion: `Build ${hoursGap} more hours — approximately ${etaMonths} months at current pace` });
+    if (scores.P < 60) gaps.push({ dimension: 'Programs Score', current: Math.round(scores.P), required: 60, gap: 60 - Math.round(scores.P), status: scores.P < 30 ? 'far' : 'close', suggestion: 'Enroll in WingMentor Foundation or CRM program' });
+    if (scores.B < 55) gaps.push({ dimension: 'Behavioral Assessment', current: Math.round(scores.B), required: 55, gap: 55 - Math.round(scores.B), status: scores.B < 30 ? 'far' : 'close', suggestion: 'Complete the SJT and psychometric assessments in your portal' });
+    if (scores.L < 65) gaps.push({ dimension: 'Language Proficiency', current: Math.round(scores.L), required: 65, gap: 65 - Math.round(scores.L), status: 'medium', suggestion: 'Achieve ICAO Level 5 or above for major airline eligibility' });
+
+    // Program recommendations to close gaps
+    const programRecs = [];
+    if (scores.B < 55) programRecs.push({ name: 'CRM & Behavioral Excellence', type: 'Behavioral', estimatedHours: 12, link: '/portal/programs/crm', priority: 'high', scoreImpact: '+15 Behavioral' });
+    if (scores.P < 60) programRecs.push({ name: 'Foundation Assessment Program', type: 'Programs', estimatedHours: 20, link: '/portal/programs/foundation', priority: 'high', scoreImpact: '+20 Programs' });
+    if (scores.L < 65) programRecs.push({ name: 'ICAO Language Preparation', type: 'Language', estimatedHours: 30, link: '/portal/programs/language', priority: 'medium', scoreImpact: '+18 Language' });
+    if (scores.S < 50) programRecs.push({ name: 'Advanced Systems & Technical', type: 'Skills', estimatedHours: 15, link: '/portal/programs/technical', priority: 'medium', scoreImpact: '+12 Skills' });
+
+    // Mark which programs are already enrolled
+    programRecs.forEach(rec => {
+      rec.enrolled = (enrollments || []).some(e => e.program_name?.toLowerCase().includes(rec.type.toLowerCase()));
+      rec.progress = (programProgress || []).find(p => p.program_name?.toLowerCase().includes(rec.type.toLowerCase()))?.progress_percentage || 0;
+    });
+
+    // 4-step roadmap
+    const roadmapSteps = [
+      {
+        step: 1,
+        title: 'Your Current Profile',
+        status: 'current',
+        description: `Recognition Score: ${scores.totalScore}/100 · ${Math.round(userHours)} flight hours · Rank: ${scores.rankLabel}`,
+        metrics: { totalScore: scores.totalScore, hours: Math.round(userHours), rank: scores.rankLabel, breakdown: { P: Math.round(scores.P), ET: Math.round(scores.ET), B: Math.round(scores.B), L: Math.round(scores.L), S: Math.round(scores.S) } }
+      },
+      {
+        step: 2,
+        title: 'Gap Analysis',
+        status: gaps.length === 0 ? 'complete' : 'active',
+        description: gaps.length === 0 ? 'You meet all baseline requirements for this pathway!' : `${gaps.length} gap${gaps.length > 1 ? 's' : ''} identified`,
+        gaps
+      },
+      {
+        step: 3,
+        title: 'Close the Gaps',
+        status: programRecs.length === 0 ? 'complete' : 'pending',
+        description: programRecs.length === 0 ? 'No programs needed — profile is aligned' : `${programRecs.length} recommended program${programRecs.length > 1 ? 's' : ''}`,
+        programs: programRecs
+      },
+      {
+        step: 4,
+        title: `Target: ${pathway.name || 'Your Pathway'}`,
+        status: gaps.length === 0 ? 'ready' : 'future',
+        description: etaMonths === 0 ? 'You qualify now — start applying!' : `Estimated readiness: ~${etaMonths} months`,
+        etaMonths,
+        targetRole: pathway.name,
+        targetAirline: pathway.airline,
+        estimatedSalary: pathway.salary?.firstYear || 'Varies by operator'
+      }
+    ];
+
+    // Cache in Supabase
+    await supabase.from('pathway_roadmap_cache').upsert({
+      user_id: userId,
+      pathway_id: pathway.id || 'unknown',
+      total_score: scores.totalScore,
+      breakdown: { P: Math.round(scores.P), ET: Math.round(scores.ET), B: Math.round(scores.B), L: Math.round(scores.L), S: Math.round(scores.S) },
+      roadmap_steps: roadmapSteps,
+      gap_score: gaps.length,
+      eta_months: etaMonths,
+      program_recommendations: programRecs,
+      calculated_at: new Date().toISOString(),
+      expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+    }, { onConflict: 'user_id,pathway_id' });
+
+    return res.json({ success: true, roadmapSteps, gapScore: gaps.length, etaMonths, programRecommendations: programRecs, pilotScore: scores.totalScore });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// F4: pathways_getTypeRatingRecommendations
+// Ranks type ratings by unlock value (how many additional jobs/airlines become accessible)
+exports.pathways_getTypeRatingRecommendations = onRequest(async (req, res) => {
+  setPathwaysCors(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+  try {
+    const userId = req.query.userId || req.body.userId;
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
+    if (!profile) return res.status(404).json({ error: 'Profile not found' });
+
+    const scores = computeRFormula(profile);
+    const currentRatings = (scores.typeRatings || []).map(r => r.toLowerCase());
+
+    // Type rating unlock data: airlines per rating type
+    const typeRatingData = [
+      { rating: 'A320', family: 'Airbus A320 Family', airlines: ['IndiGo', 'EasyJet', 'Lufthansa', 'Swiss', 'TAP', 'Vueling', 'Wizz Air', 'AirAsia', 'Cebu Pacific', 'Philippine Airlines'], costUSD: 35000, jobsUnlocked: 94, priority: 'critical' },
+      { rating: 'B737', family: 'Boeing 737 Family', airlines: ['Ryanair', 'Southwest', 'Alaska', 'GOL', 'Korean Air', 'Lion Air', 'Norwegian', 'WestJet', 'Aeromexico'], costUSD: 30000, jobsUnlocked: 87, priority: 'critical' },
+      { rating: 'A350', family: 'Airbus A350', airlines: ['Qatar Airways', 'Singapore Airlines', 'Cathay Pacific', 'Air France', 'Finnair', 'Japan Airlines', 'Vietnam Airlines'], costUSD: 55000, jobsUnlocked: 38, priority: 'high' },
+      { rating: 'B777', family: 'Boeing 777', airlines: ['Emirates', 'Qatar Airways', 'United', 'Delta', 'Korean Air', 'Etihad', 'Turkish Airlines', 'Air France'], costUSD: 50000, jobsUnlocked: 42, priority: 'high' },
+      { rating: 'B787', family: 'Boeing 787 Dreamliner', airlines: ['ANA', 'JAL', 'British Airways', 'LOT Polish', 'Oman Air', 'Scoot', 'Norwegian', 'Etihad'], costUSD: 45000, jobsUnlocked: 35, priority: 'high' },
+      { rating: 'ATR', family: 'ATR 72/42', airlines: ['Regional carriers', 'Commuter airlines', 'Island operators', 'Charter ops'], costUSD: 18000, jobsUnlocked: 28, priority: 'medium' },
+      { rating: 'CRJ', family: 'Canadair Regional Jet', airlines: ['SkyWest', 'Mesa', 'Republic', 'Air Wisconsin', 'PSA'], costUSD: 20000, jobsUnlocked: 22, priority: 'medium' },
+      { rating: 'E175', family: 'Embraer 175/190/195', airlines: ['Horizon Air', 'Republic', 'Regional operators', 'Azul'], costUSD: 22000, jobsUnlocked: 19, priority: 'medium' },
+      { rating: 'A380', family: 'Airbus A380', airlines: ['Emirates', 'Singapore Airlines', 'British Airways', 'Qantas', 'Korean Air'], costUSD: 60000, jobsUnlocked: 12, priority: 'prestige' },
+      { rating: 'B747', family: 'Boeing 747', airlines: ['Cargo operators', 'Cargolux', 'Korean Air', 'Nippon Cargo', 'Atlas Air'], costUSD: 45000, jobsUnlocked: 15, priority: 'medium' }
+    ];
+
+    // Filter out ratings pilot already has, compute ROI
+    const recommendations = typeRatingData
+      .filter(tr => !currentRatings.some(cr => tr.rating.toLowerCase().includes(cr) || cr.includes(tr.rating.toLowerCase())))
+      .map(tr => {
+        // ROI calculation: assume average FO salary boost of $20k/yr for major airline
+        const avgSalaryBoostPerYear = tr.priority === 'critical' ? 25000 : tr.priority === 'high' ? 20000 : 15000;
+        const breakevenMonths = Math.round((tr.costUSD / avgSalaryBoostPerYear) * 12);
+        const scoreImpact = Math.round(tr.jobsUnlocked * 0.15); // estimated score uplift
+
+        return {
+          rating: tr.rating,
+          family: tr.family,
+          airlines: tr.airlines,
+          costUSD: tr.costUSD,
+          jobsUnlocked: tr.jobsUnlocked,
+          priority: tr.priority,
+          priorityLabel: tr.priority === 'critical' ? '🔥 Critical — opens most doors' : tr.priority === 'high' ? '⭐ High Value' : tr.priority === 'prestige' ? '👑 Prestige' : '📈 Growth',
+          roiMonths: breakevenMonths,
+          roiLabel: `Break even in ~${breakevenMonths} months at target salary`,
+          estimatedScoreImpact: `+${scoreImpact} more job matches`,
+          programLink: `/portal/type-ratings/${tr.rating.toLowerCase()}`
+        };
+      })
+      .sort((a, b) => b.jobsUnlocked - a.jobsUnlocked)
+      .slice(0, 6);
+
+    // Current portfolio analysis
+    const currentPortfolio = typeRatingData.filter(tr =>
+      currentRatings.some(cr => tr.rating.toLowerCase().includes(cr) || cr.includes(tr.rating.toLowerCase()))
+    );
+    const totalAirlinesAccessible = new Set(currentPortfolio.flatMap(tr => tr.airlines)).size;
+    const coverageScore = Math.round((totalAirlinesAccessible / 60) * 100);
+
+    return res.json({
+      success: true,
+      recommendations,
+      currentPortfolio: currentRatings,
+      airlinesAccessible: totalAirlinesAccessible,
+      coverageScore,
+      coverageLabel: `You can fly for ${totalAirlinesAccessible} of 60 major airlines`,
+      pilotScore: scores.totalScore
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// F5: pathways_getAirlineExpectationsMatch
+// Runs R-formula against all major airlines and returns per-airline compatibility scores
+exports.pathways_getAirlineExpectationsMatch = onRequest(async (req, res) => {
+  setPathwaysCors(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+  try {
+    const userId = req.query.userId || req.body.userId;
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
+    if (!profile) return res.status(404).json({ error: 'Profile not found' });
+
+    const scores = computeRFormula(profile);
+    const userHours = scores.totalHours;
+    const userTRs = (scores.typeRatings || []).map(r => r.toLowerCase());
+
+    // Airline requirement benchmarks
+    const airlineBenchmarks = [
+      { id: 'qatar', name: 'Qatar Airways', reqHours: 4000, reqRating: 'B777', reqIcao: 5, reqBehavioral: 70, tier: 'premium' },
+      { id: 'emirates', name: 'Emirates', reqHours: 4000, reqRating: 'B777', reqIcao: 5, reqBehavioral: 72, tier: 'premium' },
+      { id: 'singapore', name: 'Singapore Airlines', reqHours: 3000, reqRating: 'A350', reqIcao: 5, reqBehavioral: 68, tier: 'premium' },
+      { id: 'cathay', name: 'Cathay Pacific', reqHours: 2500, reqRating: 'A330', reqIcao: 4, reqBehavioral: 65, tier: 'premium' },
+      { id: 'etihad', name: 'Etihad Airways', reqHours: 2500, reqRating: 'B787', reqIcao: 5, reqBehavioral: 65, tier: 'premium' },
+      { id: 'lufthansa', name: 'Lufthansa', reqHours: 1500, reqRating: 'A320', reqIcao: 4, reqBehavioral: 60, tier: 'legacy' },
+      { id: 'british', name: 'British Airways', reqHours: 1500, reqRating: 'B777', reqIcao: 4, reqBehavioral: 60, tier: 'legacy' },
+      { id: 'airfrance', name: 'Air France', reqHours: 1500, reqRating: 'A320', reqIcao: 4, reqBehavioral: 58, tier: 'legacy' },
+      { id: 'klm', name: 'KLM', reqHours: 1200, reqRating: 'B777', reqIcao: 4, reqBehavioral: 58, tier: 'legacy' },
+      { id: 'turkish', name: 'Turkish Airlines', reqHours: 2000, reqRating: 'A320', reqIcao: 4, reqBehavioral: 60, tier: 'legacy' },
+      { id: 'ana', name: 'ANA All Nippon', reqHours: 1500, reqRating: 'B787', reqIcao: 4, reqBehavioral: 65, tier: 'premium' },
+      { id: 'jal', name: 'Japan Airlines', reqHours: 1500, reqRating: 'A350', reqIcao: 4, reqBehavioral: 63, tier: 'premium' },
+      { id: 'korean', name: 'Korean Air', reqHours: 2000, reqRating: 'A380', reqIcao: 4, reqBehavioral: 62, tier: 'legacy' },
+      { id: 'delta', name: 'Delta Air Lines', reqHours: 1500, reqRating: 'A350', reqIcao: 4, reqBehavioral: 60, tier: 'legacy' },
+      { id: 'united', name: 'United Airlines', reqHours: 1500, reqRating: 'B787', reqIcao: 4, reqBehavioral: 58, tier: 'legacy' },
+      { id: 'american', name: 'American Airlines', reqHours: 1500, reqRating: 'B777', reqIcao: 4, reqBehavioral: 58, tier: 'legacy' },
+      { id: 'southwest', name: 'Southwest Airlines', reqHours: 1000, reqRating: 'B737', reqIcao: 4, reqBehavioral: 55, tier: 'lowcost' },
+      { id: 'qantas', name: 'Qantas', reqHours: 2000, reqRating: 'A380', reqIcao: 4, reqBehavioral: 65, tier: 'legacy' },
+      { id: 'aircanada', name: 'Air Canada', reqHours: 1500, reqRating: 'B787', reqIcao: 4, reqBehavioral: 58, tier: 'legacy' },
+      { id: 'thai', name: 'Thai Airways', reqHours: 1500, reqRating: 'A330', reqIcao: 4, reqBehavioral: 55, tier: 'legacy' },
+      { id: 'malaysia', name: 'Malaysia Airlines', reqHours: 1200, reqRating: 'A350', reqIcao: 4, reqBehavioral: 55, tier: 'legacy' },
+      { id: 'asiana', name: 'Asiana Airlines', reqHours: 1800, reqRating: 'A350', reqIcao: 4, reqBehavioral: 60, tier: 'legacy' },
+      { id: 'garuda', name: 'Garuda Indonesia', reqHours: 1500, reqRating: 'A330', reqIcao: 4, reqBehavioral: 55, tier: 'legacy' },
+      { id: 'philippine', name: 'Philippine Airlines', reqHours: 1200, reqRating: 'A321', reqIcao: 4, reqBehavioral: 52, tier: 'regional' },
+      { id: 'vietnam', name: 'Vietnam Airlines', reqHours: 1500, reqRating: 'A350', reqIcao: 4, reqBehavioral: 55, tier: 'regional' },
+      { id: 'indigo', name: 'IndiGo', reqHours: 1000, reqRating: 'A320', reqIcao: 4, reqBehavioral: 50, tier: 'lowcost' },
+      { id: 'cebu', name: 'Cebu Pacific', reqHours: 1000, reqRating: 'A320', reqIcao: 4, reqBehavioral: 48, tier: 'lowcost' },
+      { id: 'scoot', name: 'Scoot', reqHours: 1200, reqRating: 'B787', reqIcao: 4, reqBehavioral: 50, tier: 'lowcost' },
+      { id: 'saudia', name: 'Saudia', reqHours: 2500, reqRating: 'A320', reqIcao: 4, reqBehavioral: 60, tier: 'legacy' },
+      { id: 'ethiopian', name: 'Ethiopian Airlines', reqHours: 1500, reqRating: 'B787', reqIcao: 4, reqBehavioral: 55, tier: 'regional' }
+    ];
+
+    const airlineMatches = airlineBenchmarks.map(airline => {
+      // Hours match (40 pts)
+      let hoursScore = 0;
+      if (userHours >= airline.reqHours) hoursScore = 40;
+      else if (userHours >= airline.reqHours * 0.80) hoursScore = 30;
+      else if (userHours >= airline.reqHours * 0.60) hoursScore = 18;
+      else hoursScore = Math.round((userHours / airline.reqHours) * 10);
+      const hoursGap = Math.max(0, airline.reqHours - userHours);
+
+      // Type rating match (30 pts)
+      const reqRatingKey = airline.reqRating.toLowerCase();
+      const hasRating = userTRs.some(tr => reqRatingKey.includes(tr) || tr.includes(reqRatingKey.split('-')[0]));
+      const trScore = hasRating ? 30 : (userTRs.length > 0 ? 10 : 0);
+      const ratingGap = hasRating ? null : airline.reqRating;
+
+      // Behavioral fit (20 pts)
+      const bFit = scores.B >= airline.reqBehavioral ? 20 : Math.round((scores.B / airline.reqBehavioral) * 20);
+
+      // Language (10 pts)
+      const lFit = scores.icaoScore >= (airline.reqIcao === 5 ? 88 : 72) ? 10 : Math.round((scores.icaoScore / 100) * 10);
+
+      const rawMatch = hoursScore + trScore + bFit + lFit;
+      const matchPct = Math.max(20, Math.min(99, Math.round((rawMatch / 100) * 100)));
+
+      const readinessLabel = matchPct >= 75 ? 'Ready Now' : matchPct >= 50 ? 'Close (within reach)' : 'Long-Term Goal';
+      const readinessColor = matchPct >= 75 ? 'emerald' : matchPct >= 50 ? 'amber' : 'slate';
+
+      return {
+        id: airline.id,
+        name: airline.name,
+        tier: airline.tier,
+        matchPct,
+        hoursGap,
+        ratingGap,
+        readinessLabel,
+        readinessColor,
+        breakdown: { hours: hoursScore, typeRating: trScore, behavioral: bFit, language: lFit },
+        reqHours: airline.reqHours,
+        reqRating: airline.reqRating,
+        behavioralFit: scores.B >= airline.reqBehavioral
+      };
+    });
+
+    // Sort by match descending
+    airlineMatches.sort((a, b) => b.matchPct - a.matchPct);
+
+    // Group by readiness
+    const readyNow = airlineMatches.filter(a => a.matchPct >= 75);
+    const closeReach = airlineMatches.filter(a => a.matchPct >= 50 && a.matchPct < 75);
+    const longTerm = airlineMatches.filter(a => a.matchPct < 50);
+
+    // Global percentile estimate (compared against hour milestones)
+    const percentile = userHours >= 5000 ? 92 : userHours >= 3000 ? 78 : userHours >= 1500 ? 58 : userHours >= 500 ? 35 : 15;
+
+    return res.json({
+      success: true,
+      airlineMatches,
+      readyNow: readyNow.length,
+      closeReach: closeReach.length,
+      longTerm: longTerm.length,
+      globalPercentile: percentile,
+      percentileLabel: `Top ${100 - percentile}% of pilots for airline readiness`,
+      grouped: { readyNow, closeReach, longTerm },
+      pilotScore: scores.totalScore
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});

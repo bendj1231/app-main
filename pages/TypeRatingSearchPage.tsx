@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, LayoutGrid, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick } from 'lucide-react';
 import { aircraftModels, AircraftModel } from '../data/aircraft-models';
+import { useAuth } from '../src/contexts/AuthContext';
+import { usePathwaysIntelligence } from '../portal/hooks/usePathwaysIntelligence';
+import { TypeRatingRecommendationBanner } from '../portal/components/PathwaysIntelligenceWidgets';
 
 // ── Per-aircraft enrichment data ────────────────────────────────────────────
 interface AircraftInfo {
@@ -523,6 +526,9 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
   const pohRef = useRef<HTMLDivElement>(null);
   const [activeDocIndex, setActiveDocIndex] = useState(0);
 
+  const { currentUser } = useAuth();
+  const typeRatingIntelligence = usePathwaysIntelligence(currentUser?.id || undefined);
+
   const filteredAircraft = aircraftModels.filter(a => {
     const matchesCat = activeCategory === 'all' || a.category === activeCategory;
     const matchesSearch = searchQuery === '' ||
@@ -616,6 +622,19 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Type Rating Recommendations Banner */}
+      {(typeRatingIntelligence.typeRatings || typeRatingIntelligence.loadingTypeRatings) && (
+        <div className="max-w-7xl mx-auto px-6 mb-6">
+          <TypeRatingRecommendationBanner
+            recommendations={typeRatingIntelligence.typeRatings?.recommendations || []}
+            coverageLabel={typeRatingIntelligence.typeRatings?.coverageLabel || ''}
+            airlinesAccessible={typeRatingIntelligence.typeRatings?.airlinesAccessible || 0}
+            loading={typeRatingIntelligence.loadingTypeRatings}
+            isDarkMode={false}
+          />
+        </div>
+      )}
 
       {/* Carousel Section */}
       <div className="px-0 mb-12">

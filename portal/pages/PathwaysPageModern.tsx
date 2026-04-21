@@ -37,6 +37,21 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
+import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
+import {
+  RadarChart,
+  ScoreVelocityBadge,
+  ProfileCompletionNudge,
+  JobIntelligenceBanner,
+  BlindSpotPicksRow,
+  JobGapBar,
+  MatchBreakdownPopover,
+  RoadmapTimeline,
+  TypeRatingRecommendationBanner,
+  AirlineMatchBadge,
+  AirlineReadinessBanner,
+  ScoreLiveWidget,
+} from '../components/PathwaysIntelligenceWidgets';
 
 // React Three Fiber for 3D Aircraft Models
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -2558,11 +2573,18 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [isCarouselAutoScrolling, setIsCarouselAutoScrolling] = useState(true);
+  const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
   const carouselAutoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
   const { userProfile, currentUser } = useAuth();
+
+  // Pathways Intelligence — Firebase R-formula powered data
+  const intelligence = usePathwaysIntelligence(
+    currentUser?.id || undefined,
+    mode === 'jobs' ? jobApplicationListings : []
+  );
 
   // Category display labels - defined at component level for reuse
   const categoryLabels: Record<string, string> = {
@@ -2617,13 +2639,31 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
   }, [selectedPathwayId]);
 
-  // Get dynamic pathways — match probability calculated from real recognition profile
+  // Fetch roadmap when carousel pathway changes
+  useEffect(() => {
+    if (selectedCarouselPathway && currentUser?.id) {
+      intelligence.fetchRoadmap(currentUser.id, selectedCarouselPathway);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCarouselPathway?.id, currentUser?.id]);
+
+  // Get dynamic pathways — use Firebase match scores when available, fall back to client-side R-formula
+  const firebaseJobScoreMap = useMemo(() => {
+    if (!intelligence.jobMatches?.scoredJobs) return null;
+    const map: Record<string, number> = {};
+    intelligence.jobMatches.scoredJobs.forEach(j => { map[j.jobId] = j.matchPct; });
+    return map;
+  }, [intelligence.jobMatches]);
+
   const dynamicPathways = useMemo(() => {
     return jobApplicationListings.map((job, index) => {
       const base = transformJobToPathway(job, index);
-      return { ...base, matchProbability: calcMatchProbability(job, recognitionProfile) };
+      const jobId = `job-${index}`;
+      const fbPct = firebaseJobScoreMap?.[jobId] ?? firebaseJobScoreMap?.[`${job.company}-${job.title}`.replace(/\s+/g, '-').toLowerCase()];
+      const matchProbability = fbPct ?? calcMatchProbability(job, recognitionProfile);
+      return { ...base, matchProbability };
     });
-  }, [recognitionProfile.totalScore, recognitionProfile.pilotData?.totalHours, recognitionProfile.pilotData?.typeRatings?.length]);
+  }, [recognitionProfile.totalScore, recognitionProfile.pilotData?.totalHours, recognitionProfile.pilotData?.typeRatings?.length, firebaseJobScoreMap]);
 
   // Transform DISCOVERY_PATHWAYS into PathwayData format for static pathway cards
   const discoveryPathways: PathwayData[] = Object.entries(DISCOVERY_PATHWAYS).flatMap(([catKey, items]) =>
@@ -2875,7 +2915,22 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             </AnimatePresence>
 
             {/* Right side items */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              {/* Live Score Widget */}
+              <div className="flex items-center gap-2">
+                <ScoreLiveWidget
+                  fullScore={intelligence.fullScore}
+                  loading={intelligence.loadingScore}
+                  isDarkMode={isDarkMode}
+                />
+                {intelligence.fullScore?.velocityLabel && (
+                  <ScoreVelocityBadge
+                    velocity={intelligence.fullScore.scoreVelocity}
+                    label={intelligence.fullScore.velocityLabel}
+                    isDarkMode={isDarkMode}
+                  />
+                )}
+              </div>
               <button className={`p-2 rounded-lg ${buttonBg} ${buttonText}`}>
                 <Bell className="w-5 h-5" />
               </button>
@@ -2923,10 +2978,16 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                             {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
                           </h3>
                           <p className="text-sm text-white/80">{currentUser?.email}</p>
-                          <div className="mt-2">
+                          <div className="mt-2 flex flex-col items-center gap-1">
                             <span className="text-sm font-bold text-white">
-                              Recognition Score: {recognitionProfile?.totalScore || 0}/100
+                              Recognition Score: {intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 0}/100
                             </span>
+                            {intelligence.fullScore && (
+                              <span className="text-xs text-white/70">{intelligence.fullScore.rankLabel} · {intelligence.fullScore.profileCompleteness}% complete</span>
+                            )}
+                            {intelligence.fullScore?.velocityLabel ? (
+                              <span className="text-xs text-emerald-300">{intelligence.fullScore.velocityLabel}</span>
+                            ) : null}
                           </div>
                         </div>
                       </div>
@@ -2972,12 +3033,49 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       </button>
                     </div>
 
-                    {/* Recognition Profile */}
+                    {/* Recognition Profile — Live R-Formula */}
                     <div className="p-3 border-b border-slate-100">
-                      <ProfileSummary
-                        profile={recognitionProfile || { totalScore: 77, breakdown: { programs: 82, experience: 75, behavioral: 80, language: 70, skills: 78 } }}
-                        isDarkMode={false}
-                      />
+                      {intelligence.fullScore ? (
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs font-semibold text-slate-700 uppercase tracking-wide">R-Formula Breakdown</span>
+                            <span className="text-xs text-slate-400">WingMentor Formula</span>
+                          </div>
+                          <div className="flex items-center gap-3 mb-3">
+                            <RadarChart scores={intelligence.fullScore.breakdown} size={100} isDarkMode={false} animate={false} />
+                            <div className="flex-1 space-y-1.5">
+                              {([
+                                { key: 'P', label: 'Programs', val: intelligence.fullScore.breakdown.P },
+                                { key: 'ET', label: 'Experience', val: intelligence.fullScore.breakdown.ET },
+                                { key: 'B', label: 'Behavioral', val: intelligence.fullScore.breakdown.B },
+                                { key: 'L', label: 'Language', val: intelligence.fullScore.breakdown.L },
+                                { key: 'S', label: 'Skills', val: intelligence.fullScore.breakdown.S },
+                              ] as const).map(f => (
+                                <div key={f.key}>
+                                  <div className="flex justify-between text-[10px] mb-0.5">
+                                    <span className="text-slate-600">{f.label}</span>
+                                    <span className="text-slate-500">{f.val}%</span>
+                                  </div>
+                                  <div className="h-1 rounded-full bg-slate-200 overflow-hidden">
+                                    <div className={`h-full rounded-full ${f.val >= 70 ? 'bg-emerald-500' : f.val >= 45 ? 'bg-amber-500' : 'bg-red-400'}`} style={{ width: `${f.val}%` }} />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          {intelligence.fullScore.insights.slice(0, 2).map((ins, i) => (
+                            <div key={i} className={`flex items-start gap-2 p-2 rounded-lg text-xs mb-1 ${ins.impact === 'high' ? 'bg-amber-50' : 'bg-sky-50'}`}>
+                              <span className="text-amber-500 mt-0.5">●</span>
+                              <span className="text-slate-600">{ins.message}</span>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <ProfileSummary
+                          profile={recognitionProfile || { totalScore: 77, breakdown: { programs: 82, experience: 75, behavioral: 80, language: 70, skills: 78 } }}
+                          isDarkMode={false}
+                        />
+                      )}
                     </div>
 
                     {/* Gap Analysis */}
@@ -3293,6 +3391,31 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
         </motion.div>
 
+        {/* Intelligence Widgets — Profile nudge, job match banner, blind spot row */}
+        {intelligence.fullScore && (
+          <ProfileCompletionNudge
+            completeness={intelligence.fullScore.profileCompleteness}
+            insights={intelligence.fullScore.insights}
+            isDarkMode={isDarkMode}
+          />
+        )}
+
+        {mode === 'jobs' && (
+          <JobIntelligenceBanner
+            jobMatches={intelligence.jobMatches}
+            loading={intelligence.loadingJobs}
+            isDarkMode={isDarkMode}
+          />
+        )}
+
+        {mode === 'jobs' && intelligence.jobMatches?.blindSpotPicks && (
+          <BlindSpotPicksRow
+            blindSpots={intelligence.jobMatches.blindSpotPicks}
+            loading={intelligence.loadingJobs}
+            isDarkMode={isDarkMode}
+          />
+        )}
+
         {/* Edge-to-edge Carousel Section */}
         <div className="flex flex-col items-center">
           <div className="w-full text-center mb-3">
@@ -3370,9 +3493,41 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                             onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme']; }} />
                         )}
                         {!isWingMentorCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
-                        <div className="absolute top-3 right-3 flex gap-2">
-                          {!isWingMentorCard && <span className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold">{pathway.matchProbability}% Match</span>}
-                          {!isWingMentorCard && <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {recognitionProfile?.totalScore || 77}%</span>}
+                        <div className="absolute top-3 right-3 flex gap-2 items-start">
+                          {!isWingMentorCard && (() => {
+                            const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
+                              j.company?.toLowerCase() === pathway.airline?.toLowerCase() ||
+                              j.title?.toLowerCase() === pathway.name?.toLowerCase()
+                            );
+                            return (
+                              <div className="relative">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setPopoverJobId(popoverJobId === pathway.id ? null : pathway.id); }}
+                                  className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors"
+                                >
+                                  {pathway.matchProbability}% Match
+                                </button>
+                                <AnimatePresence>
+                                  {popoverJobId === pathway.id && fbJob && (
+                                    <MatchBreakdownPopover
+                                      breakdown={fbJob.breakdown}
+                                      matchPct={fbJob.matchPct}
+                                      missingRating={fbJob.missingRating}
+                                      isDarkMode={isDarkMode}
+                                      onClose={() => setPopoverJobId(null)}
+                                    />
+                                  )}
+                                </AnimatePresence>
+                              </div>
+                            );
+                          })()}
+                          {!isWingMentorCard && <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 77}%</span>}
+                          {!isWingMentorCard && pathway.hiringStatus === 'actively_hiring' && (
+                            <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/80 text-white text-xs font-semibold">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                              Hiring
+                            </span>
+                          )}
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
                           <div className="flex items-center justify-center gap-2 mb-1">
@@ -3381,6 +3536,22 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                             <h4 className="text-lg font-serif font-normal text-white">{pathway.name}</h4>
                           </div>
                           <p className="text-white/80 text-sm">{pathway.airline}</p>
+                          {!isWingMentorCard && mode === 'jobs' && (() => {
+                            const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
+                              j.title?.toLowerCase() === pathway.name?.toLowerCase() ||
+                              j.company?.toLowerCase() === pathway.airline?.toLowerCase()
+                            );
+                            if (!fbJob || !pathway.requirements?.totalHours) return null;
+                            return (
+                              <div className="mt-2 px-2">
+                                <JobGapBar
+                                  hoursGap={fbJob.hoursGap}
+                                  reqHours={pathway.requirements.totalHours}
+                                  isDarkMode={true}
+                                />
+                              </div>
+                            );
+                          })()}
                         </div>
                       </div>
                     </div>
@@ -3400,19 +3571,44 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             </button>
 
             {selectedCarouselPathway && (
-              <div className="text-center max-w-xl">
-                <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
-                <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>{selectedCarouselPathway.name}</h3>
-                <p className={`${subText} text-sm mb-2`}>
-                  {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
-                </p>
-                <div className={`rounded-lg p-3 mb-2 ${isDarkMode ? 'bg-sky-500/10 border border-sky-500/20' : 'bg-sky-50 border border-sky-200'}`}>
-                  <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>Why this pathway is recommended</p>
-                  <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                    Based on your profile, this pathway has a <strong>{selectedCarouselPathway.matchProbability}% match</strong>. Your recognition score of <strong>{recognitionProfile?.totalScore || 77}</strong> indicates alignment with this program's requirements.
+              <div className="flex items-center gap-6 flex-wrap justify-center">
+                {/* Radar Chart */}
+                {intelligence.fullScore && (
+                  <div className="flex flex-col items-center gap-1">
+                    <RadarChart
+                      scores={intelligence.fullScore.breakdown}
+                      size={160}
+                      isDarkMode={isDarkMode}
+                      animate={true}
+                    />
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                        Score: {intelligence.fullScore.totalScore}/100
+                      </span>
+                      <ScoreVelocityBadge
+                        velocity={intelligence.fullScore.scoreVelocity}
+                        label={intelligence.fullScore.velocityLabel}
+                        isDarkMode={isDarkMode}
+                      />
+                    </div>
+                    <span className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>{intelligence.fullScore.rankLabel}</span>
+                  </div>
+                )}
+
+                <div className="text-center max-w-xl">
+                  <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
+                  <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>{selectedCarouselPathway.name}</h3>
+                  <p className={`${subText} text-sm mb-2`}>
+                    {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
                   </p>
+                  <div className={`rounded-lg p-3 mb-2 ${isDarkMode ? 'bg-sky-500/10 border border-sky-500/20' : 'bg-sky-50 border border-sky-200'}`}>
+                    <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>Why this pathway is recommended</p>
+                    <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                      Based on your profile, this pathway has a <strong>{selectedCarouselPathway.matchProbability}% match</strong>. Your recognition score of <strong>{intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 77}</strong> indicates alignment with this program's requirements.
+                    </p>
+                  </div>
+                  <p className={`text-sm leading-relaxed ${subText}`}>{selectedCarouselPathway.description}</p>
                 </div>
-                <p className={`text-sm leading-relaxed ${subText}`}>{selectedCarouselPathway.description}</p>
               </div>
             )}
 
@@ -3470,6 +3666,17 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               </div>
             );
           })()}
+
+          {/* Roadmap Timeline — shown when a pathway is selected */}
+          {selectedCarouselPathway && (
+            <div className="w-full max-w-4xl mt-6">
+              <RoadmapTimeline
+                steps={intelligence.roadmap?.roadmapSteps || []}
+                loading={intelligence.loadingRoadmap}
+                isDarkMode={isDarkMode}
+              />
+            </div>
+          )}
 
           {/* 3D Aircraft View */}
           {selectedCarouselPathway && (() => {

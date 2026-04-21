@@ -6,6 +6,8 @@ import { IMAGES } from '../../../src/lib/website-constants';
 import { useAuth } from '../../../src/contexts/AuthContext';
 import { supabase } from '../../../shared/lib/supabase';
 import { AirlineDetailModal } from './AirlineDetailModal';
+import { usePathwaysIntelligence } from '../../../portal/hooks/usePathwaysIntelligence';
+import { AirlineReadinessBanner } from '../../../portal/components/PathwaysIntelligenceWidgets';
 
 interface AirlineExpectationsCarouselProps {
   onNavigate?: (page: string) => void;
@@ -784,6 +786,9 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
   const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { currentUser } = useAuth();
 
+  // Firebase R-formula powered airline intelligence
+  const airlineIntelligence = usePathwaysIntelligence(currentUser?.id || undefined);
+
   // Fetch match scores from Supabase
   useEffect(() => {
     const fetchMatchScores = async () => {
@@ -899,12 +904,17 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
     return nameToIdMap[airlineName] || null;
   };
 
-  // Get match score from Supabase data
+  // Get match score — prefer Firebase R-formula over Supabase RPC
   const getMatchScore = (airline: Airline) => {
-    if (!matchScores[airline.id]) {
-      return 0;
-    }
+    const fbMatch = airlineIntelligence.airlineMatches?.airlineMatches?.find(a => a.id === airline.id);
+    if (fbMatch) return fbMatch.matchPct;
+    if (!matchScores[airline.id]) return 0;
     return matchScores[airline.id].matchPercentage;
+  };
+
+  const getReadinessLabel = (airline: Airline) => {
+    const fbMatch = airlineIntelligence.airlineMatches?.airlineMatches?.find(a => a.id === airline.id);
+    return fbMatch?.readinessLabel || null;
   };
 
   // Get PR score from Supabase data
@@ -1201,6 +1211,21 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
         </p>
       </div>
 
+      {/* Airline Readiness Intelligence Banner */}
+      {(airlineIntelligence.airlineMatches || airlineIntelligence.loadingAirlines) && (
+        <div className="w-full px-8 mb-4">
+          <AirlineReadinessBanner
+            readyNow={airlineIntelligence.airlineMatches?.readyNow || 0}
+            closeReach={airlineIntelligence.airlineMatches?.closeReach || 0}
+            longTerm={airlineIntelligence.airlineMatches?.longTerm || 0}
+            percentileLabel={airlineIntelligence.airlineMatches?.percentileLabel || ''}
+            globalPercentile={airlineIntelligence.airlineMatches?.globalPercentile || 0}
+            loading={airlineIntelligence.loadingAirlines}
+            isDarkMode={false}
+          />
+        </div>
+      )}
+
       {/* Regional Selector */}
       <div className="w-full px-8 py-4">
         <div className="flex justify-center gap-3 flex-wrap">
@@ -1286,7 +1311,6 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
                               }`}>
                                 PR: {getPRScore(airline)}/10
                               </div>
-                              {/* Tooltip */}
                               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-slate-900 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
                                 <p className="font-semibold mb-1">Pilot Recognition Score</p>
                                 <p>Profile match on 1-10 scale based on your qualifications vs airline requirements</p>
@@ -1294,15 +1318,26 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
                               </div>
                             </div>
                             <div className="relative group">
-                              <div className={`bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 cursor-help ${
-                                isActive ? 'opacity-100' : 'opacity-50'
-                              }`}>
-                                {getMatchScore(airline)}%
-                              </div>
-                              {/* Tooltip */}
-                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-slate-900 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
-                                <p className="font-semibold mb-1">Match Percentage</p>
-                                <p>Overall compatibility score calculated from your Pilot Recognition Profile and flight hours</p>
+                              {(() => {
+                                const matchPct = getMatchScore(airline);
+                                const readiness = getReadinessLabel(airline);
+                                const bgColor = matchPct >= 75 ? 'bg-emerald-500' : matchPct >= 50 ? 'bg-amber-500' : 'bg-red-600';
+                                return (
+                                  <div className={`flex flex-col items-center ${isActive ? 'opacity-100' : 'opacity-50'}`}>
+                                    <div className={`${bgColor} text-white px-3 py-1.5 rounded-lg text-sm font-bold cursor-help`}>
+                                      {matchPct}%
+                                    </div>
+                                    {readiness && isActive && (
+                                      <span className={`text-[9px] font-semibold mt-0.5 px-1.5 py-0.5 rounded-full ${
+                                        matchPct >= 75 ? 'bg-emerald-500/30 text-emerald-300' : matchPct >= 50 ? 'bg-amber-500/30 text-amber-300' : 'bg-slate-700 text-slate-300'
+                                      }`}>{readiness}</span>
+                                    )}
+                                  </div>
+                                );
+                              })()}
+                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-52 bg-slate-900 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                                <p className="font-semibold mb-1">R-Formula Match Score</p>
+                                <p>Calculated using WingMentor's 5-factor formula: Programs × Experience × Behavioral × Language × Skills</p>
                                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900"></div>
                               </div>
                             </div>
