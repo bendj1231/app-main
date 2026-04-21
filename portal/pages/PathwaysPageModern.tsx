@@ -203,14 +203,15 @@ const getAircraftImage = (aircraftType: string): string => {
 
 // Helper to get airline logo
 const getAirlineLogo = (airline: string): string => {
+  if (!airline) return '';
   const airlineLower = airline.toLowerCase();
-  
+
   for (const [key, url] of Object.entries(AIRLINE_LOGOS)) {
     if (airlineLower.includes(key)) {
       return url;
     }
   }
-  
+
   // Return null if no logo found
   return '';
 };
@@ -271,15 +272,16 @@ const extractAircraftFromTitle = (title: string): string | null => {
 
 // Helper to get airline image with fallback
 const getAirlineImage = (company: string, category: string): string => {
+  if (!company) return FALLBACK_IMAGES[category] || FALLBACK_IMAGES['cadet-programme'];
   const companyLower = company.toLowerCase();
-  
+
   // Try Cloudinary match first
   for (const [key, image] of Object.entries(CLOUDINARY_AIRLINES)) {
     if (companyLower.includes(key)) {
       return image;
     }
   }
-  
+
   // Return category fallback
   return FALLBACK_IMAGES[category] || FALLBACK_IMAGES['cadet-programme'];
 };
@@ -1719,14 +1721,15 @@ const PathwayCard: React.FC<{
       'galesburg': 'United States (USA) | Galesburg',
       'abilene': 'United States (USA) | Abilene',
     };
-    
+
+    if (!location) return location;
     const locationLower = location.toLowerCase();
     for (const [key, value] of Object.entries(locationMap)) {
       if (locationLower.includes(key)) {
         return value;
       }
     }
-    
+
     return location;
   };
 
@@ -2401,7 +2404,7 @@ const Aircraft3D: React.FC<{ aircraftType: string; isDarkMode?: boolean }> = ({ 
   });
 
   // Determine aircraft category based on type
-  const typeLower = aircraftType.toLowerCase();
+  const typeLower = (aircraftType || '').toLowerCase();
   let category = 'airliner';
   if (typeLower.includes('citation') || typeLower.includes('challenger') || typeLower.includes('gulfstream') || typeLower.includes('learjet') || typeLower.includes('falcon') || typeLower.includes('global')) {
     category = 'business';
