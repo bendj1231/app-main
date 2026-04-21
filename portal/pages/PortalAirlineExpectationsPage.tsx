@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { AirlineDetailModal } from '../../components/website/components/AirlineDetailModal';
 import { ArrowLeft, ChevronLeft, ChevronRight, MapPin, Clock, DollarSign, Plane, Users, Brain, Shield, Cpu, Search, Target, Briefcase, Zap, CheckCircle2, Star, Globe } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
 
@@ -211,7 +210,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
   isDarkMode = true,
 }) => {
   const [selectedAirline, setSelectedAirline] = useState<Airline | null>(null);
-  const [modalAirline, setModalAirline] = useState<Airline | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const carouselRef = useRef<HTMLDivElement>(null);
   const { userProfile } = useAuth();
@@ -319,7 +317,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
           {filteredAirlines.map(airline => (
             <div
               key={airline.id}
-              onClick={() => { setSelectedAirline(airline); setModalAirline(airline); }}
+              onClick={() => setSelectedAirline(airline)}
               className={`flex-shrink-0 w-72 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 border ${
                 selectedAirline?.id === airline.id
                   ? 'ring-2 ring-sky-500 border-sky-500/50'
@@ -543,13 +541,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
         </div>
       </div>
 
-      {/* Airline Detail Modal */}
-      {modalAirline && (
-        <AirlineDetailModal
-          airline={modalAirline}
-          onClose={() => setModalAirline(null)}
-        />
-      )}
     </div>
   );
 };
