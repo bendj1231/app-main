@@ -435,8 +435,9 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       });
       
       if (nextState.user && !hasShownInitialLoading.current && currentView === 'login' && !directToEnrollment) {
-        console.log('🚀 Starting loading sequence for logged-in user');
-        startLoadingSequence('pilot-profile');
+        console.log('🚀 Redirecting to main app home page instead of loading sequence');
+        // Redirect to main app home page immediately instead of showing loading sequence
+        onNavigateToMainApp?.('home');
       } else if (!nextState.user && !showLoading) {
         // No user, go to login
         console.log('👤 No user, going to login');
