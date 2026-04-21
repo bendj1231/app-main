@@ -3474,6 +3474,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <ChevronLeft className="w-5 h-5" />
             </button>
 
+            <>
             {selectedCarouselPathway && (
               <div className="text-center max-w-xl">
                   <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
@@ -3498,6 +3499,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             >
               <ChevronRight className="w-5 h-5" />
             </button>
+            </>
           </div>
 
           {/* Requirements & Profile Alignment */}
