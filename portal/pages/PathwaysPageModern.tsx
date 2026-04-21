@@ -1206,18 +1206,18 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
   
   // Determine hiring status
   let hiringStatus: PathwayData['hiringStatus'] = 'moderate';
-  if (job.status?.toLowerCase().includes('hiring now') || job.status?.toLowerCase().includes('actively')) {
+  if (String(job.status || '').toLowerCase().includes('hiring now') || String(job.status || '').toLowerCase().includes('actively')) {
     hiringStatus = 'actively_hiring';
-  } else if (job.status?.toLowerCase().includes('limited') || job.status?.toLowerCase().includes('selective')) {
+  } else if (String(job.status || '').toLowerCase().includes('limited') || String(job.status || '').toLowerCase().includes('selective')) {
     hiringStatus = 'limited';
-  } else if (job.status?.toLowerCase().includes('frozen') || job.status?.toLowerCase().includes('pause')) {
+  } else if (String(job.status || '').toLowerCase().includes('frozen') || String(job.status || '').toLowerCase().includes('pause')) {
     hiringStatus = 'frozen';
   }
   
   // Parse flight time requirements
   const totalHours = parseInt(job.flightTime?.match(/(\d{3,4})/)?.[0] || '1500');
   const picHours = parseInt(job.picTime?.match(/(\d{3,4})/)?.[0] || '0');
-  const turbineHours = job.flightTime?.toLowerCase().includes('turbine') ? parseInt(job.flightTime?.match(/turbine.*?([\d,]+)/i)?.[0]?.replace(/[^\d]/g, '') || '0') : 0;
+  const turbineHours = String(job.flightTime || '').toLowerCase().includes('turbine') ? parseInt(job.flightTime?.match(/turbine.*?([\d,]+)/i)?.[0]?.replace(/[^\d]/g, '') || '0') : 0;
   
   // Get real airline image from Airline Expectations bank
   const airlineImage = getAirlineImage(job.company, category);
@@ -1251,17 +1251,17 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
     aircraftType,
     requirements: {
       totalHours,
-      multiEngineHours: job.flightTime?.toLowerCase().includes('multi') ? Math.floor(totalHours * 0.3) : 0,
+      multiEngineHours: String(job.flightTime || '').toLowerCase().includes('multi') ? Math.floor(totalHours * 0.3) : 0,
       turbineHours: turbineHours || (category === 'airtaxi-drones' ? 1000 : category === 'cadet-programme' ? 500 : 0),
-      typeRatings: job.typeRating?.toLowerCase().includes('required') ? [job.aircraft.split(' ')[0]] : [],
+      typeRatings: String(job.typeRating || '').toLowerCase().includes('required') ? [job.aircraft.split(' ')[0]] : [],
     },
     salary: {
       firstYear: job.compensation || 'Competitive',
       fifthYear: 'Career progression available',
-      bonuses: job.visaSponsorship?.toLowerCase().includes('yes') ? 'Visa Sponsorship Available' : 'Standard benefits package',
+      bonuses: String(job.visaSponsorship || '').toLowerCase().includes('yes') ? 'Visa Sponsorship Available' : 'Standard benefits package',
     },
     benefits: [
-      job.visaSponsorship?.toLowerCase().includes('yes') ? 'Visa Sponsorship' : 'No Visa Sponsorship',
+      String(job.visaSponsorship || '').toLowerCase().includes('yes') ? 'Visa Sponsorship' : 'No Visa Sponsorship',
       job.medicalClass?.includes('1') ? 'Class 1 Medical Required' : 'Class 2 Medical Required',
     ],
     locations: [job.location || 'TBD'],
@@ -1379,8 +1379,8 @@ const calcMatchProbability = (job: { flightTime?: string; typeRating?: string; v
 
   // Type rating (25 pts)
   max += 25;
-  const trReq = job.typeRating?.toLowerCase() || '';
-  const userTRs = (profile.pilotData?.typeRatings || []).map((t: string) => (t || '').toLowerCase());
+  const trReq = String(job.typeRating || '').toLowerCase() || '';
+  const userTRs = (profile.pilotData?.typeRatings || []).map((t: string) => String(t || '').toLowerCase());
   if (!trReq || trReq === 'not required' || trReq === 'n/a') {
     score += 25;
   } else if (userTRs.some(tr => trReq.includes(tr) || tr.includes(trReq.split(' ')[0]))) {
@@ -3499,8 +3499,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         <div className="absolute top-3 right-3 flex gap-2 items-start">
                           {!isWingMentorCard && (() => {
                             const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
-                              j.company?.toLowerCase() === pathway.airline?.toLowerCase() ||
-                              j.title?.toLowerCase() === pathway.name?.toLowerCase()
+                              String(j.company || '').toLowerCase() === String(pathway.airline || '').toLowerCase() ||
+                              String(j.title || '').toLowerCase() === String(pathway.name || '').toLowerCase()
                             );
                             return (
                               <div className="relative">
@@ -3541,8 +3541,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                           <p className="text-white/80 text-sm">{pathway.airline}</p>
                           {!isWingMentorCard && mode === 'jobs' && (() => {
                             const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
-                              j.title?.toLowerCase() === pathway.name?.toLowerCase() ||
-                              j.company?.toLowerCase() === pathway.airline?.toLowerCase()
+                              String(j.title || '').toLowerCase() === String(pathway.name || '').toLowerCase() ||
+                              String(j.company || '').toLowerCase() === String(pathway.airline || '').toLowerCase()
                             );
                             if (!fbJob || !pathway.requirements?.totalHours) return null;
                             return (
