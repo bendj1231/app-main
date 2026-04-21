@@ -3316,16 +3316,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
         {/* Edge-to-edge Carousel Section */}
         <div className="flex flex-col items-center">
-          <div className="w-full text-center mb-4">
-            <h2 className={`text-3xl md:text-4xl font-serif font-normal ${headerText} mb-2`}>
-              Available Pathways
-            </h2>
-            <p className={`${subText} text-sm`}>Explore career pathways matched to your profile</p>
-            <p className={`${subText} text-xs mt-1`}>
-              {filteredPathways.length} of {jobApplicationListings.length}+ jobs
+          <div className="w-full text-center mb-3">
+            <p className={`${subText} text-xs`}>
+              {filteredPathways.length} of {jobApplicationListings.length}+ pathways
               <span className="ml-2 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">LIVE DATA</span>
             </p>
-            <p className={`text-xs ${subText} italic mt-2`}>Swipe left and right or click arrows to browse pathways</p>
           </div>
 
           {/* Carousel Container */}
@@ -3333,12 +3328,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; }
-              .pathways-carousel > div { scroll-snap-align: center; scroll-snap-stop: always; }
+              .pathways-carousel > .carousel-card { scroll-snap-align: center; scroll-snap-stop: always; }
             `}</style>
             <div
               ref={carouselRef}
-              className="pathways-carousel flex gap-6 overflow-x-scroll overflow-y-hidden pb-4"
-              style={{ WebkitOverflowScrolling: 'touch' }}
+              className="pathways-carousel flex gap-4 overflow-x-scroll overflow-y-hidden pb-4"
+              style={{ WebkitOverflowScrolling: 'touch', paddingLeft: 'calc(50vw - 300px)', paddingRight: 'calc(50vw - 300px)' }}
             >
               {filteredPathways.length === 0 ? (
                 <div className={`w-full py-16 text-center rounded-xl border-2 border-dashed ${isDarkMode ? 'border-slate-700' : 'border-slate-300'}`}>
@@ -3356,7 +3351,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   return (
                     <div
                       key={`${pathway.id}-${loopIndex}`}
-                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-200 p-[3px] ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
+                      className={`carousel-card flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-60'}`}
                       style={{ width: '600px' }}
                       onClick={() => setSelectedCarouselPathway(pathway)}
                     >
