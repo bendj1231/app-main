@@ -532,9 +532,10 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   useEffect(() => {
     if (!showLoading && authState.user && currentView === 'login') {
-      setCurrentView('hub');
+      // Redirect to main app home page instead of portal hub
+      onNavigateToMainApp?.('home');
     }
-  }, [showLoading, authState.user, currentView]);
+  }, [showLoading, authState.user, currentView, onNavigateToMainApp]);
 
   const handleLogout = async () => {
     try {
