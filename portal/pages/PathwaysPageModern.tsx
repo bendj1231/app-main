@@ -2611,7 +2611,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     setSelectedCarouselPathway(filteredPathways[clampedIndex]);
   }, [filteredPathways]);
 
-  // Scroll to card by index
+  // Scroll to card by index - manual calculation for padding-based centering
   const scrollToCarouselIndex = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
     const container = carouselRef.current;
     if (!container) return;
@@ -2620,7 +2620,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     // Calculate scroll position to center the card in viewport
     // The carousel has padding: calc(50vw - 300px) to center content
     const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-    const scrollPos = cardCenter - (window.innerWidth / 2) + 60; // Center card as shown
+    const viewportCenter = window.innerWidth / 2;
+    const scrollPos = cardCenter - viewportCenter;
     container.scrollTo({ left: scrollPos, behavior });
   }, []);
 
@@ -2659,7 +2660,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         });
         // Snap to center the closest card
         scrollToCarouselIndex(closest, 'smooth');
-      }, 150); // Increased delay for smoother snap
+      }, 100);
     };
     container.addEventListener('scroll', onScroll, { passive: true });
     return () => { container.removeEventListener('scroll', onScroll); clearTimeout(tid); };
@@ -3345,7 +3346,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
 
           {/* Carousel Container */}
-          <div className="relative w-screen max-w-none left-1/2 -translate-x-1/2">
+          <div className="relative w-full">
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
