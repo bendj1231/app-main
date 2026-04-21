@@ -2674,9 +2674,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     let newIndex = direction === 'left'
       ? carouselIndex - 1
       : carouselIndex + 1;
-    // Skip intro card (index 0), always stay at index >= 1
-    if (newIndex < 1) newIndex = 1;
-    if (newIndex >= filteredPathways.length) newIndex = 1;
+    // Skip intro card (index 0), wrap around between pathway cards (index 1 to end)
+    if (newIndex < 1) newIndex = filteredPathways.length - 1; // Wrap to last card
+    if (newIndex >= filteredPathways.length) newIndex = 1; // Wrap to first pathway card
     setCarouselIndex(newIndex);
     setSelectedCarouselPathway(filteredPathways[newIndex]);
     scrollToCarouselIndex(newIndex);
