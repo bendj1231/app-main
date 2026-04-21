@@ -1262,9 +1262,7 @@ const App = () => {
           <TypeRatingSearchPage />
         )}
         {currentPage === 'job-listings' && (
-          <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-            <p className="text-slate-500 text-lg">Job Listings coming soon</p>
-          </div>
+          <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} mode="jobs" />
         )}
         {currentPage === 'pathways-modern-light' && (
           <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />

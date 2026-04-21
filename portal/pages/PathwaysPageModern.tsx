@@ -2476,13 +2476,15 @@ export interface PathwaysPageModernProps {
   initialCategory?: string;
   selectedPathwayId?: string;
   onNavigate?: (page: string) => void;
+  mode?: 'pathways' | 'jobs';
 }
 
 export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({ 
   isDarkMode = true,
   initialCategory = 'all',
   selectedPathwayId,
-  onNavigate
+  onNavigate,
+  mode = 'pathways'
 }) => {
   const [expandedPathway, setExpandedPathway] = useState<string | null>(selectedPathwayId || null);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -2583,8 +2585,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }))
   );
 
-  // Include both real job listings and static discovery pathways
-  const allPathways = [...dynamicPathways, ...discoveryPathways];
+  // Include pathways or jobs based on mode
+  const allPathways = mode === 'jobs'
+    ? dynamicPathways
+    : discoveryPathways;
   
   // Always show all portal categories regardless of data
   const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
@@ -3178,28 +3182,33 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
               { label: 'Pilot Pathways', page: 'pathways-modern' },
               { label: 'Job Listings', page: 'job-listings' },
-            ].map(({ label, page }) => (
+            ].map(({ label, page }) => {
+              const isActive = (page === 'pathways-modern' && mode === 'pathways') || (page === 'job-listings' && mode === 'jobs');
+              return (
               <button
                 key={page}
                 onClick={() => onNavigate && onNavigate(page)}
                 className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  page === 'pathways-modern'
+                  isActive
                     ? 'bg-sky-400 text-white'
                     : isDarkMode ? 'bg-sky-600 hover:bg-sky-500 text-white' : 'bg-sky-500 hover:bg-sky-600 text-white'
                 }`}
               >
                 {label}
               </button>
-            ))}
+              );
+            })}
           </div>
-          <div className="flex justify-center">
-            <CategoryFilter
-              active={activeCategory}
-              onChange={setActiveCategory}
-              isDarkMode={isDarkMode}
-              categoryLabels={categoryLabels}
-            />
-          </div>
+          {mode === 'pathways' && (
+            <div className="flex justify-center">
+              <CategoryFilter
+                active={activeCategory}
+                onChange={setActiveCategory}
+                isDarkMode={isDarkMode}
+                categoryLabels={categoryLabels}
+              />
+            </div>
+          )}
 
           {/* Match Probability Filter */}
           <div className="flex items-center gap-3 justify-center">
