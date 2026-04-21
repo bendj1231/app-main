@@ -614,24 +614,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             try {
                 console.log("Fetching user profile from Supabase for:", data.user.id);
                 const { data: profileData, error: profileError } = await supabase
-                    .from('pilot_licensure_experience')
+                    .from('profiles')
                     .select('*')
-                    .eq('user_id', data.user.id)
+                    .eq('id', data.user.id)
                     .single();
 
                 if (profileData && !profileError) {
-                    console.log("✅ User profile fetched:", data.user.id);
+                    console.log("✅ User profile fetched from profiles table:", data.user.id);
                     setUserProfile(profileData);
                 } else {
-                    console.log("⚠️ No user profile found for:", data.user.id);
-                    // Create minimal profile from auth data
-                    const newProfile = {
-                        user_id: data.user.id,
-                        email: email,
-                        created_at: new Date().toISOString(),
-                        last_login: new Date().toISOString()
-                    };
-                    setUserProfile(newProfile);
+                    console.log("⚠️ No user profile found in profiles table for:", data.user.id);
+                    // Try pilot_licensure_experience as fallback
+                    const { data: pilotData, error: pilotError } = await supabase
+                        .from('pilot_licensure_experience')
+                        .select('*')
+                        .eq('user_id', data.user.id)
+                        .single();
+                    
+                    if (pilotData && !pilotError) {
+                        console.log("✅ User profile fetched from pilot_licensure_experience table:", data.user.id);
+                        setUserProfile(pilotData);
+                    } else {
+                        console.log("⚠️ No user profile found anywhere for:", data.user.id);
+                        // Create minimal profile from auth data
+                        const newProfile = {
+                            id: data.user.id,
+                            user_id: data.user.id,
+                            email: email,
+                            created_at: new Date().toISOString(),
+                            last_login: new Date().toISOString()
+                        };
+                        setUserProfile(newProfile);
+                    }
                 }
             } catch (profileError) {
                 console.error("Error fetching user profile from Supabase:", profileError);
@@ -928,31 +942,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     try {
                         console.log('Checking profile for user:', session.user.id);
                         const { data: profileData, error } = await supabase
-                            .from('pilot_licensure_experience')
+                            .from('profiles')
                             .select('*')
-                            .eq('user_id', session.user.id)
+                            .eq('id', session.user.id)
                             .single();
 
-                        console.log('Profile check result:', { profileData, error });
+                        console.log('Profile check result from profiles table:', { profileData, error });
 
                         if (profileData && !error) {
-                            console.log("✅ Profile found for OAuth user:", session.user.id);
+                            console.log("✅ Profile found for OAuth user in profiles table:", session.user.id);
                             setUserProfile(profileData);
                             setOauthAccountCheck({ checking: false, hasAccount: true });
                             console.log('Set oauthAccountCheck to hasAccount: true');
                         } else {
-                            console.log("⚠️ No profile found for OAuth user:", session.user.id);
-                            setOauthAccountCheck({ checking: false, hasAccount: false });
-                            console.log('Set oauthAccountCheck to hasAccount: false');
-                            // Create default profile
-                            const defaultProfile = {
-                                user_id: session.user.id,
-                                email: session.user.email,
-                                created_at: new Date().toISOString(),
-                                enrolled_programs: [],
-                                appAccess: []
-                            };
-                            setUserProfile(defaultProfile);
+                            console.log("⚠️ No profile found in profiles table, checking pilot_licensure_experience for OAuth user:", session.user.id);
+                            // Try pilot_licensure_experience as fallback
+                            const { data: pilotData, error: pilotError } = await supabase
+                                .from('pilot_licensure_experience')
+                                .select('*')
+                                .eq('user_id', session.user.id)
+                                .single();
+
+                            if (pilotData && !pilotError) {
+                                console.log("✅ Profile found for OAuth user in pilot_licensure_experience table:", session.user.id);
+                                setUserProfile(pilotData);
+                                setOauthAccountCheck({ checking: false, hasAccount: true });
+                            } else {
+                                console.log("⚠️ No profile found anywhere for OAuth user:", session.user.id);
+                                setOauthAccountCheck({ checking: false, hasAccount: false });
+                                console.log('Set oauthAccountCheck to hasAccount: false');
+                                // Create default profile
+                                const defaultProfile = {
+                                    id: session.user.id,
+                                    user_id: session.user.id,
+                                    email: session.user.email,
+                                    created_at: new Date().toISOString(),
+                                    enrolled_programs: [],
+                                    appAccess: []
+                                };
+                                setUserProfile(defaultProfile);
+                            }
                         }
                     } catch (err) {
                         console.error("❌ Error checking profile for OAuth user:", err);
