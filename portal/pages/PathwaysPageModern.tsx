@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   TrendingUp, 
@@ -1184,16 +1184,8 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
     category = 'cadet-programme';
   }
   
-  // Generate a match probability based on job requirements (higher = more accessible)
-  let matchProbability = 75;
-  const flightTimeReq = job.flightTime?.toLowerCase() || '';
-  if (flightTimeReq.includes('200') || flightTimeReq.includes('500')) {
-    matchProbability = 85 + Math.floor(Math.random() * 10);
-  } else if (flightTimeReq.includes('1000') || flightTimeReq.includes('1500')) {
-    matchProbability = 75 + Math.floor(Math.random() * 15);
-  } else if (flightTimeReq.includes('3000') || flightTimeReq.includes('3500') || flightTimeReq.includes('4000') || flightTimeReq.includes('5000')) {
-    matchProbability = 60 + Math.floor(Math.random() * 20);
-  }
+  // Match probability is calculated from the pilot's recognition profile — passed in at call site
+  const matchProbability = 75; // placeholder, overridden by caller via recognitionProfile
   
   // Determine hiring status
   let hiringStatus: PathwayData['hiringStatus'] = 'moderate';
@@ -1296,39 +1288,101 @@ const MOCK_USER_PROFILE: RecognitionProfile = {
 
 // Function to convert user profile to RecognitionProfile format
 const convertToRecognitionProfile = (userProfile: any): RecognitionProfile => {
-  // Extract flight hours from profile
   const totalHours = userProfile?.current_flight_hours || 0;
-  
-  // Extract type ratings/aircraft ratings
+
   const aircraftRatings = userProfile?.aircraft_ratings || [];
   const ratings = userProfile?.ratings || [];
-  const typeRatings = [...aircraftRatings.map((ar: any) => ar.aircraft_type), ...ratings].filter(Boolean);
-  
-  // Estimate multi-engine and turbine hours based on total hours and experience level
+  const typeRatings = [...aircraftRatings.map((ar: any) => ar.aircraft_type || ar), ...ratings].filter(Boolean);
+
   const experienceLevel = userProfile?.experience_level || 'Low Timer';
-  const multiEngineHours = experienceLevel === 'High Timer' ? Math.round(totalHours * 0.6) : 
-                            experienceLevel === 'Middle Timer' ? Math.round(totalHours * 0.4) : 
-                            Math.round(totalHours * 0.2);
-  const turbineHours = experienceLevel === 'High Timer' ? Math.round(totalHours * 0.5) : 
-                        experienceLevel === 'Middle Timer' ? Math.round(totalHours * 0.3) : 
-                        Math.round(totalHours * 0.1);
-  
+  const multiEngineHours = experienceLevel === 'High Timer' ? Math.round(totalHours * 0.6)
+    : experienceLevel === 'Middle Timer' ? Math.round(totalHours * 0.4)
+    : Math.round(totalHours * 0.2);
+  const turbineHours = experienceLevel === 'High Timer' ? Math.round(totalHours * 0.5)
+    : experienceLevel === 'Middle Timer' ? Math.round(totalHours * 0.3)
+    : Math.round(totalHours * 0.1);
+
+  // Experience score: logarithmic scale — 100h=30, 500h=50, 1500h=70, 5000h=90
+  const expScore = totalHours === 0 ? 10
+    : Math.min(95, Math.round(30 + Math.log10(Math.max(1, totalHours)) * 18));
+
+  // Language score from ICAO level
+  const icaoLevel = userProfile?.english_proficiency_level || userProfile?.english_proficiency || '';
+  const langScore = icaoLevel.includes('6') ? 100
+    : icaoLevel.includes('5') ? 88
+    : icaoLevel.includes('4') ? 72
+    : 50;
+
+  // Medical score
+  const medical = userProfile?.medical_class || '';
+  const medScore = medical.includes('1') ? 100 : medical.includes('2') ? 75 : 40;
+
+  // Type rating bonus
+  const trBonus = typeRatings.length > 0 ? Math.min(20, typeRatings.length * 8) : 0;
+
+  // Composite totalScore (0–100)
+  const totalScore = Math.min(100, Math.round(
+    expScore * 0.45 + langScore * 0.20 + medScore * 0.15 + 65 * 0.20 + trBonus
+  ));
+
   return {
-    totalScore: 78, // Default score - in real app, this would be calculated from profile
+    totalScore,
     breakdown: {
-      programs: 85,
-      experience: experienceLevel === 'High Timer' ? 85 : experienceLevel === 'Middle Timer' ? 72 : 55,
-      behavioral: 80,
-      language: userProfile?.english_proficiency === 'Level 4' || userProfile?.english_proficiency === 'Level 5' ? 90 : 75,
+      programs: 65,
+      experience: expScore,
+      behavioral: 65,
+      language: langScore,
       skills: 65,
     },
-    pilotData: {
-      totalHours,
-      multiEngineHours,
-      turbineHours,
-      typeRatings,
-    },
+    pilotData: { totalHours, multiEngineHours, turbineHours, typeRatings },
   };
+};
+
+// Real match probability calculator — called per job against the pilot's recognition profile
+const calcMatchProbability = (job: { flightTime?: string; typeRating?: string; visaSponsorship?: string; location?: string }, profile: RecognitionProfile): number => {
+  let score = 0;
+  let max = 0;
+
+  const userHours = profile.pilotData?.totalHours || 0;
+  const flightTimeText = job.flightTime?.replace(/,/g, '') || '';
+  const reqHoursMatch = flightTimeText.match(/(\d{3,5})/);
+  const reqHours = reqHoursMatch ? parseInt(reqHoursMatch[1]) : 0;
+
+  // Hours (40 pts)
+  max += 40;
+  if (reqHours === 0 || userHours >= reqHours) {
+    score += 40;
+  } else if (userHours >= reqHours * 0.75) {
+    score += 28;
+  } else if (userHours >= reqHours * 0.5) {
+    score += 16;
+  } else if (userHours > 0) {
+    score += 6;
+  }
+
+  // Type rating (25 pts)
+  max += 25;
+  const trReq = job.typeRating?.toLowerCase() || '';
+  const userTRs = (profile.pilotData?.typeRatings || []).map((t: string) => t.toLowerCase());
+  if (!trReq || trReq === 'not required' || trReq === 'n/a') {
+    score += 25;
+  } else if (userTRs.some(tr => trReq.includes(tr) || tr.includes(trReq.split(' ')[0]))) {
+    score += 25;
+  } else if (userTRs.length > 0) {
+    score += 10; // Has a type rating, just not the exact one
+  }
+
+  // Medical / license via recognition score (20 pts)
+  max += 20;
+  score += Math.round((profile.totalScore / 100) * 20);
+
+  // Language (15 pts)
+  max += 15;
+  score += Math.round((profile.breakdown.language / 100) * 15);
+
+  const raw = Math.round((score / max) * 100);
+  // Clamp to 45–99 so it always feels meaningful
+  return Math.max(45, Math.min(99, raw));
 };
 
 // Function to compare job requirements against user profile
@@ -2563,8 +2617,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
   }, [selectedPathwayId]);
 
-  // Get dynamic pathways based on visible count
-  const dynamicPathways = jobApplicationListings.map((job, index) => transformJobToPathway(job, index));
+  // Get dynamic pathways — match probability calculated from real recognition profile
+  const dynamicPathways = useMemo(() => {
+    return jobApplicationListings.map((job, index) => {
+      const base = transformJobToPathway(job, index);
+      return { ...base, matchProbability: calcMatchProbability(job, recognitionProfile) };
+    });
+  }, [recognitionProfile.totalScore, recognitionProfile.pilotData?.totalHours, recognitionProfile.pilotData?.typeRatings?.length]);
 
   // Transform DISCOVERY_PATHWAYS into PathwayData format for static pathway cards
   const discoveryPathways: PathwayData[] = Object.entries(DISCOVERY_PATHWAYS).flatMap(([catKey, items]) =>
