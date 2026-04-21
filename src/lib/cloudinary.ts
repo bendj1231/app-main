@@ -2,9 +2,9 @@ import { v2 as cloudinary } from 'cloudinary';
 
 // Configure Cloudinary with environment variables
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'WMPILOTGROUP',
-  api_key: process.env.CLOUDINARY_API_KEY || '337769872771858',
-  api_secret: process.env.CLOUDINARY_API_SECRET || '01ozqHqkTM6uNPZ1Bzue4pYMe24',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true,
 });
 

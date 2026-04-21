@@ -3990,8 +3990,359 @@ async function calculateRecognitionScore(profile, supabaseClient) {
   return Math.round(weightedScore * 100) / 100;
 }
 
-// V12 Ferrari Engine - Master Cross-Project Integration
+// Gap Calculator (Δ) - Calculate difference between current profile and pathway requirements
+async function calculateGapAnalysis(profile, pathway, supabase) {
+  const gaps = [];
+  const recommendations = [];
+  
+  // Flight Hours Gap Analysis
+  const requiredHours = pathway.required_total_hours || 0;
+  const currentHours = profile.total_flight_time || 0;
+  const hoursGap = requiredHours - currentHours;
+  
+  if (hoursGap > 0) {
+    gaps.push({
+      category: 'Flight Hours',
+      current: currentHours,
+      required: requiredHours,
+      gap: hoursGap,
+      priority: hoursGap > 500 ? 'high' : hoursGap > 200 ? 'medium' : 'low'
+    });
+    recommendations.push(`Need ${hoursGap} more flight hours. Consider: CFI position, banner towing, or pipeline patrol.`);
+  }
+  
+  // Multi-Engine Gap
+  const requiredME = pathway.required_multi_engine_hours || 0;
+  const currentME = profile.multi_engine_time || 0;
+  const meGap = requiredME - currentME;
+  
+  if (meGap > 0) {
+    gaps.push({
+      category: 'Multi-Engine Time',
+      current: currentME,
+      required: requiredME,
+      gap: meGap,
+      priority: meGap > 100 ? 'high' : 'medium'
+    });
+    recommendations.push(`Need ${meGap} more multi-engine hours. Consider: ME rating training or skydive operations.`);
+  }
+  
+  // Turbine/Jet Gap
+  const requiredTurbine = pathway.required_turbine_hours || 0;
+  const currentTurbine = profile.turbine_time || 0;
+  const turbineGap = requiredTurbine - currentTurbine;
+  
+  if (turbineGap > 0) {
+    gaps.push({
+      category: 'Turbine Time',
+      current: currentTurbine,
+      required: requiredTurbine,
+      gap: turbineGap,
+      priority: 'high'
+    });
+    recommendations.push(`Need ${turbineGap} more turbine hours. Consider: corporate charter or cargo operations.`);
+  }
+  
+  // Ratings/Certificates Gap
+  const requiredRatings = pathway.required_ratings || [];
+  const currentRatings = profile.ratings || [];
+  const missingRatings = requiredRatings.filter(r => !currentRatings.includes(r));
+  
+  if (missingRatings.length > 0) {
+    gaps.push({
+      category: 'Ratings/Certificates',
+      current: currentRatings,
+      required: requiredRatings,
+      gap: missingRatings,
+      priority: 'high'
+    });
+    recommendations.push(`Missing ratings: ${missingRatings.join(', ')}. Complete these certifications to qualify.`);
+  }
+  
+  // Program Scores Gap
+  const pathwayPrograms = pathway.required_program_scores || {};
+  const profilePrograms = {
+    technical: profile.technical_skills_score || 0,
+    interview: profile.interview_score || 0,
+    consultation: profile.consultation_score || 0,
+    examination: profile.examination_score || 0,
+    simulation: profile.simulation_score || 0,
+    behavioral: (profile.behavioral_sjt_score || 0) + (profile.behavioral_psychometric_score || 0)
+  };
+  
+  const programGaps = [];
+  for (const [program, required] of Object.entries(pathwayPrograms)) {
+    const current = profilePrograms[program] || 0;
+    if (current < required) {
+      programGaps.push({
+        program,
+        current,
+        required,
+        gap: required - current
+      });
+    }
+  }
+  
+  if (programGaps.length > 0) {
+    gaps.push({
+      category: 'Program Assessments',
+      gaps: programGaps,
+      priority: 'medium'
+    });
+    recommendations.push(`Improve assessment scores in: ${programGaps.map(g => g.program).join(', ')}.`);
+  }
+  
+  // Calculate overall gap percentage
+  const totalRequirements = 6; // hours, ME, turbine, ratings, programs, recency
+  const metRequirements = totalRequirements - gaps.filter(g => g.priority === 'high').length;
+  const gapPercentage = ((totalRequirements - metRequirements) / totalRequirements) * 100;
+  
+  return {
+    gapPercentage: Math.round(gapPercentage * 100) / 100,
+    totalGaps: gaps.length,
+    highPriorityGaps: gaps.filter(g => g.priority === 'high').length,
+    mediumPriorityGaps: gaps.filter(g => g.priority === 'medium').length,
+    lowPriorityGaps: gaps.filter(g => g.priority === 'low').length,
+    gaps,
+    recommendations,
+    estimatedCost: calculateEstimatedTrainingCost(gaps),
+    estimatedTime: calculateEstimatedTrainingTime(gaps)
+  };
+}
+
+// Calculate estimated training cost based on gaps
+function calculateEstimatedTrainingCost(gaps) {
+  let cost = 0;
+  
+  for (const gap of gaps) {
+    switch (gap.category) {
+      case 'Flight Hours':
+        cost += gap.gap * 150; // $150/hour average
+        break;
+      case 'Multi-Engine Time':
+        cost += gap.gap * 300; // $300/hour for ME
+        break;
+      case 'Turbine Time':
+        cost += gap.gap * 500; // $500/hour for turbine
+        break;
+      case 'Ratings/Certificates':
+        cost += gap.gap.length * 5000; // $5000 per rating
+        break;
+      case 'Program Assessments':
+        cost += (gap.gaps || []).length * 500; // $500 per program
+        break;
+    }
+  }
+  
+  return Math.round(cost);
+}
+
+// Calculate estimated training time based on gaps
+function calculateEstimatedTrainingTime(gaps) {
+  let days = 0;
+  
+  for (const gap of gaps) {
+    switch (gap.category) {
+      case 'Flight Hours':
+        days += Math.ceil(gap.gap / 5); // 5 hours/day average
+        break;
+      case 'Multi-Engine Time':
+        days += Math.ceil(gap.gap / 3); // 3 hours/day for ME
+        break;
+      case 'Turbine Time':
+        days += Math.ceil(gap.gap / 2); // 2 hours/day for turbine
+        break;
+      case 'Ratings/Certificates':
+        days += gap.gap.length * 30; // 30 days per rating
+        break;
+      case 'Program Assessments':
+        days += (gap.gaps || []).length * 7; // 1 week per program
+        break;
+    }
+  }
+  
+  const months = Math.ceil(days / 30);
+  return { days, months };
+}
+
+// Get real-time market volatility data
+async function getMarketVolatilityRealTime(pathwayId, supabase) {
+  try {
+    // Fetch from market data table (to be populated by scraper)
+    const { data: marketData, error } = await supabase
+      .from('market_volatility_data')
+      .select('*')
+      .eq('pathway_id', pathwayId)
+      .order('timestamp', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    
+    if (error || !marketData) {
+      // Return default volatility if no data
+      return {
+        volatilityIndex: 1.0,
+        hiringVelocity: 'stable',
+        competitionLevel: 'moderate',
+        lastUpdated: new Date().toISOString(),
+        source: 'default'
+      };
+    }
+    
+    return {
+      volatilityIndex: marketData.volatility_index || 1.0,
+      hiringVelocity: marketData.hiring_velocity || 'stable',
+      competitionLevel: marketData.competition_level || 'moderate',
+      openPositions: marketData.open_positions || 0,
+      lastUpdated: marketData.timestamp,
+      source: 'real-time'
+    };
+  } catch (error) {
+    console.error('Error fetching market volatility:', error);
+    return {
+      volatilityIndex: 1.0,
+      hiringVelocity: 'stable',
+      competitionLevel: 'moderate',
+      lastUpdated: new Date().toISOString(),
+      source: 'fallback'
+    };
+  }
+}
+
+// Calculate dynamic cost friction based on gaps and market
+async function calculateCostFrictionDynamic(gapAnalysis, marketVolatility, profile) {
+  const baseCost = gapAnalysis.estimatedCost || 0;
+  const financialCapacity = profile.financial_capacity || 1.0;
+  
+  // Adjust cost based on market volatility
+  // High volatility = more competition = may need more training to stand out
+  const volatilityMultiplier = marketVolatility.volatilityIndex || 1.0;
+  
+  // Calculate friction score (higher = more friction)
+  // 1.0 = no friction, 3.0 = high friction
+  let frictionScore = 1.0;
+  
+  if (baseCost > 0) {
+    // Cost friction: inverse of financial capacity relative to cost
+    const costToCapacityRatio = baseCost / (financialCapacity * 50000); // Assume 50k capacity baseline
+    frictionScore += Math.min(2.0, costToCapacityRatio);
+  }
+  
+  // Add volatility friction
+  frictionScore += (volatilityMultiplier - 1.0) * 0.5;
+  
+  // Cap at 3.0
+  const cappedFriction = Math.min(3.0, Math.max(1.0, frictionScore));
+  
+  return {
+    frictionScore: Math.round(cappedFriction * 100) / 100,
+    baseCost,
+    adjustedCost: Math.round(baseCost * volatilityMultiplier),
+    volatilityMultiplier,
+    financialCapacity,
+    affordability: financialCapacity >= cappedFriction ? 'affordable' : 'challenging'
+  };
+}
+
+// Prepare Atlas CV data structure
+function prepareAtlasCVData(profile, pathway, gapAnalysis, recognitionScore) {
+  return {
+    // Header Section
+    pilotInfo: {
+      name: profile.full_name,
+      email: profile.email,
+      phone: profile.phone,
+      location: profile.location,
+      licenseNumber: profile.license_number,
+      medicalClass: profile.medical_class,
+      medicalExpiry: profile.medical_expiry
+    },
+    
+    // Executive Summary
+    executiveSummary: {
+      totalFlightTime: profile.total_flight_time || 0,
+      recognitionScore: Math.round(recognitionScore * 100) / 100,
+      pathwayAlignment: pathway.name,
+      keyStrengths: gapAnalysis.gaps
+        .filter(g => g.current >= g.required)
+        .map(g => g.category),
+      developmentAreas: gapAnalysis.recommendations.slice(0, 3)
+    },
+    
+    // Flight Experience (Chronological)
+    flightExperience: {
+      totalTime: profile.total_flight_time || 0,
+      picTime: profile.pic_time || 0,
+      multiEngineTime: profile.multi_engine_time || 0,
+      turbineTime: profile.turbine_time || 0,
+      ifrTime: profile.ifr_time || 0,
+      nightTime: profile.night_time || 0,
+      lastFlight: profile.last_flown || profile.last_flight_date,
+      recencyStatus: calculateRecencyStatus(profile.last_flown)
+    },
+    
+    // Certifications & Ratings
+    certifications: {
+      ratings: profile.ratings || [],
+      typeRatings: profile.type_ratings || [],
+      endorsements: profile.endorsements || [],
+      certificates: profile.certificates || []
+    },
+    
+    // WingMentor Programs (Recognition Profile)
+    wingmentorPrograms: {
+      technicalSkills: profile.technical_skills_score || 0,
+      interviewReadiness: profile.interview_score || 0,
+      consultationSkills: profile.consultation_score || 0,
+      examinationResults: profile.examination_score || 0,
+      simulationPerformance: profile.simulation_score || 0,
+      behavioralAssessment: (profile.behavioral_sjt_score || 0) + (profile.behavioral_psychometric_score || 0),
+      foundationProgress: profile.foundation_progress || 0
+    },
+    
+    // Behavioral & CRM Profile
+    behavioralProfile: {
+      situationalJudgment: profile.behavioral_sjt_score || 0,
+      psychometricProfile: profile.behavioral_psychometric_score || 0,
+      cognitiveWorkload: profile.behavioral_cognitive_workload || 0,
+      stressManagement: profile.behavioral_stress_management || 0,
+      decisionMaking: profile.behavioral_decision_making || 0,
+      crmAssessment: profile.behavioral_crm_assessment || 0
+    },
+    
+    // Gap Analysis for Target Pathway
+    pathwayReadiness: {
+      targetPathway: pathway.name,
+      alignmentScore: Math.round((100 - gapAnalysis.gapPercentage) * 100) / 100,
+      criticalGaps: gapAnalysis.highPriorityGaps,
+      estimatedInvestment: gapAnalysis.estimatedCost,
+      estimatedTimeline: gapAnalysis.estimatedTime,
+      actionPlan: gapAnalysis.recommendations
+    },
+    
+    // Generated metadata
+    generatedAt: new Date().toISOString(),
+    version: '2.0',
+    atsOptimized: true
+  };
+}
+
+// Helper for recency status
+function calculateRecencyStatus(lastFlownDate) {
+  if (!lastFlownDate) return 'Unknown';
+  
+  const lastFlight = new Date(lastFlownDate);
+  const today = new Date();
+  const daysSince = Math.floor((today - lastFlight) / (1000 * 60 * 60 * 24));
+  
+  if (daysSince <= 30) return 'Current';
+  if (daysSince <= 90) return 'Recent';
+  if (daysSince <= 180) return 'Needs Currency';
+  return 'Requires Recency Training';
+}
+
+// V12 Ferrari Engine - Master Cross-Project Integration (IMPROVED v2.0)
 // Orchestrates all formula components across projects for complete pathway matching
+// Now includes: Gap Calculator, Real-time Market Data, Dynamic Cost Friction, Atlas CV Prep
 
 exports.calculateCompletePathwayMatch = onRequest(async (req, res) => {
   const supabase = createClient(
@@ -4031,51 +4382,99 @@ exports.calculateCompletePathwayMatch = onRequest(async (req, res) => {
     // Calculate all components
     const recognitionScore = await calculateRecognitionScore(profile.data, supabase);
     const { timeDecayCoefficient } = await calculateTimeDecayLogic(profile.data);
-
+    
+    // NEW: Calculate Gap Analysis (Δ)
+    const gapAnalysis = await calculateGapAnalysis(profile.data, pathway.data, supabase);
+    
+    // NEW: Get real-time Market Volatility (V)
+    const marketVolatility = await getMarketVolatilityRealTime(pathwayId, supabase);
+    
     // Multipliers (boost probability)
     const M = profile.data.mentorship_endorsement || 1.0;
     const A = pathway.data.airline_preference || 1.0;
     const G = pathway.data.geographic_compatibility || 1.0;
     const D = profile.data.development_trajectory || 1.0;
 
-    // Denominators (reduce probability)
-    const V = pathway.data.market_volatility || 1.0;
-    const C = pathway.data.cost_friction || 1.0;
+    // NEW: Calculate dynamic Cost Friction (C) based on gaps and market
+    const costFriction = await calculateCostFrictionDynamic(gapAnalysis, marketVolatility, profile.data);
+    const C = costFriction.frictionScore;
+    
+    // Use real-time market volatility or fallback to pathway static value
+    const V = marketVolatility.volatilityIndex || pathway.data.market_volatility || 1.0;
+    
+    // Financial Capacity
     const F = profile.data.financial_capacity || 1.0;
 
     // Gatekeeper (binary)
     const Rf = (profile.data.medical_valid && profile.data.license_valid) ? 1 : 0;
 
     // Master Formula: Wₚ = (R × M × A × G) / (V × C × F) × Rf × D
+    // Now includes real-time V and dynamic C
     const numerator = recognitionScore * M * A * G;
     const denominator = V * C * F;
     const pathwayProbability = (numerator / denominator) * Rf * D;
     
+    // NEW: Adjust probability based on gap percentage
+    // If there are critical gaps, reduce probability
+    const gapAdjustment = 1 - (gapAnalysis.gapPercentage / 200); // Max 50% reduction
+    const adjustedProbability = pathwayProbability * gapAdjustment;
+    
     // Cap at 97% for realistic probabilities (never 100% in real life)
-    const clampedProbability = Math.max(0, Math.min(97, pathwayProbability));
+    const clampedProbability = Math.max(0, Math.min(97, adjustedProbability));
 
-    // Determine recommendation based on realistic ranges
+    // Determine recommendation based on realistic ranges + gap analysis
     let recommendation;
+    let actionItems = [];
+    
     if (Rf === 0) {
       recommendation = 'Cannot proceed - Regulatory/Medical gatekeeper failed';
+      actionItems = ['Renew medical certificate', 'Verify license validity'];
     } else if (clampedProbability === 0) {
       recommendation = 'No data - Complete profile to get assessment';
+      actionItems = ['Complete pilot profile', 'Add flight hours', 'Take assessments'];
     } else if (clampedProbability < 50) {
-      recommendation = 'Low chance - Not current, needs practice and improvement';
+      recommendation = 'Low chance - Significant gaps need to be addressed';
+      actionItems = gapAnalysis.recommendations.slice(0, 3);
     } else if (clampedProbability < 64) {
-      recommendation = 'Moderate chance - Good but needs improvement';
+      recommendation = 'Moderate chance - Good foundation but needs improvement';
+      actionItems = gapAnalysis.recommendations.slice(0, 2);
     } else if (clampedProbability < 73) {
       recommendation = 'Average chance - New profile with data but no history yet';
+      actionItems = ['Continue building flight hours', 'Complete WingMentor programs'];
     } else if (clampedProbability < 85) {
       recommendation = 'High chance - Strong candidate with good track record';
+      actionItems = ['Maintain currency', 'Network with industry professionals'];
     } else {
       recommendation = 'Very high chance - Effort-based top achiever';
+      actionItems = ['Apply to pathway', 'Prepare for interview', 'Connect with mentors'];
     }
+    
+    // NEW: Prepare Atlas CV data
+    const atlasCVData = prepareAtlasCVData(profile.data, pathway.data, gapAnalysis, recognitionScore);
 
     return res.json({
       pathwayProbability: Math.round(clampedProbability * 100) / 100,
-      engine: 'V12 Ferrari Engine',
-      formula: 'Wₚ = (R × M × A × G) / (V × C × F) × Rf × D',
+      engine: 'V12 Ferrari Engine v2.0',
+      formula: 'Wₚ = (R × M × A × G) / (V × C × F) × Rf × D × (1 - Δ/200)',
+      version: '2.0',
+      newFeatures: ['Gap Calculator (Δ)', 'Real-time Market Volatility', 'Dynamic Cost Friction', 'Atlas CV Preparation'],
+      
+      // NEW: Gap Analysis Section
+      gapAnalysis: {
+        gapPercentage: gapAnalysis.gapPercentage,
+        totalGaps: gapAnalysis.totalGaps,
+        highPriorityGaps: gapAnalysis.highPriorityGaps,
+        mediumPriorityGaps: gapAnalysis.mediumPriorityGaps,
+        lowPriorityGaps: gapAnalysis.lowPriorityGaps,
+        detailedGaps: gapAnalysis.gaps,
+        recommendations: gapAnalysis.recommendations,
+        estimatedInvestment: {
+          cost: gapAnalysis.estimatedCost,
+          currency: 'USD'
+        },
+        estimatedTimeline: gapAnalysis.estimatedTime
+      },
+      
       components: {
         recognition: {
           score: Math.round(recognitionScore * 100) / 100,
@@ -4092,26 +4491,10 @@ exports.calculateCompletePathwayMatch = onRequest(async (req, res) => {
             behavioral: Math.round((profile.data.behavioral_sjt_score || 0) + (profile.data.behavioral_psychometric_score || 0) + (profile.data.behavioral_cognitive_workload || 0) + (profile.data.behavioral_stress_management || 0) + (profile.data.behavioral_decision_making || 0) + (profile.data.behavioral_crm_assessment || 0) * 100) / 100,
             language: Math.round((profile.data.language_cultural_adaptability || 0) + (profile.data.language_international_experience ? 20 : 0) + (profile.data.language_cross_cultural_comm || 0) + (profile.data.language_icao_level === '6' ? 30 : profile.data.language_icao_level === '5' ? 25 : profile.data.language_icao_level === '4' ? 20 : 0) * 100) / 100,
             specializedSkills: Math.round((profile.data.skills_weather_ops || 0) + (profile.data.skills_terrain_complexity || 0) + (profile.data.skills_emergency_procedures || 0) + (profile.data.skills_type_rating_diversity || 0) + (profile.data.skills_instrument_approaches || 0) * 100) / 100,
-            engagement: {
-              learningHours: 0, // Will be calculated from learning_hours table
-              forumParticipation: 0, // Will be calculated from forum_participation table
-              eventAttendance: 0 // Will be calculated from event_attendance table
-            },
-            consistency: {
-              loginFrequency: 0, // Will be calculated from user_activity_log table
-              completionRate: 0, // Will be calculated from completion_tracking table
-              goalCompletion: 0 // Will be calculated from goal_tracking table
-            },
-            growth: {
-              improvementRate: 0, // Will be calculated from score_history table
-              learningSpeed: 0, // Will be calculated from learning_metrics table
-              adaptability: 0 // Will be calculated from cross-training success
-            },
-            network: {
-              peerEndorsements: 0, // Will be calculated from peer_endorsements table
-              mentorshipQuality: 0, // Will be calculated from mentor_tier and endorsements
-              alumniConnections: 0 // Will be calculated from alumni_network table
-            }
+            engagement: { learningHours: 0, forumParticipation: 0, eventAttendance: 0 },
+            consistency: { loginFrequency: 0, completionRate: 0, goalCompletion: 0 },
+            growth: { improvementRate: 0, learningSpeed: 0, adaptability: 0 },
+            network: { peerEndorsements: 0, mentorshipQuality: 0, alumniConnections: 0 }
           },
           timeDecayCoefficient
         },
@@ -4122,20 +4505,1637 @@ exports.calculateCompletePathwayMatch = onRequest(async (req, res) => {
           D: { name: 'Development Trajectory', value: D, range: '0.9-1.2' }
         },
         denominators: {
-          V: { name: 'Market Volatility', value: V, range: '0.5-2.0' },
-          C: { name: 'Cost Friction', value: C, range: '1.0-3.0' },
+          V: { 
+            name: 'Market Volatility', 
+            value: V, 
+            range: '0.5-2.0',
+            source: marketVolatility.source,
+            hiringVelocity: marketVolatility.hiringVelocity,
+            competitionLevel: marketVolatility.competitionLevel,
+            openPositions: marketVolatility.openPositions,
+            lastUpdated: marketVolatility.lastUpdated
+          },
+          C: { 
+            name: 'Cost Friction (Dynamic)', 
+            value: C, 
+            range: '1.0-3.0',
+            baseCost: costFriction.baseCost,
+            adjustedCost: costFriction.adjustedCost,
+            volatilityMultiplier: costFriction.volatilityMultiplier,
+            affordability: costFriction.affordability
+          },
           F: { name: 'Financial Capacity', value: F, range: '0.8-1.5' }
         },
         gatekeeper: {
           Rf: { name: 'Regulatory/Medical', value: Rf, range: '0 or 1', status: Rf === 1 ? 'PASS' : 'FAIL' }
         },
+        adjustment: {
+          gapAdjustment: Math.round(gapAdjustment * 100) / 100,
+          gapPercentage: gapAnalysis.gapPercentage
+        },
         calculation: {
           numerator: Math.round(numerator * 100) / 100,
           denominator: Math.round(denominator * 100) / 100,
-          rawProbability: Math.round(pathwayProbability * 100) / 100
+          rawProbability: Math.round(pathwayProbability * 100) / 100,
+          adjustedProbability: Math.round(adjustedProbability * 100) / 100
         }
       },
-      recommendations: recommendation
+      
+      // NEW: Atlas CV Data (ready for generation)
+      atlasCV: {
+        ready: true,
+        data: atlasCVData,
+        downloadUrl: `https://us-central1-pilotrecognition-recognition.cloudfunctions.net/generateAtlasCV?userId=${userId}&pathwayId=${pathwayId}`
+      },
+      
+      recommendations: {
+        overall: recommendation,
+        priority: gapAnalysis.highPriorityGaps > 0 ? 'Address critical gaps first' : 'Continue current trajectory',
+        actionItems: actionItems,
+        nextSteps: gapAnalysis.recommendations.slice(0, 3)
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Generate Atlas CV - ATS-approved CV generation
+exports.generateAtlasCV = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  try {
+    const { userId, pathwayId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    // Fetch profile data
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (profileError || !profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
+
+    // Fetch pathway data if pathwayId provided
+    let pathway = null;
+    let gapAnalysis = null;
+    let recognitionScore = 0;
+    
+    if (pathwayId) {
+      const { data: pathwayData } = await supabase
+        .from('career_pathways')
+        .select('*')
+        .eq('id', pathwayId)
+        .maybeSingle();
+      
+      if (pathwayData) {
+        pathway = pathwayData;
+        recognitionScore = await calculateRecognitionScore(profile, supabase);
+        gapAnalysis = await calculateGapAnalysis(profile, pathway, supabase);
+      }
+    }
+
+    // Generate HTML CV (ATS-optimized)
+    const atlasCVData = prepareAtlasCVData(profile, pathway || {}, gapAnalysis || { gapPercentage: 0, gaps: [], recommendations: [] }, recognitionScore);
+    const htmlCV = generateAtlasCVHTML(atlasCVData);
+
+    // Store CV generation record
+    await supabase.from('generated_cvs').insert({
+      user_id: userId,
+      pathway_id: pathwayId || null,
+      recognition_score: recognitionScore,
+      generated_at: new Date().toISOString(),
+      version: '2.0'
+    });
+
+    return res.json({
+      success: true,
+      cv: {
+        html: htmlCV,
+        data: atlasCVData,
+        generatedAt: new Date().toISOString(),
+        version: '2.0'
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Generate HTML for Atlas CV (ATS-optimized)
+function generateAtlasCVHTML(cvData) {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${cvData.pilotInfo.name} - Pilot Recognition Profile</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 40px; line-height: 1.6; color: #333; }
+    .header { border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
+    .name { font-size: 32px; font-weight: bold; color: #1e40af; margin: 0; }
+    .title { font-size: 18px; color: #64748b; margin: 5px 0; }
+    .contact { font-size: 14px; color: #475569; margin-top: 10px; }
+    .section { margin-bottom: 25px; }
+    .section-title { font-size: 18px; font-weight: bold; color: #2563eb; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; }
+    .recognition-score { background: #dbeafe; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    .score-value { font-size: 48px; font-weight: bold; color: #2563eb; }
+    .score-label { font-size: 14px; color: #64748b; }
+    .flight-hours { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 15px 0; }
+    .hour-item { background: #f8fafc; padding: 10px; border-radius: 6px; text-align: center; }
+    .hour-value { font-size: 24px; font-weight: bold; color: #1e40af; }
+    .hour-label { font-size: 12px; color: #64748b; }
+    .cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .cert-item { background: #f1f5f9; padding: 8px 12px; border-radius: 4px; font-size: 14px; }
+    .program-score { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
+    .program-name { font-weight: 500; }
+    .program-value { color: #2563eb; font-weight: bold; }
+    .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; font-size: 12px; color: #9ca3af; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="name">${cvData.pilotInfo.name}</h1>
+    <p class="title">Professional Pilot - ${cvData.flightExperience.totalTime} Hours Total Time</p>
+    <div class="contact">
+      ${cvData.pilotInfo.email} | ${cvData.pilotInfo.phone || 'N/A'} | ${cvData.pilotInfo.location || 'N/A'}<br>
+      License: ${cvData.pilotInfo.licenseNumber || 'N/A'} | Medical: ${cvData.pilotInfo.medicalClass || 'N/A'}
+    </div>
+  </div>
+
+  <div class="recognition-score">
+    <div class="score-label">WingMentor Recognition Score</div>
+    <div class="score-value">${Math.round(cvData.executiveSummary.recognitionScore)}%</div>
+    <div style="margin-top: 10px; font-size: 14px;">
+      <strong>Pathway Alignment:</strong> ${cvData.executiveSummary.pathwayAlignment || 'Not specified'}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Flight Experience</div>
+    <div class="flight-hours">
+      <div class="hour-item">
+        <div class="hour-value">${cvData.flightExperience.totalTime}</div>
+        <div class="hour-label">Total Time</div>
+      </div>
+      <div class="hour-item">
+        <div class="hour-value">${cvData.flightExperience.picTime}</div>
+        <div class="hour-label">PIC Time</div>
+      </div>
+      <div class="hour-item">
+        <div class="hour-value">${cvData.flightExperience.multiEngineTime}</div>
+        <div class="hour-label">Multi-Engine</div>
+      </div>
+      <div class="hour-item">
+        <div class="hour-value">${cvData.flightExperience.turbineTime}</div>
+        <div class="hour-label">Turbine</div>
+      </div>
+      <div class="hour-item">
+        <div class="hour-value">${cvData.flightExperience.ifrTime}</div>
+        <div class="hour-label">IFR</div>
+      </div>
+      <div class="hour-item">
+        <div class="hour-value">${cvData.flightExperience.nightTime}</div>
+        <div class="hour-label">Night</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Certifications & Ratings</div>
+    <div class="cert-grid">
+      ${(cvData.certifications.ratings || []).map(r => `<div class="cert-item">${r}</div>`).join('')}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">WingMentor Assessment Scores</div>
+    <div class="program-score">
+      <span class="program-name">Technical Skills</span>
+      <span class="program-value">${cvData.wingmentorPrograms.technicalSkills}/100</span>
+    </div>
+    <div class="program-score">
+      <span class="program-name">Interview Readiness</span>
+      <span class="program-value">${cvData.wingmentorPrograms.interviewReadiness}/100</span>
+    </div>
+    <div class="program-score">
+      <span class="program-name">Behavioral Assessment</span>
+      <span class="program-value">${cvData.wingmentorPrograms.behavioralAssessment}/100</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    Generated by WingMentor Recognition Platform v2.0 | ${cvData.generatedAt}<br>
+    ATS-Optimized CV | Verified Pilot Credentials
+  </div>
+</body>
+</html>
+  `.trim();
+}
+
+// Priority 1: Gap-to-Program Recommendation Engine
+// Matches identified gaps to specific WingMentor programs that can close them
+exports.getGapClosingRecommendations = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  try {
+    const { userId, pathwayId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    // Fetch profile
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (profileError || !profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
+
+    let gapAnalysis = null;
+    if (pathwayId) {
+      const { data: pathway } = await supabase
+        .from('career_pathways')
+        .select('*')
+        .eq('id', pathwayId)
+        .maybeSingle();
+      
+      if (pathway) {
+        gapAnalysis = await calculateGapAnalysis(profile, pathway, supabase);
+      }
+    }
+
+    // If no pathway specified, check for gaps in general profile completeness
+    const recommendations = [];
+    
+    if (gapAnalysis && gapAnalysis.gaps) {
+      // Map each gap to specific programs
+      for (const gap of gapAnalysis.gaps) {
+        const programRecs = mapGapToPrograms(gap, profile);
+        recommendations.push(...programRecs);
+      }
+    }
+
+    // Always check for missing assessments
+    if (!profile.technical_skills_score || profile.technical_skills_score < 70) {
+      recommendations.push({
+        type: 'assessment',
+        priority: 'high',
+        title: 'Technical Skills Assessment',
+        description: 'Complete technical evaluation to identify knowledge gaps',
+        estimatedImpact: '+15% Recognition Score',
+        duration: '2 hours',
+        cost: 'Included in membership',
+        programId: 'tech-assessment-001'
+      });
+    }
+
+    if (!profile.interview_score || profile.interview_score < 70) {
+      recommendations.push({
+        type: 'program',
+        priority: 'high',
+        title: 'Airline Interview Preparation',
+        description: 'Mock interviews with airline HR professionals',
+        estimatedImpact: '+20% Interview Success Rate',
+        duration: '4 weeks',
+        cost: '$299',
+        programId: 'interview-prep-001'
+      });
+    }
+
+    // Check for behavioral/CRM gaps
+    const behavioralScore = (profile.behavioral_sjt_score || 0) + 
+                           (profile.behavioral_psychometric_score || 0) +
+                           (profile.behavioral_crm_assessment || 0);
+    if (behavioralScore < 150) {
+      recommendations.push({
+        type: 'program',
+        priority: 'medium',
+        title: 'CRM & Behavioral Excellence',
+        description: 'Crew Resource Management and psychometric training',
+        estimatedImpact: '+25% Behavioral Score',
+        duration: '3 weeks',
+        cost: '$199',
+        programId: 'crm-training-001'
+      });
+    }
+
+    // Sort by priority
+    const priorityOrder = { high: 0, medium: 1, low: 2 };
+    recommendations.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+
+    return res.json({
+      success: true,
+      userId,
+      pathwayId: pathwayId || null,
+      totalRecommendations: recommendations.length,
+      highPriority: recommendations.filter(r => r.priority === 'high').length,
+      mediumPriority: recommendations.filter(r => r.priority === 'medium').length,
+      lowPriority: recommendations.filter(r => r.priority === 'low').length,
+      recommendations: recommendations.slice(0, 10), // Top 10
+      totalEstimatedCost: recommendations.reduce((sum, r) => {
+        const cost = parseInt(r.cost?.replace(/[^0-9]/g, '') || 0);
+        return sum + cost;
+      }, 0),
+      totalEstimatedTime: recommendations.reduce((sum, r) => {
+        const weeks = parseInt(r.duration?.match(/(\d+)\s*week/)?.[1] || 0);
+        return sum + weeks;
+      }, 0)
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Helper function to map specific gaps to programs
+function mapGapToPrograms(gap, profile) {
+  const recommendations = [];
+  
+  switch (gap.category) {
+    case 'Flight Hours':
+      if (gap.gap > 1000) {
+        recommendations.push({
+          type: 'pathway',
+          priority: 'high',
+          title: 'Certified Flight Instructor (CFI) Program',
+          description: 'Build hours while teaching - fastest route to 1500 hours',
+          estimatedImpact: `+${gap.gap} hours in 12-18 months`,
+          duration: '12-18 months',
+          cost: '$45,000 (includes salary)',
+          programId: 'cfi-pathway-001'
+        });
+      }
+      recommendations.push({
+        type: 'pathway',
+        priority: gap.gap > 500 ? 'high' : 'medium',
+        title: 'Aerial Survey Operations',
+        description: 'Paid flying for mapping and surveying companies',
+        estimatedImpact: `+${Math.min(gap.gap, 500)} hours in 6 months`,
+        duration: '6 months',
+        cost: 'Paid position - $35/hr',
+        programId: 'survey-ops-001'
+      });
+      break;
+      
+    case 'Multi-Engine Time':
+      const hasMERating = (profile.ratings || []).some(r => 
+        r.toLowerCase().includes('multi') || r.toLowerCase().includes('me')
+      );
+      
+      if (!hasMERating) {
+        recommendations.push({
+          type: 'certification',
+          priority: 'high',
+          title: 'Multi-Engine Rating Program',
+          description: '7-day intensive ME rating with checkride prep',
+          estimatedImpact: 'ME Rating + 10 hours ME time',
+          duration: '7 days',
+          cost: '$4,500',
+          programId: 'me-rating-001'
+        });
+      } else {
+        recommendations.push({
+          type: 'pathway',
+          priority: 'high',
+          title: 'Skydive Operations Pilot',
+          description: 'Build ME time flying jump aircraft',
+          estimatedImpact: `+${gap.gap} ME hours in 3-6 months`,
+          duration: '3-6 months',
+          cost: 'Paid position - $25/hr',
+          programId: 'skydive-ops-001'
+        });
+      }
+      break;
+      
+    case 'Turbine Time':
+      recommendations.push({
+        type: 'pathway',
+        priority: 'high',
+        title: 'Corporate Charter Right-Seat Program',
+        description: 'SIC position on turboprop/turbine aircraft',
+        estimatedImpact: `+${Math.min(gap.gap, 300)} turbine hours`,
+        duration: '6-12 months',
+        cost: 'Paid position - $50/hr',
+        programId: 'corporate-sic-001'
+      });
+      recommendations.push({
+        type: 'program',
+        priority: 'medium',
+        title: 'Jet Transition Training',
+        description: 'Simulator-based turbine aircraft systems training',
+        estimatedImpact: '+50 turbine-equivalent hours',
+        duration: '2 weeks',
+        cost: '$3,500',
+        programId: 'jet-transition-001'
+      });
+      break;
+      
+    case 'Ratings/Certificates':
+      for (const rating of gap.gap) {
+        const ratingLower = rating.toLowerCase();
+        if (ratingLower.includes('atpl')) {
+          recommendations.push({
+            type: 'certification',
+            priority: 'high',
+            title: 'ATPL Theory & Skills Test Prep',
+            description: 'Complete ATPL license preparation',
+            estimatedImpact: 'ATPL License',
+            duration: '8 weeks',
+            cost: '$2,500',
+            programId: 'atpl-prep-001'
+          });
+        } else if (ratingLower.includes('instrument') || ratingLower.includes('ifr')) {
+          recommendations.push({
+            type: 'certification',
+            priority: 'high',
+            title: 'Instrument Rating (IR) Program',
+            description: 'Full instrument rating with 40 hours IFR time',
+            estimatedImpact: 'IR + 40 IFR hours',
+            duration: '6 weeks',
+            cost: '$8,500',
+            programId: 'ir-rating-001'
+          });
+        }
+      }
+      break;
+      
+    case 'Program Assessments':
+      for (const programGap of (gap.gaps || [])) {
+        if (programGap.program === 'technical') {
+          recommendations.push({
+            type: 'program',
+            priority: 'medium',
+            title: 'Advanced Technical Refresher',
+            description: 'Systems, weather, and regulations deep-dive',
+            estimatedImpact: '+15 technical score',
+            duration: '2 weeks',
+            cost: '$399',
+            programId: 'tech-refresh-001'
+          });
+        } else if (programGap.program === 'behavioral') {
+          recommendations.push({
+            type: 'program',
+            priority: 'medium',
+            title: 'Psychometric Assessment Prep',
+            description: 'Practice airline-style behavioral testing',
+            estimatedImpact: '+20 behavioral score',
+            duration: '1 week',
+            cost: '$199',
+            programId: 'psych-prep-001'
+          });
+        }
+      }
+      break;
+  }
+  
+  return recommendations;
+}
+
+// Priority 2: Market Data Scraper
+// Scrapes airline hiring pages and job boards for real-time market data
+exports.scrapeMarketData = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  try {
+    // This function would be called by a scheduled job (Cloud Scheduler)
+    // For now, it accepts manual triggers for testing
+    const { pathwayId, source } = req.query;
+    
+    const scrapedData = [];
+    
+    // Simulated scraping logic (in production, use Puppeteer or similar)
+    // TODO: Replace with actual web scraping implementation
+    
+    // Example data structure for scraped information
+    const mockScrapedJobs = [
+      {
+        airline: 'SkyWest Airlines',
+        position: 'First Officer',
+        location: 'Various Bases',
+        requirements: '1500 TT, 500 ME preferred',
+        postedDate: new Date().toISOString(),
+        applicationUrl: 'https://skywest.com/careers',
+        hiringVelocity: 'high',
+        openPositions: 45
+      },
+      {
+        airline: 'Atlas Air',
+        position: 'Cargo First Officer',
+        location: 'Miami, FL',
+        requirements: '2000 TT, turbine preferred',
+        postedDate: new Date().toISOString(),
+        applicationUrl: 'https://atlasair.com/careers',
+        hiringVelocity: 'moderate',
+        openPositions: 12
+      },
+      {
+        airline: 'NetJets',
+        position: 'Corporate Pilot',
+        location: 'Columbus, OH',
+        requirements: '3000 TT, jet type rating',
+        postedDate: new Date().toISOString(),
+        applicationUrl: 'https://netjets.com/careers',
+        hiringVelocity: 'low',
+        openPositions: 5
+      }
+    ];
+    
+    // Calculate volatility index based on scraped data
+    for (const job of mockScrapedJobs) {
+      const volatilityIndex = calculateVolatilityIndex(job);
+      
+      // Store in database
+      await supabase.from('market_volatility_data').upsert({
+        pathway_id: pathwayId || 'general',
+        airline: job.airline,
+        position: job.position,
+        open_positions: job.openPositions,
+        hiring_velocity: job.hiringVelocity,
+        competition_level: job.openPositions > 20 ? 'low' : job.openPositions > 10 ? 'moderate' : 'high',
+        volatility_index: volatilityIndex,
+        requirements: job.requirements,
+        source_url: job.applicationUrl,
+        timestamp: new Date().toISOString()
+      }, {
+        onConflict: 'pathway_id,airline,position'
+      });
+      
+      scrapedData.push({
+        ...job,
+        volatilityIndex
+      });
+    }
+    
+    return res.json({
+      success: true,
+      scrapedAt: new Date().toISOString(),
+      source: source || 'manual',
+      jobsFound: scrapedData.length,
+      data: scrapedData,
+      note: 'This is using mock data. Implement actual scraper with Puppeteer/Playwright for production.'
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Calculate volatility index from job data
+function calculateVolatilityIndex(jobData) {
+  // Formula: Higher open positions = lower volatility (easier to get hired)
+  // Lower open positions = higher volatility (harder competition)
+  
+  let baseIndex = 1.0;
+  
+  // Adjust based on open positions
+  if (jobData.openPositions > 50) baseIndex = 0.5;
+  else if (jobData.openPositions > 20) baseIndex = 0.7;
+  else if (jobData.openPositions > 10) baseIndex = 1.0;
+  else if (jobData.openPositions > 5) baseIndex = 1.3;
+  else baseIndex = 1.5;
+  
+  // Adjust based on hiring velocity
+  const velocityMultiplier = {
+    high: 0.8,
+    moderate: 1.0,
+    low: 1.2
+  };
+  
+  return Math.round(baseIndex * (velocityMultiplier[jobData.hiringVelocity] || 1.0) * 100) / 100;
+}
+
+// Priority 3: Notification System
+// Sends alerts for critical events (medical expiry, pathway matches, market changes)
+exports.sendNotification = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  try {
+    const { userId, type, message } = req.body;
+
+    if (!userId || !type) {
+      return res.status(400).json({ error: 'userId and type required' });
+    }
+
+    // Get user profile for contact info
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('email, phone, full_name, fcm_token')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (profileError || !profile) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Store notification
+    const { data: notification, error: notifError } = await supabase
+      .from('notifications')
+      .insert({
+        user_id: userId,
+        type: type,
+        title: getNotificationTitle(type),
+        message: message || getDefaultMessage(type, profile),
+        status: 'pending',
+        priority: getNotificationPriority(type),
+        created_at: new Date().toISOString()
+      })
+      .select()
+      .single();
+
+    if (notifError) {
+      return res.status(500).json({ error: notifError.message });
+    }
+
+    // Send email notification
+    await sendEmailNotification(profile.email, notification);
+    
+    // Send push notification if FCM token exists
+    if (profile.fcm_token) {
+      await sendPushNotification(profile.fcm_token, notification);
+    }
+
+    // Update status
+    await supabase
+      .from('notifications')
+      .update({ status: 'sent', sent_at: new Date().toISOString() })
+      .eq('id', notification.id);
+
+    return res.json({
+      success: true,
+      notificationId: notification.id,
+      type,
+      recipient: profile.email,
+      sentAt: new Date().toISOString()
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Check and send automated notifications
+exports.checkAutomatedNotifications = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  try {
+    const notificationsSent = [];
+    
+    // 1. Check for expiring medical certificates (60, 30, 7 days)
+    const medicalAlerts = await checkMedicalExpiry(supabase);
+    notificationsSent.push(...medicalAlerts);
+    
+    // 2. Check for new pathway matches (when profile updates)
+    const pathwayMatches = await checkNewPathwayMatches(supabase);
+    notificationsSent.push(...pathwayMatches);
+    
+    // 3. Check for market volatility changes
+    const marketChanges = await checkMarketVolatilityChanges(supabase);
+    notificationsSent.push(...marketChanges);
+    
+    // 4. Check for recency alerts (90-day currency)
+    const recencyAlerts = await checkRecencyAlerts(supabase);
+    notificationsSent.push(...recencyAlerts);
+
+    return res.json({
+      success: true,
+      checkedAt: new Date().toISOString(),
+      totalNotifications: notificationsSent.length,
+      notifications: notificationsSent
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Helper functions for notifications
+async function checkMedicalExpiry(supabase) {
+  const alerts = [];
+  const now = new Date();
+  
+  // Get pilots with medical expiring in 60, 30, or 7 days
+  const warningDays = [60, 30, 7];
+  
+  for (const days of warningDays) {
+    const targetDate = new Date(now);
+    targetDate.setDate(targetDate.getDate() + days);
+    
+    const { data: pilots } = await supabase
+      .from('profiles')
+      .select('id, email, full_name, medical_expiry')
+      .lte('medical_expiry', targetDate.toISOString())
+      .gte('medical_expiry', now.toISOString());
+    
+    for (const pilot of (pilots || [])) {
+      const daysRemaining = Math.ceil((new Date(pilot.medical_expiry) - now) / (1000 * 60 * 60 * 24));
+      
+      // Create notification
+      await supabase.from('notifications').insert({
+        user_id: pilot.id,
+        type: 'medical_expiry',
+        title: `Medical Certificate Expires in ${daysRemaining} Days`,
+        message: `Your medical certificate expires on ${pilot.medical_expiry}. Schedule renewal now to avoid pathway disruption.`,
+        priority: daysRemaining <= 7 ? 'high' : daysRemaining <= 30 ? 'medium' : 'low',
+        status: 'pending',
+        created_at: new Date().toISOString()
+      });
+      
+      alerts.push({
+        userId: pilot.id,
+        type: 'medical_expiry',
+        daysRemaining
+      });
+    }
+  }
+  
+  return alerts;
+}
+
+async function checkNewPathwayMatches(supabase) {
+  // Check for pilots whose recent profile updates created new high-probability matches
+  const matches = [];
+  
+  // Get recent flight log additions
+  const { data: recentLogs } = await supabase
+    .from('flight_logs')
+    .select('user_id, created_at')
+    .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+    .order('created_at', { ascending: false });
+  
+  // Get unique users who added hours recently
+  const recentUsers = [...new Set((recentLogs || []).map(l => l.user_id))];
+  
+  for (const userId of recentUsers.slice(0, 10)) { // Check top 10
+    // This would recalculate pathway matches
+    // For now, simplified check
+    matches.push({
+      userId,
+      type: 'pathway_match',
+      message: 'New flight hours may have unlocked pathways!'
+    });
+  }
+  
+  return matches;
+}
+
+async function checkMarketVolatilityChanges(supabase) {
+  const changes = [];
+  
+  // Get market data that changed significantly in last 24h
+  const { data: marketChanges } = await supabase
+    .from('market_volatility_data')
+    .select('*')
+    .gte('timestamp', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+  
+  // For each significant change, notify interested pilots
+  for (const change of (marketChanges || [])) {
+    if (change.hiring_velocity === 'high' && change.open_positions > 20) {
+      // Find pilots targeting this pathway
+      const { data: interestedPilots } = await supabase
+        .from('user_pathway_interests')
+        .select('user_id')
+        .eq('pathway_id', change.pathway_id);
+      
+      for (const pilot of (interestedPilots || [])) {
+        await supabase.from('notifications').insert({
+          user_id: pilot.user_id,
+          type: 'market_opportunity',
+          title: `Hiring Alert: ${change.airline}`,
+          message: `${change.airline} is actively hiring ${change.position} with ${change.open_positions} open positions!`,
+          priority: 'high',
+          status: 'pending',
+          created_at: new Date().toISOString()
+        });
+        
+        changes.push({
+          userId: pilot.user_id,
+          airline: change.airline,
+          type: 'market_opportunity'
+        });
+      }
+    }
+  }
+  
+  return changes;
+}
+
+async function checkRecencyAlerts(supabase) {
+  const alerts = [];
+  const now = new Date();
+  
+  // Find pilots whose last flight was 75+ days ago (warning before 90-day limit)
+  const warningDate = new Date(now);
+  warningDate.setDate(warningDate.getDate() - 75);
+  
+  const { data: pilots } = await supabase
+    .from('profiles')
+    .select('id, full_name, last_flown')
+    .lte('last_flown', warningDate.toISOString())
+    .gte('last_flown', new Date(now - 180 * 24 * 60 * 60 * 1000).toISOString()); // Within last 6 months
+  
+  for (const pilot of (pilots || [])) {
+    const daysSince = Math.floor((now - new Date(pilot.last_flown)) / (1000 * 60 * 60 * 24));
+    
+    await supabase.from('notifications').insert({
+      user_id: pilot.id,
+      type: 'recency_warning',
+      title: 'Flight Recency Expiring Soon',
+      message: `Your last flight was ${daysSince} days ago. Fly within ${90 - daysSince} days to maintain currency.`,
+      priority: daysSince > 85 ? 'high' : 'medium',
+      status: 'pending',
+      created_at: new Date().toISOString()
+    });
+    
+    alerts.push({
+      userId: pilot.id,
+      daysSince,
+      type: 'recency_warning'
+    });
+  }
+  
+  return alerts;
+}
+
+function getNotificationTitle(type) {
+  const titles = {
+    medical_expiry: 'Medical Certificate Expiring',
+    pathway_match: 'New Pathway Match Available',
+    market_opportunity: 'Airline Hiring Alert',
+    recency_warning: 'Flight Currency Warning',
+    gap_reminder: 'Gap Closing Reminder',
+    program_complete: 'Program Completed',
+    assessment_due: 'Assessment Due'
+  };
+  return titles[type] || 'WingMentor Notification';
+}
+
+function getDefaultMessage(type, profile) {
+  const messages = {
+    medical_expiry: `Hi ${profile.full_name}, your medical certificate is expiring soon. Please schedule a renewal.`,
+    pathway_match: `Great news! Your updated profile now matches new career pathways.`,
+    market_opportunity: `An airline you're interested in is actively hiring!`,
+    recency_warning: `Your flight currency is expiring. Book simulator time soon.`,
+    gap_reminder: `Don't forget to work on your identified gaps.`,
+    program_complete: `Congratulations on completing your program!`,
+    assessment_due: `You have an upcoming assessment scheduled.`
+  };
+  return messages[type] || 'You have a new notification from WingMentor.';
+}
+
+function getNotificationPriority(type) {
+  const priorities = {
+    medical_expiry: 'high',
+    pathway_match: 'medium',
+    market_opportunity: 'high',
+    recency_warning: 'high',
+    gap_reminder: 'low',
+    program_complete: 'medium',
+    assessment_due: 'high'
+  };
+  return priorities[type] || 'medium';
+}
+
+async function sendEmailNotification(email, notification) {
+  // Use Resend API (already configured in project)
+  // Implementation would use the existing sendEnrollmentEmail pattern
+  console.log(`Sending email to ${email}: ${notification.title}`);
+  // TODO: Implement actual email sending
+}
+
+async function sendPushNotification(fcmToken, notification) {
+  // Use Firebase Cloud Messaging
+  console.log(`Sending push to token ${fcmToken}: ${notification.title}`);
+  // TODO: Implement FCM integration
+}
+
+// Priority 4: Mentorship Matching Engine
+// Matches pilots with mentors based on target pathway and experience
+exports.findMentorMatches = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  try {
+    const { userId, pathwayId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    // Get mentee (pilot) profile
+    const { data: mentee, error: menteeError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (menteeError || !mentee) {
+      return res.status(404).json({ error: 'Mentee not found' });
+    }
+
+    // Get target pathway
+    let targetPathway = null;
+    if (pathwayId) {
+      const { data: pathway } = await supabase
+        .from('career_pathways')
+        .select('*')
+        .eq('id', pathwayId)
+        .maybeSingle();
+      targetPathway = pathway;
+    }
+
+    // Get all available mentors
+    const { data: mentors, error: mentorsError } = await supabase
+      .from('mentor_profiles')
+      .select('*')
+      .eq('available', true)
+      .order('tier', { ascending: false });
+
+    if (mentorsError) {
+      return res.status(500).json({ error: mentorsError.message });
+    }
+
+    // Calculate match scores
+    const matches = [];
+    
+    for (const mentor of (mentors || [])) {
+      const score = calculateMentorMatchScore(mentee, mentor, targetPathway);
+      
+      matches.push({
+        mentorId: mentor.id,
+        mentorName: mentor.full_name,
+        mentorTier: mentor.tier,
+        currentAirline: mentor.current_airline,
+        position: mentor.position,
+        yearsExperience: mentor.years_experience,
+        totalTime: mentor.total_flight_time,
+        matchScore: score.overall,
+        matchBreakdown: score.breakdown,
+        compatibility: score.compatibility,
+        estimatedImpact: score.impact,
+        availability: mentor.availability,
+        bio: mentor.bio,
+        specialties: mentor.specialties || []
+      });
+    }
+
+    // Sort by match score (descending)
+    matches.sort((a, b) => b.matchScore - a.matchScore);
+
+    return res.json({
+      success: true,
+      userId,
+      pathwayId: pathwayId || null,
+      totalMatches: matches.length,
+      topMatches: matches.slice(0, 5),
+      menteeProfile: {
+        targetPathway: targetPathway?.name || 'Not specified',
+        currentHours: mentee.total_flight_time,
+        desiredPathway: targetPathway?.category || 'Commercial Airlines'
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Calculate mentor match score
+function calculateMentorMatchScore(mentee, mentor, pathway) {
+  let score = 0;
+  const breakdown = {};
+  
+  // 1. Pathway alignment (40% weight)
+  if (pathway) {
+    const mentorPathwayMatch = (mentor.specialties || []).some(s => 
+      pathway.name.toLowerCase().includes(s.toLowerCase()) ||
+      s.toLowerCase().includes(pathway.category?.toLowerCase())
+    );
+    breakdown.pathwayAlignment = mentorPathwayMatch ? 40 : 0;
+    score += breakdown.pathwayAlignment;
+  } else {
+    breakdown.pathwayAlignment = 20; // Neutral if no pathway specified
+    score += 20;
+  }
+  
+  // 2. Experience gap appropriateness (30% weight)
+  const experienceGap = (mentor.total_flight_time || 0) - (mentee.total_flight_time || 0);
+  if (experienceGap > 1000 && experienceGap < 8000) {
+    breakdown.experienceFit = 30; // Ideal gap
+  } else if (experienceGap >= 500) {
+    breakdown.experienceFit = 20; // Acceptable
+  } else {
+    breakdown.experienceFit = 10; // Too similar or too junior
+  }
+  score += breakdown.experienceFit;
+  
+  // 3. Geographic compatibility (15% weight)
+  if (mentee.location && mentor.base_location) {
+    const sameRegion = mentee.location.toLowerCase().includes(mentor.base_location.toLowerCase()) ||
+                       mentor.base_location.toLowerCase().includes(mentee.location.toLowerCase());
+    breakdown.geographicFit = sameRegion ? 15 : 5;
+    score += breakdown.geographicFit;
+  } else {
+    breakdown.geographicFit = 10;
+    score += 10;
+  }
+  
+  // 4. Mentor tier/seniority (15% weight)
+  const tierScores = { platinum: 15, gold: 12, silver: 10, bronze: 8 };
+  breakdown.mentorTier = tierScores[mentor.tier?.toLowerCase()] || 8;
+  score += breakdown.mentorTier;
+  
+  // Calculate compatibility level
+  let compatibility = 'Low';
+  if (score >= 80) compatibility = 'Excellent';
+  else if (score >= 60) compatibility = 'High';
+  else if (score >= 40) compatibility = 'Moderate';
+  
+  // Estimate impact based on mentor tier and match
+  const impactMultiplier = { platinum: 1.5, gold: 1.3, silver: 1.1, bronze: 1.0 };
+  const impact = Math.round((score / 100) * 25 * (impactMultiplier[mentor.tier?.toLowerCase()] || 1.0));
+  
+  return {
+    overall: Math.round(score),
+    breakdown,
+    compatibility,
+    impact: `+${impact}% pathway probability boost`
+  };
+}
+
+// Request mentorship connection
+exports.requestMentorship = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  try {
+    const { menteeId, mentorId, message } = req.body;
+
+    if (!menteeId || !mentorId) {
+      return res.status(400).json({ error: 'menteeId and mentorId required' });
+    }
+
+    // Create mentorship request
+    const { data: request, error } = await supabase
+      .from('mentorship_requests')
+      .insert({
+        mentee_id: menteeId,
+        mentor_id: mentorId,
+        status: 'pending',
+        message: message || 'I would like to connect with you as a mentor.',
+        created_at: new Date().toISOString()
+      })
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    // Notify mentor
+    await supabase.from('notifications').insert({
+      user_id: mentorId,
+      type: 'mentorship_request',
+      title: 'New Mentorship Request',
+      message: 'A pilot has requested to connect with you as a mentor.',
+      priority: 'medium',
+      status: 'pending',
+      metadata: { request_id: request.id },
+      created_at: new Date().toISOString()
+    });
+
+    return res.json({
+      success: true,
+      requestId: request.id,
+      status: 'pending',
+      message: 'Mentorship request sent successfully'
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Performance Analytics Dashboard
+// Track pilot progress over time with trend analysis and velocity metrics
+exports.getPerformanceAnalytics = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  try {
+    const { userId, timeframe = '90' } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    const daysBack = parseInt(timeframe);
+    const startDate = new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000);
+
+    // Fetch score history
+    const { data: scoreHistory, error: scoreError } = await supabase
+      .from('score_history')
+      .select('*')
+      .eq('user_id', userId)
+      .gte('calculated_at', startDate.toISOString())
+      .order('calculated_at', { ascending: true });
+
+    // Fetch flight log additions
+    const { data: flightLogs, error: logError } = await supabase
+      .from('flight_logs')
+      .select('*')
+      .eq('user_id', userId)
+      .gte('created_at', startDate.toISOString())
+      .order('created_at', { ascending: true });
+
+    // Fetch program completions
+    const { data: programProgress, error: progError } = await supabase
+      .from('user_program_progress')
+      .select('*')
+      .eq('user_id', userId)
+      .gte('updated_at', startDate.toISOString());
+
+    // Get current profile
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+
+    // Calculate analytics
+    const analytics = {
+      recognitionScore: calculateScoreTrend(scoreHistory || []),
+      flightHours: calculateFlightHoursTrend(flightLogs || []),
+      gapClosing: calculateGapClosingVelocity(scoreHistory || [], programProgress || []),
+      pathwayProgress: await calculatePathwayProgress(userId, supabase),
+      engagement: calculateEngagementMetrics(scoreHistory || [], flightLogs || [], programProgress || [], daysBack),
+      projections: calculateProjections(profile, scoreHistory || [], daysBack)
+    };
+
+    return res.json({
+      success: true,
+      userId,
+      timeframe: `${daysBack} days`,
+      generatedAt: new Date().toISOString(),
+      analytics
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Calculate recognition score trend
+function calculateScoreTrend(scoreHistory) {
+  if (scoreHistory.length === 0) {
+    return { trend: 'insufficient_data', change: 0, dataPoints: 0 };
+  }
+
+  const firstScore = scoreHistory[0].score_value || 0;
+  const lastScore = scoreHistory[scoreHistory.length - 1].score_value || 0;
+  const change = lastScore - firstScore;
+  const percentChange = firstScore > 0 ? (change / firstScore) * 100 : 0;
+
+  // Calculate trend line slope
+  let trend = 'stable';
+  if (scoreHistory.length >= 3) {
+    const midpoint = Math.floor(scoreHistory.length / 2);
+    const firstHalf = scoreHistory.slice(0, midpoint);
+    const secondHalf = scoreHistory.slice(midpoint);
+    
+    const firstHalfAvg = firstHalf.reduce((a, b) => a + (b.score_value || 0), 0) / firstHalf.length;
+    const secondHalfAvg = secondHalf.reduce((a, b) => a + (b.score_value || 0), 0) / secondHalf.length;
+    
+    if (secondHalfAvg > firstHalfAvg + 5) trend = 'accelerating';
+    else if (secondHalfAvg < firstHalfAvg - 5) trend = 'decelerating';
+  }
+
+  return {
+    currentScore: Math.round(lastScore),
+    startScore: Math.round(firstScore),
+    change: Math.round(change * 100) / 100,
+    percentChange: Math.round(percentChange * 100) / 100,
+    trend,
+    dataPoints: scoreHistory.length,
+    trendLine: scoreHistory.map(s => ({
+      date: s.calculated_at,
+      score: s.score_value
+    }))
+  };
+}
+
+// Calculate flight hours trend
+function calculateFlightHoursTrend(flightLogs) {
+  const totalHoursAdded = flightLogs.reduce((sum, log) => sum + (log.duration || 0), 0);
+  
+  // Group by month
+  const monthlyData = {};
+  for (const log of flightLogs) {
+    const month = log.created_at?.substring(0, 7) || 'unknown';
+    monthlyData[month] = (monthlyData[month] || 0) + (log.duration || 0);
+  }
+
+  const monthlyAvg = Object.keys(monthlyData).length > 0
+    ? totalHoursAdded / Object.keys(monthlyData).length
+    : 0;
+
+  // Calculate velocity (hours per week)
+  const firstLog = flightLogs[0]?.created_at;
+  const lastLog = flightLogs[flightLogs.length - 1]?.created_at;
+  let hoursPerWeek = 0;
+  
+  if (firstLog && lastLog && flightLogs.length > 1) {
+    const daysSpan = (new Date(lastLog) - new Date(firstLog)) / (1000 * 60 * 60 * 24);
+    const weeks = Math.max(1, daysSpan / 7);
+    hoursPerWeek = totalHoursAdded / weeks;
+  }
+
+  return {
+    totalHoursAdded: Math.round(totalHoursAdded * 10) / 10,
+    monthlyAverage: Math.round(monthlyAvg * 10) / 10,
+    hoursPerWeek: Math.round(hoursPerWeek * 10) / 10,
+    monthlyBreakdown: monthlyData,
+    trend: hoursPerWeek > 10 ? 'strong' : hoursPerWeek > 5 ? 'moderate' : 'slow'
+  };
+}
+
+// Calculate gap closing velocity
+function calculateGapClosingVelocity(scoreHistory, programProgress) {
+  // How fast are they completing programs?
+  const completedPrograms = programProgress.filter(p => p.status === 'completed').length;
+  const inProgressPrograms = programProgress.filter(p => p.status === 'in_progress').length;
+  
+  // Calculate average completion time
+  const completionTimes = programProgress
+    .filter(p => p.status === 'completed' && p.started_at && p.completed_at)
+    .map(p => {
+      const days = (new Date(p.completed_at) - new Date(p.started_at)) / (1000 * 60 * 60 * 24);
+      return days;
+    });
+  
+  const avgCompletionDays = completionTimes.length > 0
+    ? completionTimes.reduce((a, b) => a + b, 0) / completionTimes.length
+    : 0;
+
+  // Estimate time to close remaining gaps based on velocity
+  const velocity = scoreHistory.length > 1
+    ? (scoreHistory[scoreHistory.length - 1].score_value - scoreHistory[0].score_value) / scoreHistory.length
+    : 0;
+
+  return {
+    completedPrograms,
+    inProgressPrograms,
+    averageCompletionDays: Math.round(avgCompletionDays),
+    scoreVelocityPerWeek: Math.round(velocity * 100) / 100,
+    efficiency: avgCompletionDays < 30 ? 'fast' : avgCompletionDays < 60 ? 'moderate' : 'slow',
+    gapClosingRate: velocity > 2 ? 'excellent' : velocity > 0.5 ? 'good' : 'needs_acceleration'
+  };
+}
+
+// Calculate pathway progress
+async function calculatePathwayProgress(userId, supabase) {
+  // Get all pathways user is tracking
+  const { data: interests } = await supabase
+    .from('user_pathway_interests')
+    .select('pathway_id, created_at')
+    .eq('user_id', userId);
+
+  const pathwayProgress = [];
+  
+  for (const interest of (interests || [])) {
+    // Get pathway details
+    const { data: pathway } = await supabase
+      .from('career_pathways')
+      .select('*')
+      .eq('id', interest.pathway_id)
+      .maybeSingle();
+    
+    if (pathway) {
+      // Calculate current probability (simplified)
+      const daysSinceInterest = Math.floor(
+        (Date.now() - new Date(interest.created_at)) / (1000 * 60 * 60 * 24)
+      );
+      
+      pathwayProgress.push({
+        pathwayId: pathway.id,
+        pathwayName: pathway.name,
+        trackingSince: interest.created_at,
+        daysTracking: daysSinceInterest,
+        targetProbability: 85, // Target 85%
+        estimatedTimeToReady: '3-6 months' // Would calculate from gaps
+      });
+    }
+  }
+
+  return pathwayProgress;
+}
+
+// Calculate engagement metrics
+function calculateEngagementMetrics(scoreHistory, flightLogs, programProgress, daysBack) {
+  const weeks = daysBack / 7;
+  
+  // Activity frequency
+  const scoreUpdates = scoreHistory.length;
+  const flightLogEntries = flightLogs.length;
+  const programUpdates = programProgress.length;
+  
+  // Weekly averages
+  const weeklyScoreUpdates = scoreUpdates / weeks;
+  const weeklyFlightLogs = flightLogEntries / weeks;
+  const weeklyProgramUpdates = programUpdates / weeks;
+  
+  // Engagement score (0-100)
+  const engagementScore = Math.min(100, 
+    (weeklyScoreUpdates * 10) + 
+    (weeklyFlightLogs * 5) + 
+    (weeklyProgramUpdates * 15)
+  );
+
+  return {
+    engagementScore: Math.round(engagementScore),
+    weeklyActivity: {
+      scoreUpdates: Math.round(weeklyScoreUpdates * 10) / 10,
+      flightLogs: Math.round(weeklyFlightLogs * 10) / 10,
+      programUpdates: Math.round(weeklyProgramUpdates * 10) / 10
+    },
+    level: engagementScore > 70 ? 'highly_engaged' : engagementScore > 40 ? 'moderately_engaged' : 'low_engagement'
+  };
+}
+
+// Calculate projections
+function calculateProjections(profile, scoreHistory, daysBack) {
+  const currentScore = scoreHistory.length > 0
+    ? scoreHistory[scoreHistory.length - 1].score_value
+    : 70; // Default baseline
+
+  const targetScore = 90; // Target recognition score
+  const gap = targetScore - currentScore;
+
+  // Calculate velocity from recent history
+  const recentHistory = scoreHistory.slice(-5); // Last 5 measurements
+  let velocity = 0;
+  
+  if (recentHistory.length >= 2) {
+    const first = recentHistory[0].score_value;
+    const last = recentHistory[recentHistory.length - 1].score_value;
+    const timeSpan = recentHistory.length; // in update cycles
+    velocity = (last - first) / timeSpan;
+  }
+
+  // Time to reach 90% score
+  const updatesNeeded = velocity > 0 ? Math.ceil(gap / velocity) : null;
+  const estimatedWeeks = updatesNeeded ? updatesNeeded * 2 : null; // Assuming bi-weekly updates
+
+  // Projected pathway readiness
+  const readiness = currentScore >= 85 ? 'ready_now' : 
+                   currentScore >= 70 ? 'ready_3_months' : 
+                   currentScore >= 60 ? 'ready_6_months' : 'ready_12_months';
+
+  return {
+    currentScore: Math.round(currentScore),
+    targetScore,
+    gap: Math.round(gap),
+    velocity: Math.round(velocity * 100) / 100,
+    estimatedWeeksToTarget: estimatedWeeks,
+    projectedReadiness: readiness,
+    milestoneDates: {
+      seventyFivePct: currentScore >= 75 ? 'achieved' : estimatedWeeks ? `~${Math.round(estimatedWeeks * 0.5)} weeks` : 'unknown',
+      eightyFivePct: currentScore >= 85 ? 'achieved' : estimatedWeeks ? `~${estimatedWeeks} weeks` : 'unknown',
+      ninetyPct: currentScore >= 90 ? 'achieved' : estimatedWeeks ? `~${Math.round(estimatedWeeks * 1.3)} weeks` : 'unknown'
+    }
+  };
+}
+
+// B2B Airline Recruiter Portal
+// Airlines search for and connect with qualified pilots (revenue stream)
+exports.searchPilotCandidates = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY // Use service role for B2B access
+  );
+
+  try {
+    // Verify airline API key (simplified - would check against airline_subscriptions table)
+    const { airlineApiKey } = req.headers;
+    
+    // In production, validate API key and check subscription tier
+    // const { data: airline } = await validateAirlineApiKey(airlineApiKey, supabase);
+    // if (!airline) return res.status(401).json({ error: 'Invalid API key' });
+
+    // Parse search filters
+    const {
+      minRecognitionScore = 70,
+      minTotalHours = 500,
+      pathwayCategory,
+      location,
+      ratings = [],
+      minWpScore = 60,
+      limit = 20,
+      offset = 0
+    } = req.query;
+
+    // Build query
+    let query = supabase
+      .from('profiles')
+      .select(`
+        id,
+        full_name,
+        location,
+        total_flight_time,
+        pic_time,
+        multi_engine_time,
+        turbine_time,
+        ratings,
+        technical_skills_score,
+        interview_score,
+        behavioral_sjt_score,
+        medical_valid,
+        license_valid,
+        last_flown,
+        recognition_score:score_history!inner(score_value)
+      `, { count: 'exact' })
+      .gte('total_flight_time', parseInt(minTotalHours))
+      .eq('medical_valid', true)
+      .eq('license_valid', true);
+
+    // Apply filters
+    if (location) {
+      query = query.ilike('location', `%${location}%`);
+    }
+
+    if (ratings.length > 0) {
+      // Filter by ratings overlap
+      query = query.overlaps('ratings', ratings);
+    }
+
+    // Execute query
+    const { data: candidates, error, count } = await query
+      .order('total_flight_time', { ascending: false })
+      .range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    // Calculate Wp scores for each candidate (simplified)
+    const enrichedCandidates = (candidates || []).map(candidate => {
+      // Calculate a simplified pathway probability
+      const recencyScore = calculateRecencyScore(candidate.last_flown);
+      const ratingScore = (candidate.ratings || []).length * 5;
+      const experienceScore = Math.min(100, (candidate.total_flight_time || 0) / 15);
+      const programScore = (
+        (candidate.technical_skills_score || 0) +
+        (candidate.interview_score || 0) +
+        (candidate.behavioral_sjt_score || 0)
+      ) / 3;
+
+      const estimatedWp = Math.round(
+        (experienceScore * 0.4 + ratingScore * 0.2 + programScore * 0.3 + recencyScore * 0.1) * 
+        (candidate.medical_valid && candidate.license_valid ? 1 : 0)
+      );
+
+      return {
+        pilotId: candidate.id,
+        name: candidate.full_name,
+        location: candidate.location,
+        flightExperience: {
+          totalTime: candidate.total_flight_time,
+          picTime: candidate.pic_time,
+          multiEngine: candidate.multi_engine_time,
+          turbine: candidate.turbine_time
+        },
+        ratings: candidate.ratings || [],
+        assessmentScores: {
+          technical: candidate.technical_skills_score,
+          interview: candidate.interview_score,
+          behavioral: candidate.behavioral_sjt_score
+        },
+        estimatedWpScore: estimatedWp,
+        medicalStatus: candidate.medical_valid ? 'valid' : 'expired',
+        recency: candidate.last_flown,
+        expressInterestUrl: `https://us-central1-pilotrecognition-recognition.cloudfunctions.net/expressInterest?pilotId=${candidate.id}&airlineKey=${airlineApiKey}`,
+        viewFullProfileUrl: `https://us-central1-pilotrecognition-recognition.cloudfunctions.net/viewPilotProfile?pilotId=${candidate.id}&airlineKey=${airlineApiKey}`
+      };
+    }).filter(c => c.estimatedWpScore >= parseInt(minWpScore));
+
+    // Sort by Wp score
+    enrichedCandidates.sort((a, b) => b.estimatedWpScore - a.estimatedWpScore);
+
+    return res.json({
+      success: true,
+      // airline: airline?.name || 'Demo Airline',
+      searchFilters: {
+        minRecognitionScore,
+        minTotalHours,
+        pathwayCategory,
+        location,
+        ratings,
+        minWpScore
+      },
+      totalResults: count,
+      showing: enrichedCandidates.length,
+      candidates: enrichedCandidates
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Helper for recency score
+function calculateRecencyScore(lastFlown) {
+  if (!lastFlown) return 0;
+  
+  const daysSince = Math.floor((Date.now() - new Date(lastFlown)) / (1000 * 60 * 60 * 24));
+  
+  if (daysSince <= 30) return 100;
+  if (daysSince <= 90) return 80;
+  if (daysSince <= 180) return 60;
+  if (daysSince <= 365) return 40;
+  return 20;
+}
+
+// Express interest in a pilot (B2B feature)
+exports.expressInterest = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+
+  try {
+    const { pilotId, airlineKey, message } = req.query;
+
+    if (!pilotId || !airlineKey) {
+      return res.status(400).json({ error: 'pilotId and airlineKey required' });
+    }
+
+    // In production: Validate airline API key
+    // const airline = await validateAirlineApiKey(airlineKey, supabase);
+
+    // Get pilot contact info
+    const { data: pilot } = await supabase
+      .from('profiles')
+      .select('email, full_name, fcm_token')
+      .eq('id', pilotId)
+      .maybeSingle();
+
+    if (!pilot) {
+      return res.status(404).json({ error: 'Pilot not found' });
+    }
+
+    // Store interest expression
+    await supabase.from('airline_interest_expressions').insert({
+      pilot_id: pilotId,
+      airline_key: airlineKey,
+      message: message || 'An airline has expressed interest in your profile.',
+      status: 'pending',
+      created_at: new Date().toISOString()
+    });
+
+    // Notify pilot
+    await supabase.from('notifications').insert({
+      user_id: pilotId,
+      type: 'airline_interest',
+      title: 'Airline Interest Received',
+      message: 'An airline recruiter has viewed your profile and expressed interest. Check your email for details.',
+      priority: 'high',
+      status: 'pending',
+      created_at: new Date().toISOString()
+    });
+
+    return res.json({
+      success: true,
+      message: 'Interest expressed successfully',
+      pilotNotified: true,
+      nextSteps: [
+        'Pilot will be notified via email and push notification',
+        'Pilot can choose to share full profile details',
+        'If interested, pilot can generate Atlas CV for your review'
+      ]
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });

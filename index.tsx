@@ -110,6 +110,7 @@ import { TransitionProgramPage } from './components/website/components/programs/
 import { ProgramsPathwaysPage } from './components/website/components/programs/ProgramsPathwaysPage';
 import { ProgramsPage } from './components/website/components/programs/ProgramsPage';
 import { PathwaysPage } from './components/website/components/pathways/PathwaysPage';
+import { PathwaysPageModern } from './portal/pages/PathwaysPageModern';
 const PortalWrapper = lazy(() => import('./components/website/components/portal/PortalWrapper').then(m => ({ default: m.PortalWrapper })));
 import { DirectEnrollmentLoadingScreen } from './components/website/components/home/DirectEnrollmentLoadingScreen';
 import { DirectPlatformLoadingScreen } from './components/website/components/home/DirectPlatformLoadingScreen';
@@ -302,6 +303,15 @@ const App = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedAirline, setSelectedAirline] = useState<any>(null);
+  const [selectedPathwayCategory, setSelectedPathwayCategory] = useState<string>('all');
+  const [selectedPathwayId, setSelectedPathwayId] = useState<string | null>(null);
+
+  // Handle Discover Pathway from carousel
+  const handleDiscoverPathway = (category: string, pathwayId: string) => {
+    setSelectedPathwayCategory(category);
+    setSelectedPathwayId(pathwayId);
+    setCurrentPage('pathways-detail');
+  };
 
   // Page metadata mapping for unique titles and descriptions
   const pageMetadata: { [key: string]: { title: string; description: string } } = {
@@ -1237,6 +1247,19 @@ const App = () => {
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
             onLogin={navigateToPortal}
+          />
+        )}
+        {currentPage === 'pathways-modern' && (
+          <PathwaysPageModern isDarkMode={true} />
+        )}
+        {currentPage === 'pathways-modern-light' && (
+          <PathwaysPageModern isDarkMode={false} />
+        )}
+        {currentPage === 'pathways-detail' && (
+          <PathwaysPageModern 
+            isDarkMode={true}
+            initialCategory={selectedPathwayCategory || 'all'}
+            selectedPathwayId={selectedPathwayId || undefined}
           />
         )}
         {currentPage === 'portal' && showDirectEnrollmentLoading && (

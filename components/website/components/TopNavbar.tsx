@@ -528,6 +528,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 >
                                     {currentUser ? 'Access Portal' : 'Login'}
                                 </button>
+
+                                {/* Pathways Button */}
+                                <button
+                                    onClick={() => onNavigate('pathways-modern-light')}
+                                    className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-amber-500/20 flex items-center gap-1.5 whitespace-nowrap"
+                                    title="View Pathways"
+                                >
+                                    <span>☀</span>
+                                    Pathways
+                                </button>
                             </>
                         )}
 
@@ -843,34 +853,43 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     >
                                         {currentUser ? 'Access Portal' : 'Login'}
                                     </button>
-                                </>
-                            )}
 
-                            {currentUser && (
-                                <div className="flex gap-4 mt-4">
-                                    <div className="flex-1 flex items-center justify-center gap-2">
-                                        <div className="relative">
-                                            <div className="w-12 h-16 rounded-[50%/40%] bg-slate-700 flex items-center justify-center overflow-hidden" style={{ borderRadius: '45% / 50%' }}>
-                                                {profileImageUrl ? (
-                                                    <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
-                                                ) : (
-                                                    <User className="w-6 h-8 text-slate-400" />
-                                                )}
+                                    {/* Mobile: Pathways Button */}
+                                    <button
+                                        onClick={() => { onNavigate('pathways-modern-light'); setIsMenuOpen(false); }}
+                                        className="w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white transition-all shadow-lg flex items-center justify-center gap-2"
+                                    >
+                                        <span>☀</span>
+                                        Pathways
+                                    </button>
+
+                                    {currentUser && (
+                                        <div className="flex gap-4 mt-4">
+                                            <div className="flex-1 flex items-center justify-center gap-2">
+                                                <div className="relative">
+                                                    <div className="w-12 h-16 rounded-[50%/40%] bg-slate-700 flex items-center justify-center overflow-hidden" style={{ borderRadius: '45% / 50%' }}>
+                                                        {profileImageUrl ? (
+                                                            <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <User className="w-6 h-8 text-slate-400" />
+                                                        )}
+                                                    </div>
+                                                    <label className="absolute bottom-0 right-0 p-1.5 bg-blue-600 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
+                                                        <Camera className="w-3 h-3" />
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={handleImageUpload}
+                                                            disabled={uploading}
+                                                            className="hidden"
+                                                        />
+                                                    </label>
+                                                </div>
+                                                <span className="text-white text-sm font-medium">{pilotId || 'Pilot'}</span>
                                             </div>
-                                            <label className="absolute bottom-0 right-0 p-1.5 bg-blue-600 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
-                                                <Camera className="w-3 h-3" />
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    onChange={handleImageUpload}
-                                                    disabled={uploading}
-                                                    className="hidden"
-                                                />
-                                            </label>
                                         </div>
-                                        <span className="text-white text-sm font-medium">{pilotId || 'Pilot'}</span>
-                                    </div>
-                                </div>
+                                    )}
+                                </>
                             )}
                         </div>
                     </div>

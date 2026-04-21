@@ -1921,33 +1921,46 @@ const PathwayCard: React.FC<{
 const ProfileSummary: React.FC<{ profile: RecognitionProfile; isDarkMode?: boolean }> = ({ profile, isDarkMode = true }) => {
   const textColor = isDarkMode ? 'text-white' : 'text-slate-900';
   const textColorLight = isDarkMode ? 'text-slate-400' : 'text-slate-500';
-  
+
   return (
-    <GlassCard className="p-3" isDarkMode={isDarkMode}>
-      <div className="flex items-center gap-3">
+    <div className={`rounded-xl p-4 ${isDarkMode ? 'bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700' : 'bg-gradient-to-br from-white to-slate-50 border border-slate-200'} shadow-lg`}>
+      <div className="flex items-center gap-4">
         <div className="flex-shrink-0">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 flex items-center justify-center">
-            <span className="text-lg font-bold text-white">{profile.totalScore}%</span>
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 via-blue-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
+            <span className="text-xl font-bold text-white">{profile.totalScore}%</span>
           </div>
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className={`text-sm font-semibold ${textColor} flex items-center gap-1.5`}>
-            <Star className="w-3.5 h-3.5 text-amber-400" />
+          <h2 className={`text-base font-semibold ${textColor} flex items-center gap-2`}>
+            <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
             Your Recognition Profile
           </h2>
-          <p className={`${textColorLight} text-xs mt-0.5`}>Based on WingMentor formula</p>
+          <p className={`${textColorLight} text-xs mt-1`}>Based on WingMentor formula</p>
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-5 gap-1">
-        {Object.entries(profile.breakdown).map(([key, value]) => (
-          <div key={key} className="text-center">
-            <div className={`text-xs font-semibold ${textColor}`}>{value}%</div>
-            <div className={`text-[10px] ${textColorLight} capitalize truncate`}>{key}</div>
-          </div>
-        ))}
+      <div className="mt-4 space-y-2">
+        {Object.entries(profile.breakdown).map(([key, value]) => {
+          const colors = {
+            programs: 'from-blue-500 to-blue-600',
+            experience: 'from-emerald-500 to-emerald-600',
+            behavioral: 'from-purple-500 to-purple-600',
+            language: 'from-amber-500 to-amber-600',
+            skills: 'from-pink-500 to-pink-600',
+          };
+          const barColor = colors[key as keyof typeof colors] || 'from-slate-500 to-slate-600';
+          return (
+            <div key={key} className="flex items-center gap-3">
+              <span className={`text-xs font-medium capitalize w-24 ${textColorLight}`}>{key}</span>
+              <div className="flex-1 h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700">
+                <div className={`h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-500`} style={{ width: `${value}%` }} />
+              </div>
+              <span className={`text-xs font-bold ${textColor} w-8 text-right`}>{value}%</span>
+            </div>
+          );
+        })}
       </div>
-    </GlassCard>
+    </div>
   );
 };
 
@@ -1955,40 +1968,58 @@ const ProfileSummary: React.FC<{ profile: RecognitionProfile; isDarkMode?: boole
 const GapAnalysisPanel: React.FC<{ analysis: GapAnalysis; isDarkMode?: boolean; isExpanded?: boolean; onToggle?: () => void }> = ({ analysis, isDarkMode = true, isExpanded = true, onToggle }) => {
   const textColor = isDarkMode ? 'text-white' : 'text-slate-900';
   const textColorLight = isDarkMode ? 'text-slate-400' : 'text-slate-500';
-  
+  const readinessColor = analysis.gapPercentage < 30
+    ? 'from-emerald-500 to-emerald-600'
+    : analysis.gapPercentage < 50
+      ? 'from-amber-500 to-amber-600'
+      : 'from-red-500 to-red-600';
+  const readinessBg = analysis.gapPercentage < 30
+    ? 'bg-emerald-500/20 text-emerald-400'
+    : analysis.gapPercentage < 50
+      ? 'bg-amber-500/20 text-amber-400'
+      : 'bg-red-500/20 text-red-400';
+
   return (
-    <GlassCard className="p-3" isDarkMode={isDarkMode}>
-      <div 
-        className="flex items-center justify-between cursor-pointer"
+    <div className={`rounded-xl overflow-hidden ${isDarkMode ? 'bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700' : 'bg-gradient-to-br from-white to-slate-50 border border-slate-200'} shadow-lg`}>
+      <div
+        className="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-500/10 transition-colors"
         onClick={onToggle}
       >
-        <div className="flex items-center gap-2">
-          <Target className="w-3.5 h-3.5 text-blue-400" />
-          <h2 className={`text-sm font-semibold ${textColor}`}>Gap Analysis</h2>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+            <Target className="w-5 h-5 text-white" />
+          </div>
+          <h2 className={`text-base font-semibold ${textColor}`}>Gap Analysis</h2>
         </div>
-        <div className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-          analysis.gapPercentage < 30 
-            ? 'bg-emerald-500/20 text-emerald-400' 
-            : analysis.gapPercentage < 50 
-              ? 'bg-amber-500/20 text-amber-400' 
-              : 'bg-red-500/20 text-red-400'
-        }`}>
+        <div className={`px-3 py-1.5 rounded-full text-sm font-bold ${readinessBg}`}>
           {100 - analysis.gapPercentage}% Ready
         </div>
       </div>
 
       {isExpanded && (
-        <div className="mt-2 space-y-1.5">
-          <div className="flex justify-between text-xs">
-            <span className={textColorLight}>Cost: ${analysis.estimatedCost.toLocaleString()}</span>
-            <span className={textColorLight}>Time: {analysis.estimatedTime.months}mo</span>
+        <div className="p-4 pt-0 space-y-3">
+          <div className="h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700">
+            <div className={`h-full bg-gradient-to-r ${readinessColor} rounded-full transition-all duration-500`} style={{ width: `${100 - analysis.gapPercentage}%` }} />
           </div>
-          <div className={`text-[10px] ${textColorLight} truncate`}>
-            {analysis.recommendations[0]}
+          <div className="grid grid-cols-2 gap-3">
+            <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-100/50'}`}>
+              <div className={`text-xs ${textColorLight} mb-1`}>Estimated Cost</div>
+              <div className={`text-lg font-bold ${textColor}`}>${analysis.estimatedCost.toLocaleString()}</div>
+            </div>
+            <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-100/50'}`}>
+              <div className={`text-xs ${textColorLight} mb-1`}>Time Required</div>
+              <div className={`text-lg font-bold ${textColor}`}>{analysis.estimatedTime.months}mo</div>
+            </div>
+          </div>
+          <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-100/50'}`}>
+            <div className="flex items-start gap-2">
+              <AlertCircle className={`w-4 h-4 mt-0.5 text-amber-400 flex-shrink-0`} />
+              <div className={`text-sm ${textColorLight}`}>{analysis.recommendations[0]}</div>
+            </div>
           </div>
         </div>
       )}
-    </GlassCard>
+    </div>
   );
 };
 
@@ -2017,7 +2048,7 @@ const CategoryFilter: React.FC<{
   categoryLabels: Record<string, string>;
 }> = ({ active, onChange, isDarkMode = true, categoryLabels }) => {
   // Always show all categories, maintaining order
-  const orderedCategories = ['all', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'cargoPathways', 'airtaxi-drones'];
+  const orderedCategories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'cargoPathways', 'airtaxi-drones'];
   
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
@@ -2148,30 +2179,11 @@ const SKETCHFAB_COCKPITS: Record<string, string> = {
 const Aircraft3DCanvas: React.FC<{ aircraftType: string; isDarkMode?: boolean }> = ({ aircraftType, isDarkMode = true }) => {
   const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
   const sketchfabUrl = SKETCHFAB_MODELS[typeKey] || SKETCHFAB_MODELS[aircraftType] || SKETCHFAB_MODELS['A320'];
-  
-  // Check if this is a Sketchfab-supported aircraft
-  const isA220 = typeKey.includes('A220') || typeKey.includes('A220-100') || typeKey.includes('A220-300');
-  const isA320 = typeKey.includes('A320') || typeKey.includes('A320NEO') || typeKey.includes('A318') || typeKey.includes('A319') || typeKey.includes('A319NEO') || typeKey.includes('A321') || typeKey.includes('A321NEO');
-  const isA310 = typeKey.includes('A310') || typeKey.includes('A310-300');
-  const isA330 = typeKey.includes('A330') || typeKey.includes('A330-300') || typeKey.includes('A330-200');
-  const isA340 = typeKey.includes('A340') || typeKey.includes('A340-600') || typeKey.includes('A340-300');
-  const isA350 = typeKey.includes('A350') || typeKey.includes('A350-1000') || typeKey.includes('A350-900');
-  const isA380 = typeKey.includes('A380') || typeKey.includes('A380-800');
-  const isB777 = typeKey.includes('B777') || typeKey.includes('B777-300') || typeKey.includes('B777-200') || typeKey.includes('777');
-  const isCessna = typeKey.includes('CESSNA') || typeKey.includes('CITATION') || typeKey.includes('LATITUDE');
-  const isCitationI = typeKey.includes('CITATIONI') || typeKey.includes('CITATION-I') || typeKey.includes('M2');
-  const isSovereign = typeKey.includes('SOVEREIGN') || typeKey.includes('LONGITUDE');
-  const isGulfstream = typeKey.includes('GULFSTREAM') || typeKey.includes('G650') || typeKey.includes('G500') || typeKey.includes('G600') || typeKey.includes('G700');
-  const isLearjet = typeKey.includes('LEARJET') || typeKey.includes('LR45') || typeKey.includes('LR60') || typeKey.includes('LR-45') || typeKey.includes('LR-60');
-  const isERJ = typeKey.includes('ERJ') || typeKey.includes('EMB') || typeKey.includes('EMBRAER') || typeKey.includes('E135') || typeKey.includes('E145');
-  const isCRJ = typeKey.includes('CRJ') || typeKey.includes('CANADAIR') || typeKey.includes('REGIONALJET');
-  const isKingAir = typeKey.includes('KINGAIR') || typeKey.includes('KING-AIR') || typeKey.includes('B200') || typeKey.includes('B350') || typeKey.includes('BEECH');
-  const isCaravan = typeKey.includes('GRANDCARAVAN') || typeKey.includes('CARAVAN') || typeKey.includes('AMPHIBIAN') || typeKey.includes('CARAVAN-208') || typeKey.includes('C208');
-  
-  // Use Sketchfab embed for supported aircraft, procedural for others
-  if (isA220 || isA310 || isA320 || isA330 || isA340 || isA350 || isA380 || isB777 || isCessna || isCitationI || isSovereign || isGulfstream || isLearjet || isERJ || isCRJ || isKingAir || isCaravan) {
+
+  // Simplified: if we have a Sketchfab URL, use it
+  if (sketchfabUrl) {
     return (
-      <div className="w-full h-full absolute inset-0 overflow-hidden rounded-lg">
+      <div className="w-full h-full absolute inset-0 overflow-hidden rounded-lg flex items-center justify-center">
         <iframe
           title={`${aircraftType} 3D Model`}
           src={sketchfabUrl}
@@ -2417,6 +2429,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [selectedPathwayForMatch, setSelectedPathwayForMatch] = useState<PathwayData | null>(null);
   const [selectedCarouselPathway, setSelectedCarouselPathway] = useState<PathwayData | null>(null);
+  const [cockpitActivated, setCockpitActivated] = useState(false);
+  const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
@@ -2425,6 +2439,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Category display labels - defined at component level for reuse
   const categoryLabels: Record<string, string> = {
     'all': 'All',
+    'recommended': 'Recommended',
     'airline-pathways': 'Airline',
     'cadet-programme': 'Cadet Programs',
     'private': 'Type Rating',
@@ -2475,50 +2490,21 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   }, [selectedPathwayId]);
 
   // Get dynamic pathways based on visible count
-  const dynamicPathways = jobApplicationListings.slice(0, visibleCount).map((job, index) => transformJobToPathway(job, index));
-  
-  // Add discovery pathways based on active category
-  const discoveryPathways = DISCOVERY_PATHWAYS[activeCategory] || [];
-  
-  // Transform discovery pathways to PathwayData format
-  const transformedDiscoveryPathways = discoveryPathways.map((dp, index) => ({
-    id: dp.id,
-    name: dp.title,
-    category: activeCategory as PathwayData['category'],
-    airline: dp.company,
-    description: `${dp.type} - ${dp.salary}`,
-    image: dp.image === 'wingmentor-white' ? '/logo.png' : dp.image,
-    matchProbability: dp.matchPercentage,
-    aircraftType: 'generic',
-    requirements: {
-      totalHours: 1500,
-      typeRatings: dp.requirements.slice(0, 2)
-    },
-    salary: {
-      firstYear: dp.salary,
-      fifthYear: 'Career progression available',
-      bonuses: dp.tags.join(', ')
-    },
-    benefits: dp.tags,
-    hiringStatus: 'actively_hiring' as const,
-    locations: [dp.location],
-    matchPercentage: dp.matchPercentage,
-    positions: dp.tags.length,
-    gapAnalysis: {
-      totalHours: { aligned: false, score: 70, status: 'close', suggestion: 'Consider building more hours' },
-      typeRatings: dp.requirements.slice(0, 2).map((req: string) => ({ aligned: false, score: 60, status: 'under-minimums', suggestion: `Complete ${req}` }))
-    }
-  }));
-  
-  // Combine both pathways
-  const allPathways = [...transformedDiscoveryPathways, ...dynamicPathways];
+  const dynamicPathways = jobApplicationListings.map((job, index) => transformJobToPathway(job, index));
+
+  // Remove DISCOVERY_PATHWAYS - use only jobApplicationListings for all categories
+  const allPathways = [...dynamicPathways];
   
   // Always show all portal categories regardless of data
-  const categories = ['all', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'cargoPathways', 'airtaxi-drones'];
+  const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'cargoPathways', 'airtaxi-drones'];
 
   const filteredPathways = allPathways.filter(pathway => {
-    const matchesCategory = activeCategory === 'all' || pathway.category === activeCategory;
-    const matchesSearch = 
+    let matchesCategory = activeCategory === 'all' || pathway.category === activeCategory;
+    // For 'recommended' category, show pathways with high match probability (85%+)
+    if (activeCategory === 'recommended') {
+      matchesCategory = pathway.matchProbability >= 85;
+    }
+    const matchesSearch =
       pathway.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       pathway.airline.toLowerCase().includes(searchQuery.toLowerCase()) ||
       pathway.locations.some(l => l.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -2566,19 +2552,55 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     return matchesCategory && matchesSearch && matchesMatchFilter && matchesPositionFilter;
   });
 
-  // Initialize selected carousel pathway
+  const loopedPathways = filteredPathways.length > 0
+    ? [...filteredPathways, ...filteredPathways, ...filteredPathways]
+    : [];
+
+  // Initialize selected carousel pathway and reset cockpit activation
   useEffect(() => {
-    if (filteredPathways.length > 0 && !selectedCarouselPathway) {
+    if (filteredPathways.length === 0) {
+      setSelectedCarouselPathway(null);
+      return;
+    }
+
+    const stillExists = selectedCarouselPathway
+      ? filteredPathways.some(pathway => pathway.id === selectedCarouselPathway.id)
+      : false;
+
+    if (!stillExists) {
       setSelectedCarouselPathway(filteredPathways[0]);
     }
+  }, [filteredPathways, selectedCarouselPathway]);
+
+  useEffect(() => {
+    if (!carouselRef.current || filteredPathways.length === 0) return;
+
+    const carousel = carouselRef.current;
+    const middleStart = filteredPathways.length;
+
+    requestAnimationFrame(() => {
+      const cards = carousel.children;
+      const middleCard = cards[middleStart] as HTMLElement | undefined;
+      if (!middleCard) return;
+
+      const targetScroll = middleCard.offsetLeft - (carousel.clientWidth / 2) + (middleCard.offsetWidth / 2);
+      carousel.scrollTo({ left: targetScroll, behavior: 'auto' });
+    });
   }, [filteredPathways]);
+
+  // Reset cockpit activation when pathway changes
+  useEffect(() => {
+    setCockpitActivated(false);
+  }, [selectedCarouselPathway?.id]);
 
   // Carousel scroll handler
   const scrollCarousel = (direction: 'left' | 'right') => {
-    if (!carouselRef.current) return;
+    if (!carouselRef.current || filteredPathways.length === 0) return;
     const container = carouselRef.current;
     const containerCenter = container.scrollLeft + container.clientWidth / 2;
-    const cards = container.children;
+    const cards = Array.from(container.children).filter(child => child.classList.contains('flex-shrink-0'));
+
+    if (cards.length === 0) return;
 
     let currentCenteredIndex = 0;
     let closestDistance = Infinity;
@@ -2594,15 +2616,16 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
 
     const targetIndex = direction === 'left'
-      ? Math.max(0, currentCenteredIndex - 1)
-      : Math.min(filteredPathways.length - 1, currentCenteredIndex + 1);
+      ? (currentCenteredIndex - 1 + cards.length) % cards.length
+      : (currentCenteredIndex + 1) % cards.length;
 
     const targetCard = cards[targetIndex] as HTMLElement;
     if (targetCard) {
       const targetScroll = targetCard.offsetLeft - (container.clientWidth / 2) + (targetCard.offsetWidth / 2);
       container.scrollTo({ left: targetScroll, behavior: 'smooth' });
-      if (filteredPathways[targetIndex]) {
-        setSelectedCarouselPathway(filteredPathways[targetIndex]);
+      const realIndex = targetIndex % filteredPathways.length;
+      if (filteredPathways[realIndex]) {
+        setSelectedCarouselPathway(filteredPathways[realIndex]);
       }
     }
   };
@@ -2634,10 +2657,28 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
         if (closestCard) {
           const cardIndex = Array.from(cards).indexOf(closestCard);
-          if (cardIndex >= 0 && cardIndex < filteredPathways.length) {
-            const newSelected = filteredPathways[cardIndex];
+          if (cardIndex >= 0 && filteredPathways.length > 0) {
+            const realIndex = cardIndex % filteredPathways.length;
+            const newSelected = filteredPathways[realIndex];
             if (newSelected && newSelected.id !== selectedCarouselPathway?.id) {
               setSelectedCarouselPathway(newSelected);
+            }
+          }
+        }
+
+        if (filteredPathways.length > 0 && cards.length >= filteredPathways.length * 2) {
+          const firstSetCard = cards[0] as HTMLElement | undefined;
+          const secondSetCard = cards[filteredPathways.length] as HTMLElement | undefined;
+
+          if (firstSetCard && secondSetCard) {
+            const setWidth = secondSetCard.offsetLeft - firstSetCard.offsetLeft;
+
+            if (setWidth > 0) {
+              if (carousel.scrollLeft < setWidth * 0.5) {
+                carousel.scrollTo({ left: carousel.scrollLeft + setWidth, behavior: 'auto' });
+              } else if (carousel.scrollLeft > setWidth * 1.5) {
+                carousel.scrollTo({ left: carousel.scrollLeft - setWidth, behavior: 'auto' });
+              }
             }
           }
         }
@@ -3028,9 +3069,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               </button>
 
               {isPositionDropdownOpen && (
-                <div className={`absolute top-full mt-2 left-0 w-48 rounded-lg shadow-xl z-50 overflow-hidden ${
-                  isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
-                }`}>
+                <div
+                  ref={dropdownRef}
+                  className={`absolute top-full left-0 mt-2 w-48 rounded-lg shadow-xl z-50 ${
+                    isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
+                  }`}
+                >
                   {[
                     { key: 'all', label: 'All Positions' },
                     { key: 'Captain', label: 'Captain' },
@@ -3062,7 +3106,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
         </motion.div>
 
-        {/* Main Content - Carousel */}
+        {/* Edge-to-edge Carousel Section */}
         <div className="flex flex-col items-center">
           <div className="w-full text-center mb-4">
             <h2 className={`text-3xl md:text-4xl font-serif font-normal ${headerText} mb-2`}>
@@ -3077,7 +3121,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
 
           {/* Carousel Container */}
-          <div className="relative w-full overflow-hidden">
+          <div className="relative w-screen max-w-none left-1/2 -translate-x-1/2 overflow-hidden">
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; }
@@ -3085,7 +3129,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             `}</style>
             <div
               ref={carouselRef}
-              className="pathways-carousel flex gap-6 overflow-x-scroll overflow-y-hidden pb-4 px-4"
+              className="pathways-carousel flex gap-6 overflow-x-scroll overflow-y-hidden pb-4"
               style={{ WebkitOverflowScrolling: 'touch' }}
             >
               {filteredPathways.length === 0 ? (
@@ -3094,13 +3138,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   <p className={`${subText} text-sm mt-1`}>Try a different filter or select "All"</p>
                 </div>
               ) : (
-                filteredPathways.map((pathway) => {
+                loopedPathways.map((pathway, loopIndex) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);
                   const cardAircraftImage = getAircraftImage(pathway.aircraftType);
                   const isSelected = selectedCarouselPathway?.id === pathway.id;
                   return (
                     <div
-                      key={pathway.id}
+                      key={`${pathway.id}-${loopIndex}`}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-200 p-[3px] ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
                       style={{ width: '600px' }}
                       onClick={() => setSelectedCarouselPathway(pathway)}
@@ -3209,30 +3253,143 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               </div>
             );
           })()}
+
+          {/* 3D Aircraft View */}
+          {selectedCarouselPathway && (() => {
+            const aircraftType = selectedCarouselPathway.aircraftType || 'default';
+            const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            // Better matching for A320 family and similar patterns
+            const hasModel = SKETCHFAB_MODELS[typeKey] || 
+              SKETCHFAB_MODELS[aircraftType] ||
+              Object.keys(SKETCHFAB_MODELS).some(key => 
+                typeKey.includes(key) || key.includes(typeKey.replace('FAMILY', ''))
+              );
+            // Map A320 family to A320 if not found
+            const effectiveType = (typeKey.includes('A320') && !SKETCHFAB_MODELS[typeKey]) ? 'A320' : aircraftType;
+            return (
+              <div className="w-full mt-6">
+                <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'}`}>
+                  <h3 className={`text-lg font-semibold ${headerText} mb-4 flex items-center gap-2`}>
+                    <Target className="w-5 h-5 text-sky-400" />
+                    3D Aircraft View
+                  </h3>
+                  {hasModel ? (
+                    <div className="aspect-video w-full rounded-lg overflow-hidden relative group">
+                      <Aircraft3DCanvas
+                        aircraftType={effectiveType}
+                        isDarkMode={isDarkMode}
+                      />
+                      {!cockpitActivated && (
+                        <div
+                          className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer transition-opacity duration-300 group-hover:opacity-100 opacity-90"
+                          onClick={() => setCockpitActivated(true)}
+                        >
+                          <div className="text-center">
+                            <img src="/logo.png" alt="WingMentor" className="w-48 h-48 object-contain mx-auto mb-1" />
+                            <p className="text-white font-semibold text-lg mb-1">Click to Interact</p>
+                            <p className="text-white/80 text-sm">Enable 3D aircraft controls</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className={`h-48 w-full rounded-lg flex flex-col items-center justify-center ${isDarkMode ? 'bg-slate-700' : 'bg-slate-100'}`}>
+                      <Plane className={`w-12 h-12 mb-2 ${isDarkMode ? 'text-slate-600' : 'text-slate-400'}`} />
+                      <p className={`${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>3D model unavailable</p>
+                      <p className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>Aircraft not in model library</p>
+                    </div>
+                  )}
+                  <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'} mt-2 text-center`}>
+                    Interactive {aircraftType || 'Aircraft'} model
+                  </p>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* 3D Cockpit View - A320 Family, B737, and B747 only */}
+          {selectedCarouselPathway && (() => {
+            const aircraftType = selectedCarouselPathway.aircraftType || 'default';
+            const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            const isA320 = typeKey.includes('A318') || typeKey.includes('A319') || typeKey.includes('A319NEO') || typeKey.includes('A320') || typeKey.includes('A320NEO') || typeKey.includes('A321') || typeKey.includes('A321NEO');
+            const isB737 = typeKey.includes('B737') || typeKey.includes('737');
+            const isB747 = typeKey.includes('B747') || typeKey.includes('747');
+            const showCockpit = isA320 || isB737 || isB747;
+            if (!showCockpit) return null;
+            return (
+              <div className="w-full mt-6">
+                <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'}`}>
+                  <h4 className={`text-sm font-semibold ${isDarkMode ? 'text-slate-400' : 'text-slate-600'} uppercase tracking-wider mb-3 flex items-center gap-2`}>
+                    <LayoutGrid className="w-4 h-4" />
+                    Cockpit Interior 3D
+                  </h4>
+                  <div className="h-[500px] w-full rounded-lg relative overflow-hidden group">
+                    <Cockpit3DCanvas
+                      aircraftType={aircraftType}
+                      isDarkMode={isDarkMode}
+                    />
+                    {!cockpitActivated && (
+                      <div
+                        className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer transition-opacity duration-300 group-hover:opacity-100 opacity-90"
+                        onClick={() => setCockpitActivated(true)}
+                      >
+                        <div className="text-center">
+                          <img src="/logo.png" alt="WingMentor" className="w-48 h-48 object-contain mx-auto mb-1" />
+                          <p className="text-white font-semibold text-lg mb-1">Click to Interact</p>
+                          <p className="text-white/80 text-sm">Enable 3D cockpit controls</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'} mt-2 text-center`}>
+                    {isB747 ? 'Boeing 747 Glass cockpit' : isB737 ? 'Boeing 737 Glass cockpit' : 'A320 Glass cockpit layout'}
+                  </p>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </main>
 
-      {/* Fixed Bottom Right Corner UI */}
-      <div className="fixed bottom-4 right-4 z-50 space-y-3 max-w-sm">
-        <ProfileSummary
-          profile={{
-            totalScore: 77,
-            breakdown: {
-              programs: 82,
-              experience: 75,
-              behavioral: 80,
-              language: 70,
-              skills: 78,
-            }
-          }}
-          isDarkMode={isDarkMode}
-        />
-        <GapAnalysisPanel
-          analysis={MOCK_GAP_ANALYSIS}
-          isDarkMode={isDarkMode}
-          isExpanded={expandedGapAnalysis}
-          onToggle={() => setExpandedGapAnalysis(!expandedGapAnalysis)}
-        />
+      {/* Fixed Left Side Panel */}
+      <div className="fixed left-0 top-1/2 -translate-y-1/2 z-50 flex items-center">
+        <button
+          onClick={() => setSidePanelExpanded(!sidePanelExpanded)}
+          className={`p-3 rounded-r-lg border-y border-r transition-all flex-shrink-0 ${
+            isDarkMode
+              ? 'border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white shadow-xl'
+              : 'border-slate-300 bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-900 shadow-xl'
+          }`}
+        >
+          {sidePanelExpanded ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+        </button>
+        <div
+          className={`transition-all duration-300 overflow-hidden ${
+            sidePanelExpanded ? 'max-w-sm opacity-100' : 'max-w-0 opacity-0'
+          }`}
+        >
+          <div className={`p-4 space-y-3 ${isDarkMode ? 'bg-slate-800/95 border-r border-slate-700' : 'bg-white/95 border-r border-slate-200'}`}>
+            <ProfileSummary
+              profile={{
+                totalScore: 77,
+                breakdown: {
+                  programs: 82,
+                  experience: 75,
+                  behavioral: 80,
+                  language: 70,
+                  skills: 78,
+                }
+              }}
+              isDarkMode={isDarkMode}
+            />
+            <GapAnalysisPanel
+              analysis={MOCK_GAP_ANALYSIS}
+              isDarkMode={isDarkMode}
+              isExpanded={expandedGapAnalysis}
+              onToggle={() => setExpandedGapAnalysis(!expandedGapAnalysis)}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Match Result Modal */}
