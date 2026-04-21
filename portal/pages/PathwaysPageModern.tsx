@@ -2475,12 +2475,14 @@ export interface PathwaysPageModernProps {
   isDarkMode?: boolean;
   initialCategory?: string;
   selectedPathwayId?: string;
+  onNavigate?: (page: string) => void;
 }
 
 export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({ 
   isDarkMode = true,
   initialCategory = 'all',
-  selectedPathwayId
+  selectedPathwayId,
+  onNavigate
 }) => {
   const [expandedPathway, setExpandedPathway] = useState<string | null>(selectedPathwayId || null);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -3172,7 +3174,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
           <div className="flex justify-center mt-3">
             <button
-              onClick={() => window.location.href = '/airline-expectations'}
+              onClick={() => onNavigate ? onNavigate('airline-expectations') : (window.location.href = '/airline-expectations')}
               className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
                 isDarkMode
                   ? 'bg-sky-600 hover:bg-sky-700 text-white'

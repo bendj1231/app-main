@@ -1251,16 +1251,17 @@ const App = () => {
           />
         )}
         {currentPage === 'pathways-modern' && (
-          <PathwaysPageModern isDarkMode={true} />
+          <PathwaysPageModern isDarkMode={true} onNavigate={navigateTo} />
         )}
         {currentPage === 'pathways-modern-light' && (
-          <PathwaysPageModern isDarkMode={false} />
+          <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />
         )}
         {currentPage === 'pathways-detail' && (
           <PathwaysPageModern 
             isDarkMode={true}
             initialCategory={selectedPathwayCategory || 'all'}
             selectedPathwayId={selectedPathwayId || undefined}
+            onNavigate={navigateTo}
           />
         )}
         {currentPage === 'portal' && showDirectEnrollmentLoading && (
