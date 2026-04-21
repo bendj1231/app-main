@@ -9,6 +9,7 @@ interface AircraftInfo {
   firstFlight: number;
   avgRatingCostUSD: string;
   pohUrl: string;
+  pohEmbed?: string;
   airlinesUsingFleet: { name: string; logo: string }[];
   specs: { label: string; value: string }[];
   typicalNeedToKnow: string[];
@@ -112,6 +113,43 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
       { name: 'Ryanair TRTO', location: 'Dublin, Ireland', offers: ['B737 NG / MAX'], img: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
     ],
   },
+  'airbus-a380': {
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
+    manufacturerName: 'Airbus',
+    firstFlight: 2005,
+    avgRatingCostUSD: '$45,000–$75,000',
+    pohUrl: 'https://www.scribd.com/document/254362201/Airbus-A380-Manual',
+    pohEmbed: 'https://www.scribd.com/embeds/254362201/content?start_page=1&view_mode=scroll&access_key=key-dlI4DDFm4MiWtnkN3xdU',
+    airlinesUsingFleet: [
+      { name: 'Emirates', logo: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/emirates.jpg' },
+      { name: 'Singapore Airlines', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
+      { name: 'Qantas', logo: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&q=80' },
+      { name: 'British Airways', logo: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/british-airways.jpg' },
+    ],
+    specs: [
+      { label: 'MTOW', value: '575,000 kg' },
+      { label: 'V1 (typical)', value: '~150 kt' },
+      { label: 'Vr', value: '~160 kt' },
+      { label: 'V2', value: '~165 kt' },
+      { label: 'Vmo', value: '340 kt / M0.89' },
+      { label: 'Vfe (Config 1)', value: '230 kt' },
+      { label: 'Vfe (Full)', value: '177 kt' },
+      { label: 'Takeoff Roll (SL/ISA)', value: '~3,100 m' },
+      { label: 'Service Ceiling', value: '43,000 ft' },
+    ],
+    typicalNeedToKnow: [
+      'Fly-by-wire flight control laws — same philosophy as A320 but 4-engine logic',
+      'Engine Alliance GP7200 / Rolls-Royce Trent 970 management',
+      'Dual-deck cabin pressurisation and emergency evacuation',
+      'ECAM multi-system monitoring across 4 engines',
+      'Long-range ETOPS and oceanic track procedures',
+      'A380 specific weight & balance — 853 PAX max configuration',
+    ],
+    atoCarousel: [
+      { name: 'Airbus Training Centre', location: 'Toulouse, France', offers: ['A380 Type Rating', 'A380 Recurrency'], img: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg' },
+      { name: 'Emirates Flight Training Academy', location: 'Dubai, UAE', offers: ['A380 Type Rating'], img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80' },
+    ],
+  },
   'atr-72': {
     manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/ATR_Aircraft_logo.svg/1200px-ATR_Aircraft_logo.svg.png',
     manufacturerName: 'ATR',
@@ -145,6 +183,8 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
 };
 
 function getAircraftInfo(aircraft: AircraftModel): AircraftInfo {
+  if (aircraft.id === 'airbus-a380' || aircraft.id === 'airbus-a380-alt')
+    return AIRCRAFT_INFO['airbus-a380'];
   if (aircraft.id.includes('a320') || aircraft.id.includes('a318') || aircraft.id.includes('a319') || aircraft.id.includes('a321'))
     return AIRCRAFT_INFO['airbus-a320'];
   if (aircraft.id.includes('737'))
@@ -639,6 +679,46 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                       </div>
                     ))}
                   </div>
+                </div>
+              );
+            })()}
+
+            {/* POH / Pilot Operating Handbook embed — shown when available */}
+            {(() => {
+              const info = getAircraftInfo(selectedAircraft);
+              if (!info.pohEmbed) return null;
+              return (
+                <div className="px-6 md:px-8 py-6 border-b border-slate-100">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-5 h-5 text-indigo-500" />
+                      <h3 className="text-lg font-semibold text-slate-900">Pilot Operating Handbook</h3>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 font-medium">Official Document</span>
+                    </div>
+                    <a
+                      href={info.pohUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-medium text-sky-600 hover:text-sky-700"
+                    >
+                      Open on Scribd →
+                    </a>
+                  </div>
+                  <div className="rounded-xl overflow-hidden border border-slate-200">
+                    <iframe
+                      src={info.pohEmbed}
+                      title={`${selectedAircraft.name} Pilot Operating Handbook`}
+                      width="100%"
+                      height="600"
+                      frameBorder="0"
+                      scrolling="no"
+                      allowFullScreen
+                      className="w-full"
+                    />
+                  </div>
+                  <p className="text-xs text-slate-400 mt-2 text-center">
+                    <a href="https://www.scribd.com/document/254362201/Airbus-A380-Manual#from_embed" target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:underline">Airbus A380 Manual</a> via Scribd
+                  </p>
                 </div>
               );
             })()}
