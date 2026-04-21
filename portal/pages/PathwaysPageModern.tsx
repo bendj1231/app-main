@@ -3238,8 +3238,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         <div className="flex flex-col items-center">
           <div className="w-full text-center mb-3">
             <p className={`${subText} text-xs`}>
-              {filteredPathways.length} of {jobApplicationListings.length}+ pathways
-              <span className="ml-2 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">LIVE DATA</span>
+              {mode === 'jobs'
+                ? <>{filteredPathways.length} of {jobApplicationListings.length}+ jobs <span className="ml-2 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">LIVE DATA</span></>
+                : <>{filteredPathways.length} pathways available</>
+              }
             </p>
           </div>
 
