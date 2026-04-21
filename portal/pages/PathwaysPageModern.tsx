@@ -2679,13 +2679,15 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     const carousel = carouselRef.current;
     const middleStart = filteredPathways.length;
 
+    // Use double rAF to ensure layout is complete before computing offsets
     requestAnimationFrame(() => {
-      const cards = carousel.children;
-      const middleCard = cards[middleStart] as HTMLElement | undefined;
-      if (!middleCard) return;
-
-      const targetScroll = middleCard.offsetLeft - (carousel.clientWidth / 2) + (middleCard.offsetWidth / 2);
-      carousel.scrollTo({ left: targetScroll, behavior: 'auto' });
+      requestAnimationFrame(() => {
+        const cards = carousel.children;
+        const middleCard = cards[middleStart] as HTMLElement | undefined;
+        if (!middleCard) return;
+        const targetScroll = middleCard.offsetLeft - (carousel.clientWidth / 2) + (middleCard.offsetWidth / 2);
+        carousel.scrollTo({ left: targetScroll, behavior: 'auto' });
+      });
     });
   }, [filteredPathways]);
 
@@ -2730,6 +2732,36 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       }
     }
   };
+
+  // Auto-scroll carousel every 3 seconds
+  useEffect(() => {
+    if (filteredPathways.length === 0) return;
+    const interval = setInterval(() => {
+      if (!carouselRef.current) return;
+      const container = carouselRef.current;
+      const containerCenter = container.scrollLeft + container.clientWidth / 2;
+      const cards = Array.from(container.children).filter(child => child.classList.contains('flex-shrink-0'));
+      if (cards.length === 0) return;
+      let currentCenteredIndex = 0;
+      let closestDistance = Infinity;
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i] as HTMLElement;
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const distance = Math.abs(containerCenter - cardCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          currentCenteredIndex = i;
+        }
+      }
+      const targetIndex = (currentCenteredIndex + 1) % cards.length;
+      const targetCard = cards[targetIndex] as HTMLElement;
+      if (targetCard) {
+        const targetScroll = targetCard.offsetLeft - (container.clientWidth / 2) + (targetCard.offsetWidth / 2);
+        container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [filteredPathways.length]);
 
   // Carousel scroll event handler
   useEffect(() => {
