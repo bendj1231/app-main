@@ -2002,14 +2002,14 @@ const GapAnalysisPanel: React.FC<{ analysis: GapAnalysis; isDarkMode?: boolean; 
 
 // Search Bar - supports light/dark mode
 const SearchBar: React.FC<{ onSearch: (query: string) => void; isDarkMode?: boolean }> = ({ onSearch, isDarkMode = true }) => (
-  <div className="relative">
+  <div className="relative w-[600px]">
     <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
     <input
       type="text"
       placeholder="Search pathways, airlines, or locations..."
-      className={`w-full pl-12 pr-4 py-4 backdrop-blur border rounded-xl focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all ${
-        isDarkMode 
-          ? 'bg-slate-800/50 border-slate-700/50 text-white placeholder-slate-400' 
+      className={`w-full pl-12 pr-4 py-4 backdrop-blur border rounded-lg focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all ${
+        isDarkMode
+          ? 'bg-slate-800/50 border-slate-700/50 text-white placeholder-slate-400'
           : 'bg-white/70 border-slate-300/50 text-slate-900 placeholder-slate-500'
       }`}
       onChange={(e) => onSearch(e.target.value)}
