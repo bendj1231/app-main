@@ -1255,7 +1255,7 @@ const App = () => {
           <PathwaysPageModern isDarkMode={true} onNavigate={navigateTo} />
         )}
         {currentPage === 'portal-airline-expectations' && (
-          <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} isDarkMode={true} />
+          <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} isDarkMode={false} />
         )}
         {currentPage === 'pathways-modern-light' && (
           <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />
