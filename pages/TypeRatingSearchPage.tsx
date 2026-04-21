@@ -321,6 +321,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
   const [showCockpit, setShowCockpit] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
+  const pohRef = useRef<HTMLDivElement>(null);
 
   const filteredAircraft = aircraftModels.filter(a => {
     const matchesCat = activeCategory === 'all' || a.category === activeCategory;
@@ -563,9 +564,18 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">POH / Manual</p>
-                    <a href={info.pohUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1">
-                      <FileText className="w-3.5 h-3.5" /> Access PDF →
-                    </a>
+                    {info.pohEmbed ? (
+                      <button
+                        onClick={() => pohRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                        className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+                      >
+                        <FileText className="w-3.5 h-3.5" /> Read Manual ↓
+                      </button>
+                    ) : (
+                      <a href={info.pohUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1">
+                        <FileText className="w-3.5 h-3.5" /> Access PDF →
+                      </a>
+                    )}
                   </div>
                 </div>
               );
@@ -688,36 +698,26 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
               const info = getAircraftInfo(selectedAircraft);
               if (!info.pohEmbed) return null;
               return (
-                <div className="px-6 md:px-8 py-6 border-b border-slate-100">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-indigo-500" />
-                      <h3 className="text-lg font-semibold text-slate-900">Pilot Operating Handbook</h3>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 font-medium">Official Document</span>
-                    </div>
-                    <a
-                      href={info.pohUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-medium text-sky-600 hover:text-sky-700"
-                    >
-                      Open on Scribd →
-                    </a>
+                <div ref={pohRef} className="px-6 md:px-8 py-6 border-b border-slate-100">
+                  <div className="flex items-center gap-2 mb-4">
+                    <FileText className="w-5 h-5 text-indigo-500" />
+                    <h3 className="text-lg font-semibold text-slate-900">Pilot Operating Handbook</h3>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 font-medium">Official Document</span>
                   </div>
-                  <div className="rounded-xl overflow-hidden border border-slate-200">
+                  <div className="rounded-xl overflow-hidden border border-slate-200 bg-white">
                     <iframe
                       src={info.pohEmbed}
                       title={`${selectedAircraft.name} Pilot Operating Handbook`}
                       width="100%"
-                      height="600"
+                      height="700"
                       frameBorder="0"
                       scrolling="no"
                       allowFullScreen
-                      className="w-full"
+                      className="w-full block"
                     />
                   </div>
                   <p className="text-xs text-slate-400 mt-2 text-center">
-                    <a href="https://www.scribd.com/document/254362201/Airbus-A380-Manual#from_embed" target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:underline">Airbus A380 Manual</a> via Scribd
+                    <a href={info.pohUrl} target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:underline">{selectedAircraft.name} Manual</a> via Scribd · by NikolaMilović
                   </p>
                 </div>
               );
