@@ -3172,7 +3172,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           <div className="flex justify-center">
             <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
           </div>
-          <div className="flex justify-center mt-3">
+          <div className="flex justify-center mt-3 gap-3">
             <button
               onClick={() => onNavigate ? onNavigate('portal-airline-expectations') : (window.location.href = '/airline-expectations')}
               className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -3182,6 +3182,16 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               }`}
             >
               View Airline Expectations
+            </button>
+            <button
+              onClick={() => onNavigate ? onNavigate('type-rating-search') : (window.location.href = '/type-rating-search')}
+              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
+                isDarkMode
+                  ? 'bg-violet-600 hover:bg-violet-700 text-white'
+                  : 'bg-violet-500 hover:bg-violet-600 text-white'
+              }`}
+            >
+              Aircraft Type-Ratings Search
             </button>
           </div>
           <div className="flex justify-center">
