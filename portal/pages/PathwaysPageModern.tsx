@@ -374,19 +374,6 @@ interface RequirementMatch {
 // Discovery Pathways - Career pathways and programs for all pilot types
 const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
   'airline-pathways': [
-    {
-      id: 'wingmentor-intro-airline',
-      title: 'Pathways to Major Airlines',
-      company: 'WingMentor',
-      matchPercentage: 100,
-      location: 'Global',
-      type: 'Introduction',
-      salary: 'Direct entry pathways for major airline careers',
-      requirements: ['ATPL', 'Type Rating', '1500+ hrs TT'],
-      tags: ['Career Progression', 'Global Opportunities', 'Major Airlines'],
-      postedAt: 'Featured',
-      image: 'wingmentor-white'
-    }
   ],
   'cadet-programme': [
     {
