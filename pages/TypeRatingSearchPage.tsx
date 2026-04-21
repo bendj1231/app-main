@@ -77,7 +77,7 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
       { name: 'CAE', location: 'Clark, Philippines', offers: ['A320 Family', 'ATR 72-600'], img: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp' },
       { name: 'Global Training Aviation', location: 'Manila, Philippines', offers: ['A320 Type Rating', 'MCC / JOC'], img: 'https://globaltrainingaviation.com/wp-content/uploads/2024/09/DSC_7096-15.png' },
       { name: 'Airbus Training Centre', location: 'Toulouse, France', offers: ['A318', 'A319', 'A320', 'A321'], img: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg' },
-      { name: 'FlightSafety International', location: 'Atlanta, USA', offers: ['A320 Type Rating'], img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80' },
+      { name: 'FlightSafety International', location: 'Atlanta, USA', offers: ['A350 Type Rating'], img: 'https://i.ytimg.com/vi/0CAFr1Rojhw/maxresdefault.jpg' },
     ],
   },
   'boeing-737': {
