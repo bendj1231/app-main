@@ -113,6 +113,46 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
       { name: 'Ryanair TRTO', location: 'Dublin, Ireland', offers: ['B737 NG / MAX'], img: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
     ],
   },
+  'tecnam-p2002': {
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Tecnam_logo.svg/1200px-Tecnam_logo.svg.png',
+    manufacturerName: 'Tecnam',
+    firstFlight: 2001,
+    avgRatingCostUSD: '$6,000–$12,000',
+    pohUrl: 'https://www.scribd.com/document/262325387/Tecnam-P2002-JF-Flight-Manual',
+    pohDocs: [
+      {
+        label: 'P2002-JF Flight Manual',
+        embed: 'https://www.scribd.com/embeds/262325387/content?start_page=1&view_mode=scroll&access_key=key-fB8TgcEpBnM8VEzO0dIy',
+        url: 'https://www.scribd.com/document/262325387/Tecnam-P2002-JF-Flight-Manual#from_embed',
+        author: 'John',
+      },
+    ],
+    airlinesUsingFleet: [
+      { name: 'Flight Training Schools', logo: '/logo.png' },
+    ],
+    specs: [
+      { label: 'MTOW', value: '600 kg' },
+      { label: 'Vso', value: '42 kt' },
+      { label: 'Vs1', value: '47 kt' },
+      { label: 'Vr', value: '55 kt' },
+      { label: 'Vx', value: '60 kt' },
+      { label: 'Vy', value: '70 kt' },
+      { label: 'Vno', value: '114 kt' },
+      { label: 'Vne', value: '140 kt' },
+      { label: 'Takeoff Roll (SL/ISA)', value: '~200 m' },
+    ],
+    typicalNeedToKnow: [
+      'Rotax 912 ULS engine management — carburettor heat and warm-up procedures',
+      'Light sport aircraft (LSA) limitations and operating category',
+      'Weight & balance — two-seat max, sensitive to fuel and pax loading',
+      'Low-wing handling characteristics vs high-wing trainers',
+      'Flap schedule and short/soft field operations',
+      'EASA Light Aircraft Pilot Licence (LAPL) typical training aircraft',
+    ],
+    atoCarousel: [
+      { name: 'Local Flying Schools', location: 'Worldwide', offers: ['PPL', 'LAPL', 'Hour Building'], img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80' },
+    ],
+  },
   'cessna-172': {
     manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Cessna_logo.svg/1200px-Cessna_logo.svg.png',
     manufacturerName: 'Cessna Aircraft Company',
@@ -326,6 +366,8 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
 };
 
 function getAircraftInfo(aircraft: AircraftModel): AircraftInfo {
+  if (aircraft.id.includes('tecnam-p2002'))
+    return AIRCRAFT_INFO['tecnam-p2002'];
   if (aircraft.id === 'cessna-172' || aircraft.id === 'cessna-172-alt' || aircraft.id === 'cessna-172-cockpit')
     return AIRCRAFT_INFO['cessna-172'];
   if (aircraft.id === 'cessna-152')
