@@ -2688,6 +2688,34 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     requestAnimationFrame(() => requestAnimationFrame(() => scrollToCarouselIndex(0, 'auto')));
   }, [filteredPathways.length]);
 
+  // Sync carouselIndex from scroll position (handles touch/mouse swipe)
+  useEffect(() => {
+    const container = carouselRef.current;
+    if (!container) return;
+    let tid: ReturnType<typeof setTimeout>;
+    const onScroll = () => {
+      clearTimeout(tid);
+      tid = setTimeout(() => {
+        const center = container.scrollLeft + container.clientWidth / 2;
+        const cards = container.querySelectorAll('[data-pathway-index]');
+        let closest = 0;
+        let minDist = Infinity;
+        cards.forEach((card) => {
+          const el = card as HTMLElement;
+          const dist = Math.abs(el.offsetLeft + el.offsetWidth / 2 - center);
+          if (dist < minDist) { minDist = dist; closest = Number(el.dataset.pathwayIndex); }
+        });
+        setCarouselIndex(closest);
+        setSelectedCarouselPathway(fp => {
+          const cur = filteredPathways[closest];
+          return cur || fp;
+        });
+      }, 80);
+    };
+    container.addEventListener('scroll', onScroll, { passive: true });
+    return () => { container.removeEventListener('scroll', onScroll); clearTimeout(tid); };
+  }, [filteredPathways]);
+
   // Reset cockpit activation when pathway changes
   useEffect(() => {
     setCockpitActivated(false);
@@ -3216,15 +3244,38 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
 
           {/* Carousel Container */}
-          <div className="relative w-screen max-w-none left-1/2 -translate-x-1/2 overflow-hidden">
+          <div className="relative w-screen max-w-none left-1/2 -translate-x-1/2">
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>
             <div
               ref={carouselRef}
-              className="pathways-carousel flex gap-4 overflow-x-scroll overflow-y-hidden pb-4"
-              style={{ WebkitOverflowScrolling: 'touch', paddingLeft: 'calc(50vw - 300px)', paddingRight: 'calc(50vw - 300px)' }}
+              className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                paddingLeft: 'calc(50vw - 300px)',
+                paddingRight: 'calc(50vw - 300px)',
+                cursor: 'grab',
+              }}
+              onMouseDown={(e) => {
+                const el = carouselRef.current;
+                if (!el) return;
+                el.style.cursor = 'grabbing';
+                const startX = e.pageX - el.offsetLeft;
+                const scrollLeft = el.scrollLeft;
+                const onMove = (me: MouseEvent) => {
+                  const x = me.pageX - el.offsetLeft;
+                  el.scrollLeft = scrollLeft - (x - startX);
+                };
+                const onUp = () => {
+                  el.style.cursor = 'grab';
+                  window.removeEventListener('mousemove', onMove);
+                  window.removeEventListener('mouseup', onUp);
+                };
+                window.addEventListener('mousemove', onMove);
+                window.addEventListener('mouseup', onUp);
+              }}
             >
               {filteredPathways.length === 0 ? (
                 <div className={`w-full py-16 text-center rounded-xl border-2 border-dashed ${isDarkMode ? 'border-slate-700' : 'border-slate-300'}`}>
