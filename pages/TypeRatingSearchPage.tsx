@@ -110,7 +110,7 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
     ],
     atoCarousel: [
       { name: 'CAE', location: 'Clark, Philippines', offers: ['B737 NG', 'B737 MAX'], img: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp' },
-      { name: 'Boeing Flight Services', location: 'Miami, USA', offers: ['B737 Type Rating'], img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80' },
+      { name: 'Boeing Flight Services', location: 'Miami, USA', offers: ['B737 Type Rating'], img: 'https://services.boeing.com/bgsmedias/sys_master/migrated_images2/Migrated_images2/h8b/hed/8943855108126/8943855108126.jpg' },
       { name: 'Ryanair TRTO', location: 'Dublin, Ireland', offers: ['B737 NG / MAX'], img: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
     ],
   },

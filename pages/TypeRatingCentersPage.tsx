@@ -88,7 +88,7 @@ const CENTERS: RatingCenter[] = [
     location: 'Miami, USA',
     flag: '🇺🇸',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Boeing_full_logo.svg/1200px-Boeing_full_logo.svg.png',
-    heroImg: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    heroImg: 'https://services.boeing.com/bgsmedias/sys_master/migrated_images2/Migrated_images2/h8b/hed/8943855108126/8943855108126.jpg',
     website: 'https://www.boeing.com/commercial/services/flight-services',
     description: "Boeing Flight Services operates the world's largest OEM-direct type rating network for Boeing aircraft. The Miami location is the primary hub for B737 NG and MAX training, serving Latin American and North American operators.",
     typesOffered: ['Boeing 737 NG', 'Boeing 737 MAX', 'Boeing 777', 'Boeing 787 Dreamliner'],
