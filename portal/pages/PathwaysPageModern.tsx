@@ -2502,6 +2502,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [selectedCarouselPathway, setSelectedCarouselPathway] = useState<PathwayData | null>(null);
   const [cockpitActivated, setCockpitActivated] = useState(false);
   const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [isCarouselAutoScrolling, setIsCarouselAutoScrolling] = useState(true);
+  const carouselAutoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
@@ -2659,177 +2662,65 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     return matchesCategory && matchesSearch && matchesMatchFilter && matchesPositionFilter && matchesViewFilter;
   });
 
-  const loopedPathways = filteredPathways.length > 0
-    ? [...filteredPathways, ...filteredPathways, ...filteredPathways]
-    : [];
+  const loopedPathways = filteredPathways; // no longer looped — use direct index
 
-  // Initialize selected carousel pathway and reset cockpit activation
+  // Sync selectedCarouselPathway with carouselIndex
   useEffect(() => {
-    if (filteredPathways.length === 0) {
-      setSelectedCarouselPathway(null);
-      return;
-    }
-
-    const stillExists = selectedCarouselPathway
-      ? filteredPathways.some(pathway => pathway.id === selectedCarouselPathway.id)
-      : false;
-
-    if (!stillExists) {
-      setSelectedCarouselPathway(filteredPathways[0]);
-    }
-  }, [filteredPathways, selectedCarouselPathway]);
-
-  useEffect(() => {
-    if (!carouselRef.current || filteredPathways.length === 0) return;
-
-    const carousel = carouselRef.current;
-    const middleStart = filteredPathways.length;
-
-    // Use double rAF to ensure layout is complete before computing offsets
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const cards = carousel.children;
-        const middleCard = cards[middleStart] as HTMLElement | undefined;
-        if (!middleCard) return;
-        const targetScroll = middleCard.offsetLeft - (carousel.clientWidth / 2) + (middleCard.offsetWidth / 2);
-        carousel.scrollTo({ left: targetScroll, behavior: 'auto' });
-      });
-    });
+    if (filteredPathways.length === 0) { setSelectedCarouselPathway(null); return; }
+    const clampedIndex = Math.min(carouselIndex, filteredPathways.length - 1);
+    setCarouselIndex(clampedIndex);
+    setSelectedCarouselPathway(filteredPathways[clampedIndex]);
   }, [filteredPathways]);
+
+  // Scroll to card by index
+  const scrollToCarouselIndex = (index: number, behavior: ScrollBehavior = 'smooth') => {
+    const container = carouselRef.current;
+    if (!container) return;
+    const card = container.querySelector(`[data-pathway-index="${index}"]`) as HTMLElement | null;
+    if (!card) return;
+    const scrollPos = card.offsetLeft - (container.offsetWidth / 2) + (card.offsetWidth / 2);
+    container.scrollTo({ left: scrollPos, behavior });
+  };
+
+  // On mount / filter change scroll to index 0
+  useEffect(() => {
+    if (filteredPathways.length === 0) return;
+    requestAnimationFrame(() => requestAnimationFrame(() => scrollToCarouselIndex(0, 'auto')));
+  }, [filteredPathways.length]);
 
   // Reset cockpit activation when pathway changes
   useEffect(() => {
     setCockpitActivated(false);
   }, [selectedCarouselPathway?.id]);
 
-  // Carousel scroll handler
+  // Arrow navigation
   const scrollCarousel = (direction: 'left' | 'right') => {
-    if (!carouselRef.current || filteredPathways.length === 0) return;
-    const container = carouselRef.current;
-    const containerCenter = container.scrollLeft + container.clientWidth / 2;
-    const cards = Array.from(container.children).filter(child => child.classList.contains('flex-shrink-0'));
-
-    if (cards.length === 0) return;
-
-    let currentCenteredIndex = 0;
-    let closestDistance = Infinity;
-
-    for (let i = 0; i < cards.length; i++) {
-      const card = cards[i] as HTMLElement;
-      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const distance = Math.abs(containerCenter - cardCenter);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        currentCenteredIndex = i;
-      }
-    }
-
-    const targetIndex = direction === 'left'
-      ? (currentCenteredIndex - 1 + cards.length) % cards.length
-      : (currentCenteredIndex + 1) % cards.length;
-
-    const targetCard = cards[targetIndex] as HTMLElement;
-    if (targetCard) {
-      const targetScroll = targetCard.offsetLeft - (container.clientWidth / 2) + (targetCard.offsetWidth / 2);
-      container.scrollTo({ left: targetScroll, behavior: 'smooth' });
-      const realIndex = targetIndex % filteredPathways.length;
-      if (filteredPathways[realIndex]) {
-        setSelectedCarouselPathway(filteredPathways[realIndex]);
-      }
-    }
+    if (filteredPathways.length === 0) return;
+    setIsCarouselAutoScrolling(false);
+    const newIndex = direction === 'left'
+      ? Math.max(carouselIndex - 1, 0)
+      : Math.min(carouselIndex + 1, filteredPathways.length - 1);
+    setCarouselIndex(newIndex);
+    setSelectedCarouselPathway(filteredPathways[newIndex]);
+    scrollToCarouselIndex(newIndex);
+    // resume after 10s
+    if (carouselAutoScrollRef.current) clearTimeout(carouselAutoScrollRef.current);
+    carouselAutoScrollRef.current = setTimeout(() => setIsCarouselAutoScrolling(true), 10000);
   };
 
-  // Auto-scroll carousel every 3 seconds
+  // Auto-scroll every 4 seconds
   useEffect(() => {
-    if (filteredPathways.length === 0) return;
+    if (!isCarouselAutoScrolling || filteredPathways.length === 0) return;
     const interval = setInterval(() => {
-      if (!carouselRef.current) return;
-      const container = carouselRef.current;
-      const containerCenter = container.scrollLeft + container.clientWidth / 2;
-      const cards = Array.from(container.children).filter(child => child.classList.contains('flex-shrink-0'));
-      if (cards.length === 0) return;
-      let currentCenteredIndex = 0;
-      let closestDistance = Infinity;
-      for (let i = 0; i < cards.length; i++) {
-        const card = cards[i] as HTMLElement;
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const distance = Math.abs(containerCenter - cardCenter);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          currentCenteredIndex = i;
-        }
-      }
-      const targetIndex = (currentCenteredIndex + 1) % cards.length;
-      const targetCard = cards[targetIndex] as HTMLElement;
-      if (targetCard) {
-        const targetScroll = targetCard.offsetLeft - (container.clientWidth / 2) + (targetCard.offsetWidth / 2);
-        container.scrollTo({ left: targetScroll, behavior: 'smooth' });
-      }
-    }, 3000);
+      setCarouselIndex(prev => {
+        const next = prev >= filteredPathways.length - 1 ? 0 : prev + 1;
+        setSelectedCarouselPathway(filteredPathways[next]);
+        scrollToCarouselIndex(next);
+        return next;
+      });
+    }, 4000);
     return () => clearInterval(interval);
-  }, [filteredPathways.length]);
-
-  // Carousel scroll event handler
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    const carousel = carouselRef.current;
-    if (!carousel) return;
-
-    const handleCarouselScroll = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        const containerCenter = carousel.scrollLeft + carousel.clientWidth / 2;
-        const cards = carousel.children;
-
-        let closestCard: HTMLElement | null = null;
-        let closestDistance = Infinity;
-
-        for (let i = 0; i < cards.length; i++) {
-          const card = cards[i] as HTMLElement;
-          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-          const distance = Math.abs(containerCenter - cardCenter);
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closestCard = card;
-          }
-        }
-
-        if (closestCard) {
-          const cardIndex = Array.from(cards).indexOf(closestCard);
-          if (cardIndex >= 0 && filteredPathways.length > 0) {
-            const realIndex = cardIndex % filteredPathways.length;
-            const newSelected = filteredPathways[realIndex];
-            if (newSelected && newSelected.id !== selectedCarouselPathway?.id) {
-              setSelectedCarouselPathway(newSelected);
-            }
-          }
-        }
-
-        if (filteredPathways.length > 0 && cards.length >= filteredPathways.length * 2) {
-          const firstSetCard = cards[0] as HTMLElement | undefined;
-          const secondSetCard = cards[filteredPathways.length] as HTMLElement | undefined;
-
-          if (firstSetCard && secondSetCard) {
-            const setWidth = secondSetCard.offsetLeft - firstSetCard.offsetLeft;
-
-            if (setWidth > 0) {
-              if (carousel.scrollLeft < setWidth * 0.5) {
-                carousel.scrollTo({ left: carousel.scrollLeft + setWidth, behavior: 'auto' });
-              } else if (carousel.scrollLeft > setWidth * 1.5) {
-                carousel.scrollTo({ left: carousel.scrollLeft - setWidth, behavior: 'auto' });
-              }
-            }
-          }
-        }
-      }, 80);
-    };
-
-    carousel.addEventListener('scroll', handleCarouselScroll);
-    return () => {
-      carousel.removeEventListener('scroll', handleCarouselScroll);
-      clearTimeout(timeoutId);
-    };
-  }, [filteredPathways, selectedCarouselPathway]);
+  }, [isCarouselAutoScrolling, filteredPathways.length]);
 
   const handleCalculateMatch = (pathwayId: string) => {
     const pathway = allPathways.find(p => p.id === pathwayId);
@@ -3327,8 +3218,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           <div className="relative w-screen max-w-none left-1/2 -translate-x-1/2 overflow-hidden">
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
-              .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; }
-              .pathways-carousel > .carousel-card { scroll-snap-align: center; scroll-snap-stop: always; }
+              .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>
             <div
               ref={carouselRef}
@@ -3341,19 +3231,20 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   <p className={`${subText} text-sm mt-1`}>Try a different filter or select "All"</p>
                 </div>
               ) : (
-                loopedPathways.map((pathway, loopIndex) => {
+                filteredPathways.map((pathway, idx) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);
                   const isWingMentorCard = pathway.aircraftType === '__wingmentor__';
                   const cardAircraftImage = isWingMentorCard
                     ? '/logo.png'
                     : (pathway.image && !pathway.image.startsWith('wingmentor') ? pathway.image : getAircraftImage(pathway.aircraftType));
-                  const isSelected = selectedCarouselPathway?.id === pathway.id;
+                  const isSelected = carouselIndex === idx;
                   return (
                     <div
-                      key={`${pathway.id}-${loopIndex}`}
-                      className={`carousel-card flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-60'}`}
+                      key={pathway.id}
+                      data-pathway-index={idx}
+                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-60'}`}
                       style={{ width: '600px' }}
-                      onClick={() => setSelectedCarouselPathway(pathway)}
+                      onClick={() => { setCarouselIndex(idx); setSelectedCarouselPathway(pathway); scrollToCarouselIndex(idx); setIsCarouselAutoScrolling(false); }}
                     >
                       <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
                         {isWingMentorCard ? (
