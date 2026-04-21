@@ -37,7 +37,7 @@ export default function TypeRatingSearchPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftModel | null>(null);
   const [showCockpit, setShowCockpit] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   // Filter aircraft by category and search

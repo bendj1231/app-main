@@ -14,15 +14,15 @@ const NAV_BUTTONS = [
 
 export const PortalPageHeader: React.FC<PortalPageHeaderProps> = ({ onNavigate, activePage }) => {
   return (
-    <div className="w-full bg-slate-950 border-b border-slate-800 px-6 py-6 text-center sticky top-0 z-50">
+    <div className="w-full bg-white border-b border-slate-200 px-6 py-6 text-center sticky top-0 z-50">
       <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-2">
         Pilot Recognition Platform
       </p>
-      <h1 className="text-3xl md:text-4xl font-serif font-normal text-white mb-2">
+      <h1 className="text-3xl md:text-4xl font-serif font-normal text-slate-900 mb-2">
         Pilot Recognition{' '}
         <span style={{ color: '#DAA520' }}>Pathways</span>
       </h1>
-      <p className="text-slate-400 text-sm max-w-xl mx-auto mb-6">
+      <p className="text-slate-500 text-sm max-w-xl mx-auto mb-6">
         Discover and track your journey to airline careers. Our Recognition Formula calculates your real probability of success.
       </p>
       <div className="flex flex-wrap justify-center gap-3">

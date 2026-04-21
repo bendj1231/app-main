@@ -1253,7 +1253,7 @@ const App = () => {
           />
         )}
         {currentPage === 'pathways-modern' && (
-          <PathwaysPageModern isDarkMode={true} onNavigate={navigateTo} />
+          <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />
         )}
         {currentPage === 'portal-airline-expectations' && (
           <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} onNavigate={navigateTo} isDarkMode={false} />
@@ -1262,8 +1262,8 @@ const App = () => {
           <TypeRatingSearchPage />
         )}
         {currentPage === 'job-listings' && (
-          <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-            <p className="text-slate-400 text-lg">Job Listings coming soon</p>
+          <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+            <p className="text-slate-500 text-lg">Job Listings coming soon</p>
           </div>
         )}
         {currentPage === 'pathways-modern-light' && (
