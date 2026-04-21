@@ -388,19 +388,6 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       image: 'wingmentor-white'
     },
     {
-      id: 'disc-airline-1',
-      title: 'Delta Air Lines First Officer',
-      company: 'Delta Air Lines',
-      matchPercentage: 96,
-      location: 'Atlanta, GA / Various Bases',
-      type: 'Major Airline',
-      salary: '$150,000 - $200,000/year',
-      requirements: ['1500+ hrs TT', 'ATPL', 'B737/A320 Type Rating', 'US Citizen/Perm Resident'],
-      tags: ['Major Carrier', 'Union Benefits', 'Career Growth', 'Profit Sharing'],
-      postedAt: 'Hiring Now',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/1200px-Delta_logo.svg.png'
-    },
-    {
       id: 'disc-airline-2',
       title: 'United Airlines Captain',
       company: 'United Airlines',
@@ -411,7 +398,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['4000+ hrs TT', 'B737/B777 Type Rating', 'PIC Time', 'US Citizen'],
       tags: ['Major Carrier', 'Widebody Fleet', 'International Routes', 'Union Benefits'],
       postedAt: 'Access',
-      image: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/1200px-United_Airlines_Logo.svg.png'
+      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780360/airline-logos/airline-logos/united.svg'
     },
     {
       id: 'disc-airline-3',
