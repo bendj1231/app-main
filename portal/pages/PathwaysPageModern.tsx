@@ -3086,7 +3086,59 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     {/* Gap Analysis */}
                     <div className="p-3">
                       <GapAnalysisPanel
-                        analysis={MOCK_GAP_ANALYSIS}
+                        analysis={(() => {
+                          // Calculate gap analysis from Firebase intelligence
+                          const scoredJobs = intelligence.jobMatches?.scoredJobs || [];
+                          const topJob = scoredJobs[0];
+                          const userHours = recognitionProfile.pilotData?.totalHours || 0;
+                          const userTRs = recognitionProfile.pilotData?.typeRatings || [];
+                          const userScore = intelligence.fullScore?.totalScore || 0;
+
+                          // Calculate average gap from top jobs
+                          const avgHoursGap = scoredJobs.length > 0
+                            ? Math.round(scoredJobs.reduce((sum: number, j: any) => sum + (j.hoursGap || 0), 0) / scoredJobs.length)
+                            : 0;
+
+                          // Count missing type ratings
+                          const missingTRs = scoredJobs.filter((j: any) => j.missingRating).length;
+
+                          // Calculate gap percentage based on match scores
+                          const avgMatchPct = scoredJobs.length > 0
+                            ? Math.round(scoredJobs.reduce((sum: number, j: any) => sum + (j.matchPct || 0), 0) / scoredJobs.length)
+                            : 0;
+                          const gapPercentage = 100 - avgMatchPct;
+
+                          // Generate recommendations based on gaps
+                          const recommendations: string[] = [];
+                          if (avgHoursGap > 0) {
+                            recommendations.push(`Need ${avgHoursGap} more flight hours`);
+                          }
+                          if (missingTRs > 0) {
+                            recommendations.push(`Complete type rating program for ${missingTRs} aircraft types`);
+                          }
+                          if (recognitionProfile.breakdown?.experience && recognitionProfile.breakdown.experience < 70) {
+                            recommendations.push('Improve experience score through additional flight hours');
+                          }
+                          if (recognitionProfile.breakdown?.behavioral && recognitionProfile.breakdown.behavioral < 75) {
+                            recommendations.push('Enhance behavioral/CRM skills through training');
+                          }
+                          if (recommendations.length === 0) {
+                            recommendations.push('Profile is well-aligned with pathway requirements');
+                          }
+
+                          // Estimate cost and time based on gaps
+                          const estimatedCost = avgHoursGap * 50 + missingTRs * 15000;
+                          const estimatedMonths = Math.max(1, Math.ceil(avgHoursGap / 100) + missingTRs * 3);
+
+                          return {
+                            gapPercentage,
+                            totalGaps: (avgHoursGap > 0 ? 1 : 0) + (missingTRs > 0 ? 1 : 0),
+                            highPriorityGaps: avgHoursGap > 500 ? 1 : 0,
+                            estimatedCost,
+                            estimatedTime: { days: estimatedMonths * 30, months: estimatedMonths },
+                            recommendations
+                          };
+                        })()}
                         isDarkMode={false}
                         isExpanded={expandedGapAnalysis}
                         onToggle={() => setExpandedGapAnalysis(!expandedGapAnalysis)}
