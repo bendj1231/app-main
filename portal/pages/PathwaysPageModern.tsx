@@ -2778,25 +2778,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   />
                 )}
               </div>
-              {/* Profile Completion Progress - Top Right */}
-              {intelligence.fullScore && intelligence.fullScore.profileCompleteness < 90 && (
-                <div className={`hidden md:flex flex-col items-end gap-1 px-3 py-1.5 rounded-lg border ${isDarkMode ? 'bg-amber-500/10 border-amber-500/20' : 'bg-amber-50 border-amber-200'}`}>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-xs font-semibold ${isDarkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-                      Profile {intelligence.fullScore.profileCompleteness}% complete
-                    </span>
-                    <div className="w-20 h-1.5 rounded-full bg-slate-700 overflow-hidden">
-                      <div 
-                        className="h-full rounded-full bg-amber-400 transition-all duration-1000"
-                        style={{ width: `${intelligence.fullScore.profileCompleteness}%` }}
-                      />
-                    </div>
-                  </div>
-                  <span className={`text-[10px] ${isDarkMode ? 'text-slate-400' : 'text-slate-500'} truncate max-w-[200px]`}>
-                    Enroll in a WingMentor program to boost your Programs score
-                  </span>
-                </div>
-              )}
               <button className={`p-2 rounded-lg ${buttonBg} ${buttonText}`}>
                 <Bell className="w-5 h-5" />
               </button>
@@ -3012,6 +2993,26 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
         </div>
       </header>
+
+      {/* Profile Completion Progress Bar - Long Strip Below Header */}
+      {intelligence.fullScore && intelligence.fullScore.profileCompleteness < 90 && (
+        <div className={`w-full border-b ${isDarkMode ? 'bg-amber-500/10 border-amber-500/20' : 'bg-amber-50 border-amber-200'}`}>
+          <div className="container mx-auto px-4 py-2 flex items-center gap-4">
+            <span className={`text-sm font-semibold ${isDarkMode ? 'text-amber-400' : 'text-amber-600'} whitespace-nowrap`}>
+              Profile {intelligence.fullScore.profileCompleteness}% complete
+            </span>
+            <div className="flex-1 h-2 rounded-full bg-slate-700 overflow-hidden">
+              <div 
+                className="h-full rounded-full bg-amber-400 transition-all duration-1000"
+                style={{ width: `${intelligence.fullScore.profileCompleteness}%` }}
+              />
+            </div>
+            <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'} truncate`}>
+              Enroll in a WingMentor program to boost your Programs score
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Floating Filter Buttons - appears when scrolled */}
       <AnimatePresence>
@@ -3308,15 +3309,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             </div>
           </div>
         </motion.div>
-
-        {/* Intelligence Widgets — Profile nudge, job match banner, blind spot row */}
-        {intelligence.fullScore && (
-          <ProfileCompletionNudge
-            completeness={intelligence.fullScore.profileCompleteness}
-            insights={intelligence.fullScore.insights}
-            isDarkMode={isDarkMode}
-          />
-        )}
 
         {mode === 'jobs' && (
           <JobIntelligenceBanner
