@@ -299,58 +299,11 @@ export default function TypeRatingSearchPage() {
               </div>
             </div>
 
-            {/* Detail Content */}
-            <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
-              {/* Left — 3D viewer */}
-              <div>
-                <div className="flex gap-2 mb-4">
-                  <button
-                    onClick={() => setShowCockpit(false)}
-                    className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${!showCockpit ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                  >
-                    3D Model
-                  </button>
-                  {selectedAircraft.category !== 'cockpit' && (
-                    <button
-                      onClick={() => setShowCockpit(true)}
-                      className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${showCockpit ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                    >
-                      <LayoutGrid className="w-4 h-4" />
-                      Cockpit View
-                    </button>
-                  )}
-                </div>
-                <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-100">
-                  {!showCockpit ? (
-                    <iframe
-                      src={selectedAircraft.embedUrl}
-                      className="w-full h-full"
-                      title={selectedAircraft.title}
-                      frameBorder="0"
-                      allowFullScreen
-                      allow="autoplay; fullscreen; xr-spatial-tracking"
-                    />
-                  ) : getCockpitUrl(selectedAircraft.id) ? (
-                    <iframe
-                      src={getCockpitUrl(selectedAircraft.id)!}
-                      className="w-full h-full"
-                      title={`${selectedAircraft.name} Cockpit`}
-                      frameBorder="0"
-                      allowFullScreen
-                      allow="autoplay; fullscreen; xr-spatial-tracking"
-                    />
-                  ) : (
-                    <div className="h-full flex items-center justify-center text-slate-400 text-sm">
-                      Cockpit view not available for this aircraft
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Right — Info */}
+            {/* Description Section — requirements side by side */}
+            <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8 border-b border-slate-100">
               <div>
                 <h3 className="text-lg font-semibold mb-3 text-slate-900">Type Rating Requirements</h3>
-                <ul className="space-y-2.5 mb-6">
+                <ul className="space-y-2.5">
                   {[
                     'Valid ATPL or frozen ATPL',
                     'Multi-Engine Instrument Rating (ME/IR)',
@@ -364,11 +317,12 @@ export default function TypeRatingSearchPage() {
                     </li>
                   ))}
                 </ul>
-
+              </div>
+              <div>
                 <h3 className="text-lg font-semibold mb-3 text-slate-900">Recommended</h3>
                 <ul className="space-y-2.5">
                   {[
-                    `Prior experience on similar aircraft type`,
+                    'Prior experience on similar aircraft type',
                     'Simulator training at approved ATO',
                     'EBT / CBTA certification',
                     'Recent line experience (last 12 months)',
@@ -379,6 +333,55 @@ export default function TypeRatingSearchPage() {
                     </li>
                   ))}
                 </ul>
+              </div>
+            </div>
+
+            {/* 3D Viewer Section — tab switch above, full-width viewer below */}
+            <div className="p-6 md:p-8">
+              {/* Tab toggle */}
+              <div className="flex items-center gap-3 mb-5">
+                <button
+                  onClick={() => setShowCockpit(false)}
+                  className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${!showCockpit ? 'bg-sky-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                >
+                  Aircraft Full View 3D
+                </button>
+                {selectedAircraft.category !== 'cockpit' && (
+                  <button
+                    onClick={() => setShowCockpit(true)}
+                    className={`px-5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${showCockpit ? 'bg-amber-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                    Cockpit View
+                  </button>
+                )}
+              </div>
+
+              {/* Full-width viewer */}
+              <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-100">
+                {!showCockpit ? (
+                  <iframe
+                    src={selectedAircraft.embedUrl}
+                    className="w-full h-full"
+                    title={selectedAircraft.title}
+                    frameBorder="0"
+                    allowFullScreen
+                    allow="autoplay; fullscreen; xr-spatial-tracking"
+                  />
+                ) : getCockpitUrl(selectedAircraft.id) ? (
+                  <iframe
+                    src={getCockpitUrl(selectedAircraft.id)!}
+                    className="w-full h-full"
+                    title={`${selectedAircraft.name} Cockpit`}
+                    frameBorder="0"
+                    allowFullScreen
+                    allow="autoplay; fullscreen; xr-spatial-tracking"
+                  />
+                ) : (
+                  <div className="h-full flex items-center justify-center text-slate-400 text-sm">
+                    Cockpit view not available for this aircraft
+                  </div>
+                )}
               </div>
             </div>
 
