@@ -3175,7 +3175,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           <div className="flex flex-wrap justify-center mt-3 gap-3">
             {[
               { label: 'Airline Expectations', page: 'portal-airline-expectations', fallback: '/airline-expectations' },
-              { label: 'Aircraft Type-Ratings Search', page: 'type-rating-search', fallback: '/type-rating-search' },
+              { label: 'Aircraft Type-Ratings', page: 'type-rating-search', fallback: '/type-rating-search' },
               { label: 'Pilot Pathways', page: 'pathways', fallback: '/pathways' },
               { label: 'Job Listings', page: 'job-listings', fallback: '/job-listings' },
             ].map(({ label, page, fallback }) => (
