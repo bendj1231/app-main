@@ -588,7 +588,7 @@ const App = () => {
   };
 
   const navigateToPortal = () => {
-    setCurrentPage('pathways-modern-light');
+    setCurrentPage('portal');
   };
 
   const navigateToMainAppHome = () => {
@@ -1263,8 +1263,7 @@ const App = () => {
             selectedPathwayId={selectedPathwayId || undefined}
           />
         )}
-        {/* Legacy portal - disabled */}
-        {/* {currentPage === 'portal' && showDirectEnrollmentLoading && (
+        {currentPage === 'portal' && showDirectEnrollmentLoading && (
           <DirectEnrollmentLoadingScreen />
         )}
         {currentPage === 'portal' && !showDirectEnrollmentLoading && (
@@ -1275,7 +1274,7 @@ const App = () => {
               directToEnrollment={directToEnrollment}
             />
           </Suspense>
-        )} */}
+        )}
         {currentPage === 'foundational-platform' && showDirectPlatformLoading && (
           <DirectPlatformLoadingScreen />
         )}
@@ -1552,14 +1551,13 @@ root.render(
       <ToastProvider>
         <Routes>
           <Route path="/callback" element={<OAuthCallback />} />
-          {/* Legacy portal route - disabled */}
-          {/* <Route path="/portal" element={
+          <Route path="/portal" element={
             <ProtectedRoute>
               <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center"><div className="text-white text-xl">Loading Portal...</div></div>}>
                 <PortalWrapper onNavigate={() => {}} onBack={() => {}} />
               </Suspense>
             </ProtectedRoute>
-          } /> */}
+          } />
           <Route path="/type-rating-search" element={<TypeRatingSearchPage />} />
           <Route path="/airline-expectations" element={<AirlineExpectationsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/discover-pathways" element={<PathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />

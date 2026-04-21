@@ -524,7 +524,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 </button>
 
                                 <button
-                                    onClick={currentUser ? () => onNavigate('pathways-modern-light') : onLoginModalOpen || (() => {})}
+                                    onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
                                     className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
                                 >
                                     {currentUser ? 'Access Portal' : 'Login'}
@@ -849,7 +849,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     </button>
 
                                     <button
-                                        onClick={currentUser ? () => onNavigate('pathways-modern-light') : onLoginModalOpen || (() => {})}
+                                        onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
                                         className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest mt-4 shadow-xl`}
                                     >
                                         {currentUser ? 'Access Portal' : 'Login'}
