@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react';
-import { Search, ArrowLeft, X, LayoutGrid } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, LayoutGrid } from 'lucide-react';
 import { aircraftModels, AircraftModel } from '../data/aircraft-models';
 
-const categoryLabels: Record<string, string> = {
-  'all': 'All Aircraft',
+type Category = 'all' | 'commercial' | 'regional' | 'business-jet' | 'single-engine' | 'multi-engine' | 'turboprop' | 'jet' | 'cockpit' | 'amphibious' | 'vintage';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  'all': 'All',
   'commercial': 'Commercial',
   'regional': 'Regional',
   'business-jet': 'Business Jets',
@@ -13,10 +15,10 @@ const categoryLabels: Record<string, string> = {
   'jet': 'Jet',
   'cockpit': 'Cockpits',
   'amphibious': 'Amphibious',
-  'vintage': 'Vintage'
+  'vintage': 'Vintage',
 };
 
-const categoryColors: Record<string, string> = {
+const CATEGORY_COLORS: Record<string, string> = {
   'commercial': 'bg-blue-500',
   'regional': 'bg-emerald-500',
   'business-jet': 'bg-purple-500',
@@ -26,7 +28,7 @@ const categoryColors: Record<string, string> = {
   'jet': 'bg-rose-500',
   'cockpit': 'bg-amber-500',
   'amphibious': 'bg-cyan-500',
-  'vintage': 'bg-orange-500'
+  'vintage': 'bg-orange-500',
 };
 
 const getCockpitUrl = (id: string): string | null => {
@@ -40,170 +42,227 @@ const getCockpitUrl = (id: string): string | null => {
 };
 
 export default function TypeRatingSearchPage() {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftModel | null>(null);
   const [showCockpit, setShowCockpit] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
 
-  const filteredAircraft = aircraftModels.filter(aircraft => {
-    const matchesCategory = activeCategory === 'all' || aircraft.category === activeCategory;
+  const filteredAircraft = aircraftModels.filter(a => {
+    const matchesCat = activeCategory === 'all' || a.category === activeCategory;
     const matchesSearch = searchQuery === '' ||
-      aircraft.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      aircraft.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
+      a.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      a.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCat && matchesSearch;
   });
+
+  // Auto-scroll carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!carouselRef.current) return;
+      const el = carouselRef.current;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll - 10) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: 288, behavior: 'smooth' });
+      }
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [filteredAircraft]);
+
+  const scroll = (dir: 'left' | 'right') =>
+    carouselRef.current?.scrollBy({ left: dir === 'left' ? -288 : 288, behavior: 'smooth' });
 
   const handleSelect = (aircraft: AircraftModel) => {
     setSelectedAircraft(aircraft);
     setShowCockpit(false);
-    setTimeout(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    setTimeout(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
-      {/* Header */}
-      <header className="bg-white/80 border-b border-slate-200 backdrop-blur-sm sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
-          <img src="/logo.png" alt="WingMentor" className="h-10 w-auto object-contain" />
-          <div>
-            <h1 className="text-lg font-bold text-slate-900">Aircraft Type-Ratings</h1>
-            <p className="text-slate-500 text-xs">Explore aircraft types and 3D models</p>
-          </div>
-          <div className="ml-auto relative">
-            <input
-              type="text"
-              placeholder="Search aircraft..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="pl-4 pr-10 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/40 w-56"
-            />
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Hero */}
-        <div className="mb-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-serif font-normal text-slate-900 mb-2">
+      {/* Header Nav */}
+      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
+          <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
+          <span className="text-sm font-semibold text-slate-900">Aircraft Type-Ratings</span>
+        </div>
+      </div>
+
+      {/* Hero */}
+      <div className="relative overflow-hidden pt-16 pb-12 px-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-500 mb-3">3D Models & Type Rating Info</p>
+          <h1 className="text-4xl md:text-6xl font-serif font-normal leading-tight mb-4 text-slate-900">
             Aircraft <span style={{ color: '#DAA520' }}>Type Ratings</span>
           </h1>
-          <p className="text-slate-500 max-w-2xl mx-auto text-sm">
-            Click any aircraft to explore its 3D model and cockpit. {filteredAircraft.length} aircraft available.
+          <p className="text-lg md:text-xl mb-2 text-slate-500">
+            Explore · 3D Models · Cockpits · Requirements
           </p>
-        </div>
 
-        {/* Category Filter */}
-        <div className="mb-6 flex flex-wrap justify-center gap-2">
-          {Object.keys(categoryLabels).map(cat => (
-            <button
-              key={cat}
-              onClick={() => { setActiveCategory(cat); setSelectedAircraft(null); }}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                activeCategory === cat
-                  ? `${categoryColors[cat] || 'bg-sky-500'} text-white shadow-md scale-105`
-                  : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-              }`}
-            >
-              {categoryLabels[cat]}
+          {/* Search */}
+          <div className="mt-8 max-w-lg mx-auto relative">
+            <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search aircraft, type ratings, tags..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full pl-4 pr-11 py-3 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Carousel Section */}
+      <div className="px-0 mb-12">
+        <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h2 className="text-2xl font-serif font-normal text-slate-900">Browse Aircraft</h2>
+            <p className="text-sm text-slate-500">{filteredAircraft.length} aircraft available</p>
+          </div>
+          {/* Category filter chips */}
+          <div className="flex gap-1.5 flex-wrap">
+            {(Object.keys(CATEGORY_LABELS) as Category[]).map(cat => (
+              <button
+                key={cat}
+                onClick={() => { setActiveCategory(cat); setSelectedAircraft(null); }}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeCategory === cat
+                    ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white`
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                {CATEGORY_LABELS[cat]}
+              </button>
+            ))}
+          </div>
+          {/* Scroll arrows */}
+          <div className="flex gap-2">
+            <button onClick={() => scroll('left')} className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+              <ChevronLeft className="w-5 h-5" />
             </button>
-          ))}
+            <button onClick={() => scroll('right')} className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Aircraft Grid — thumbnails only, no iframes */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+        {/* Edge-to-edge carousel */}
+        <div
+          ref={carouselRef}
+          className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
           {filteredAircraft.map(aircraft => (
-            <button
+            <div
               key={aircraft.id}
               onClick={() => handleSelect(aircraft)}
-              className={`group text-left rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all ${
+              className={`flex-shrink-0 w-72 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 border ${
                 selectedAircraft?.id === aircraft.id
-                  ? 'ring-2 ring-sky-500 border-sky-400'
-                  : 'border-slate-200 hover:border-sky-300'
-              } bg-white`}
+                  ? 'ring-2 ring-sky-500 border-sky-500/50'
+                  : 'border-slate-200 hover:border-slate-400'
+              } bg-white group`}
             >
-              <div className="aspect-video bg-slate-100 relative overflow-hidden">
+              {/* Thumbnail */}
+              <div className="relative h-44 overflow-hidden bg-slate-100">
                 <img
-                  src={`https://media.sketchfab.com/models/${aircraft.sketchfabId}/thumbnails/2048x2048/e3ab0eff2ed442ecb9e06d5e7aaf62e3.jpeg`}
+                  src={`https://media.sketchfab.com/models/${aircraft.sketchfabId}/thumbnails/640x360/8f5c92def5534d9ab02b0ccdc4cf9eff.jpeg`}
                   alt={aircraft.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   onError={e => {
-                    (e.target as HTMLImageElement).src = `https://media.sketchfab.com/models/${aircraft.sketchfabId}/thumbnails/640x360/8f5c92def5534d9ab02b0ccdc4cf9eff.jpeg`;
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80';
                   }}
                 />
-                <span className={`absolute top-2 left-2 px-2 py-0.5 rounded text-xs font-semibold text-white ${categoryColors[aircraft.category] || 'bg-slate-500'}`}>
-                  {categoryLabels[aircraft.category]}
-                </span>
-              </div>
-              <div className="p-3">
-                <p className="text-sm font-semibold text-slate-900 truncate">{aircraft.name}</p>
-                <p className="text-xs text-slate-500 truncate">{aircraft.tags.slice(0, 3).join(' · ')}</p>
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Inline Detail Panel — iframe loads only here */}
-        {selectedAircraft && (
-          <div ref={detailRef} className="bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden mb-12">
-            {/* Panel Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-              <div className="flex items-center gap-3">
-                <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
-                <div>
-                  <h2 className="text-xl font-bold text-slate-900">{selectedAircraft.name}</h2>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <span className={`px-2 py-0.5 rounded text-xs font-semibold text-white ${categoryColors[selectedAircraft.category]}`}>
-                      {categoryLabels[selectedAircraft.category]}
-                    </span>
-                    <span className="text-xs text-slate-500">Model by {selectedAircraft.author}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3">
+                  <span className="text-white font-serif text-base leading-tight">{aircraft.name}</span>
+                  <div className="flex items-center gap-1 text-white/70 text-xs mt-0.5">
+                    <Plane className="w-3 h-3" />
+                    {CATEGORY_LABELS[aircraft.category]}
                   </div>
                 </div>
               </div>
-              <button
-                onClick={() => setSelectedAircraft(null)}
-                className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Tab Toggle */}
-            <div className="flex gap-2 px-6 pt-4">
-              <button
-                onClick={() => setShowCockpit(false)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${!showCockpit ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-              >
-                3D Model
-              </button>
-              {selectedAircraft.category !== 'cockpit' && (
-                <button
-                  onClick={() => setShowCockpit(true)}
-                  className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${showCockpit ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                >
-                  <LayoutGrid className="w-4 h-4 inline mr-1" />
-                  Cockpit View
-                </button>
-              )}
-            </div>
-
-            {/* 3D Model iframe — only loads when panel is open */}
-            <div className="px-6 py-4">
-              {!showCockpit ? (
-                <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-100">
-                  <iframe
-                    src={selectedAircraft.embedUrl}
-                    className="w-full h-full"
-                    title={selectedAircraft.title}
-                    frameBorder="0"
-                    allowFullScreen
-                    allow="autoplay; fullscreen; xr-spatial-tracking"
-                  />
+              {/* Card body */}
+              <div className="p-4">
+                <div className="flex flex-wrap gap-1">
+                  {aircraft.tags.slice(0, 4).map(tag => (
+                    <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{tag}</span>
+                  ))}
                 </div>
-              ) : (
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Selected Aircraft Detail Panel */}
+      {selectedAircraft && (
+        <div ref={detailRef} className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-lg">
+
+            {/* Hero image with overlay */}
+            <div className="relative h-64 md:h-80">
+              <img
+                src={`https://media.sketchfab.com/models/${selectedAircraft.sketchfabId}/thumbnails/640x360/8f5c92def5534d9ab02b0ccdc4cf9eff.jpeg`}
+                alt={selectedAircraft.name}
+                className="w-full h-full object-cover"
+                onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'; }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 p-6 md:p-8">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className={`text-xs font-bold tracking-[0.2em] uppercase text-sky-400 bg-sky-500/20 px-3 py-1 rounded-full border border-sky-400/30`}>
+                    {CATEGORY_LABELS[selectedAircraft.category]}
+                  </span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-serif text-white mb-2">{selectedAircraft.name}</h2>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <span className="flex items-center gap-1.5 text-sky-300 text-sm">
+                    <img src="/logo.png" alt="WingMentor" className="h-4 w-auto object-contain opacity-80" />
+                    Model by {selectedAircraft.author}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Detail Content */}
+            <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
+              {/* Left — 3D viewer */}
+              <div>
+                <div className="flex gap-2 mb-4">
+                  <button
+                    onClick={() => setShowCockpit(false)}
+                    className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${!showCockpit ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                  >
+                    3D Model
+                  </button>
+                  {selectedAircraft.category !== 'cockpit' && (
+                    <button
+                      onClick={() => setShowCockpit(true)}
+                      className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${showCockpit ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                    >
+                      <LayoutGrid className="w-4 h-4" />
+                      Cockpit View
+                    </button>
+                  )}
+                </div>
                 <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-100">
-                  {getCockpitUrl(selectedAircraft.id) ? (
+                  {!showCockpit ? (
+                    <iframe
+                      src={selectedAircraft.embedUrl}
+                      className="w-full h-full"
+                      title={selectedAircraft.title}
+                      frameBorder="0"
+                      allowFullScreen
+                      allow="autoplay; fullscreen; xr-spatial-tracking"
+                    />
+                  ) : getCockpitUrl(selectedAircraft.id) ? (
                     <iframe
                       src={getCockpitUrl(selectedAircraft.id)!}
                       className="w-full h-full"
@@ -213,19 +272,55 @@ export default function TypeRatingSearchPage() {
                       allow="autoplay; fullscreen; xr-spatial-tracking"
                     />
                   ) : (
-                    <div className="h-full flex items-center justify-center text-slate-500 text-sm">
+                    <div className="h-full flex items-center justify-center text-slate-400 text-sm">
                       Cockpit view not available for this aircraft
                     </div>
                   )}
                 </div>
-              )}
+              </div>
+
+              {/* Right — Info */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-slate-900">Type Rating Requirements</h3>
+                <ul className="space-y-2.5 mb-6">
+                  {[
+                    'Valid ATPL or frozen ATPL',
+                    'Multi-Engine Instrument Rating (ME/IR)',
+                    'Class 1 Medical Certificate',
+                    'MCC course completion',
+                    'ICAO English Level 4+',
+                  ].map((req, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-slate-500">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+
+                <h3 className="text-lg font-semibold mb-3 text-slate-900">Recommended</h3>
+                <ul className="space-y-2.5">
+                  {[
+                    `Prior experience on similar aircraft type`,
+                    'Simulator training at approved ATO',
+                    'EBT / CBTA certification',
+                    'Recent line experience (last 12 months)',
+                  ].map((req, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-slate-500">
+                      <Star className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
-            {/* Tags & Link */}
-            <div className="px-6 pb-6">
-              <div className="flex flex-wrap gap-2 mb-4">
+            {/* Tags & link */}
+            <div className="px-6 md:px-8 pb-6 border-t border-slate-100 pt-5">
+              <div className="flex flex-wrap gap-2 mb-3">
                 {selectedAircraft.tags.map(tag => (
-                  <span key={tag} className="px-3 py-1 rounded-full text-xs bg-slate-100 text-slate-600">{tag}</span>
+                  <span key={tag} className="text-xs px-3 py-1.5 rounded-full font-medium bg-sky-50 text-sky-700 border border-sky-200">
+                    {tag}
+                  </span>
                 ))}
               </div>
               <a
@@ -238,8 +333,8 @@ export default function TypeRatingSearchPage() {
               </a>
             </div>
           </div>
-        )}
-      </main>
+        </div>
+      )}
     </div>
   );
 }
