@@ -270,7 +270,11 @@ const getCockpitUrl = (id: string): string | null => {
   return null;
 };
 
-export default function TypeRatingSearchPage() {
+interface Props {
+  onNavigate?: (page: string) => void;
+}
+
+export default function TypeRatingSearchPage({ onNavigate }: Props) {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftModel | null>(null);
@@ -599,7 +603,17 @@ export default function TypeRatingSearchPage() {
               const info = getAircraftInfo(selectedAircraft);
               return (
                 <div className="px-6 md:px-8 py-6 border-b border-slate-100">
-                  <h3 className="text-lg font-semibold mb-4 text-slate-900">Recommended Type Rating Centers</h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-slate-900">Recommended Type Rating Centers</h3>
+                    {onNavigate && (
+                      <button
+                        onClick={() => onNavigate('type-rating-centers')}
+                        className="text-xs font-medium text-sky-600 hover:text-sky-700 transition-colors"
+                      >
+                        View All Centers →
+                      </button>
+                    )}
+                  </div>
                   <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' } as React.CSSProperties}>
                     {info.atoCarousel.map((ato, i) => (
                       <div key={i} className="flex-shrink-0 w-64 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">

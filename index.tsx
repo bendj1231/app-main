@@ -72,6 +72,7 @@ import { OnboardingPrograms } from './components/website/components/OnboardingPr
 import { OnboardingRecognition } from './components/website/components/OnboardingRecognition';
 import { AccreditationPage } from './components/website/components/AccreditationPage';
 import TypeRatingSearchPage from './pages/TypeRatingSearchPage';
+import TypeRatingCentersPage from './pages/TypeRatingCentersPage';
 import { EmiratesAtplPage } from './components/website/components/pathways/EmiratesAtplPage';
 import { EmergingAirTaxiPage } from './components/website/components/pathways/EmergingAirTaxiPage';
 import { PilotedDronesPage } from './components/website/components/pathways/PilotedDronesPage';
@@ -1259,7 +1260,10 @@ const App = () => {
           <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} onNavigate={navigateTo} isDarkMode={false} />
         )}
         {currentPage === 'type-rating-search' && (
-          <TypeRatingSearchPage />
+          <TypeRatingSearchPage onNavigate={navigateTo} />
+        )}
+        {currentPage === 'type-rating-centers' && (
+          <TypeRatingCentersPage onBack={() => navigateTo('type-rating-search')} onNavigate={navigateTo} />
         )}
         {currentPage === 'job-listings' && (
           <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} mode="jobs" />
@@ -1304,7 +1308,7 @@ const App = () => {
         'pilot-recognition', 'pilot-recognition-profile', 'recognition-career-matches', 'air-taxi-pathways', 'cadet-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
         'pilot-gap', 'website', 'digital-logbook-directory', 'examination-results-directory', 'pilot-gap-about',
-        'pathways-modern', 'pathways-modern-light', 'pathways-detail', 'portal-airline-expectations', 'type-rating-search', 'job-listings',
+        'pathways-modern', 'pathways-modern-light', 'pathways-detail', 'portal-airline-expectations', 'type-rating-search', 'type-rating-centers', 'job-listings',
         'benefits', 'news-updates', 'settings'
       ].includes(currentPage) && (
           <div className={`layout-wrapper ${loading ? 'content-loading' : 'content-ready'}`}>
