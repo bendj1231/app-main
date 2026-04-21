@@ -2641,19 +2641,21 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
     const cardWidth = 604; // 600px width + 4px gap
     const totalCards = filteredPathways.length;
-    const scrollWidth = totalCards * cardWidth;
+    const oneSetWidth = totalCards * cardWidth;
 
     // Initialize scroll position to middle set
-    container.scrollLeft = scrollWidth;
+    container.scrollLeft = oneSetWidth;
 
     const onScroll = () => {
-      // When scrolled past the first set, snap to the middle set
-      if (container.scrollLeft >= scrollWidth * 2) {
-        container.scrollLeft = scrollWidth;
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      
+      // When scrolled past the second set (near the end), snap to the middle set
+      if (container.scrollLeft >= oneSetWidth * 2) {
+        container.scrollLeft = oneSetWidth;
       }
-      // When scrolled before the first set, snap to the middle set
+      // When scrolled before the first set (near the beginning), snap to the middle set
       if (container.scrollLeft <= 0) {
-        container.scrollLeft = scrollWidth;
+        container.scrollLeft = oneSetWidth;
       }
     };
 
