@@ -1,6 +1,163 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, LayoutGrid } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, LayoutGrid, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick } from 'lucide-react';
 import { aircraftModels, AircraftModel } from '../data/aircraft-models';
+
+// ── Per-aircraft enrichment data ────────────────────────────────────────────
+interface AircraftInfo {
+  manufacturerLogo: string;
+  manufacturerName: string;
+  firstFlight: number;
+  avgRatingCostUSD: string;
+  pohUrl: string;
+  airlinesUsingFleet: { name: string; logo: string }[];
+  specs: { label: string; value: string }[];
+  typicalNeedToKnow: string[];
+  atoCarousel: { name: string; location: string; offers: string[]; img: string }[];
+}
+
+const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
+  default: {
+    manufacturerLogo: '/logo.png',
+    manufacturerName: 'Various Manufacturers',
+    firstFlight: 1980,
+    avgRatingCostUSD: '$15,000–$40,000',
+    pohUrl: 'https://www.faa.gov/aircraft',
+    airlinesUsingFleet: [],
+    specs: [
+      { label: 'MTOW', value: 'Varies by variant' },
+      { label: 'V1 (Typical)', value: 'Varies' },
+      { label: 'Vr', value: 'Varies' },
+      { label: 'V2', value: 'Varies' },
+      { label: 'Vne', value: 'Varies' },
+    ],
+    typicalNeedToKnow: [
+      'Normal, abnormal and emergency procedures',
+      'Systems knowledge — hydraulics, pneumatics, electrics, avionics',
+      'Performance calculations — V-speeds, takeoff/landing data',
+      'Limitations — structural, engine, speed',
+      'Weight & balance calculations',
+    ],
+    atoCarousel: [
+      { name: 'CAE', location: 'Clark, Philippines', offers: ['A320', 'ATR 72-600', 'B737 NG'], img: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp' },
+      { name: 'FlightSafety International', location: 'Worldwide', offers: ['B737', 'B747', 'Citation'], img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80' },
+    ],
+  },
+  'airbus-a320': {
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
+    manufacturerName: 'Airbus',
+    firstFlight: 1987,
+    avgRatingCostUSD: '$30,000–$55,000',
+    pohUrl: 'https://www.airbusatc.com/courses/a320',
+    airlinesUsingFleet: [
+      { name: 'Philippine Airlines', logo: 'https://www.philippineairlines.com/content/dam/palportal/migration/files/historyandmilestonespalsstory/nutshell-copy.jpg' },
+      { name: 'Cebu Pacific', logo: 'https://images.jgsummit.com.ph/2021/12/15/0f999ad31e634dc5a90ad0d350cbe86ddfc4eca3.jpg' },
+      { name: 'IndiGo', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
+      { name: 'easyJet', logo: 'https://www.cae.com/content/images/civil-aviation/_webp/easyJet_crew_.jpg_webp_40cd750bba9870f18aada2478b24840a.webp' },
+    ],
+    specs: [
+      { label: 'MTOW', value: '77,000 kg (A320-200)' },
+      { label: 'V1 (typical)', value: '~134 kt' },
+      { label: 'Vr', value: '~143 kt' },
+      { label: 'V2', value: '~147 kt' },
+      { label: 'Vmo', value: '350 kt / M0.82' },
+      { label: 'Vfe (full flap)', value: '177 kt' },
+      { label: 'Vs1g (clean)', value: '~122 kt' },
+      { label: 'Takeoff Roll (SL/ISA)', value: '~1,800 m' },
+    ],
+    typicalNeedToKnow: [
+      'Fly-by-wire flight control laws (Normal, Alternate, Direct)',
+      'FADEC engine control and thrust rating logic',
+      'ECAM/EFIS system architecture and failure analysis',
+      'FMGC/MCDU operation and flight plan management',
+      'Alpha protection and high-AoA envelope',
+      'MEL category A/B/C/D implications',
+    ],
+    atoCarousel: [
+      { name: 'CAE', location: 'Clark, Philippines', offers: ['A320 Family', 'ATR 72-600'], img: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp' },
+      { name: 'Airbus Training Centre', location: 'Toulouse, France', offers: ['A320', 'A330', 'A350'], img: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg' },
+      { name: 'FlightSafety International', location: 'Atlanta, USA', offers: ['A320 Type Rating'], img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80' },
+    ],
+  },
+  'boeing-737': {
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Boeing_full_logo.svg/1200px-Boeing_full_logo.svg.png',
+    manufacturerName: 'Boeing',
+    firstFlight: 1967,
+    avgRatingCostUSD: '$25,000–$50,000',
+    pohUrl: 'https://www.boeing.com/commercial/737ng',
+    airlinesUsingFleet: [
+      { name: 'Southwest Airlines', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Southwest_Airlines_logo_2014.svg/1200px-Southwest_Airlines_logo_2014.svg.png' },
+      { name: 'Ryanair', logo: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
+      { name: 'SkyWest', logo: 'https://www.thrustflight.com/wp-content/uploads/2022/11/skywest-airlines-2-768x512.jpg' },
+    ],
+    specs: [
+      { label: 'MTOW (737-800)', value: '79,016 kg' },
+      { label: 'V1 (typical)', value: '~138 kt' },
+      { label: 'Vr', value: '~145 kt' },
+      { label: 'V2', value: '~152 kt' },
+      { label: 'Vmo', value: '340 kt / M0.82' },
+      { label: 'Vfe (flaps 40)', value: '162 kt' },
+      { label: 'Takeoff Roll (SL/ISA)', value: '~2,000 m' },
+    ],
+    typicalNeedToKnow: [
+      'Conventional hydraulic flight controls and feel system',
+      'CFM56 engine operations and FADEC differences by variant',
+      'Boeing EFIS (PFD/ND) and FMC operation',
+      'TCAS II and EGPWS response procedures',
+      'Tailstrike awareness and rotation technique',
+      '737 MAX MCAS awareness (post-AD training)',
+    ],
+    atoCarousel: [
+      { name: 'CAE', location: 'Clark, Philippines', offers: ['B737 NG', 'B737 MAX'], img: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp' },
+      { name: 'Boeing Flight Services', location: 'Miami, USA', offers: ['B737 Type Rating'], img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80' },
+      { name: 'Ryanair TRTO', location: 'Dublin, Ireland', offers: ['B737 NG / MAX'], img: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
+    ],
+  },
+  'atr-72': {
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/ATR_Aircraft_logo.svg/1200px-ATR_Aircraft_logo.svg.png',
+    manufacturerName: 'ATR',
+    firstFlight: 1988,
+    avgRatingCostUSD: '$20,000–$35,000',
+    pohUrl: 'https://www.atr-aircraft.com/services/training',
+    airlinesUsingFleet: [
+      { name: 'Cebu Pacific', logo: 'https://images.jgsummit.com.ph/2021/12/15/0f999ad31e634dc5a90ad0d350cbe86ddfc4eca3.jpg' },
+      { name: 'Philippine Airlines', logo: 'https://www.philippineairlines.com/content/dam/palportal/migration/files/historyandmilestonespalsstory/nutshell-copy.jpg' },
+    ],
+    specs: [
+      { label: 'MTOW (ATR 72-600)', value: '23,000 kg' },
+      { label: 'Vr', value: '~105 kt' },
+      { label: 'V2', value: '~115 kt' },
+      { label: 'Vmo', value: '250 kt' },
+      { label: 'Vfe (15°)', value: '185 kt' },
+      { label: 'Takeoff Roll (SL/ISA)', value: '~1,250 m' },
+    ],
+    typicalNeedToKnow: [
+      'PW127 turboprop engine management and NTS system',
+      'Propeller autofeather and manual feather procedures',
+      'Digital avionics suite — PFD/MFD/MCDU (Primus Epic)',
+      'Icing and de-icing procedures (ATR is prone to ice-related incidents)',
+      'Pressurization system and pressurization failure drills',
+    ],
+    atoCarousel: [
+      { name: 'CAE', location: 'Clark, Philippines', offers: ['ATR 72-600'], img: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp' },
+      { name: 'ATR Training Centre', location: 'Toulouse, France', offers: ['ATR 42', 'ATR 72'], img: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg' },
+    ],
+  },
+};
+
+function getAircraftInfo(aircraft: AircraftModel): AircraftInfo {
+  if (aircraft.id.includes('a320') || aircraft.id.includes('a318') || aircraft.id.includes('a319') || aircraft.id.includes('a321'))
+    return AIRCRAFT_INFO['airbus-a320'];
+  if (aircraft.id.includes('737'))
+    return AIRCRAFT_INFO['boeing-737'];
+  if (aircraft.id.includes('atr'))
+    return AIRCRAFT_INFO['atr-72'];
+  return AIRCRAFT_INFO['default'];
+}
+
+// Age helper
+function getAge(firstFlight: number) {
+  return new Date().getFullYear() - firstFlight;
+}
 
 // Cache for fetched thumbnail URLs
 const thumbnailCache: Record<string, string> = {};
@@ -269,6 +426,40 @@ export default function TypeRatingSearchPage() {
         </div>
       </div>
 
+      {/* Empty state — no aircraft selected */}
+      {!selectedAircraft && (
+        <div ref={detailRef} className="max-w-7xl mx-auto px-6 mb-16">
+          <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-white p-10 md:p-16 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 rounded-full bg-sky-50 flex items-center justify-center">
+                <MousePointerClick className="w-10 h-10 text-sky-400" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-serif font-normal text-slate-800 mb-3">Select an Aircraft to Explore</h2>
+            <p className="text-slate-500 max-w-xl mx-auto mb-8 leading-relaxed">
+              Choose any aircraft from the carousel above to view its interactive 3D model, cockpit, type rating requirements, training costs, manufacturer details, V-speed specs, POH access, and which airlines operate it.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+              {[
+                { icon: <Plane className="w-5 h-5 text-sky-500" />, label: '3D Model & Cockpit' },
+                { icon: <DollarSign className="w-5 h-5 text-emerald-500" />, label: 'Avg. Rating Cost' },
+                { icon: <Building2 className="w-5 h-5 text-purple-500" />, label: 'Airlines in Fleet' },
+                { icon: <Gauge className="w-5 h-5 text-rose-500" />, label: 'V-Speeds & Specs' },
+                { icon: <Calendar className="w-5 h-5 text-amber-500" />, label: 'Aircraft Age & History' },
+                { icon: <FileText className="w-5 h-5 text-indigo-500" />, label: 'POH / Manual Access' },
+                { icon: <BookOpen className="w-5 h-5 text-teal-500" />, label: 'Need-to-Know' },
+                { icon: <Star className="w-5 h-5 text-yellow-500" />, label: 'Type Rating Centers' },
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                  {item.icon}
+                  <span className="text-xs font-medium text-slate-600 text-center">{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Selected Aircraft Detail Panel */}
       {selectedAircraft && (
         <div ref={detailRef} className="max-w-7xl mx-auto px-6 mb-12">
@@ -299,11 +490,60 @@ export default function TypeRatingSearchPage() {
               </div>
             </div>
 
-            {/* Description Section — requirements side by side */}
+            {/* Info bar — manufacturer + cost + age */}
+            {(() => {
+              const info = getAircraftInfo(selectedAircraft);
+              return (
+                <div className="px-6 md:px-8 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 border-b border-slate-100">
+                  <div className="flex items-center gap-3">
+                    <img src={info.manufacturerLogo} alt={info.manufacturerName} className="h-8 object-contain" onError={e => { (e.target as HTMLImageElement).style.display='none'; }} />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-slate-400">Manufacturer</p>
+                      <p className="text-sm font-semibold text-slate-800">{info.manufacturerName}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">Avg. Type Rating Cost</p>
+                    <p className="text-sm font-semibold text-emerald-600">{info.avgRatingCostUSD}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">First Flight</p>
+                    <p className="text-sm font-semibold text-slate-800">{info.firstFlight} <span className="text-xs text-slate-400 font-normal">({getAge(info.firstFlight)} yrs old)</span></p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">POH / Manual</p>
+                    <a href={info.pohUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1">
+                      <FileText className="w-3.5 h-3.5" /> Access PDF →
+                    </a>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Airlines in fleet */}
+            {(() => {
+              const info = getAircraftInfo(selectedAircraft);
+              if (!info.airlinesUsingFleet.length) return null;
+              return (
+                <div className="px-6 md:px-8 py-5 border-b border-slate-100">
+                  <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-3">Airlines Operating This Type</p>
+                  <div className="flex flex-wrap gap-3">
+                    {info.airlinesUsingFleet.map(a => (
+                      <div key={a.name} className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+                        <img src={a.logo} alt={a.name} className="h-6 w-10 object-contain" onError={e => { (e.target as HTMLImageElement).style.display='none'; }} />
+                        <span className="text-xs font-medium text-slate-700">{a.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Description Section — requirements + specs */}
             <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8 border-b border-slate-100">
               <div>
                 <h3 className="text-lg font-semibold mb-3 text-slate-900">Type Rating Requirements</h3>
-                <ul className="space-y-2.5">
+                <ul className="space-y-2.5 mb-6">
                   {[
                     'Valid ATPL or frozen ATPL',
                     'Multi-Engine Instrument Rating (ME/IR)',
@@ -317,8 +557,26 @@ export default function TypeRatingSearchPage() {
                     </li>
                   ))}
                 </ul>
+                <h3 className="text-lg font-semibold mb-3 text-slate-900">Need to Know</h3>
+                <ul className="space-y-2.5">
+                  {getAircraftInfo(selectedAircraft).typicalNeedToKnow.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-slate-500">
+                      <BookOpen className="w-4 h-4 text-indigo-400 mt-0.5 flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div>
+                <h3 className="text-lg font-semibold mb-3 text-slate-900">Performance Standards & V-Speeds</h3>
+                <div className="space-y-2 mb-6">
+                  {getAircraftInfo(selectedAircraft).specs.map((s, i) => (
+                    <div key={i} className="flex items-center justify-between py-2 border-b border-slate-50">
+                      <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">{s.label}</span>
+                      <span className="text-sm font-medium text-slate-800">{s.value}</span>
+                    </div>
+                  ))}
+                </div>
                 <h3 className="text-lg font-semibold mb-3 text-slate-900">Recommended</h3>
                 <ul className="space-y-2.5">
                   {[
@@ -335,6 +593,34 @@ export default function TypeRatingSearchPage() {
                 </ul>
               </div>
             </div>
+
+            {/* Recommended Type Rating Centers carousel */}
+            {(() => {
+              const info = getAircraftInfo(selectedAircraft);
+              return (
+                <div className="px-6 md:px-8 py-6 border-b border-slate-100">
+                  <h3 className="text-lg font-semibold mb-4 text-slate-900">Recommended Type Rating Centers</h3>
+                  <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' } as React.CSSProperties}>
+                    {info.atoCarousel.map((ato, i) => (
+                      <div key={i} className="flex-shrink-0 w-64 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+                        <div className="h-36 overflow-hidden">
+                          <img src={ato.img} alt={ato.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="p-3">
+                          <p className="font-semibold text-sm text-slate-900">{ato.name}</p>
+                          <p className="text-xs text-slate-400 mb-2">{ato.location}</p>
+                          <div className="flex flex-wrap gap-1">
+                            {ato.offers.map(o => (
+                              <span key={o} className="text-[10px] px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">{o}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* 3D Viewer Section — tab switch above, full-width viewer below */}
             <div className="p-6 md:p-8">
