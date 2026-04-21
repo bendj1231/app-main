@@ -109,7 +109,7 @@ const CENTERS: RatingCenter[] = [
     location: 'Toulouse, France',
     flag: '🇫🇷',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/ATR_Aircraft_logo.svg/1200px-ATR_Aircraft_logo.svg.png',
-    heroImg: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/air-france.jpg',
+    heroImg: 'https://www.atr-aircraft.com/wp-content/uploads/2020/06/ATR-71691MD-1024x682.jpg',
     website: 'https://www.atr-aircraft.com/services/training',
     description: "The ATR Training Centre is the OEM-authorised training organisation for all ATR turboprop type ratings. Located at Toulouse-Blagnac Airport, it provides the most authoritative ATR 42 and ATR 72 initial type rating and recurrency training worldwide.",
     typesOffered: ['ATR 42-500', 'ATR 42-600', 'ATR 72-500', 'ATR 72-600'],

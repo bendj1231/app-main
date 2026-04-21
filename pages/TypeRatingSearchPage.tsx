@@ -361,7 +361,7 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
     ],
     atoCarousel: [
       { name: 'CAE', location: 'Clark, Philippines', offers: ['ATR 72-600'], img: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp' },
-      { name: 'ATR Training Centre', location: 'Toulouse, France', offers: ['ATR 42', 'ATR 72'], img: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg' },
+      { name: 'ATR Training Centre', location: 'Toulouse, France', offers: ['ATR 42', 'ATR 72'], img: 'https://www.atr-aircraft.com/wp-content/uploads/2020/06/ATR-71691MD-1024x682.jpg' },
     ],
   },
 };
