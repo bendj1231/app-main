@@ -207,7 +207,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Strategic Career Guidance</p>
           <h1 className={`text-4xl md:text-6xl font-serif font-normal leading-tight mb-4 ${text}`}>
-            Airline Requirements Search
+            Airline Expectations Search
           </h1>
           <p className="text-lg md:text-xl mb-2" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
             Requirements · Expectations · Career Pathways
