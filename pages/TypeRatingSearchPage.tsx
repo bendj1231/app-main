@@ -9,7 +9,7 @@ interface AircraftInfo {
   firstFlight: number;
   avgRatingCostUSD: string;
   pohUrl: string;
-  pohEmbed?: string;
+  pohDocs?: { label: string; embed: string; url: string; author: string }[];
   airlinesUsingFleet: { name: string; logo: string }[];
   specs: { label: string; value: string }[];
   typicalNeedToKnow: string[];
@@ -119,7 +119,20 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
     firstFlight: 2005,
     avgRatingCostUSD: '$45,000–$75,000',
     pohUrl: 'https://www.scribd.com/document/254362201/Airbus-A380-Manual',
-    pohEmbed: 'https://www.scribd.com/embeds/254362201/content?start_page=1&view_mode=scroll&access_key=key-dlI4DDFm4MiWtnkN3xdU',
+    pohDocs: [
+      {
+        label: 'Pilot Operating Handbook',
+        embed: 'https://www.scribd.com/embeds/254362201/content?start_page=1&view_mode=scroll&access_key=key-dlI4DDFm4MiWtnkN3xdU',
+        url: 'https://www.scribd.com/document/254362201/Airbus-A380-Manual#from_embed',
+        author: 'NikolaMilović',
+      },
+      {
+        label: 'Flight Crew Operating Manual (FCOM)',
+        embed: 'https://www.scribd.com/embeds/455323866/content?start_page=1&view_mode=scroll&access_key=key-ivcVD6uOFhfDhPZpih1V',
+        url: 'https://www.scribd.com/document/455323866/Airbus-a380-Fcom#from_embed',
+        author: 'Iceman 29',
+      },
+    ],
     airlinesUsingFleet: [
       { name: 'Emirates', logo: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/emirates.jpg' },
       { name: 'Singapore Airlines', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
@@ -322,6 +335,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
   const carouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const pohRef = useRef<HTMLDivElement>(null);
+  const [activeDocIndex, setActiveDocIndex] = useState(0);
 
   const filteredAircraft = aircraftModels.filter(a => {
     const matchesCat = activeCategory === 'all' || a.category === activeCategory;
@@ -352,6 +366,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
   const handleSelect = (aircraft: AircraftModel) => {
     setSelectedAircraft(aircraft);
     setShowCockpit(false);
+    setActiveDocIndex(0);
     setTimeout(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   };
 
@@ -564,7 +579,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">POH / Manual</p>
-                    {info.pohEmbed ? (
+                    {info.pohDocs?.length ? (
                       <button
                         onClick={() => pohRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                         className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
@@ -693,21 +708,41 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
               );
             })()}
 
-            {/* POH / Pilot Operating Handbook embed — shown when available */}
+            {/* POH / Documents — tab selector + embedded reader */}
             {(() => {
               const info = getAircraftInfo(selectedAircraft);
-              if (!info.pohEmbed) return null;
+              if (!info.pohDocs?.length) return null;
+              const activeDoc = info.pohDocs[activeDocIndex] ?? info.pohDocs[0];
               return (
                 <div ref={pohRef} className="px-6 md:px-8 py-6 border-b border-slate-100">
                   <div className="flex items-center gap-2 mb-4">
                     <FileText className="w-5 h-5 text-indigo-500" />
-                    <h3 className="text-lg font-semibold text-slate-900">Pilot Operating Handbook</h3>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 font-medium">Official Document</span>
+                    <h3 className="text-lg font-semibold text-slate-900">Aircraft Manuals</h3>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 font-medium">Official Documents</span>
                   </div>
+                  {/* Document tab selector */}
+                  <div className="flex gap-2 mb-4 flex-wrap">
+                    {info.pohDocs.map((doc, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveDocIndex(i)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
+                          activeDocIndex === i
+                            ? 'bg-indigo-500 text-white shadow-md'
+                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        {doc.label}
+                      </button>
+                    ))}
+                  </div>
+                  {/* Embedded reader */}
                   <div className="rounded-xl overflow-hidden border border-slate-200 bg-white">
                     <iframe
-                      src={info.pohEmbed}
-                      title={`${selectedAircraft.name} Pilot Operating Handbook`}
+                      key={activeDocIndex}
+                      src={activeDoc.embed}
+                      title={activeDoc.label}
                       width="100%"
                       height="700"
                       frameBorder="0"
@@ -717,7 +752,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                     />
                   </div>
                   <p className="text-xs text-slate-400 mt-2 text-center">
-                    <a href={info.pohUrl} target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:underline">{selectedAircraft.name} Manual</a> via Scribd · by NikolaMilović
+                    <a href={activeDoc.url} target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:underline">{activeDoc.label}</a> via Scribd · by {activeDoc.author}
                   </p>
                 </div>
               );
