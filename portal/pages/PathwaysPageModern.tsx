@@ -44,7 +44,7 @@ import { OrbitControls, PerspectiveCamera, Environment } from '@react-three/drei
 import * as THREE from 'three';
 
 // Import real job data from PilotJobDatabasePage
-import { jobApplicationListings } from '../../external-references/Portal 2/src/pages/PilotJobDatabasePage';
+import { jobApplicationListings } from './PilotJobDatabasePage';
 
 // ============================================================================
 // AIRLINE IMAGE BANK - Confirmed Cloudinary URLs from AirlineExpectations
