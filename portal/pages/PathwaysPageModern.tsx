@@ -2409,7 +2409,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [selectedCarouselPathway, setSelectedCarouselPathway] = useState<PathwayData | null>(null);
   const [cockpitActivated, setCockpitActivated] = useState(false);
   const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
-  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [carouselIndex, setCarouselIndex] = useState(1);
   const [isCarouselAutoScrolling, setIsCarouselAutoScrolling] = useState(true);
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
   const carouselAutoScrollRef = useRef<NodeJS.Timeout | null>(null);
@@ -2623,7 +2623,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // On mount / filter change scroll to index 0
   useEffect(() => {
     if (filteredPathways.length === 0) return;
-    requestAnimationFrame(() => requestAnimationFrame(() => scrollToCarouselIndex(0, 'auto')));
+    // Scroll to index 1 to skip intro card
+    requestAnimationFrame(() => requestAnimationFrame(() => scrollToCarouselIndex(1, 'auto')));
   }, [filteredPathways.length]);
 
   // Sync carouselIndex from scroll position (handles touch/mouse swipe)
@@ -2636,13 +2637,15 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       tid = setTimeout(() => {
         const center = container.scrollLeft + container.clientWidth / 2;
         const cards = container.querySelectorAll('[data-pathway-index]');
-        let closest = 0;
+        let closest = 1; // Default to index 1 to skip intro card
         let minDist = Infinity;
         cards.forEach((card) => {
           const el = card as HTMLElement;
           const dist = Math.abs(el.offsetLeft + el.offsetWidth / 2 - center);
           if (dist < minDist) { minDist = dist; closest = Number(el.dataset.pathwayIndex); }
         });
+        // Ensure we never select index 0 (intro card)
+        if (closest === 0 && cards.length > 1) closest = 1;
         setCarouselIndex(closest);
         setSelectedCarouselPathway(fp => {
           const cur = filteredPathways[closest];
@@ -2650,7 +2653,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         });
         // Snap to center the closest card
         scrollToCarouselIndex(closest, 'smooth');
-      }, 150);
+      }, 150); // Increased delay for smoother snap
     };
     container.addEventListener('scroll', onScroll, { passive: true });
     return () => { container.removeEventListener('scroll', onScroll); clearTimeout(tid); };
@@ -2682,7 +2685,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     const pathways = filteredPathways;
     const interval = setInterval(() => {
       setCarouselIndex(prev => {
-        const next = prev >= pathways.length - 1 ? 0 : prev + 1;
+        // Skip intro card (index 0), always start at index 1
+        const next = prev >= pathways.length - 1 ? 1 : prev + 1;
         setSelectedCarouselPathway(pathways[next]);
         scrollToCarouselIndex(next);
         return next;
