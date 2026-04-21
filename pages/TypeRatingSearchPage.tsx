@@ -113,6 +113,50 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
       { name: 'Ryanair TRTO', location: 'Dublin, Ireland', offers: ['B737 NG / MAX'], img: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
     ],
   },
+  'airbus-a350': {
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
+    manufacturerName: 'Airbus',
+    firstFlight: 2013,
+    avgRatingCostUSD: '$40,000–$65,000',
+    pohUrl: 'https://www.scribd.com/document/576313013/A350-1000-FCOM',
+    pohDocs: [
+      {
+        label: 'Flight Crew Operating Manual (FCOM)',
+        embed: 'https://www.scribd.com/embeds/576313013/content?start_page=1&view_mode=scroll&access_key=key-flSpS0tiu25M1AOYIumc',
+        url: 'https://www.scribd.com/document/576313013/A350-1000-FCOM#from_embed',
+        author: 'Peter J Begley',
+      },
+    ],
+    airlinesUsingFleet: [
+      { name: 'Qatar Airways', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
+      { name: 'Singapore Airlines', logo: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&q=80' },
+      { name: 'Cathay Pacific', logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
+      { name: 'Finnair', logo: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&q=80' },
+    ],
+    specs: [
+      { label: 'MTOW (A350-900)', value: '280,000 kg' },
+      { label: 'V1 (typical)', value: '~145 kt' },
+      { label: 'Vr', value: '~155 kt' },
+      { label: 'V2', value: '~160 kt' },
+      { label: 'Vmo', value: '350 kt / M0.89' },
+      { label: 'Vfe (Config 1)', value: '230 kt' },
+      { label: 'Vfe (Full)', value: '185 kt' },
+      { label: 'Takeoff Roll (SL/ISA)', value: '~2,600 m' },
+      { label: 'Service Ceiling', value: '43,100 ft' },
+    ],
+    typicalNeedToKnow: [
+      'Fly-by-wire 3rd generation — enhanced Normal Law with load alleviation',
+      'Rolls-Royce Trent XWB engine management and FADEC',
+      'Advanced avionics — OIS, MFD, FMS with FANS-C/ATN',
+      'ETOPS 370 minute approval procedures',
+      'Composite airframe awareness and inspection limitations',
+      'A350 specific weight & balance — 369 PAX (3-class) configuration',
+    ],
+    atoCarousel: [
+      { name: 'Airbus Training Centre', location: 'Toulouse, France', offers: ['A350-900', 'A350-1000'], img: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg' },
+      { name: 'FlightSafety International', location: 'Worldwide', offers: ['A350 Type Rating'], img: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80' },
+    ],
+  },
   'airbus-a380': {
     manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
     manufacturerName: 'Airbus',
@@ -198,6 +242,8 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
 function getAircraftInfo(aircraft: AircraftModel): AircraftInfo {
   if (aircraft.id === 'airbus-a380' || aircraft.id === 'airbus-a380-alt')
     return AIRCRAFT_INFO['airbus-a380'];
+  if (aircraft.id.includes('a350'))
+    return AIRCRAFT_INFO['airbus-a350'];
   if (aircraft.id.includes('a320') || aircraft.id.includes('a318') || aircraft.id.includes('a319') || aircraft.id.includes('a321'))
     return AIRCRAFT_INFO['airbus-a320'];
   if (aircraft.id.includes('737'))
