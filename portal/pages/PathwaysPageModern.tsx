@@ -2682,12 +2682,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   );
 
   // Include pathways or jobs based on mode
-  // For 'all' category, always use discoveryPathways (curated pathway cards)
+  // For 'all' category, always use discoveryPathways (curated pathway cards) regardless of mode
   const allPathways = activeCategory === 'all'
     ? discoveryPathways
-    : mode === 'jobs'
-      ? dynamicPathways
-      : discoveryPathways;
+    : (mode === 'jobs' ? dynamicPathways : discoveryPathways);
 
   // Always show all portal categories regardless of data
   const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
