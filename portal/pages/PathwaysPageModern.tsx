@@ -3172,27 +3172,25 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           <div className="flex justify-center">
             <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
           </div>
-          <div className="flex justify-center mt-3 gap-3">
-            <button
-              onClick={() => onNavigate ? onNavigate('portal-airline-expectations') : (window.location.href = '/airline-expectations')}
-              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                isDarkMode
-                  ? 'bg-sky-600 hover:bg-sky-700 text-white'
-                  : 'bg-sky-500 hover:bg-sky-600 text-white'
-              }`}
-            >
-              View Airline Expectations
-            </button>
-            <button
-              onClick={() => onNavigate ? onNavigate('type-rating-search') : (window.location.href = '/type-rating-search')}
-              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                isDarkMode
-                  ? 'bg-violet-600 hover:bg-violet-700 text-white'
-                  : 'bg-violet-500 hover:bg-violet-600 text-white'
-              }`}
-            >
-              Aircraft Type-Ratings Search
-            </button>
+          <div className="flex flex-wrap justify-center mt-3 gap-3">
+            {[
+              { label: 'Airline Expectations', page: 'portal-airline-expectations', fallback: '/airline-expectations' },
+              { label: 'Aircraft Type-Ratings Search', page: 'type-rating-search', fallback: '/type-rating-search' },
+              { label: 'Pilot Pathways', page: 'pathways', fallback: '/pathways' },
+              { label: 'Job Listings', page: 'job-listings', fallback: '/job-listings' },
+            ].map(({ label, page, fallback }) => (
+              <button
+                key={page}
+                onClick={() => onNavigate ? onNavigate(page) : (window.location.href = fallback)}
+                className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
+                  isDarkMode
+                    ? 'bg-sky-600 hover:bg-sky-700 text-white'
+                    : 'bg-sky-500 hover:bg-sky-600 text-white'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
           <div className="flex justify-center">
             <CategoryFilter
