@@ -499,18 +499,18 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
       <div className="max-w-7xl mx-auto px-6 mb-16">
         <div className="rounded-2xl overflow-hidden bg-gradient-to-r from-sky-900 via-blue-900 to-indigo-900 border border-sky-800/50 p-8 text-center">
           <Globe className="w-10 h-10 text-sky-400 mx-auto mb-4" />
-          <h3 className="text-2xl font-serif text-white mb-2">Check Your Airline Match Score</h3>
-          <p className="text-sky-200/80 text-sm max-w-xl mx-auto mb-6">
+          <h3 className="text-2xl font-serif text-black mb-2">Check Your Airline Match Score</h3>
+          <p className="text-slate-600 text-sm max-w-xl mx-auto mb-6">
             Your WingMentor PilotRecognition profile is automatically matched against each airline's verified requirements. Build your profile to unlock personalised match scores.
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur px-5 py-2.5 rounded-full border border-white/20">
-              <span className="text-white text-sm font-medium">Profile Score</span>
-              <span className="text-sky-300 font-bold text-lg">{userProfile ? '82%' : '--'}</span>
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur px-5 py-2.5 rounded-full border border-slate-200">
+              <span className="text-black text-sm font-medium">Profile Score</span>
+              <span className="text-sky-600 font-bold text-lg">{userProfile ? '82%' : '--'}</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur px-5 py-2.5 rounded-full border border-white/20">
-              <span className="text-white text-sm font-medium">Airlines Matched</span>
-              <span className="text-emerald-300 font-bold text-lg">{userProfile ? AIRLINES.length : '0'}</span>
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur px-5 py-2.5 rounded-full border border-slate-200">
+              <span className="text-black text-sm font-medium">Airlines Matched</span>
+              <span className="text-emerald-600 font-bold text-lg">{userProfile ? AIRLINES.length : '0'}</span>
             </div>
           </div>
         </div>
