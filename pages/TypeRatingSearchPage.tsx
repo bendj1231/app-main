@@ -213,6 +213,12 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
         url: 'https://www.scribd.com/document/512711472/Cessna-152-1978-POH#from_embed',
         author: 'vic',
       },
+      {
+        label: 'C152 Checklist',
+        embed: 'https://www.scribd.com/embeds/17683313/content?start_page=1&view_mode=scroll&access_key=key-8sjf9hhba2kn2ziwetz',
+        url: 'https://www.scribd.com/document/17683313/C152-Checklist-2#from_embed',
+        author: 'jgills240',
+      },
     ],
     airlinesUsingFleet: [
       { name: 'Flight Schools Worldwide', logo: '/logo.png' },
