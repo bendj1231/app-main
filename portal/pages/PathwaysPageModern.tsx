@@ -2409,11 +2409,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [selectedCarouselPathway, setSelectedCarouselPathway] = useState<PathwayData | null>(null);
   const [cockpitActivated, setCockpitActivated] = useState(false);
   const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
-  const [carouselIndex, setCarouselIndex] = useState(1);
-  const [isCarouselAutoScrolling, setIsCarouselAutoScrolling] = useState(false);
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
-  const carouselAutoScrollRef = useRef<NodeJS.Timeout | null>(null);
-  const isProgrammaticScrollRef = useRef(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
@@ -2603,93 +2599,22 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   const loopedPathways = filteredPathways; // no longer looped — use direct index
 
-  // Sync selectedCarouselPathway with carouselIndex
-  useEffect(() => {
-    if (filteredPathways.length === 0) { setSelectedCarouselPathway(null); return; }
-    const clampedIndex = Math.min(carouselIndex, filteredPathways.length - 1);
-    setCarouselIndex(clampedIndex);
-    setSelectedCarouselPathway(filteredPathways[clampedIndex]);
-  }, [filteredPathways]);
-
-  // Scroll to card by index - manual calculation for padding-based centering
-  const scrollToCarouselIndex = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
-    const container = carouselRef.current;
-    if (!container) return;
-    const card = container.querySelector(`[data-pathway-index="${index}"]`) as HTMLElement | null;
-    if (!card) return;
-    // Calculate scroll position to center the card in viewport
-    // The carousel has padding: calc(50vw - 300px) to center content
-    const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-    const viewportCenter = window.innerWidth / 2;
-    const scrollPos = cardCenter - viewportCenter;
-    container.scrollTo({ left: scrollPos, behavior });
-  }, []);
-
-  // On mount / filter change scroll to index 0
-  useEffect(() => {
-    if (filteredPathways.length === 0) return;
-    // Scroll to index 1 to skip intro card
-    requestAnimationFrame(() => requestAnimationFrame(() => scrollToCarouselIndex(1, 'auto')));
-  }, [filteredPathways.length]);
-
-  // Sync carouselIndex from scroll position (handles touch/mouse swipe)
-  useEffect(() => {
-    const container = carouselRef.current;
-    if (!container) return;
-    let tid: ReturnType<typeof setTimeout>;
-    const onScroll = () => {
-      // Skip if this is a programmatic scroll from arrow buttons
-      if (isProgrammaticScrollRef.current) return;
-      clearTimeout(tid);
-      tid = setTimeout(() => {
-        const center = container.scrollLeft + container.clientWidth / 2;
-        const cards = container.querySelectorAll('[data-pathway-index]');
-        let closest = 1; // Default to index 1 to skip intro card
-        let minDist = Infinity;
-        cards.forEach((card) => {
-          const el = card as HTMLElement;
-          const dist = Math.abs(el.offsetLeft + el.offsetWidth / 2 - center);
-          if (dist < minDist) { minDist = dist; closest = Number(el.dataset.pathwayIndex); }
-        });
-        // Ensure we never select index 0 (intro card)
-        if (closest === 0 && cards.length > 1) closest = 1;
-        setCarouselIndex(closest);
-        setSelectedCarouselPathway(fp => {
-          const cur = filteredPathways[closest];
-          return cur || fp;
-        });
-        // Snap to center the closest card
-        scrollToCarouselIndex(closest, 'smooth');
-      }, 100);
-    };
-    container.addEventListener('scroll', onScroll, { passive: true });
-    return () => { container.removeEventListener('scroll', onScroll); clearTimeout(tid); };
-  }, [filteredPathways.length, scrollToCarouselIndex]);
+  // Simple scroll function like PortalAirlineExpectationsPage
+  const scrollCarousel = (dir: 'left' | 'right') => {
+    carouselRef.current?.scrollBy({ left: dir === 'left' ? -640 : 640, behavior: 'smooth' });
+  };
 
   // Reset cockpit activation when pathway changes
   useEffect(() => {
     setCockpitActivated(false);
   }, [selectedCarouselPathway?.id]);
 
-  // Arrow navigation
-  const scrollCarousel = useCallback((direction: 'left' | 'right') => {
-    if (filteredPathways.length === 0) return;
-    setIsCarouselAutoScrolling(false);
-    setCarouselIndex(prevIndex => {
-      let newIndex = direction === 'left'
-        ? prevIndex - 1
-        : prevIndex + 1;
-      // Skip intro card (index 0), wrap around between pathway cards (index 1 to end)
-      if (newIndex < 1) newIndex = filteredPathways.length - 1; // Wrap to last card
-      if (newIndex >= filteredPathways.length) newIndex = 1; // Wrap to first pathway card
-      setSelectedCarouselPathway(filteredPathways[newIndex]);
-      isProgrammaticScrollRef.current = true;
-      scrollToCarouselIndex(newIndex);
-      // Reset flag after scroll animation completes (smooth scroll takes ~600-800ms)
-      setTimeout(() => { isProgrammaticScrollRef.current = false; }, 800);
-      return newIndex;
-    });
-  }, [filteredPathways.length, scrollToCarouselIndex]);
+  // Set initial selected pathway
+  useEffect(() => {
+    if (filteredPathways.length > 0 && !selectedCarouselPathway) {
+      setSelectedCarouselPathway(filteredPathways[0]);
+    }
+  }, [filteredPathways, selectedCarouselPathway]);
 
   // Keyboard navigation for arrow keys
   useEffect(() => {
@@ -2702,7 +2627,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [scrollCarousel]);
+  }, []);
 
   // Auto-scroll disabled - manual control only
 
@@ -3353,11 +3278,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             `}</style>
             <div
               ref={carouselRef}
-              className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4"
+              className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4 px-6"
               style={{
                 WebkitOverflowScrolling: 'touch',
-                paddingLeft: 'calc(50vw - 300px)',
-                paddingRight: 'calc(50vw - 300px)',
                 cursor: 'grab',
               }}
               onMouseDown={(e) => {
@@ -3391,22 +3314,14 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   const cardAircraftImage = isWingMentorCard
                     ? '/logo.png'
                     : (pathway.image && !pathway.image.startsWith('wingmentor') ? pathway.image : getAircraftImage(pathway.aircraftType));
-                  const isSelected = carouselIndex === idx;
+                  const isSelected = selectedCarouselPathway?.id === pathway.id;
                   return (
                     <div
                       key={pathway.id}
-                      data-pathway-index={idx}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-60'}`}
                       style={{ width: '600px' }}
-                      onClick={() => { 
-                        // Skip intro card (index 0)
-                        if (idx === 0) return;
-                        setCarouselIndex(idx); 
-                        setSelectedCarouselPathway(pathway); 
-                        isProgrammaticScrollRef.current = true;
-                        scrollToCarouselIndex(idx); 
-                        setIsCarouselAutoScrolling(false); 
-                        setTimeout(() => { isProgrammaticScrollRef.current = false; }, 800);
+                      onClick={() => {
+                        setSelectedCarouselPathway(pathway);
                       }}
                     >
                       <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
