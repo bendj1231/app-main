@@ -2413,6 +2413,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [isCarouselAutoScrolling, setIsCarouselAutoScrolling] = useState(false);
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
   const carouselAutoScrollRef = useRef<NodeJS.Timeout | null>(null);
+  const isProgrammaticScrollRef = useRef(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
@@ -2636,6 +2637,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     if (!container) return;
     let tid: ReturnType<typeof setTimeout>;
     const onScroll = () => {
+      // Skip if this is a programmatic scroll from arrow buttons
+      if (isProgrammaticScrollRef.current) return;
       clearTimeout(tid);
       tid = setTimeout(() => {
         const center = container.scrollLeft + container.clientWidth / 2;
@@ -2679,7 +2682,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     if (newIndex >= filteredPathways.length) newIndex = 1; // Wrap to first pathway card
     setCarouselIndex(newIndex);
     setSelectedCarouselPathway(filteredPathways[newIndex]);
+    isProgrammaticScrollRef.current = true;
     scrollToCarouselIndex(newIndex);
+    // Reset flag after scroll animation completes (smooth scroll takes ~600-800ms)
+    setTimeout(() => { isProgrammaticScrollRef.current = false; }, 800);
   };
 
   // Auto-scroll disabled - manual control only
@@ -3382,8 +3388,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         if (idx === 0) return;
                         setCarouselIndex(idx); 
                         setSelectedCarouselPathway(pathway); 
+                        isProgrammaticScrollRef.current = true;
                         scrollToCarouselIndex(idx); 
                         setIsCarouselAutoScrolling(false); 
+                        setTimeout(() => { isProgrammaticScrollRef.current = false; }, 800);
                       }}
                     >
                       <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
