@@ -113,6 +113,46 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
       { name: 'Ryanair TRTO', location: 'Dublin, Ireland', offers: ['B737 NG / MAX'], img: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
     ],
   },
+  'cessna-172': {
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Cessna_logo.svg/1200px-Cessna_logo.svg.png',
+    manufacturerName: 'Cessna Aircraft Company',
+    firstFlight: 1955,
+    avgRatingCostUSD: '$8,000–$15,000',
+    pohUrl: 'https://www.scribd.com/document/406390315/C-172-Skyhawk-Checklist',
+    pohDocs: [
+      {
+        label: 'C-172 Skyhawk Checklist',
+        embed: 'https://www.scribd.com/embeds/406390315/content?start_page=1&view_mode=scroll&access_key=key-9cAryVSRyoKdDVMRzsqH',
+        url: 'https://www.scribd.com/document/406390315/C-172-Skyhawk-Checklist#from_embed',
+        author: 'Alejo Bautista',
+      },
+    ],
+    airlinesUsingFleet: [
+      { name: 'Flight Schools Worldwide', logo: '/logo.png' },
+    ],
+    specs: [
+      { label: 'MTOW', value: '1,111 kg' },
+      { label: 'Vso', value: '44 kt' },
+      { label: 'Vs1', value: '48 kt' },
+      { label: 'Vr', value: '55 kt' },
+      { label: 'Vx', value: '62 kt' },
+      { label: 'Vy', value: '76 kt' },
+      { label: 'Vno', value: '129 kt' },
+      { label: 'Vne', value: '163 kt' },
+      { label: 'Takeoff Roll (SL/ISA)', value: '~274 m' },
+    ],
+    typicalNeedToKnow: [
+      'Lycoming IO-360 engine management, fuel injection system and priming',
+      'Weight & balance — four-seat configuration, fuel/pax loading discipline',
+      'Cross-country navigation using VOR, GPS and pilotage',
+      'Soft and short field takeoff and landing techniques',
+      'Instrument scan basics — widely used for IMC/IFR initial training',
+      'Spin awareness and recovery — approved for intentional spins (early models)',
+    ],
+    atoCarousel: [
+      { name: 'Local Flying Schools', location: 'Worldwide', offers: ['PPL', 'CPL Hour Building', 'IFR Rating'], img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80' },
+    ],
+  },
   'cessna-152': {
     manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Cessna_logo.svg/1200px-Cessna_logo.svg.png',
     manufacturerName: 'Cessna Aircraft Company',
@@ -280,6 +320,8 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
 };
 
 function getAircraftInfo(aircraft: AircraftModel): AircraftInfo {
+  if (aircraft.id === 'cessna-172' || aircraft.id === 'cessna-172-alt' || aircraft.id === 'cessna-172-cockpit')
+    return AIRCRAFT_INFO['cessna-172'];
   if (aircraft.id === 'cessna-152')
     return AIRCRAFT_INFO['cessna-152'];
   if (aircraft.id === 'airbus-a380' || aircraft.id === 'airbus-a380-alt')
