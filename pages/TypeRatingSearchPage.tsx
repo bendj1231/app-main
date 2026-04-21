@@ -121,6 +121,12 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
     pohUrl: 'https://www.scribd.com/document/406390315/C-172-Skyhawk-Checklist',
     pohDocs: [
       {
+        label: 'Pilot Operating Handbook',
+        embed: 'https://www.scribd.com/embeds/724960749/content?start_page=1&view_mode=scroll&access_key=key-1fFlWIWCuVjNXW8xoKux',
+        url: 'https://www.scribd.com/document/724960749/Cessna-172-POH#from_embed',
+        author: 'arnavpilot',
+      },
+      {
         label: 'C-172 Skyhawk Checklist',
         embed: 'https://www.scribd.com/embeds/406390315/content?start_page=1&view_mode=scroll&access_key=key-9cAryVSRyoKdDVMRzsqH',
         url: 'https://www.scribd.com/document/406390315/C-172-Skyhawk-Checklist#from_embed',
