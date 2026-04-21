@@ -162,15 +162,15 @@ const AIRLINE_LOGOS: Record<string, string> = {
   'singapore': 'https://upload.wikimedia.org/wikipedia/en/thumb/6/2b/Singapore_Airlines_logo.svg/1200px-Singapore_Airlines_logo.svg.png',
   'cathay': 'https://upload.wikimedia.org/wikipedia/en/thumb/1/15/Cathay_Pacific_logo.svg/1200px-Cathay_Pacific_logo.svg.png',
   'lufthansa': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Lufthansa_Logo_2018.svg/1200px-Lufthansa_Logo_2018.svg.png',
-  'british airways': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/41/British_Airways_1997.svg/1200px-British_Airways_1997.svg.png',
-  'air france': 'https://upload.wikimedia.org/wikipedia/en/thumb/8/8c/Air_France-Logo.svg/1200px-Air_France-Logo.svg.png',
-  'klm': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/40/KLM_Logo.svg/1200px-KLM_Logo.svg.png',
+  'british airways': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/49/British_Airways_1997.svg/1200px-British_Airways_1997.svg.png',
+  'air france': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Air_France-Logo.svg/1200px-Air_France-Logo.svg.png',
+  'klm': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/KLM_Logo.svg/1200px-KLM_Logo.svg.png',
   'turkish': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Turkish_Airlines_logo_2019.svg/1200px-Turkish_Airlines_logo_2019.svg.png',
   'ana': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/All_Nippon_Airways_Logo.svg/1200px-All_Nippon_Airways_Logo.svg.png',
   'jal': 'https://upload.wikimedia.org/wikipedia/en/thumb/3/3a/Japan_Airlines_logo.svg/1200px-Japan_Airlines_logo.svg.png',
-  'delta': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/1200px-Delta_logo.svg.png',
-  'american': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/1200px-American_Airlines_logo_2013.svg.png',
-  'united': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/1200px-United_Airlines_Logo.svg.png',
+  'delta': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780355/airline-logos/airline-logos/delta.svg',
+  'american': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780357/airline-logos/airline-logos/american.svg',
+  'united': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780360/airline-logos/airline-logos/united.svg',
   'jetblue': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/23/JetBlue_Airways_Logo.svg/1200px-JetBlue_Airways_Logo.svg.png',
   'southwest': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Southwest_Airlines_logo_2014.svg/1200px-Southwest_Airlines_logo_2014.svg.png',
   'alaska': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/54/Alaska_Airlines_logo_2014.svg/1200px-Alaska_Airlines_logo_2014.svg.png',
@@ -207,12 +207,11 @@ const getAirlineLogo = (airline: string): string => {
   const airlineLower = airline.toLowerCase();
 
   for (const [key, url] of Object.entries(AIRLINE_LOGOS)) {
-    if (airlineLower.includes(key)) {
+    if (airlineLower.includes(key) || key.includes(airlineLower)) {
       return url;
     }
   }
 
-  // Return null if no logo found
   return '';
 };
 
