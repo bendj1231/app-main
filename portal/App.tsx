@@ -531,11 +531,14 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   }, [directToEnrollment, showLoading]);
 
   useEffect(() => {
-    if (!showLoading && authState.user && currentView === 'login') {
+    if (authState.user && currentView === 'login' && !directToEnrollment) {
       // Redirect to main app home page instead of portal hub
-      onNavigateToMainApp?.('home');
+      // Don't wait for loading sequence to complete
+      setTimeout(() => {
+        onNavigateToMainApp?.('home');
+      }, 100);
     }
-  }, [showLoading, authState.user, currentView, onNavigateToMainApp]);
+  }, [authState.user, currentView, directToEnrollment, onNavigateToMainApp]);
 
   const handleLogout = async () => {
     try {
