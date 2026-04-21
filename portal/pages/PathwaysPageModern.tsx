@@ -414,19 +414,6 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'
     },
     {
-      id: 'disc-airline-5',
-      title: 'JetBlue Airways First Officer',
-      company: 'JetBlue Airways',
-      matchPercentage: 92,
-      location: 'New York, NY / Boston, MA / Fort Lauderdale, FL',
-      type: 'Major Airline',
-      salary: '$135,000 - $175,000/year',
-      requirements: ['1500+ hrs TT', 'A320 Type Rating', 'US Citizen/Perm Resident'],
-      tags: ['All-Airbus Fleet', 'Crew Culture', 'Growth Opportunities', 'Profit Sharing'],
-      postedAt: 'Hiring Now',
-      image: 'https://upload.wikimedia.org/wikipedia/en/thumb/2/23/JetBlue_Airways_Logo.svg/1200px-JetBlue_Airways_Logo.svg.png'
-    },
-    {
       id: 'disc-airline-6',
       title: 'Alaska Airlines First Officer',
       company: 'Alaska Airlines',

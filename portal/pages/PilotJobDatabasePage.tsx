@@ -57,6 +57,26 @@ export const jobApplicationListings = [
     compensation: '$140,000 - $180,000/year'
   },
   {
+    title: 'First Officer - JetBlue Airways',
+    company: 'JetBlue Airways',
+    aircraft: 'A320',
+    location: 'New York, NY / Boston, MA / Fort Lauderdale, FL',
+    role: 'First Officer',
+    url: 'https://jetblue.com/careers',
+    posted: '2025-04-01',
+    status: 'Hiring Now',
+    applicationUrl: '',
+    flightTime: '1500',
+    license: 'ATP / ATPL',
+    visaSponsorship: 'Yes',
+    picTime: '0',
+    picInTypeTime: '0',
+    typeRating: 'Required',
+    medicalClass: 'Class 1',
+    icaoElpLevel: '4',
+    compensation: '$135,000 - $175,000/year'
+  },
+  {
     title: 'Captain - A320 family',
     company: 'Etihad',
     aircraft: 'A320 family',
