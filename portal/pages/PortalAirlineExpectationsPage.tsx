@@ -201,26 +201,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
           <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
           <span className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Airline Expectations</span>
         </div>
-        <div className={`border-t ${isDarkMode ? 'border-slate-800' : 'border-slate-200'} px-6 py-2 flex flex-wrap gap-2 justify-center`}>
-          {([
-            { label: 'Airline Expectations', page: 'portal-airline-expectations' },
-            { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
-            { label: 'Pilot Pathways', page: 'pathways-modern' },
-            { label: 'Job Listings', page: 'job-listings' },
-          ] as { label: string; page: string }[]).map(({ label, page }) => (
-            <button
-              key={page}
-              onClick={() => onNavigate ? onNavigate(page) : onBack()}
-              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                page === 'portal-airline-expectations'
-                  ? 'bg-sky-400 text-white'
-                  : isDarkMode ? 'bg-sky-600 hover:bg-sky-500 text-white' : 'bg-sky-500 hover:bg-sky-600 text-white'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* Hero */}
@@ -248,6 +228,26 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
               onChange={e => setSearchQuery(e.target.value)}
               className={`w-full pl-11 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all ${inputBg}`}
             />
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 mt-4">
+            {([
+              { label: 'Airline Expectations', page: 'portal-airline-expectations' },
+              { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
+              { label: 'Pilot Pathways', page: 'pathways-modern' },
+              { label: 'Job Listings', page: 'job-listings' },
+            ] as { label: string; page: string }[]).map(({ label, page }) => (
+              <button
+                key={page}
+                onClick={() => onNavigate ? onNavigate(page) : onBack()}
+                className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  page === 'portal-airline-expectations'
+                    ? 'bg-sky-400 text-white'
+                    : 'bg-sky-500 hover:bg-sky-600 text-white'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
         </div>
       </div>
