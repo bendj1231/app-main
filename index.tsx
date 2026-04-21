@@ -1303,7 +1303,9 @@ const App = () => {
         'contact-support', 'emirates-atpl', 'emerging-air-taxi', 'piloted-drones',
         'pilot-recognition', 'pilot-recognition-profile', 'recognition-career-matches', 'air-taxi-pathways', 'cadet-pathways', 'private-charter-pathways', 'cargo-transportation', 'ebt-cbta',
         'airline-expectations', 'atlas-cv', 'foundational-program', 'foundational-application', 'transition-program', 'transition-application', 'programs-pathways', 'programs', 'pathways', 'portal', 'about_programs', 'insights', 'applications_systems', 'membership', 'mission-vision', 'core-values', 'industry-stewardship',
-        'pilot-gap', 'website', 'digital-logbook-directory', 'examination-results-directory', 'pilot-gap-about'
+        'pilot-gap', 'website', 'digital-logbook-directory', 'examination-results-directory', 'pilot-gap-about',
+        'pathways-modern', 'pathways-modern-light', 'pathways-detail', 'portal-airline-expectations', 'type-rating-search', 'job-listings',
+        'benefits', 'news-updates', 'settings'
       ].includes(currentPage) && (
           <div className={`layout-wrapper ${loading ? 'content-loading' : 'content-ready'}`}>
             {!loading && (
