@@ -3474,24 +3474,25 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <ChevronLeft className="w-5 h-5" />
             </button>
 
-            <>
-            {selectedCarouselPathway && (
-              <div className="text-center max-w-xl">
-                  <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
-                  <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>{selectedCarouselPathway.name}</h3>
-                  <p className={`${subText} text-sm mb-2`}>
-                    {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
-                  </p>
-                  <div className={`rounded-lg p-3 mb-2 ${isDarkMode ? 'bg-sky-500/10 border border-sky-500/20' : 'bg-sky-50 border border-sky-200'}`}>
-                    <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>Why this pathway is recommended</p>
-                    <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                      Based on your profile, this pathway has a <strong>{selectedCarouselPathway.matchProbability}% match</strong>. Your recognition score of <strong>{intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 77}</strong> indicates alignment with this program's requirements.
+            <div className="flex-1 flex items-center justify-center">
+              {selectedCarouselPathway && (
+                <div className="text-center max-w-xl">
+                    <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
+                    <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>{selectedCarouselPathway.name}</h3>
+                    <p className={`${subText} text-sm mb-2`}>
+                      {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
                     </p>
+                    <div className={`rounded-lg p-3 mb-2 ${isDarkMode ? 'bg-sky-500/10 border border-sky-500/20' : 'bg-sky-50 border border-sky-200'}`}>
+                      <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>Why this pathway is recommended</p>
+                      <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                        Based on your profile, this pathway has a <strong>{selectedCarouselPathway.matchProbability}% match</strong>. Your recognition score of <strong>{intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 77}</strong> indicates alignment with this program's requirements.
+                      </p>
+                    </div>
+                    <p className={`text-sm leading-relaxed ${subText}`}>{selectedCarouselPathway.description}</p>
                   </div>
-                  <p className={`text-sm leading-relaxed ${subText}`}>{selectedCarouselPathway.description}</p>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             <button
               onClick={() => scrollCarousel('right')}
@@ -3499,7 +3500,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             >
               <ChevronRight className="w-5 h-5" />
             </button>
-            </>
           </div>
 
           {/* Requirements & Profile Alignment */}
