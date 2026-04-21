@@ -1263,7 +1263,8 @@ const App = () => {
             selectedPathwayId={selectedPathwayId || undefined}
           />
         )}
-        {currentPage === 'portal' && showDirectEnrollmentLoading && (
+        {/* Legacy portal - disabled */}
+        {/* {currentPage === 'portal' && showDirectEnrollmentLoading && (
           <DirectEnrollmentLoadingScreen />
         )}
         {currentPage === 'portal' && !showDirectEnrollmentLoading && (
@@ -1274,7 +1275,7 @@ const App = () => {
               directToEnrollment={directToEnrollment}
             />
           </Suspense>
-        )}
+        )} */}
         {currentPage === 'foundational-platform' && showDirectPlatformLoading && (
           <DirectPlatformLoadingScreen />
         )}
