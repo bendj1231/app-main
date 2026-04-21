@@ -257,7 +257,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Licensure & Type Rating Pathways', name: 'CPL & Type Ratings', target: 'about_programs', bullets: ['License Upgrades', 'Type Rating Courses', 'Multi-Engine'] },
 { category: 'Licensure & Type Rating Pathways', name: 'Aerial Work<br />(UPRT)', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] },
                 { category: 'Licensure & Type Rating Pathways', name: 'Aircraft Mgmt &<br />Ownership', target: 'insights', bullets: ['Registration Options', 'Maintenance Costs', 'Hangarage Strategy'] },
-                { category: 'Specialized Operations', name: 'Agricultural Crop<br />Dusting', target: 'insights', bullets: ['Hyperspectral Imaging', 'Crop Yield Analysis', 'Autonomy in Ag'] }
+                { category: 'Specialized Operations', name: 'Agricultural Crop<br />Dusting', target: 'insights', bullets: ['Hyperspectral Imaging', 'Crop Yield Analysis', 'Autonomy in Ag'] },
+                { category: 'Licensure & Type Rating Pathways', name: 'Type Rating Search', target: 'type-rating-search', bullets: ['3D Aircraft Models', 'Cockpit Views', 'Aircraft Categories'] }
             ]
         },
         {
