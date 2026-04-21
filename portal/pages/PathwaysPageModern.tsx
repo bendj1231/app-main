@@ -1380,7 +1380,7 @@ const calcMatchProbability = (job: { flightTime?: string; typeRating?: string; v
   // Type rating (25 pts)
   max += 25;
   const trReq = job.typeRating?.toLowerCase() || '';
-  const userTRs = (profile.pilotData?.typeRatings || []).map((t: string) => t.toLowerCase());
+  const userTRs = (profile.pilotData?.typeRatings || []).map((t: string) => (t || '').toLowerCase());
   if (!trReq || trReq === 'not required' || trReq === 'n/a') {
     score += 25;
   } else if (userTRs.some(tr => trReq.includes(tr) || tr.includes(trReq.split(' ')[0]))) {
@@ -2662,7 +2662,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     return jobApplicationListings.map((job, index) => {
       const base = transformJobToPathway(job, index);
       const jobId = `job-${index}`;
-      const fbPct = firebaseJobScoreMap?.[jobId] ?? firebaseJobScoreMap?.[`${job.company}-${job.title}`.replace(/\s+/g, '-').toLowerCase()];
+      const fbPct = firebaseJobScoreMap?.[jobId] ?? firebaseJobScoreMap?.[`${job.company || ''}-${job.title || ''}`.replace(/\s+/g, '-').toLowerCase()];
       const matchProbability = fbPct ?? calcMatchProbability(job, recognitionProfile);
       return { ...base, matchProbability };
     });
@@ -2705,9 +2705,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       matchesCategory = pathway.matchProbability >= 85;
     }
     const matchesSearch =
-      pathway.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pathway.airline.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pathway.locations.some(l => l.toLowerCase().includes(searchQuery.toLowerCase()));
+      (pathway.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (pathway.airline || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pathway.locations.some(l => (l || '').toLowerCase().includes(searchQuery.toLowerCase()));
     
     // Match probability filtering
     let matchesMatchFilter = true;
@@ -2741,7 +2741,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     // Job position filtering
     let matchesPositionFilter = true;
     if (positionFilter !== 'all') {
-      const name = pathway.name.toLowerCase();
+      const name = (pathway.name || '').toLowerCase();
       switch (positionFilter) {
         case 'Captain':
           matchesPositionFilter = name.includes('captain');
@@ -3814,9 +3814,9 @@ const MatchResultModal: React.FC<{
     const hoursScore = Math.min(100, (userHours / requiredHours) * 100);
     
     // Calculate licenses match
-    const licensesMet = requiredLicenses.every(license => 
-      userLicenses.some(userLicense => 
-        userLicense.toLowerCase().includes(license.toLowerCase())
+    const licensesMet = requiredLicenses.every(license =>
+      userLicenses.some(userLicense =>
+        (userLicense || '').toLowerCase().includes(license.toLowerCase())
       )
     );
     const licensesScore = licensesMet ? 100 : 50;
@@ -3957,8 +3957,8 @@ const MatchResultModal: React.FC<{
                 </thead>
                 <tbody>
                   {pathway.requirements.typeRatings.map((license, index) => {
-                    const hasLicense = userProfile?.ratings?.some(r => 
-                      r.toLowerCase().includes(license.toLowerCase())
+                    const hasLicense = userProfile?.ratings?.some(r =>
+                      (r || '').toLowerCase().includes(license.toLowerCase())
                     );
                     return (
                       <tr key={index} className={`${isDarkMode ? 'border-slate-700' : 'border-slate-200'} border-t`}>
