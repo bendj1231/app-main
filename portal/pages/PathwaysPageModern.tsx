@@ -178,25 +178,25 @@ const AIRLINE_LOGOS: Record<string, string> = {
 
 // Helper to get aircraft image
 const getAircraftImage = (aircraftType: string): string => {
-  const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  
+  const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+
   // Try exact match first
   if (AIRCRAFT_IMAGES[typeKey]) {
     return AIRCRAFT_IMAGES[typeKey];
   }
-  
+
   // Try partial matches
   for (const [key, url] of Object.entries(AIRCRAFT_IMAGES)) {
-    if (typeKey.includes(key.toUpperCase()) || key.toUpperCase().includes(typeKey)) {
+    if (typeKey.includes(String(key).toUpperCase()) || String(key).toUpperCase().includes(typeKey)) {
       return url;
     }
   }
-  
+
   // Check for partial matches
-  if (aircraftType.toUpperCase().includes('KING AIR')) {
+  if (String(aircraftType || '').toUpperCase().includes('KING AIR')) {
     return AIRCRAFT_IMAGES['King Air'];
   }
-  
+
   // Fallback to cadet-programme aircraft image
   return FALLBACK_IMAGES['cadet-programme'];
 };
@@ -1229,10 +1229,10 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
   }
   
   // Check if aircraft is in available 3D model list
-  const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const hasAircraftModel = AIRCRAFT_IMAGES[typeKey] || 
-    Object.keys(AIRCRAFT_IMAGES).some(key => 
-      typeKey.includes(key.toUpperCase()) || key.toUpperCase().includes(typeKey)
+  const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const hasAircraftModel = AIRCRAFT_IMAGES[typeKey] ||
+    Object.keys(AIRCRAFT_IMAGES).some(key =>
+      typeKey.includes(String(key).toUpperCase()) || String(key).toUpperCase().includes(typeKey)
     );
   
   // If aircraft not in list, mark as unavailable
@@ -1464,12 +1464,12 @@ const analyzeRequirementAlignment = (
   if (pathway.requirements.typeRatings.length > 0) {
     const hasTypeRating = pathway.requirements.typeRatings.some(rating =>
       userProfile.pilotData?.typeRatings?.some(userRating =>
-        userRating.toUpperCase().includes(rating.toUpperCase())
+        String(userRating || '').toUpperCase().includes(String(rating || '').toUpperCase())
       )
     );
     const missingRatings = pathway.requirements.typeRatings.filter(rating =>
       !userProfile.pilotData?.typeRatings?.some(userRating =>
-        userRating.toUpperCase().includes(rating.toUpperCase())
+        String(userRating || '').toUpperCase().includes(String(rating || '').toUpperCase())
       )
     );
     matches.push({
@@ -1634,31 +1634,23 @@ const PathwayCard: React.FC<{
 
   // Format aircraft type with manufacturer
   const formatAircraftType = (type: string): string => {
-    const upperType = type.toUpperCase();
+    const upperType = String(type || '').toUpperCase();
     if (upperType.includes('A318') || upperType.includes('A319') || upperType.includes('A320') || upperType.includes('A321')) {
       return 'Airbus A320 Family';
-    } else if (upperType.includes('A330')) {
-      return 'Airbus A330';
-    } else if (upperType.includes('A350')) {
-      return 'Airbus A350';
-    } else if (upperType.includes('A380')) {
-      return 'Airbus A380';
-    } else if (upperType.includes('A220')) {
-      return 'Airbus A220';
-    } else if (upperType.includes('737')) {
+    } else if (upperType.includes('B737') || upperType.includes('737')) {
       return 'Boeing 737';
-    } else if (upperType.includes('747')) {
+    } else if (upperType.includes('B747') || upperType.includes('747')) {
       return 'Boeing 747';
-    } else if (upperType.includes('777')) {
+    } else if (upperType.includes('B777') || upperType.includes('777')) {
       return 'Boeing 777';
-    } else if (upperType.includes('787')) {
+    } else if (upperType.includes('B787') || upperType.includes('787')) {
       return 'Boeing 787 Dreamliner';
-    } else if (upperType.includes('757')) {
-      return 'Boeing 757';
-    } else if (upperType.includes('767')) {
-      return 'Boeing 767';
-    } else if (upperType.includes('E170') || upperType.includes('E175') || upperType.includes('E190') || upperType.includes('E195')) {
-      return 'Embraer E-Jet Family';
+    } else if (upperType.includes('A350') || upperType.includes('350')) {
+      return 'Airbus A350';
+    } else if (upperType.includes('E195') || upperType.includes('E190') || upperType.includes('E170')) {
+      return 'Embraer E-Jet';
+    } else if (upperType.includes('A220') || upperType.includes('220')) {
+      return 'Airbus A220';
     } else if (upperType.includes('CRJ')) {
       return 'Bombardier CRJ';
     } else if (upperType.includes('CHALLENGER') || upperType.includes('CL-30')) {
@@ -1962,12 +1954,12 @@ const PathwayCard: React.FC<{
 
               {/* Cockpit Interior 3D - Only for A320 Family, B737, and B747 */}
               {pathway.aircraftType !== 'unavailable' &&
-                ((pathway.aircraftType?.toUpperCase().includes('A318') ||
-                pathway.aircraftType?.toUpperCase().includes('A319') || pathway.aircraftType?.toUpperCase().includes('A319NEO') ||
-                pathway.aircraftType?.toUpperCase().includes('A320') || pathway.aircraftType?.toUpperCase().includes('A320NEO') ||
-                pathway.aircraftType?.toUpperCase().includes('A321') || pathway.aircraftType?.toUpperCase().includes('A321NEO')) ||
-                (pathway.aircraftType?.toUpperCase().includes('B737') || pathway.aircraftType?.toUpperCase().includes('737')) ||
-                (pathway.aircraftType?.toUpperCase().includes('B747') || pathway.aircraftType?.toUpperCase().includes('747'))) && (
+                ((String(pathway.aircraftType || '').toUpperCase().includes('A318') ||
+                String(pathway.aircraftType || '').toUpperCase().includes('A319') || String(pathway.aircraftType || '').toUpperCase().includes('A319NEO') ||
+                String(pathway.aircraftType || '').toUpperCase().includes('A320') || String(pathway.aircraftType || '').toUpperCase().includes('A320NEO') ||
+                String(pathway.aircraftType || '').toUpperCase().includes('A321') || String(pathway.aircraftType || '').toUpperCase().includes('A321NEO')) ||
+                (String(pathway.aircraftType || '').toUpperCase().includes('B737') || String(pathway.aircraftType || '').toUpperCase().includes('737')) ||
+                (String(pathway.aircraftType || '').toUpperCase().includes('B747') || String(pathway.aircraftType || '').toUpperCase().includes('747'))) && (
                 <div className={`${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-100/50'} rounded-xl p-4 overflow-hidden`}>
                   <h4 className={`text-sm font-semibold ${isDarkMode ? 'text-slate-400' : 'text-slate-600'} uppercase tracking-wider mb-3 flex items-center gap-2`}>
                     <LayoutGrid className="w-4 h-4" />
@@ -1980,10 +1972,10 @@ const PathwayCard: React.FC<{
                     />
                   </div>
                   <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'} mt-2 text-center`}>
-                    {(pathway.aircraftType?.toUpperCase().includes('B747') || pathway.aircraftType?.toUpperCase().includes('747')) 
+                    {(String(pathway.aircraftType || '').toUpperCase().includes('B747') || String(pathway.aircraftType || '').toUpperCase().includes('747'))
                       ? 'Boeing 747 Glass cockpit'
-                      : (pathway.aircraftType?.toUpperCase().includes('B737') || pathway.aircraftType?.toUpperCase().includes('737')) 
-                        ? 'Boeing 737 Glass cockpit' 
+                      : (String(pathway.aircraftType || '').toUpperCase().includes('B737') || String(pathway.aircraftType || '').toUpperCase().includes('737'))
+                        ? 'Boeing 737 Glass cockpit'
                         : 'A320 Glass cockpit layout'}
                   </p>
                 </div>
@@ -2202,7 +2194,7 @@ const CategoryFilter: React.FC<{
                 : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50 hover:text-slate-800'
           }`}
         >
-          {categoryLabels[cat] || cat.charAt(0).toUpperCase() + cat.slice(1)}
+          {categoryLabels[cat] || String(cat).charAt(0).toUpperCase() + String(cat).slice(1)}
         </button>
       ))}
     </div>
@@ -2315,7 +2307,7 @@ const SKETCHFAB_COCKPITS: Record<string, string> = {
 
 // 3D Canvas Wrapper for Aircraft Models
 const Aircraft3DCanvas: React.FC<{ aircraftType: string; isDarkMode?: boolean }> = ({ aircraftType, isDarkMode = true }) => {
-  const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   const sketchfabUrl = SKETCHFAB_MODELS[typeKey] || SKETCHFAB_MODELS[aircraftType] || SKETCHFAB_MODELS['A320'];
 
   // Simplified: if we have a Sketchfab URL, use it
@@ -2365,7 +2357,7 @@ const Aircraft3DCanvas: React.FC<{ aircraftType: string; isDarkMode?: boolean }>
 
 // 3D Cockpit Canvas Wrapper - A320 Family, B737, and B747 ONLY
 const Cockpit3DCanvas: React.FC<{ aircraftType: string; isDarkMode?: boolean }> = ({ aircraftType, isDarkMode = true }) => {
-  const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   const cockpitUrl = SKETCHFAB_COCKPITS[typeKey] || SKETCHFAB_COCKPITS[aircraftType] || SKETCHFAB_COCKPITS['A320'];
   
   // Show cockpit for A320 Family (A318, A319, A320, A321), B737, and B747 only
@@ -3738,7 +3730,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           {/* 3D Aircraft View */}
           {selectedCarouselPathway && (() => {
             const aircraftType = selectedCarouselPathway.aircraftType || 'default';
-            const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
             // Better matching for A320 family and similar patterns
             const hasModel = SKETCHFAB_MODELS[typeKey] || 
               SKETCHFAB_MODELS[aircraftType] ||
@@ -3791,7 +3783,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           {/* 3D Cockpit View - A320 Family, B737, and B747 only */}
           {selectedCarouselPathway && (() => {
             const aircraftType = selectedCarouselPathway.aircraftType || 'default';
-            const typeKey = aircraftType.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
             const isA320 = typeKey.includes('A318') || typeKey.includes('A319') || typeKey.includes('A319NEO') || typeKey.includes('A320') || typeKey.includes('A320NEO') || typeKey.includes('A321') || typeKey.includes('A321NEO');
             const isB737 = typeKey.includes('B737') || typeKey.includes('737');
             const isB747 = typeKey.includes('B747') || typeKey.includes('747');
