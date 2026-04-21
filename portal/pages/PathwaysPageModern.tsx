@@ -2816,7 +2816,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     };
     container.addEventListener('scroll', onScroll, { passive: true });
     return () => { container.removeEventListener('scroll', onScroll); clearTimeout(tid); };
-  }, [filteredPathways]);
+  }, [filteredPathways.length]);
 
   // Reset cockpit activation when pathway changes
   useEffect(() => {
@@ -2851,7 +2851,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       });
     }, 4000);
     return () => clearInterval(interval);
-  }, [isCarouselAutoScrolling, filteredPathways, scrollToCarouselIndex]);
+  }, [isCarouselAutoScrolling, filteredPathways.length, scrollToCarouselIndex]);
 
   const handleCalculateMatch = (pathwayId: string) => {
     const pathway = allPathways.find(p => p.id === pathwayId);
