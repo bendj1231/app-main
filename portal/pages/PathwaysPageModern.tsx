@@ -2617,10 +2617,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     if (!container) return;
     const card = container.querySelector(`[data-pathway-index="${index}"]`) as HTMLElement | null;
     if (!card) return;
-    // Calculate scroll position to center the card under SELECTED PATHWAY text
+    // Calculate scroll position to center the card in viewport
     // The carousel has padding: calc(50vw - 300px) to center content
     const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-    const scrollPos = cardCenter - (window.innerWidth / 2) + 180; // Center card perfectly above SELECTED PATHWAY
+    const scrollPos = cardCenter - (window.innerWidth / 2) + 60; // Center card as shown
     container.scrollTo({ left: scrollPos, behavior });
   }, []);
 
@@ -2671,22 +2671,37 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   }, [selectedCarouselPathway?.id]);
 
   // Arrow navigation
-  const scrollCarousel = (direction: 'left' | 'right') => {
+  const scrollCarousel = useCallback((direction: 'left' | 'right') => {
     if (filteredPathways.length === 0) return;
     setIsCarouselAutoScrolling(false);
-    let newIndex = direction === 'left'
-      ? carouselIndex - 1
-      : carouselIndex + 1;
-    // Skip intro card (index 0), wrap around between pathway cards (index 1 to end)
-    if (newIndex < 1) newIndex = filteredPathways.length - 1; // Wrap to last card
-    if (newIndex >= filteredPathways.length) newIndex = 1; // Wrap to first pathway card
-    setCarouselIndex(newIndex);
-    setSelectedCarouselPathway(filteredPathways[newIndex]);
-    isProgrammaticScrollRef.current = true;
-    scrollToCarouselIndex(newIndex);
-    // Reset flag after scroll animation completes (smooth scroll takes ~600-800ms)
-    setTimeout(() => { isProgrammaticScrollRef.current = false; }, 800);
-  };
+    setCarouselIndex(prevIndex => {
+      let newIndex = direction === 'left'
+        ? prevIndex - 1
+        : prevIndex + 1;
+      // Skip intro card (index 0), wrap around between pathway cards (index 1 to end)
+      if (newIndex < 1) newIndex = filteredPathways.length - 1; // Wrap to last card
+      if (newIndex >= filteredPathways.length) newIndex = 1; // Wrap to first pathway card
+      setSelectedCarouselPathway(filteredPathways[newIndex]);
+      isProgrammaticScrollRef.current = true;
+      scrollToCarouselIndex(newIndex);
+      // Reset flag after scroll animation completes (smooth scroll takes ~600-800ms)
+      setTimeout(() => { isProgrammaticScrollRef.current = false; }, 800);
+      return newIndex;
+    });
+  }, [filteredPathways.length, scrollToCarouselIndex]);
+
+  // Keyboard navigation for arrow keys
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        scrollCarousel('left');
+      } else if (e.key === 'ArrowRight') {
+        scrollCarousel('right');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [scrollCarousel]);
 
   // Auto-scroll disabled - manual control only
 
@@ -3007,9 +3022,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
       )}
 
-      {/* Floating Filter Buttons - appears when scrolled */}
       <AnimatePresence>
-        {isScrolled && (
+        {!isScrolled && (
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
