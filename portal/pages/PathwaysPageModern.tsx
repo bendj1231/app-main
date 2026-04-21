@@ -2567,9 +2567,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       category: catKey as PathwayData['category'],
       airline: item.company,
       description: item.salary || '',
-      image: item.image,
+      // Use image directly as aircraftType so the card renderer picks it up
+      image: item.image === 'wingmentor-white' ? '/logo.png' : (item.image || ''),
       matchProbability: item.matchPercentage,
-      aircraftType: '',
+      aircraftType: item.image === 'wingmentor-white' ? '__wingmentor__' : (item.image || ''),
       requirements: { totalHours: 0, typeRatings: item.requirements || [] },
       salary: { firstYear: item.salary || '', fifthYear: '', bonuses: '' },
       benefits: item.tags || [],
@@ -3278,7 +3279,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               ) : (
                 loopedPathways.map((pathway, loopIndex) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);
-                  const cardAircraftImage = getAircraftImage(pathway.aircraftType);
+                  const isWingMentorCard = pathway.aircraftType === '__wingmentor__';
+                  const cardAircraftImage = isWingMentorCard
+                    ? '/logo.png'
+                    : (pathway.image && !pathway.image.startsWith('wingmentor') ? pathway.image : getAircraftImage(pathway.aircraftType));
                   const isSelected = selectedCarouselPathway?.id === pathway.id;
                   return (
                     <div
@@ -3287,18 +3291,25 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       style={{ width: '600px' }}
                       onClick={() => setSelectedCarouselPathway(pathway)}
                     >
-                      <div className={`relative h-[300px] overflow-hidden rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
-                        <img src={cardAircraftImage} alt={pathway.aircraftType} className="w-full h-full object-cover" loading="lazy"
-                          onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme']; }} />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                      <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
+                        {isWingMentorCard ? (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
+                            <img src="/logo.png" alt="WingMentor" className="h-20 w-auto object-contain mb-4" />
+                            <p className="text-slate-400 text-sm text-center px-8">{pathway.description}</p>
+                          </div>
+                        ) : (
+                          <img src={cardAircraftImage} alt={pathway.aircraftType} className="w-full h-full object-cover" loading="lazy"
+                            onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme']; }} />
+                        )}
+                        {!isWingMentorCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
                         <div className="absolute top-3 right-3 flex gap-2">
-                          <span className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold">{pathway.matchProbability}% Match</span>
-                          <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {recognitionProfile?.totalScore || 77}%</span>
+                          {!isWingMentorCard && <span className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold">{pathway.matchProbability}% Match</span>}
+                          {!isWingMentorCard && <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {recognitionProfile?.totalScore || 77}%</span>}
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
                           <div className="flex items-center justify-center gap-2 mb-1">
-                            <img src={cardAirlineLogo} alt={pathway.airline} className="h-6 w-auto object-contain"
-                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                            {!isWingMentorCard && <img src={cardAirlineLogo} alt={pathway.airline} className="h-6 w-auto object-contain"
+                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
                             <h4 className="text-lg font-serif font-normal text-white">{pathway.name}</h4>
                           </div>
                           <p className="text-white/80 text-sm">{pathway.airline}</p>
