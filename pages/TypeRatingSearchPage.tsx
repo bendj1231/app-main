@@ -320,6 +320,12 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
       {/* Header Nav */}
       <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
+          <button
+            onClick={() => onNavigate ? onNavigate('pathways-modern') : window.history.back()}
+            className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
           <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
           <span className="text-sm font-semibold text-slate-900">Aircraft Type-Ratings</span>
         </div>
@@ -348,31 +354,32 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
               className="w-full pl-4 pr-11 py-3 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all"
             />
           </div>
-        </div>
-      </div>
 
-      {/* Carousel Section */}
-      <div className="px-0 mb-12">
-        <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <h2 className="text-2xl font-serif font-normal text-slate-900">Browse Aircraft</h2>
-            <p className="text-sm text-slate-500">{filteredAircraft.length} aircraft available</p>
-          </div>
-          {/* Category filter chips */}
-          <div className="flex gap-1.5 flex-wrap">
+          {/* Category filter chips — directly below search */}
+          <div className="mt-4 flex gap-1.5 flex-wrap justify-center">
             {(Object.keys(CATEGORY_LABELS) as Category[]).map(cat => (
               <button
                 key={cat}
                 onClick={() => { setActiveCategory(cat); setSelectedAircraft(null); }}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                   activeCategory === cat
-                    ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white`
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white shadow-sm`
+                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
                 }`}
               >
                 {CATEGORY_LABELS[cat]}
               </button>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Carousel Section */}
+      <div className="px-0 mb-12">
+        <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-serif font-normal text-slate-900">Browse Aircraft</h2>
+            <p className="text-sm text-slate-500">{filteredAircraft.length} aircraft available</p>
           </div>
           {/* Scroll arrows */}
           <div className="flex gap-2">
