@@ -2920,7 +2920,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
                 {/* Profile Dropdown Menu */}
                 {isProfileDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                  <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
                     {/* Profile Header */}
                     <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
                       <div className="flex flex-col items-center gap-3">
@@ -2978,7 +2978,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     </div>
 
                     {/* Menu Items */}
-                    <div className="p-2">
+                    <div className="p-2 border-b border-slate-100">
                       <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors text-left">
                         <User className="w-4 h-4 text-slate-500" />
                         <span className="text-sm text-slate-700">View Profile</span>
@@ -2991,6 +2991,24 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         <LogOut className="w-4 h-4 text-slate-500" />
                         <span className="text-sm text-slate-700">Logout</span>
                       </button>
+                    </div>
+
+                    {/* Recognition Profile */}
+                    <div className="p-3 border-b border-slate-100">
+                      <ProfileSummary
+                        profile={recognitionProfile || { totalScore: 77, breakdown: { programs: 82, experience: 75, behavioral: 80, language: 70, skills: 78 } }}
+                        isDarkMode={false}
+                      />
+                    </div>
+
+                    {/* Gap Analysis */}
+                    <div className="p-3">
+                      <GapAnalysisPanel
+                        analysis={MOCK_GAP_ANALYSIS}
+                        isDarkMode={false}
+                        isExpanded={expandedGapAnalysis}
+                        onToggle={() => setExpandedGapAnalysis(!expandedGapAnalysis)}
+                      />
                     </div>
                   </div>
                 )}
@@ -3551,46 +3569,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
       </main>
 
-      {/* Fixed Left Side Panel */}
-      <div className="fixed left-0 top-1/2 -translate-y-1/2 z-50 flex items-center">
-        <button
-          onClick={() => setSidePanelExpanded(!sidePanelExpanded)}
-          className={`p-3 rounded-r-lg border-y border-r transition-all flex-shrink-0 ${
-            isDarkMode
-              ? 'border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white shadow-xl'
-              : 'border-slate-300 bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-900 shadow-xl'
-          }`}
-        >
-          {sidePanelExpanded ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-        </button>
-        <div
-          className={`transition-all duration-300 overflow-hidden ${
-            sidePanelExpanded ? 'max-w-sm opacity-100' : 'max-w-0 opacity-0'
-          }`}
-        >
-          <div className={`p-4 space-y-3 ${isDarkMode ? 'bg-slate-800/95 border-r border-slate-700' : 'bg-white/95 border-r border-slate-200'}`}>
-            <ProfileSummary
-              profile={{
-                totalScore: 77,
-                breakdown: {
-                  programs: 82,
-                  experience: 75,
-                  behavioral: 80,
-                  language: 70,
-                  skills: 78,
-                }
-              }}
-              isDarkMode={isDarkMode}
-            />
-            <GapAnalysisPanel
-              analysis={MOCK_GAP_ANALYSIS}
-              isDarkMode={isDarkMode}
-              isExpanded={expandedGapAnalysis}
-              onToggle={() => setExpandedGapAnalysis(!expandedGapAnalysis)}
-            />
-          </div>
-        </div>
-      </div>
 
       {/* Match Result Modal */}
       {selectedPathwayForMatch && (
