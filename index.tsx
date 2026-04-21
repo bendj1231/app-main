@@ -71,6 +71,7 @@ import { OnboardingPilotPortal } from './components/website/components/Onboardin
 import { OnboardingPrograms } from './components/website/components/OnboardingPrograms';
 import { OnboardingRecognition } from './components/website/components/OnboardingRecognition';
 import { AccreditationPage } from './components/website/components/AccreditationPage';
+import TypeRatingSearchPage from './pages/TypeRatingSearchPage';
 import { EmiratesAtplPage } from './components/website/components/pathways/EmiratesAtplPage';
 import { EmergingAirTaxiPage } from './components/website/components/pathways/EmergingAirTaxiPage';
 import { PilotedDronesPage } from './components/website/components/pathways/PilotedDronesPage';
@@ -1550,13 +1551,15 @@ root.render(
       <ToastProvider>
         <Routes>
           <Route path="/callback" element={<OAuthCallback />} />
-          <Route path="/portal" element={
+          {/* Legacy portal route - disabled */}
+          {/* <Route path="/portal" element={
             <ProtectedRoute>
               <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center"><div className="text-white text-xl">Loading Portal...</div></div>}>
                 <PortalWrapper onNavigate={() => {}} onBack={() => {}} />
               </Suspense>
             </ProtectedRoute>
-          } />
+          } /> */}
+          <Route path="/type-rating-search" element={<TypeRatingSearchPage />} />
           <Route path="/airline-expectations" element={<AirlineExpectationsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/discover-pathways" element={<PathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
