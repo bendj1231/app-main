@@ -468,6 +468,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftModel | null>(null);
   const [showCockpit, setShowCockpit] = useState(false);
+  const [viewerActivated, setViewerActivated] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const pohRef = useRef<HTMLDivElement>(null);
@@ -503,6 +504,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
     setSelectedAircraft(aircraft);
     setShowCockpit(false);
     setActiveDocIndex(0);
+    setViewerActivated(false);
     setTimeout(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   };
 
@@ -899,14 +901,14 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
               {/* Tab toggle */}
               <div className="flex items-center gap-3 mb-5">
                 <button
-                  onClick={() => setShowCockpit(false)}
+                  onClick={() => { setShowCockpit(false); setViewerActivated(false); }}
                   className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${!showCockpit ? 'bg-sky-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                 >
                   Aircraft Full View 3D
                 </button>
                 {selectedAircraft.category !== 'cockpit' && (
                   <button
-                    onClick={() => setShowCockpit(true)}
+                    onClick={() => { setShowCockpit(true); setViewerActivated(false); }}
                     className={`px-5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${showCockpit ? 'bg-amber-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                   >
                     <LayoutGrid className="w-4 h-4" />
@@ -915,8 +917,8 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                 )}
               </div>
 
-              {/* Full-width viewer */}
-              <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-100">
+              {/* Full-width viewer with tint overlay */}
+              <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-900 relative group">
                 {!showCockpit ? (
                   <iframe
                     src={selectedAircraft.embedUrl}
@@ -938,6 +940,19 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                 ) : (
                   <div className="h-full flex items-center justify-center text-slate-400 text-sm">
                     Cockpit view not available for this aircraft
+                  </div>
+                )}
+                {/* WingMentor overlay — click to activate */}
+                {!viewerActivated && (
+                  <div
+                    className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer transition-opacity duration-300"
+                    onClick={() => setViewerActivated(true)}
+                  >
+                    <div className="text-center select-none">
+                      <img src="/logo.png" alt="WingMentor" className="w-40 h-40 object-contain mx-auto mb-2" />
+                      <p className="text-white font-semibold text-lg mb-1">Click to Interact</p>
+                      <p className="text-white/70 text-sm">Enable 3D aircraft controls</p>
+                    </div>
                   </div>
                 )}
               </div>
