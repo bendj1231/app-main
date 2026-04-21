@@ -2995,141 +2995,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
       )}
 
-      {/* Category Filters - Normal Static Components */}
-      <div className="px-6 py-4 border-b" style={{ borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}>
-        <div className="flex items-center justify-center gap-3 flex-wrap">
-          {/* Category Filters */}
-          <div className="flex gap-1.5 flex-wrap">
-            {[
-              { key: 'all', label: 'All' },
-              { key: 'cadet-programme', label: 'Cadet Programs' },
-              { key: 'private', label: 'Type Rating' },
-              { key: 'privateSector', label: 'Private Sector' },
-              { key: 'cargo', label: 'Cargo' },
-              { key: 'type-rating', label: 'Type Rating Pathways' },
-              { key: 'airtaxi-drones', label: 'AirTaxi & Drones' },
-            ].map((cat) => (
-              <button
-                key={cat.key}
-                onClick={() => setActiveCategory(cat.key)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  activeCategory === cat.key
-                    ? 'bg-blue-500 text-white'
-                    : isDarkMode 
-                      ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' 
-                      : 'bg-white text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-          
-          {/* Match Filter */}
-          <div className="flex items-center gap-2">
-            <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match:</span>
-            <div className="flex gap-1">
-              {[
-                { key: 'all', label: 'All' },
-                { key: 'low', label: 'Low' },
-                { key: 'mid', label: 'Mid' },
-                { key: 'high', label: 'High' },
-              ].map((filter) => (
-                <button
-                  key={filter.key}
-                  onClick={() => setMatchFilter(filter.key as typeof matchFilter)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                    matchFilter === filter.key
-                      ? 'bg-purple-500 text-white'
-                      : isDarkMode 
-                        ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' 
-                        : 'bg-white text-slate-600 hover:bg-slate-100'
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* View Filter - Jobs vs Pathways */}
-          <div className="flex items-center gap-2">
-            <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>View:</span>
-            <div className="flex gap-1">
-              {[
-                { key: 'all', label: 'All' },
-                { key: 'jobs', label: 'Available Jobs' },
-                { key: 'pathways', label: 'Available Pathways' },
-              ].map((filter) => (
-                <button
-                  key={filter.key}
-                  onClick={() => setViewFilter(filter.key as typeof viewFilter)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                    viewFilter === filter.key
-                      ? 'bg-green-500 text-white'
-                      : isDarkMode
-                        ? 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                        : 'bg-white text-slate-600 hover:bg-slate-100'
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Job Position Filter - Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setIsPositionDropdownOpen(!isPositionDropdownOpen)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1 ${
-                positionFilter !== 'all'
-                  ? 'bg-blue-500 text-white'
-                  : isDarkMode 
-                    ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' 
-                    : 'bg-white text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <span>Position:</span>
-              <span>{positionFilter === 'all' ? 'All' : positionFilter}</span>
-              <ChevronDown className="w-3 h-3" />
-            </button>
-
-            {isPositionDropdownOpen && (
-              <div className={`absolute top-full mt-1 right-0 w-40 rounded-lg shadow-xl z-50 overflow-hidden ${
-                isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
-              }`}>
-                {[
-                  { key: 'all', label: 'All' },
-                  { key: 'Captain', label: 'Captain' },
-                  { key: 'Fighter Pilot', label: 'Fighter Pilot' },
-                  { key: 'First Officer', label: 'First Officer' },
-                  { key: 'Flight Instructor', label: 'Flight Instructor' },
-                  { key: 'Pilot Cadet', label: 'Pilot Cadet' },
-                ].map((position) => (
-                  <button
-                    key={position.key}
-                    onClick={() => {
-                      setPositionFilter(position.key as typeof positionFilter);
-                      setIsPositionDropdownOpen(false);
-                    }}
-                    className={`w-full px-3 py-2 text-left text-xs font-medium transition-colors ${
-                      positionFilter === position.key
-                        ? 'bg-blue-500 text-white'
-                        : isDarkMode 
-                          ? 'text-slate-300 hover:bg-slate-700' 
-                          : 'text-slate-700 hover:bg-slate-100'
-                    }`}
-                  >
-                    {position.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="mb-8 text-center">
@@ -3145,13 +3010,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
 
         {/* Search & Filter */}
-        <motion.div
-          className="mb-8 space-y-4 text-center"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: isScrolled ? 0 : 1 }}
-          transition={{ duration: 0.3 }}
-          style={{ pointerEvents: isScrolled ? 'none' : 'auto' }}
-        >
+        <div className="mb-8 space-y-4 text-center">
           <div className="flex justify-center">
             <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
           </div>
@@ -3273,7 +3132,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               )}
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {mode === 'jobs' && (
           <JobIntelligenceBanner
