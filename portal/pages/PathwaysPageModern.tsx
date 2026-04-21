@@ -2616,11 +2616,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     if (!container) return;
     const card = container.querySelector(`[data-pathway-index="${index}"]`) as HTMLElement | null;
     if (!card) return;
-    // Calculate scroll position to center the card
-    // The container has padding: calc(50vw - 300px), so we need to account for that
-    const padding = container.clientWidth / 2 - 300;
+    // Calculate scroll position to center the card in the viewport
+    // card.offsetLeft includes padding, so we need to center it in the content area
     const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-    const scrollPos = cardCenter - padding - (container.clientWidth / 2);
+    const scrollPos = cardCenter - (container.clientWidth / 2);
     container.scrollTo({ left: scrollPos, behavior });
   }, []);
 
