@@ -3490,7 +3490,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     </div>
                     <p className={`text-sm leading-relaxed ${subText}`}>{selectedCarouselPathway.description}</p>
                   </div>
-                </div>
               )}
             </div>
 
