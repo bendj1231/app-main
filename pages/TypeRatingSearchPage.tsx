@@ -868,17 +868,26 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                   </div>
                   <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' } as React.CSSProperties}>
                     {info.atoCarousel.map((ato, i) => (
-                      <div key={i} className="flex-shrink-0 w-64 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+                      <div key={i} className="flex-shrink-0 w-64 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex flex-col">
                         <div className="h-36 overflow-hidden">
                           <img src={ato.img} alt={ato.name} className="w-full h-full object-cover" />
                         </div>
-                        <div className="p-3">
+                        <div className="p-3 flex flex-col flex-1">
                           <p className="font-semibold text-sm text-slate-900">{ato.name}</p>
                           <p className="text-xs text-slate-400 mb-2">{ato.location}</p>
-                          <div className="flex flex-wrap gap-1">
+                          <div className="flex flex-wrap gap-1 mb-3">
                             {ato.offers.map(o => (
                               <span key={o} className="text-[10px] px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">{o}</span>
                             ))}
+                          </div>
+                          <div className="mt-auto">
+                            <button
+                              onClick={() => onNavigate?.('type-rating-centers')}
+                              className="w-full text-xs font-semibold text-white bg-sky-500 hover:bg-sky-600 transition-colors rounded-lg py-2 flex items-center justify-center gap-1.5"
+                            >
+                              <MousePointerClick className="w-3.5 h-3.5" />
+                              Discover Pathway →
+                            </button>
                           </div>
                         </div>
                       </div>
