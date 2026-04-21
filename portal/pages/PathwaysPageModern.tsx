@@ -2559,8 +2559,29 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Get dynamic pathways based on visible count
   const dynamicPathways = jobApplicationListings.map((job, index) => transformJobToPathway(job, index));
 
-  // Remove DISCOVERY_PATHWAYS - use only jobApplicationListings for all categories
-  const allPathways = [...dynamicPathways];
+  // Transform DISCOVERY_PATHWAYS into PathwayData format for static pathway cards
+  const discoveryPathways: PathwayData[] = Object.entries(DISCOVERY_PATHWAYS).flatMap(([catKey, items]) =>
+    items.map((item: any) => ({
+      id: item.id,
+      name: item.title,
+      category: catKey as PathwayData['category'],
+      airline: item.company,
+      description: item.salary || '',
+      image: item.image,
+      matchProbability: item.matchPercentage,
+      aircraftType: '',
+      requirements: { totalHours: 0, typeRatings: item.requirements || [] },
+      salary: { firstYear: item.salary || '', fifthYear: '', bonuses: '' },
+      benefits: item.tags || [],
+      locations: [item.location || 'Global'],
+      hiringStatus: item.postedAt === 'Hiring Now' ? 'actively_hiring' : 'moderate' as const,
+      positions: 1,
+      url: undefined,
+    }))
+  );
+
+  // Include both real job listings and static discovery pathways
+  const allPathways = [...dynamicPathways, ...discoveryPathways];
   
   // Always show all portal categories regardless of data
   const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
