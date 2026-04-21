@@ -113,6 +113,46 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
       { name: 'Ryanair TRTO', location: 'Dublin, Ireland', offers: ['B737 NG / MAX'], img: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png' },
     ],
   },
+  'cessna-152': {
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Cessna_logo.svg/1200px-Cessna_logo.svg.png',
+    manufacturerName: 'Cessna Aircraft Company',
+    firstFlight: 1958,
+    avgRatingCostUSD: '$5,000–$10,000',
+    pohUrl: 'https://www.scribd.com/document/512711472/Cessna-152-1978-POH',
+    pohDocs: [
+      {
+        label: 'Pilot Operating Handbook (1978)',
+        embed: 'https://www.scribd.com/embeds/512711472/content?start_page=1&view_mode=scroll&access_key=key-lE9xOGos5ZcBTgtTIGku',
+        url: 'https://www.scribd.com/document/512711472/Cessna-152-1978-POH#from_embed',
+        author: 'vic',
+      },
+    ],
+    airlinesUsingFleet: [
+      { name: 'Flight Schools Worldwide', logo: '/logo.png' },
+    ],
+    specs: [
+      { label: 'MTOW', value: '757 kg' },
+      { label: 'Vso', value: '40 kt' },
+      { label: 'Vs1', value: '43 kt' },
+      { label: 'Vr', value: '54 kt' },
+      { label: 'Vx', value: '55 kt' },
+      { label: 'Vy', value: '67 kt' },
+      { label: 'Vno', value: '107 kt' },
+      { label: 'Vne', value: '149 kt' },
+      { label: 'Takeoff Roll (SL/ISA)', value: '~185 m' },
+    ],
+    typicalNeedToKnow: [
+      'Lycoming O-235 engine management and carburettor icing awareness',
+      'Weight & balance — two-seat limit, fuel/passenger loading discipline',
+      'VFR airspace rules and cross-country navigation fundamentals',
+      'Emergency procedures — forced landings and engine-out glide ratio',
+      'Stall awareness and spin recovery — docile but requires correct technique',
+      'Radio telephony basics and controlled airspace communications',
+    ],
+    atoCarousel: [
+      { name: 'Local Flying Schools', location: 'Worldwide', offers: ['PPL', 'Hour Building', 'Night Rating'], img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80' },
+    ],
+  },
   'airbus-a350': {
     manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
     manufacturerName: 'Airbus',
@@ -240,6 +280,8 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
 };
 
 function getAircraftInfo(aircraft: AircraftModel): AircraftInfo {
+  if (aircraft.id === 'cessna-152')
+    return AIRCRAFT_INFO['cessna-152'];
   if (aircraft.id === 'airbus-a380' || aircraft.id === 'airbus-a380-alt')
     return AIRCRAFT_INFO['airbus-a380'];
   if (aircraft.id.includes('a350'))
