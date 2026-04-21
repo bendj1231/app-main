@@ -2597,7 +2597,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     return matchesCategory && matchesSearch && matchesMatchFilter && matchesPositionFilter && matchesViewFilter;
   });
 
-  const loopedPathways = filteredPathways; // no longer looped — use direct index
+  // Duplicate cards for infinite scroll illusion
+  const loopedPathways = filteredPathways.length > 0
+    ? [...filteredPathways, ...filteredPathways, ...filteredPathways]
+    : [];
 
   // Simple scroll function like PortalAirlineExpectationsPage
   const scrollCarousel = (dir: 'left' | 'right') => {
@@ -2612,9 +2615,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     if (currentIndex === -1) return;
     
     let newIndex = dir === 'left' ? currentIndex - 1 : currentIndex + 1;
-    // Clamp to valid range
-    if (newIndex < 0) newIndex = 0;
-    if (newIndex >= filteredPathways.length) newIndex = filteredPathways.length - 1;
+    // Wrap around for infinite selection
+    if (newIndex < 0) newIndex = filteredPathways.length - 1;
+    if (newIndex >= filteredPathways.length) newIndex = 0;
     
     setSelectedCarouselPathway(filteredPathways[newIndex]);
   };
@@ -2630,6 +2633,33 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       setSelectedCarouselPathway(filteredPathways[0]);
     }
   }, [filteredPathways, selectedCarouselPathway]);
+
+  // Infinite scroll - reset scroll position when reaching edges
+  useEffect(() => {
+    const container = carouselRef.current;
+    if (!container || filteredPathways.length === 0) return;
+
+    const cardWidth = 604; // 600px width + 4px gap
+    const totalCards = filteredPathways.length;
+    const scrollWidth = totalCards * cardWidth;
+
+    // Initialize scroll position to middle set
+    container.scrollLeft = scrollWidth;
+
+    const onScroll = () => {
+      // When scrolled past the first set, snap to the middle set
+      if (container.scrollLeft >= scrollWidth * 2) {
+        container.scrollLeft = scrollWidth;
+      }
+      // When scrolled before the first set, snap to the middle set
+      if (container.scrollLeft <= 0) {
+        container.scrollLeft = scrollWidth;
+      }
+    };
+
+    container.addEventListener('scroll', onScroll, { passive: true });
+    return () => container.removeEventListener('scroll', onScroll);
+  }, [filteredPathways.length]);
 
   // Keyboard navigation for arrow keys
   useEffect(() => {
@@ -3323,7 +3353,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   <p className={`${subText} text-sm mt-1`}>Try a different filter or select "All"</p>
                 </div>
               ) : (
-                filteredPathways.map((pathway, idx) => {
+                loopedPathways.map((pathway, idx) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);
                   const isWingMentorCard = pathway.aircraftType === '__wingmentor__';
                   const cardAircraftImage = isWingMentorCard
@@ -3332,7 +3362,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   const isSelected = selectedCarouselPathway?.id === pathway.id;
                   return (
                     <div
-                      key={pathway.id}
+                      key={`${pathway.id}-${idx}`}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-60'}`}
                       style={{ width: '600px' }}
                       onClick={() => {
