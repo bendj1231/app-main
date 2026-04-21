@@ -1253,27 +1253,17 @@ const App = () => {
           />
         )}
         {currentPage === 'pathways-modern' && (
-          <div className="min-h-screen bg-slate-950">
-            <PortalPageHeader onNavigate={navigateTo} activePage="pathways-modern" />
-            <PathwaysPageModern isDarkMode={true} onNavigate={navigateTo} />
-          </div>
+          <PathwaysPageModern isDarkMode={true} onNavigate={navigateTo} />
         )}
         {currentPage === 'portal-airline-expectations' && (
-          <div className="min-h-screen bg-slate-50">
-            <PortalPageHeader onNavigate={navigateTo} activePage="portal-airline-expectations" />
-            <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} isDarkMode={false} />
-          </div>
+          <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} onNavigate={navigateTo} isDarkMode={false} />
         )}
         {currentPage === 'type-rating-search' && (
-          <div className="min-h-screen bg-slate-950">
-            <PortalPageHeader onNavigate={navigateTo} activePage="type-rating-search" />
-            <TypeRatingSearchPage />
-          </div>
+          <TypeRatingSearchPage />
         )}
         {currentPage === 'job-listings' && (
-          <div className="min-h-screen bg-slate-950">
-            <PortalPageHeader onNavigate={navigateTo} activePage="job-listings" />
-            <div className="flex items-center justify-center py-32 text-slate-400 text-lg">Job Listings coming soon</div>
+          <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+            <p className="text-slate-400 text-lg">Job Listings coming soon</p>
           </div>
         )}
         {currentPage === 'pathways-modern-light' && (

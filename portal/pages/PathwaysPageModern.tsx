@@ -2994,6 +2994,27 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             </div>
           </div>
         </div>
+        {/* Portal Nav Buttons */}
+        <div className={`border-t ${borderColor} px-6 py-2 flex flex-wrap gap-2 justify-center`}>
+          {[
+            { label: 'Airline Expectations', page: 'portal-airline-expectations' },
+            { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
+            { label: 'Pilot Pathways', page: 'pathways-modern' },
+            { label: 'Job Listings', page: 'job-listings' },
+          ].map(({ label, page }) => (
+            <button
+              key={page}
+              onClick={() => onNavigate && onNavigate(page)}
+              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                page === 'pathways-modern'
+                  ? 'bg-sky-400 text-white'
+                  : isDarkMode ? 'bg-sky-600 hover:bg-sky-500 text-white' : 'bg-sky-500 hover:bg-sky-600 text-white'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </header>
 
       {/* Floating Filter Buttons - appears when scrolled */}

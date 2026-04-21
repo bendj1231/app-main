@@ -138,11 +138,13 @@ const ASSESSMENT_PIPELINE = [
 
 export interface PortalAirlineExpectationsPageProps {
   onBack: () => void;
+  onNavigate?: (page: string) => void;
   isDarkMode?: boolean;
 }
 
 export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPageProps> = ({
   onBack,
+  onNavigate,
   isDarkMode = true,
 }) => {
   const [selectedAirline, setSelectedAirline] = useState<Airline | null>(null);
@@ -198,6 +200,26 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
           <div className="h-5 w-px bg-slate-700 mx-1" />
           <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
           <span className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Airline Expectations</span>
+        </div>
+        <div className={`border-t ${isDarkMode ? 'border-slate-800' : 'border-slate-200'} px-6 py-2 flex flex-wrap gap-2 justify-center`}>
+          {([
+            { label: 'Airline Expectations', page: 'portal-airline-expectations' },
+            { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
+            { label: 'Pilot Pathways', page: 'pathways-modern' },
+            { label: 'Job Listings', page: 'job-listings' },
+          ] as { label: string; page: string }[]).map(({ label, page }) => (
+            <button
+              key={page}
+              onClick={() => onNavigate ? onNavigate(page) : onBack()}
+              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                page === 'portal-airline-expectations'
+                  ? 'bg-sky-400 text-white'
+                  : isDarkMode ? 'bg-sky-600 hover:bg-sky-500 text-white' : 'bg-sky-500 hover:bg-sky-600 text-white'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
