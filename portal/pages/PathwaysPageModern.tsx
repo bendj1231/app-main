@@ -2848,7 +2848,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   return (
     <div className={`min-h-screen ${bgGradient}`}>
       {/* Header with Search Bar */}
-      <header className={`${headerBg} border-b ${borderColor} backdrop-blur-sm sticky top-0 z-40`}>
+      <header className={`${headerBg} border-b ${borderColor} backdrop-blur-sm sticky top-0 z-30`}>
         <div className="container mx-auto pl-2 pr-6 py-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">

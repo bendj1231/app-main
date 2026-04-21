@@ -14,7 +14,7 @@ const NAV_BUTTONS = [
 
 export const PortalPageHeader: React.FC<PortalPageHeaderProps> = ({ onNavigate, activePage }) => {
   return (
-    <div className="w-full bg-slate-950 border-b border-slate-800 px-6 py-8 text-center">
+    <div className="w-full bg-slate-950 border-b border-slate-800 px-6 py-6 text-center sticky top-0 z-50">
       <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-2">
         Pilot Recognition Platform
       </p>
