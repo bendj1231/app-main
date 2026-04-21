@@ -959,32 +959,36 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                 )}
               </div>
 
-              {/* Full-width viewer with tint overlay */}
+              {/* Full-width viewer with tint overlay — iframe lazy-loaded on click */}
               <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-900 relative group">
-                {!showCockpit ? (
-                  <iframe
-                    src={selectedAircraft.embedUrl}
-                    className="w-full h-full"
-                    title={selectedAircraft.title}
-                    frameBorder="0"
-                    allowFullScreen
-                    allow="autoplay; fullscreen; xr-spatial-tracking"
-                  />
-                ) : getCockpitUrl(selectedAircraft.id) ? (
-                  <iframe
-                    src={getCockpitUrl(selectedAircraft.id)!}
-                    className="w-full h-full"
-                    title={`${selectedAircraft.name} Cockpit`}
-                    frameBorder="0"
-                    allowFullScreen
-                    allow="autoplay; fullscreen; xr-spatial-tracking"
-                  />
-                ) : (
-                  <div className="h-full flex items-center justify-center text-slate-400 text-sm">
-                    Cockpit view not available for this aircraft
-                  </div>
+                {viewerActivated && (
+                  !showCockpit ? (
+                    <iframe
+                      key={selectedAircraft.id + '-full'}
+                      src={selectedAircraft.embedUrl.includes('autostart') ? selectedAircraft.embedUrl : selectedAircraft.embedUrl + '&autostart=1'}
+                      className="w-full h-full"
+                      title={selectedAircraft.title}
+                      frameBorder="0"
+                      allowFullScreen
+                      allow="autoplay; fullscreen; xr-spatial-tracking"
+                    />
+                  ) : getCockpitUrl(selectedAircraft.id) ? (
+                    <iframe
+                      key={selectedAircraft.id + '-cockpit'}
+                      src={getCockpitUrl(selectedAircraft.id)! + (getCockpitUrl(selectedAircraft.id)!.includes('autostart') ? '' : '&autostart=1')}
+                      className="w-full h-full"
+                      title={`${selectedAircraft.name} Cockpit`}
+                      frameBorder="0"
+                      allowFullScreen
+                      allow="autoplay; fullscreen; xr-spatial-tracking"
+                    />
+                  ) : (
+                    <div className="h-full flex items-center justify-center text-slate-400 text-sm">
+                      Cockpit view not available for this aircraft
+                    </div>
+                  )
                 )}
-                {/* WingMentor overlay — click to activate */}
+                {/* WingMentor overlay — click to activate + lazy-load iframe */}
                 {!viewerActivated && (
                   <div
                     className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer transition-opacity duration-300"
