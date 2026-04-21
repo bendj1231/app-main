@@ -3439,7 +3439,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
                             <h4 className="text-lg font-serif font-normal text-white">{pathway.name}</h4>
                           </div>
-                          <p className="text-white/80 text-sm">{pathway.airline}</p>
+                          <p className="text-white/80 text-sm">{pathway.airline} · {pathway.locations.join(' | ')}</p>
                           {!isWingMentorCard && mode === 'jobs' && (() => {
                             const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
                               String(j.title || '').toLowerCase() === String(pathway.name || '').toLowerCase() ||
