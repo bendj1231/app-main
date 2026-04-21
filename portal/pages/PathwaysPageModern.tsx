@@ -3011,6 +3011,18 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           <div className="flex justify-center">
             <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
           </div>
+          <div className="flex justify-center mt-3">
+            <button
+              onClick={() => window.location.href = '/airline-expectations'}
+              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
+                isDarkMode
+                  ? 'bg-sky-600 hover:bg-sky-700 text-white'
+                  : 'bg-sky-500 hover:bg-sky-600 text-white'
+              }`}
+            >
+              View Airline Expectations
+            </button>
+          </div>
           <div className="flex justify-center">
             <CategoryFilter
               active={activeCategory}
