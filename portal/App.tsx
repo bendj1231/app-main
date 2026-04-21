@@ -437,7 +437,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       if (nextState.user && !hasShownInitialLoading.current && currentView === 'login' && !directToEnrollment) {
         console.log('🚀 Redirecting to main app home page instead of loading sequence');
         // Redirect to main app home page immediately instead of showing loading sequence
-        onNavigateToMainApp?.('home');
+        // Use window.location to force navigation out of portal
+        window.location.href = '/';
       } else if (!nextState.user && !showLoading) {
         // No user, go to login
         console.log('👤 No user, going to login');
