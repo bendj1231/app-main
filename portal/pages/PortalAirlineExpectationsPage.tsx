@@ -220,13 +220,13 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
           {/* Search */}
           <div className="mt-8 max-w-lg mx-auto relative">
-            <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 ${subtext}`} />
+            <Search className={`absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 ${subtext}`} />
             <input
               type="text"
               placeholder="Search airlines, locations, tags..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className={`w-full pl-11 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all ${inputBg}`}
+              className={`w-full pl-4 pr-11 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all ${inputBg}`}
             />
           </div>
           <div className="flex flex-wrap justify-center gap-2 mt-4">
