@@ -2673,14 +2673,14 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   }, [filteredPathways]);
 
   // Scroll to card by index
-  const scrollToCarouselIndex = (index: number, behavior: ScrollBehavior = 'smooth') => {
+  const scrollToCarouselIndex = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
     const container = carouselRef.current;
     if (!container) return;
     const card = container.querySelector(`[data-pathway-index="${index}"]`) as HTMLElement | null;
     if (!card) return;
-    const scrollPos = card.offsetLeft - (container.offsetWidth / 2) + (card.offsetWidth / 2);
+    const scrollPos = card.offsetLeft - (container.clientWidth / 2) + (card.offsetWidth / 2);
     container.scrollTo({ left: scrollPos, behavior });
-  };
+  }, []);
 
   // On mount / filter change scroll to index 0
   useEffect(() => {
@@ -2711,16 +2711,17 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Auto-scroll every 4 seconds
   useEffect(() => {
     if (!isCarouselAutoScrolling || filteredPathways.length === 0) return;
+    const pathways = filteredPathways;
     const interval = setInterval(() => {
       setCarouselIndex(prev => {
-        const next = prev >= filteredPathways.length - 1 ? 0 : prev + 1;
-        setSelectedCarouselPathway(filteredPathways[next]);
+        const next = prev >= pathways.length - 1 ? 0 : prev + 1;
+        setSelectedCarouselPathway(pathways[next]);
         scrollToCarouselIndex(next);
         return next;
       });
     }, 4000);
     return () => clearInterval(interval);
-  }, [isCarouselAutoScrolling, filteredPathways.length]);
+  }, [isCarouselAutoScrolling, filteredPathways, scrollToCarouselIndex]);
 
   const handleCalculateMatch = (pathwayId: string) => {
     const pathway = allPathways.find(p => p.id === pathwayId);
