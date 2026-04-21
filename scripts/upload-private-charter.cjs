@@ -5,8 +5,8 @@ const fs = require('fs');
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: 'dridtecu6',
-  api_key: '337769872771858',
-  api_secret: '01ozqHqkTM6uNPZ1Bzue4pYMe24'
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // Private charter image URL
