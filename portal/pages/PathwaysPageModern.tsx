@@ -3316,14 +3316,14 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
 
           {/* Carousel Container */}
-          <div className="relative w-full">
+          <div className="relative w-screen left-1/2 -translate-x-1/2">
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>
             <div
               ref={carouselRef}
-              className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4 px-6"
+              className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4"
               style={{
                 WebkitOverflowScrolling: 'touch',
                 cursor: 'grab',
