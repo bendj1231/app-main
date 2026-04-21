@@ -1110,9 +1110,9 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
   // Determine category based on job characteristics
   // Categories: airline-pathways, cadet-programme, private, privateSector, cargo, type-rating, airtaxi-drones
   let category: PathwayData['category'] = 'cadet-programme';
-  const title = job.title.toLowerCase();
-  const aircraft = job.aircraft.toLowerCase();
-  const company = job.company.toLowerCase();
+  const title = (job.title || '').toLowerCase();
+  const aircraft = (job.aircraft || '').toLowerCase();
+  const company = (job.company || '').toLowerCase();
   const jobRole = (job.role || '').toLowerCase();
   
   // AIRLINE PATHWAYS: Major airlines, first officer, captain positions
