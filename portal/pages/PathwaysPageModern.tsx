@@ -3475,31 +3475,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             </button>
 
             {selectedCarouselPathway && (
-              <div className="flex items-center gap-6 flex-wrap justify-center">
-                {/* Radar Chart */}
-                {intelligence.fullScore && (
-                  <div className="flex flex-col items-center gap-1">
-                    <RadarChart
-                      scores={intelligence.fullScore.breakdown}
-                      size={160}
-                      isDarkMode={isDarkMode}
-                      animate={true}
-                    />
-                    <div className="flex items-center gap-2">
-                      <span className={`text-xs font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                        Score: {intelligence.fullScore.totalScore}/100
-                      </span>
-                      <ScoreVelocityBadge
-                        velocity={intelligence.fullScore.scoreVelocity}
-                        label={intelligence.fullScore.velocityLabel}
-                        isDarkMode={isDarkMode}
-                      />
-                    </div>
-                    <span className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>{intelligence.fullScore.rankLabel}</span>
-                  </div>
-                )}
-
-                <div className="text-center max-w-xl">
+              <div className="text-center max-w-xl">
                   <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
                   <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>{selectedCarouselPathway.name}</h3>
                   <p className={`${subText} text-sm mb-2`}>
@@ -3567,6 +3543,29 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     <div><span className={`font-semibold ${headerText}`}>Location:</span> <span className={subText}>{selectedCarouselPathway.locations.join(', ')}</span></div>
                   </div>
                 </GlassCard>
+
+                {/* Score Display */}
+                {intelligence.fullScore && (
+                  <div className="flex flex-col items-center gap-2 mt-6">
+                    <RadarChart
+                      scores={intelligence.fullScore.breakdown}
+                      size={160}
+                      isDarkMode={isDarkMode}
+                      animate={true}
+                    />
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                        Score: {intelligence.fullScore.totalScore}/100
+                      </span>
+                      <ScoreVelocityBadge
+                        velocity={intelligence.fullScore.scoreVelocity}
+                        label={intelligence.fullScore.velocityLabel}
+                        isDarkMode={isDarkMode}
+                      />
+                    </div>
+                    <span className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>{intelligence.fullScore.rankLabel}</span>
+                  </div>
+                )}
               </div>
             );
           })()}
