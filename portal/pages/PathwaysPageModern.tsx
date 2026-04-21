@@ -414,19 +414,6 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'
     },
     {
-      id: 'disc-airline-4',
-      title: 'Southwest Airlines First Officer',
-      company: 'Southwest Airlines',
-      matchPercentage: 93,
-      location: 'Dallas, TX / Various Bases',
-      type: 'Major Airline',
-      salary: '$140,000 - $180,000/year',
-      requirements: ['1500+ hrs TT', 'B737 Type Rating', 'US Citizen', 'Class 1 Medical'],
-      tags: ['All-Boeing Fleet', 'Great Culture', 'Profit Sharing', 'Home Basing Options'],
-      postedAt: 'Access',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Southwest_Airlines_logo_2014.svg/1200px-Southwest_Airlines_logo_2014.svg.png'
-    },
-    {
       id: 'disc-airline-5',
       title: 'JetBlue Airways First Officer',
       company: 'JetBlue Airways',

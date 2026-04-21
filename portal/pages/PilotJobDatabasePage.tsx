@@ -37,6 +37,26 @@ export const jobApplicationListings = [
     compensation: '$150,000 - $200,000/year'
   },
   {
+    title: 'First Officer - Southwest Airlines',
+    company: 'Southwest Airlines',
+    aircraft: 'B737',
+    location: 'Dallas, TX / Various Bases',
+    role: 'First Officer',
+    url: 'https://southwest.com/careers',
+    posted: '2025-04-01',
+    status: 'Hiring Now',
+    applicationUrl: '',
+    flightTime: '1500',
+    license: 'ATP / ATPL',
+    visaSponsorship: 'Yes',
+    picTime: '0',
+    picInTypeTime: '0',
+    typeRating: 'Required',
+    medicalClass: 'Class 1',
+    icaoElpLevel: '4',
+    compensation: '$140,000 - $180,000/year'
+  },
+  {
     title: 'Captain - A320 family',
     company: 'Etihad',
     aircraft: 'A320 family',
