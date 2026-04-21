@@ -2778,6 +2778,25 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   />
                 )}
               </div>
+              {/* Profile Completion Progress - Top Right */}
+              {intelligence.fullScore && intelligence.fullScore.profileCompleteness < 90 && (
+                <div className={`hidden md:flex flex-col items-end gap-1 px-3 py-1.5 rounded-lg border ${isDarkMode ? 'bg-amber-500/10 border-amber-500/20' : 'bg-amber-50 border-amber-200'}`}>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-semibold ${isDarkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+                      Profile {intelligence.fullScore.profileCompleteness}% complete
+                    </span>
+                    <div className="w-20 h-1.5 rounded-full bg-slate-700 overflow-hidden">
+                      <div 
+                        className="h-full rounded-full bg-amber-400 transition-all duration-1000"
+                        style={{ width: `${intelligence.fullScore.profileCompleteness}%` }}
+                      />
+                    </div>
+                  </div>
+                  <span className={`text-[10px] ${isDarkMode ? 'text-slate-400' : 'text-slate-500'} truncate max-w-[200px]`}>
+                    Enroll in a WingMentor program to boost your Programs score
+                  </span>
+                </div>
+              )}
               <button className={`p-2 rounded-lg ${buttonBg} ${buttonText}`}>
                 <Bell className="w-5 h-5" />
               </button>
