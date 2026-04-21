@@ -498,9 +498,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   useEffect(() => {
     if (!showLoading) {
       const timeout = setTimeout(() => setLoginBlurred(false), 500);
+      
+      // Redirect to main app home page after loading completes if user is logged in
+      if (authState.user && currentView === 'login' && !directToEnrollment) {
+        console.log('🏠 Redirecting to main app home page after loading');
+        onNavigateToMainApp?.('home');
+      }
+      
       return () => clearTimeout(timeout);
     }
-  }, [showLoading]);
+  }, [showLoading, authState.user, currentView, directToEnrollment, onNavigateToMainApp]);
 
   useEffect(() => {
     return () => {
