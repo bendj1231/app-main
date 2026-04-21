@@ -2410,7 +2410,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [cockpitActivated, setCockpitActivated] = useState(false);
   const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
   const [carouselIndex, setCarouselIndex] = useState(1);
-  const [isCarouselAutoScrolling, setIsCarouselAutoScrolling] = useState(true);
+  const [isCarouselAutoScrolling, setIsCarouselAutoScrolling] = useState(false);
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
   const carouselAutoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -2672,32 +2672,18 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (filteredPathways.length === 0) return;
     setIsCarouselAutoScrolling(false);
-    const newIndex = direction === 'left'
-      ? Math.max(carouselIndex - 1, 0)
-      : Math.min(carouselIndex + 1, filteredPathways.length - 1);
+    let newIndex = direction === 'left'
+      ? carouselIndex - 1
+      : carouselIndex + 1;
+    // Skip intro card (index 0), always stay at index >= 1
+    if (newIndex < 1) newIndex = 1;
+    if (newIndex >= filteredPathways.length) newIndex = 1;
     setCarouselIndex(newIndex);
     setSelectedCarouselPathway(filteredPathways[newIndex]);
     scrollToCarouselIndex(newIndex);
-    // resume after 10s
-    if (carouselAutoScrollRef.current) clearTimeout(carouselAutoScrollRef.current);
-    carouselAutoScrollRef.current = setTimeout(() => setIsCarouselAutoScrolling(true), 10000);
   };
 
-  // Auto-scroll every 4 seconds
-  useEffect(() => {
-    if (!isCarouselAutoScrolling || filteredPathways.length === 0) return;
-    const pathways = filteredPathways;
-    const interval = setInterval(() => {
-      setCarouselIndex(prev => {
-        // Skip intro card (index 0), always start at index 1
-        const next = prev >= pathways.length - 1 ? 1 : prev + 1;
-        setSelectedCarouselPathway(pathways[next]);
-        scrollToCarouselIndex(next);
-        return next;
-      });
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [isCarouselAutoScrolling, filteredPathways.length, scrollToCarouselIndex]);
+  // Auto-scroll disabled - manual control only
 
   const handleCalculateMatch = (pathwayId: string) => {
     const pathway = allPathways.find(p => p.id === pathwayId);
@@ -3392,7 +3378,14 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       data-pathway-index={idx}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-60'}`}
                       style={{ width: '600px' }}
-                      onClick={() => { setCarouselIndex(idx); setSelectedCarouselPathway(pathway); scrollToCarouselIndex(idx); setIsCarouselAutoScrolling(false); }}
+                      onClick={() => { 
+                        // Skip intro card (index 0)
+                        if (idx === 0) return;
+                        setCarouselIndex(idx); 
+                        setSelectedCarouselPathway(pathway); 
+                        scrollToCarouselIndex(idx); 
+                        setIsCarouselAutoScrolling(false); 
+                      }}
                     >
                       <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
                         {isWingMentorCard ? (
