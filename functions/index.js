@@ -6711,3 +6711,227 @@ exports.pathways_getAirlineExpectationsMatch = onRequest(async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
+
+// Check if user has enterprise access authorization
+exports.checkEnterpriseAccess = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('enterprise_access')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    const hasEnterpriseAccess = data?.enterprise_access === true;
+
+    return res.json({
+      hasEnterpriseAccess,
+      userId
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Check if user is verified for posting pathway cards
+exports.checkVerifiedAccount = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('verified_account')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    const isVerified = data?.verified_account === true;
+
+    return res.json({
+      isVerified,
+      userId
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Check if user can post pathway cards (enterprise access or verified account)
+exports.checkPathwayPostingAccess = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('enterprise_access, verified_account')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    const canPost = data?.enterprise_access === true || data?.verified_account === true;
+
+    return res.json({
+      canPost,
+      hasEnterpriseAccess: data?.enterprise_access === true,
+      isVerified: data?.verified_account === true,
+      userId
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Post pathway card with authorization check
+exports.postPathwayCard = onRequest(async (req, res) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { userId, pathwayData } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+
+    if (!pathwayData) {
+      return res.status(400).json({ error: 'pathwayData required' });
+    }
+
+    // Check if user has posting authorization
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('enterprise_access, verified_account')
+      .eq('id', userId)
+      .single();
+
+    if (profileError) {
+      return res.status(500).json({ error: profileError.message });
+    }
+
+    const canPost = profile?.enterprise_access === true || profile?.verified_account === true;
+
+    if (!canPost) {
+      return res.status(403).json({ 
+        error: 'Unauthorized: User does not have enterprise access or verified account status',
+        hasEnterpriseAccess: profile?.enterprise_access === true,
+        isVerified: profile?.verified_account === true
+      });
+    }
+
+    // Insert pathway card
+    const { data: pathway, error: pathwayError } = await supabase
+      .from('career_pathways')
+      .insert({
+        ...pathwayData,
+        created_by: userId,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .select()
+      .single();
+
+    if (pathwayError) {
+      return res.status(500).json({ error: pathwayError.message });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Pathway card posted successfully',
+      pathway
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
