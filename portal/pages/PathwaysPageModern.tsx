@@ -331,6 +331,8 @@ interface PathwayData {
   hiringStatus: 'actively_hiring' | 'moderate' | 'limited' | 'frozen';
   positions: number;
   url?: string; // Link to original job posting
+  isEnterprise?: boolean; // Posted by an enterprise/airline account
+  enterpriseLogoUrl?: string; // Airline logo from Cloudinary
 }
 
 interface GapAnalysis {
@@ -1594,6 +1596,14 @@ const PathwayCard: React.FC<{
             {pathway.category}
           </div>
 
+          {/* Enterprise Badge */}
+          {pathway.isEnterprise && (
+            <div className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider shadow-lg border border-blue-400/40">
+              <Building2 className="w-3 h-3" />
+              Airline Posted
+            </div>
+          )}
+
           {/* PR Score and Match Percentage */}
           <div className="absolute top-2 right-2 flex gap-1">
             <div className="bg-emerald-500 px-2 py-0.5 rounded-full text-white text-[10px] font-bold">
@@ -2430,6 +2440,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
   const [canPostPathways, setCanPostPathways] = useState(false);
+  const [enterprisePathwayCards, setEnterprisePathwayCards] = useState<PathwayData[]>([]);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
@@ -2501,12 +2512,55 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Fetch published enterprise pathway cards from Supabase
+  useEffect(() => {
+    const fetchEnterpriseCards = async () => {
+      try {
+        const res = await fetch('https://us-central1-pilotrecognition-airline.cloudfunctions.net/getEnterprisePathwayCards');
+        if (!res.ok) return;
+        const data = await res.json();
+        const cards: PathwayData[] = (data.cards || []).map((c: any) => ({
+          id: `enterprise-${c.id}`,
+          name: c.title,
+          category: (c.category as PathwayData['category']) || 'airline-pathways',
+          airline: c.airline_name || '',
+          description: c.subtitle || c.benefits_summary || '',
+          image: c.card_image_url || c.airline_logo_url || '',
+          matchProbability: 75,
+          aircraftType: 'generic',
+          requirements: {
+            totalHours: c.minimum_requirements?.total_hours || 0,
+            typeRatings: c.minimum_requirements?.type_rating_required ? [c.position_type] : [],
+          },
+          salary: {
+            firstYear: c.compensation?.salary_min && c.compensation?.salary_max
+              ? `${c.compensation.currency} ${c.compensation.salary_min}–${c.compensation.salary_max}`
+              : 'Competitive',
+            fifthYear: '',
+            bonuses: c.compensation?.housing ? 'Housing included' : '',
+          },
+          benefits: c.benefits_summary ? [c.benefits_summary] : [],
+          locations: Array.isArray(c.base_locations) && c.base_locations.length > 0 ? c.base_locations : ['Global'],
+          hiringStatus: c.hiring_status === 'active' ? 'actively_hiring' : c.hiring_status === 'paused' ? 'limited' : 'moderate',
+          positions: c.positions_available || 1,
+          url: c.application_url || undefined,
+          isEnterprise: true,
+          enterpriseLogoUrl: c.airline_logo_url || undefined,
+        }));
+        setEnterprisePathwayCards(cards);
+      } catch (e) {
+        // silently fail — enterprise cards are additive
+      }
+    };
+    fetchEnterpriseCards();
+  }, []);
+
   // Check if user can post pathway cards
   useEffect(() => {
     if (currentUser?.id) {
       const checkPostingAccess = async () => {
         try {
-          const response = await fetch(`https://us-central1-bendj1231-app-main.cloudfunctions.net/checkPathwayPostingAccess?userId=${currentUser.id}`);
+          const response = await fetch(`https://us-central1-pilotrecognition-airline.cloudfunctions.net/checkPathwayPostingAccess?userId=${currentUser.id}`);
           const data = await response.json();
           setCanPostPathways(data.canPost || false);
         } catch (error) {
@@ -2599,9 +2653,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Include pathways or jobs based on mode
   // For 'all' category, always use discoveryPathways (curated pathway cards) regardless of mode
-  const allPathways = activeCategory === 'all'
-    ? discoveryPathways
-    : (mode === 'jobs' ? dynamicPathways : discoveryPathways);
+  // Enterprise cards are always merged in, surfaced first
+  const allPathways = [
+    ...enterprisePathwayCards,
+    ...(activeCategory === 'all'
+      ? discoveryPathways
+      : (mode === 'jobs' ? dynamicPathways : discoveryPathways)),
+  ];
 
   // Always show all portal categories regardless of data
   const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];

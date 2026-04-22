@@ -792,6 +792,20 @@ const EnterpriseAccessPage = () => {
                             </div>
                         </div>
 
+                        {/* Already have access? */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center justify-between gap-4">
+                            <div>
+                                <p className="text-slate-800 font-semibold text-sm">Already have enterprise access?</p>
+                                <p className="text-slate-500 text-xs mt-0.5">Log in to your airline partner dashboard.</p>
+                            </div>
+                            <a
+                                href="/enterprise/login"
+                                className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all"
+                            >
+                                Enterprise Login →
+                            </a>
+                        </div>
+
                         {/* Submit Button */}
                         <div className="pt-4">
                             <button
