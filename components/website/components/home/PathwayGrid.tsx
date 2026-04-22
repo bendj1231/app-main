@@ -1529,6 +1529,12 @@ const GridCard: React.FC<GridCardProps> = ({
                                             w-full h-full object-cover object-center
                                             ${isHovered && idx === currentImageIndex && !(card.id === 'discover' && isLoggedIn) ? 'scale-110' : ''}
                                         `}
+                                        onError={(e) => {
+                                            console.error('Carousel image load error:', card.id, idx, img, e);
+                                        }}
+                                        onLoad={() => {
+                                            console.log('Carousel image loaded successfully:', card.id, idx, img);
+                                        }}
                                     />
                                 </div>
                             ))}
@@ -1565,13 +1571,19 @@ const GridCard: React.FC<GridCardProps> = ({
                                                 <DigitalLogbookAnimation isHovered={isHovered && idx === currentImageIndex} />
                                             )
                                         ) : (
-                                            <img 
-                                                src={img} 
+                                            <img
+                                                src={img}
                                                 alt={`${card.title} ${idx + 1}`}
                                                 className={`
                                                     w-full h-full object-cover
                                                     ${isHovered && idx === currentImageIndex ? 'scale-110' : ''}
                                                 `}
+                                                onError={(e) => {
+                                                    console.error('General carousel image load error:', card.id, idx, img, e);
+                                                }}
+                                                onLoad={() => {
+                                                    console.log('General carousel image loaded successfully:', card.id, idx, img);
+                                                }}
                                             />
                                         )}
                                     </div>
