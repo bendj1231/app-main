@@ -378,7 +378,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'community-2',
             image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800',
-            title: 'Pilot Community',
+            title: 'Discover Membership Free & First Class Benefits',
             subtitle: 'Connect with fellow pilots, mentors, and industry professionals',
             icon: Users,
             badge: 'Network',
