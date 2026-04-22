@@ -1684,9 +1684,9 @@ const GridCard: React.FC<GridCardProps> = ({
                                             // Navigate to enrollment page with directToEnrollment parameter
                                             onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
                                         }}
-                                        className="px-4 py-1.5 bg-red-500/30 backdrop-blur-md border border-red-400/50 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-500/50 transition-all duration-300 shadow-lg"
+                                        className="px-4 py-1.5 bg-red-500 border border-red-500 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-600 transition-all duration-300 shadow-lg"
                                     >
-                                        Enroll
+                                        Enroll Now!
                                     </button>
                                 </div>
                             )}
