@@ -91,6 +91,8 @@ import { ATLASCVPage } from './components/website/components/pilot-recognition/A
 import { FoundationalProgramApplicationPage } from './components/website/components/programs/FoundationalProgramApplicationDirectoryPage';
 import { TransitionProgramApplicationPage } from './components/website/components/programs/TransitionProgramApplicationDirectoryPage';
 import EnterpriseAccessPage from './app/enterprise-access/page';
+import { EnterpriseLoginPage } from './components/enterprise/EnterpriseLoginPage';
+import { EnterprisePortalApp } from './components/enterprise/EnterprisePortalApp';
 
 import { BoardPage } from './components/website/components/BoardPage';
 import { GovernancePage } from './components/website/components/GovernancePage';
@@ -1630,6 +1632,9 @@ root.render(
           <Route path="/membership-benefits" element={<MembershipBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Other Pages */}
           <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
+          <Route path="/enterprise/login" element={<EnterpriseLoginPage />} />
+          <Route path="/enterprise/dashboard" element={<EnterprisePortalApp />} />
+          <Route path="/enterprise/*" element={<EnterprisePortalApp />} />
           <Route path="/accreditation" element={<AccreditationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/contact-support" element={<ContactSupportPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/download" element={<DownloadPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
