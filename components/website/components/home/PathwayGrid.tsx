@@ -1409,12 +1409,16 @@ const GridCard: React.FC<GridCardProps> = ({
                     ${isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}
                 `}>
                     <div className="flex flex-col">
-                        <h3 className="text-white font-serif text-sm md:text-base tracking-wide">
-                            {finalDisplayTitle}
-                        </h3>
-                        <p className="text-white/60 text-[10px] md:text-xs mt-1">
-                            {displaySubtitle}
-                        </p>
+                        {!(card.id === 'discover' && currentDynamicTitle === 'Foundation Program Enroll') && (
+                            <>
+                                <h3 className="text-white font-serif text-sm md:text-base tracking-wide">
+                                    {finalDisplayTitle}
+                                </h3>
+                                <p className="text-slate-300 text-xs md:text-sm leading-tight">
+                                    {displaySubtitle}
+                                </p>
+                            </>
+                        )}
                     </div>
                     <div className={`
                         w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center
