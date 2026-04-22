@@ -1321,6 +1321,22 @@ const GridCard: React.FC<GridCardProps> = ({
         return () => clearInterval(interval);
     }, [shouldUseCarousel, shouldUseLoggedInCarousel, shouldUseEnrolledCarousel, carouselImages, card.isCarousel, card.images, isPaused]);
 
+    // Debug logging for pilot-pathways card
+    useEffect(() => {
+        if (card.id === 'pilot-pathways') {
+            console.log('pilot-pathways card debug:', {
+                cardId: card.id,
+                shouldUseCarousel,
+                shouldUseLoggedInCarousel,
+                shouldUseEnrolledCarousel,
+                carouselImages,
+                displayImage,
+                isLoggedIn,
+                isEnrolledInFoundation
+            });
+        }
+    }, [card.id, shouldUseCarousel, shouldUseLoggedInCarousel, shouldUseEnrolledCarousel, carouselImages, displayImage, isLoggedIn, isEnrolledInFoundation]);
+
     // Reset animation scene index when carousel image changes
     useEffect(() => {
         setAnimationSceneIndex(0);
