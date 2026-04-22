@@ -35,6 +35,7 @@ const LinkedInIcon = ({ className }: { className?: string }) => (
 import { MemberJourneyAnimation } from './MemberJourneyAnimation';
 import { DigitalLogbookAnimation } from './DigitalLogbookAnimation';
 import { EtihadExpectationsAnimation } from './EtihadExpectationsAnimation';
+import { DiscoverPathwaysAnimation } from './DiscoverPathwaysAnimation';
 
 interface Slide {
     image: string;
@@ -130,27 +131,28 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'discover',
-            images: ['/pr2.png'],
+            images: ['/pr2.png', '/images/airline-operations.png'],
             image: '/pr2.png',
             loggedInImages: ['/pr2.png'],
             loggedInImage: '/pr2.png',
             enrolledImage: '/pr2.png',
             enrolledImages: ['/pr2.png'],
             title: 'Foundation Program Enroll',
-            loggedInTitle: 'Enroll on Foundation Program',
+            loggedInTitle: 'Foundation Program Enroll',
             enrolledTitle: 'Foundation Program Access',
-            dynamicTitles: [],
+            dynamicTitles: ['Foundation Program Enroll', 'Discover Expectations', 'Discover Type Ratings Search', 'Discover Pilot Matched Jobs', 'Discover Pathways'],
             subtitle: 'Start your aviation career with comprehensive mentorship',
             loggedInSubtitle: 'Start your aviation career with comprehensive mentorship',
             enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
             icon: Map,
             badge: null,
             accentColor: 'from-emerald-500/80 to-teal-400/80',
-            isCarousel: false,
+            isCarousel: true,
             isCarouselWhenLoggedIn: true,
             isCarouselWhenEnrolled: true,
-            hasArrows: false,
-            animationIndices: [],
+            hasArrows: true,
+            animationIndices: [1],
+            enrollNow: false,
         },
         {
             id: 'programs',
@@ -424,27 +426,28 @@ const dummyCards = [
     },
     {
         id: 'discover',
-        images: ['/pr2.png'],
+        images: ['/pr2.png', '/images/airline-operations.png'],
         image: '/pr2.png',
         loggedInImages: ['/pr2.png'],
         loggedInImage: '/pr2.png',
         enrolledImages: ['/pr2.png'],
         enrolledImage: '/pr2.png',
         title: 'Foundation Program Enroll',
-        loggedInTitle: 'Enroll on Foundation Program',
+        loggedInTitle: 'Foundation Program Enroll',
         enrolledTitle: 'Foundation Program Access',
-        dynamicTitles: [],
+        dynamicTitles: ['Foundation Program Enroll', 'Discover Expectations', 'Discover Type Ratings Search', 'Discover Pilot Matched Jobs', 'Discover Pathways'],
         subtitle: 'Start your aviation career with comprehensive mentorship',
         loggedInSubtitle: 'Start your aviation career with comprehensive mentorship',
         enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
         icon: Map,
         badge: null,
         accentColor: 'from-emerald-500/80 to-teal-400/80',
-        isCarousel: false,
+        isCarousel: true,
         isCarouselWhenLoggedIn: true,
         isCarouselWhenEnrolled: true,
-        hasArrows: false,
-        animationIndices: [],
+        hasArrows: true,
+        animationIndices: [1],
+        enrollNow: false,
     },
     {
         id: 'programs',
@@ -811,7 +814,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
             // Navigation mapping for all view cards
             const navMap: Record<string, string> = {
                 'member': isLoggedIn ? 'portal' : 'become-member',
-                'discover': isLoggedIn ? 'portal?directToEnrollment=true' : 'airline-expectations',
+                'discover': 'pathways-modern',
                 'programs': 'programs',
                 'pilot-recognition': 'pilot-recognition',
                 'pathways': 'pathways',
@@ -975,20 +978,24 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                         >
                             {/* Layout 1: Home - Gateway: Member & Discover featured, 3 categories below */}
                             {currentViewKey === 'home' && (
-                                <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-2.5 mb-4 md:mb-6">
-                                    {/* Member & Discover are entry points - make them prominent */}
-                                    {currentCards.slice(0, 2).map((card) => (
-                                        <motion.div key={card.id} variants={cardVariants} className="md:col-span-3 h-[240px] md:h-[250px] lg:h-[265px] xl:h-[280px]">
-                                            <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                    ))}
-                                    {/* Programs, Recognition, Pathways as category teasers */}
-                                    {currentCards.slice(2).map((card) => (
-                                        <motion.div key={card.id} variants={cardVariants} className="md:col-span-2 h-[150px] md:h-[128px] lg:h-[136px] xl:h-[144px]">
-                                            <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                    ))}
-                                </div>
+                                <>
+                                    {/* Top row: Member & Discover */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-2.5 mb-4 md:mb-4">
+                                        {currentCards.slice(0, 2).map((card) => (
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[240px] md:h-[250px] lg:h-[265px] xl:h-[280px]">
+                                                <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                    {/* Bottom row: Programs, Recognition, Pathways */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-2.5 mb-4 md:mb-6">
+                                        {currentCards.slice(2).map((card) => (
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[150px] md:h-[128px] lg:h-[136px] xl:h-[144px]">
+                                                <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </>
                             )}
 
                             {/* Layout 2: Programs - Foundation video hero + 3 stacked info cards */}
@@ -1247,19 +1254,28 @@ const GridCard: React.FC<GridCardProps> = ({
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+    const [animationSceneIndex, setAnimationSceneIndex] = useState(0);
     const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
     // Determine display title and subtitle based on enrollment state
-    const displayTitle = isEnrolledInFoundation && card.enrolledTitle 
-        ? card.enrolledTitle 
-        : isLoggedIn && card.loggedInTitle 
-            ? card.loggedInTitle 
+    const displayTitle = isEnrolledInFoundation && card.enrolledTitle
+        ? card.enrolledTitle
+        : isLoggedIn && card.loggedInTitle
+            ? card.loggedInTitle
             : card.title;
-    const displaySubtitle = isEnrolledInFoundation && card.enrolledSubtitle 
-        ? card.enrolledSubtitle 
-        : isLoggedIn && card.loggedInSubtitle 
-            ? card.loggedInSubtitle 
+    const displaySubtitle = isEnrolledInFoundation && card.enrolledSubtitle
+        ? card.enrolledSubtitle
+        : isLoggedIn && card.loggedInSubtitle
+            ? card.loggedInSubtitle
             : card.subtitle;
+
+    // Get current dynamic title for discover card (when not enrolled in foundation)
+    const currentDynamicTitle = (card.id === 'discover' && !isEnrolledInFoundation)
+        ? card.dynamicTitles ? card.dynamicTitles[currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex] : null
+        : null;
+
+    // Use dynamic title if available, otherwise use display title
+    const finalDisplayTitle = currentDynamicTitle || displayTitle;
     
     // Determine if we should use carousel for enrolled/logged in state
     const shouldUseEnrolledCarousel = isEnrolledInFoundation && card.isCarouselWhenEnrolled && card.enrolledImages;
@@ -1289,22 +1305,22 @@ const GridCard: React.FC<GridCardProps> = ({
                 : shouldUseEnrolledCarousel
                     ? !!carouselImages
                     : card.isCarousel && card.images;
-    
-    // Get current dynamic title for discover card (only when not logged in)
-    const currentDynamicTitle = (card.id === 'discover' && !isLoggedIn) 
-        ? card.dynamicTitles ? card.dynamicTitles[currentImageIndex] : null 
-        : null;
-    
+
     // Auto-rotate carousel images
     useEffect(() => {
         if (!shouldUseCarousel || !carouselImages || carouselImages.length <= 1 || isPaused) return;
-        
+
         const interval = setInterval(() => {
             setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
         }, 5000); // Change every 5 seconds
-        
+
         return () => clearInterval(interval);
     }, [shouldUseCarousel, shouldUseLoggedInCarousel, shouldUseEnrolledCarousel, carouselImages, card.isCarousel, card.images, isPaused]);
+
+    // Reset animation scene index when carousel image changes
+    useEffect(() => {
+        setAnimationSceneIndex(0);
+    }, [currentImageIndex]);
     
     // Cleanup pause timeout on unmount
     useEffect(() => {
@@ -1354,12 +1370,7 @@ const GridCard: React.FC<GridCardProps> = ({
         if (card.id === 'discover') {
             e.preventDefault();
             e.stopPropagation();
-            // If enrolled, navigate to foundation program platform
-            if (isEnrolledInFoundation) {
-                onNavigate('foundational-platform');
-                return;
-            }
-            // If logged in but not enrolled, navigate to enrollment
+            // Always navigate to enrollment page when logged in
             if (isLoggedIn) {
                 onNavigate('portal?directToEnrollment=true');
                 return;
@@ -1395,7 +1406,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 `}>
                     <div className="flex flex-col">
                         <h3 className="text-white font-serif text-sm md:text-base tracking-wide">
-                            {displayTitle}
+                            {finalDisplayTitle}
                         </h3>
                         <p className="text-white/60 text-[10px] md:text-xs mt-1">
                             {displaySubtitle}
@@ -1538,7 +1549,9 @@ const GridCard: React.FC<GridCardProps> = ({
                                         ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}
                                     `}>
                                         {isAnimationIndex ? (
-                                            idx === 1 ? (
+                                            idx === 1 && card.id === 'discover' ? (
+                                                <DiscoverPathwaysAnimation isPlaying={idx === currentImageIndex} onSceneChange={setAnimationSceneIndex} />
+                                            ) : idx === 1 ? (
                                                 <EtihadExpectationsAnimation isHovered={isHovered && idx === currentImageIndex} />
                                             ) : (
                                                 <DigitalLogbookAnimation isHovered={isHovered && idx === currentImageIndex} />
@@ -1597,24 +1610,32 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 )}
 
-                {/* Glassy Discover button for discover card - always visible outside text overlay */}
+                {/* Glassy button for discover card - changes based on carousel slide */}
                 {card.id === 'discover' && isLargeCard && (
                     <div className="absolute bottom-4 right-4 z-30">
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                // Navigate to portal with direct enrollment flag when logged in, otherwise navigate to become-member
-                                if (isLoggedIn) {
-                                    onNavigate('portal?directToEnrollment=true');
-                                } else {
-                                    onNavigate('become-member');
-                                }
-                            }}
-                            className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                        >
-                            {isLoggedIn ? 'Enroll Now' : 'Enroll'}
-                        </button>
+                        {currentImageIndex === 0 ? (
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
+                                }}
+                                className="px-4 py-1.5 bg-red-500/30 backdrop-blur-md border border-red-400/50 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-500/50 transition-all duration-300 shadow-lg"
+                            >
+                                Enroll
+                            </button>
+                        ) : (
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    onNavigate('pathways-modern');
+                                }}
+                                className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                            >
+                                Discover
+                            </button>
+                        )}
                     </div>
                 )}
 
@@ -1622,19 +1643,9 @@ const GridCard: React.FC<GridCardProps> = ({
                 {isLargeCard && (
                     <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'}`}>
                         <div className="flex items-center gap-3 mb-2">
-                            {/* Hide title/subtitle for discover card when logged out and hovered */}
-                            {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
-                                <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide">
-                                    {card.dynamicTitles && currentDynamicTitle ? (
-                                        <>
-                                            {card.title}{' '}
-                                            <span className="text-yellow-400">{currentDynamicTitle}</span>
-                                        </>
-                                    ) : (
-                                        displayTitle
-                                    )}
-                                </h3>
-                            )}
+                            <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide">
+                                {finalDisplayTitle}
+                            </h3>
                             {/* Glassy Join Now button for member card only */}
                             {card.id === 'member' && (
                                 <button
@@ -1654,16 +1665,19 @@ const GridCard: React.FC<GridCardProps> = ({
                             )}
                             {/* Glassy Enroll Now button for foundation card */}
                             {card.enrollNow && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onNavigate('become-member');
-                                    }}
-                                    className="px-4 py-1.5 bg-red-500/30 backdrop-blur-md border border-red-400/50 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-500/50 transition-all duration-300 shadow-lg"
-                                >
-                                    Enroll Now!
-                                </button>
+                                <div className="absolute bottom-4 right-4 z-40">
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            // Navigate to enrollment page with directToEnrollment parameter
+                                            onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
+                                        }}
+                                        className="px-4 py-1.5 bg-red-500/30 backdrop-blur-md border border-red-400/50 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-500/50 transition-all duration-300 shadow-lg"
+                                    >
+                                        Enroll
+                                    </button>
+                                </div>
                             )}
                             {/* Glassy button for programs card */}
                             {card.id === 'programs' && (

@@ -1294,7 +1294,7 @@ const App = () => {
         {currentPage === 'portal' && !showDirectEnrollmentLoading && (
           <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Portal...</div>}>
             <PortalWrapper
-              onNavigate={navigateToMainAppHome}
+              onNavigate={navigateTo}
               onBack={() => navigateTo('home')}
               directToEnrollment={directToEnrollment}
             />

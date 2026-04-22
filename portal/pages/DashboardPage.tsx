@@ -24,6 +24,7 @@ interface DashboardPageProps {
   onViewFoundationalEnrollment?: () => void;
   onViewLicensureExperience?: () => void;
   onViewJobDatabase?: () => void;
+  onViewProgramProgress?: () => void;
   onViewModule01?: () => void;
   onViewModule02?: () => void;
   onViewModule03?: () => void;
@@ -792,7 +793,7 @@ import { JobMatchingSection } from '../components/JobMatchCard';
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({ 
   onBack, onViewLogbook, onViewDigitalLogbook, onViewMentorLogbook, onViewAtlas, 
-  onViewRecognition, onViewPrograms, onViewPathways, onViewExamination, onViewExaminationPortal, onViewFoundationalProgram, onViewFoundationalPlatform, onViewFoundationalEnrollment, onViewLicensureExperience, onViewJobDatabase, onViewModule01, onViewModule02, onViewModule03, onViewWingMentorConnect, onViewEBTCBTAInterview, userProfile, isDarkMode = false 
+  onViewRecognition, onViewPrograms, onViewPathways, onViewExamination, onViewExaminationPortal, onViewFoundationalProgram, onViewFoundationalPlatform, onViewFoundationalEnrollment, onViewLicensureExperience, onViewJobDatabase, onViewProgramProgress, onViewModule01, onViewModule02, onViewModule03, onViewWingMentorConnect, onViewEBTCBTAInterview, userProfile, isDarkMode = false 
 }) => {
   const [competencyScores] = useState({
     knowledge: 86,
@@ -1483,11 +1484,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Foundational Program Card - Clickable */}
                 <div
                   onClick={() => {
-                    if (isFoundationalEnrolled === null) return; // Don't navigate while loading
                     if (isFoundationalEnrolled) {
                       // Navigate to platform in full-screen
                       onViewFoundationalPlatform?.();
                     } else {
+                      // Navigate to enrollment page (even if still checking enrollment)
                       onViewFoundationalEnrollment?.();
                     }
                   }}
@@ -1507,7 +1508,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     WebkitBackdropFilter: 'blur(20px)',
                     display: 'flex',
                     flexDirection: 'column',
-                    cursor: isFoundationalEnrolled === null ? 'wait' : 'pointer',
+                    cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     height: '100%',
                     opacity: isFoundationalEnrolled === null ? 0.7 : 1
@@ -1791,6 +1792,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
                     </div>
                   )}
+                  <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onViewProgramProgress?.();
+                      }}
+                      style={{
+                        color: '#3b82f6',
+                        textDecoration: 'none',
+                        fontSize: '0.875rem',
+                        fontWeight: 500,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.25rem'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.textDecoration = 'underline';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.textDecoration = 'none';
+                      }}
+                    >
+                      Access Foundation Program Information
+                    </a>
+                  </div>
                 </div>
 
                 {/* Mentorship Logbook Card - Glassy Grey Style */}

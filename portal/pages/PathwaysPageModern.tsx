@@ -2019,9 +2019,12 @@ const CategoryFilter: React.FC<{
   onChange: (cat: string) => void;
   isDarkMode?: boolean;
   categoryLabels: Record<string, string>;
-}> = ({ active, onChange, isDarkMode = true, categoryLabels }) => {
-  // Always show all categories, maintaining order
-  const orderedCategories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
+  isLoggedIn?: boolean;
+}> = ({ active, onChange, isDarkMode = true, categoryLabels, isLoggedIn = false }) => {
+  // Always show all categories, maintaining order - hide recommended for logged out users
+  const orderedCategories = isLoggedIn 
+    ? ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones']
+    : ['all', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
   
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
@@ -2744,21 +2747,32 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
             {/* Right side items */}
             <div className="flex items-center gap-3">
-              {/* Live Score Widget */}
-              <div className="flex items-center gap-2">
-                <ScoreLiveWidget
-                  fullScore={intelligence.fullScore}
-                  loading={intelligence.loadingScore}
-                  isDarkMode={isDarkMode}
-                />
-                {intelligence.fullScore?.velocityLabel && (
-                  <ScoreVelocityBadge
-                    velocity={intelligence.fullScore.scoreVelocity}
-                    label={intelligence.fullScore.velocityLabel}
+              {/* Live Score Widget - only show when logged in */}
+              {currentUser && (
+                <div className="flex items-center gap-2">
+                  <ScoreLiveWidget
+                    fullScore={intelligence.fullScore}
+                    loading={intelligence.loadingScore}
                     isDarkMode={isDarkMode}
                   />
-                )}
-              </div>
+                  {intelligence.fullScore?.velocityLabel && (
+                    <ScoreVelocityBadge
+                      velocity={intelligence.fullScore.scoreVelocity}
+                      label={intelligence.fullScore.velocityLabel}
+                      isDarkMode={isDarkMode}
+                    />
+                  )}
+                </div>
+              )}
+              {/* Login prompt for logged out users */}
+              {!currentUser && (
+                <button
+                  onClick={() => onNavigate && onNavigate('login')}
+                  className={`px-4 py-2 rounded-lg ${isDarkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'} text-white text-sm font-medium transition-all duration-200`}
+                >
+                  Login to Match Pathways
+                </button>
+              )}
               <button className={`p-2 rounded-lg ${buttonBg} ${buttonText}`}>
                 <Bell className="w-5 h-5" />
               </button>
@@ -3044,6 +3058,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 onChange={setActiveCategory}
                 isDarkMode={isDarkMode}
                 categoryLabels={categoryLabels}
+                isLoggedIn={!!currentUser}
               />
             </div>
           )}
@@ -3134,7 +3149,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
         </div>
 
-        {mode === 'jobs' && (
+        {mode === 'jobs' && currentUser && (
           <JobIntelligenceBanner
             jobMatches={intelligence.jobMatches}
             loading={intelligence.loadingJobs}
@@ -3142,7 +3157,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           />
         )}
 
-        {mode === 'jobs' && intelligence.jobMatches?.blindSpotPicks && (
+        {mode === 'jobs' && currentUser && intelligence.jobMatches?.blindSpotPicks && (
           <BlindSpotPicksRow
             blindSpots={intelligence.jobMatches.blindSpotPicks}
             loading={intelligence.loadingJobs}

@@ -7,7 +7,7 @@ interface SidebarProps {
     mainView: any;
     onLogout: () => void;
     onNavigate: (view: any) => void;
-    onNavigateToMainApp?: () => void;
+    onNavigateToMainApp?: (page?: string) => void;
     isDarkMode?: boolean;
 }
 
@@ -44,7 +44,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                                 <button
                                     key={item.id}
                                     className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-                                    onClick={() => onNavigate(item.id)}
+                                    onClick={() => {
+                                        try {
+                                            // Navigate to pathways-modern when pathways item is clicked
+                                            if (item.id === 'pathways' && onNavigateToMainApp) {
+                                                onNavigateToMainApp('pathways-modern');
+                                            } else {
+                                                onNavigate(item.id);
+                                            }
+                                        } catch (error) {
+                                            console.error('Navigation error:', error);
+                                        }
+                                    }}
                                 >
                                     <div className={styles.navItemContent}>
                                         <div className={styles.navItemTitle}>{item.title}</div>

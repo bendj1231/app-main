@@ -238,9 +238,11 @@ export type MainView =
   | 'news'
   | 'programs'
   | 'pathways'
+  | 'pathways-modern'
   | 'applications'
   | 'recognition'
   | 'pilot-portfolio'
+  | 'program-progress'
   | 'foundational'
   | 'foundational-get-started'
   | 'foundational-onboarding'
@@ -420,7 +422,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
     || 'Pilot';
   const userDisplayName = userProfileDisplayName;
   const userHasFoundationalEnrollment = Boolean(userProfile?.enrolledPrograms?.includes('Foundational'));
-  const userFirstName = userProfile?.firstName?.trim() || userDisplayName.split(' ')[0] || 'Pilot';
+  const userFirstName = userProfile?.firstName?.trim() || 'Pilot';
 
   // Removed automatic redirect to foundation platform - user should stay on pilot-portfolio/dashboard view
   // Re-check enrollment when userProfile changes
@@ -3285,11 +3287,10 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           onNavigateToProfile={() => setMainView('pilot-portfolio')}
           onNavigateToApplications={() => setMainView('applications')}
           onAccessWebsite={handleAccessWebsite}
-          onNavigateToHome={() => {
+          onNavigateToHome={() => setMainView('hub')}
+          onBack={() => {
             if (onNavigateToMainApp) {
               onNavigateToMainApp('home');
-            } else {
-              setMainView('hub');
             }
           }}
           onLogout={onLogout}
@@ -3663,12 +3664,23 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onViewFoundationalPlatform={() => setMainView('foundational-enrolled')}
             onViewFoundationalEnrollment={() => setMainView('foundational-enrollment-check')}
             onViewLicensureExperience={() => setMainView('pilot-licensure-experience')}
+            onViewProgramProgress={() => setMainView('program-progress')}
             onViewModule01={() => setFullScreenView('pilot-gap-module')}
             onViewModule02={() => setFullScreenView('pilot-gap-module-2')}
             onViewModule03={() => setFullScreenView('module-3')}
             onViewWingMentorConnect={() => setMainView('wingmentor-network')}
             onViewEBTCBTAInterview={() => setMainView('interview-evaluation')}
             userProfile={userProfile ?? undefined} 
+          />
+        );
+      case 'program-progress':
+        return (
+          <ProgramProgressPage 
+            userProfile={userProfile ?? undefined}
+            onBack={() => setMainView('pilot-portfolio')}
+            completedModules={[]}
+            onViewExaminationPortal={() => setMainView('examination-portal')}
+            onViewSyllabus={() => setMainView('foundational')}
           />
         );
       case 'logbook':

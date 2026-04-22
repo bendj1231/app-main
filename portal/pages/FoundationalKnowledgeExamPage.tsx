@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { UserProfile } from '../types/user';
 import { Icons } from '../icons';
 import { supabase } from '../lib/supabase-auth';
+import foundationalQuestions from '../data/foundational-knowledge-exam-questions.json';
 
 interface FoundationalKnowledgeExamPageProps {
   userProfile?: UserProfile | null;
@@ -9,66 +10,10 @@ interface FoundationalKnowledgeExamPageProps {
   onComplete?: (score: number) => void;
 }
 
-const examQuestions = [
-  {
-    id: 1,
-    question: 'What is the primary purpose of the WingMentor program?',
-    options: [
-      'To provide flight training',
-      'To bridge the gap between pilot training and airline readiness',
-      'To issue pilot licenses',
-      'To operate charter flights',
-    ],
-    correctAnswer: 1,
-  },
-  {
-    id: 2,
-    question: 'Which of the following is a core component of the Pilot Gap analysis?',
-    options: [
-      'Aircraft maintenance skills',
-      'Technical competencies and soft skills assessment',
-      'Flight route planning',
-      'Airport operations management',
-    ],
-    correctAnswer: 1,
-  },
-  {
-    id: 3,
-    question: 'What does the W1000 logbook track?',
-    options: [
-      'Fuel consumption only',
-      'Comprehensive pilot development and mentorship progress',
-      'Aircraft maintenance schedules',
-      'Airline scheduling',
-    ],
-    correctAnswer: 1,
-  },
-  {
-    id: 4,
-    question: 'How often should mentorship sessions be conducted?',
-    options: [
-      'Once per year',
-      'Monthly or as scheduled with your mentor',
-      'Only when applying for jobs',
-      'Daily',
-    ],
-    correctAnswer: 1,
-  },
-  {
-    id: 5,
-    question: 'What is the minimum passing score for WingMentor examinations?',
-    options: [
-      '60%',
-      '70%',
-      '80%',
-      '90%',
-    ],
-    correctAnswer: 2,
-  },
-];
+const examQuestions = foundationalQuestions.questions || [];
 
-export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPageProps> = ({ 
-  userProfile, 
+export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPageProps> = ({
+  userProfile,
   onBack,
   onComplete
 }) => {
@@ -77,6 +22,7 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>(new Array(examQuestions.length).fill(-1));
   const [showResults, setShowResults] = useState(false);
   const [examSaved, setExamSaved] = useState(false);
+  const passingScore = foundationalQuestions.passingScore || 80;
 
   const saveExamResult = async (score: number) => {
     if (examSaved) return;
@@ -96,12 +42,12 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
           exam_type: 'foundational',
           score: score,
           max_score: 100,
-          passed: score >= 80,
+          passed: score >= passingScore,
           duration: examQuestions.length * 5, // Estimated duration in minutes
           exam_date: new Date().toISOString(),
           remarks: `Score: ${score}%, Questions: ${examQuestions.length}`,
           module_id: 'foundational-program',
-          status: score >= 80 ? 'passed' : 'failed',
+          status: score >= passingScore ? 'passed' : 'failed',
           attempts: 1,
           max_attempts: 3
         });
@@ -153,12 +99,50 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
     return Math.round((correct / examQuestions.length) * 100);
   };
 
+  const calculateCurrentScore = () => {
+    let correct = 0;
+    selectedAnswers.forEach((answer, index) => {
+      if (answer !== -1 && answer === examQuestions[index].correctAnswer) {
+        correct++;
+      }
+    });
+    return correct;
+  };
+
+  const calculateCurrentPercentage = () => {
+    const correct = calculateCurrentScore();
+    const answered = selectedAnswers.filter(a => a !== -1).length;
+    if (answered === 0) return 0;
+    return Math.round((correct / answered) * 100);
+  };
+
   const score = calculateScore();
-  const passed = score >= 80;
+  const passed = score >= passingScore;
+  const currentScore = calculateCurrentScore();
+  const currentPercentage = calculateCurrentPercentage();
+  const answeredQuestions = selectedAnswers.filter(a => a !== -1).length;
 
   if (showResults) {
     return (
       <div style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, system-ui, sans-serif' }}>
+        {/* Score Card - Fixed Position Top Right */}
+        <div style={{
+          position: 'fixed',
+          top: '5rem',
+          right: '1.5rem',
+          background: '#fff',
+          borderRadius: '12px',
+          padding: '1rem 1.5rem',
+          boxShadow: '0 4px 20px rgba(15, 23, 42, 0.1)',
+          border: '1px solid rgba(226, 232, 240, 0.6)',
+          zIndex: 1000,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{ color: '#64748b', fontSize: '0.875rem', fontWeight: 600 }}>Score:</span>
+            <span style={{ color: '#22c55e', fontSize: '1.25rem', fontWeight: 700 }}>{score}%</span>
+          </div>
+        </div>
+
         <div style={{ padding: '2rem 3rem', maxWidth: '800px', margin: '0 auto' }}>
           <button
             onClick={onBack}
@@ -223,7 +207,7 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
                 {score}%
               </div>
               <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.5rem' }}>
-                {passed ? 'You passed! (80% required)' : 'You did not pass (80% required)'}
+                {passed ? `You passed! (${passingScore}% required)` : `You did not pass (${passingScore}% required)`}
               </div>
             </div>
 
@@ -274,6 +258,24 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
 
   return (
     <div style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, system-ui, sans-serif' }}>
+      {/* Score Card - Fixed Position Top Right */}
+      <div style={{
+        position: 'fixed',
+        top: '5rem',
+        right: '1.5rem',
+        background: '#fff',
+        borderRadius: '12px',
+        padding: '1rem 1.5rem',
+        boxShadow: '0 4px 20px rgba(15, 23, 42, 0.1)',
+        border: '1px solid rgba(226, 232, 240, 0.6)',
+        zIndex: 1000,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <span style={{ color: '#64748b', fontSize: '0.875rem', fontWeight: 600 }}>Score:</span>
+          <span style={{ color: '#22c55e', fontSize: '1.25rem', fontWeight: 700 }}>{currentPercentage}%</span>
+        </div>
+      </div>
+
       <div style={{ padding: '2rem 3rem', maxWidth: '800px', margin: '0 auto' }}>
         <button
           onClick={onBack}
@@ -378,18 +380,33 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
               Previous
             </button>
 
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              {examQuestions.map((_, index) => (
-                <div
-                  key={index}
-                  style={{
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '50%',
-                    background: selectedAnswers[index] !== -1 ? '#22c55e' : index === currentQuestion ? '#2563eb' : '#e2e8f0',
-                  }}
-                />
-              ))}
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              {Array.from({ length: Math.min(10, examQuestions.length) }, (_, i) => {
+                let dotIndex;
+                if (examQuestions.length <= 10) {
+                  dotIndex = i;
+                } else if (currentQuestion < 5) {
+                  dotIndex = i;
+                } else if (currentQuestion >= examQuestions.length - 5) {
+                  dotIndex = examQuestions.length - 10 + i;
+                } else {
+                  dotIndex = currentQuestion - 4 + i;
+                }
+                return (
+                  <div
+                    key={dotIndex}
+                    style={{
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      background: selectedAnswers[dotIndex] !== -1 ? '#22c55e' : dotIndex === currentQuestion ? '#2563eb' : '#e2e8f0',
+                    }}
+                  />
+                );
+              })}
+              <span style={{ fontSize: '0.875rem', color: '#64748b', marginLeft: '0.5rem' }}>
+                {currentQuestion + 1} / {examQuestions.length}
+              </span>
             </div>
 
             <button

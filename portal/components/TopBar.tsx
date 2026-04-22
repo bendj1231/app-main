@@ -13,6 +13,7 @@ interface TopBarProps {
     onNavigateToApplications?: () => void;
     onAccessWebsite?: () => void;
     onNavigateToHome?: () => void;
+    onBack?: () => void;
     onLogout?: () => void;
     onContactSupport?: () => void;
     onGuidance?: () => void;
@@ -28,6 +29,7 @@ export const TopBar: React.FC<TopBarProps> = ({
     onNavigateToApplications,
     onAccessWebsite,
     onNavigateToHome,
+    onBack,
     onLogout,
     onContactSupport,
     onGuidance
@@ -65,7 +67,7 @@ export const TopBar: React.FC<TopBarProps> = ({
     return (
         <div className={styles.topBarContainer}>
             <div className={styles.leftButtons}>
-                <button onClick={onNavigateToHome} className={`${styles.actionButton} ${styles.homeButton}`}>
+                <button onClick={onBack || onNavigateToHome} className={`${styles.actionButton} ${styles.homeButton}`}>
                     <Home size={18} />
                     <span>Home</span>
                 </button>
@@ -135,7 +137,6 @@ export const TopBar: React.FC<TopBarProps> = ({
                                 )}
                                 <div className={styles.profileDropdownInfo}>
                                     <div className={styles.profileName}>{userFirstName}</div>
-                                    <div className={styles.profileEmail}>{userProfile?.email || ''}</div>
                                 </div>
                             </div>
                             <div className={styles.profileDropdownDivider}></div>

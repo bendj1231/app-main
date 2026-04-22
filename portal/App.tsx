@@ -12,6 +12,7 @@ import { RecognitionAchievementPage } from './pages/RecognitionAchievementPage';
 import { LoginPage } from './pages/LoginPage';
 import { GraphicsPresetSelector, type DetectionResult, type GraphicsPreset } from './components/GraphicsPresetSelector';
 import { LoadingScreen } from './components/LoadingScreen';
+import { PathwaysPageModern } from './pages/PathwaysPageModern';
 
 // Remote segment disabled for integration
 // // Declare the remote module for TypeScript
@@ -265,7 +266,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'hub'
     | 'dashboard'
     | 'programs'
-    | 'pathways'
+    | 'pathways-modern'
     | 'applications'
     | 'foundational'
     | 'atpl'
@@ -280,8 +281,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'mentorship'
     | 'reset-password'
     | 'module-01'
-    | 'pilot-portfolio'
     | 'pilot-profile'
+    | 'pilot-portfolio'
     | 'recognition'
     | 'verification'
     | 'job-database'
@@ -289,16 +290,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'examination-portal';
 
   const VIEW_WHITELIST: ViewName[] = [
-    'hub','dashboard','programs','pathways','applications','foundational','atpl','airtaxi','privatesector',
+    'hub','dashboard','programs','pathways-modern','applications','foundational','atpl','airtaxi','privatesector',
     'foundational-onboarding','enrollment-confirmation','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
-    'reset-password','module-01','pilot-profile','recognition','verification','job-database','become-member','examination-portal'
+    'reset-password','module-01','pilot-profile','pilot-portfolio','recognition','verification','job-database','become-member','examination-portal'
   ];
 
-  const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'hub' : 'hub');
+  const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'foundational' : 'hub');
   const [initialModuleChapter, setInitialModuleChapter] = useState<number | undefined>(undefined);
   const [completedModules, setCompletedModules] = useState<string[]>([]);
   const [lastLoginEmail, setLastLoginEmail] = useState<string | null>(null);
-  const [pendingHomeView, setPendingHomeView] = useState<MainView | null>('pilot-portfolio');
+  const [pendingHomeView, setPendingHomeView] = useState<MainView | null>(directToEnrollment ? null : 'pilot-portfolio');
 
   useEffect(() => {
     const detected = detectGraphicsPreset();
@@ -398,6 +399,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       console.log('🔍 [VIEW CHANGE] View changed from', currentView, 'to', view);
     } else {
       console.log('❌ [VIEW CHANGE] View is NOT whitelisted, blocking navigation to:', view);
+    }
+  };
+
+  const handleNavigateToMainApp = (page?: string) => {
+    if (page && VIEW_WHITELIST.includes(page as ViewName)) {
+      handleViewChange(page as ViewName);
+    } else if (page) {
+      onNavigateToMainApp?.(page);
+    } else {
+      onNavigateToMainApp?.('home');
     }
   };
 
@@ -754,14 +765,14 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
           onViewChange={(view, initialChapter) => handleViewChange(view as ViewName, initialChapter)}
-          onNavigateToMainApp={onNavigateToMainApp}
+          onNavigateToMainApp={handleNavigateToMainApp}
           initialView={pendingHomeView || 'pilot-portfolio'}
           isDarkMode={isDarkMode}
           onToggleDarkMode={handleToggleDarkMode}
         />
       ) : currentView === 'foundational' ? (
         <FoundationalProgramPage
-          onBack={() => setCurrentView('hub')}
+          onBack={() => directToEnrollment ? onNavigateToMainApp?.('home') : setCurrentView('hub')}
           onLogout={handleLogout}
           onStartEnrollment={() => setCurrentView('foundational-onboarding')}
           onStartSlideshow={() => setCurrentView('post-enrollment-slideshow')}
@@ -775,7 +786,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       ) : currentView === 'foundational-onboarding' ? (
         <EnrollmentOnboardingPage
           onComplete={() => setCurrentView('enrollment-confirmation')}
-          onBackToPrograms={() => setCurrentView('foundational')}
+          onBackToPrograms={() => directToEnrollment ? onNavigateToMainApp?.('home') : setCurrentView('foundational')}
           onLogout={handleLogout}
           onShowTerms={() => setCurrentView('terms-conditions')}
           onRefreshProfile={refreshUserProfile}
@@ -797,20 +808,25 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           onBack={() => setCurrentView('foundational')}
           onLogout={handleLogout}
         />
-      ) : currentView === 'pathways' || currentView === 'programs' ? (
+      ) : currentView === 'programs' ? (
         <WingMentorHome
           onLogout={handleLogout}
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
           onViewChange={(view, initialChapter) => handleViewChange(view as ViewName, initialChapter)}
-          onNavigateToMainApp={onNavigateToMainApp}
-          initialView={currentView === 'pathways' ? 'pathways' : 'programs'}
+          onNavigateToMainApp={handleNavigateToMainApp}
+          initialView='programs'
           preloadedData={authState.preloadedData}
           isDarkMode={isDarkMode}
           onToggleDarkMode={handleToggleDarkMode}
         />
+      ) : currentView === 'pathways-modern' ? (
+        <PathwaysPageModern
+          isDarkMode={isDarkMode}
+          onNavigate={(page) => handleViewChange(page as ViewName)}
+        />
       ) : currentView === 'privatesector' ? (
-        <PrivateSectorPage onBack={() => setCurrentView('pathways')} onLogout={handleLogout} />
+        <PrivateSectorPage onBack={() => setCurrentView('programs')} onLogout={handleLogout} />
       ) : currentView === 'mentorship' ? (
         <PilotGapModule2 onBack={() => setCurrentView('foundational')} />
       ) : currentView === 'module-01' ? (

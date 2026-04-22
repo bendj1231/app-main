@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { UserProfile } from '../types/user';
 import { Icons } from '../icons';
+import foundationalQuestions from '../data/foundational-knowledge-exam-questions.json';
 
 interface ExaminationPortalPageProps {
   userProfile?: UserProfile | null;
@@ -33,8 +34,8 @@ export const ExaminationPortalPage: React.FC<ExaminationPortalPageProps> = ({
       icon: 'Book',
       status: module01Completed ? 'available' : 'locked',
       duration: '45 min',
-      questions: 25,
-      passingScore: 80,
+      questions: foundationalQuestions.totalQuestions || 50,
+      passingScore: foundationalQuestions.passingScore || 80,
     },
     {
       id: 'pilot-licensure',
@@ -288,7 +289,7 @@ export const ExaminationPortalPage: React.FC<ExaminationPortalPageProps> = ({
         >
           {/* Header Section */}
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               WINGMENTOR PROGRAMS
             </div>
