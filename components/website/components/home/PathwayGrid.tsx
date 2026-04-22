@@ -316,7 +316,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'W1000 Suite',
             subtitle: 'Complete pilot workspace with weather, NOTAMs, and flight planning',
             icon: Zap,
-            badge: 'Popular',
+            badge: null,
             accentColor: 'from-cyan-500/80 to-blue-400/80',
         },
         {
