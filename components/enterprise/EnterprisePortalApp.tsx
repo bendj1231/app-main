@@ -7,7 +7,7 @@ import {
   Trash2, Eye, EyeOff, Upload, X, Check, AlertCircle,
   Users, TrendingUp, Star, Globe, Menu, Bell, ExternalLink,
   FileText, Clock, MapPin, DollarSign, Shield, RefreshCw,
-  ShieldCheck, UserCheck, UserX, ChevronDown
+  ShieldCheck, UserCheck, UserX, ChevronDown, Download
 } from 'lucide-react';
 import { useEnterpriseAuth, supabase, FIREBASE_BASE } from './hooks/useEnterpriseAuth';
 
@@ -16,7 +16,7 @@ const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/dridtecu6/image/u
 const CLOUDINARY_UPLOAD_PRESET = 'enterprise_unsigned';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'settings' | 'support' | 'admin';
+type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'analytics' | 'settings' | 'support' | 'admin';
 
 // ─── 72 Airlines List ────────────────────────────────────────────────────────
 const AIRLINE_LIST = [
@@ -58,6 +58,7 @@ const NAV = [
   { id: 'airline-expectations', label: 'Airline Expectations', icon: Building2 },
   { id: 'pilot-search', label: 'Pilot Search', icon: Search },
   { id: 'applications', label: 'Applications', icon: Users },
+  { id: 'analytics', label: 'Analytics', icon: TrendingUp },
   { id: 'settings', label: 'Account Settings', icon: Settings },
   { id: 'support', label: 'Contact Support', icon: HelpCircle },
 ] as const;
@@ -387,6 +388,216 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── Analytics Page ───────────────────────────────────────────────────────────
+function AnalyticsPage({ user, account }: { user: any; account: any }) {
+  const [analytics, setAnalytics] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
+
+  const loadAnalytics = async () => {
+    if (!account?.id) return;
+    setLoading(true);
+    try {
+      const url = new URL(`${FIREBASE_BASE}/getCardAnalytics`);
+      url.searchParams.append('enterpriseAccountId', account.id);
+      const res = await fetch(url.toString());
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      setAnalytics(data.cards || []);
+    } catch (e) {
+      console.error('Error loading analytics:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadAnalytics();
+  }, [account?.id, timeRange]);
+
+  // Calculate totals
+  const totalViews = analytics.reduce((sum, card) => sum + (card.view_count || 0), 0);
+  const totalApplications = analytics.reduce((sum, card) => sum + (card.application_count || 0), 0);
+  const avgCTR = analytics.length > 0
+    ? (analytics.reduce((sum, card) => sum + (parseFloat(card.conversion_rate) || 0), 0) / analytics.length).toFixed(2)
+    : '0';
+
+  const topPerforming = [...analytics].sort((a, b) => (b.application_count || 0) - (a.application_count || 0)).slice(0, 3);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-emerald-400" /> Performance Analytics
+          </h1>
+          <p className="text-slate-400 text-sm mt-1">Track views, applications, and conversion rates</p>
+        </div>
+        <div className="flex gap-2">
+          {(['7d', '30d', '90d', 'all'] as const).map(range => (
+            <button
+              key={range}
+              onClick={() => setTimeRange(range)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                timeRange === range
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:text-white'
+              }`}
+            >
+              {range === 'all' ? 'All Time' : range}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Summary Stats */}
+      <div className="grid grid-cols-4 gap-4">
+        <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Eye className="w-5 h-5 text-blue-400" />
+            <span className="text-slate-400 text-sm">Total Views</span>
+          </div>
+          <p className="text-3xl font-bold text-white">{totalViews.toLocaleString()}</p>
+        </div>
+        <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Users className="w-5 h-5 text-emerald-400" />
+            <span className="text-slate-400 text-sm">Applications</span>
+          </div>
+          <p className="text-3xl font-bold text-white">{totalApplications.toLocaleString()}</p>
+        </div>
+        <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <TrendingUp className="w-5 h-5 text-purple-400" />
+            <span className="text-slate-400 text-sm">Avg. CTR</span>
+          </div>
+          <p className="text-3xl font-bold text-white">{avgCTR}%</p>
+        </div>
+        <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Star className="w-5 h-5 text-amber-400" />
+            <span className="text-slate-400 text-sm">Conversion</span>
+          </div>
+          <p className="text-3xl font-bold text-white">
+            {totalViews > 0 ? ((totalApplications / totalViews) * 100).toFixed(2) : '0'}%
+          </p>
+        </div>
+      </div>
+
+      {/* Top Performing Cards */}
+      {topPerforming.length > 0 && (
+        <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
+          <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+            <Star className="w-4 h-4 text-amber-400" /> Top Performing Cards
+          </h3>
+          <div className="space-y-3">
+            {topPerforming.map((card, i) => (
+              <div key={card.id} className="flex items-center justify-between bg-slate-900/50 rounded-lg p-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold text-sm">
+                    #{i + 1}
+                  </div>
+                  <div>
+                    <p className="text-white font-medium">{card.title}</p>
+                    <p className="text-slate-500 text-xs">
+                      Published {new Date(card.published_at || card.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-6">
+                  <div className="text-right">
+                    <p className="text-blue-400 font-semibold">{card.view_count || 0}</p>
+                    <p className="text-slate-500 text-xs">Views</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-emerald-400 font-semibold">{card.application_count || 0}</p>
+                    <p className="text-slate-500 text-xs">Applications</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-purple-400 font-semibold">{card.ctr}</p>
+                    <p className="text-slate-500 text-xs">CTR</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Detailed Table */}
+      <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-white font-semibold">Card Performance Details</h3>
+          <button
+            onClick={loadAnalytics}
+            className="text-slate-400 hover:text-white text-sm flex items-center gap-1"
+          >
+            <RefreshCw className="w-4 h-4" /> Refresh
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : analytics.length === 0 ? (
+          <p className="text-slate-500 text-center py-8">No published cards yet. Create and publish pathway cards to see analytics.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-left border-b border-slate-700">
+                  <th className="pb-3 text-slate-400 text-xs font-medium uppercase tracking-wider">Card Title</th>
+                  <th className="pb-3 text-slate-400 text-xs font-medium uppercase tracking-wider text-center">Status</th>
+                  <th className="pb-3 text-slate-400 text-xs font-medium uppercase tracking-wider text-right">Views</th>
+                  <th className="pb-3 text-slate-400 text-xs font-medium uppercase tracking-wider text-right">Applications</th>
+                  <th className="pb-3 text-slate-400 text-xs font-medium uppercase tracking-wider text-right">CTR</th>
+                  <th className="pb-3 text-slate-400 text-xs font-medium uppercase tracking-wider text-right">Conversion</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {analytics.map(card => (
+                  <tr key={card.id} className="hover:bg-slate-800/30">
+                    <td className="py-3">
+                      <p className="text-white font-medium">{card.title}</p>
+                      <p className="text-slate-500 text-xs">
+                        {new Date(card.published_at || card.created_at).toLocaleDateString()}
+                      </p>
+                    </td>
+                    <td className="py-3 text-center">
+                      <span className={`px-2 py-0.5 rounded-full text-xs ${
+                        card.is_published
+                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                          : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                      }`}>
+                        {card.is_published ? 'Published' : 'Draft'}
+                      </span>
+                    </td>
+                    <td className="py-3 text-right text-white">{card.view_count || 0}</td>
+                    <td className="py-3 text-right text-emerald-400 font-medium">{card.application_count || 0}</td>
+                    <td className="py-3 text-right text-purple-400">{card.ctr}</td>
+                    <td className="py-3 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <div className="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full"
+                            style={{ width: `${Math.min(parseFloat(card.conversion_rate) || 0, 100)}%` }}
+                          />
+                        </div>
+                        <span className="text-slate-400 text-xs">{card.conversion_rate}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -1024,7 +1235,7 @@ function AirlineExpectationsPage({ user, account }: { user: any; account: any })
 
 // ─── Pilot Search ─────────────────────────────────────────────────────────────
 function PilotSearchPage({ user }: { user: any }) {
-  const [filters, setFilters] = useState({ minHours: '', maxHours: '', icaoLevel: '', nationality: '', typeRating: '' });
+  const [filters, setFilters] = useState({ minHours: '', maxHours: '', icaoLevel: '', nationality: '', typeRating: '', availabilityStatus: '', licenseType: '' });
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
@@ -1040,23 +1251,70 @@ function PilotSearchPage({ user }: { user: any }) {
     setLoading(false);
   };
 
+  const exportCSV = () => {
+    if (results.length === 0) return;
+    
+    const headers = ['Name', 'Email', 'Nationality', 'License Country', 'License Type', 'Total Hours', 'ICAO Level', 'Type Ratings', 'Availability', 'PR Score', 'Phone'];
+    const rows = results.map(p => [
+      p.display_name || p.full_name || '',
+      p.email || '',
+      p.nationality || '',
+      p.country_of_license || '',
+      p.license_type || '',
+      p.total_flight_hours || 0,
+      p.language_icao_level || '',
+      Array.isArray(p.type_ratings) ? p.type_ratings.join('; ') : '',
+      p.availability_status || '',
+      p.overall_recognition_score || 0,
+      p.phone_number || ''
+    ]);
+    
+    const csvContent = [headers.join(','), ...rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `pilots-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-white">Pilot Search</h1>
-        <p className="text-slate-400 text-sm mt-1">Search pilot profiles in the PilotRecognition database by qualifications.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Pilot Search</h1>
+          <p className="text-slate-400 text-sm mt-1">Search pilot profiles in the PilotRecognition database by qualifications.</p>
+        </div>
+        {results.length > 0 && (
+          <button onClick={exportCSV} className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl px-4 py-2 text-sm transition-all">
+            <Download className="w-4 h-4" />
+            Export CSV
+          </button>
+        )}
       </div>
 
       <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5 space-y-4">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <Field label="Min Flight Hours"><input type="number" className={INPUT} value={filters.minHours} onChange={e => setFilters(f => ({ ...f, minHours: e.target.value }))} placeholder="e.g. 1500" /></Field>
           <Field label="Max Flight Hours"><input type="number" className={INPUT} value={filters.maxHours} onChange={e => setFilters(f => ({ ...f, maxHours: e.target.value }))} placeholder="e.g. 10000" /></Field>
           <Field label="ICAO ELP Level"><select className={INPUT} value={filters.icaoLevel} onChange={e => setFilters(f => ({ ...f, icaoLevel: e.target.value }))}>
             <option value="">Any</option>
             {['4','5','6'].map(l => <option key={l} value={l}>Level {l}</option>)}
           </select></Field>
+          <Field label="License Type"><select className={INPUT} value={filters.licenseType} onChange={e => setFilters(f => ({ ...f, licenseType: e.target.value }))}>
+            <option value="">Any</option>
+            <option value="ATPL">ATPL</option>
+            <option value="CPL">CPL</option>
+            <option value="MPL">MPL</option>
+            <option value="PPL">PPL</option>
+          </select></Field>
           <Field label="Nationality (keyword)"><input className={INPUT} value={filters.nationality} onChange={e => setFilters(f => ({ ...f, nationality: e.target.value }))} placeholder="e.g. Malaysian" /></Field>
           <Field label="Type Rating (keyword)"><input className={INPUT} value={filters.typeRating} onChange={e => setFilters(f => ({ ...f, typeRating: e.target.value }))} placeholder="e.g. B737" /></Field>
+          <Field label="Availability"><select className={INPUT} value={filters.availabilityStatus} onChange={e => setFilters(f => ({ ...f, availabilityStatus: e.target.value }))}>
+            <option value="">Any</option>
+            <option value="available">Available</option>
+            <option value="considering">Considering Offers</option>
+            <option value="not_looking">Not Looking</option>
+          </select></Field>
         </div>
         <button onClick={search} disabled={loading} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all">
           {loading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Search className="w-4 h-4" />}
@@ -1081,11 +1339,20 @@ function PilotSearchPage({ user }: { user: any }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-white font-semibold text-sm">{p.display_name || p.full_name || 'Pilot'}</div>
-                    <div className="text-slate-500 text-xs mt-0.5">{p.nationality} · {p.country_of_license} license</div>
+                    <div className="text-slate-500 text-xs mt-0.5">{p.nationality} · {p.country_of_license} license · {p.license_type || 'Unknown License'}</div>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-slate-400">
-                    <span className="bg-slate-700 px-2.5 py-1 rounded-lg">{Number(p.total_flight_hours || 0).toLocaleString()}h</span>
-                    <span className="bg-slate-700 px-2.5 py-1 rounded-lg">ICAO {p.language_icao_level || '—'}</span>
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300">{Number(p.total_flight_hours || 0).toLocaleString()}h</span>
+                    <span className="bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300">ICAO {p.language_icao_level || '—'}</span>
+                    {p.availability_status && (
+                      <span className={`px-2.5 py-1 rounded-lg ${
+                        p.availability_status === 'available' ? 'bg-emerald-500/20 text-emerald-400' :
+                        p.availability_status === 'considering' ? 'bg-amber-500/20 text-amber-400' :
+                        'bg-slate-600 text-slate-400'
+                      }`}>
+                        {p.availability_status === 'available' ? 'Available' : p.availability_status === 'considering' ? 'Considering' : 'Not Looking'}
+                      </span>
+                    )}
                     <span className="bg-blue-600/20 text-blue-400 px-2.5 py-1 rounded-lg">Score {p.overall_recognition_score || 0}</span>
                   </div>
                 </div>
@@ -1446,6 +1713,7 @@ export function EnterprisePortalApp() {
         {page === 'airline-expectations' && <AirlineExpectationsPage user={user} account={account} />}
         {page === 'pilot-search' && <PilotSearchPage user={user} />}
         {page === 'applications' && <ApplicationsPage user={user} account={account} />}
+        {page === 'analytics' && <AnalyticsPage user={user} account={account} />}
         {page === 'settings' && <SettingsPage user={user} account={account} refreshAccount={refreshAccount} upsertEnterpriseAccount={upsertEnterpriseAccount} />}
         {page === 'support' && <SupportPage user={user} account={account} />}
         {page === 'admin' && isManager && <AdminPanel user={user} />}
