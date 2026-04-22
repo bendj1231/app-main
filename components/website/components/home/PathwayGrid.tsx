@@ -369,11 +369,11 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'community',
             image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800',
-            title: 'Pilot Recognition +',
+            title: 'Pilot Recognition First Class',
             subtitle: 'Connect with fellow pilots, mentors, and industry professionals',
             icon: Users,
-            badge: 'Network',
-            accentColor: 'from-blue-500/80 to-sky-400/80',
+            badge: 'First Class',
+            accentColor: 'from-yellow-500/80 to-amber-400/80',
         },
         {
             id: 'community-2',
