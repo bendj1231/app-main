@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shield, AppWindow, Tablet, Book, LayoutGrid, Award, FileText, Cpu, Database, ChevronRight, Zap, Boxes, Terminal } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { PathwaysHeader } from './PathwaysHeader';
 import { RevealOnScroll } from '../RevealOnScroll';
 
 interface ApplicationsSystemsPageProps {
@@ -97,7 +97,7 @@ export const ApplicationsSystemsDirectoryPage: React.FC<ApplicationsSystemsPageP
 
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans">
-            <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
+            <PathwaysHeader onBack={onBack} onNavigate={onNavigate} />
 
             {/* Header Section */}
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { PathwaysHeader } from './PathwaysHeader';
 import { RevealOnScroll } from '../RevealOnScroll';
 
 interface ExaminationResultsDirectoryPageProps {
@@ -16,7 +16,7 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
 }) => {
     return (
         <div className="min-h-screen bg-slate-50">
-            <TopNavbar onNavigate={onNavigate} onLogin={onLogin} />
+            <PathwaysHeader onBack={onBack} onNavigate={onNavigate} />
 
             {/* Header Section */}
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">

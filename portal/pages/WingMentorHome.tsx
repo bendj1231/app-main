@@ -418,17 +418,12 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
   const userHasFoundationalEnrollment = Boolean(userProfile?.enrolledPrograms?.includes('Foundational'));
   const userFirstName = userProfile?.firstName?.trim() || userDisplayName.split(' ')[0] || 'Pilot';
 
+  // Removed automatic redirect to foundation platform - user should stay on pilot-portfolio/dashboard view
   // Re-check enrollment when userProfile changes
   useEffect(() => {
     if (userProfile?.enrolledPrograms && userProfile.enrolledPrograms.includes('Foundational')) {
-      console.log('✅ User is enrolled in Foundational program, updating view');
-      setMainView(prev => {
-        // Only update if currently on dashboard or programs view
-        if (prev === 'dashboard' || prev === 'programs' || prev === 'pilot-portfolio') {
-          return 'foundational-enrolled';
-        }
-        return prev;
-      });
+      console.log('✅ User is enrolled in Foundational program, but staying on current view');
+      // No automatic redirect - user stays on pilot-portfolio/dashboard view
     }
   }, [userProfile?.enrolledPrograms]);
   const handleAccessWebsite = () => {
@@ -526,7 +521,16 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         padding: '2.5rem 3rem 2rem 3rem', 
         maxWidth: '1400px', 
         margin: '0 auto',
-        background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'white',
+        background: isDarkMode 
+          ? 'linear-gradient(135deg, rgba(2, 8, 23, 0.6) 0%, rgba(15, 23, 42, 0.7) 100%)' 
+          : 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(240, 244, 255, 0.5) 100%)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderRadius: '20px',
+        border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(255, 255, 255, 0.5)',
+        boxShadow: isDarkMode 
+          ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)' 
+          : '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
         zoom: 0.9
       }}>
         {selectedNewsItem ? (
@@ -1662,7 +1666,15 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
     return (
     <div className="wingmentor-subpage programs-view-page" style={{ width: '100%', height: '100%', overflow: 'auto' }}>
-      <div className="wingmentor-subpage-shell" style={{ position: 'relative', background: 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
+      <div className="wingmentor-subpage-shell" style={{ 
+        position: 'relative', 
+        background: isDarkMode 
+          ? 'linear-gradient(135deg, rgba(2, 8, 23, 0.6) 0%, rgba(15, 23, 42, 0.7) 100%)' 
+          : 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(240, 244, 255, 0.5) 100%)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        minHeight: '100vh'
+      }}>
         <button
           onClick={() => setMainView('dashboard')}
           style={{
@@ -1698,24 +1710,26 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
         {/* Programs Header */}
         <div style={{ padding: '2rem 3rem 1.5rem 3rem', textAlign: 'center', maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.95)',
-            borderRadius: '28px',
-            padding: '3rem',
-            boxShadow: '0 20px 60px rgba(15, 23, 42, 0.07)',
-            border: '1px solid rgba(255, 255, 255, 0.8)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)'
-          }}>
-            <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-              <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px' }} />
-            </div>
-            <div className="dashboard-subtitle">CONNECTING PILOTS TO THE INDUSTRY</div>
-            <h1 className="dashboard-title" style={{ marginBottom: '1rem' }}>Programs</h1>
-            <p style={{ maxWidth: '800px', margin: '0 auto', color: '#475569', lineHeight: 1.6 }}>
-              Access Foundational and Transition mentorship programs designed to refine your core mechanics and CRM skills through high-fidelity simulator practice.
-            </p>
+          <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px' }} />
           </div>
+          <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.25rem' }}>
+            CONNECTING PILOTS TO THE INDUSTRY
+          </div>
+          <h1 style={{
+            fontFamily: 'Georgia, serif',
+            fontSize: 'clamp(2rem, 5vw, 3.25rem)',
+            fontWeight: 400,
+            color: '#0f172a',
+            marginBottom: '1rem',
+            letterSpacing: '-0.02em',
+            lineHeight: 1.15
+          }}>
+            Programs
+          </h1>
+          <p style={{ maxWidth: '800px', margin: '0 auto', color: '#475569', lineHeight: 1.6 }}>
+            Access Foundational and Transition mentorship programs designed to refine your core mechanics and CRM skills through high-fidelity simulator practice.
+          </p>
         </div>
 
         <section className="dashboard-section" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
@@ -1731,625 +1745,278 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           </div>
 
           {/* Foundational Program Directory Card */}
-          <div className="horizontal-card" style={{ 
-            cursor: 'pointer', 
-            padding: '0', 
+          <div className="horizontal-card" style={{
+            cursor: 'pointer',
+            padding: '0',
             marginBottom: '1.5rem',
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95))',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            borderRadius: '24px',
-            boxShadow: '0 4px 20px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05)',
-            border: '1px solid rgba(226, 232, 240, 0.6)',
+            background: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
             position: 'relative',
             overflow: 'hidden',
-            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             display: 'flex',
-            alignItems: 'stretch'
-          }} 
+            alignItems: 'stretch',
+            height: '180px'
+          }}
           onClick={() => setMainView('foundational-enrollment-check')}
           onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'translateY(-6px)';
-            e.currentTarget.style.boxShadow = '0 20px 40px rgba(15, 23, 42, 0.12), 0 8px 16px rgba(15, 23, 42, 0.08)';
-            e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.4)';
+            e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 4px 20px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05)';
-            e.currentTarget.style.borderColor = 'rgba(226, 232, 240, 0.6)';
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
           }}
           >
-            <div style={{ 
-              flex: '1', 
-              padding: '2rem 2.5rem', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              justifyContent: 'center',
+            <div style={{
               position: 'relative',
-              zIndex: 2
+              width: '280px',
+              overflow: 'hidden',
+              pointerEvents: 'none'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                <span style={{ 
-                  fontSize: '0.75rem', 
-                  fontWeight: 700, 
-                  letterSpacing: '0.1em',
+              <img
+                src="/Gemini_Generated_Image_7awns87awns87awn.png"
+                alt="Foundational Program"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  pointerEvents: 'none'
+                }}
+              />
+            </div>
+            <div style={{
+              flex: '1',
+              padding: '1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                <span style={{
+                  fontSize: '0.65rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.05em',
                   textTransform: 'uppercase',
                   color: '#64748b',
-                  background: 'rgba(100, 116, 139, 0.1)',
-                  padding: '0.35rem 0.75rem',
-                  borderRadius: '20px'
+                  background: '#f1f5f9',
+                  padding: '0.25rem 0.5rem',
+                  borderRadius: '4px'
                 }}>
                   Core Training
                 </span>
               </div>
-              <h3 style={{ 
-                fontSize: '1.75rem', 
-                marginBottom: '0.75rem', 
-                color: '#0f172a', 
-                fontWeight: 700, 
-                letterSpacing: '-0.02em',
+              <h3 style={{
+                fontSize: '1.25rem',
+                marginBottom: '0.5rem',
+                color: '#0f172a',
+                fontWeight: 700,
+                letterSpacing: '-0.01em',
                 lineHeight: 1.2
               }}>
                 Foundational Program
               </h3>
-              <p style={{ 
-                marginBottom: '1.25rem', 
-                color: '#64748b', 
-                fontSize: '1rem', 
-                lineHeight: 1.7,
-                maxWidth: '90%'
+              <p style={{
+                marginBottom: '0.75rem',
+                color: '#64748b',
+                fontSize: '0.875rem',
+                lineHeight: 1.5,
+                maxWidth: '95%'
               }}>
-                Master core aviation fundamentals, instrument procedures, and advanced CRM techniques through structured simulator training modules.
+                Master core aviation fundamentals, instrument procedures, and advanced CRM techniques.
               </p>
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <span style={{ 
-                  fontSize: '0.8rem', 
-                  padding: '0.5rem 1rem', 
-                  background: 'white',
-                  borderRadius: '100px', 
-                  color: '#475569', 
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <span style={{
+                  fontSize: '0.7rem',
+                  padding: '0.3rem 0.6rem',
+                  background: '#f8fafc',
+                  borderRadius: '4px',
+                  color: '#475569',
                   fontWeight: 500,
-                  border: '1px solid rgba(226, 232, 240, 0.8)',
-                  boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                  border: '1px solid #e2e8f0'
                 }}>
                   7 Modules
                 </span>
-                <span style={{ 
-                  fontSize: '0.8rem', 
-                  padding: '0.5rem 1rem', 
-                  background: 'white',
-                  borderRadius: '100px', 
-                  color: '#475569', 
+                <span style={{
+                  fontSize: '0.7rem',
+                  padding: '0.3rem 0.6rem',
+                  background: '#f8fafc',
+                  borderRadius: '4px',
+                  color: '#475569',
                   fontWeight: 500,
-                  border: '1px solid rgba(226, 232, 240, 0.8)',
-                  boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                  border: '1px solid #e2e8f0'
                 }}>
                   50 Hours Mentorship
                 </span>
-                <span style={{ 
-                  fontSize: '0.8rem', 
-                  padding: '0.5rem 1rem', 
-                  background: 'rgba(100, 116, 139, 0.1)', 
-                  borderRadius: '100px', 
-                  color: '#475569', 
+                <span style={{
+                  fontSize: '0.7rem',
+                  padding: '0.3rem 0.6rem',
+                  background: '#e0f2fe',
+                  borderRadius: '4px',
+                  color: '#0369a1',
                   fontWeight: 600,
-                  border: '1px solid rgba(100, 116, 139, 0.2)'
+                  border: '1px solid #bae6fd'
                 }}>
-                  Pilot Recognition Initial
+                  Pilot Recognition
                 </span>
-              </div>
-            </div>
-            <div style={{ 
-              position: 'relative',
-              width: '40%',
-              minHeight: '220px',
-              overflow: 'hidden',
-              borderRadius: '0 24px 24px 0',
-              pointerEvents: 'none'
-            }}>
-              <img 
-                src="/Gemini_Generated_Image_7awns87awns87awn.png" 
-                alt="Foundational Program" 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'cover',
-                  transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                  pointerEvents: 'none'
-                }} 
-              />
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 30%)',
-                pointerEvents: 'none'
-              }} />
-              <div style={{
-                position: 'absolute',
-                right: '1.5rem',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '48px',
-                height: '48px',
-                borderRadius: '50%',
-                background: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                transition: 'all 0.3s ease',
-                pointerEvents: 'none'
-              }}>
-                <Icons.ArrowRight style={{ width: 20, height: 20, color: '#0f172a' }} />
               </div>
             </div>
           </div>
 
           {/* Transition Program Directory Card */}
-          <div className="horizontal-card" style={{ 
-              cursor: 'pointer', 
-              padding: '0', 
-              marginBottom: '1.5rem',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95))',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              borderRadius: '24px',
-              boxShadow: '0 4px 20px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05)',
-              border: '1px solid rgba(226, 232, 240, 0.6)',
+          <div className="horizontal-card" style={{
+            cursor: 'not-allowed',
+            padding: '0',
+            marginBottom: '1.5rem',
+            background: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            position: 'relative',
+            overflow: 'hidden',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            display: 'flex',
+            alignItems: 'stretch',
+            height: '180px',
+            opacity: 0.6
+          }}
+          onMouseEnter={(e) => {
+            const tooltip = document.createElement('div');
+            tooltip.id = 'transition-tooltip';
+            tooltip.textContent = 'Coming Soon';
+            tooltip.style.cssText = `
+              position: fixed;
+              top: ${e.clientY + 10}px;
+              left: ${e.clientX + 10}px;
+              background: #0f172a;
+              color: white;
+              padding: 0.5rem 1rem;
+              borderRadius: 6px;
+              fontSize: 0.875rem;
+              fontWeight: 500;
+              zIndex: 10000;
+              pointer-events: none;
+              white-space: nowrap;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            `;
+            document.body.appendChild(tooltip);
+          }}
+          onMouseLeave={() => {
+            const tooltip = document.getElementById('transition-tooltip');
+            if (tooltip) {
+              tooltip.remove();
+            }
+          }}
+          onMouseMove={(e) => {
+            const tooltip = document.getElementById('transition-tooltip');
+            if (tooltip) {
+              tooltip.style.top = `${e.clientY + 10}px`;
+              tooltip.style.left = `${e.clientX + 10}px`;
+            }
+          }}
+          >
+            <div style={{
               position: 'relative',
+              width: '280px',
               overflow: 'hidden',
-              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-              display: 'flex',
-              alignItems: 'stretch'
-            }} 
-            onClick={() => setMainView('transition')}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-6px)';
-              e.currentTarget.style.boxShadow = isDarkMode
-                ? '0 24px 48px rgba(2, 6, 23, 0.42), 0 10px 20px rgba(2, 6, 23, 0.24)'
-                : '0 20px 40px rgba(15, 23, 42, 0.12), 0 8px 16px rgba(15, 23, 42, 0.08)';
-              e.currentTarget.style.borderColor = isDarkMode ? 'rgba(96, 165, 250, 0.35)' : 'rgba(148, 163, 184, 0.4)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = isDarkMode
-                ? '0 18px 40px rgba(2, 6, 23, 0.34), 0 1px 3px rgba(2, 6, 23, 0.22)'
-                : '0 4px 20px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05)';
-              e.currentTarget.style.borderColor = isDarkMode ? 'rgba(71, 85, 105, 0.7)' : 'rgba(226, 232, 240, 0.6)';
-            }}
-            >
-              <div style={{ 
-                flex: '1', 
-                padding: '2rem 2.5rem', 
-                display: 'flex', 
-                flexDirection: 'column', 
-                justifyContent: 'center',
-                position: 'relative',
-                zIndex: 2
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                  <span style={{ 
-                    fontSize: '0.75rem', 
-                    fontWeight: 700, 
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: '#64748b',
-                    background: 'rgba(100, 116, 139, 0.1)',
-                    padding: '0.35rem 0.75rem',
-                    borderRadius: '20px'
-                  }}>
-                    Advanced Track
-                  </span>
-                  <span style={{ 
-                    fontSize: '0.75rem', 
-                    fontWeight: 700, 
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: '#64748b',
-                    background: 'rgba(100, 116, 139, 0.1)',
-                    padding: '0.35rem 0.75rem',
-                    borderRadius: '20px'
-                  }}>
-                    Coming Soon
-                  </span>
-                </div>
-                <h3 style={{ 
-                  fontSize: '1.75rem', 
-                  marginBottom: '0.75rem', 
-                  color: isDarkMode ? '#f8fafc' : '#0f172a', 
-                  fontWeight: 700, 
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.2
-                }}>
-                  Transition Program
-                </h3>
-                <p style={{ 
-                  marginBottom: '1.25rem', 
-                  color: isDarkMode ? '#94a3b8' : '#64748b', 
-                  fontSize: '1rem', 
-                  lineHeight: 1.7,
-                  maxWidth: '90%'
-                }}>
-                  Advanced career transition training for experienced pilots seeking airline pathways and specialized aviation roles.
-                </p>
-                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                  <span style={{ 
-                    fontSize: '0.8rem', 
-                    padding: '0.5rem 1rem', 
-                    background: 'white',
-                    borderRadius: '100px', 
-                    color: '#475569', 
-                    fontWeight: 500,
-                    border: '1px solid rgba(226, 232, 240, 0.8)',
-                    boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
-                  }}>
-                    Advanced
-                  </span>
-                  <span style={{ 
-                    fontSize: '0.8rem', 
-                    padding: '0.5rem 1rem', 
-                    background: 'white',
-                    borderRadius: '100px', 
-                    color: '#475569', 
-                    fontWeight: 500,
-                    border: '1px solid rgba(226, 232, 240, 0.8)',
-                    boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
-                  }}>
-                    Career Focus
-                  </span>
-                </div>
-              </div>
-              <div style={{ 
-                position: 'relative',
-                width: '40%',
-                minHeight: '220px',
-                overflow: 'hidden',
-                borderRadius: '0 24px 24px 0'
-              }}>
-                <img 
-                  src="/WhatsApp Image 2026-02-07 at 20.06.18.jpeg" 
-                  alt="Transition Program" 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover',
-                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
-                  }} 
-                />
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 30%)',
-                  pointerEvents: 'none'
-                }} />
-                <div style={{
-                  position: 'absolute',
-                  right: '1.5rem',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  background: 'white',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  transition: 'all 0.3s ease'
-                }}>
-                  <Icons.ArrowRight style={{ width: 20, height: 20, color: '#0f172a' }} />
-                </div>
-              </div>
-            </div>
-
-            {/* Program Progress Notifications */}
-            <div style={{ marginBottom: '2rem', position: 'relative' }}>
-              <div style={{
-                position: 'absolute',
-                inset: '-30px 0 20px',
-                borderRadius: '32px',
-                background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(56,189,248,0.08))',
-                filter: 'blur(40px)',
-                opacity: 0.8,
-                pointerEvents: 'none'
-              }} />
-              <div style={{
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                borderRadius: '24px',
-                boxShadow: '0 20px 40px rgba(15, 23, 42, 0.12)',
-                border: '1px solid rgba(255, 255, 255, 0.8)',
-                padding: '2rem',
-                position: 'relative',
-                overflow: 'hidden'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
-                  <div>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a', margin: 0 }}>Program Updates & News</h3>
-                    <p style={{ fontSize: '0.875rem', color: '#64748b', margin: '0.35rem 0 0' }}>Stay current with the latest program headlines.</p>
-                  </div>
-                  <span style={{ fontSize: '0.85rem', color: '#2563eb', fontWeight: 600 }}>Updated moments ago</span>
-                </div>
-                <div style={{ position: 'relative', overflow: 'hidden' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      transition: 'transform 0.5s ease',
-                      transform: `translateX(-${activeUpdate * 100}%)`,
-                      width: `${pathwayUpdates.length * 100}%`
-                    }}
-                  >
-                    {pathwayUpdates.map((update) => (
-                      <div
-                        key={update.title}
-                        style={{
-                          minWidth: '100%',
-                          padding: '1rem',
-                          borderRadius: '12px',
-                          background: '#f8fafc',
-                          border: '1px solid #e2e8f0',
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2563eb' }} />
-                          <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>{update.title}</h4>
-                        </div>
-                        <p style={{ margin: 0, color: '#64748b', fontSize: '0.9rem', lineHeight: 1.5 }}>{update.summary}</p>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.75rem', fontSize: '0.8rem', color: '#94a3b8' }}>
-                          <span>{update.source}</span>
-                          <span>{update.date}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
-                  <button
-                    onClick={() => setActiveUpdate((prev) => (prev - 1 + pathwayUpdates.length) % pathwayUpdates.length)}
-                    style={{
-                      border: 'none',
-                      background: 'transparent',
-                      cursor: 'pointer',
-                      padding: '0.5rem',
-                    }}
-                  >
-                    <Icons.ArrowLeft style={{ width: 20, height: 20, color: '#94a3b8' }} />
-                  </button>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    {pathwayUpdates.map((_, idx) => (
-                      <button
-                        key={`dot-${idx}`}
-                        onClick={() => setActiveUpdate(idx)}
-                        style={{
-                          width: '8px',
-                          height: '8px',
-                          borderRadius: '50%',
-                          border: 'none',
-                          padding: 0,
-                          cursor: 'pointer',
-                          background: idx === activeUpdate ? '#2563eb' : '#cbd5e1',
-                        }}
-                      />
-                    ))}
-                  </div>
-                  <button
-                    onClick={() => setActiveUpdate((prev) => (prev + 1) % pathwayUpdates.length)}
-                    style={{
-                      border: 'none',
-                      background: 'transparent',
-                      cursor: 'pointer',
-                      padding: '0.5rem',
-                    }}
-                  >
-                    <Icons.ArrowRight style={{ width: 20, height: 20, color: '#94a3b8' }} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Foundation Program Progress Card - Hard Truth Format - Only show if enrolled */}
-            {userHasFoundationalEnrollment && (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', marginTop: '2rem', textAlign: 'left' }}>
-                <div style={{
-                  backgroundColor: 'rgba(15, 23, 42, 0.7)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  borderRadius: '24px',
-                  padding: '4rem 3rem',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  textAlign: 'center',
-                  width: '100%',
-                  boxSizing: 'border-box'
-                }}>
-                  <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
-                  <div style={{ color: '#60a5fa', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                    PROGRESS TRACKING
-                  </div>
-                  <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#f8fafc', marginBottom: '2.5rem', fontFamily: 'Georgia, serif' }}>
-                    Foundation Program Journey
-                  </h2>
-                  
-                  {/* Carousel Container */}
-                  <div style={{ position: 'relative', height: '200px', width: '100%', maxWidth: '40rem', margin: '0 auto' }}>
-                    {/* Progress Update 1 */}
-                    <div style={{
-                      position: 'absolute',
-                      top: '0',
-                      left: '0',
-                      right: '0',
-                      height: '100%',
-                      opacity: 1,
-                      animation: 'slideInOut 8s infinite'
-                    }}>
-                      <div style={{ color: '#cbd5e1', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, textAlign: 'left' }}>
-                        <strong>Your Foundation Program progress is tracked in real-time.</strong> WingMentor monitors your training advancement and syncs with our comprehensive database.
-                        <br /><br />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#f8fafc' }}>
-                            Module Progress
-                          </span>
-                          <span style={{ fontSize: '0.875rem', color: '#60a5fa', fontWeight: 600 }}>
-                            {completedCount} of {totalCount} Complete
-                          </span>
-                        </div>
-                      <div style={{
-                        width: '100%',
-                        height: '8px',
-                        background: 'rgba(255,255,255,0.1)',
-                        borderRadius: '4px',
-                        overflow: 'hidden',
-                        marginBottom: '0.5rem'
-                      }}>
-                        <div style={{
-                          width: `${progressPercent}%`,
-                          height: '100%',
-                          background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-                          borderRadius: '4px',
-                          transition: 'width 0.3s ease'
-                        }}></div>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#94a3b8' }}>
-                        <span>{progressPercent}% Complete</span>
-                        <span>Last sync: {loadingProgress ? 'Loading...' : new Date().toLocaleTimeString()}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Progress Update 2 */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    right: '0',
-                    height: '100%',
-                    opacity: 0,
-                    animation: 'slideInOut 8s infinite 4s'
-                  }}>
-                    <div style={{ color: '#cbd5e1', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, textAlign: 'left' }}>
-                      <strong>Advanced CRM techniques module now available.</strong> The latest module in your Foundation Program includes enhanced simulator scenarios and real-world case studies.
-                      <br /><br />
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                        <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#f8fafc' }}>
-                          Recent Achievement
-                        </span>
-                        <span style={{ fontSize: '0.875rem', color: '#34d399', fontWeight: 600 }}>
-                          Completed
-                        </span>
-                      </div>
-                      <div style={{
-                        padding: '0.75rem',
-                        background: 'rgba(16, 185, 129, 0.15)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(16, 185, 129, 0.3)'
-                      }}>
-                        <div style={{ fontSize: '0.8rem', color: '#6ee7b7', lineHeight: 1.5 }}>
-                          ✅ Module 8: Advanced CRM Techniques<br/>
-                          ✅ Module 9: Decision Making Under Pressure<br/>
-                          ✅ Module 10: Team Communication
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Carousel Progress Indicator */}
-                <div style={{ 
-                  display: 'flex', 
-                  gap: '0.5rem', 
-                  marginTop: '2rem',
-                  justifyContent: 'center',
-                  zIndex: 20
-                }}>
-                  <div style={{
-                    width: '32px',
-                    height: '4px',
-                    borderRadius: '2px',
-                    background: 'rgba(255, 255, 255, 0.8)',
-                    animation: 'progressPulse 8s infinite'
-                  }}></div>
-                  <div style={{
-                    width: '32px',
-                    height: '4px',
-                    borderRadius: '2px',
-                    background: 'rgba(255, 255, 255, 0.2)'
-                  }}></div>
-                </div>
-              </div>
-
-
-              {/* Enhanced CSS Animations */}
-              <style>{`
-                @keyframes slideInOut {
-                  0%, 100% { 
-                    opacity: 0; 
-                    transform: translateX(-20px); 
-                  }
-                  10%, 45% { 
-                    opacity: 1; 
-                    transform: translateX(0); 
-                  }
-                  55%, 90% { 
-                    opacity: 0; 
-                    transform: translateX(20px); 
-                  }
-                }
-                @keyframes pulse {
-                  0%, 100% { opacity: 1; transform: scale(1); }
-                  50% { opacity: 0.6; transform: scale(1.2); }
-                }
-                @keyframes progressPulse {
-                  0%, 100% { opacity: 0.3; }
-                  50% { opacity: 1; }
-                }
-              `}</style>
-            </div>
-            )}
-        </section>
-
-        {/* Footer Section */}
-        <footer style={{ 
-          marginTop: '3rem', 
-          padding: '2rem',
-          borderTop: '1px solid #e2e8f0',
-          background: 'white'
-        }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-            <div style={{ marginBottom: '1rem' }}>
-              <button 
+              pointerEvents: 'none'
+            }}>
+              <img
+                src="https://lh3.googleusercontent.com/d/1wPEIiMRj4fW34_NIQKRnzCf8KNhdD1TC"
+                alt="Transition Program"
                 style={{
-                  padding: '0.75rem 1.5rem',
-                  background: '#0ea5e9',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: 600,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  pointerEvents: 'none'
                 }}
-                onClick={() => setMainView('contact')}
-              >
-                Contact Support
-              </button>
+              />
             </div>
-            <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
-              <p style={{ margin: '0 0 0.5rem 0' }}>
-                Need help with your training program? Our support team is here to assist you.
+            <div style={{
+              flex: '1',
+              padding: '1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                <span style={{
+                  fontSize: '0.65rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  color: '#64748b',
+                  background: '#f1f5f9',
+                  padding: '0.25rem 0.5rem',
+                  borderRadius: '4px'
+                }}>
+                  Advanced Track
+                </span>
+                <span style={{
+                  fontSize: '0.65rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  color: '#64748b',
+                  background: '#fef3c7',
+                  padding: '0.25rem 0.5rem',
+                  borderRadius: '4px'
+                }}>
+                  Coming Soon
+                </span>
+              </div>
+              <h3 style={{
+                fontSize: '1.25rem',
+                marginBottom: '0.5rem',
+                color: '#0f172a',
+                fontWeight: 700,
+                letterSpacing: '-0.01em',
+                lineHeight: 1.2
+              }}>
+                Transition Program
+              </h3>
+              <p style={{
+                marginBottom: '0.75rem',
+                color: '#64748b',
+                fontSize: '0.875rem',
+                lineHeight: 1.5,
+                maxWidth: '95%'
+              }}>
+                Advanced career transition training for experienced pilots seeking airline pathways and specialized aviation roles.
               </p>
-              <p style={{ margin: 0 }}>
-                © 2024 WingMentor Network. All rights reserved.
-              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <span style={{
+                  fontSize: '0.7rem',
+                  padding: '0.3rem 0.6rem',
+                  background: '#f8fafc',
+                  borderRadius: '4px',
+                  color: '#475569',
+                  fontWeight: 500,
+                  border: '1px solid #e2e8f0'
+                }}>
+                  Advanced
+                </span>
+                <span style={{
+                  fontSize: '0.7rem',
+                  padding: '0.3rem 0.6rem',
+                  background: '#f8fafc',
+                  borderRadius: '4px',
+                  color: '#475569',
+                  fontWeight: 500,
+                  border: '1px solid #e2e8f0'
+                }}>
+                  Career Focus
+                </span>
+              </div>
             </div>
           </div>
-        </footer>
+        </section>
       </div>
     </div>
   );
-};
+  };
 
   // Pathways View Component
   const PathwaysView = () => {
@@ -2366,7 +2033,15 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
     return (
       <div className="wingmentor-subpage pathways-view-page" style={{ width: '100%', height: '100%', overflow: 'auto' }}>
-        <div className="wingmentor-subpage-shell" style={{ position: 'relative', background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
+        <div className="wingmentor-subpage-shell" style={{ 
+          position: 'relative', 
+          background: isDarkMode 
+            ? 'linear-gradient(135deg, rgba(2, 8, 23, 0.6) 0%, rgba(15, 23, 42, 0.7) 100%)' 
+            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(240, 244, 255, 0.5) 100%)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          minHeight: '100vh'
+        }}>
           <button
             onClick={() => setMainView('dashboard')}
             style={{
@@ -3196,7 +2871,16 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
   const DashboardView = () => {
     return (
     <div className="dashboard-container animate-fade-in">
-      <div style={{ position: 'relative', background: isDarkMode ? 'linear-gradient(135deg, #020817 0%, #0f172a 100%)' : 'linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%)' }}>
+      <div style={{ 
+        position: 'relative', 
+        background: isDarkMode 
+          ? 'linear-gradient(135deg, rgba(2, 8, 23, 0.6) 0%, rgba(15, 23, 42, 0.7) 100%)' 
+          : 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(240, 244, 255, 0.5) 100%)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        minHeight: '100vh',
+        borderRadius: '0 0 20px 0'
+      }}>
         <div className="dashboard-header" style={{ marginBottom: '3rem', padding: '2rem 2rem 0 2rem' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
             <img src="/logo.png" alt="WingMentor Logo" />
@@ -3581,23 +3265,32 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
     const marginLeft = SIDEBAR_BASE_WIDTH;
     return (
       <div style={{
-        marginLeft: `${marginLeft}px`,
-        width: `calc(100% - ${marginLeft}px)`,
+        marginLeft: `${280}px`,
+        width: `calc(100% - 280px)`,
         height: '100vh',
         overflow: 'auto',
         position: 'relative',
-        paddingTop: '70px'
+        paddingTop: '0'
       }}>
         <TopBar
           userFirstName={userFirstName}
+          userProfile={userProfile}
           isDarkMode={isDarkMode}
           onToggleDarkMode={onToggleDarkMode}
           onNavigateToModules={() => onViewChange?.('module-01')}
           onNavigateToProfile={() => setMainView('pilot-portfolio')}
           onNavigateToApplications={() => setMainView('applications')}
           onAccessWebsite={handleAccessWebsite}
-          onNavigateToHome={onNavigateToMainApp}
+          onNavigateToHome={() => {
+            if (onNavigateToMainApp) {
+              onNavigateToMainApp('home');
+            } else {
+              setMainView('hub');
+            }
+          }}
           onLogout={onLogout}
+          onContactSupport={() => setMainView('contact')}
+          onGuidance={() => setMainView('contact')}
         />
 
         <div style={{ padding: '0', maxWidth: '1200px', margin: '0 auto' }}>
@@ -3615,7 +3308,12 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         alignItems: 'flex-start',
         justifyContent: 'center',
         padding: '3rem 1rem 2rem',
-        background: isDarkMode ? 'linear-gradient(180deg, #020817 0%, #071122 100%)' : 'transparent'
+        background: isDarkMode 
+          ? 'linear-gradient(180deg, rgba(2, 8, 23, 0.6) 0%, rgba(7, 17, 34, 0.7) 100%)' 
+          : 'linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(240, 244, 255, 0.5) 100%)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        minHeight: '100vh'
       }}
     >
       <main
@@ -4139,6 +3837,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onBack={() => setMainView('programs')}
             onLogout={onLogout}
             userEmail={userProfile?.email}
+            onComplete={() => setMainView('programs')}
           />
         );
       case 'post-enrollment-slideshow':

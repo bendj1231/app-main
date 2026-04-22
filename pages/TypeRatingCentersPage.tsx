@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, MapPin, Globe, Phone, Mail, CheckCircle2 } from 'lucide-react';
+import { PathwaysHeader } from '../components/website/components/PathwaysHeader';
 
 interface RatingCenter {
   id: string;
@@ -184,28 +185,7 @@ export default function TypeRatingCentersPage({ onBack, onNavigate }: Props) {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
-
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
-          <button
-            onClick={() => onBack ? onBack() : window.history.back()}
-            className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
-          <span className="text-sm font-semibold text-slate-900">Type Rating Centers</span>
-          {onNavigate && (
-            <button
-              onClick={() => onNavigate('type-rating-search')}
-              className="ml-auto text-xs text-sky-600 hover:text-sky-700 font-medium"
-            >
-              Browse Aircraft Type Ratings →
-            </button>
-          )}
-        </div>
-      </div>
+      <PathwaysHeader onBack={onBack} onNavigate={onNavigate} />
 
       {/* Hero */}
       <div className="relative overflow-hidden pt-16 pb-12 px-6">

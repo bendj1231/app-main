@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, MapPin, Clock, DollarSign, Plane, Users, Brain, Shield, Cpu, Search, Target, Briefcase, Zap, CheckCircle2, Star, Globe } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Clock, DollarSign, Plane, Users, Brain, Shield, Cpu, Search, Target, Briefcase, Zap, CheckCircle2, Star, Globe } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
+import { PathwaysHeader } from '../../components/website/components/PathwaysHeader';
 
 type Region = 'All' | 'Asia' | 'Europe' | 'Americas' | 'Oceania' | 'Africa' | 'Middle East';
 
@@ -187,21 +188,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
   return (
     <div className={`min-h-screen ${bg} ${text} font-sans`}>
-      {/* Top Nav */}
-      <div className={`sticky top-0 z-50 ${isDarkMode ? 'bg-slate-950/95' : 'bg-white/95'} backdrop-blur border-b ${isDarkMode ? 'border-slate-800' : 'border-slate-200'}`}>
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
-          <button
-            onClick={onBack}
-            className={`flex items-center gap-2 text-sm font-medium transition-colors ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Pathways
-          </button>
-          <div className="h-5 w-px bg-slate-700 mx-1" />
-          <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
-          <span className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Airline Expectations</span>
-        </div>
-      </div>
+      <PathwaysHeader onBack={onBack} onNavigate={onNavigate} />
 
       {/* Hero */}
       <div className="relative overflow-hidden pt-16 pb-12 px-6">

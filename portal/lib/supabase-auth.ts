@@ -102,12 +102,25 @@ export const createUserProfile = async (user: any, role: UserRole['type'] = 'men
 
 export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
   try {
+    console.log('🔍 [PROFILE DEBUG] Fetching profile for user ID:', uid);
     // Get profile from Supabase - removed timeout to allow natural query completion
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('*')
+      .select('*, profile_image_url')
       .eq('id', uid)
       .maybeSingle();
+
+    console.log('🔍 [PROFILE DEBUG] Profile query result:', {
+      hasProfile: !!profile,
+      profileError: profileError,
+      profileData: profile ? {
+        id: profile.id,
+        email: profile.email,
+        display_name: profile.display_name,
+        profile_image_url: profile.profile_image_url,
+        role: profile.role
+      } : null
+    });
 
     if (profileError) {
       // Only log error if it's not a "not found" error
@@ -117,14 +130,9 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
       return null;
     }
 
-    if (!profile) {
-      console.log('Profile not found');
-      return null;
-    }
-
     // Use display_name from profile, or generate from email
     const displayName = profile.display_name || profile.email?.split('@')[0] || '';
-    
+
     const firstName = displayName?.split(' ')[0] || profile.email?.split('@')[0] || '';
     const lastName = displayName?.split(' ').slice(1).join(' ') || '';
 
@@ -136,49 +144,52 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
         .select('*')
         .eq('user_id', uid);
 
-      if (accessError) {
-        console.error('Error fetching app access:', accessError);
-        // Continue without app access rather than hanging
-      } else {
-        appAccess = accessData || [];
+      if (!accessError && accessData) {
+        appAccess = accessData.map((access: any) => ({
+          appId: access.app_id,
+          appName: access.app_name || '',
+          granted: access.granted,
+          grantedBy: access.granted_by,
+          grantedAt: access.granted_at ? new Date(access.granted_at) : undefined,
+          restricted: access.restricted || false
+        }));
       }
-    } catch (error) {
-      console.error('Exception fetching app access:', error);
-      // Continue without app access rather than hanging
+    } catch (accessErr) {
+      console.error('Error fetching app access:', accessErr);
     }
-
-    // Map app access to proper format
-    const appAccessMap = {
-      'foundational': 'Foundational Program',
-      'pilot-profile': 'Pilot Profile', 
-      'mentorship': 'Mentorship',
-      'atlas-cv': 'ATLAS CV Generator',
-      'w1000': 'W1000 Logbook'
-    };
 
     const userProfile: UserProfile = {
       id: profile.id,
+      uid: profile.firebase_uid || profile.id,
       email: profile.email,
-      displayName: displayName,
-      firstName: firstName,
-      lastName: lastName,
-      role: profile.role,
-      totalHours: 0, // This would come from a separate table if needed
+      firstName,
+      lastName,
+      displayName,
+      role: profile.role || 'mentee',
+      totalHours: profile.total_flight_hours || 0,
+      region: profile.region,
+      flightSchool: profile.flight_school,
       enrolledPrograms: profile.enrolled_programs || [],
-      appAccess: appAccess?.map(access => ({
-        appId: access.app_id,
-        appName: appAccessMap[access.app_id as keyof typeof appAccessMap] || access.app_id,
-        granted: access.granted,
-        restricted: !access.granted
-      })) || [],
-      createdAt: new Date(profile.created_at),
-      lastLogin: new Date(profile.updated_at),
-      status: profile.status
+      appAccess,
+      createdAt: profile.created_at ? new Date(profile.created_at) : new Date(),
+      lastLogin: profile.last_login ? new Date(profile.last_login) : undefined,
+      status: profile.status || 'active',
+      isNewUser: profile.is_new_user || false,
+      profile_image_url: profile.profile_image_url
     };
 
+    console.log('🔍 [PROFILE DEBUG] Final userProfile object:', {
+      id: userProfile.id,
+      email: userProfile.email,
+      firstName: userProfile.firstName,
+      displayName: userProfile.displayName,
+      profile_image_url: userProfile.profile_image_url,
+      appAccessCount: userProfile.appAccess.length
+    });
+    console.log('📋 User profile loaded:', userProfile);
     return userProfile;
   } catch (error) {
-    console.error('Error getting user profile:', error);
+    console.error('Error fetching user profile:', error);
     return null;
   }
 };

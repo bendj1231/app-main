@@ -42,6 +42,7 @@ export interface UserProfile {
   moduleProgress?: Record<string, number>; // module id -> completion %
   performanceScore?: number; // 0-100
   notifications?: { type: string; message: string; date: string; read: boolean }[];
+  profile_image_url?: string; // Profile image URL from Cloudinary
 }
 
 export const PERMISSIONS = {

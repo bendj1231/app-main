@@ -73,6 +73,7 @@ import { OnboardingRecognition } from './components/website/components/Onboardin
 import { AccreditationPage } from './components/website/components/AccreditationPage';
 import TypeRatingSearchPage from './pages/TypeRatingSearchPage';
 import TypeRatingCentersPage from './pages/TypeRatingCentersPage';
+import JobListingsPage from './pages/JobListingsPage';
 import { EmiratesAtplPage } from './components/website/components/pathways/EmiratesAtplPage';
 import { EmergingAirTaxiPage } from './components/website/components/pathways/EmergingAirTaxiPage';
 import { PilotedDronesPage } from './components/website/components/pathways/PilotedDronesPage';
@@ -595,7 +596,15 @@ const App = () => {
   };
 
   const navigateToMainAppHome = () => {
-    console.log(' Navigating to main app home page from portal');
+    console.log('🔍 [MAIN APP NAV] Navigating to main app home page from portal');
+    console.log('🔍 [MAIN APP NAV] Current auth state:', {
+      hasCurrentUser: !!currentUser,
+      currentUserId: currentUser?.uid,
+      currentPage: currentPage
+    });
+    // Clear auth state when navigating from portal after logout
+    console.log('🔍 [MAIN APP NAV] Clearing auth state for logout');
+    logout();
     setCurrentPage('home');
   };
 
@@ -1266,7 +1275,7 @@ const App = () => {
           <TypeRatingCentersPage onBack={() => navigateTo('type-rating-search')} onNavigate={navigateTo} />
         )}
         {currentPage === 'job-listings' && (
-          <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} mode="jobs" />
+          <JobListingsPage onNavigate={navigateTo} />
         )}
         {currentPage === 'pathways-modern-light' && (
           <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />

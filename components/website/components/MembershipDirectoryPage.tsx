@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shield, Sparkles, Users, Globe, Award, Heart, MessageSquare, Zap, ChevronRight, CheckCircle2, Star, CreditCard } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { PathwaysHeader } from './PathwaysHeader';
 import { RevealOnScroll } from '../RevealOnScroll';
 
 interface MembershipDirectoryPageProps {
@@ -73,7 +73,7 @@ export const MembershipDirectoryPage: React.FC<MembershipDirectoryPageProps> = (
 
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans text-left">
-            <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
+            <PathwaysHeader onBack={onBack} onNavigate={onNavigate} />
 
             {/* Header Section - matching AboutPage style */}
             <div className="pt-32 pb-12 px-6">

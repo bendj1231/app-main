@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icons } from '../icons';
+import { MessageCircle, Settings, Home, LogOut } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
@@ -10,212 +11,50 @@ interface SidebarProps {
     isDarkMode?: boolean;
 }
 
+const navItems = [
+    { id: 'news', title: 'News & Updates', subtitle: 'Latest announcements' },
+    { id: 'pilot-portfolio', title: 'Dashboard', subtitle: 'Flight logs' },
+    { id: 'programs', title: 'Programs', subtitle: 'Training programs' },
+    { id: 'pathways', title: 'Pathways', subtitle: 'Career roadmaps' },
+    { id: 'recognition', title: 'Recognition', subtitle: 'Awards' },
+    { id: 'wingmentor-network', title: 'Network', subtitle: 'Community hub' },
+    { id: 'w1000', title: 'W1000', subtitle: 'Advanced training' },
+];
+
 export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate, onNavigateToMainApp, isDarkMode = false }) => {
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>
-                {/* Navigation Bar */}
-                <div className={styles.navigationBar}>
-                    <button 
-                        onClick={() => {
-                            console.log('Home button clicked, onNavigateToMainApp:', !!onNavigateToMainApp);
-                            if (onNavigateToMainApp) {
-                                onNavigateToMainApp();
-                            } else {
-                                onNavigate('home');
-                            }
-                        }}
-                        className={styles.homeButton}
-                    >
-                        <Icons.Home />
-                        Home
-                    </button>
-                    <button 
-                        onClick={() => {
-                            onLogout();
-                            if (onNavigateToMainApp) {
-                                onNavigateToMainApp();
-                            }
-                        }}
-                        className={styles.logoutButton}
-                    >
-                        <Icons.LogOut />
-                        Logout
-                    </button>
-                </div>
-                
                 {/* Sidebar Logo */}
                 <div className={styles.sidebarHeader}>
                     <div className={styles.sidebarLogo}>
-                        <img src="/logo.png" alt="WingMentor Logo" />
+                        <img src="/logo.png" alt="WingMentor Logo" className={styles.logoImage} />
+                    </div>
+                    <div className={styles.sidebarLogoText}>
+                        <span className={styles.logoText}>Pilot portal</span>
                     </div>
                     <div className={styles.sidebarSubtitle}>CONNECTING PILOTS TO THE INDUSTRY</div>
                 </div>
 
-                <section className={styles.dashboardSection}>
-                    <div className={styles.cardsList}>
-                        <div 
-                            className={`${styles.horizontalCard} ${mainView === 'news' ? styles.active : ''}`}
-                            onClick={() => onNavigate('news')}
-                        >
-                            <div className={styles.horizontalCardContentWrapper}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
-                                    <div style={{ fontSize: '0.9rem', color: '#000000', fontWeight: 'bold' }}>•</div>
-                                    <div className={styles.horizontalCardContent}>
-                                        <h3 className={styles.horizontalCardTitle}>News & Updates</h3>
-                                        <p className={styles.horizontalCardDesc}>
-                                            Latest announcements
-                                        </p>
+                <section className={styles.navSection}>
+                    <div className={styles.navList}>
+                        {navItems.map((item) => {
+                            const isActive = mainView === item.id;
+                            return (
+                                <button
+                                    key={item.id}
+                                    className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                                    onClick={() => onNavigate(item.id)}
+                                >
+                                    <div className={styles.navItemContent}>
+                                        <div className={styles.navItemTitle}>{item.title}</div>
+                                        <div className={styles.navItemSubtitle}>{item.subtitle}</div>
                                     </div>
-                                </div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="News & Updates" className={styles.hubCardBgImage} />
-                            <div className={styles.hubCardArrow}>
-                                <Icons.ArrowRight />
-                            </div>
-                        </div>
-
-                        <div 
-                            className={`${styles.horizontalCard} ${mainView === 'pilot-portfolio' ? styles.active : ''}`}
-                            onClick={() => onNavigate('pilot-portfolio')}
-                        >
-                            <div className={styles.horizontalCardContentWrapper}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
-                                    <div style={{ fontSize: '0.9rem', color: '#000000', fontWeight: 'bold' }}>•</div>
-                                    <div className={styles.horizontalCardContent}>
-                                        <h3 className={styles.horizontalCardTitle}>Pilot Portfolio</h3>
-                                        <p className={styles.horizontalCardDesc}>
-                                            Flight logs
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <img src="/Captain-Paperwork-Medium.jpg" alt="Pilot Portfolio" className={styles.hubCardBgImage} />
-                            <div className={styles.hubCardArrow}>
-                                <Icons.ArrowRight />
-                            </div>
-                        </div>
-
-                        <div 
-                            className={`${styles.horizontalCard} ${mainView === 'programs' ? styles.active : ''}`}
-                            onClick={() => onNavigate('programs')}
-                        >
-                            <div className={styles.horizontalCardContentWrapper}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
-                                    <div style={{ fontSize: '0.9rem', color: '#000000', fontWeight: 'bold' }}>•</div>
-                                    <div className={styles.horizontalCardContent}>
-                                        <h3 className={styles.horizontalCardTitle}>Programs</h3>
-                                        <p className={styles.horizontalCardDesc}>
-                                            Training programs
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <img src="/Gemini_Generated_Image_7awns87awns87awn.png" alt="Programs" className={styles.hubCardBgImage} />
-                            <div className={styles.hubCardArrow}>
-                                <Icons.ArrowRight />
-                            </div>
-                        </div>
-
-                        <div 
-                            className={`${styles.horizontalCard} ${mainView === 'pathways' ? styles.active : ''}`}
-                            onClick={() => onNavigate('pathways')}
-                        >
-                            <div className={styles.horizontalCardContentWrapper}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
-                                    <div style={{ fontSize: '0.9rem', color: '#000000', fontWeight: 'bold' }}>•</div>
-                                    <div className={styles.horizontalCardContent}>
-                                        <h3 className={styles.horizontalCardTitle}>Pathways</h3>
-                                        <p className={styles.horizontalCardDesc}>
-                                            Career roadmaps
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <img src="/shutterstock_1698112222.jpg" alt="Pathways" className={styles.hubCardBgImage} />
-                            <div className={styles.hubCardArrow}>
-                                <Icons.ArrowRight />
-                            </div>
-                        </div>
-
-                        <div 
-                            className={`${styles.horizontalCard} ${mainView === 'recognition' ? styles.active : ''}`}
-                            onClick={() => onNavigate('recognition')}
-                        >
-                            <div className={styles.horizontalCardContentWrapper}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
-                                    <div style={{ fontSize: '0.9rem', color: '#000000', fontWeight: 'bold' }}>•</div>
-                                    <div className={styles.horizontalCardContent}>
-                                        <h3 className={styles.horizontalCardTitle}>Recognition</h3>
-                                        <p className={styles.horizontalCardDesc}>
-                                            Awards
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <img src="/Gemini_Generated_Image_tka3njtka3njtka3.png" alt="Recognition & Achievements" className={styles.hubCardBgImage} />
-                            <div className={styles.hubCardArrow}>
-                                <Icons.ArrowRight />
-                            </div>
-                        </div>
-
-                        <div 
-                            className={`${styles.horizontalCard} ${mainView === 'wingmentor-network' ? styles.active : ''}`}
-                            onClick={() => onNavigate('wingmentor-network')}
-                        >
-                            <div className={styles.horizontalCardContentWrapper}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
-                                    <div style={{ fontSize: '0.9rem', color: '#000000', fontWeight: 'bold' }}>•</div>
-                                    <div className={styles.horizontalCardContent}>
-                                        <h3 className={styles.horizontalCardTitle}>Network</h3>
-                                        <p className={styles.horizontalCardDesc}>
-                                            Community hub
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <img src="/Networking.jpg" alt="WingMentor Network" className={styles.hubCardBgImage} />
-                            <div className={styles.hubCardArrow}>
-                                <Icons.ArrowRight />
-                            </div>
-                        </div>
-
-                        <div 
-                            className={`${styles.horizontalCard} ${mainView === 'w1000' ? styles.active : ''}`}
-                            onClick={() => onNavigate('w1000')}
-                        >
-                            <div className={styles.horizontalCardContentWrapper}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '60%' }}>
-                                    <div style={{ fontSize: '0.9rem', color: '#000000', fontWeight: 'bold' }}>•</div>
-                                    <div className={styles.horizontalCardContent}>
-                                        <h3 className={styles.horizontalCardTitle}>W1000</h3>
-                                        <p className={styles.horizontalCardDesc}>
-                                            Advanced training
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <img src="/Gemini_Generated_Image_7awns87awns87awn.png" alt="W1000" className={styles.hubCardBgImage} />
-                            <div className={styles.hubCardArrow}>
-                                <Icons.ArrowRight />
-                            </div>
-                        </div>
+                                </button>
+                            );
+                        })}
                     </div>
                 </section>
-                
-                {/* Sidebar Footer */}
-                <div className={styles.sidebarFooter}>
-                    <div className={styles.sidebarFooterButtons}>
-                        <button onClick={() => onNavigate('contact')} className={styles.footerButton}>
-                            <Icons.MessageCircle />
-                            Contact Support
-                        </button>
-                        <button onClick={() => onNavigate('contact')} className={styles.footerButton}>
-                            <Icons.Settings />
-                            Guidance
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     );

@@ -39,35 +39,40 @@ export const EnrolledFoundationalPage: React.FC<EnrolledFoundationalPageProps> =
   const displayName = userProfile?.firstName || userProfile?.displayName || userProfile?.email || 'Pilot';
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, system-ui, sans-serif', paddingTop: '120px' }}>
-      <div style={{ padding: '2rem 3rem', maxWidth: '1200px', margin: '0 auto' }}>
-        <button
-          onClick={onBack}
-          style={{
-            marginBottom: '1.25rem',
-            background: 'transparent',
-            border: 'none',
-            color: '#1e40af',
-            fontSize: '0.95rem',
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
-        >
-          ← Back to Program Directory
-        </button>
-        
+    <div style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, system-ui, sans-serif', paddingTop: '0' }}>
+      <div style={{ padding: '0 3rem 2rem 3rem', maxWidth: '1200px', margin: '0 auto' }}>
         {/* Single White Card Container */}
         <div
           style={{
             background: '#fff',
             borderRadius: '24px',
-            padding: '2.5rem',
+            padding: '1rem',
             boxShadow: '0 4px 20px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05)',
             border: '1px solid rgba(226, 232, 240, 0.6)',
+            position: 'relative',
           }}
         >
+          {/* Back Button - Top Left Corner */}
+          <button
+            onClick={onBack}
+            style={{
+              position: 'absolute',
+              top: '1rem',
+              left: '1rem',
+              background: 'transparent',
+              border: 'none',
+              color: '#1e40af',
+              fontSize: '0.95rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              zIndex: 10,
+            }}
+          >
+            ← Back to Program Directory
+          </button>
+
           {/* Header Section */}
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
             <img src="/logo.png" alt="WingMentor Logo" style={{ display: 'block', maxWidth: '180px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               WINGMENTOR PROGRAMS

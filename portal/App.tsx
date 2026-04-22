@@ -230,6 +230,34 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     currentSystem: 'pms',
     preloadedData: {}
   });
+
+  // Debug: Log component mount
+  useEffect(() => {
+    console.log('🚀 [PORTAL MOUNT] Portal component mounted');
+    console.log('🔍 [PORTAL MOUNT] Initial state:', {
+      currentView,
+      directToEnrollment,
+      pendingHomeView,
+      isDarkMode
+    });
+    return () => {
+      console.log('🔴 [PORTAL UNMOUNT] Portal component unmounted');
+    };
+  }, []);
+
+  // Debug: Log auth state changes
+  useEffect(() => {
+    console.log('🔍 [PORTAL DEBUG] Auth state changed:', {
+      hasUser: !!authState.user,
+      userId: authState.user?.id,
+      hasUserProfile: !!authState.userProfile,
+      userProfileEmail: authState.userProfile?.email,
+      userProfileFirstName: authState.userProfile?.firstName,
+      userProfileProfileImage: authState.userProfile?.profile_image_url,
+      loading: authState.loading
+    });
+  }, [authState]);
+
   const [isInitializing, setIsInitializing] = useState(!directToEnrollment);
   const loadingTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const hasShownInitialLoading = useRef(false);
@@ -264,21 +292,29 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'become-member';
 
   const VIEW_WHITELIST: ViewName[] = [
-    'login','hub','dashboard','programs','pathways','applications','foundational','atpl','airtaxi','privatesector',
+    'hub','dashboard','programs','pathways','applications','foundational','atpl','airtaxi','privatesector',
     'foundational-onboarding','enrollment-confirmation','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
     'reset-password','module-01','module-02','module-03','pilot-profile','recognition','verification','job-database','become-member'
   ];
 
-  const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'foundational' : 'login');
+  const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'foundational' : 'hub');
   const [completedModules, setCompletedModules] = useState<string[]>([]);
   const [lastLoginEmail, setLastLoginEmail] = useState<string | null>(null);
-  const [pendingHomeView, setPendingHomeView] = useState<MainView | null>(null);
+  const [pendingHomeView, setPendingHomeView] = useState<MainView | null>('pilot-portfolio');
 
   useEffect(() => {
     const detected = detectGraphicsPreset();
     setGraphicsDetection(detected);
 
     if (typeof window === 'undefined') return;
+
+    // Clear cache on page reload
+    console.log('🧹 [CACHE] Clearing cache on page reload');
+    window.localStorage.removeItem('supabase.auth.token');
+    window.localStorage.removeItem('supabase.auth.refreshToken');
+    window.localStorage.removeItem('supabase.auth.codeVerifier');
+    window.localStorage.removeItem('supabase.auth.pkceVerifier');
+    window.sessionStorage.clear();
 
     const savedPreset = window.localStorage.getItem(GRAPHICS_PRESET_STORAGE_KEY) as GraphicsPreset | null;
     const savedConfirmed = window.localStorage.getItem(GRAPHICS_PRESET_CONFIRMED_STORAGE_KEY) === 'true';
@@ -350,12 +386,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   }, []);
 
   const handleViewChange = (view: ViewName) => {
-    console.log('🔀 View change requested:', view);
-    if (!VIEW_WHITELIST.includes(view)) {
-      console.warn('⚠️ Attempted to navigate to unknown view:', view);
-      return;
+    console.log('� [VIEW CHANGE] Requested view:', view);
+    console.log('🔍 [VIEW CHANGE] Current view:', currentView);
+    console.log('🔍 [VIEW CHANGE] View whitelist:', VIEW_WHITELIST);
+    if (VIEW_WHITELIST.includes(view)) {
+      console.log('✅ [VIEW CHANGE] View is whitelisted, navigating to:', view);
+      setCurrentView(view);
+      console.log('🔍 [VIEW CHANGE] View changed from', currentView, 'to', view);
+    } else {
+      console.log('⛔ [VIEW CHANGE] View not whitelisted, ignoring:', view);
     }
-    setCurrentView(view);
   };
 
   const clearLoadingSequence = () => {
@@ -423,36 +463,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       console.log('✅ Setting isInitializing to false');
       setIsInitializing(false);
 
-      // If user is logged in and loading hasn't started, trigger it
-      // Only trigger if current view is 'login' to prevent re-triggering on tab switch
-      // Skip loading sequence when directToEnrollment is true
-      console.log('🔍 Loading sequence check:', {
-        hasUser: !!nextState.user,
-        hasShownLoading: hasShownInitialLoading.current,
-        showLoading,
-        currentView,
-        directToEnrollment
-      });
-      
-      if (nextState.user && !hasShownInitialLoading.current && currentView === 'login' && !directToEnrollment) {
-        console.log('🚀 Redirecting to main app home page instead of loading sequence');
-        // Redirect to main app home page immediately instead of showing loading sequence
-        // Use window.location to force navigation out of portal
-        window.location.href = '/';
-      } else if (!nextState.user && !showLoading) {
-        // No user, go to login
-        console.log('👤 No user, going to login');
-        setCurrentView('login');
-      } else {
-        console.log('⏭️ Skipping loading sequence:', {
-          reason: nextState.user ? 'Already shown loading or loading in progress' : 'User not authenticated'
-        });
-        // If loading is already shown but sequence was skipped, dismiss it
-        if (showLoading && nextState.user && hasShownInitialLoading.current) {
-          console.log('🔓 Dismiss loading screen since user is authenticated');
-          setShowLoading(false);
-        }
-      }
+      // No loading sequence - portal loads directly
+      console.log('⏭️ [ROUTING] Portal loads directly without loading sequence');
     });
 
     // Also check for existing session immediately
@@ -498,18 +510,30 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   };
 
   useEffect(() => {
+    console.log('🔍 [ROUTING-2] useEffect triggered:', {
+      showLoading,
+      authStateUser: !!authState.user,
+      authStateLoading: authState.loading,
+      currentView,
+      directToEnrollment,
+      onNavigateToMainApp: !!onNavigateToMainApp
+    });
+
+    // Don't make routing decisions while auth is still loading
+    if (authState.loading) {
+      console.log('⏳ [ROUTING-2] Auth still loading, skipping routing decision');
+      return;
+    }
+
     if (!showLoading) {
       const timeout = setTimeout(() => setLoginBlurred(false), 500);
-      
-      // Redirect to main app home page after loading completes if user is logged in
-      if (authState.user && currentView === 'login' && !directToEnrollment) {
-        console.log('🏠 Redirecting to main app home page after loading');
-        onNavigateToMainApp?.('home');
-      }
-      
+
+      // No authentication checks - portal is accessible without login
+      console.log('⏭️ [ROUTING-2] Portal accessible without authentication');
+
       return () => clearTimeout(timeout);
     }
-  }, [showLoading, authState.user, currentView, directToEnrollment, onNavigateToMainApp]);
+  }, [showLoading, authState.user, authState.loading, currentView, directToEnrollment, onNavigateToMainApp]);
 
   useEffect(() => {
     return () => {
@@ -525,11 +549,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     console.log('📍 Active view:', currentView, '| Accessible apps:', grantedApps, '| Accessible views:', accessibleViews);
   }, [currentView, authState.userProfile]);
 
-  useEffect(() => {
-    if (authState.user && !hasShownInitialLoading.current && !showLoading && !directToEnrollment) {
-      startLoadingSequence('pilot-profile');
-    }
-  }, [authState.user, showLoading, startLoadingSequence, directToEnrollment]);
+  // Loading sequence removed - no longer needed
 
   // Ensure showLoading stays false when directToEnrollment is true
   useEffect(() => {
@@ -540,47 +560,66 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   }, [directToEnrollment, showLoading]);
 
   useEffect(() => {
-    if (authState.user && currentView === 'login' && !directToEnrollment) {
-      // Redirect to main app home page instead of portal hub
-      // Don't wait for loading sequence to complete
-      setTimeout(() => {
-        onNavigateToMainApp?.('home');
-      }, 100);
+    console.log('🔍 [ROUTING-3] useEffect triggered:', {
+      authStateUser: !!authState.user,
+      authStateLoading: authState.loading,
+      currentView,
+      directToEnrollment,
+      onNavigateToMainApp: !!onNavigateToMainApp
+    });
+
+    // Don't make routing decisions while auth is still loading
+    if (authState.loading) {
+      console.log('⏳ [ROUTING-3] Auth still loading, skipping routing decision');
+      return;
     }
-  }, [authState.user, currentView, directToEnrollment, onNavigateToMainApp]);
+
+    // No authentication checks - portal is accessible without login
+    console.log('⏭️ [ROUTING-3] Portal accessible without authentication');
+  }, [authState.user, authState.loading, currentView, directToEnrollment, onNavigateToMainApp]);
 
   const handleLogout = async () => {
     try {
-      console.log('🔴 handleLogout called');
-      console.log('🔴 Calling logout function...');
+      console.log('🔴 [LOGOUT DEBUG] handleLogout called');
+      console.log('🔴 [LOGOUT DEBUG] Calling logout function...');
+      console.log('🔍 [LOGOUT DEBUG] Current auth state:', {
+        hasUser: !!authState.user,
+        userId: authState.user?.id,
+        hasUserProfile: !!authState.userProfile,
+        loading: authState.loading
+      });
 
       // Clear URL hash first
+      console.log('🔍 [LOGOUT DEBUG] Clearing URL hash');
       window.location.hash = '';
+      console.log('✅ [LOGOUT DEBUG] URL hash cleared');
 
       // Clear any stored session data
+      console.log('🔍 [LOGOUT DEBUG] Clearing localStorage');
       localStorage.removeItem('supabase.auth.token');
       localStorage.removeItem('supabase.auth.refreshToken');
       localStorage.removeItem('supabase.auth.codeVerifier');
       localStorage.removeItem('supabase.auth.pkceVerifier');
-      console.log('✅ localStorage cleared');
+      console.log('✅ [LOGOUT DEBUG] localStorage cleared');
 
       // Clear IndexedDB session from main app
       try {
+        console.log('🔍 [LOGOUT DEBUG] Attempting to clear IndexedDB session');
         const db = await (window as any).indexedDB.open('PilotRecognitionAuth', 1);
         const transaction = db.transaction(['authSession'], 'readwrite');
         if (transaction && transaction.objectStore) {
           const store = transaction.objectStore('authSession');
           store.delete('currentSession');
-          console.log('✅ IndexedDB session cleared from portal logout');
+          console.log('✅ [LOGOUT DEBUG] IndexedDB session cleared from portal logout');
         } else {
-          console.log('⚠️ IndexedDB transaction or objectStore not available, skipping');
+          console.log('⚠️ [LOGOUT DEBUG] IndexedDB transaction or objectStore not available, skipping');
         }
       } catch (error) {
-        console.error('❌ Error clearing IndexedDB session from portal:', error);
+        console.error('❌ [LOGOUT DEBUG] Error clearing IndexedDB session from portal:', error);
         // Continue with logout even if IndexedDB clearing fails
       }
 
-      console.log('🔴 Clearing auth state...');
+      console.log('🔴 [LOGOUT DEBUG] Clearing auth state...');
       // Reset auth state
       setAuthState({
         user: null,
@@ -589,30 +628,33 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         currentSystem: 'pms',
         preloadedData: {}
       });
-      console.log('✅ Auth state cleared');
+      console.log('✅ [LOGOUT DEBUG] Auth state cleared');
 
-      // Try to sign out from Supabase, but don't fail if there's a lock error
-      try {
-        await signOut();
-        console.log('🔴 Logout function called');
-        await supabase.auth.setSession({ access_token: '', refresh_token: '' });
-        console.log('✅ Supabase session cleared');
-      } catch (error: any) {
-        console.error('⚠️ Supabase logout error (continuing anyway):', error.message);
-        // Continue with logout even if Supabase logout fails due to lock
-      }
-
-      // Navigate back to main app home page
+      // Navigate back to main app home page immediately
+      console.log('🔍 [LOGOUT DEBUG] Navigating to main app, page: home');
+      console.log('🔍 [LOGOUT DEBUG] onNavigateToMainApp available:', !!onNavigateToMainApp);
       if (onNavigateToMainApp) {
-        console.log('🔴 Navigating back to main app home page...');
+        console.log('✅ [LOGOUT DEBUG] Calling onNavigateToMainApp with page: home');
         onNavigateToMainApp('home');
+      } else {
+        console.log('⚠️ [LOGOUT DEBUG] onNavigateToMainApp not available');
       }
 
-      console.log('✅ Logout successful, navigating to home');
+      console.log('✅ [LOGOUT DEBUG] Logout successful, navigating to home');
+
+      // Try to sign out from Supabase in background, don't block navigation
+      signOut().then(() => {
+        console.log('🔴 [LOGOUT DEBUG] Supabase signOut completed');
+        supabase.auth.setSession({ access_token: '', refresh_token: '' });
+        console.log('✅ [LOGOUT DEBUG] Supabase session cleared');
+      }).catch((error: any) => {
+        console.error('⚠️ [LOGOUT DEBUG] Supabase logout error (non-blocking):', error.message);
+      });
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error('❌ [LOGOUT DEBUG] Logout error:', error);
       // Still try to navigate to home even if logout fails
       if (onNavigateToMainApp) {
+        console.log('🔍 [LOGOUT DEBUG] Attempting navigation to home after error');
         onNavigateToMainApp('home');
       }
     }
@@ -695,54 +737,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   return (
     <>
-      {/* <CloudBackground variant={currentView === 'login' || showLoading || isInitializing || isDarkMode ? 'dark' : 'light'} performancePreset={graphicsPreset} /> */}
-      {isInitializing && !directToEnrollment ? (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999
-        }}>
-          <div style={{
-            textAlign: 'center',
-            color: '#fff',
-            textShadow: '0 2px 10px rgba(0,0,0,0.3)'
-          }}>
-            <img src="/logo.png" alt="WingMentor" style={{ width: '320px', marginBottom: '2rem' }} />
-            <div style={{ fontSize: '1.5rem', fontWeight: 500, letterSpacing: '0.15em' }}>INITIALIZING...</div>
-          </div>
-        </div>
-      ) : showLoading && !directToEnrollment ? (
-        <LoadingScreen
-          error={loadingError}
-          onRetry={() => {
-            setLoadingError(null);
-            // Restart loading sequence
-            setShowLoading(true);
-            setCanSkipLoading(false);
-            // Trigger data reload
-            if (authState.user?.id) {
-              startLoadingSequence(authState.user.id);
-            }
-          }}
-          onSkip={() => {
-            setShowLoading(false);
-            clearLoadingSequence();
-          }}
-          canSkip={canSkipLoading}
-        />
-      ) : currentView === 'login' && !hasConfirmedGraphicsPreset ? (
-        <GraphicsPresetSelector
-          detection={graphicsDetection}
-          selectedPreset={graphicsPreset}
-          onSelect={setGraphicsPreset}
-          onConfirm={handleConfirmGraphicsPreset}
-        />
-      ) : currentView === 'login' ? (
-        <LoginPage onLogin={handleLogin} onNavigate={setCurrentView} onNavigateToMainApp={onNavigateToMainApp} blurred={loginBlurred} onChangeOptimization={handleReopenGraphicsPreset} />
-      ) : currentView === 'reset-password' ? (
+      {/* <CloudBackground variant={currentView === 'login' || showLoading || isDarkMode ? 'dark' : 'light'} performancePreset={graphicsPreset} /> */}
+      {currentView === 'reset-password' ? (
         <ResetPasswordPage />
       ) : currentView === 'hub' ? (
         <WingMentorHome

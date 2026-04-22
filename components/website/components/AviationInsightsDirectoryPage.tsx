@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shield, Globe, Plane, Zap, Briefcase, Anchor, GraduationCap, HardHat, Settings, LineChart, ChevronRight, BarChart3, Search, Lightbulb } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { PathwaysHeader } from './PathwaysHeader';
 import { RevealOnScroll } from '../RevealOnScroll';
 
 interface AviationInsightsPageProps {
@@ -97,7 +97,7 @@ export const AviationInsightsDirectoryPage: React.FC<AviationInsightsPageProps> 
 
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans">
-            <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
+            <PathwaysHeader onBack={onBack} onNavigate={onNavigate} />
 
             {/* Header Section */}
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">

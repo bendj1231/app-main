@@ -1,4 +1,4 @@
-/* Sidebar Container */
+/* Sidebar Container - Glassy UI */
 .sidebarContainer {
     width: 280px;
     height: 100vh;
@@ -7,255 +7,209 @@
     left: 0;
     top: 0;
     z-index: 10;
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.7) 0%, 
+        rgba(240, 244, 255, 0.8) 50%,
+        rgba(255, 255, 255, 0.7) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .sidebarContent {
-    position: relative;
-    height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
-    overflow-x: hidden;
-    padding: 0.75rem;
 }
 
 /* Navigation Bar */
 .navigationBar {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem 0;
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
 }
 
-/* Logout Button */
-.homeButton {
+.navButton {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.56rem 1rem;
-    border-radius: 8px;
-    background: rgba(59, 130, 246, 0.9);
-    border: 1px solid rgba(59, 130, 246, 0.8);
-    color: white;
-    font-size: 0.8rem;
-    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.2s ease;
+    border-radius: 6px;
 }
 
-.homeButton:hover {
-    background: rgba(59, 130, 246, 0.95);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.homeButton svg {
-    width: 14px;
-    height: 14px;
-}
-
-.logoutButton {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.56rem 1rem;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    color: #1e293b;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
-}
-
-.logoutButton:hover {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-}
-
-.logoutButton svg {
-    width: 14px;
-    height: 14px;
+.navButton:hover {
+    background: rgba(255, 255, 255, 0.6);
+    color: #000000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Sidebar Header */
 .sidebarHeader {
-    margin-bottom: 1rem;
-    margin-top: 0.5rem;
+    padding: 1.5rem 1rem 1rem;
+    text-align: center;
 }
 
 .sidebarLogo {
     margin-bottom: 0.5rem;
-    display: flex;
-    justify-content: center;
 }
 
-.sidebarLogo img {
-    max-width: 100px;
+.logoImage {
+    width: 100%;
+    max-width: 120px;
     height: auto;
-    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.sidebarLogoText {
+    margin-bottom: 0.5rem;
+}
+
+.logoText {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #000000;
+    font-family: 'Georgia, serif';
+    letter-spacing: -0.02em;
 }
 
 .sidebarSubtitle {
-    text-align: center;
-    color: #2563eb;
-    font-size: 0.55rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
+    color: #2563eb;
+    text-align: center;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
 }
 
-/* Dashboard Section */
-.dashboardSection {
-    margin-top: 0.5rem;
+/* Navigation Section */
+.navSection {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 0.5rem;
 }
 
-.cardsList {
+.navList {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
 }
 
-/* Horizontal Card */
-.horizontalCard {
+/* Navigation Item - Glassy UI */
+.navItem {
+    display: flex;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     cursor: pointer;
-    padding: 0;
-    border: 2px solid transparent;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.7);
-    min-height: 60px;
     transition: all 0.2s ease;
-    backdrop-filter: blur(8px);
-    position: relative;
-    overflow: hidden;
-}
-
-.horizontalCard:hover {
-    background: rgba(255, 255, 255, 0.85);
-    transform: translateX(4px);
-}
-
-.horizontalCard.active {
-    border-color: #2563eb;
-    background: rgba(255, 255, 255, 0.9);
-}
-
-.horizontalCardContentWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0;
-    height: 100%;
-    position: relative;
-    z-index: 2;
-}
-
-.horizontalCardContent {
-    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
     text-align: left;
+}
+
+.navItem:hover {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.navItem.active {
+    background: rgba(37, 99, 235, 0.1);
+    border-color: rgba(37, 99, 235, 0.3);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.navItemContent {
     flex: 1;
-    max-width: 60%;
+    min-width: 0;
 }
 
-.horizontalCardTitle {
-    font-size: 0.8rem;
-    margin-bottom: 0.15rem;
-    color: #0f172a;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+.navItemTitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 0.125rem;
+    line-height: 1.2;
 }
 
-.horizontalCardDesc {
-    max-width: 100%;
-    margin-bottom: 0;
-    color: #64748b;
-    font-size: 0.65rem;
+.navItemSubtitle {
+    font-size: 0.75rem;
+    color: #6b7280;
     line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.hubCardArrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 3;
-}
-
-.hubCardArrow svg {
-    width: 18px;
-    height: 18px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-}
-
-.hubCardBgImage {
-    width: 40%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 1;
-}
-
-.hubCardBgImage::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 40px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.8) 0%, transparent 100%);
-    z-index: 2;
+.navItem.active .navItemTitle {
+    color: #000000;
 }
 
 /* Sidebar Footer */
 .sidebarFooter {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
     padding: 1rem;
-    background: linear-gradient(180deg, transparent 0%, rgba(240, 244, 248, 0.9) 30%);
-    border-top: 1px solid rgba(226, 232, 240, 0.6);
-}
-
-.sidebarFooterButtons {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
 .footerButton {
-    padding: 0.6rem 1rem;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    border-radius: 12px;
-    color: #475569;
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.2s ease;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    text-align: left;
 }
 
 .footerButton:hover {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(59, 130, 246, 0.3);
-    color: #2563eb;
+    background: rgba(255, 255, 255, 0.5);
+    color: #000000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.footerButton svg {
-    width: 14px;
-    height: 14px;
+/* Scrollbar Styling */
+.sidebarContent::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebarContent::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebarContent::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+.sidebarContent::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
 }

@@ -983,7 +983,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
   useEffect(() => {
     const fetchFirebaseData = async () => {
-      if (!userProfile?.uid || !db) {
+      if (!userProfile?.uid) {
         return;
       }
 
@@ -1268,7 +1268,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 src="/logo.png"
                 alt="WingMentor"
                 style={{
-                  width: '220px',
+                  width: '150px',
                   height: 'auto'
                 }}
               />
@@ -1401,8 +1401,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
         {/* Header - Matching News & Updates Style */}
         <header className="pilot-profile-header" style={{
-          padding: '3rem 4rem',
-          background: isDarkMode 
+          padding: '0rem 4rem',
+          marginTop: '-1rem',
+          background: isDarkMode
             ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
             : 'linear-gradient(180deg, #fff 0%, #f0f4fb 100%)',
           position: 'relative',
@@ -1431,22 +1432,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             Back to Hub
           </button>
 
-          <div style={{ marginBottom: '2rem', marginTop: '0.5rem' }}>
+          <div style={{ marginBottom: '0.25rem', marginTop: '0.5rem' }}>
             <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
           </div>
-          
-          <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
+
+          <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.25rem' }}>
             Connecting Pilots to the Industry
           </div>
-          
-          <h1 style={{ 
-            fontFamily: 'Georgia, serif', 
-            fontSize: 'clamp(2rem, 5vw, 3.25rem)', 
-            fontWeight: 400, 
-            color: isDarkMode ? '#f8fafc' : '#0f172a', 
-            marginBottom: '1rem', 
-            letterSpacing: '-0.02em', 
-            lineHeight: 1.15 
+
+          <h1 style={{
+            fontFamily: 'Georgia, serif',
+            fontSize: 'clamp(2rem, 5vw, 3.25rem)',
+            fontWeight: 400,
+            color: isDarkMode ? '#f8fafc' : '#0f172a',
+            marginBottom: '0.25rem',
+            letterSpacing: '-0.02em',
+            lineHeight: 1.15
           }}>
             Dashboard
           </h1>

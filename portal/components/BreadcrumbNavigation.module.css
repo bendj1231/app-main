@@ -1,0 +1,113 @@
+/* Breadcrumb Container */
+.breadcrumb {
+  padding: 0.75rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumbList {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.breadcrumbItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.breadcrumbText {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbLink {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.breadcrumbLink:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.breadcrumbLink:active {
+  transform: translateY(0);
+}
+
+.currentPage {
+  color: #0f172a;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 6px;
+}
+
+.separator {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .breadcrumb {
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+  }
+
+  .breadcrumbList {
+    gap: 0.25rem;
+  }
+
+  .breadcrumbLink {
+    font-size: 0.8125rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .currentPage {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .breadcrumbLink {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+  }
+
+  .breadcrumbLink:hover {
+    background: rgba(30, 41, 59, 0.8);
+    color: #60a5fa;
+  }
+
+  .currentPage {
+    color: #f8fafc;
+    background: rgba(59, 130, 246, 0.2);
+  }
+
+  .separator {
+    color: #64748b;
+  }
+}

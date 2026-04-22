@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Target, Users, Brain, Award, CheckCircle2, Briefcase, Shield, Search, Zap, Globe, Cpu, MapPin, Plane } from 'lucide-react';
-import { TopNavbar } from './TopNavbar';
+import { Target, Users, Brain, Award, CheckCircle2, Briefcase, Shield, Search, Zap, Globe, Cpu, MapPin, Plane } from 'lucide-react';
+import { PathwaysHeader } from './PathwaysHeader';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { AirlineExpectationsCarousel } from './AirlineExpectationsCarousel';
@@ -108,7 +108,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 { name: 'Airline Expectations', url: '/airline-expectations' }
             ]} />
             <div className="min-h-screen bg-white text-slate-900 font-sans">
-            <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
+            <PathwaysHeader onBack={onBack} onNavigate={onNavigate} />
 
             {/* Header Section - matching AboutPage style */}
             <div className={selectedAirline ? "pt-12 pb-8 px-6" : "pt-32 pb-12 px-6"}>
