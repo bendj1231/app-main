@@ -231,7 +231,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'Discover Pathways Platform',
             subtitle: 'Discover comprehensive career pathways from student to captain',
             icon: Compass,
-            badge: 'Explore',
+            badge: null,
             accentColor: 'from-blue-500/80 to-sky-400/80',
         },
         {
@@ -240,7 +240,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'Type-Rating Search',
             subtitle: 'Find aircraft type ratings and training centers worldwide',
             icon: Plane,
-            badge: 'Search',
+            badge: null,
             accentColor: 'from-purple-500/80 to-fuchsia-400/80',
         },
         {
@@ -249,7 +249,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'Airline Expectations',
             subtitle: 'Major carriers, regional airlines, and international opportunities',
             icon: Briefcase,
-            badge: 'High Demand',
+            badge: null,
             accentColor: 'from-orange-500/80 to-amber-400/80',
         },
         {
@@ -258,7 +258,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'Recognition Pathways',
             subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
             icon: Award,
-            badge: 'Verified',
+            badge: null,
             accentColor: 'from-violet-500/80 to-purple-400/80',
         },
         {
@@ -268,7 +268,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             subtitle: 'AI-powered job matching based on your qualifications and experience',
             icon: Zap,
             badge: 'AI Match',
-            accentColor: 'from-green-500/80 to-emerald-400/80',
+            accentColor: 'from-blue-500/80 to-sky-400/80',
         },
     ],
     'pilot-recognition': [
