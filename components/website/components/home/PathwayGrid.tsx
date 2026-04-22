@@ -375,33 +375,6 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             badge: 'Network',
             accentColor: 'from-blue-500/80 to-sky-400/80',
         },
-        {
-            id: 'events',
-            image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800',
-            title: 'Aviation Events',
-            subtitle: 'Airshows, seminars, networking events, and training workshops',
-            icon: Compass,
-            badge: 'Events',
-            accentColor: 'from-rose-500/80 to-pink-400/80',
-        },
-        {
-            id: 'resources',
-            image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800',
-            title: 'Learning Resources',
-            subtitle: 'Articles, guides, and educational content for all levels',
-            icon: BookOpen,
-            badge: 'Knowledge',
-            accentColor: 'from-green-500/80 to-emerald-400/80',
-        },
-        {
-            id: 'support',
-            image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800',
-            title: 'Career Support',
-            subtitle: 'Mentorship, job matching, and professional development guidance',
-            icon: Briefcase,
-            badge: 'Support',
-            accentColor: 'from-violet-500/80 to-purple-400/80',
-        },
     ],
 });
 
