@@ -3226,7 +3226,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   return (
                     <div
                       key={`${pathway.id}-${idx}`}
-                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-60'}`}
+                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-100'}`}
                       style={{ width: '600px' }}
                       onClick={() => {
                         setSelectedCarouselPathway(pathway);
