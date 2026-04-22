@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap, Folder } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Social Media Icons
@@ -350,7 +350,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             id: 'atpl-game',
             title: 'Pilot-Terminal.com',
             subtitle: 'Pilot social media platform',
-            icon: Folder,
+            icon: Play,
             badge: null,
             accentColor: 'from-pink-500/80 to-rose-400/80',
             isDirectory: true,
@@ -1686,7 +1686,7 @@ const GridCard: React.FC<GridCardProps> = ({
 
                 {/* Text Overlay - Directly on Image (for large cards) */}
                 {isLargeCard && (
-                    <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'}`}>
+                    <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'} ${card.id === 'w1000-suite' ? 'pb-16' : ''}`}>
                         {!(card.id === 'discover' && currentImageIndex === 0) && (
                             <div className="flex items-center gap-3 mb-4">
                                 <h3 className={`font-serif text-2xl md:text-3xl lg:text-4xl tracking-wide ${card.id === 'credentials' ? 'text-black' : 'text-white'}`}>
