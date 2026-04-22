@@ -88,6 +88,7 @@ interface GridCardData {
     isCarouselWhenEnrolled?: boolean;
     hasArrows?: boolean;
     dynamicTitles?: string[];
+    dynamicSubtitles?: string[];
     animationIndices?: number[];
     isDirectory?: boolean;
 }
@@ -141,6 +142,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             loggedInTitle: 'Foundation Program Enroll',
             enrolledTitle: 'Foundation Program Access',
             dynamicTitles: ['Foundation Program Enroll', 'Discover Expectations', 'Discover Type Ratings Search', 'Discover Pilot Matched Jobs', 'Discover Pathways'],
+            dynamicSubtitles: ['Start your aviation career with comprehensive mentorship', 'Align your Recognition Profile with an Airline Expectation', 'Profile-Matched Aircraft Type Rating Recommendations', 'AI-powered job matching based on your qualifications and experience', 'Discover comprehensive career pathways from student to captain'],
             subtitle: 'Align your Recognition Profile with an Airline Expectation',
             loggedInSubtitle: 'Align your Recognition Profile with an Airline Expectation',
             enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
@@ -418,6 +420,7 @@ const dummyCards = [
         loggedInTitle: 'Foundation Program Enroll',
         enrolledTitle: 'Foundation Program Access',
         dynamicTitles: ['Foundation Program Enroll', 'Discover Expectations', 'Discover Type Ratings Search', 'Discover Pilot Matched Jobs', 'Discover Pathways'],
+        dynamicSubtitles: ['Start your aviation career with comprehensive mentorship', 'Align your Recognition Profile with an Airline Expectation', 'Profile-Matched Aircraft Type Rating Recommendations', 'AI-powered job matching based on your qualifications and experience', 'Discover comprehensive career pathways from student to captain'],
         subtitle: 'Align your Recognition Profile with an Airline Expectation',
         loggedInSubtitle: 'Align your Recognition Profile with an Airline Expectation',
         enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
@@ -1257,8 +1260,16 @@ const GridCard: React.FC<GridCardProps> = ({
         ? card.dynamicTitles ? card.dynamicTitles[currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex] : null
         : null;
 
+    // Get current dynamic subtitle for discover card (when not enrolled in foundation)
+    const currentDynamicSubtitle = (card.id === 'discover' && !isEnrolledInFoundation)
+        ? card.dynamicSubtitles ? card.dynamicSubtitles[currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex] : null
+        : null;
+
     // Use dynamic title if available, otherwise use display title
     const finalDisplayTitle = currentDynamicTitle || displayTitle;
+
+    // Use dynamic subtitle if available, otherwise use display subtitle
+    const finalDisplaySubtitle = currentDynamicSubtitle || displaySubtitle;
     
     // Determine if we should use carousel for enrolled/logged in state
     const shouldUseEnrolledCarousel = isEnrolledInFoundation && card.isCarouselWhenEnrolled && card.enrolledImages;
@@ -1410,7 +1421,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                     {finalDisplayTitle}
                                 </h3>
                                 <p className="text-slate-300 text-xs md:text-sm leading-tight">
-                                    {displaySubtitle}
+                                    {finalDisplaySubtitle}
                                 </p>
                             </>
                         )}
@@ -1836,7 +1847,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         {/* Hide subtitle for discover card when logged out and hovered, or for second image when logged in, or when showing Foundation Program Enroll */}
                         {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && !(card.id === 'discover' && currentImageIndex === 0) && (
                             <p className="text-white/90 text-xs md:text-sm truncate mb-4">
-                                {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
+                                {finalDisplaySubtitle.length > 60 ? finalDisplaySubtitle.slice(0, 57) + '...' : finalDisplaySubtitle}
                             </p>
                         )}
                     </div>
@@ -1882,7 +1893,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                         {displayTitle}
                                     </h3>
                                     <p className="text-white/80 text-[10px] md:text-xs truncate hidden md:block">
-                                        {displaySubtitle.length > 45 ? displaySubtitle.slice(0, 42) + '...' : displaySubtitle}
+                                        {finalDisplaySubtitle.length > 45 ? finalDisplaySubtitle.slice(0, 42) + '...' : finalDisplaySubtitle}
                                     </p>
                                 </div>
                                 {/* Glassy button for home view bottom row cards only */}
