@@ -1752,7 +1752,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                     Learn More
                                 </button>
                             )}
-                            {/* Glassy button for credentials (Recognition Profile) card */}
+                            {/* Glassy button for credentials (Pilot-Recognition Profile) card */}
                             {card.id === 'credentials' && (
                                 <button
                                     onClick={(e) => {
@@ -1760,7 +1760,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                         e.stopPropagation();
                                         onNavigate('pilot-recognition');
                                     }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-black text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
                                 >
                                     Learn More
                                 </button>
