@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap, Folder } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Social Media Icons
@@ -350,7 +350,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             id: 'atpl-game',
             title: 'Pilot-Terminal.com',
             subtitle: 'Pilot social media platform',
-            icon: Play,
+            icon: Folder,
             badge: null,
             accentColor: 'from-pink-500/80 to-rose-400/80',
             isDirectory: true,
