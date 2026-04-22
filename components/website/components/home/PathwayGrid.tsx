@@ -1395,9 +1395,9 @@ const GridCard: React.FC<GridCardProps> = ({
                 onNavigate('portal?directToEnrollment=true');
                 return;
             }
-            // If not logged in, navigate based on current image index
+            // If not logged out, navigate based on current image index
             const pageMap: Record<number, string> = {
-                0: 'w1000-suite',      // W1000
+                0: 'become-member',         // Foundation Program Enroll
                 1: 'airline-expectations',  // Expectations
                 2: 'pilot-recognition',    // Digital Logbook
             };
