@@ -1657,18 +1657,30 @@ const GridCard: React.FC<GridCardProps> = ({
 
                 {/* Glassy button for discover card - changes based on carousel slide */}
                 {card.id === 'discover' && isLargeCard && (
-                    <div className="absolute bottom-4 right-4 z-30">
+                    <div className="absolute bottom-4 right-4 z-30 flex gap-2">
                         {currentImageIndex === 0 ? (
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
-                                }}
-                                className="px-4 py-1.5 bg-red-500/30 backdrop-blur-md border border-red-400/50 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-500/50 transition-all duration-300 shadow-lg"
-                            >
-                                Enroll
-                            </button>
+                            <>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate('foundational-program');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    Learn More
+                                </button>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
+                                    }}
+                                    className="px-4 py-1.5 bg-red-500/30 backdrop-blur-md border border-red-400/50 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-500/50 transition-all duration-300 shadow-lg"
+                                >
+                                    Enroll
+                                </button>
+                            </>
                         ) : (
                             <button
                                 onClick={(e) => {
