@@ -2519,34 +2519,42 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         const res = await fetch('https://us-central1-pilotrecognition-airline.cloudfunctions.net/getEnterprisePathwayCards');
         if (!res.ok) return;
         const data = await res.json();
-        const cards: PathwayData[] = (data.cards || []).map((c: any) => ({
-          id: `enterprise-${c.id}`,
-          name: c.title,
-          category: (c.category as PathwayData['category']) || 'airline-pathways',
-          airline: c.airline_name || '',
-          description: c.subtitle || c.benefits_summary || '',
-          image: c.card_image_url || c.airline_logo_url || '',
-          matchProbability: 75,
-          aircraftType: 'generic',
-          requirements: {
-            totalHours: c.minimum_requirements?.total_hours || 0,
-            typeRatings: c.minimum_requirements?.type_rating_required ? [c.position_type] : [],
-          },
-          salary: {
-            firstYear: c.compensation?.salary_min && c.compensation?.salary_max
-              ? `${c.compensation.currency} ${c.compensation.salary_min}–${c.compensation.salary_max}`
-              : 'Competitive',
-            fifthYear: '',
-            bonuses: c.compensation?.housing ? 'Housing included' : '',
-          },
-          benefits: c.benefits_summary ? [c.benefits_summary] : [],
-          locations: Array.isArray(c.base_locations) && c.base_locations.length > 0 ? c.base_locations : ['Global'],
-          hiringStatus: c.hiring_status === 'active' ? 'actively_hiring' : c.hiring_status === 'paused' ? 'limited' : 'moderate',
-          positions: c.positions_available || 1,
-          url: c.application_url || undefined,
-          isEnterprise: true,
-          enterpriseLogoUrl: c.airline_logo_url || undefined,
-        }));
+        const cards: PathwayData[] = (data.cards || []).map((c: any) => {
+          // airline data comes from the joined enterprise_accounts object
+          const ea = c.enterprise_accounts || {};
+          const airlineName = ea.airline_name || c.airline_name || '';
+          const logoUrl = ea.airline_logo_url || c.airline_logo_url || '';
+          return {
+            id: `enterprise-${c.id}`,
+            name: c.title,
+            category: (c.category as PathwayData['category']) || 'airline-pathways',
+            airline: airlineName,
+            description: c.subtitle || c.benefits_summary || '',
+            image: logoUrl,
+            matchProbability: 75,
+            aircraftType: 'generic',
+            requirements: {
+              totalHours: c.minimum_requirements?.total_hours || 0,
+              typeRatings: c.minimum_requirements?.type_rating_required ? [c.position_type] : [],
+            },
+            salary: {
+              firstYear: c.compensation?.salary_min && c.compensation?.salary_max
+                ? `${c.compensation.currency || 'USD'} ${c.compensation.salary_min}–${c.compensation.salary_max}`
+                : 'Competitive',
+              fifthYear: c.career_progression?.typical_upgrade_years
+                ? `Captain upgrade ~${c.career_progression.typical_upgrade_years} yrs`
+                : '',
+              bonuses: c.compensation?.housing ? 'Housing included' : '',
+            },
+            benefits: c.benefits_summary ? [c.benefits_summary] : [],
+            locations: Array.isArray(c.base_locations) && c.base_locations.length > 0 ? c.base_locations : (ea.country ? [ea.country] : ['Global']),
+            hiringStatus: c.hiring_status === 'active' ? 'actively_hiring' : c.hiring_status === 'paused' ? 'limited' : 'moderate',
+            positions: c.positions_available || 1,
+            url: c.application_url || ea.airline_website || undefined,
+            isEnterprise: true,
+            enterpriseLogoUrl: logoUrl,
+          };
+        });
         setEnterprisePathwayCards(cards);
       } catch (e) {
         // silently fail — enterprise cards are additive
