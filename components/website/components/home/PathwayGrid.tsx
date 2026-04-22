@@ -1409,7 +1409,7 @@ const GridCard: React.FC<GridCardProps> = ({
                     ${isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}
                 `}>
                     <div className="flex flex-col">
-                        {!(card.id === 'discover' && currentDynamicTitle === 'Foundation Program Enroll') && (
+                        {!(card.id === 'discover' && currentImageIndex === 0) && (
                             <>
                                 <h3 className="text-white font-serif text-sm md:text-base tracking-wide">
                                     {finalDisplayTitle}
@@ -1652,10 +1652,11 @@ const GridCard: React.FC<GridCardProps> = ({
                 {/* Text Overlay - Directly on Image (for large cards) */}
                 {isLargeCard && (
                     <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'}`}>
-                        <div className="flex items-center gap-3 mb-2">
-                            <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide">
-                                {finalDisplayTitle}
-                            </h3>
+                        {!(card.id === 'discover' && currentImageIndex === 0) && (
+                            <div className="flex items-center gap-3 mb-2">
+                                <h3 className="font-serif text-white text-2xl md:text-3xl lg:text-4xl tracking-wide">
+                                    {finalDisplayTitle}
+                                </h3>
                             {/* Glassy Join Now button for member card only */}
                             {card.id === 'member' && (
                                 <button
@@ -1742,8 +1743,9 @@ const GridCard: React.FC<GridCardProps> = ({
                                 </button>
                             )}
                         </div>
-                        {/* Hide subtitle for discover card when logged out and hovered, or for second image when logged in */}
-                        {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && (
+                        )}
+                        {/* Hide subtitle for discover card when logged out and hovered, or for second image when logged in, or when showing Foundation Program Enroll */}
+                        {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && !(card.id === 'discover' && currentImageIndex === 0) && (
                             <p className="text-white/90 text-xs md:text-sm truncate">
                                 {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
                             </p>
