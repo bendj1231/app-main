@@ -1668,7 +1668,7 @@ const GridCard: React.FC<GridCardProps> = ({
                     <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'} ${card.id === 'w1000-suite' ? 'pb-16' : ''}`}>
                         {!(card.id === 'discover' && currentImageIndex === 0) && (
                             <div className="flex items-center gap-3 mb-4">
-                                <h3 className={`font-normal text-2xl md:text-3xl lg:text-4xl tracking-wide ${card.id === 'credentials' ? 'text-black' : 'text-white'}`} style={{ fontFamily: 'Georgia, serif' }}>
+                                <h3 className={`text-2xl md:text-3xl lg:text-4xl tracking-wide font-normal ${card.id === 'credentials' ? 'text-black' : 'text-white'}`} style={{ fontFamily: 'var(--font-family-secondary)' }}>
                                     {finalDisplayTitle}
                                 </h3>
                             {/* Glassy Join Now button for member card only */}
