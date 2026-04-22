@@ -321,7 +321,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'expectations',
-            title: 'Pilot Pathways Access',
+            title: 'Pilot-Pathways Access',
             subtitle: 'Airline-specific requirements and preparation tools',
             icon: Briefcase,
             badge: null,
