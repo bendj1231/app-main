@@ -1711,7 +1711,18 @@ const GridCard: React.FC<GridCardProps> = ({
                             )}
                             {/* Glassy Enroll Now button for foundation card */}
                             {card.enrollNow && (
-                                <div className="absolute bottom-4 right-4 z-40">
+                                <div className="absolute bottom-4 right-4 z-40 flex gap-2">
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            // Navigate to foundation program about page
+                                            onNavigate('foundational-program');
+                                        }}
+                                        className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                    >
+                                        Learn More
+                                    </button>
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault();
