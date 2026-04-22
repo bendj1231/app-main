@@ -287,7 +287,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'Pilot-Recognition Profile',
             subtitle: 'Industry-recognized pilot verification and endorsement system',
             icon: Award,
-            badge: 'Trusted',
+            badge: null,
             accentColor: 'from-blue-500/80 to-indigo-400/80',
         },
         {
