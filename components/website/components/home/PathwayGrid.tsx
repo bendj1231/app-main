@@ -322,7 +322,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'expectations',
             image: '/images/airlinesexpectations.png',
-            title: 'Expectations Portal',
+            title: 'Access Pathways Platform',
             subtitle: 'Airline-specific requirements and preparation tools',
             icon: Briefcase,
             badge: 'Essential',
