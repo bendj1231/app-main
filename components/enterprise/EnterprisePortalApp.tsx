@@ -16,7 +16,7 @@ const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/dridtecu6/image/u
 const CLOUDINARY_UPLOAD_PRESET = 'enterprise_unsigned';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'settings' | 'support' | 'admin';
+type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'settings' | 'support' | 'admin';
 
 // ─── 72 Airlines List ────────────────────────────────────────────────────────
 const AIRLINE_LIST = [
@@ -57,6 +57,7 @@ const NAV = [
   { id: 'job-listings', label: 'Job Listings', icon: Briefcase },
   { id: 'airline-expectations', label: 'Airline Expectations', icon: Building2 },
   { id: 'pilot-search', label: 'Pilot Search', icon: Search },
+  { id: 'applications', label: 'Applications', icon: Users },
   { id: 'settings', label: 'Account Settings', icon: Settings },
   { id: 'support', label: 'Contact Support', icon: HelpCircle },
 ] as const;
@@ -143,6 +144,249 @@ function StatCard({ label, value, icon: Icon, color, sub }: { label: string; val
       <div className="text-2xl font-bold text-white">{value}</div>
       <div className="text-slate-400 text-sm">{label}</div>
       {sub && <div className="text-slate-500 text-xs mt-0.5">{sub}</div>}
+    </div>
+  );
+}
+
+// ─── Applications Page ───────────────────────────────────────────────────────
+function ApplicationsPage({ user, account }: { user: any; account: any }) {
+  const [applications, setApplications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [selectedApp, setSelectedApp] = useState<any>(null);
+  const [updating, setUpdating] = useState(false);
+
+  const loadApplications = async () => {
+    if (!account?.id) return;
+    setLoading(true);
+    try {
+      const url = new URL(`${FIREBASE_BASE}/getEnterpriseApplications`);
+      url.searchParams.append('enterpriseAccountId', account.id);
+      if (selectedStatus !== 'all') {
+        url.searchParams.append('status', selectedStatus);
+      }
+      const res = await fetch(url.toString());
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      setApplications(data.applications || []);
+    } catch (e) {
+      console.error('Error loading applications:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadApplications();
+  }, [account?.id, selectedStatus]);
+
+  const updateStatus = async (appId: string, newStatus: string, notes?: string) => {
+    setUpdating(true);
+    try {
+      const res = await fetch(`${FIREBASE_BASE}/updateApplicationStatus`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ applicationId: appId, status: newStatus, notes }),
+      });
+      if (!res.ok) throw new Error('Failed to update');
+      await loadApplications();
+      setSelectedApp(null);
+    } catch (e) {
+      console.error('Error updating status:', e);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const statusColors: Record<string, string> = {
+    applied: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    shortlisted: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+    interview_scheduled: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    offer_made: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    hired: 'bg-green-500/20 text-green-400 border-green-500/30',
+    rejected: 'bg-red-500/20 text-red-400 border-red-500/30',
+    withdrawn: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
+  };
+
+  const statusLabels: Record<string, string> = {
+    applied: 'Applied',
+    shortlisted: 'Shortlisted',
+    interview_scheduled: 'Interview Scheduled',
+    offer_made: 'Offer Made',
+    hired: 'Hired',
+    rejected: 'Rejected',
+    withdrawn: 'Withdrawn',
+  };
+
+  const pipelineStages = ['applied', 'shortlisted', 'interview_scheduled', 'offer_made', 'hired'];
+
+  const groupedByStatus = pipelineStages.reduce((acc, status) => {
+    acc[status] = applications.filter(a => a.status === status);
+    return acc;
+  }, {} as Record<string, any[]>);
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <Users className="w-6 h-6 text-blue-400" /> Applications Pipeline
+        </h1>
+        <p className="text-slate-400 text-sm mt-1">Manage pilot applications through your hiring pipeline</p>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-5 gap-4">
+        {pipelineStages.map(stage => (
+          <div key={stage} className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-4">
+            <p className="text-slate-500 text-xs uppercase tracking-wider">{statusLabels[stage]}</p>
+            <p className="text-2xl font-bold text-white mt-1">{groupedByStatus[stage]?.length || 0}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Pipeline Board */}
+      {loading ? (
+        <div className="flex justify-center py-12">
+          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-5 gap-4">
+          {pipelineStages.map(stage => (
+            <div key={stage} className="space-y-3">
+              <div className={`px-3 py-2 rounded-lg border ${statusColors[stage]}`}>
+                <p className="text-sm font-semibold">{statusLabels[stage]}</p>
+                <p className="text-xs opacity-70">{groupedByStatus[stage]?.length || 0} candidates</p>
+              </div>
+              <div className="space-y-2">
+                {groupedByStatus[stage]?.map((app: any) => (
+                  <div
+                    key={app.id}
+                    onClick={() => setSelectedApp(app)}
+                    className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 cursor-pointer hover:border-slate-600 transition-all"
+                  >
+                    <p className="text-white font-medium text-sm truncate">{app.pilot_name}</p>
+                    <p className="text-slate-400 text-xs">{app.pilot_total_hours?.toLocaleString()} hrs</p>
+                    {app.pilot_type_ratings?.length > 0 && (
+                      <p className="text-slate-500 text-xs mt-1">{app.pilot_type_ratings.join(', ')}</p>
+                    )}
+                    <p className="text-slate-600 text-xs mt-2">
+                      {new Date(app.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+                {(!groupedByStatus[stage] || groupedByStatus[stage].length === 0) && (
+                  <p className="text-slate-600 text-xs text-center py-4">No candidates</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Application Detail Modal */}
+      <AnimatePresence>
+        {selectedApp && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedApp(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="p-6 space-y-6">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="text-xl font-bold text-white">{selectedApp.pilot_name}</h2>
+                    <p className="text-slate-400">{selectedApp.pilot_email}</p>
+                    <div className="flex gap-2 mt-2">
+                      <span className={`px-2 py-0.5 rounded-full text-xs border ${statusColors[selectedApp.status]}`}>
+                        {statusLabels[selectedApp.status]}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                        PR Score: {selectedApp.pilot_pr_score}%
+                      </span>
+                    </div>
+                  </div>
+                  <button onClick={() => setSelectedApp(null)} className="text-slate-500 hover:text-white">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-slate-800/50 rounded-xl p-4">
+                    <p className="text-slate-500 text-xs uppercase">Total Hours</p>
+                    <p className="text-lg font-semibold text-white">{selectedApp.pilot_total_hours?.toLocaleString()}</p>
+                  </div>
+                  <div className="bg-slate-800/50 rounded-xl p-4">
+                    <p className="text-slate-500 text-xs uppercase">Nationality</p>
+                    <p className="text-lg font-semibold text-white">{selectedApp.pilot_nationality || 'Not specified'}</p>
+                  </div>
+                  <div className="bg-slate-800/50 rounded-xl p-4 col-span-2">
+                    <p className="text-slate-500 text-xs uppercase">Type Ratings</p>
+                    <p className="text-white">{selectedApp.pilot_type_ratings?.join(', ') || 'None listed'}</p>
+                  </div>
+                </div>
+
+                {selectedApp.cover_letter && (
+                  <div>
+                    <p className="text-slate-500 text-xs uppercase mb-2">Cover Letter</p>
+                    <p className="text-slate-300 text-sm whitespace-pre-wrap">{selectedApp.cover_letter}</p>
+                  </div>
+                )}
+
+                {selectedApp.notes && (
+                  <div>
+                    <p className="text-slate-500 text-xs uppercase mb-2">Internal Notes</p>
+                    <p className="text-slate-300 text-sm">{selectedApp.notes}</p>
+                  </div>
+                )}
+
+                {/* Status Actions */}
+                <div className="border-t border-slate-800 pt-4">
+                  <p className="text-slate-500 text-xs uppercase mb-3">Move to Stage</p>
+                  <div className="flex flex-wrap gap-2">
+                    {pipelineStages.filter(s => s !== selectedApp.status).map(stage => (
+                      <button
+                        key={stage}
+                        onClick={() => updateStatus(selectedApp.id, stage)}
+                        disabled={updating}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${statusColors[stage]} hover:opacity-80 disabled:opacity-50`}
+                      >
+                        Move to {statusLabels[stage]}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => updateStatus(selectedApp.id, 'rejected')}
+                      disabled={updating}
+                      className="px-4 py-2 rounded-lg text-sm font-medium bg-red-500/20 text-red-400 border border-red-500/30 hover:opacity-80 disabled:opacity-50"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </div>
+
+                {/* Email Link */}
+                <div className="border-t border-slate-800 pt-4">
+                  <a
+                    href={`mailto:${selectedApp.pilot_email}?subject=Re: Your Application to ${account?.airline_name}`}
+                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Email Pilot
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -1201,6 +1445,7 @@ export function EnterprisePortalApp() {
         {page === 'job-listings' && <JobListingsPage user={user} account={account} />}
         {page === 'airline-expectations' && <AirlineExpectationsPage user={user} account={account} />}
         {page === 'pilot-search' && <PilotSearchPage user={user} />}
+        {page === 'applications' && <ApplicationsPage user={user} account={account} />}
         {page === 'settings' && <SettingsPage user={user} account={account} refreshAccount={refreshAccount} upsertEnterpriseAccount={upsertEnterpriseAccount} />}
         {page === 'support' && <SupportPage user={user} account={account} />}
         {page === 'admin' && isManager && <AdminPanel user={user} />}
