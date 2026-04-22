@@ -6935,3 +6935,374 @@ exports.postPathwayCard = onRequest(async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
+
+// ============================================================
+// ENTERPRISE / AIRLINE FUNCTIONS
+// Project: pilotrecognition-airline
+// ============================================================
+
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
+};
+
+function setCORS(res) {
+  Object.entries(CORS_HEADERS).forEach(([k, v]) => res.set(k, v));
+}
+
+// Grant enterprise access to a profile (admin only)
+exports.grantEnterpriseAccess = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  setCORS(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { adminUserId, targetUserId, verified = false } = req.body;
+    if (!adminUserId || !targetUserId) return res.status(400).json({ error: 'adminUserId and targetUserId required' });
+
+    // Verify caller is super_admin
+    const { data: admin, error: adminError } = await supabase
+      .from('profiles').select('role').eq('id', adminUserId).single();
+    if (adminError || admin?.role !== 'super_admin') {
+      return res.status(403).json({ error: 'Only super_admin can grant enterprise access' });
+    }
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ enterprise_access: true, verified_account: verified, updated_at: new Date().toISOString() })
+      .eq('id', targetUserId);
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({ success: true, message: 'Enterprise access granted', targetUserId });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Create or update enterprise account (airline profile)
+exports.upsertEnterpriseAccount = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  setCORS(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+  if (!['POST', 'PUT'].includes(req.method)) return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { userId, accountData } = req.body;
+    if (!userId || !accountData?.airline_name) {
+      return res.status(400).json({ error: 'userId and accountData.airline_name required' });
+    }
+
+    // Check enterprise_access flag
+    const { data: profile } = await supabase
+      .from('profiles').select('enterprise_access').eq('id', userId).single();
+    if (!profile?.enterprise_access) {
+      return res.status(403).json({ error: 'Enterprise access required' });
+    }
+
+    // Upsert enterprise account
+    const { data: account, error } = await supabase
+      .from('enterprise_accounts')
+      .upsert({ ...accountData, profile_id: userId, updated_at: new Date().toISOString() }, { onConflict: 'profile_id' })
+      .select().single();
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({ success: true, account });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get enterprise account for a user
+exports.getEnterpriseAccount = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  setCORS(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { userId } = req.query;
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    const { data, error } = await supabase
+      .from('enterprise_accounts')
+      .select('*')
+      .eq('profile_id', userId)
+      .single();
+
+    if (error && error.code !== 'PGRST116') return res.status(500).json({ error: error.message });
+
+    return res.json({ account: data || null });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Post a full enterprise pathway card with all components
+exports.postEnterprisePathwayCard = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  setCORS(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { userId, cardData } = req.body;
+    if (!userId || !cardData) return res.status(400).json({ error: 'userId and cardData required' });
+
+    // Auth check
+    const { data: profile } = await supabase
+      .from('profiles').select('enterprise_access, verified_account').eq('id', userId).single();
+    const canPost = profile?.enterprise_access === true || profile?.verified_account === true;
+    if (!canPost) return res.status(403).json({ error: 'Enterprise access or verified account required' });
+
+    // Get enterprise account
+    const { data: account } = await supabase
+      .from('enterprise_accounts').select('id').eq('profile_id', userId).single();
+    if (!account) return res.status(400).json({ error: 'Enterprise account not found. Create enterprise account first.' });
+
+    const {
+      title, subtitle, category, position_type, hiring_status,
+      minimum_requirements, profile_alignment, compensation,
+      career_progression, training_programs, recruitment_process,
+      company_culture, benefits_summary,
+      application_url, application_email, application_deadline,
+      positions_available, base_locations, is_published, is_featured, expires_at
+    } = cardData;
+
+    if (!title || !position_type) {
+      return res.status(400).json({ error: 'title and position_type required' });
+    }
+
+    const { data: card, error } = await supabase
+      .from('enterprise_pathway_cards')
+      .insert({
+        enterprise_account_id: account.id,
+        posted_by: userId,
+        title, subtitle, category: category || 'airline-pathways',
+        position_type, hiring_status: hiring_status || 'active',
+        minimum_requirements: minimum_requirements || {},
+        profile_alignment: profile_alignment || {},
+        compensation: compensation || {},
+        career_progression: career_progression || [],
+        training_programs: training_programs || [],
+        recruitment_process: recruitment_process || [],
+        company_culture, benefits_summary,
+        application_url, application_email, application_deadline,
+        positions_available: positions_available || 1,
+        base_locations: base_locations || [],
+        is_published: is_published || false,
+        is_featured: is_featured || false,
+        expires_at,
+        published_at: is_published ? new Date().toISOString() : null,
+      })
+      .select().single();
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({ success: true, message: 'Enterprise pathway card posted', card });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Post a job listing to job_opportunities table
+exports.postEnterpriseJobListing = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  setCORS(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { userId, jobData } = req.body;
+    if (!userId || !jobData) return res.status(400).json({ error: 'userId and jobData required' });
+
+    const { data: profile } = await supabase
+      .from('profiles').select('enterprise_access').eq('id', userId).single();
+    if (!profile?.enterprise_access) return res.status(403).json({ error: 'Enterprise access required' });
+
+    const { data: account } = await supabase
+      .from('enterprise_accounts').select('id, airline_name').eq('profile_id', userId).single();
+    if (!account) return res.status(400).json({ error: 'Enterprise account not found' });
+
+    const { data: job, error } = await supabase
+      .from('job_opportunities')
+      .insert({
+        job_id: `ENT-${Date.now()}`,
+        title: jobData.title,
+        company: jobData.company || account.airline_name,
+        location: jobData.location,
+        job_type: jobData.job_type || 'Full-time',
+        category: jobData.category || 'airline-pathways',
+        aircraft_types: jobData.aircraft_types || [],
+        minimum_requirements: jobData.minimum_requirements || {},
+        preferred_qualifications: jobData.preferred_qualifications || {},
+        benefits: jobData.benefits || {},
+        application_url: jobData.application_url,
+        flight_hours_required: jobData.flight_hours_required,
+        pic_hours_required: jobData.pic_hours_required,
+        pic_in_type_hours: jobData.pic_in_type_hours,
+        type_rating_required: jobData.type_rating_required || false,
+        medical_class_required: jobData.medical_class_required,
+        icao_elp_level: jobData.icao_elp_level,
+        license_required: jobData.license_required,
+        visa_sponsorship: jobData.visa_sponsorship || false,
+        compensation: jobData.compensation,
+        salary_min: jobData.salary_min,
+        salary_max: jobData.salary_max,
+        salary_currency: jobData.salary_currency || 'USD',
+        description: jobData.description,
+        logo_url: jobData.logo_url,
+        positions_available: jobData.positions_available || 1,
+        application_deadline: jobData.application_deadline,
+        posting_date: new Date().toISOString(),
+        expiry_date: jobData.expiry_date,
+        is_active: true,
+        status: 'active',
+        is_enterprise_listing: true,
+        enterprise_account_id: account.id,
+        posted_by: userId,
+      })
+      .select().single();
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({ success: true, message: 'Job listing posted', job });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Update airline expectations (enterprise-managed record)
+exports.updateAirlineExpectations = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  setCORS(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+  if (!['POST', 'PUT'].includes(req.method)) return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { userId, airlineExpectationId, updates } = req.body;
+    if (!userId || !updates) return res.status(400).json({ error: 'userId and updates required' });
+
+    const { data: profile } = await supabase
+      .from('profiles').select('enterprise_access').eq('id', userId).single();
+    if (!profile?.enterprise_access) return res.status(403).json({ error: 'Enterprise access required' });
+
+    const { data: account } = await supabase
+      .from('enterprise_accounts').select('id').eq('profile_id', userId).single();
+    if (!account) return res.status(400).json({ error: 'Enterprise account not found' });
+
+    const allowedFields = [
+      'pilot_expectations', 'recruitment_process', 'training_programs',
+      'career_progression', 'company_culture', 'benefits_compensation',
+      'base_locations', 'fleet_information', 'minimum_requirements',
+      'preferred_qualifications', 'interview_process', 'contact_information',
+      'airline_logo_url', 'airline_website', 'company_description'
+    ];
+    const safeUpdates = {};
+    allowedFields.forEach(f => { if (updates[f] !== undefined) safeUpdates[f] = updates[f]; });
+
+    let query;
+    if (airlineExpectationId) {
+      // Update specific record — must belong to this enterprise
+      const { data: existing } = await supabase
+        .from('airline_expectations').select('enterprise_account_id').eq('id', airlineExpectationId).single();
+      if (existing?.enterprise_account_id && existing.enterprise_account_id !== account.id) {
+        return res.status(403).json({ error: 'Cannot update another enterprise\'s expectation record' });
+      }
+      query = supabase.from('airline_expectations')
+        .update({ ...safeUpdates, enterprise_account_id: account.id, last_updated_by: userId, is_enterprise_managed: true, last_updated: new Date().toISOString() })
+        .eq('id', airlineExpectationId);
+    } else {
+      // Upsert by enterprise_account_id
+      query = supabase.from('airline_expectations')
+        .upsert({ ...safeUpdates, enterprise_account_id: account.id, last_updated_by: userId, is_enterprise_managed: true, last_updated: new Date().toISOString(), created_at: new Date().toISOString(), airline_name: updates.airline_name || 'Enterprise Airline' }, { onConflict: 'enterprise_account_id' });
+    }
+
+    const { data, error } = await query.select().single();
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({ success: true, message: 'Airline expectations updated', data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Search pilot profiles (for enterprise/airline use — returns safe public data)
+exports.searchPilotProfiles = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  setCORS(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { userId, minHours, maxHours, licenseType, icaoLevel, nationality, typeRating, limit = 20, offset = 0 } = req.query;
+
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    const { data: caller } = await supabase
+      .from('profiles').select('enterprise_access').eq('id', userId).single();
+    if (!caller?.enterprise_access) return res.status(403).json({ error: 'Enterprise access required' });
+
+    let query = supabase
+      .from('profiles')
+      .select(`
+        id, display_name, full_name, country, nationality,
+        total_flight_hours, overall_recognition_score,
+        language_icao_level, license_id, country_of_license,
+        aircraft_rated_on, ratings, profile_image_url,
+        english_proficiency_level, technical_skills_score,
+        behavioral_sjt_score, behavioral_crm_assessment
+      `)
+      .eq('status', 'active')
+      .limit(parseInt(limit))
+      .range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
+
+    if (minHours) query = query.gte('total_flight_hours', parseFloat(minHours));
+    if (maxHours) query = query.lte('total_flight_hours', parseFloat(maxHours));
+    if (icaoLevel) query = query.eq('language_icao_level', icaoLevel);
+    if (nationality) query = query.ilike('nationality', `%${nationality}%`);
+    if (typeRating) query = query.ilike('aircraft_rated_on', `%${typeRating}%`);
+
+    const { data, error, count } = await query;
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({ pilots: data, total: count, limit: parseInt(limit), offset: parseInt(offset) });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get enterprise pathway cards (published ones for the pathways page)
+exports.getEnterprisePathwayCards = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  setCORS(res);
+  if (req.method === 'OPTIONS') return res.status(204).send('');
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { category, position_type, hiring_status, limit = 50, offset = 0 } = req.query;
+
+    let query = supabase
+      .from('enterprise_pathway_cards')
+      .select(`*, enterprise_accounts(airline_name, airline_logo_url, airline_iata_code, airline_website, country)`)
+      .eq('is_published', true)
+      .limit(parseInt(limit))
+      .range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1)
+      .order('is_featured', { ascending: false })
+      .order('published_at', { ascending: false });
+
+    if (category) query = query.eq('category', category);
+    if (position_type) query = query.eq('position_type', position_type);
+    if (hiring_status) query = query.eq('hiring_status', hiring_status);
+
+    const { data, error } = await query;
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({ cards: data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
