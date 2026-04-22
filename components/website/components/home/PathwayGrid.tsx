@@ -1601,6 +1601,13 @@ const GridCard: React.FC<GridCardProps> = ({
                                 w-full h-full object-cover
                                 ${isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}
                             `}
+                            onError={(e) => {
+                                console.error('Image load error:', card.id, currentImage || displayImage, e);
+                                console.error('Card:', card);
+                            }}
+                            onLoad={() => {
+                                console.log('Image loaded successfully:', card.id, currentImage || displayImage);
+                            }}
                         />
                     ) : null}
                     {/* Gradient Overlay - skip for carousel cards */}
