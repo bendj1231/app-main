@@ -363,7 +363,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'Pilot Recognition',
             subtitle: 'Exclusive discounts, resources, and career advantages',
             icon: Award,
-            badge: '+',
+            badge: '✚',
             accentColor: 'from-yellow-500/80 to-amber-400/80',
         },
         {
