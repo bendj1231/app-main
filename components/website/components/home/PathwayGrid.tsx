@@ -330,7 +330,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'examination',
-            title: 'Exam Terminal',
+            title: 'Pilot Portal Access',
             subtitle: 'Practice tests and exam preparation for all license levels',
             icon: BookOpen,
             badge: null,
