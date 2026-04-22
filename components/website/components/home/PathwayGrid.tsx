@@ -227,7 +227,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
     pathways: [
         {
             id: 'pilot-pathways',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/c_fill,w_800,h_600,g_center/v1776692676/pathways/cargo-operations.jpg',
+            image: '/pilotpathways.png',
             title: 'Discover Pathways Platform',
             subtitle: 'Discover comprehensive career pathways from student to captain',
             icon: Compass,
