@@ -236,7 +236,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'type-rating-search',
-            image: '/type ratings.png',
+            image: '/typerating2.png',
             title: 'Type-Rating Search',
             subtitle: 'Find aircraft type ratings and training centers worldwide',
             icon: Plane,
