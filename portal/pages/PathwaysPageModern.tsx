@@ -1997,19 +1997,33 @@ const GapAnalysisPanel: React.FC<{ analysis: GapAnalysis; isDarkMode?: boolean; 
 };
 
 // Search Bar - supports light/dark mode
-const SearchBar: React.FC<{ onSearch: (query: string) => void; isDarkMode?: boolean }> = ({ onSearch, isDarkMode = true }) => (
-  <div className="relative w-[600px]">
-    <Search className={`absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
-    <input
-      type="text"
-      placeholder="Search pathways, airlines, or locations..."
-      className={`w-full pl-4 pr-12 py-4 backdrop-blur border rounded-lg focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all ${
-        isDarkMode
-          ? 'bg-slate-800/50 border-slate-700/50 text-white placeholder-slate-400'
-          : 'bg-white/70 border-slate-300/50 text-slate-900 placeholder-slate-500'
-      }`}
-      onChange={(e) => onSearch(e.target.value)}
-    />
+const SearchBar: React.FC<{ onSearch: (query: string) => void; isDarkMode?: boolean; canPostPathways?: boolean; onPostPathway?: () => void }> = ({ onSearch, isDarkMode = true, canPostPathways = false, onPostPathway }) => (
+  <div className="relative w-[600px] flex items-center gap-3">
+    <div className="relative flex-1">
+      <Search className={`absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
+      <input
+        type="text"
+        placeholder="Search pathways, airlines, or locations..."
+        className={`w-full pl-4 pr-12 py-4 backdrop-blur border rounded-lg focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all ${
+          isDarkMode
+            ? 'bg-slate-800/50 border-slate-700/50 text-white placeholder-slate-400'
+            : 'bg-white/70 border-slate-300/50 text-slate-900 placeholder-slate-500'
+        }`}
+        onChange={(e) => onSearch(e.target.value)}
+      />
+    </div>
+    {canPostPathways && onPostPathway && (
+      <button
+        onClick={onPostPathway}
+        className={`px-4 py-4 rounded-lg font-semibold text-sm transition-all ${
+          isDarkMode
+            ? 'bg-blue-600 hover:bg-blue-700 text-white'
+            : 'bg-blue-600 hover:bg-blue-700 text-white'
+        }`}
+      >
+        Post Pathway
+      </button>
+    )}
   </div>
 );
 
@@ -2415,10 +2429,49 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [cockpitActivated, setCockpitActivated] = useState(false);
   const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
+  const [canPostPathways, setCanPostPathways] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
   const { userProfile, currentUser } = useAuth();
+
+  // Handle posting pathway cards
+  const handlePostPathway = async (pathwayData: any) => {
+    if (!currentUser?.id) {
+      console.error('No user logged in');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://us-central1-bendj1231-app-main.cloudfunctions.net/postPathwayCard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: currentUser.id,
+          pathwayData
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Failed to post pathway:', data.error);
+        return;
+      }
+
+      console.log('Pathway posted successfully:', data);
+    } catch (error) {
+      console.error('Error posting pathway:', error);
+    }
+  };
+
+  // Wrapper function for Post Pathway button (without pathway data)
+  const handlePostPathwayClick = () => {
+    // TODO: Add a modal or form to collect pathway data
+    console.log('Post pathway clicked - add modal to collect pathway data');
+  };
 
   // Pathways Intelligence — Firebase R-formula powered data
   const intelligence = usePathwaysIntelligence(
@@ -2447,6 +2500,23 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Check if user can post pathway cards
+  useEffect(() => {
+    if (currentUser?.id) {
+      const checkPostingAccess = async () => {
+        try {
+          const response = await fetch(`https://us-central1-bendj1231-app-main.cloudfunctions.net/checkPathwayPostingAccess?userId=${currentUser.id}`);
+          const data = await response.json();
+          setCanPostPathways(data.canPost || false);
+        } catch (error) {
+          console.error('Error checking posting access:', error);
+          setCanPostPathways(false);
+        }
+      };
+      checkPostingAccess();
+    }
+  }, [currentUser?.id]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -2748,7 +2818,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   transition={{ duration: 0.3 }}
                   className="flex-1 max-w-2xl"
                 >
-                  <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
+                  <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} canPostPathways={canPostPathways} onPostPathway={handlePostPathwayClick} />
                 </motion.div>
               )}
             </AnimatePresence>
