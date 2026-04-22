@@ -1689,7 +1689,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 {isLargeCard && (
                     <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'}`}>
                         {!(card.id === 'discover' && currentImageIndex === 0) && (
-                            <div className="flex items-center gap-3 mb-2">
+                            <div className="flex items-center gap-3 mb-4">
                                 <h3 className={`font-serif text-2xl md:text-3xl lg:text-4xl tracking-wide ${card.id === 'credentials' ? 'text-black' : 'text-white'}`}>
                                     {finalDisplayTitle}
                                 </h3>
@@ -1857,7 +1857,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         )}
                         {/* Hide subtitle for discover card when logged out and hovered, or for second image when logged in, or when showing Foundation Program Enroll */}
                         {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && !(card.id === 'discover' && currentImageIndex === 0) && (
-                            <p className="text-white/90 text-xs md:text-sm truncate">
+                            <p className="text-white/90 text-xs md:text-sm truncate mb-4">
                                 {displaySubtitle.length > 60 ? displaySubtitle.slice(0, 57) + '...' : displaySubtitle}
                             </p>
                         )}
