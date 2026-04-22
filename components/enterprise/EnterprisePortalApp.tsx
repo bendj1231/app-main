@@ -6,7 +6,8 @@ import {
   Settings, HelpCircle, LogOut, ChevronRight, Plus, Edit3,
   Trash2, Eye, EyeOff, Upload, X, Check, AlertCircle,
   Users, TrendingUp, Star, Globe, Menu, Bell, ExternalLink,
-  FileText, Clock, MapPin, DollarSign, Shield, RefreshCw
+  FileText, Clock, MapPin, DollarSign, Shield, RefreshCw,
+  ShieldCheck, UserCheck, UserX, ChevronDown
 } from 'lucide-react';
 import { useEnterpriseAuth, supabase, FIREBASE_BASE } from './hooks/useEnterpriseAuth';
 
@@ -15,7 +16,27 @@ const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/dridtecu6/image/u
 const CLOUDINARY_UPLOAD_PRESET = 'enterprise_unsigned';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'settings' | 'support';
+type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'settings' | 'support' | 'admin';
+
+// ─── 72 Airlines List ────────────────────────────────────────────────────────
+const AIRLINE_LIST = [
+  'ANA All Nippon','Aegean Airlines','Aeromexico','Air Canada','Air China',
+  'Air France','Air India','Air India Express','Asiana Airlines','Austrian Airlines',
+  'Avianca','Biman Bangladesh','British Airways','Brussels Airlines','Cathay Dragon',
+  'Cathay Pacific','Cebu Pacific','China Eastern','China Southern','Copa Airlines',
+  'Czech Airlines','Delta Air Lines','EgyptAir','El Al Israel','Ethiopian Airlines',
+  'Etihad Airways','Emirates','Finnair','GOL Linhas','Garuda Indonesia',
+  'HK Express','Iberia','ITA Airways','Icelandair','IndiGo',
+  'Japan Airlines','JetBlue Airways','Jetstar Asia','KLM','Korean Air',
+  'LOT Polish','LATAM Airlines','Lufthansa','Malaysia Airlines','Nepal Airlines',
+  'Norwegian','Oman Air','Peach Aviation','Philippine Airlines','Qantas',
+  'Qatar Airways','Royal Jordanian','SAS Scandinavian','Saudia','Scoot',
+  'Singapore Airlines','South African Airways','Southwest Airlines','SpiceJet',
+  'Spring Airlines','SriLankan Airlines','Swiss International','TAP Portugal',
+  'Thai Airways','Turkish Airlines','United Airlines','Vietnam Airlines',
+  'Virgin Australia','WestJet','Alaska Airlines','American Airlines',
+  'Other / Not listed',
+].sort();
 
 // ─── Cloudinary Upload Helper ─────────────────────────────────────────────────
 async function uploadToCloudinary(file: File): Promise<string> {
@@ -40,10 +61,13 @@ const NAV = [
   { id: 'support', label: 'Contact Support', icon: HelpCircle },
 ] as const;
 
-function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed }: {
+const ADMIN_NAV = { id: 'admin', label: 'Enterprise Admin', icon: ShieldCheck };
+
+function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, isManager }: {
   page: Page; setPage: (p: Page) => void;
   account: any; onLogout: () => void;
   collapsed: boolean; setCollapsed: (v: boolean) => void;
+  isManager: boolean;
 }) {
   return (
     <div className={`h-screen bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'} shrink-0`}>
@@ -77,6 +101,22 @@ function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed }: 
             {!collapsed && <span>{label}</span>}
           </button>
         ))}
+        {isManager && (
+          <>
+            {!collapsed && <div className="px-3 pt-3 pb-1"><p className="text-slate-600 text-[10px] font-bold uppercase tracking-wider">Manager</p></div>}
+            <button
+              onClick={() => setPage('admin')}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                page === 'admin'
+                  ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30'
+                  : 'text-slate-400 hover:text-amber-400 hover:bg-amber-800/20'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4 shrink-0" />
+              {!collapsed && <span>Enterprise Admin</span>}
+            </button>
+          </>
+        )}
       </nav>
 
       {/* Logout */}
@@ -188,7 +228,7 @@ function PathwayCardsPage({ user, account }: { user: any; account: any }) {
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
-    title: '', subtitle: '', category: 'airline-pathways', position_type: 'First Officer',
+    title: '', subtitle: '', category: 'airline-pathways' as string, position_type: 'First Officer',
     hiring_status: 'active', is_published: false, is_featured: false,
     positions_available: 1, application_url: '', application_email: '',
     company_culture: '', benefits_summary: '', base_locations: '',
@@ -821,6 +861,7 @@ function SettingsPage({ user, account, refreshAccount, upsertEnterpriseAccount }
     airline_logo_url: account?.airline_logo_url || '', airline_website: account?.airline_website || '',
     company_description: account?.company_description || '', country: account?.country || '',
     account_type: account?.account_type || 'airline', base_locations: (account?.base_locations || []).join(', '),
+    linked_airline: account?.linked_airline || '',
   });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -875,6 +916,13 @@ function SettingsPage({ user, account, refreshAccount, upsertEnterpriseAccount }
           </select></Field>
           <Field label="Base Locations (comma separated)"><input className={INPUT} value={form.base_locations} onChange={e => setForm(f => ({ ...f, base_locations: e.target.value }))} placeholder="Dubai, Colombo" /></Field>
         </div>
+        <Field label="Link to Airline Expectations (72 airlines)">
+          <select className={INPUT} value={form.linked_airline} onChange={e => setForm(f => ({ ...f, linked_airline: e.target.value, airline_name: e.target.value !== 'Other / Not listed' ? e.target.value : f.airline_name }))}>
+            <option value="">— Select your airline —</option>
+            {AIRLINE_LIST.map(a => <option key={a} value={a}>{a}</option>)}
+          </select>
+          <p className="text-slate-500 text-xs mt-1">Linking grants you edit access to your airline's Expectations page on PilotRecognition.com</p>
+        </Field>
         <Field label="Company Description"><textarea className={`${INPUT} h-24 resize-none`} value={form.company_description} onChange={e => setForm(f => ({ ...f, company_description: e.target.value }))} /></Field>
         <button onClick={save} disabled={saving || !form.airline_name} className={`flex items-center gap-2 font-semibold rounded-xl px-5 py-2.5 text-sm transition-all disabled:opacity-50 ${saved ? 'bg-emerald-600 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}>
           {saving ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : saved ? <Check className="w-4 h-4" /> : <Settings className="w-4 h-4" />}
@@ -959,16 +1007,180 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
+// ─── Admin Panel ───────────────────────────────────────────────────────────────
+function AdminPanel({ user }: { user: any }) {
+  const [tab, setTab] = useState<'requests' | 'users'>('requests');
+  const [requests, setRequests] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [actioning, setActioning] = useState<string | null>(null);
+
+  const loadRequests = async () => {
+    const { data } = await supabase.from('enterprise_access_requests').select('*').order('created_at', { ascending: false });
+    setRequests(data || []);
+  };
+  const loadUsers = async () => {
+    const { data } = await supabase.from('profiles').select('id, email, display_name, enterprise_access, is_enterprise_manager, created_at').eq('enterprise_access', true).order('created_at', { ascending: false });
+    setUsers(data || []);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([loadRequests(), loadUsers()]).finally(() => setLoading(false));
+  }, []);
+
+  const approveRequest = async (req: any) => {
+    setActioning(req.id);
+    try {
+      // Grant enterprise access
+      await supabase.from('profiles').update({ enterprise_access: true }).eq('email', req.email);
+      await supabase.from('enterprise_access_requests').update({ status: 'approved', reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq('id', req.id);
+      await loadRequests();
+      await loadUsers();
+    } finally { setActioning(null); }
+  };
+
+  const rejectRequest = async (req: any) => {
+    setActioning(req.id);
+    try {
+      await supabase.from('enterprise_access_requests').update({ status: 'rejected', reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq('id', req.id);
+      await loadRequests();
+    } finally { setActioning(null); }
+  };
+
+  const revokeAccess = async (u: any) => {
+    if (!confirm(`Revoke enterprise access for ${u.email}?`)) return;
+    setActioning(u.id);
+    try {
+      await supabase.from('profiles').update({ enterprise_access: false }).eq('id', u.id);
+      await loadUsers();
+    } finally { setActioning(null); }
+  };
+
+  const toggleManager = async (u: any) => {
+    setActioning(u.id);
+    try {
+      await supabase.from('profiles').update({ is_enterprise_manager: !u.is_enterprise_manager }).eq('id', u.id);
+      await loadUsers();
+    } finally { setActioning(null); }
+  };
+
+  const statusColor = (s: string) => s === 'approved' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' : s === 'rejected' ? 'text-red-400 bg-red-500/10 border-red-500/30' : 'text-amber-400 bg-amber-500/10 border-amber-500/30';
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-white flex items-center gap-2"><ShieldCheck className="w-6 h-6 text-amber-400" /> Enterprise Admin</h1>
+        <p className="text-slate-400 text-sm mt-1">Manage access requests and enterprise users.</p>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2">
+        {(['requests', 'users'] as const).map(t => (
+          <button key={t} onClick={() => setTab(t)} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${tab === t ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30' : 'text-slate-400 hover:text-white bg-slate-800/40'}`}>
+            {t === 'requests' ? `Access Requests (${requests.length})` : `Enterprise Users (${users.length})`}
+          </button>
+        ))}
+        <button onClick={() => { loadRequests(); loadUsers(); }} className="ml-auto text-slate-500 hover:text-white p-2 rounded-xl hover:bg-slate-800/40"><RefreshCw className="w-4 h-4" /></button>
+      </div>
+
+      {loading ? <div className="flex justify-center py-12"><div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" /></div> : (
+        <>
+          {tab === 'requests' && (
+            <div className="space-y-3">
+              {requests.length === 0 && <p className="text-slate-500 text-sm text-center py-8">No requests yet.</p>}
+              {requests.map(req => (
+                <div key={req.id} className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <p className="text-white font-semibold">{req.full_name}</p>
+                        <span className={`text-xs px-2 py-0.5 rounded-full border ${statusColor(req.status)}`}>{req.status}</span>
+                      </div>
+                      <p className="text-slate-400 text-sm">{req.email} · {req.company_name}</p>
+                      <p className="text-slate-500 text-xs mt-1">{req.role} · {req.country} · {req.company_size}</p>
+                      {req.business_type && <p className="text-slate-400 text-xs mt-1"><strong>What they do:</strong> {req.business_type}</p>}
+                      {req.partnership_interest && <p className="text-slate-400 text-xs mt-0.5"><strong>Interest:</strong> {req.partnership_interest}</p>}
+                      {req.message && <p className="text-slate-500 text-xs mt-1 italic">{req.message}</p>}
+                      <div className="flex gap-2 mt-1.5 flex-wrap text-xs text-slate-500">
+                        {req.is_operator && <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">Airline Operator</span>}
+                        {req.is_manufacturer && <span className="bg-purple-500/10 border border-purple-500/20 text-purple-400 px-2 py-0.5 rounded-full">Manufacturer</span>}
+                        {req.is_ato && <span className="bg-green-500/10 border border-green-500/20 text-green-400 px-2 py-0.5 rounded-full">ATO</span>}
+                        {req.is_type_rating_provider && <span className="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">Type Rating</span>}
+                        {req.is_airline_recruiter && <span className="bg-pink-500/10 border border-pink-500/20 text-pink-400 px-2 py-0.5 rounded-full">Recruiter</span>}
+                        {req.is_staffing_firm && <span className="bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full">Staffing</span>}
+                        {req.is_recruitment_agency && <span className="bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full">Recruitment Agency</span>}
+                      </div>
+                      <p className="text-slate-600 text-xs mt-2">{new Date(req.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                    </div>
+                    {req.status === 'pending' && (
+                      <div className="flex flex-col gap-2 shrink-0">
+                        <button onClick={() => approveRequest(req)} disabled={actioning === req.id} className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all">
+                          <UserCheck className="w-3.5 h-3.5" /> Approve
+                        </button>
+                        <button onClick={() => rejectRequest(req)} disabled={actioning === req.id} className="flex items-center gap-1.5 bg-red-600/20 hover:bg-red-600/40 border border-red-500/30 text-red-400 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all">
+                          <UserX className="w-3.5 h-3.5" /> Reject
+                        </button>
+                        <a href={`mailto:${req.email}?subject=WingMentor Enterprise Access&body=Hi ${req.full_name},%0A%0AThank you for your interest in WingMentor Enterprise.`} className="flex items-center gap-1.5 bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all">
+                          <Bell className="w-3.5 h-3.5" /> Email
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {tab === 'users' && (
+            <div className="space-y-3">
+              {users.length === 0 && <p className="text-slate-500 text-sm text-center py-8">No enterprise users yet.</p>}
+              {users.map(u => (
+                <div key={u.id} className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5 flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-white font-medium">{u.display_name || u.email}</p>
+                    <p className="text-slate-400 text-sm">{u.email}</p>
+                    <div className="flex gap-2 mt-1">
+                      <span className="text-xs bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">Enterprise Active</span>
+                      {u.is_enterprise_manager && <span className="text-xs bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">Manager</span>}
+                    </div>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <button onClick={() => toggleManager(u)} disabled={actioning === u.id} title={u.is_enterprise_manager ? 'Remove manager' : 'Make manager'} className="text-xs px-3 py-1.5 rounded-lg border border-amber-500/30 text-amber-400 hover:bg-amber-500/10 transition-all disabled:opacity-50">
+                      {u.is_enterprise_manager ? 'Remove Mgr' : 'Make Mgr'}
+                    </button>
+                    <button onClick={() => revokeAccess(u)} disabled={actioning === u.id || u.id === user.id} className="text-xs px-3 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50">
+                      Revoke
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 // ─── Main Portal App ───────────────────────────────────────────────────────────
 export function EnterprisePortalApp() {
   const { user, account, loading, logout, refreshAccount, upsertEnterpriseAccount } = useEnterpriseAuth();
   const [page, setPage] = useState<Page>('dashboard');
   const [collapsed, setCollapsed] = useState(false);
+  const [isManager, setIsManager] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) window.location.href = '/enterprise/login';
     if (!loading && user && !user.enterprise_access) window.location.href = '/enterprise/login';
   }, [user, loading]);
+
+  // Check if current user is an enterprise manager
+  useEffect(() => {
+    if (!user?.id) return;
+    supabase.from('profiles').select('is_enterprise_manager').eq('id', user.id).single()
+      .then(({ data }) => setIsManager(data?.is_enterprise_manager === true));
+  }, [user?.id]);
 
   if (loading) {
     return (
@@ -982,7 +1194,7 @@ export function EnterprisePortalApp() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
-      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); window.location.href = '/enterprise/login'; }} collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); window.location.href = '/enterprise/login'; }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} />
       <main className="flex-1 overflow-y-auto p-6 lg:p-8">
         {page === 'dashboard' && <Dashboard user={user} account={account} />}
         {page === 'pathway-cards' && <PathwayCardsPage user={user} account={account} />}
@@ -991,6 +1203,7 @@ export function EnterprisePortalApp() {
         {page === 'pilot-search' && <PilotSearchPage user={user} />}
         {page === 'settings' && <SettingsPage user={user} account={account} refreshAccount={refreshAccount} upsertEnterpriseAccount={upsertEnterpriseAccount} />}
         {page === 'support' && <SupportPage user={user} account={account} />}
+        {page === 'admin' && isManager && <AdminPanel user={user} />}
       </main>
     </div>
   );

@@ -3,6 +3,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
+const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY';
+const FIREBASE_BASE = 'https://us-central1-pilotrecognition-airline.cloudfunctions.net';
+
 const EnterpriseAccessPage = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -31,32 +35,86 @@ const EnterpriseAccessPage = () => {
         message: '',
     });
 
+    const [submitted, setSubmitted] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+        setSubmitting(true);
+
         try {
-            const response = await fetch(
-                'https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/enterprise-access',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY`,
-                    },
-                    body: JSON.stringify(formData),
-                }
-            );
+            // 1. Save to Supabase enterprise_access_requests table
+            await fetch(`${SUPABASE_URL}/rest/v1/enterprise_access_requests`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON,
+                    'Authorization': `Bearer ${SUPABASE_ANON}`,
+                    'Prefer': 'return=minimal',
+                },
+                body: JSON.stringify({
+                    full_name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    company_name: formData.company,
+                    role: formData.role,
+                    website: formData.website,
+                    company_size: formData.companySize,
+                    country: formData.country,
+                    is_operator: formData.operator,
+                    is_manufacturer: formData.manufacturer,
+                    is_ato: formData.ato,
+                    is_type_rating_provider: formData.typeRatingProvider,
+                    is_airline_recruiter: formData.airlineRecruiter,
+                    is_staffing_firm: formData.staffingFirm,
+                    is_recruitment_agency: formData.recruitmentAgency,
+                    business_type: formData.businessType,
+                    partnership_interest: formData.partnershipInterest,
+                    pathway_interests: formData.pathwayInterests,
+                    custom_pathway: formData.customPathway,
+                    timeline: formData.timeline,
+                    data_input: formData.dataInput,
+                    message: formData.message,
+                    status: 'pending',
+                }),
+            });
 
-            const result = await response.json();
+            // 2. Send email notification via Firebase
+            await fetch(`${FIREBASE_BASE}/enterpriseAccess`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    company: formData.company,
+                    role: formData.role,
+                    website: formData.website,
+                    companySize: formData.companySize,
+                    country: formData.country,
+                    operator: formData.operator,
+                    manufacturer: formData.manufacturer,
+                    ato: formData.ato,
+                    typeRatingProvider: formData.typeRatingProvider,
+                    airlineRecruiter: formData.airlineRecruiter,
+                    staffingFirm: formData.staffingFirm,
+                    recruitmentAgency: formData.recruitmentAgency,
+                    businessType: formData.businessType,
+                    partnershipInterest: formData.partnershipInterest,
+                    pathwayInterests: formData.pathwayInterests,
+                    customPathway: formData.customPathway,
+                    timeline: formData.timeline,
+                    dataInput: formData.dataInput,
+                    message: formData.message,
+                }),
+            });
 
-            if (response.ok) {
-                alert('Thank you for your interest! Your request has been sent successfully.');
-            } else {
-                throw new Error(result.error || 'Failed to send email');
-            }
+            setSubmitted(true);
         } catch (error) {
-            console.error('Error sending email:', error);
-            alert('There was an error sending your request. Please try again or contact us directly at enterprise@pilotrecognition.com');
+            console.error('Error submitting request:', error);
+            alert('There was an error sending your request. Please try again or contact enterprise@pilotrecognition.com');
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -84,6 +142,35 @@ const EnterpriseAccessPage = () => {
             }));
         }
     };
+
+    if (submitted) {
+        return (
+            <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    className="bg-slate-800 border border-slate-700 rounded-2xl p-10 max-w-lg w-full text-center">
+                    <div className="w-16 h-16 bg-emerald-600/20 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-5">
+                        <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-white mb-3">Request Received</h2>
+                    <p className="text-slate-400 mb-2">Thank you, <strong className="text-white">{formData.name}</strong>.</p>
+                    <p className="text-slate-400 text-sm mb-6">
+                        Your enterprise access request for <strong className="text-white">{formData.company}</strong> has been submitted and saved to our system. The WingMentor team will review your request and contact you at <strong className="text-white">{formData.email}</strong> within 1–2 business days to set up your account and grant appropriate access.
+                    </p>
+                    <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-4 text-left mb-6 space-y-2 text-sm">
+                        <p className="text-slate-500 font-medium uppercase text-xs tracking-wider mb-2">What happens next</p>
+                        <p className="text-slate-300">✓ WingMentor team reviews your request</p>
+                        <p className="text-slate-300">✓ We create your enterprise account</p>
+                        <p className="text-slate-300">✓ You receive login credentials via email</p>
+                        <p className="text-slate-300">✓ Access granted to your specific airline/org portal</p>
+                    </div>
+                    <a href="/enterprise/login" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all">
+                        Go to Enterprise Login →
+                    </a>
+                    <p className="text-slate-500 text-xs mt-4">Questions? <a href="mailto:enterprise@pilotrecognition.com" className="text-blue-400">enterprise@pilotrecognition.com</a></p>
+                </motion.div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-slate-900 py-12 px-4">
@@ -810,9 +897,11 @@ const EnterpriseAccessPage = () => {
                         <div className="pt-4">
                             <button
                                 type="submit"
-                                className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+                                disabled={submitting}
+                                className="w-full bg-blue-900 hover:bg-blue-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-3"
                             >
-                                Submit Request
+                                {submitting && <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />}
+                                {submitting ? 'Submitting...' : 'Submit Request'}
                             </button>
                             <p className="text-center text-sm text-slate-500 mt-3">
                                 Or email us directly at <a href="mailto:enterprise@pilotrecognition.com" className="text-blue-600 hover:underline">enterprise@pilotrecognition.com</a>
