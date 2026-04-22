@@ -1844,8 +1844,8 @@ const GridCard: React.FC<GridCardProps> = ({
                             )}
                         </div>
                         )}
-                        {/* Hide subtitle for discover card when logged out and hovered, or for second image when logged in, or when showing Foundation Program Enroll */}
-                        {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && isLoggedIn && currentImageIndex === 1) && !(card.id === 'discover' && currentImageIndex === 0) && (
+                        {/* Hide subtitle for discover card when logged out and hovered, or when showing Foundation Program Enroll */}
+                        {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && currentImageIndex === 0) && (
                             <p className="text-white/90 text-xs md:text-sm truncate mb-4">
                                 {finalDisplaySubtitle.length > 60 ? finalDisplaySubtitle.slice(0, 57) + '...' : finalDisplaySubtitle}
                             </p>
