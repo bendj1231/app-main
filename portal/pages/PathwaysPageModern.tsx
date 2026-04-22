@@ -2709,7 +2709,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <div className="flex items-center gap-3">
                 {/* Back Button */}
                 <button
-                  onClick={() => onNavigate ? onNavigate('/') : window.location.href = '/'}
+                  onClick={() => window.location.href = '/'}
                   className={`p-2 rounded-lg ${buttonBg} ${buttonText} hover:scale-105 transition-transform`}
                   title="Back to Home"
                 >
