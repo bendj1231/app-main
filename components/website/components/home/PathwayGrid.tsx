@@ -339,7 +339,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'atpl-game',
-            title: 'pilot-terminal.com',
+            title: 'Pilot-Terminal.com',
             subtitle: 'Pilot social media platform',
             icon: Play,
             badge: null,
