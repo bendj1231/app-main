@@ -126,8 +126,6 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
 }) => {
   const [currentScene, setCurrentScene] = useState<'airlines' | 'typeratings' | 'jobs' | 'pathways'>('airlines');
   const [opacity, setOpacity] = useState(1);
-  const [scrollOutMessage, setScrollOutMessage] = useState('');
-  const [showScrollOutMessage, setShowScrollOutMessage] = useState(false);
 
   const sceneTitles = [
     'Discover Expectations',
@@ -136,82 +134,50 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
     'Discover Pathways'
   ];
 
-  const scrollOutMessages = {
-    'airlines': '',
-    'typeratings': 'matching the right type rating based on your recognition profile',
-    'jobs': '',
-    'pathways': 'Align your recognition with an Airline expectation'
-  };
-
   useEffect(() => {
     if (!isPlaying) return;
 
     const sceneDuration = 5000;
     const transitionDuration = 800;
-    const messageDuration = 1500;
     onSceneChange?.(0);
 
     const timer1 = setTimeout(() => {
       setOpacity(0);
+      setTransitionOverlay(true);
       setTimeout(() => {
-        setShowScrollOutMessage(true);
-        setScrollOutMessage(scrollOutMessages['airlines']);
-        setTimeout(() => {
-          setShowScrollOutMessage(false);
-          setCurrentScene('typeratings');
-          setOpacity(1);
-          onSceneChange?.(1);
-        }, messageDuration);
+        setCurrentScene('typeratings');
+        setOpacity(1);
+        setTransitionOverlay(false);
+        onSceneChange?.(1);
       }, transitionDuration);
     }, sceneDuration);
 
     const timer2 = setTimeout(() => {
       setOpacity(0);
+      setTransitionOverlay(true);
       setTimeout(() => {
-        setShowScrollOutMessage(true);
-        setScrollOutMessage(scrollOutMessages['typeratings']);
-        setTimeout(() => {
-          setShowScrollOutMessage(false);
-          setCurrentScene('jobs');
-          setOpacity(1);
-          onSceneChange?.(2);
-        }, messageDuration);
+        setCurrentScene('jobs');
+        setOpacity(1);
+        setTransitionOverlay(false);
+        onSceneChange?.(2);
       }, transitionDuration);
     }, sceneDuration * 2);
 
     const timer3 = setTimeout(() => {
       setOpacity(0);
+      setTransitionOverlay(true);
       setTimeout(() => {
-        setShowScrollOutMessage(true);
-        setScrollOutMessage(scrollOutMessages['jobs']);
-        setTimeout(() => {
-          setShowScrollOutMessage(false);
-          setCurrentScene('pathways');
-          setOpacity(1);
-          onSceneChange?.(3);
-        }, messageDuration);
+        setCurrentScene('pathways');
+        setOpacity(1);
+        setTransitionOverlay(false);
+        onSceneChange?.(3);
       }, transitionDuration);
     }, sceneDuration * 3);
 
-    const timer4 = setTimeout(() => {
-      setOpacity(0);
-      setTimeout(() => {
-        setShowScrollOutMessage(true);
-        setScrollOutMessage(scrollOutMessages['pathways']);
-        setTimeout(() => {
-          setShowScrollOutMessage(false);
-          onComplete?.();
-        }, messageDuration);
-      }, transitionDuration);
-    }, sceneDuration * 4);
+    const timer4 = setTimeout(() => { onComplete?.(); }, sceneDuration * 4);
 
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
-    };
-  }, [isPlaying, onComplete, onSceneChange, scrollOutMessages]);
+    return () => { clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3); clearTimeout(timer4); };
+  }, [isPlaying, onComplete, onSceneChange]);
 
   const [transitionOverlay, setTransitionOverlay] = useState(false);
 
@@ -275,31 +241,15 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
             transition={{ duration: 0.4, ease: "easeInOut" }}
             className="absolute inset-0 z-30 bg-black/60 backdrop-blur-md"
           >
-            {showScrollOutMessage && scrollOutMessage && (
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute inset-0 flex items-center justify-center px-8"
-              >
-                <div className="text-white text-center">
-                  <div className="text-sm md:text-base font-semibold mb-2">{scrollOutMessage}</div>
-                  <div className="w-8 h-8 border-3 border-white/30 border-t-white rounded-full animate-spin mx-auto" />
-                </div>
-              </motion.div>
-            )}
-            {!showScrollOutMessage && (
-              <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 1.05, opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                <div className="w-8 h-8 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-              </motion.div>
-            )}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 1.05, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <div className="w-8 h-8 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -412,8 +362,9 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
                   <div className="text-slate-900 text-[12px] font-serif font-normal mb-0.5">Aircraft <span style={{ color: '#DAA520' }}>Type Ratings</span></div>
                   <div className="text-slate-500 text-[7px] mb-1.5">Explore · 3D Models · Cockpits · Requirements</div>
                   <div className="mx-auto max-w-[85%] mb-1.5">
-                    <div className="w-full px-2 py-1 rounded-lg bg-white border border-slate-200 text-slate-400 text-[7px]">
+                    <div className="w-full px-2 py-1 rounded-lg bg-white border border-slate-200 text-slate-400 text-[7px] flex items-center gap-1">
                       <TypingAnimation texts={['Search aircraft, type ratings...', 'Find Cessna models...', 'Browse turboprops...']} speed={80} />
+                      <Search className="w-2.5 h-2.5 ml-auto" />
                     </div>
                   </div>
                   <div className="flex gap-1 justify-center flex-wrap">
@@ -438,11 +389,11 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
                       <motion.div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center cursor-pointer"
                         whileHover={{ rotate: -10, scale: 1.1, boxShadow: '0 0 15px rgba(59, 130, 246, 0.4)' }}
                         whileTap={{ scale: 0.95 }}
-                      ></motion.div>
+                      ><ChevronLeft className="w-2.5 h-2.5 text-slate-500" /></motion.div>
                       <motion.div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center cursor-pointer"
                         whileHover={{ rotate: 10, scale: 1.1, boxShadow: '0 0 15px rgba(59, 130, 246, 0.4)' }}
                         whileTap={{ scale: 0.95 }}
-                      ></motion.div>
+                      ><ChevronRight className="w-2.5 h-2.5 text-slate-500" /></motion.div>
                     </div>
                   </div>
                   <div className="flex gap-1.5 mb-2">
