@@ -3,6 +3,7 @@ import { Icons } from '../icons';
 import { PilotGapModuleChapter0 } from './PilotGapModuleChapter0';
 import { PilotGapModuleChapter1 } from './PilotGapModuleChapter1';
 import { PilotGapModuleChapter2 } from './PilotGapModuleChapter2';
+import { PilotGapModuleChapter3 } from './PilotGapModuleChapter3';
 import { MentorModulesPage1 } from './MentorModulesPage1';
 import { MentorModulesPage2 } from './MentorModulesPage2';
 import { MentorModulesPage3 } from './MentorModulesPage3';
@@ -31,13 +32,17 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         { chapter: 1, topic: 'what-low-timer' },
         { chapter: 1, topic: 'what-pilot-shortage' },
         { chapter: 1, topic: 'what-pilot-gap' },
-        { chapter: 1, topic: 'pilot-risk-management' },
         { chapter: 1, topic: 'what-pilot-recognition' },
         { chapter: 1, topic: 'what-now' },
         { chapter: 2, topic: null },
-        { chapter: 2, topic: 'why-statistics' },
-        { chapter: 2, topic: 'w1000-poh' },
-        { chapter: 2, topic: 'initial-exam-access' },
+        { chapter: 2, topic: 'pilot-risk-management' },
+        { chapter: 2, topic: 'prm-health' },
+        { chapter: 2, topic: 'prm-decision' },
+        { chapter: 2, topic: 'prm-financial' },
+        { chapter: 3, topic: null },
+        { chapter: 3, topic: 'why-statistics' },
+        { chapter: 3, topic: 'w1000-poh' },
+        { chapter: 3, topic: 'initial-exam-access' },
     ];
 
     const getCurrentStepIndex = () => {
@@ -137,7 +142,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
     };
     // ────────────────────────────────────────────────────────────────────────
 
-    const totalChapters = 3;
+    const totalChapters = 4;
     // ── Video Player Helpers ────────────────────────────
     const toggleHeroVideoPlayback = () => {
         const video = heroVideoRef.current;
@@ -273,8 +278,8 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
             return (
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
-                    <div style={{ textAlign: 'center', paddingBottom: '3.5rem', paddingTop: '4rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain', marginBottom: '2rem', margin: '0 auto' }} />
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -373,7 +378,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         WINGMENTOR SOLUTIONS
                                     </div>
@@ -428,7 +433,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         INDUSTRY INSIGHT
                                     </div>
@@ -500,7 +505,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#e11d48', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         HARD TRUTH
                                     </div>
@@ -547,7 +552,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         WINGMENTOR INSIGHT
                                     </div>
@@ -562,10 +567,10 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 </div>
                             </div>
 
-                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem', marginTop: '3.5rem' }}>
+                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', marginTop: '1rem' }}>
                                 IN CONTINUATION
                             </div>
-                            <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
+                            <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '0.5rem', fontFamily: 'Georgia, serif' }}>
                                 The Connection
                             </h2>
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: 0 }}>
@@ -574,21 +579,8 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         </section>
 
                     </div>
-                    <div style={{ height: '1px', background: '#e2e8f0', marginBottom: '2rem', marginTop: '4rem' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '6rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', maxWidth: '48rem', margin: '0 auto', width: '100%' }}>
-                        <button onClick={handlePrev} style={{ color: '#94a3b8', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                            ← Back
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            style={{ background: '#0284c7', color: 'white', fontWeight: 600, fontSize: '14px', padding: '0.75rem 1.5rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
-                            onMouseEnter={e => (e.currentTarget.style.background = '#0369a1')}
-                            onMouseLeave={e => (e.currentTarget.style.background = '#0284c7')}
-                        >
-                            Next →
-                        </button>
-                    </div>
-                    <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+                    <div style={{ height: '1px', background: '#e2e8f0', marginBottom: '0.5rem', marginTop: '1rem' }} />
+                    <div style={{ textAlign: 'center', marginTop: '0.5rem' }}>
                         <p style={{ color: '#0284c7', fontSize: '1.05rem', lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
                             Next, we will explore the <strong>Pilot Gap</strong>—the invisible wall that separates the classroom from the cockpit.
                         </p>
@@ -599,8 +591,8 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
             return (
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
-                    <div style={{ textAlign: 'center', paddingBottom: '3.5rem', paddingTop: '4rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -677,7 +669,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 width: '100%',
                                 boxSizing: 'border-box'
                             }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '72px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 1.5rem auto' }} />
+                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 1rem auto' }} />
                                 <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>
                                     WINGMENTOR INSIGHT
                                 </div>
@@ -697,20 +689,159 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
-                        {/* Pilot Health Risk Management Section Header */}
-                        <section style={{ textAlign: 'center', maxWidth: '56rem', marginTop: '2rem' }}>
-                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-                                THE HUMAN ELEMENT
-                            </div>
-                            <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-                                Pilot Health
-                            </h1>
-                            <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400, textAlign: 'center' }}>
-                                Navigating the Pilot Gap is as much a mental challenge as it is a professional one. In this section, we examine how to manage stress through this turbulent period. Many of us—our own founders included—have reached points of denial, feeling stressed that our dreams were shattered or blocked by an immovable wall. Compounded by investment risks, it is critical to focus on managing what you can. Do not overwork yourself into the ground. The constant grind often leads to mental fatigue or overexhaustion, leaving many pilots medically or mentally unfit for the flight deck when the opportunity finally arises.
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', alignItems: 'center', marginTop: '3rem' }}>
+                        <div style={{ textAlign: 'center', maxWidth: '52rem' }}>
+                            <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.8, marginBottom: '2rem' }}>
+                                Explore each pillar in detail through the dedicated topic pages below:
                             </p>
+                        </div>
+
+                        {/* Health Topics */}
+                        <section style={{ textAlign: 'center', maxWidth: '56rem' }}>
+                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+                                PILOT HEALTH
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Fitness</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Physical readiness & sleep science</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Mental Well-being</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Navigating mental fatigue</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Stress Management</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Workload & cognitive capacity</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Situational Awareness</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Knowing your physical limits</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Relationships</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Personal life & career balance</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Unforeseen Risks</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Radiation & long-term health</div>
+                                </div>
+                            </div>
                         </section>
 
+                        {/* Decision Making Topics */}
+                        <section style={{ textAlign: 'center', maxWidth: '56rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0' }}>
+                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+                                PILOT DECISION MAKING
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Perfectionism Trap</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Impostor syndrome & mindset</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Seniority Gamble</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Career structure & fragility</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Lost Decade</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Debt vs. early career pay</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Industry Blind Spot</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>What pilots don't see coming</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Financial Risk Topics */}
+                        <section style={{ textAlign: 'center', maxWidth: '56rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0' }}>
+                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+                                FINANCIAL RISK
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Type Rating</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Banker vs. Casino perspective</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Instructor Dilemma</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>The instructor trap</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Shiny Syndrome</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>The subscription model trap</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Additional Topics */}
+                        <section style={{ textAlign: 'center', maxWidth: '56rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0' }}>
+                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+                                CRITICAL CONCEPTS
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Expectations vs Reality</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>The information gap</div>
+                                </div>
+                                <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>Liquidity Trap</div>
+                                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Exit strategies & risks</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Closing Section */}
+                        <section style={{ textAlign: 'center', maxWidth: '56rem', marginTop: '3rem', paddingTop: '3rem', borderTop: '1px solid #e2e8f0' }}>
+                            <div style={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                backdropFilter: 'blur(16px)',
+                                WebkitBackdropFilter: 'blur(16px)',
+                                borderRadius: '24px',
+                                padding: '3rem 2.5rem',
+                                boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                border: '1px solid rgba(255, 255, 255, 0.8)',
+                                textAlign: 'center',
+                            }}>
+                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem', display: 'block', margin: '0 auto 1.5rem auto' }} />
+                                <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                                    WINGMENTOR INSIGHT
+                                </div>
+                                <h3 style={{ fontSize: '1.4rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
+                                    Navigate the Three Pillars
+                                </h3>
+                                <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '40rem', textAlign: 'left' }}>
+                                    Pilot Risk Management is built on three core pillars: <strong>Financial Risk</strong>—understanding the true cost of training, debt, and return on investment before committing capital; <strong>Pilot Health</strong>—maintaining physical, mental, and situational airworthiness throughout your career; and <strong>Pilot Decision Making</strong>—developing the discipline to make sound, strategic career decisions under pressure, uncertainty, and industry volatility.
+                                    <br /><br />
+                                    Most pilots learn these lessons the hard way. Wingmentor exists to ensure you learn them before the cost becomes irreversible. Explore each topic in detail through the dedicated pages above.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM Health (Consolidated) ──────────────────────────────────
+        if (currentTopic === 'prm-health') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Pilot Risk Management: Health
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Physical and mental airworthiness is the foundation of pilot performance. Just as an aircraft requires routine maintenance to remain airworthy, you must maintain your own physical, mental, and situational health throughout your career.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
                         {/* Pilot Fitness Section */}
                         <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
                             <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
@@ -745,12 +876,12 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
                         </section>
 
-                        {/* Mental Health Industry Culture Section */}
-                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '3rem' }}>
+                        {/* Mental Well-being Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
                             <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>MENTAL WELL-BEING</div>
                                 <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
-                                    The Archaic Reality
+                                    Mental Well-being: The Archaic Reality
                                 </h3>
                                 <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
                                     <img src="/Gemini_Generated_Image_4fglej4fglej4fgl.png" alt="Mental Fatigue Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
@@ -846,7 +977,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
                         </section>
 
-                        {/* Relationships & Personal Life Section */}
+                        {/* Relationships Section */}
                         <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
                             <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE PERSONAL COST</div>
@@ -880,7 +1011,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
                         </section>
 
-                        {/* Unforeseen Health Indications Section */}
+                        {/* Unforeseen Risks Section */}
                         <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
                             <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>HIDDEN LONG-TERM RISKS</div>
@@ -913,54 +1044,300 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 </p>
                             </div>
                         </section>
+                    </div>
+                </div >
+            );
+        }
 
-                        {/* Pilot Health Summary */}
-                        <section style={{ textAlign: 'center', maxWidth: '56rem', marginTop: '2rem', paddingTop: '3rem', borderTop: '1px solid #e2e8f0' }}>
-                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                                CHAPTER SUMMARY
-                            </div>
-                            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '2rem' }}>
-                                What You Have Learned: Pilot Health
-                            </h2>
-                            <div style={{
-                                backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                                backdropFilter: 'blur(16px)',
-                                WebkitBackdropFilter: 'blur(16px)',
-                                borderRadius: '24px',
-                                padding: '3rem 2.5rem',
-                                boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
-                                border: '1px solid rgba(255, 255, 255, 0.8)',
-                                textAlign: 'left',
-                            }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem', display: 'block', margin: '0 auto 1.5rem auto' }} />
-                                <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>
-                                    WINGMENTOR INSIGHT
+        // ── PRM Health - Mental Well-being ──────────────────────────────────
+        if (currentTopic === 'prm-health-mental') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Mental Well-being: The Archaic Reality
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            The aviation industry's approach to mental health remains outdated. Understanding the mental challenges you will face—and the taboo surrounding them—is critical for your long-term career survival.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Mental Health Industry Culture Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>MENTAL WELL-BEING</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
+                                    <img src="/Gemini_Generated_Image_4fglej4fglej4fgl.png" alt="Mental Fatigue Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
                                 </div>
-                                <h3 style={{ fontSize: '1.4rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
-                                    Your Most Important Asset is You
-                                </h3>
-                                <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '40rem', textAlign: 'left' }}>
-                                    Across this chapter, you have learned that a pilot's health is multi-dimensional. <strong>Physical fitness</strong> and the discipline of 7 hours of sleep keep you airworthy. <strong>Stress and workload management</strong> prevent the Swiss Cheese holes from aligning into disaster. <strong>Situational awareness of your own mind</strong> means breaking the silence epidemic before it grounds you permanently. <strong>Your relationships</strong> require active management alongside your career—the Aviation Induced Divorce Syndrome is real and preventable. And crucially, the <strong>unforeseen physical risks</strong> of radiation and circadian disruption must be monitored proactively throughout your entire career.
-                                    <br /><br />
-                                    The industry's greatest taboo is the pilot who suffers in silence. <strong>Wingmentor's foundation is built on the opposite — awareness, honesty, and sustainable performance.</strong>
+                                <p style={{ marginBottom: '1.5rem', color: '#334155' }}>
+                                    However, there are several downsides as well, where the industry's archaic mental health culture truly strikes. This reality hits early—even during your initial training as a student. You will encounter the fatigue or "drained" factor. You may not feel physically tired, but performing repetitive, high-stakes maneuvers is intensely mentally draining. Your mindset becomes fixated; it shifts from "I want to do this" to "I <em>have</em> to do this."
+                                </p>
+                                <p style={{ marginBottom: '1.5rem', color: '#334155' }}>
+                                    Yes, flying may be your passion. You may dream of flying long hauls or commanding jumbo jets. But to achieve that, you must sacrifice extensively—especially your time. Your life becomes concentrated purely on aviation. You must study endlessly for written exams, prepare for simulator sessions, execute cross-country flights, and pass grueling checkrides. Moreover, you must remain physically fit simply to obtain and retain your medical certificates, which are absolute requirements to fly.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE ULTIMATE TABOO</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        Navigating mental fatigue is possibly one of the biggest taboos in aviation, as many international regulators have historically maintained an inflexible, outdated approach to pilot mental health and medical certification.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM Health - Stress Management ──────────────────────────────────
+        if (currentTopic === 'prm-health-stress') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Stress Management & Workload
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Managing your mental capacity under pressure is not just good advice—it is a mandatory professional skill. Understanding how stress affects decision-making is critical for flight safety.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Stress Management Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE COGNITIVE CHALLENGE</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
+                                    <img src="/Gemini_Generated_Image_nbhb1gnbhb1gnbhb.png" alt="Stress Management Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    When navigating the Pilot Gap, studying under immense pressure can actually degrade your ability to focus. Aviation psychology demonstrates that pilots operating under high stress are significantly less cognitively aware of their surroundings. This degradation in situational awareness is a primary catalyst for poor decision-making.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                                        THE SWISS CHEESE MODEL
+                                    </h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        Accidents rarely happen from a single failure. The <strong>Swiss Cheese Model</strong> illustrates how danger arises when a series of small, seemingly insignificant errors align—like the holes in slices of Swiss cheese. A poor decision fueled by stress creates the first hole. Fatigue creates the next. If you do not manage your mental load, those holes align, and you slip straight through to an unrecoverable failure. This underscores the danger of letting stress dictate your thoughts or actions.
+                                    </p>
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Recognizing and stopping this chain reaction is a foundational element of modern pilot training. In fact, <strong>Stress and Workload Management</strong> is strictly evaluated as a core competency within the Evidence-Based Training (EBT) and Competency-Based Training and Assessment (CBTA) frameworks utilized by airlines worldwide. Managing your mental capacity—especially when you are stretching your abilities—is not just good advice; it is a mandatory professional skill.
                                 </p>
                             </div>
                         </section>
+                    </div>
+                </div >
+            );
+        }
 
-                        {/* Pilot Decision Making Section Header */}
-                        <section style={{ textAlign: 'center', maxWidth: '56rem', marginTop: '2rem', paddingTop: '4rem', borderTop: '1px solid #e2e8f0' }}>
-                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-                                THE COMMAND MINDSET
+        // ── PRM Health - Situational Awareness ──────────────────────────────────
+        if (currentTopic === 'prm-health-situational') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Situational Awareness In Health
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            One of the most disregarded aspects of overall well-being is situational awareness of your own body and mind. Knowing when something is wrong—and having the courage to act on it—can save your career and your life.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Situational Awareness Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>KNOWING YOUR LIMITS</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
+                                    <img src="/Gemini_Generated_Image_trogq9trogq9trog.png" alt="Situational Awareness Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    One of the most disregarded aspects of overall well-being is situational awareness of your own body and mind. If you ever feel that something is wrong, or you are reluctant to fly due to an underlying health concern—even if it means being grounded for a month—it is always best to consult a private doctor or clinic for evaluation.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE SILENCE EPIDEMIC</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        First and foremost is the fear within the industry: pilots are often afraid to seek therapy, or afraid to voice out that they are burnt out, drained, or stressed. Why? Because it can result in an immediate grounding and a thorough investigation of their medical certificates. In reality, this creates a deeply flawed system where pilots suffer in silence instead of seeking medical attention. This is the exact opposite of the "safety-first" culture the industry claims to want.
+                                    </p>
+                                </div>
                             </div>
-                            <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-                                Pilot Decision Making
-                            </h1>
-                            <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400, textAlign: 'center' }}>
-                                Every action inside the cockpit is a decision, and every decision carries weight. The same principle applies to your career. In this section, we explore how pilots think, how they assess risk in real-time, and how the habits you build today—whether in the sim, at your desk, or in your personal life—directly shape the quality of every command decision you will ever make.
-                            </p>
                         </section>
+                    </div>
+                </div >
+            );
+        }
 
-                        {/* Pilot Decision Making - Perfectionism Trap */}
+        // ── PRM Health - Relationships ──────────────────────────────────
+        if (currentTopic === 'prm-health-relationships') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Relationships & Personal Life
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Your mental well-being is deeply intertwined with your personal life. The state of your relationships will directly affect your performance and cognitive abilities on the flight deck.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Relationships & Personal Life Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE PERSONAL COST</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
+                                    <img src="/Gemini_Generated_Image_nspqu6nspqu6nspq.png" alt="Relationships & Personal Life Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Your mental well-being is deeply intertwined with your personal life. Whether you are married, have a girlfriend, or are navigating a recent breakup, the state of your relationships will directly affect your performance and cognitive abilities on the flight deck. It is a harsh reality that many pilots experience firsthand.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>AVIATION INDUCED DIVORCE SYNDROME (AIDS)</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        It is a macabre industry joke with a deeply serious undertone: the divorce rates among airline pilots are statistically high. You are continuously working, often missing special holidays, birthdays, and major life events. Being miles away from home for days or months at a time frequently leads to family conflict, particularly because you are absent exactly when your loved ones need you most.
+                                    </p>
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The paradox of the job is striking. The career is fantastic—you are earning far more than the average earner, capable of providing incredible financial support and deluxe items for your family. However, <strong>your physical presence is missing</strong>. Ultimately, no amount of financial compensation can replace what your partner or children will find lacking, which is quite simply, <em>you</em>.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM Health - Unforeseen Risks ──────────────────────────────────
+        if (currentTopic === 'prm-health-unforeseen') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Unforeseen Health Indications
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Flight schools teach you about immediate physiological threats, but rarely about the long-term health effects that an airline career inflicts upon the human body. Understanding these invisible hazards is critical for career longevity.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Unforeseen Health Indications Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>HIDDEN LONG-TERM RISKS</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
+                                    <img src="/Gemini_Generated_Image_2xu5h52xu5h52xu5.png" alt="Unforeseen Health Indications Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Flight schools rigorously teach you about immediate physiological threats like hypoxia and spatial disorientation. However, they rarely teach you about the <strong>long-term health effects</strong> that an airline career inflicts upon the human body.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>INVISIBLE HAZARDS: RADIATION & THE ATMOSPHERE</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        Commercial jets routinely fly at extremely high altitudes where the protective atmosphere is much thinner. This exposes pilots to substantially higher levels of cosmic radiation compared to the general public. While the aircraft fuselage and cockpit sunvisors can help lessen direct sunlight, they do not fully protect you. Radiation is invisible and omnidirectional, meaning standard shielding cannot block all of the airborne exposure you will accumulate over a 30-year flying career.
+                                    </p>
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Beyond the atmosphere, there is the circadian burden. Constantly working across different time zones entirely disrupts your body's natural clock. Long-term studies have strongly associated this continuous disruption with severe metabolic and cardiovascular issues, which, in extreme cases of unmanaged health, can even lead to cardiac rupture.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM Decision Making (Consolidated) ──────────────────────────────────
+        if (currentTopic === 'prm-decision') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Pilot Decision Making (ADM)
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Aeronautical Decision Making is the cognitive process of determining the best course of action in response to a given situation. Understanding the psychological and structural challenges that affect pilot decision-making is critical for career survival.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Perfectionism Trap Section */}
                         <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
                             <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>MINDSET & IDENTITY</div>
@@ -993,7 +1370,8 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 </p>
                             </div>
                         </section>
-                        {/* Pilot Decision Making - The Seniority Gamble */}
+
+                        {/* Seniority Gamble Section */}
                         <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
                             <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>CAREER STRUCTURE</div>
@@ -1041,7 +1419,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
                         </section>
 
-                        {/* Pilot Decision Making - The Lost Decade */}
+                        {/* Lost Decade Section */}
                         <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
                             <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>FINANCIAL REALITY</div>
@@ -1089,7 +1467,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
                         </section>
 
-                        {/* Pilot Decision Making - The Industry Blind Spot */}
+                        {/* Industry Blind Spot Section */}
                         <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
                             <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>INDUSTRY AWARENESS</div>
@@ -1148,17 +1526,253 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 </div>
                             </div>
                         </section>
+                    </div>
+                </div >
+            );
+        }
 
+        // ── PRM Decision - Seniority Gamble ──────────────────────────────────
+        if (currentTopic === 'prm-decision-seniority') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            The Seniority Gamble
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Unlike almost any other profession, an airline pilot's entire career trajectory is governed by a single, ruthless mechanism: the seniority list. Understanding this system from day one is critical for strategic career planning.
+                        </p>
+                    </div>
 
-                        {/* Hidden Costs Section */}
-                        <section style={{ textAlign: 'center', maxWidth: '56rem', marginTop: '4rem', paddingTop: '4rem', borderTop: '1px solid #e2e8f0' }}>
-                            <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-                                THE FINANCIAL BARRIER
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Seniority Gamble Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>CAREER STRUCTURE</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
+                                    <img src="/Gemini_Generated_Image_a0rjm7a0rjm7a0rj.png" alt="Seniority Gamble Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Unlike almost any other profession, an airline pilot's entire career trajectory is governed by a single, ruthless mechanism: the <strong>seniority list</strong>. Your salary, your routes, your aircraft type, your roster quality—all of it is determined by your position on that list. And that list is extraordinarily fragile.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>START FROM ZERO — EVERY TIME</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        If your airline goes bankrupt or another pandemic grounds the industry, you do not simply "get another job." You go straight to the <strong>bottom of the list</strong> at the next airline—regardless of your total experience, years, or ratings. Different airlines have different training standards and procedures. You must undergo costly conversion training all over again, and the bill lands on you.
+                                    </p>
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The waiting is its own trap. After applying to a new airline, you sit at home with no clear timeline—no idea when the call will come. Days turn into weeks, weeks into months. During this limbo, pilots risk losing momentum, letting their currency lapse, and watching their skills and knowledge quietly erode. In aviation, standing still is moving backward.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '16px',
+                                    padding: '1.5rem 2rem',
+                                    boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255,255,255,0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, fontStyle: 'italic' }}>
+                                        "The seniority system creates a career that is fundamentally non-transferable. Understanding this from day one is not pessimism—it is the most important strategic decision you will ever make as a pilot."
+                                    </p>
+                                </div>
                             </div>
-                            <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-                                Financial Risk
-                            </h1>
-                            <div style={{ textAlign: 'left', maxWidth: '52rem', margin: '0 auto' }}>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM Decision - Lost Decade ──────────────────────────────────
+        if (currentTopic === 'prm-decision-lost-decade') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            The Lost Decade: Debt vs. Pay
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Flight schools sell the dream of a high captain's salary, but rarely mention what comes before it—the lost decade. The gap between promise and early-career reality is one of the most financially dangerous decisions a pilot can make.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Lost Decade Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>FINANCIAL REALITY</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
+                                    <img src="/Gemini_Generated_Image_adg4jbadg4jbadg4.png" alt="Lost Decade Financials" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Flight schools sell the dream of a $300,000 captain's salary. What they rarely mention is what comes before it — the <strong>lost decade</strong>. The gap between the promise and the reality of early-career pay is one of the most financially dangerous decisions a young pilot can be underprepared for.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE NUMBERS NOBODY PUTS ON THE BROCHURE</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        You may graduate with upwards of <strong>$100,000 in training debt</strong>, only to earn between <strong>$30,000–$60,000 per year</strong> as a flight instructor or junior first officer for several years. Meanwhile, life doesn't pause: rent, utilities, groceries, insurance, taxes, and potentially a family to support all continue demanding payment — every single month.
+                                    </p>
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Many schools offer a "study now, pay later" programme that sounds appealing on paper. But the reality is that once you graduate, accumulate hours, and finally land that airline position, the debt follows you in. Your early airline salary is simply not enough to service that loan comfortably while also covering living expenses. Your earnings lag behind your obligations for years.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '16px',
+                                    padding: '1.5rem 2rem',
+                                    boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255,255,255,0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, fontStyle: 'italic' }}>
+                                        "The captain's salary is real. But the decade of financial sacrifice required to reach it is rarely advertised. A pilot who enters their career without a financial plan is not just broke — they are a decision-making risk waiting to happen inside the cockpit."
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM Decision - Industry Blind Spot ──────────────────────────────────
+        if (currentTopic === 'prm-decision-blind-spot') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            The Industry Blind Spot
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            From the outside, being a pilot looks like a dream career. But the internal reality is something most student pilots never see coming. Understanding the blind spots before investing is crucial for survival.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Industry Blind Spot Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>INDUSTRY AWARENESS</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem', position: 'relative' }}>
+                                    <img src="/Gemini_Generated_Image_tiw3pqtiw3pqtiw3.png" alt="Industry Blind Spot Illustration" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    From the outside, being a pilot looks everything a dream career should be—high paychecks, globe-trotting, and enviable airline perks. But these are only the external attractions. The internal reality of the industry is something the majority of student pilots never see coming.
+                                </p>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Most student pilots are exclusively focused on the traditional pathway: enrol in flight school, build hours, obtain a type rating, get hired. What they have no visibility on is what happens next—or more critically, <strong>why so many never make it past that final step</strong>. After spending approximately $100,000 on training licenses and then another $50,000 on a type rating, a significant number of pilots still cannot get hired. The primary reason is the <strong>1,500-hour rule</strong>, a regulatory barrier that simply takes time and additional cost to clear.
+                                </p>
+                                <div style={{
+                                    backgroundColor: '#f8fafc',
+                                    borderLeft: '4px solid #475569',
+                                    padding: '1.5rem',
+                                    borderRadius: '0 8px 8px 0',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#1e293b', fontSize: '1.1rem', fontWeight: 600 }}>The Retirement Wave</h4>
+                                    <p style={{ margin: 0, color: '#334155', fontSize: '1rem' }}>
+                                        The industry simultaneously faces an accelerating retirement wave, most acutely felt across Europe and the United States. A large segment of the workforce belongs to the "baby boomer" generation, with pilots rapidly approaching the mandatory retirement age of 65. Every year, thousands of experienced captains leave their seats—creating massive vacancies that the training pipeline simply cannot fill quickly enough due to that same hour-barrier.
+                                    </p>
+                                </div>
+                                <div style={{
+                                    backgroundColor: '#fef2f2',
+                                    borderLeft: '4px solid #ef4444',
+                                    padding: '1.5rem',
+                                    borderRadius: '0 8px 8px 0',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#991b1b', fontSize: '1.1rem', fontWeight: 600 }}>The COVID Fault Line</h4>
+                                    <p style={{ margin: 0, color: '#7f1d1d', fontSize: '1rem' }}>
+                                        COVID-19 did not just pause aviation — it broke parts of it permanently. Entire fleets were grounded, regional airlines filed for bankruptcy, and a large number of pilots took early retirement. Flight training stalled. When travel demand rebounded, the industry discovered it had nowhere near enough trained crew to meet it. The training system could not recover fast enough to replace those who had left.
+                                    </p>
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The downstream effects continue today. Flight cancellations, route reductions, and understaffed regional carriers are all symptoms of this structural gap. Worse, major airlines routinely raid regional fleets to poach their most experienced pilots — leaving smaller carriers further depleted and forcing reductions in service to smaller and underserved communities.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '16px',
+                                    padding: '1.5rem 2rem',
+                                    boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255,255,255,0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, fontStyle: 'italic' }}>
+                                        "The pilot shortage is real. But so is the blind spot. Most pilots only discover the gap after they've already invested everything. Wingmentor exists to illuminate this before it's too late to navigate."
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM Financial Risk (Consolidated) ──────────────────────────────────
+        if (currentTopic === 'prm-financial') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Pilot Financial Risk
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Financial mismanagement is one of the leading causes of pilot career failure. Understanding the risks of type ratings, instructor dilemmas, and liquidity traps is essential for making informed investment decisions.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Type Rating Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '56rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>INVESTMENT PSYCHOLOGY</div>
+                                <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
+                                    Type Rating: Banker vs Casino
+                                </h3>
                                 <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.8, marginBottom: '1.5rem' }}>
                                     Before exploring the financial risks of aviation, it is crucial to first understand what a <strong>Type Rating</strong> is. While a Commercial Pilot License allows a pilot to fly for hire, a type rating is an advanced, aircraft-specific certification (such as an Airbus A320 or Boeing 737) required by aviation authorities. Historically, airlines paid for this training upon hiring a pilot. Today, the sheer volume of low-timer graduates has shifted this dynamic: many airlines now require pilots to securely hold a type rating <em>before</em> they even apply, completely shifting the financial burden onto the applicant's shoulders.
                                 </p>
@@ -1209,114 +1823,305 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     Without a fundamental understanding of market demand, financial liquidity, and risk management, pilots often trap themselves in insurmountable debt with a rating they cannot legally use—a hand where the casino always wins.
                                 </p>
                             </div>
+                        </section>
 
-                            {/* Financial Risk - The Instructor's Dilemma */}
-                            <div style={{ textAlign: 'left', maxWidth: '52rem', margin: '3rem auto 0 auto' }}>
-                                <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
-                                    <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center', marginTop: '3rem' }}>THE INSTRUCTOR TRAP</div>
-                                    <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
-                                        The Instructor's Dilemma
-                                    </h3>
-                                    <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
-                                        <img src="/instructor-wrong-investment-pilot-gap.png" alt="Flight instructor stuck paying for Airbus rating" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                    </div>
-                                    <p style={{ marginBottom: '1.5rem' }}>
-                                        Even pilots who chose the <strong>traditional flight instructor route</strong> are not immune. Trapped in a holding pattern, some will burn their hard-earned cash on a Category 3 type rating (like an A320) out of pure frustration, hoping it will force an airline to notice them. Sadly, they remain stuck as instructors, now burdened with a heavy training loan and recurrent costs they can't afford.
-                                    </p>
+                        {/* Instructor Dilemma Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE INSTRUCTOR TRAP</div>
+                                <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
+                                    The Instructor's Dilemma
+                                </h3>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
+                                    <img src="/instructor-wrong-investment-pilot-gap.png" alt="Flight instructor stuck paying for Airbus rating" style={{ width: '100%', height: 'auto', display: 'block' }} />
                                 </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Even pilots who chose the <strong>traditional flight instructor route</strong> are not immune. Trapped in a holding pattern, some will burn their hard-earned cash on a Category 3 type rating (like an A320) out of pure frustration, hoping it will force an airline to notice them. Sadly, they remain stuck as instructors, now burdened with a heavy training loan and recurrent costs they can't afford.
+                                </p>
                             </div>
+                        </section>
 
-                            {/* Financial Risk - "Shiny Type Rating" Syndrome */}
-                            <div style={{ textAlign: 'left', maxWidth: '52rem', margin: '3rem auto 0 auto' }}>
-                                <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
-                                    <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center', marginTop: '3rem' }}>THE SYNDROME</div>
-                                    <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
-                                        "Shiny Type Rating" Syndrome
-                                    </h3>
-                                    <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
-                                        <img src="/financial-drain-pilot-gap.jpg" alt="Cartoon showing the financial drain of type ratings" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                                    </div>
-                                    <p style={{ marginBottom: '1.5rem' }}>
-                                        Trapped with no clear direction, many succumb to <strong>"Shiny Type Rating Syndrome."</strong> Out of frustration, they spend tens of thousands on complex ratings (A320 or ATR) <em>before</em> securing a job offer. Without line experience, this is often a catastrophic mistake—bleeding their remaining funds dry just as an airline might finally call.
+                        {/* Shiny Syndrome Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE ALLURE TRAP</div>
+                                <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
+                                    "Shiny Type Rating" Syndrome
+                                </h3>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
+                                    <img src="/type-rating-header.png" alt="Shiny type rating syndrome pilot gap" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The allure of a shiny new type rating is powerful. But here is the cold truth: <strong>without a job offer, it is almost always a liability, not an asset.</strong> It is a subscription fee you pay for a service you cannot legally access.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE SUBSCRIPTION MODEL</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        A type rating is not a one-time purchase—it's a subscription. Every 6 months, you must pay for simulator sessions to maintain currency. Every 12 months, you must complete recurrent training and pass a proficiency check. If you miss these deadlines, the rating expires and you lose everything you paid for. This is not an investment; this is a recurring expense with no guarantee of return.
                                     </p>
                                 </div>
                             </div>
                         </section>
-                    </div >
 
-                    {/* The Aftermath Section */}
-                    {/* Expectations vs Reality Section */}
-                    <section style={{ textAlign: 'center', maxWidth: '52rem', marginTop: '1rem' }}>
-                        <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                            PERSPECTIVE
-                        </div>
-                        <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '2.5rem', fontFamily: 'Georgia, serif' }}>
-                            Expectations vs. Reality
-                        </h2>
+                        {/* Expectations vs Reality Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE REALITY CHECK</div>
+                                <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
+                                    Expectations vs Reality
+                                </h3>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
+                                    <img src="/low-timer-expectation.png" alt="Expectations vs Reality pilot gap" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The gap between what flight schools promise and what the industry delivers is stark. Schools market the dream—high salaries, travel, prestige—but rarely mention the years of financial sacrifice, the crushing debt, the uncertainty of employment, and the real possibility of never making it to the flight deck despite doing everything "right."
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE INFORMATION GAP</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        Most pilots only discover this gap after they have already invested everything—in time, money, and emotional energy. By then, they are trapped. The industry has their money, and they have no choice but to keep playing a game they can't afford to lose.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
 
-                        <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                            <img src="/low-timer-expectation.png" alt="Pilot holding commercial license dreaming of a jet" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                        </div>
-
-                        <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, marginBottom: '2.5rem', textAlign: 'left' }}>
-                            The journey often begins with towering expectations. Fresh out of flight school, clutching a newly printed Commercial Pilot License, the immediate dream is a fast-tracked leap into the right seat of a shiny corporate jet or major airliner.
-                        </p>
-
-                        <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                            <img src="/low-timer-reality.jpg" alt="Bankrupt pilot regretting buying a type rating" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                        </div>
-
-                        <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, marginBottom: '2.5rem', textAlign: 'left' }}>
-                            However, reality quickly sets in. Desperate to bridge the massive experience gap and stand out from the immense stack of identical resumes, many pilots succumb to paying out-of-pocket for expensive, heavy jet type ratings without any guaranteed job offer attached. The aftermath is often devastating—wishing they had simply invested that money into building organic flight hours instead.
-                        </p>
-                    </section>
-
-
-
-
-                    {/* PRM Section */}
-                    <section style={{ textAlign: 'center', maxWidth: '52rem', marginTop: '1rem' }}>
-                        <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                            PILOT RISK MANAGEMENT (PRM)
-                        </div>
-                        <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '2.5rem', fontFamily: 'Georgia, serif' }}>
-                            The Liquidity Trap
-                        </h2>
-
-                        <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '3rem', position: 'relative' }}>
-                            <img src="/what-is-a-type-rating.png" alt="Be smart with your investments. You can cash out and sell a plane, but not a type rating." style={{ width: '100%', height: 'auto', display: 'block' }} />
-                        </div>
-
-                        <div style={{ textAlign: 'left', color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0 }}>
-                            <p style={{ marginBottom: '1.5rem' }}>
-                                A core tenet of <strong>Pilot Risk Management (PRM)</strong> is understanding liquidity. As the image illustrates: <em>"Be smart with your investments. You can cash out and sell a plane, but not a type rating."</em>
-                            </p>
-                            <p style={{ marginBottom: '1.5rem' }}>
-                                A pilot stands holding a massive scroll showing an <strong>"Airbus A320 Type Rating - Cost: $50,000"</strong>. Next to him sits a tangible light aircraft also worth $50,000. In a thought bubble, he remembers a devastating medical diagnosis requiring exactly that much money for treatment.
-                            </p>
-                            <p style={{ margin: 0, padding: '1.5rem', backgroundColor: '#fdf2f8', borderRadius: '12px', borderLeft: '4px solid #db2777', fontStyle: 'italic' }}>
-                                The stark reality is that while an airplane is a tangible asset that can be sold to recover cash in a crisis, a Type Rating is purely experiential. Once that money is spent, it is gone forever. If your career stalls or life throws a curveball, you cannot liquidate a certification.
-                            </p>
-                        </div>
-                    </section>
-                    <div style={{ height: '1px', background: '#e2e8f0', marginBottom: '2rem', marginTop: '4rem', width: '100%', maxWidth: '52rem', margin: '0 auto' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '6rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', maxWidth: '48rem', margin: '0 auto', width: '100%' }}>
-                        <button onClick={handlePrev} style={{ color: '#94a3b8', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                            ← Back
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            style={{ background: '#0284c7', color: 'white', fontWeight: 600, fontSize: '14px', padding: '0.75rem 1.5rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
-                            onMouseEnter={e => (e.currentTarget.style.background = '#0369a1')}
-                            onMouseLeave={e => (e.currentTarget.style.background = '#0284c7')}
-                        >
-                            Next →
-                        </button>
+                        {/* Liquidity Trap Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE FINANCIAL DEAD END</div>
+                                <h3 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', textAlign: 'center' }}>
+                                    The Liquidity Trap
+                                </h3>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
+                                    <img src="/financial-drain-pilot-gap.jpg" alt="Liquidity trap pilot gap" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The most dangerous financial position a pilot can find themselves in is <strong>illiquid</strong>. When you have invested everything in non-transferable assets with no exit strategy, you are trapped. You cannot pivot, you cannot retreat, and you cannot afford to wait. This is where careers break—not because of skill, but because of financial desperation.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE EXIT STRATEGY</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        Before you invest a single dollar in flight training, you must have an exit strategy. What happens if you don't get hired? What happens if the industry crashes again? What happens if you discover you don't actually enjoy the lifestyle? Without answers to these questions, you are not investing—you are gambling with your future.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
                     </div>
-                    <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-                        <p style={{ color: '#0284c7', fontSize: '1.05rem', lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
-                            Beyond the rating, one must bypass the "insurmountable wall" of recruitment. Learn about the <strong>Pilot Recognition System</strong> on the next page.
+                </div >
+            );
+        }
+
+        // ── PRM Financial - Instructor Dilemma ──────────────────────────────────
+        if (currentTopic === 'prm-financial-instructor') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            The Instructor's Dilemma
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            Even pilots who chose the traditional flight instructor route are not immune to financial risks. Trapped in a holding pattern, some burn their hard-earned cash on type ratings out of pure frustration.
                         </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Instructor's Dilemma Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE INSTRUCTOR TRAP</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
+                                    <img src="/instructor-wrong-investment-pilot-gap.png" alt="Flight instructor stuck paying for Airbus rating" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    Even pilots who chose the <strong>traditional flight instructor route</strong> are not immune. Trapped in a holding pattern, some will burn their hard-earned cash on a Category 3 type rating (like an A320) out of pure frustration, hoping it will force an airline to notice them. Sadly, they remain stuck as instructors, now burdened with a heavy training loan and recurrent costs they can't afford.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM Financial - Shiny Syndrome ──────────────────────────────────
+        if (currentTopic === 'prm-financial-shiny-syndrome') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            "Shiny Type Rating" Syndrome
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            The allure of a shiny new type rating is powerful—but it's often a trap. Understanding the difference between an investment and a liability can save you from financial ruin.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Shiny Type Rating Syndrome Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE ALLURE TRAP</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
+                                    <img src="/shiny-type-rating-syndrome-pilot-gap.png" alt="Shiny type rating syndrome pilot gap" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The allure of a shiny new type rating is powerful. But here is the cold truth: <strong>without a job offer, it is almost always a liability, not an asset.</strong> It is a subscription fee you pay for a service you cannot legally access.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE SUBSCRIPTION MODEL</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        A type rating is not a one-time purchase—it's a subscription. Every 6 months, you must pay for simulator sessions to maintain currency. Every 12 months, you must complete recurrent training and pass a proficiency check. If you miss these deadlines, the rating expires and you lose everything you paid for. This is not an investment; this is a recurring expense with no guarantee of return.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM - Expectations vs Reality ──────────────────────────────────
+        if (currentTopic === 'prm-expectations-reality') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            Expectations vs Reality
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            The gap between what flight schools promise and what the industry delivers is stark. Understanding the reality before you invest is essential for making informed decisions.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Expectations vs Reality Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE REALITY CHECK</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
+                                    <img src="/expectations-vs-reality-pilot-gap.png" alt="Expectations vs Reality pilot gap" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The gap between what flight schools promise and what the industry delivers is stark. Schools market the dream—high salaries, travel, prestige—but rarely mention the years of financial sacrifice, the crushing debt, the uncertainty of employment, and the real possibility of never making it to the flight deck despite doing everything "right."
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE INFORMATION GAP</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        Most pilots only discover this gap after they have already invested everything—in time, money, and emotional energy. By then, they are trapped. The industry has their money, and they have no choice but to keep playing a game they can't afford to lose.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div >
+            );
+        }
+
+        // ── PRM - Liquidity Trap ──────────────────────────────────
+        if (currentTopic === 'prm-liquidity-trap') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
+                    {/* ── Page Header ── */}
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
+                        <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
+                            CHAPTER 02 — PILOT RISK MANAGEMENT
+                        </div>
+                        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: '#0f172a', margin: '0 0 1.5rem 0', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            The Liquidity Trap
+                        </h1>
+                        <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '48rem', margin: '0 auto', fontWeight: 400 }}>
+                            The most dangerous financial position a pilot can find themselves in is illiquid. When you have invested everything in non-transferable assets with no exit strategy, you are trapped.
+                        </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
+                        {/* Liquidity Trap Section */}
+                        <section style={{ textAlign: 'left', maxWidth: '52rem', marginTop: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#334155' }}>
+                                <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>THE FINANCIAL DEAD END</div>
+                                <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2rem', position: 'relative' }}>
+                                    <img src="/liquidity-trap-pilot-gap.png" alt="Liquidity trap pilot gap" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                                </div>
+                                <p style={{ marginBottom: '1.5rem' }}>
+                                    The most dangerous financial position a pilot can find themselves in is <strong>illiquid</strong>. When you have invested everything in non-transferable assets with no exit strategy, you are trapped. You cannot pivot, you cannot retreat, and you cannot afford to wait. This is where careers break—not because of skill, but because of financial desperation.
+                                </p>
+                                <div style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    backdropFilter: 'blur(16px)',
+                                    WebkitBackdropFilter: 'blur(16px)',
+                                    borderRadius: '24px',
+                                    padding: '2.5rem',
+                                    boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    marginBottom: '1.5rem'
+                                }}>
+                                    <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE EXIT STRATEGY</h4>
+                                    <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                                        Before you invest a single dollar in flight training, you must have an exit strategy. What happens if you don't get hired? What happens if the industry crashes again? What happens if you discover you don't actually enjoy the lifestyle? Without answers to these questions, you are not investing—you are gambling with your future.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div >
             );
@@ -1327,8 +2132,8 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
             return (
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
-                    <div style={{ textAlign: 'center', paddingBottom: '3.5rem', paddingTop: '4rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -1439,7 +2244,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             margin: '2rem 0 3rem 0',
                             boxSizing: 'border-box' as const
                         }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                             <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                 RECAP: THE BROKEN BRIDGE
                             </div>
@@ -1459,7 +2264,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                         {/* Transition Header */}
                         <div style={{ textAlign: 'center', margin: '6rem 0 4rem 0', padding: '0 1rem' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                             <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                                 THE BRIDGING THE GAP APPROACH
                             </div>
@@ -1569,7 +2374,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             boxSizing: 'border-box',
                             marginBottom: '3rem'
                         }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                             <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                 WINGMENTOR INSIGHT
                             </div>
@@ -1624,7 +2429,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 width: '100%',
                                 boxSizing: 'border-box'
                             }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                 <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                     WINGMENTOR INSIGHT
                                 </div>
@@ -1654,19 +2459,6 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                     </div>
 
                     <div style={{ height: '1px', background: '#e2e8f0', marginBottom: '2rem', marginTop: '4rem', width: '100%', maxWidth: '52rem', margin: '0 auto' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '6rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', maxWidth: '48rem', margin: '0 auto', width: '100%' }}>
-                        <button onClick={handlePrev} style={{ color: '#94a3b8', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                            ← Back
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            style={{ background: '#0284c7', color: 'white', fontWeight: 600, fontSize: '14px', padding: '0.75rem 1.5rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
-                            onMouseEnter={e => (e.currentTarget.style.background = '#0369a1')}
-                            onMouseLeave={e => (e.currentTarget.style.background = '#0284c7')}
-                        >
-                            Next →
-                        </button>
-                    </div>
                     <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                         <p style={{ color: '#0284c7', fontSize: '1.05rem', lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
                             Next, we explore <strong>Pilot Risk Management</strong>—the final pillar of understanding the industry landscape.
@@ -1681,8 +2473,8 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
             return (
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
-                    <div style={{ textAlign: 'center', paddingBottom: '3.5rem', paddingTop: '4rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -1790,7 +2582,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                         width: '100%',
                                         boxSizing: 'border-box'
                                     }}>
-                                        <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                        <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                         <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                             INDUSTRY INSIGHT
                                         </div>
@@ -1985,7 +2777,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         WINGMENTOR INSIGHT
                                     </div>
@@ -2001,7 +2793,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
                         </section>
                         {/* The Economic Trap */}
-                        <section style={{ textAlign: 'center', maxWidth: '56rem', marginTop: '4rem', paddingTop: '4rem', borderTop: '1px solid #e2e8f0' }}>
+                        <section style={{ textAlign: 'center', maxWidth: '56rem', marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0' }}>
                             <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                                 THE ECONOMIC TRAP: PILOT DEBT SPIRAL
                             </div>
@@ -2090,7 +2882,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 width: '100%',
                                 boxSizing: 'border-box'
                             }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                     CONCLUSION
                                 </div>
@@ -2171,19 +2963,6 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                     </div >
 
                     <div style={{ height: '1px', background: '#e2e8f0', marginBottom: '2rem', marginTop: '4rem', width: '100%', maxWidth: '52rem', margin: '0 auto' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '6rem' }}>
-                        <button onClick={handlePrev} style={{ color: '#94a3b8', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                            ← Back
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            style={{ background: '#0284c7', color: 'white', fontWeight: 600, fontSize: '14px', padding: '0.75rem 1.5rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
-                            onMouseEnter={e => (e.currentTarget.style.background = '#0369a1')}
-                            onMouseLeave={e => (e.currentTarget.style.background = '#0284c7')}
-                        >
-                            Next →
-                        </button>
-                    </div>
                     <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                         <p style={{ color: '#0284c7', fontSize: '1.05rem', lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
                             Next, we will define <strong>What is a Low-Timer Pilot</strong>—and explore how this paradox directly creates the low-timer label.
@@ -2199,7 +2978,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ maxWidth: '56rem', margin: '0 auto', paddingTop: '3rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', animation: 'fadeIn 0.4s ease-in-out' }}>
                     {/* Centered logo + header block */}
                     <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                         <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                             Chapter 01 — Understanding the What's
                         </div>
@@ -2267,7 +3046,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             <div style={{ backgroundColor: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '24px', padding: '2.5rem 2rem', boxShadow: '0 8px 32px rgba(15,23,42,0.04)', border: '1px solid rgba(255,255,255,0.8)', marginTop: '2rem' }}>
                                 {/* Logo + header */}
                                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '160px', height: 'auto', objectFit: 'contain', marginBottom: '1.25rem' }} />
+                                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
                                         WINGMENTOR INSIGHT
                                     </div>
@@ -2446,11 +3225,11 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                     </div>
 
                     {/* ── WingMentor Pilot Recognition ── */}
-                    <div style={{ marginTop: '5rem', paddingTop: '4rem', borderTop: '2px solid #e2e8f0', marginBottom: '2rem' }}>
+                    <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '2px solid #e2e8f0', marginBottom: '2rem' }}>
 
                         {/* Section header */}
                         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                                 Chapter 01 — Understanding the What's
                             </div>
@@ -2609,11 +3388,11 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                     </div>
 
                     {/* ── ATLAS CV Recognition (merged) ── */}
-                    <div style={{ marginTop: '5rem', paddingTop: '4rem', borderTop: '2px solid #e2e8f0', marginBottom: '2rem' }}>
+                    <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '2px solid #e2e8f0', marginBottom: '2rem' }}>
 
                         {/* Section header — matches main page title style */}
                         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                                 Chapter 01 — Understanding the What's
                             </div>
@@ -2781,19 +3560,6 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                     </div>
 
                     <div style={{ height: '1px', background: '#e2e8f0', marginBottom: '2rem' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '6rem' }}>
-                        <button onClick={handlePrev} style={{ color: '#94a3b8', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                            ← Back
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            style={{ background: '#0284c7', color: 'white', fontWeight: 600, fontSize: '14px', padding: '0.75rem 1.5rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
-                            onMouseEnter={e => (e.currentTarget.style.background = '#0369a1')}
-                            onMouseLeave={e => (e.currentTarget.style.background = '#0284c7')}
-                        >
-                            Next →
-                        </button>
-                    </div>
                 </div>
             );
         }
@@ -2802,9 +3568,9 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         if (currentTopic === 'difference') {
             return (
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '4rem', paddingTop: '2rem' }}>
-                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
+                    <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             THE DIFFERENCES
@@ -3059,8 +3825,8 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
             return (
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
-                    <div style={{ textAlign: 'center', paddingBottom: '3.5rem', paddingTop: '4rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+                    <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', margin: '0 auto' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -3225,9 +3991,9 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         if (currentTopic === 'why-statistics') {
             return (
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '5rem', paddingTop: '2rem' }}>
-                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain' }} />
+                    <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             CHAPTER 02 — THE WHY
@@ -3312,7 +4078,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         EXAMINATION STRUCTURE
                                     </div>
@@ -3348,7 +4114,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         UNLOCKED ACCESS &amp; BENEFITS
                                     </div>
@@ -3402,20 +4168,6 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         </p>
 
                         <div style={{ height: '1px', background: '#e2e8f0', width: '100%', maxWidth: '42rem' }} />
-
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '6rem', width: '100%', maxWidth: '42rem' }}>
-                            <button onClick={handlePrev} style={{ color: '#94a3b8', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                                ← Back
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                style={{ background: '#0284c7', color: 'white', fontWeight: 600, fontSize: '14px', padding: '0.75rem 1.5rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
-                                onMouseEnter={e => (e.currentTarget.style.background = '#0369a1')}
-                                onMouseLeave={e => (e.currentTarget.style.background = '#0284c7')}
-                            >
-                                Next →
-                            </button>
-                        </div>
                     </div>
                 </div>
             );
@@ -3426,9 +4178,9 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         if (currentTopic === 'w1000-poh') {
             return (
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '5rem', paddingTop: '2rem' }}>
-                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain' }} />
+                    <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             W1000 — PILOT OPERATING HANDBOOK
@@ -3732,20 +4484,6 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
 
                         </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '6rem', width: '100%', maxWidth: '42rem', margin: '6rem auto 0' }}>
-                            <button onClick={handlePrev} style={{ color: '#94a3b8', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                                ← Back
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                style={{ background: '#0284c7', color: 'white', fontWeight: 600, fontSize: '14px', padding: '0.75rem 1.5rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
-                                onMouseEnter={e => (e.currentTarget.style.background = '#0369a1')}
-                                onMouseLeave={e => (e.currentTarget.style.background = '#0284c7')}
-                            >
-                                Next →
-                            </button>
-                        </div>
                     </div>
                 </div>
             );
@@ -3755,9 +4493,9 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         if (currentTopic === 'mission') {
             return (
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '5rem', paddingTop: '2rem' }}>
-                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain' }} />
+                    <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             MODULE 01 MISSION
@@ -4072,9 +4810,9 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         if (currentTopic === 'program-syllabus') {
             return (
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '4rem', paddingTop: '2rem' }}>
-                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain' }} />
+                    <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             MODULE 01 SYLLABUS
@@ -4256,9 +4994,9 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         if (currentTopic === 'welcome') {
             return (
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '5rem', paddingTop: '2rem' }}>
-                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain' }} />
+                    <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             MODULE 01 START
@@ -4340,7 +5078,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         {/* Quote Block */}
                         <section style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '24px', padding: '4rem 3rem', boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)', border: '1px solid rgba(255, 255, 255, 0.8)', textAlign: 'center', width: '100%', boxSizing: 'border-box', marginTop: '1rem' }}>
                             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '160px', height: 'auto', objectFit: 'contain' }} />
+                                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                             </div>
                             <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                 OUR PHILOSOPHY
@@ -4392,7 +5130,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         if (currentTopic === 'initial-exam-access') {
             return (
                 <div style={{ maxWidth: '800px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '3rem', paddingTop: '2rem' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                             CHAPTER 2 — THE SOLUTION
                         </div>
@@ -4534,6 +5272,9 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
             case 2:
                 return <PilotGapModuleChapter2 onBack={onBack} />;
+
+            case 3:
+                return <PilotGapModuleChapter3 onBack={onBack} />;
         }
         
         return null;
@@ -4647,7 +5388,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 </div>
             )}
             {/* Minimal Header */}
-            <header style={{ backgroundColor: 'white', borderBottom: '1px solid #e2e8f0', padding: '0.5rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50 }}>
+            <header style={{ backgroundColor: 'white', borderBottom: '1px solid #e2e8f0', padding: '0.25rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <img src="/logo.png" alt="WingMentor Logo" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
                     <div>
@@ -4667,9 +5408,9 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
             </header>
 
             {/* Main Layout wrapper for sidebar and content */}
-            <div style={{ display: 'flex', minHeight: 'calc(100vh - 55px)' }}>
+            <div style={{ display: 'flex', height: 'calc(100vh - 55px)' }}>
                 {/* Module Viewer Sidebar */}
-                <aside style={{ width: '200px', flexShrink: 0, backgroundColor: 'white', borderRight: '1px solid #e2e8f0', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', position: 'sticky', top: '55px', height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
+                <aside style={{ width: '200px', flexShrink: 0, backgroundColor: 'white', borderRight: '1px solid #e2e8f0', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', position: 'sticky', top: '55px', height: 'calc(100vh - 55px)', overflowY: 'auto', zIndex: 10 }}>
                     <button
                         onClick={onBack}
                         style={{
@@ -4699,130 +5440,208 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         <Icons.ArrowLeft style={{ width: 16, height: 16 }} />
                         Exit Module
                     </button>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Module Viewer</div>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                        {([
-                            { title: 'Welcome Aboard', id: 0 },
-                            { title: 'Our Mission', id: 0 },
-                            { title: 'The Differences', id: 0 },
-                            { title: 'Program Syllabus', id: 0 },
-                            { title: 'Introduction & Overview', id: 0 },
-                            {
-                                title: 'The "What"', id: 1,
-                                topics: [
-                                    { label: 'What is a Low-Timer Pilot?', slug: 'what-low-timer' },
-                                    { label: 'The Pilot Shortage & Paradox', slug: 'what-pilot-shortage' },
-                                    { divider: true },
-                                    { label: 'What is the Pilot Gap?', slug: 'what-pilot-gap' },
-                                    { label: 'What is Pilot Risk Management?', slug: 'pilot-risk-management' },
-                                    { label: 'What is Pilot Recognition?', slug: 'what-pilot-recognition' },
-                                    { label: 'What Now?', slug: 'what-now' },
+                    
+                    {/* Current Chapter Display */}
+                    <div style={{ marginTop: '1rem' }}>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#2563eb', marginBottom: '0.75rem' }}>
+                            {currentChapter === 0 && 'Chapter 1 — Industry Familiarization'}
+                            {currentChapter === 1 && 'Chapter 2 — Understanding The What\'s'}
+                            {currentChapter === 2 && 'Chapter 3 — Pilot Risk Management (PRM)'}
+                            {currentChapter === 3 && 'Chapter 4 — The Solution'}
+                        </div>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                            {/* Chapter 0 items */}
+                            {currentChapter === 0 && (
+                                <>
+                                    {([
+                                        { title: 'Welcome Aboard', slug: 'welcome' },
+                                        { title: 'Our Mission', slug: 'mission' },
+                                        { title: 'The Differences', slug: 'difference' },
+                                        { title: 'Program Syllabus', slug: 'program-syllabus' },
+                                        { title: 'Introduction & Overview', slug: null },
+                                    ] as Array<{ title: string; slug: string | null }>).map((item, index) => {
+                                        const isActive = currentTopic === item.slug || (!currentTopic && !item.slug);
+                                        return (
+                                            <li key={index}>
+                                                <button
+                                                    onClick={() => {
+                                                        setCurrentChapter(0);
+                                                        setCurrentTopic(item.slug);
+                                                    }}
+                                                    style={{
+                                                        width: '100%',
+                                                        textAlign: 'left',
+                                                        padding: '0.65rem 1rem',
+                                                        borderRadius: '10px',
+                                                        backgroundColor: isActive ? 'rgba(37,99,235,0.08)' : 'transparent',
+                                                        color: isActive ? '#0f172a' : '#475569',
+                                                        fontWeight: isActive ? 600 : 500,
+                                                        border: 'none',
+                                                        cursor: 'pointer',
+                                                        transition: 'all 0.2s',
+                                                        borderLeft: isActive ? '3px solid #2563eb' : '3px solid transparent',
+                                                        fontSize: '0.9rem'
+                                                    }}
+                                                    onMouseOver={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = '#f8fafc'; }}
+                                                    onMouseOut={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'; }}
+                                                >
+                                                    {item.title}
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </>
+                            )}
+                            
+                            {/* Chapter 1 items */}
+                            {currentChapter === 1 && (
+                                <>
+                                    {([
+                                        { label: 'What is a Low-Timer Pilot?', slug: 'what-low-timer' },
+                                        { label: 'The Pilot Shortage & Paradox', slug: 'what-pilot-shortage' },
+                                        { label: 'What is the Pilot Gap?', slug: 'what-pilot-gap' },
+                                        { label: 'What is Pilot Recognition?', slug: 'what-pilot-recognition' },
+                                        { label: 'What Now?', slug: 'what-now' },
+                                    ] as Array<{ label: string; slug: string }>).map((topic, index) => {
+                                        const isActive = currentTopic === topic.slug;
+                                        return (
+                                            <li key={index}>
+                                                <button
+                                                    onClick={() => setCurrentTopic(topic.slug)}
+                                                    style={{
+                                                        display: 'block', width: '100%', textAlign: 'left',
+                                                        padding: '0.5rem 0.75rem', borderRadius: '6px',
+                                                        backgroundColor: isActive ? '#dbeafe' : 'transparent',
+                                                        color: isActive ? '#1d4ed8' : '#64748b',
+                                                        fontWeight: isActive ? 600 : 400,
+                                                        border: 'none', cursor: 'pointer', transition: 'all 0.15s',
+                                                        fontSize: '0.8125rem',
+                                                        borderLeft: isActive ? '2px solid #1d4ed8' : '2px solid transparent',
+                                                    }}
+                                                    onMouseOver={e => { if (!isActive) e.currentTarget.style.backgroundColor = '#f1f5f9'; }}
+                                                    onMouseOut={e => { if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'; }}
+                                                >
+                                                    {topic.label}
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </>
+                            )}
+                            
+                            {/* Chapter 2 items */}
+                            {currentChapter === 2 && (
+                                <>
+                                    {([
+                                        { label: 'What is Pilot Risk Management?', slug: 'pilot-risk-management' },
+                                        { label: 'Pilot Risk Management: Health', slug: 'prm-health' },
+                                        { label: 'Pilot Decision Making (ADM)', slug: 'prm-decision' },
+                                        { label: 'Pilot Financial Risk', slug: 'prm-financial' },
+                                    ] as Array<{ label: string; slug: string }>).map((topic, index) => {
+                                        const isActive = currentTopic === topic.slug;
+                                        return (
+                                            <li key={index}>
+                                                <button
+                                                    onClick={() => setCurrentTopic(topic.slug)}
+                                                    style={{
+                                                        display: 'block', width: '100%', textAlign: 'left',
+                                                        padding: '0.5rem 0.75rem', borderRadius: '6px',
+                                                        backgroundColor: isActive ? '#dbeafe' : 'transparent',
+                                                        color: isActive ? '#1d4ed8' : '#64748b',
+                                                        fontWeight: isActive ? 600 : 400,
+                                                        border: 'none', cursor: 'pointer', transition: 'all 0.15s',
+                                                        fontSize: '0.8125rem',
+                                                        borderLeft: isActive ? '2px solid #1d4ed8' : '2px solid transparent',
+                                                    }}
+                                                    onMouseOver={e => { if (!isActive) e.currentTarget.style.backgroundColor = '#f1f5f9'; }}
+                                                    onMouseOut={e => { if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'; }}
+                                                >
+                                                    {topic.label}
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </>
+                            )}
 
-                                ],
-                            },
-                            {
-                                title: 'The "Solution"', id: 2,
-                                topics: [
-                                    { label: 'Initial Examinations for the Foundational Program', slug: 'why-statistics' },
-                                    { label: 'Application Walkthrough & Guide', slug: 'w1000-poh' },
-                                    { label: 'Initial Examination Access', slug: 'initial-exam-access' },
-                                ]
-                            },
+                            {/* Chapter 3 items */}
+                            {currentChapter === 3 && (
+                                <>
+                                    {([
+                                        { label: 'Initial Examinations for the Foundational Program', slug: 'why-statistics' },
+                                        { label: 'Application Walkthrough & Guide', slug: 'w1000-poh' },
+                                        { label: 'Initial Examination Access', slug: 'initial-exam-access' },
+                                    ] as Array<{ label: string; slug: string }>).map((topic, index) => {
+                                        const isActive = currentTopic === topic.slug;
+                                        return (
+                                            <li key={index}>
+                                                <button
+                                                    onClick={() => setCurrentTopic(topic.slug)}
+                                                    style={{
+                                                        display: 'block', width: '100%', textAlign: 'left',
+                                                        padding: '0.5rem 0.75rem', borderRadius: '6px',
+                                                        backgroundColor: isActive ? '#dbeafe' : 'transparent',
+                                                        color: isActive ? '#1d4ed8' : '#64748b',
+                                                        fontWeight: isActive ? 600 : 400,
+                                                        border: 'none', cursor: 'pointer', transition: 'all 0.15s',
+                                                        fontSize: '0.8125rem',
+                                                        borderLeft: isActive ? '2px solid #1d4ed8' : '2px solid transparent',
+                                                    }}
+                                                    onMouseOver={e => { if (!isActive) e.currentTarget.style.backgroundColor = '#f1f5f9'; }}
+                                                    onMouseOut={e => { if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'; }}
+                                                >
+                                                    {topic.label}
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </>
+                            )}
+                        </ul>
+                    </div>
 
-                        ] as Array<{ title: string; id: number; topics?: Array<{ label: string; slug: string }> }>)
-                            .map((item, index) => {
-                                const hasTopics = item.topics && item.topics.length > 0;
-                                const isTopicActive = currentTopic && hasTopics && item.topics!.some(t => t.slug === currentTopic);
-                                const isChapterHubActive = !currentTopic && currentChapter === item.id && (item.title === 'Introduction & Overview' || item.id !== 0);
-                                const isDirectPageActive = currentTopic && !hasTopics && (
-                                    (item.title === 'Welcome Aboard' && currentTopic === 'welcome') ||
-                                    (item.title === 'Our Mission' && currentTopic === 'mission') ||
-                                    (item.title === 'The Differences' && currentTopic === 'difference') ||
-                                    (item.title === 'Program Syllabus' && currentTopic === 'program-syllabus')
-                                );
-                                const isHighlighted = isTopicActive || isChapterHubActive || isDirectPageActive;
-
-                                return (
-                                    <li key={index}>
-                                        <button
-                                            onClick={() => { 
-                                                if (item.title === 'Solutions - Mentor Training') {
-                                                    // Navigate to Module 2 file
-                                                    window.location.href = '/module2';
-                                                } else {
-                                                    setCurrentChapter(item.id);
-                                                    setCurrentTopic(null);
-                                                }
-                                            }}
-                                            style={{
-                                                width: '100%',
-                                                textAlign: 'left',
-                                                padding: '0.65rem 1rem',
-                                                borderRadius: '10px',
-                                                backgroundColor: isHighlighted ? 'rgba(37,99,235,0.08)' : 'transparent',
-                                                color: isHighlighted ? '#0f172a' : '#475569',
-                                                fontWeight: isHighlighted ? 600 : 500,
-                                                border: 'none',
-                                                cursor: 'pointer',
-                                                transition: 'all 0.2s',
-                                                borderLeft: isHighlighted ? '3px solid #2563eb' : '3px solid transparent',
-                                                fontSize: '0.9rem'
-                                            }}
-                                            onMouseOver={(e) => { if (!isHighlighted) e.currentTarget.style.backgroundColor = '#f8fafc'; }}
-                                            onMouseOut={(e) => { if (!isHighlighted) e.currentTarget.style.backgroundColor = 'transparent'; }}
-                                        >
-                                            {item.title}
-                                        </button>
-
-                                        {/* Sub-topics — shown when this chapter is active and has topics */}
-                                        {hasTopics && currentChapter === item.id && (
-                                            <ul style={{ listStyle: 'none', padding: '0.25rem 0 0.25rem 1rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.125rem' }}>
-                                                {item.topics!.map(topic => {
-                                                    const isTopicActive = currentTopic === topic.slug;
-                                                    return (
-                                                        <li key={topic.slug}>
-                                                            <button
-                                                                onClick={() => { 
-                                                                    if (item.title === 'Solutions - Mentor Training') {
-                                                                        // Navigate to Module 2 file
-                                                                        window.location.href = '/module2';
-                                                                    } else {
-                                                                        setCurrentTopic(topic.slug);
-                                                                    }
-                                                                }}
-                                                                style={{
-                                                                    display: 'block', width: '100%', textAlign: 'left',
-                                                                    padding: '0.5rem 0.75rem', borderRadius: '6px',
-                                                                    backgroundColor: isTopicActive ? '#dbeafe' : 'transparent',
-                                                                    color: isTopicActive ? '#1d4ed8' : '#64748b',
-                                                                    fontWeight: isTopicActive ? 600 : 400,
-                                                                    border: 'none', cursor: 'pointer', transition: 'all 0.15s',
-                                                                    fontSize: '0.8125rem',
-                                                                    borderLeft: isTopicActive ? '2px solid #1d4ed8' : '2px solid transparent',
-                                                                }}
-                                                                onMouseOver={e => { if (!isTopicActive) e.currentTarget.style.backgroundColor = '#f1f5f9'; }}
-                                                                onMouseOut={e => { if (!isTopicActive) e.currentTarget.style.backgroundColor = 'transparent'; }}
-                                                            >
-                                                                {topic.label}
-                                                            </button>
-                                                        </li>
-                                                    );
-                                                })}
-                                            </ul>
-                                        )}
-                                    </li>
-                                );
-                            })}
-                    </ul>
+                    {/* Next Chapter Button */}
+                    {currentChapter < 2 && (
+                        <button
+                            onClick={() => {
+                                setCurrentChapter(currentChapter + 1);
+                                setCurrentTopic(null);
+                            }}
+                            style={{
+                                marginTop: '1.5rem',
+                                width: '100%',
+                                padding: '0.75rem 1rem',
+                                borderRadius: '8px',
+                                backgroundColor: '#2563eb',
+                                color: 'white',
+                                fontWeight: 600,
+                                fontSize: '0.875rem',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                            }}
+                            onMouseOver={e => {
+                                e.currentTarget.style.backgroundColor = '#1d4ed8';
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                            }}
+                            onMouseOut={e => {
+                                e.currentTarget.style.backgroundColor = '#2563eb';
+                                e.currentTarget.style.transform = 'translateY(0)';
+                            }}
+                        >
+                            Next Chapter →
+                        </button>
+                    )}
                 </aside>
 
 
-                <main style={{ flex: 1, padding: '1.5rem 1rem', backgroundColor: '#f8fafc', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
-                    <div style={{ maxWidth: '700px', width: '100%', margin: '0 auto' }}>
+                <main style={{ flex: 1, padding: '1.5rem 1rem', backgroundColor: '#f8fafc', display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto' }}>
+                    <div style={{ maxWidth: '700px', width: '100%', margin: '0 auto', fontSize: '0.85rem' }}>
                         {renderChapterContent()}
+                    </div>
 
-                        {/* Pagination Controls */}
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0' }}>
+                    {/* Pagination Controls */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0', width: '100%', maxWidth: '700px', paddingBottom: '1rem' }}>
                             <button
                                 onClick={handlePrev}
                                 disabled={currentChapter === 0}
@@ -4905,37 +5724,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 <Icons.ArrowRight style={{ width: 24, height: 24 }} />
                             </button>
                         </div>
-                    </div>
                 </main>
-            </div>
-
-            {/* Bottom Advocacy Banner */}
-            < div style={{ backgroundColor: '#0f172a', color: 'white', padding: '4rem 2rem', textAlign: 'center' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1rem', margin: '0 0 1rem 0' }}>Industry Credibility Starts Here</h2>
-                <p style={{ color: '#94a3b8', marginBottom: '2.5rem' }}>Building the future of Pilot Quality Assurance.</p>
-                <div style={{ display: 'inline-block' }}>
-                    <button
-                        onClick={onBack}
-                        style={{
-                            backgroundColor: '#2563eb',
-                            color: 'white',
-                            border: 'none',
-                            padding: '1rem 3rem',
-                            borderRadius: '12px',
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            transition: 'all 0.2s',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem'
-                        }}
-                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
-                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
-                    >
-                        Return to Hub
-                    </button>
-                </div>
             </div>
         </div>
     );
