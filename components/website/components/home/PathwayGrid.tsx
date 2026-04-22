@@ -1496,7 +1496,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                 </>
                             )}
                             {/* Overlay for glassy effect - only when there's content */}
-                            {(card.videoUrl || (card.isCarousel && card.images) || card.image || card.hasAnimation) && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) && (
+                            {!(card.isCarousel && carouselImages) && (card.videoUrl || card.image || card.hasAnimation) && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) && (
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent pointer-events-none" />
                             )}
                         </div>
@@ -1516,7 +1516,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             {carouselImages.map((img, idx) => (
                                 <div key={idx} className={`
                                     absolute inset-0 w-full h-full transition-all duration-1000
-                                    ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}
+                                    ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-100 scale-105'}
                                 `}>
                                     <img
                                         src={img}
@@ -1550,7 +1550,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                 return (
                                     <div key={idx} className={`
                                         absolute inset-0 w-full h-full transition-all duration-1000
-                                        ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}
+                                        ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-100 scale-105'}
                                     `}>
                                         {isAnimationIndex ? (
                                             idx === 1 && card.id === 'discover' ? (
@@ -1599,12 +1599,14 @@ const GridCard: React.FC<GridCardProps> = ({
                             `}
                         />
                     ) : null}
-                    {/* Gradient Overlay */}
-                    <div className={`
-                        absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent
-                        transition-opacity duration-300
-                        ${isHovered ? 'opacity-90' : 'opacity-80'}
-                    `} />
+                    {/* Gradient Overlay - skip for carousel cards */}
+                    {!shouldUseCarousel && !shouldUseLoggedInCarousel && !shouldUseEnrolledCarousel && (
+                        <div className={`
+                            absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent
+                            transition-opacity duration-300
+                            ${isHovered ? 'opacity-40' : 'opacity-30'}
+                        `} />
+                    )}
                 </div>
 
                 {/* Badge */}
