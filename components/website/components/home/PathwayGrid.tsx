@@ -1624,7 +1624,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         <img
                             src={currentImage || displayImage}
                             alt={card.title}
-                            style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : 'center' }}
+                            style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : 'center' }}
                             className={`
                                 w-full h-full object-cover
                                 ${isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}
