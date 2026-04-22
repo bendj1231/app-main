@@ -348,7 +348,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'cv-builder',
-            title: 'Pilot CV Builder',
+            title: 'ATLAS-Resume Systems',
             subtitle: 'Professional aviation resume and portfolio creator',
             icon: Award,
             badge: null,
