@@ -1255,15 +1255,25 @@ const GridCard: React.FC<GridCardProps> = ({
             ? card.loggedInSubtitle
             : card.subtitle;
 
-    // Get current dynamic title for discover card (when not enrolled in foundation)
-    const currentDynamicTitle = (card.id === 'discover' && !isEnrolledInFoundation)
+    // Get current dynamic title for discover card
+    const currentDynamicTitle = card.id === 'discover'
         ? card.dynamicTitles ? card.dynamicTitles[currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex] : null
         : null;
 
-    // Get current dynamic subtitle for discover card (when not enrolled in foundation)
-    const currentDynamicSubtitle = (card.id === 'discover' && !isEnrolledInFoundation)
+    // Get current dynamic subtitle for discover card
+    const currentDynamicSubtitle = card.id === 'discover'
         ? card.dynamicSubtitles ? card.dynamicSubtitles[currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex] : null
         : null;
+
+    console.log('Dynamic subtitle debug:', {
+        cardId: card.id,
+        currentImageIndex,
+        animationSceneIndex,
+        dynamicSubtitles: card.dynamicSubtitles,
+        subtitleIndex: currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex,
+        currentDynamicSubtitle,
+        isEnrolledInFoundation
+    });
 
     // Use dynamic title if available, otherwise use display title
     const finalDisplayTitle = currentDynamicTitle || displayTitle;
