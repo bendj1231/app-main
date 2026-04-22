@@ -284,7 +284,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'credentials',
             image: '/images/pilotrecognitioncompoennt.png',
-            title: 'ATS-Proof Recognition Credentials',
+            title: 'Recognition Profile',
             subtitle: 'Industry-recognized pilot verification and endorsement system',
             icon: Award,
             badge: 'Trusted',
