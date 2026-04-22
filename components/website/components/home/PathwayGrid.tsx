@@ -1752,6 +1752,19 @@ const GridCard: React.FC<GridCardProps> = ({
                                     Learn More
                                 </button>
                             )}
+                            {/* Glassy button for credentials (Recognition Profile) card */}
+                            {card.id === 'credentials' && (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        onNavigate('pilot-recognition');
+                                    }}
+                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                >
+                                    Learn More
+                                </button>
+                            )}
                             {/* Glassy button for pathways card */}
                             {card.id === 'pathways' && (
                                 <button
