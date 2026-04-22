@@ -387,7 +387,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['CPL + ME/IR', 'Foundation Program Graduate', 'Partner Airline Eligible'],
       tags: ['Direct Entry', 'Partner Airlines', 'Career Progression'],
       postedAt: 'Featured',
-      image: '/pilotpathways.png'
+      image: 'wingmentor-white'
     },
     {
       id: 'disc-comm-1',
@@ -636,7 +636,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['CPL + ME/IR', 'Foundation Program Graduate', 'Partner Airline Eligible'],
       tags: ['Direct Entry', 'Partner Airlines', 'Career Progression'],
       postedAt: 'Featured',
-      image: '/pilotpathways.png'
+      image: 'wingmentor-white'
     },
     {
       id: 'disc-priv-6',
@@ -690,7 +690,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['CPL + ME/IR', 'Foundation Program Graduate', 'Partner Airline Eligible'],
       tags: ['Direct Entry', 'Partner Airlines', 'Career Progression'],
       postedAt: 'Featured',
-      image: '/pilotpathways.png'
+      image: 'wingmentor-white'
     },
     {
       id: 'disc-privsec-1',
@@ -731,7 +731,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['CPL + ME/IR', 'Foundation Program Graduate', 'Partner Airline Eligible'],
       tags: ['Direct Entry', 'Partner Airlines', 'Career Progression'],
       postedAt: 'Featured',
-      image: '/pilotpathways.png'
+      image: 'wingmentor-white'
     },
     {
       id: 'disc-cargo-1',
@@ -811,7 +811,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['CPL + ME/IR', 'Foundation Program Graduate', 'Partner Airline Eligible'],
       tags: ['Direct Entry', 'Partner Airlines', 'Career Progression'],
       postedAt: 'Featured',
-      image: '/pilotpathways.png'
+      image: 'wingmentor-white'
     },
     {
       id: 'disc-type-1',
@@ -891,7 +891,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['CPL + ME/IR', 'Foundation Program Graduate', 'Partner Airline Eligible'],
       tags: ['Direct Entry', 'Partner Airlines', 'Career Progression'],
       postedAt: 'Featured',
-      image: '/pilotpathways.png'
+      image: 'wingmentor-white'
     },
     {
       id: 'disc-evtol-1',
