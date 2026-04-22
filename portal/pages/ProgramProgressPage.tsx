@@ -33,20 +33,6 @@ const progressModules = [
     status: 'completed',
     progress: 100,
   },
-  {
-    id: 'module-02',
-    title: 'Module 2: Psychology of Mentorship & Practical Application',
-    description: 'Advanced mentorship techniques and portfolio building.',
-    status: 'in-progress',
-    progress: 65,
-  },
-  {
-    id: 'module-03',
-    title: 'Module 3: Pilot Risk Management & Pilot Pathways',
-    description: 'Core concepts in pilot development and skill assessment.',
-    status: 'locked',
-    progress: 0,
-  },
 ];
 
 const milestones = [

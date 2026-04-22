@@ -5,33 +5,33 @@ import { Icons } from '../icons';
 interface ModulesPageProps {
   userProfile?: UserProfile | null;
   onBack: () => void;
-  onLaunchPilotGapModule?: () => void;
-  onLaunchPilotGapModule2?: () => void;
-  onLaunchModule3?: () => void;
+  onLaunchChapter1?: () => void;
+  onLaunchChapter2?: () => void;
+  onLaunchChapter3?: () => void;
 }
 
 const syllabusModules = [
   {
-    id: 'pilot-gap-01',
-    title: 'Module 1: Industry Familiarization & Indoctrination',
+    id: 'chapter-1',
+    title: 'Chapter 1: Industry Familiarization & Indoctrination',
     description: 'Introduction to the pilot gap analysis framework. Understand your current position and identify key areas for development in your aviation career.',
     icon: 'Book',
     status: 'available',
     duration: '45 min',
   },
   {
-    id: 'pilot-gap-02',
-    title: 'Module 2: Psychology of Mentorship & Practical Application',
-    description: 'Advanced mentorship techniques and practical application of the WingMentor methodology. Build actionable strategies for career advancement.',
+    id: 'chapter-2',
+    title: 'Chapter 2: Low-Timer & Pilot Shortage',
+    description: 'Deep dive into the pilot shortage phenomenon and how it affects low-timer pilots in the industry.',
     icon: 'TrendingUp',
     status: 'available',
     duration: '60 min',
   },
   {
-    id: 'module-03',
-    title: 'Module 3: Pilot Risk Management & Pilot Pathways',
-    description: 'Comprehensive integration of concepts from previous modules. Focus on portfolio development, examination preparation, and mentorship consolidation.',
-    icon: 'Award',
+    id: 'chapter-3',
+    title: 'Chapter 3: Pilot Risk Management',
+    description: 'Comprehensive understanding of pilot risk management, health, and decision-making processes.',
+    icon: 'Shield',
     status: 'available',
     duration: '75 min',
   },
@@ -40,9 +40,9 @@ const syllabusModules = [
 export const ModulesPage: React.FC<ModulesPageProps> = ({ 
   userProfile, 
   onBack, 
-  onLaunchPilotGapModule,
-  onLaunchPilotGapModule2,
-  onLaunchModule3
+  onLaunchChapter1,
+  onLaunchChapter2,
+  onLaunchChapter3
 }) => {
   const displayName = userProfile?.firstName || userProfile?.displayName || userProfile?.email || 'Pilot';
 
@@ -131,7 +131,7 @@ export const ModulesPage: React.FC<ModulesPageProps> = ({
                   </div>
                 </div>
                 <button
-                  onClick={module.id === 'pilot-gap-01' ? onLaunchPilotGapModule : module.id === 'pilot-gap-02' ? onLaunchPilotGapModule2 : onLaunchModule3}
+                  onClick={module.id === 'chapter-1' ? onLaunchChapter1 : module.id === 'chapter-2' ? onLaunchChapter2 : onLaunchChapter3}
                   style={{
                     width: '100%',
                     background: '#2563eb',

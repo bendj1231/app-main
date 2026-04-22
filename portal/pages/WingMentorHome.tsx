@@ -222,20 +222,14 @@ const jobApplicationListings = [
 
 interface WingMentorHomeProps {
   onLogout: () => void;
-  userProfile?: UserProfile | null;
-  onStartFoundationalEnrollment?: () => void;
-  onViewChange?: (view: string) => void;
-  onNavigateToMainApp?: (page?: string) => void;
+  userProfile: UserProfile | null;
+  onStartFoundationalEnrollment: () => void;
+  onViewChange?: (view: string, initialChapter?: number) => void;
+  onNavigateToMainApp: (page?: string) => void;
   initialView?: MainView;
-  isDarkMode?: boolean;
-  onToggleDarkMode?: () => void;
-  preloadedData?: {
-    portfolio?: any;
-    achievements?: any;
-    enrollment?: any;
-    pathways?: any;
-    programs?: any;
-  };
+  isDarkMode: boolean;
+  onToggleDarkMode: () => void;
+  preloadedData?: any;
 }
 
 export type MainView =
@@ -342,6 +336,16 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialView]);
+
+  // Debug: Log mainView changes
+  useEffect(() => {
+    console.log('📍 [WINGMENTOR HOME] mainView changed to:', mainView);
+  }, [mainView]);
+
+  // Debug: Log fullScreenView changes
+  useEffect(() => {
+    console.log('📍 [WINGMENTOR HOME] fullScreenView changed to:', fullScreenView);
+  }, [fullScreenView]);
 
   const [sidebarScale, setSidebarScale] = useState(1);
 
@@ -3277,7 +3281,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           userProfile={userProfile}
           isDarkMode={isDarkMode}
           onToggleDarkMode={onToggleDarkMode}
-          onNavigateToModules={() => onViewChange?.('module-01')}
+          onNavigateToModules={() => onViewChange?.('module-01', undefined)}
           onNavigateToProfile={() => setMainView('pilot-portfolio')}
           onNavigateToApplications={() => setMainView('applications')}
           onAccessWebsite={handleAccessWebsite}
@@ -3300,7 +3304,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
     );
   };
 
-  const WingMentorNetworkView = ({ onBack, onViewChange }: { onBack: () => void; onViewChange?: (view: string) => void }) => {
+  const WingMentorNetworkView = ({ onBack, onViewChange }: { onBack: () => void; onViewChange?: (view: string, initialChapter?: number) => void }) => {
     return (
     <div
       className="dashboard-container animate-fade-in"
@@ -3513,7 +3517,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          if (onViewChange) onViewChange('job-database');
+                          if (onViewChange) onViewChange('job-database', undefined);
                         }}
                         style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', background: '#0ea5e9', color: 'white', borderRadius: '999px', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500, transition: 'all 0.2s ease' }}
                       >
@@ -3588,6 +3592,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onBack={() => setMainView('modules')}
             onComplete={() => setMainView('modules')}
             onNavigateToMentorModules={() => setMainView('mentor-modules')}
+            onNavigateToExaminationPortal={() => setMainView('examination-portal')}
           />
         );
       case 'pilot-gap-module-2':
@@ -3596,6 +3601,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onBack={() => setMainView('modules')}
             onComplete={() => setMainView('modules')}
             onNavigateToMentorModules={() => setMainView('mentor-modules')}
+            onNavigateToExaminationPortal={() => setMainView('examination-portal')}
           />
         );
       case 'module-3':
@@ -3604,6 +3610,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onBack={() => setMainView('modules')}
             onComplete={() => setMainView('modules')}
             onNavigateToMentorModules={() => setMainView('mentor-modules')}
+            onNavigateToExaminationPortal={() => setMainView('examination-portal')}
           />
         );
       case 'mentor-modules':
@@ -3725,9 +3732,9 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           <ModulesPage
             userProfile={userProfile}
             onBack={() => setMainView('foundational-enrolled')}
-            onLaunchPilotGapModule={() => onViewChange?.('module-01')}
-            onLaunchPilotGapModule2={() => onViewChange?.('module-02')}
-            onLaunchModule3={() => onViewChange?.('module-03')}
+            onLaunchChapter1={() => onViewChange?.('module-01', 1)}
+            onLaunchChapter2={() => onViewChange?.('module-01', 2)}
+            onLaunchChapter3={() => onViewChange?.('module-01', 3)}
           />
         );
 
@@ -3785,6 +3792,22 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           />
         );
 
+      case 'foundational':
+        return (
+          <FoundationalProgramPage
+            onBack={() => setMainView(userProfile?.enrolledPrograms?.includes('Foundational') ? 'foundational-enrolled' : 'programs')}
+            onLogout={onLogout}
+            onStartEnrollment={() => setMainView('foundational-onboarding')}
+            onStartSlideshow={() => setMainView('post-enrollment-slideshow')}
+            onSelectDownload={() => {}}
+            onLaunchMentorship={() => onViewChange?.('mentorship')}
+            onLaunchModule01={() => onViewChange?.('module-01')}
+            completedModules={[]}
+            directFromHome={false}
+            userProfile={userProfile}
+          />
+        );
+
       case 'program-syllabus':
         return (
           <ProgramSyllabusPage
@@ -3793,17 +3816,6 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           />
         );
 
-      case 'foundational':
-        return (
-          <FoundationalProgramPage
-            onBack={() => setMainView(userProfile?.enrolledPrograms?.includes('Foundational') ? 'foundational-enrolled' : 'programs')}
-            onLogout={onLogout}
-            onOpenPortfolio={() => setMainView('pilot-portfolio')}
-            onStartEnrollment={() => setMainView('foundational-onboarding')}
-            onStartSlideshow={() => setMainView('post-enrollment-slideshow')}
-            userProfile={userProfile}
-          />
-        );
       case 'foundational-get-started':
         return (
           <TermsAndConditionsPage
@@ -3908,6 +3920,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
               onBack={() => setFullScreenView(null)}
               onComplete={() => setFullScreenView(null)}
               onNavigateToMentorModules={() => setFullScreenView('mentor-modules')}
+              onNavigateToExaminationPortal={() => setFullScreenView('examination-portal')}
             />
           )}
           {fullScreenView === 'pilot-gap-module-2' && (
@@ -3915,6 +3928,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
               onBack={() => setFullScreenView(null)}
               onComplete={() => setFullScreenView(null)}
               onNavigateToMentorModules={() => setFullScreenView('mentor-modules')}
+              onNavigateToExaminationPortal={() => setFullScreenView('examination-portal')}
             />
           )}
           {fullScreenView === 'module-3' && (
@@ -3922,6 +3936,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
               onBack={() => setFullScreenView(null)}
               onComplete={() => setFullScreenView(null)}
               onNavigateToMentorModules={() => setFullScreenView('mentor-modules')}
+              onNavigateToExaminationPortal={() => setFullScreenView('examination-portal')}
             />
           )}
           {fullScreenView === 'mentor-modules' && (

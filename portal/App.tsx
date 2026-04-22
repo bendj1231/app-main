@@ -144,8 +144,6 @@ import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 import { MentorshipSupervisionPage } from './pages/MentorshipSupervisionPage';
 import PilotGapModulePage from './pages/PilotGapModulePage';
 import PilotGapModule2 from './pages/PilotGapModule2';
-import MentorshipProtocolsModulePage from './pages/MentorshipProtocolsModulePage';
-import PeerAdvocacyModulePage from './pages/PeerAdvocacyModulePage';
 import PilotJobDatabasePage from './pages/PilotJobDatabasePage';
 
 const GRAPHICS_PRESET_STORAGE_KEY = 'wm-graphics-preset';
@@ -282,22 +280,22 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'mentorship'
     | 'reset-password'
     | 'module-01'
-    | 'module-02'
     | 'pilot-portfolio'
-    | 'module-03'
     | 'pilot-profile'
     | 'recognition'
     | 'verification'
     | 'job-database'
-    | 'become-member';
+    | 'become-member'
+    | 'examination-portal';
 
   const VIEW_WHITELIST: ViewName[] = [
     'hub','dashboard','programs','pathways','applications','foundational','atpl','airtaxi','privatesector',
     'foundational-onboarding','enrollment-confirmation','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
-    'reset-password','module-01','module-02','module-03','pilot-profile','recognition','verification','job-database','become-member'
+    'reset-password','module-01','pilot-profile','recognition','verification','job-database','become-member','examination-portal'
   ];
 
-  const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'foundational' : 'hub');
+  const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'hub' : 'hub');
+  const [initialModuleChapter, setInitialModuleChapter] = useState<number | undefined>(undefined);
   const [completedModules, setCompletedModules] = useState<string[]>([]);
   const [lastLoginEmail, setLastLoginEmail] = useState<string | null>(null);
   const [pendingHomeView, setPendingHomeView] = useState<MainView | null>('pilot-portfolio');
@@ -385,18 +383,28 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     setIsDarkMode((prev) => !prev);
   }, []);
 
-  const handleViewChange = (view: ViewName) => {
-    console.log('� [VIEW CHANGE] Requested view:', view);
+  const handleViewChange = (view: ViewName, initialChapter?: number) => {
+    console.log('🔄 [VIEW CHANGE] Requested view:', view);
     console.log('🔍 [VIEW CHANGE] Current view:', currentView);
     console.log('🔍 [VIEW CHANGE] View whitelist:', VIEW_WHITELIST);
     if (VIEW_WHITELIST.includes(view)) {
       console.log('✅ [VIEW CHANGE] View is whitelisted, navigating to:', view);
       setCurrentView(view);
+      if (initialChapter !== undefined) {
+        setInitialModuleChapter(initialChapter);
+      } else {
+        setInitialModuleChapter(undefined);
+      }
       console.log('🔍 [VIEW CHANGE] View changed from', currentView, 'to', view);
     } else {
-      console.log('⛔ [VIEW CHANGE] View not whitelisted, ignoring:', view);
+      console.log('❌ [VIEW CHANGE] View is NOT whitelisted, blocking navigation to:', view);
     }
   };
+
+  // Debug: Log current view on mount and change
+  useEffect(() => {
+    console.log('📍 [CURRENT VIEW] App is now rendering view:', currentView);
+  }, [currentView]);
 
   const clearLoadingSequence = () => {
     loadingTimers.current.forEach((timerId) => clearTimeout(timerId));
@@ -745,7 +753,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           onLogout={handleLogout}
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
-          onViewChange={(view) => handleViewChange(view as ViewName)}
+          onViewChange={(view, initialChapter) => handleViewChange(view as ViewName, initialChapter)}
           onNavigateToMainApp={onNavigateToMainApp}
           initialView={pendingHomeView || 'pilot-portfolio'}
           isDarkMode={isDarkMode}
@@ -760,8 +768,6 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           onSelectDownload={() => handleSelectDownload()}
           onLaunchMentorship={() => setCurrentView('mentorship')}
           onLaunchModule01={() => setCurrentView('module-01')}
-          onLaunchModule02={() => setCurrentView('module-02')}
-          onLaunchModule03={() => setCurrentView('module-03')}
           completedModules={completedModules}
           directFromHome={directToEnrollment}
           userProfile={authState.userProfile}
@@ -796,7 +802,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           onLogout={handleLogout}
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
-          onViewChange={(view) => handleViewChange(view as ViewName)}
+          onViewChange={(view, initialChapter) => handleViewChange(view as ViewName, initialChapter)}
           onNavigateToMainApp={onNavigateToMainApp}
           initialView={currentView === 'pathways' ? 'pathways' : 'programs'}
           preloadedData={authState.preloadedData}
@@ -812,11 +818,9 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           onBack={() => setCurrentView('foundational')}
           onComplete={() => handleModuleComplete('stage-1')}
           onNavigateToMentorModules={() => setCurrentView('mentorship')}
+          onNavigateToExaminationPortal={() => setCurrentView('examination-portal')}
+          initialChapter={initialModuleChapter}
         />
-      ) : currentView === 'module-02' ? (
-        <MentorshipProtocolsModulePage onBack={() => setCurrentView('foundational')} onLogout={handleLogout} />
-      ) : currentView === 'module-03' ? (
-        <PeerAdvocacyModulePage onBack={() => setCurrentView('foundational')} onLogout={handleLogout} />
       ) : currentView === 'pilot-portfolio' ? (
         <PilotPortfolioPage
           onBack={() => setCurrentView('hub')}
@@ -832,7 +836,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       ) : currentView === 'recognition' ? (
         <RecognitionAchievementPage
           onBack={() => setCurrentView('hub')}
-          onViewExams={() => setCurrentView('module-02')}
+          onViewExams={() => setCurrentView('module-01')}
           onViewAtlas={() => setCurrentView('applications')}
           userProfile={authState.userProfile}
           preloadedAchievements={authState.preloadedData?.achievements}
