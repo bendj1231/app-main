@@ -140,6 +140,7 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
     const sceneDuration = 5000;
     const transitionDuration = 800;
     onSceneChange?.(0);
+    console.log('DiscoverPathwaysAnimation: Scene 0 (airlines)');
 
     const timer1 = setTimeout(() => {
       setOpacity(0);
@@ -149,6 +150,7 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
         setOpacity(1);
         setTransitionOverlay(false);
         onSceneChange?.(1);
+        console.log('DiscoverPathwaysAnimation: Scene 1 (typeratings)');
       }, transitionDuration);
     }, sceneDuration);
 
@@ -160,6 +162,7 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
         setOpacity(1);
         setTransitionOverlay(false);
         onSceneChange?.(2);
+        console.log('DiscoverPathwaysAnimation: Scene 2 (jobs)');
       }, transitionDuration);
     }, sceneDuration * 2);
 
@@ -171,6 +174,7 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
         setOpacity(1);
         setTransitionOverlay(false);
         onSceneChange?.(3);
+        console.log('DiscoverPathwaysAnimation: Scene 3 (pathways)');
       }, transitionDuration);
     }, sceneDuration * 3);
 
