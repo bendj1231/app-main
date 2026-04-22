@@ -284,7 +284,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'credentials',
             image: '/images/pilotrecognitioncompoennt.png',
-            title: 'Recognition Profile',
+            title: 'Pilot-Recognition Profile',
             subtitle: 'Industry-recognized pilot verification and endorsement system',
             icon: Award,
             badge: 'Trusted',
