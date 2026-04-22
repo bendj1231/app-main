@@ -2386,6 +2386,7 @@ export interface PathwaysPageModernProps {
   initialCategory?: string;
   selectedPathwayId?: string;
   onNavigate?: (page: string) => void;
+  onNavigateToMainApp?: (page: string) => void;
   mode?: 'pathways' | 'jobs';
 }
 
@@ -2394,6 +2395,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   initialCategory = 'all',
   selectedPathwayId,
   onNavigate,
+  onNavigateToMainApp,
   mode = 'pathways'
 }) => {
   const [expandedPathway, setExpandedPathway] = useState<string | null>(selectedPathwayId || null);
@@ -2710,10 +2712,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 {/* Back Button */}
                 <button
                   onClick={() => {
-                    if (onNavigate) {
-                      onNavigate('/');
+                    if (onNavigateToMainApp) {
+                      onNavigateToMainApp('home');
                     } else {
-                      window.location.href = '/?from=pathways&bypass=true';
+                      window.location.href = '/';
                     }
                   }}
                   className={`p-2 rounded-lg ${buttonBg} ${buttonText} hover:scale-105 transition-transform`}

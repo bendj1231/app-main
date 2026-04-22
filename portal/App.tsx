@@ -824,6 +824,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <PathwaysPageModern
           isDarkMode={isDarkMode}
           onNavigate={(page) => handleViewChange(page as ViewName)}
+          onNavigateToMainApp={onNavigateToMainApp}
         />
       ) : currentView === 'privatesector' ? (
         <PrivateSectorPage onBack={() => setCurrentView('programs')} onLogout={handleLogout} />
