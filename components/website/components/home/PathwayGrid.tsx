@@ -1825,6 +1825,21 @@ const GridCard: React.FC<GridCardProps> = ({
                                     </button>
                                 </div>
                             )}
+                            {/* Glassy button for w1000-suite card */}
+                            {card.id === 'w1000-suite' && (
+                                <div className="absolute bottom-4 right-4 z-40">
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
+                                        }}
+                                        className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                    >
+                                        Enroll Foundation Program for Access
+                                    </button>
+                                </div>
+                            )}
                             {/* Glassy button for pathway-specific cards */}
                             {['cargo', 'charter', 'cadet', 'air-taxi'].includes(card.id) && (
                                 <button
