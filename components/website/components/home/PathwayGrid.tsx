@@ -375,6 +375,15 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             badge: 'Network',
             accentColor: 'from-blue-500/80 to-sky-400/80',
         },
+        {
+            id: 'community-2',
+            image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800',
+            title: 'Pilot Community',
+            subtitle: 'Connect with fellow pilots, mentors, and industry professionals',
+            icon: Users,
+            badge: 'Network',
+            accentColor: 'from-blue-500/80 to-sky-400/80',
+        },
     ],
 });
 
