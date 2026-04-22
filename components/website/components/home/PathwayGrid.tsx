@@ -360,10 +360,10 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'benefits',
             image: '/images/accessportal.png',
-            title: 'Pilot Recognition',
+            title: 'Member Benefits',
             subtitle: 'Exclusive discounts, resources, and career advantages',
             icon: Award,
-            badge: '✚',
+            badge: 'Value',
             accentColor: 'from-yellow-500/80 to-amber-400/80',
         },
         {
@@ -377,7 +377,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'community-2',
-            image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800',
+            image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800',
             title: 'Discover Membership Free & First Class Benefits',
             subtitle: 'Connect with fellow pilots, mentors, and industry professionals',
             icon: Users,
