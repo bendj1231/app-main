@@ -1452,7 +1452,24 @@ const PathwayCard: React.FC<{
   onCalculateMatch: () => void;
   isDarkMode?: boolean;
   userProfile?: RecognitionProfile;
-}> = ({ pathway, isExpanded, onToggle, onCalculateMatch, isDarkMode = true, userProfile = MOCK_USER_PROFILE }) => {
+  currentUser?: any;
+  onApply?: () => void;
+}> = ({ pathway, isExpanded, onToggle, onCalculateMatch, isDarkMode = true, userProfile = MOCK_USER_PROFILE, currentUser, onApply }) => {
+  // Track view when enterprise card is expanded
+  const hasTrackedView = useRef(false);
+  
+  useEffect(() => {
+    if (isExpanded && pathway.isEnterprise && !hasTrackedView.current) {
+      hasTrackedView.current = true;
+      const cardId = pathway.id.replace('enterprise-', '');
+      // Fire and forget - don't block UI
+      fetch('https://us-central1-pilotrecognition-airline.cloudfunctions.net/trackCardView', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cardId })
+      }).catch(() => {});
+    }
+  }, [isExpanded, pathway.id, pathway.isEnterprise]);
   const categoryColors: Record<string, string> = {
     all: 'from-slate-600 to-slate-400',
     'airline-pathways': 'from-indigo-600 to-indigo-400',
@@ -1877,20 +1894,32 @@ const PathwayCard: React.FC<{
                   <Sparkles className="w-5 h-5" />
                   Calculate Match
                 </button>
-                <a
-                  href={pathway.url || '#'}
-                  target={pathway.url ? '_blank' : '_self'}
-                  rel="noopener noreferrer"
-                  onClick={(e) => {
-                    if (!pathway.url) {
-                      e.preventDefault();
-                    }
-                  }}
-                  className="flex-1 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white font-semibold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-green-500/25"
-                >
-                  <ExternalLink className="w-5 h-5" />
-                  View Job
-                </a>
+                {pathway.isEnterprise ? (
+                  <button
+                    onClick={onApply}
+                    disabled={!currentUser}
+                    className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-emerald-500/25"
+                    title={!currentUser ? "Sign in to apply" : "Apply now"}
+                  >
+                    <Briefcase className="w-5 h-5" />
+                    {currentUser ? 'Apply Now' : 'Sign in to Apply'}
+                  </button>
+                ) : (
+                  <a
+                    href={pathway.url || '#'}
+                    target={pathway.url ? '_blank' : '_self'}
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      if (!pathway.url) {
+                        e.preventDefault();
+                      }
+                    }}
+                    className="flex-1 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white font-semibold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-green-500/25"
+                  >
+                    <ExternalLink className="w-5 h-5" />
+                    View Job
+                  </a>
+                )}
               </div>
             </div>
           </motion.div>

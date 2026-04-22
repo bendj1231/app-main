@@ -1,6 +1,14 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
 
+// Enterprise analytics functions
+const enterpriseAnalytics = require('./enterprise-analytics');
+exports.trackCardView = enterpriseAnalytics.trackCardView;
+exports.submitApplication = enterpriseAnalytics.submitApplication;
+exports.getCardAnalytics = enterpriseAnalytics.getCardAnalytics;
+exports.getEnterpriseApplications = enterpriseAnalytics.getEnterpriseApplications;
+exports.updateApplicationStatus = enterpriseAnalytics.updateApplicationStatus;
+
 // Health check function
 exports.healthCheck = onRequest(async (req, res) => {
   const supabase = createClient(
