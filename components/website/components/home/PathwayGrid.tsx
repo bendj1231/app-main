@@ -339,8 +339,8 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'atpl-game',
-            title: 'ATPL Learning Game',
-            subtitle: 'Gamified learning for aviation theory and procedures',
+            title: 'pilot-terminal.com',
+            subtitle: 'Pilot social media platform',
             icon: Play,
             badge: null,
             accentColor: 'from-pink-500/80 to-rose-400/80',
