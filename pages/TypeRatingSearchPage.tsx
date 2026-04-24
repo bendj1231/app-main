@@ -147,11 +147,41 @@ const MILITARY_SUBCATEGORY_COLORS: Record<string, string> = {
   'surveillance-uas': 'bg-cyan-600',
 };
 
+const CARGO_SUBCATEGORY_LABELS: Record<string, string> = {
+  'production-freighter': 'Production Freighter',
+  'p2f-freighter': 'P2F Conversion',
+  'outsize-transport': 'Outsize Transport',
+  'historical-cargo': 'Historical',
+};
+
+const CARGO_SUBCATEGORY_COLORS: Record<string, string> = {
+  'production-freighter': 'bg-indigo-700',
+  'p2f-freighter': 'bg-purple-700',
+  'outsize-transport': 'bg-pink-700',
+  'historical-cargo': 'bg-gray-600',
+};
+
+const FLAGSHIP_SUBCATEGORY_LABELS: Record<string, string> = {
+  'game-changer': 'Game Changers',
+  'legacy-fading': 'Legacy (Fading)',
+  'resurgent': 'Resurgent',
+  'historical-flagship': 'Historical',
+};
+
+const FLAGSHIP_SUBCATEGORY_COLORS: Record<string, string> = {
+  'game-changer': 'bg-blue-700',
+  'legacy-fading': 'bg-orange-700',
+  'resurgent': 'bg-emerald-700',
+  'historical-flagship': 'bg-gray-700',
+};
+
 export default function TypeRatingSearchPage() {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [activeLegacySubcategory, setActiveLegacySubcategory] = useState<string | null>(null);
   const [activeHelicopterSubcategory, setActiveHelicopterSubcategory] = useState<string | null>(null);
   const [activeMilitarySubcategory, setActiveMilitarySubcategory] = useState<string | null>(null);
+  const [activeCargoSubcategory, setActiveCargoSubcategory] = useState<string | null>(null);
+  const [activeFlagshipSubcategory, setActiveFlagshipSubcategory] = useState<string | null>(null);
   const [selectedManufacturer, setSelectedManufacturer] = useState<Manufacturer | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftTypeRating | null>(null);
@@ -184,6 +214,16 @@ export default function TypeRatingSearchPage() {
       aircraft = aircraft.filter(a => a.subcategory === activeMilitarySubcategory);
     }
     
+    // Filter by cargo subcategory if cargo category is selected and a subcategory is active
+    if (activeCategory === 'cargo' && activeCargoSubcategory) {
+      aircraft = aircraft.filter(a => a.subcategory === activeCargoSubcategory);
+    }
+    
+    // Filter by flagship subcategory if flagship category is selected and a subcategory is active
+    if (activeCategory === 'flagship' && activeFlagshipSubcategory) {
+      aircraft = aircraft.filter(a => a.subcategory === activeFlagshipSubcategory);
+    }
+    
     if (searchQuery) {
       aircraft = aircraft.filter(a => 
         a.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -192,7 +232,7 @@ export default function TypeRatingSearchPage() {
     }
     
     return aircraft;
-  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, activeMilitarySubcategory, searchQuery]);
+  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, activeMilitarySubcategory, activeCargoSubcategory, activeFlagshipSubcategory, searchQuery]);
 
   // Get available categories for selected manufacturer
   const availableCategories = React.useMemo(() => {
@@ -307,7 +347,7 @@ export default function TypeRatingSearchPage() {
         {availableCategories.map(cat => (
           <button
             key={cat}
-            onClick={() => { setActiveCategory(cat); setActiveLegacySubcategory(null); setActiveHelicopterSubcategory(null); setActiveMilitarySubcategory(null); setSelectedAircraft(null); }}
+            onClick={() => { setActiveCategory(cat); setActiveLegacySubcategory(null); setActiveHelicopterSubcategory(null); setActiveMilitarySubcategory(null); setActiveCargoSubcategory(null); setActiveFlagshipSubcategory(null); setSelectedAircraft(null); }}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
               activeCategory === cat
                 ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white shadow-sm`
@@ -397,6 +437,64 @@ export default function TypeRatingSearchPage() {
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                 activeMilitarySubcategory === key
                   ? `${MILITARY_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
+                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Cargo subcategory filter chips (only show when cargo is selected) */}
+      {activeCategory === 'cargo' && (
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+          <button
+            onClick={() => { setActiveCargoSubcategory(null); setSelectedAircraft(null); }}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              activeCargoSubcategory === null
+                ? 'bg-slate-500 text-white shadow-sm'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            All Cargo
+          </button>
+          {Object.entries(CARGO_SUBCATEGORY_LABELS).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => { setActiveCargoSubcategory(key); setSelectedAircraft(null); }}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                activeCargoSubcategory === key
+                  ? `${CARGO_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
+                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Flagship subcategory filter chips (only show when flagship is selected) */}
+      {activeCategory === 'flagship' && (
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+          <button
+            onClick={() => { setActiveFlagshipSubcategory(null); setSelectedAircraft(null); }}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              activeFlagshipSubcategory === null
+                ? 'bg-slate-500 text-white shadow-sm'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            All Flagship
+          </button>
+          {Object.entries(FLAGSHIP_SUBCATEGORY_LABELS).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => { setActiveFlagshipSubcategory(key); setSelectedAircraft(null); }}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                activeFlagshipSubcategory === key
+                  ? `${FLAGSHIP_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
               }`}
             >

@@ -1334,7 +1334,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A220-300',
     category: 'flagship',
-    subcategory: 'narrow-body',
+    subcategory: 'game-changer',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A220-300 is increasingly popular for regional and short-haul routes. It is noted for its "clean-sheet" design and high pilot comfort.',
     firstFlight: 2015,
@@ -1396,8 +1396,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a320',
     manufacturerId: 'airbus',
     model: 'A320',
-    category: 'commercial',
-    subcategory: 'narrow-body',
+    category: 'flagship',
+    subcategory: 'legacy-fading',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: 'ae3d357729a44f278f9ef9326977504a',
     description: 'The Airbus A320 is a narrow-body, medium-range, twin-engine jet airliner. It was the first member of the A320 family, which was launched in March 1984.',
@@ -1460,8 +1460,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a318',
     manufacturerId: 'airbus',
     model: 'A318',
-    category: 'commercial',
-    subcategory: 'narrow-body',
+    category: 'flagship',
+    subcategory: 'legacy-fading',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A318 is the smallest member of the A320 family, known as the "Baby Bus". It was designed for short-haul routes with limited passenger demand.',
     firstFlight: 2002,
@@ -1523,8 +1523,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a319',
     manufacturerId: 'airbus',
     model: 'A319',
-    category: 'commercial',
-    subcategory: 'narrow-body',
+    category: 'flagship',
+    subcategory: 'legacy-fading',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A319 is a shortened version of the A320, designed for routes with lower passenger demand while maintaining the A320 family\'s commonality.',
     firstFlight: 1995,
@@ -1586,8 +1586,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a321',
     manufacturerId: 'airbus',
     model: 'A321',
-    category: 'commercial',
-    subcategory: 'narrow-body',
+    category: 'flagship',
+    subcategory: 'legacy-fading',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A321 is the stretched, highest-capacity version of the A320 family, designed for medium-haul routes with higher passenger demand.',
     firstFlight: 1993,
@@ -1713,7 +1713,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A320neo',
     category: 'flagship',
-    subcategory: 'narrow-body',
+    subcategory: 'game-changer',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A320neo is the backbone of global low-cost carriers like IndiGo and Air India. It is the most frequent choice for fresh pilots due to high hiring volume.',
     firstFlight: 2015,
@@ -1776,7 +1776,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A321neo',
     category: 'flagship',
-    subcategory: 'narrow-body',
+    subcategory: 'game-changer',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A321neo is the current "king" of narrow-body jets. With the introduction of the A321XLR, pilots can now fly 11-hour transatlantic routes previously reserved for widebodies, making this rating highly lucrative.',
     firstFlight: 2016,
@@ -1902,7 +1902,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A321XLR',
     category: 'flagship',
-    subcategory: 'narrow-body',
+    subcategory: 'game-changer',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A321XLR is a game-changer in 2026 that allows single-aisle pilots to earn "long-haul" pay scales with 11-hour transatlantic capability.',
     firstFlight: 2022,
@@ -2092,7 +2092,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A330-300',
     category: 'flagship',
-    subcategory: 'wide-body',
+    subcategory: 'legacy-fading',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A330-300ceo is an older generation that remains heavily in service with a large pool of rated pilots, often serving as a bridge to the A350.',
     firstFlight: 1992,
@@ -2218,7 +2218,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A330-900',
     category: 'flagship',
-    subcategory: 'wide-body',
+    subcategory: 'game-changer',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A330-900neo is a fuel-efficient widebody favorite for airlines like Delta Air Lines and TAP Air Portugal.',
     firstFlight: 2017,
@@ -2345,7 +2345,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A350-900',
     category: 'flagship',
-    subcategory: 'wide-body',
+    subcategory: 'game-changer',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A350-900 is a highly sought-after long-haul rating. It shares a Common Type Rating with the A330, allowing pilots to fly both with only eight days of additional training.',
     firstFlight: 2013,
@@ -2404,11 +2404,767 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
+    id: 'a350f',
+    manufacturerId: 'airbus',
+    model: 'A350F',
+    category: 'cargo',
+    subcategory: 'production-freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A350F is the newest flagship freighter entering service in 2026. It is a clean-sheet freighter designed to replace the Boeing 777F, featuring a massive main deck cargo door and carbon-fiber technology for maximum efficiency.',
+    firstFlight: 2024,
+    specifications: {
+      maxTakeoffWeight: '351,000 kg',
+      cruisingSpeed: 'Mach 0.84',
+      range: '9,700 km',
+      capacity: 111000,
+      engines: 2,
+      engineType: 'Trent XWB-97',
+      length: '70.80 m',
+      wingspan: '64.31 m',
+      height: '17.75 m'
+    },
+    trainingRequirements: {
+      minimumHours: 3000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 35,
+      flightHours: 20
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '120 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Dangerous Goods']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '35 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '20 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['1000 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321p2f',
+    manufacturerId: 'airbus',
+    model: 'A321P2F',
+    category: 'cargo',
+    subcategory: 'p2f-freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A321P2F is the modernized "iPhone of cargo" - a narrow-body passenger-to-freighter conversion rapidly replacing older Boeing 737 freighters for short-range express delivery with operators like DHL and Qantas.',
+    firstFlight: 2020,
+    specifications: {
+      maxTakeoffWeight: '93,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '3,700 km',
+      capacity: 28000,
+      engines: 2,
+      engineType: 'CFM56-5B or V2533-A5',
+      length: '44.51 m',
+      wingspan: '35.80 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '80 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Narrow-body Operations']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '20 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '10 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a320p2f',
+    manufacturerId: 'airbus',
+    model: 'A320P2F',
+    category: 'cargo',
+    subcategory: 'p2f-freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A320P2F is the smaller sibling of the A321P2F, a narrow-body passenger-to-freighter conversion used for lower-volume regional cargo routes.',
+    firstFlight: 2019,
+    specifications: {
+      maxTakeoffWeight: '78,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '3,700 km',
+      capacity: 21000,
+      engines: 2,
+      engineType: 'CFM56-5B or V2527-A5',
+      length: '37.57 m',
+      wingspan: '35.80 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '80 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Narrow-body Operations']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '20 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '10 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-300p2f',
+    manufacturerId: 'airbus',
+    model: 'A330-300P2F',
+    category: 'cargo',
+    subcategory: 'p2f-freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-300P2F is the most popular medium-to-long-range freighter conversion today, offering high volume and excellent efficiency for e-commerce with operators like FedEx, UPS, and DHL.',
+    firstFlight: 2017,
+    specifications: {
+      maxTakeoffWeight: '242,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '7,400 km',
+      capacity: 70000,
+      engines: 2,
+      engineType: 'Trent 772B or CF6-80E1',
+      length: '63.66 m',
+      wingspan: '60.30 m',
+      height: '16.79 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 25,
+      flightHours: 15
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '100 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Wide-body Operations']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '25 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '15 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['800 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-200f',
+    manufacturerId: 'airbus',
+    model: 'A330-200F',
+    category: 'cargo',
+    subcategory: 'production-freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-200F is one of the few wide-body aircraft originally built by Airbus as a freighter from day one, featuring a distinctive "nose bubble" to keep the cargo floor level on the ground.',
+    firstFlight: 2009,
+    specifications: {
+      maxTakeoffWeight: '233,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '7,400 km',
+      capacity: 70000,
+      engines: 2,
+      engineType: 'Trent 772B or CF6-80E1',
+      length: '58.82 m',
+      wingspan: '60.30 m',
+      height: '16.79 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 25,
+      flightHours: 15
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '100 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Production Freighter Systems']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '25 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '15 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['800 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-200p2f',
+    manufacturerId: 'airbus',
+    model: 'A330-200P2F',
+    category: 'cargo',
+    subcategory: 'p2f-freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-200P2F is a converted version of the A330-200, offering longer range than the -300P2F but slightly less volume for medium-to-long-range cargo operations.',
+    firstFlight: 2018,
+    specifications: {
+      maxTakeoffWeight: '233,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '8,000 km',
+      capacity: 65000,
+      engines: 2,
+      engineType: 'Trent 772B or CF6-80E1',
+      length: '58.82 m',
+      wingspan: '60.30 m',
+      height: '16.79 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 25,
+      flightHours: 15
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '100 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Wide-body Operations']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '25 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '15 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['800 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-600f',
+    manufacturerId: 'airbus',
+    model: 'A300-600F',
+    category: 'cargo',
+    subcategory: 'production-freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300-600F is the "Grandfather" of the fleet, a reliable but aging heavy lifter. UPS and FedEx still operate large numbers, but many carriers completed final retirements in 2025/early 2026. Most will be phased out by the end of the decade.',
+    firstFlight: 1983,
+    specifications: {
+      maxTakeoffWeight: '170,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '5,500 km',
+      capacity: 50000,
+      engines: 2,
+      engineType: 'CF6-80C2 or PW4158',
+      length: '54.10 m',
+      wingspan: '44.84 m',
+      height: '16.54 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '80 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Legacy Systems']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '20 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '12 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310-300f',
+    manufacturerId: 'airbus',
+    model: 'A310-300F',
+    category: 'cargo',
+    subcategory: 'production-freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A310-300F is a legacy freighter about to retire. Very few remain in commercial service, mostly used by niche regional cargo airlines or as military transports.',
+    firstFlight: 1985,
+    specifications: {
+      maxTakeoffWeight: '164,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '5,200 km',
+      capacity: 40000,
+      engines: 2,
+      engineType: 'CF6-80C2 or PW4156',
+      length: '46.66 m',
+      wingspan: '43.90 m',
+      height: '15.80 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '80 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Legacy Systems']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '20 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '12 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'belugaxl',
+    manufacturerId: 'airbus',
+    model: 'BelugaXL (A330-743L)',
+    category: 'cargo',
+    subcategory: 'outsize-transport',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus BelugaXL (A330-743L) is the newest "Mega-Lifter" for Airbus internal logistics. Six are currently in service, handling the massive parts like wings and fuselages for the A350 and A320 programs between Airbus factories.',
+    firstFlight: 2018,
+    specifications: {
+      maxTakeoffWeight: '227,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '4,000 km',
+      capacity: 53000,
+      engines: 2,
+      engineType: 'Trent 772B',
+      length: '63.10 m',
+      wingspan: '60.30 m',
+      height: '18.90 m'
+    },
+    trainingRequirements: {
+      minimumHours: 3000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 30,
+      flightHours: 18
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '120 hours',
+        topics: ['Outsize Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Airbus Logistics']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '30 hours',
+        topics: ['Outsize Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '18 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Outsize Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse'],
+      features: ['6-DOF Motion', 'Visual System', 'Outsize Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['1000 hours on type', 'TRI certification', 'Airbus Logistics rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'belugast',
+    manufacturerId: 'airbus',
+    model: 'BelugaST (A300-600ST)',
+    category: 'cargo',
+    subcategory: 'outsize-transport',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus BelugaST (A300-600ST) is the original "Mega-Lifter" that is now legacy/retired. Airbus officially began retiring this fleet in 2025. As of January 2026, Beluga #5 performed its final flight. Only 1 or 2 remain operational for "Airbus Beluga Transport" missions in their final months of service.',
+    firstFlight: 1994,
+    specifications: {
+      maxTakeoffWeight: '155,000 kg',
+      cruisingSpeed: 'Mach 0.70',
+      range: '2,800 km',
+      capacity: 47000,
+      engines: 2,
+      engineType: 'CF6-80C2',
+      length: '56.15 m',
+      wingspan: '44.84 m',
+      height: '17.24 m'
+    },
+    trainingRequirements: {
+      minimumHours: 3000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 30,
+      flightHours: 18
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '120 hours',
+        topics: ['Outsize Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Airbus Logistics']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '30 hours',
+        topics: ['Outsize Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '18 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Outsize Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse'],
+      features: ['6-DOF Motion', 'Visual System', 'Outsize Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['1000 hours on type', 'TRI certification', 'Airbus Logistics rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-cargo',
+    manufacturerId: 'airbus',
+    model: 'A300 B2/B4 Cargo',
+    category: 'cargo',
+    subcategory: 'historical-cargo',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300 B2/B4 Cargo are the original 1970s conversions. None are in active commercial service today. They exist only in memories or museums as historical aircraft.',
+    firstFlight: 1972,
+    specifications: {
+      maxTakeoffWeight: '142,000 kg',
+      cruisingSpeed: 'Mach 0.75',
+      range: '4,000 km',
+      capacity: 35000,
+      engines: 2,
+      engineType: 'CF6-50C or JT9D-7R4',
+      length: '53.75 m',
+      wingspan: '44.84 m',
+      height: '16.54 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '80 hours',
+        topics: ['Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Historical Systems']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '20 hours',
+        topics: ['Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '12 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse'],
+      features: ['6-DOF Motion', 'Visual System', 'Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Cargo Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'super-guppy',
+    manufacturerId: 'airbus',
+    model: 'Super Guppy',
+    category: 'cargo',
+    subcategory: 'historical-cargo',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Super Guppy was the NASA/Airbus predecessor to the Beluga. Airbus retired its last one in the 1990s (though NASA still flies one). It was a specialized outsize transport aircraft with a uniquely enlarged fuselage for carrying large aerospace components.',
+    firstFlight: 1965,
+    specifications: {
+      maxTakeoffWeight: '77,111 kg',
+      cruisingSpeed: 'Mach 0.50',
+      range: '2,000 km',
+      capacity: 24000,
+      engines: 4,
+      engineType: 'Turboprop',
+      length: '43.84 m',
+      wingspan: '47.62 m',
+      height: '14.78 m'
+    },
+    trainingRequirements: {
+      minimumHours: 3000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Cargo Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 30,
+      flightHours: 18
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '120 hours',
+        topics: ['Outsize Cargo Systems', 'Loading Procedures', 'Weight & Balance', 'Historical Systems']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '30 hours',
+        topics: ['Outsize Cargo Operations', 'Loading Techniques', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '18 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Outsize Cargo Handling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse'],
+      features: ['6-DOF Motion', 'Visual System', 'Outsize Cargo Loading Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['1000 hours on type', 'TRI certification', 'Historical Cargo rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
     id: 'a350-900ulr',
     manufacturerId: 'airbus',
     model: 'A350-900ULR',
     category: 'flagship',
-    subcategory: 'wide-body',
+    subcategory: 'game-changer',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A350-900ULR (Ultra Long Range) is a variant capable of flying the world\'s longest routes, currently used by Singapore Airlines for non-stop flights between Singapore and New York. It is the flagship of long-range aviation.',
     firstFlight: 2018,
@@ -2471,7 +3227,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A350-1000',
     category: 'flagship',
-    subcategory: 'wide-body',
+    subcategory: 'game-changer',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A350-1000 is the stretched, highest-capacity model of the A350 family, featuring advanced carbon-composite construction. It is the flagship of Airbus\'s current wide-body lineup.',
     firstFlight: 2016,
@@ -2534,7 +3290,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A380',
     category: 'flagship',
-    subcategory: 'wide-body',
+    subcategory: 'resurgent',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: 'b4fbb839e6b4bb989422426bfc8fd1c',
     description: 'The Airbus A380 is the iconic double-decker quad-engine jet, the largest commercial passenger aircraft ever built. While production ended in 2021, it remains the flagship of Airbus engineering excellence.',
@@ -2597,8 +3353,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a340-200',
     manufacturerId: 'airbus',
     model: 'A340-200',
-    category: 'legacy',
-    subcategory: 'retired',
+    category: 'flagship',
+    subcategory: 'historical-flagship',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A340-200 is the initial version of the A340 family, a four-engine long-haul airliner developed to bypass early twin-engine flight restrictions. End of Life. No commercial airline flies this version anymore. Only 28 were ever built, and the last few were used as government "Air Force One" style planes for countries like Egypt or Qatar, but even those have largely been replaced by modern A350s.',
     firstFlight: 1991,
@@ -2723,8 +3479,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a340-500',
     manufacturerId: 'airbus',
     model: 'A340-500',
-    category: 'legacy',
-    subcategory: 'reaching-end-of-service',
+    category: 'flagship',
+    subcategory: 'historical-flagship',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A340-500 is the ultra-long-range version of the A340 family with a stretched fuselage. Almost Extinct. This was a "niche" ultra-long-range plane. Almost every airline has retired them because they have four engines and burn too much fuel. Only a tiny handful exist as private VIP jets.',
     firstFlight: 2002,
@@ -2774,6 +3530,195 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       {
         type: 'Type Rating Instructor',
         requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-passenger',
+    manufacturerId: 'airbus',
+    model: 'A300',
+    category: 'flagship',
+    subcategory: 'historical-flagship',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300 was the first twin-engine wide-body aircraft, a pioneer in modern aviation. Once the flagship wide-body of the 80s and 90s, it now only flies in cargo or specialized military roles.',
+    firstFlight: 1972,
+    specifications: {
+      maxTakeoffWeight: '142,000 kg',
+      cruisingSpeed: 'Mach 0.75',
+      range: '4,000 km',
+      capacity: 250,
+      engines: 2,
+      engineType: 'CF6-50C or JT9D-7R4',
+      length: '53.75 m',
+      wingspan: '44.84 m',
+      height: '16.54 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '120 hours',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '24 hours',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '12 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Wide-body Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310-passenger',
+    manufacturerId: 'airbus',
+    model: 'A310',
+    category: 'flagship',
+    subcategory: 'historical-flagship',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A310 was a smaller version of the A300, designed for medium-haul routes. Once the flagship wide-body of the 80s and 90s, it now only flies in cargo or specialized military roles.',
+    firstFlight: 1982,
+    specifications: {
+      maxTakeoffWeight: '164,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '5,200 km',
+      capacity: 220,
+      engines: 2,
+      engineType: 'CF6-80C2 or PW4156',
+      length: '46.66 m',
+      wingspan: '43.90 m',
+      height: '15.80 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '120 hours',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '24 hours',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '12 hours',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Wide-body Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'concorde',
+    manufacturerId: 'airbus',
+    model: 'Concorde',
+    category: 'flagship',
+    subcategory: 'historical-flagship',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'Concorde was the world\'s first supersonic passenger airliner, a joint venture between Aérospatiale and BAC. While technically not exclusively Airbus, it remains the most iconic retired flagship in the Airbus heritage. It operated from 1976 to 2003, flying at Mach 2.04.',
+    firstFlight: 1969,
+    specifications: {
+      maxTakeoffWeight: '185,000 kg',
+      cruisingSpeed: 'Mach 2.04',
+      range: '7,250 km',
+      capacity: 100,
+      engines: 4,
+      engineType: 'Rolls-Royce/Snecma Olympus 593',
+      length: '61.66 m',
+      wingspan: '25.60 m',
+      height: '12.19 m'
+    },
+    trainingRequirements: {
+      minimumHours: 5000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'Supersonic Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 5',
+      groundSchoolHours: 200,
+      simulatorHours: 40,
+      flightHours: 20
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '200 hours',
+        topics: ['Supersonic Aerodynamics', 'Fuel Management', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '40 hours',
+        topics: ['Supersonic Operations', 'Temperature Management', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '20 hours',
+        topics: ['Supersonic Transition', 'Cruise Operations', 'Subsonic Approach']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'London'],
+      features: ['6-DOF Motion', 'Visual System', 'Supersonic Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['1000 hours on type', 'TRI certification', 'Supersonic Instructor rating']
       }
     ],
     certification: {
@@ -3224,69 +4169,6 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
-    id: 'a300-600f',
-    manufacturerId: 'airbus',
-    model: 'A300-600F',
-    category: 'cargo',
-    subcategory: 'freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A300-600F is a dedicated freighter variant of the A300-600, featuring a large cargo door and reinforced floor.',
-    firstFlight: 1994,
-    specifications: {
-      maxTakeoffWeight: '171,700 kg',
-      cruisingSpeed: 'Mach 0.82',
-      range: '6,500 km',
-      capacity: 0,
-      engines: 2,
-      engineType: 'CF6-80C2 or PW4158',
-      length: '54.10 m',
-      wingspan: '44.84 m',
-      height: '16.54 m'
-    },
-    trainingRequirements: {
-      minimumHours: 2000,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 120,
-      simulatorHours: 24,
-      flightHours: 12
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '5 weeks',
-        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '4 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse', 'Miami'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
     id: 'a310f',
     manufacturerId: 'airbus',
     model: 'A310F',
@@ -3324,258 +4206,6 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       {
         phase: 'Simulator Training',
         duration: '4 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse', 'Miami'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'a330-200f',
-    manufacturerId: 'airbus',
-    model: 'A330-200F',
-    category: 'cargo',
-    subcategory: 'freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A330-200F is a dedicated freighter variant of the A330-200, featuring a large cargo door and reinforced floor.',
-    firstFlight: 2009,
-    specifications: {
-      maxTakeoffWeight: '233,000 kg',
-      cruisingSpeed: 'Mach 0.82',
-      range: '7,400 km',
-      capacity: 0,
-      engines: 2,
-      engineType: 'CF6-80E1 or Trent 772',
-      length: '58.82 m',
-      wingspan: '60.3 m',
-      height: '17.39 m'
-    },
-    trainingRequirements: {
-      minimumHours: 2000,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 120,
-      simulatorHours: 24,
-      flightHours: 12
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '5 weeks',
-        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '4 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse', 'Miami'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'a350f',
-    manufacturerId: 'airbus',
-    model: 'A350F',
-    category: 'flagship',
-    subcategory: 'freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A350F is the newest freighter variant entering the market to meet rising e-commerce demand. It is a clean-sheet freighter designed to compete with Boeing\'s heavy lifters.',
-    firstFlight: 2025,
-    specifications: {
-      maxTakeoffWeight: '319,000 kg',
-      cruisingSpeed: 'Mach 0.85',
-      range: '8,700 km',
-      capacity: 0,
-      engines: 2,
-      engineType: 'Trent XWB-97',
-      length: '73.79 m',
-      wingspan: '64.31 m',
-      height: '17.08 m'
-    },
-    trainingRequirements: {
-      minimumHours: 2500,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 150,
-      simulatorHours: 28,
-      flightHours: 14
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '6 weeks',
-        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '5 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '3 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse', 'Miami'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'a320p2f',
-    manufacturerId: 'airbus',
-    model: 'A320P2F',
-    category: 'cargo',
-    subcategory: 'p2f-conversion',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A320P2F is a passenger-to-freighter conversion of the A320, featuring a large cargo door and reinforced floor for cargo operations.',
-    firstFlight: 2019,
-    specifications: {
-      maxTakeoffWeight: '77,000 kg',
-      cruisingSpeed: 'Mach 0.78',
-      range: '4,800 km',
-      capacity: 0,
-      engines: 2,
-      engineType: 'CFM56 or V2500',
-      length: '37.57 m',
-      wingspan: '35.8 m',
-      height: '11.76 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1500,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 100,
-      simulatorHours: 20,
-      flightHours: 10
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse', 'Miami'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'a321p2f',
-    manufacturerId: 'airbus',
-    model: 'A321P2F',
-    category: 'cargo',
-    subcategory: 'p2f-conversion',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A321P2F is a passenger-to-freighter conversion of the A321, featuring a large cargo door and reinforced floor for cargo operations.',
-    firstFlight: 2020,
-    specifications: {
-      maxTakeoffWeight: '93,000 kg',
-      cruisingSpeed: 'Mach 0.78',
-      range: '4,500 km',
-      capacity: 0,
-      engines: 2,
-      engineType: 'CFM56 or V2500',
-      length: '44.51 m',
-      wingspan: '35.8 m',
-      height: '11.76 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1500,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 100,
-      simulatorHours: 20,
-      flightHours: 10
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
         topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
       },
       {
