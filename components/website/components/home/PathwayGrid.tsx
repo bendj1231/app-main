@@ -802,7 +802,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 'member': isLoggedIn ? 'portal' : 'become-member',
                 'discover': 'pathways-modern',
                 'pilot-pathways': 'pathways-modern',
-                'type-rating-search': 'pathways-modern',
+                'type-rating-search': 'type-rating-search',
                 'airline-expectations': 'airline-expectations',
                 'recognition-pathways': 'pilot-recognition',
                 'programs': 'programs',
