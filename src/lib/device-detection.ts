@@ -36,6 +36,9 @@ export function getDevicePerformanceTier(): PerformanceTier {
   if (deviceMemory < 4 || hardwareConcurrency < 4) {
     return 'low';
   }
+  if (deviceMemory < 6 || hardwareConcurrency < 6) {
+    return 'low';
+  }
   if (deviceMemory < 8 || hardwareConcurrency < 8) {
     return 'medium';
   }
