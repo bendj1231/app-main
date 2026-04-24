@@ -26,7 +26,6 @@ interface AuthContextType {
     deleteAccount: (userId: string) => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
     getAuthHeaders: () => { 'X-CSRF-Token'?: string };
-    loginWithOAuth: (provider: 'google' | 'apple' | 'github') => Promise<any>;
     // MFA functions
     mfaEnabled: boolean;
     mfaSetupStep: 'none' | 'qr' | 'verify';
@@ -684,49 +683,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }
 
-    async function loginWithOAuth(provider: 'google' | 'apple' | 'github') {
-        try {
-            // Use Supabase's default callback handler
-            const redirectUri = `https://gkbhgrozrzhalnjherfu.supabase.co/auth/v1/callback`;
-            console.log(`[${provider} OAuth] Starting OAuth with Supabase default callback:`, redirectUri);
-
-            const { data, error } = await supabase.auth.signInWithOAuth({
-                provider,
-                options: {
-                    redirectTo: redirectUri,
-                    queryParams: {
-                        access_type: 'offline',
-                        prompt: 'consent',
-                    }
-                }
-            });
-
-            if (error) {
-                console.error(`${provider} OAuth error:`, error);
-                throw new Error(`${provider} sign-in failed: ${error.message}`);
-            }
-
-            console.log(`[${provider} OAuth] OAuth initiated, redirect URL:`, data.url);
-            console.log(`[${provider} OAuth] Extracting redirect_uri from URL...`);
-
-            // Extract redirect_uri from the URL for debugging
-            try {
-                const urlObj = new URL(data.url);
-                const redirectUriParam = urlObj.searchParams.get('redirect_uri');
-                console.log(`[${provider} OAuth] redirect_uri parameter:`, redirectUriParam);
-            } catch (e) {
-                console.error(`[${provider} OAuth] Failed to parse redirect URL:`, e);
-            }
-
-            // OAuth will redirect, so we don't need to set state here
-            // The auth state change listener will handle the session
-            return data;
-        } catch (error) {
-            console.error(`${provider} OAuth login error:`, error);
-            throw error;
-        }
-    }
-
     async function resetPassword(email: string) {
         // Use Supabase auth for password reset
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -1146,7 +1102,6 @@ const value = {
     mfaDisable,
     mfaGenerateBackupCodes,
     mfaCheckStatus,
-    loginWithOAuth,
     // OAuth account check
     oauthAccountCheck,
     resetOauthAccountCheck,

@@ -31,9 +31,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [oauthLoading, setOAuthLoading] = useState(false);
     const { addToast } = useToast();
-    const { login, loginWithOAuth } = useAuth();
+    const { login } = useAuth();
     const modalRef = useRef<HTMLDivElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
 
@@ -121,29 +120,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             addToast('error', 'Login Failed', err.message || 'Login failed. Please check your credentials and try again.');
         } finally {
             setLoading(false);
-        }
-    };
-
-    const handleGoogleSignIn = async () => {
-        const timestamp = new Date().toISOString();
-        console.log(`[${timestamp}] [GOOGLE OAUTH] Starting Google sign-in process with Supabase`);
-        setOAuthLoading(true);
-        setError('');
-
-        try {
-            console.log(`[${timestamp}] [GOOGLE OAUTH] Calling loginWithOAuth with provider: google`);
-            await loginWithOAuth('google');
-            console.log(`[${timestamp}] [GOOGLE OAUTH] OAuth initiated successfully`);
-            // Supabase handles the redirect automatically
-        } catch (err: any) {
-            const errorTimestamp = new Date().toISOString();
-            console.error(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] Google Sign-In failed:`, err);
-            console.error(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] Error message:`, err.message);
-            console.error(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] Error stack:`, err.stack);
-            setError(err.message || 'Google Sign-In failed. Please try again.');
-            addToast('error', 'Google Sign-In Failed', err.message || 'Google Sign-In failed. Please try again.');
-            setOAuthLoading(false);
-            console.log(`[${errorTimestamp}] [GOOGLE OAUTH ERROR] oauthLoading state reset to: false`);
         }
     };
 
@@ -315,32 +291,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                             >
                                 {loading ? 'Logging in...' : 'Login'}
                                 {!loading && <ArrowRight className="w-4 h-4" />}
-                            </button>
-
-                            {/* Divider */}
-                            <div className="relative my-4">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-slate-300"></div>
-                                </div>
-                                <div className="relative flex justify-center text-sm">
-                                    <span className="px-4 bg-slate-100 text-slate-500">or continue with</span>
-                                </div>
-                            </div>
-
-                            {/* Google Sign-In Button */}
-                            <button
-                                type="button"
-                                onClick={handleGoogleSignIn}
-                                disabled={oauthLoading}
-                                className="w-full py-4 min-h-[52px] bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl font-semibold text-sm md:text-base flex items-center justify-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                                aria-busy={oauthLoading}
-                            >
-                                {oauthLoading ? 'Signing in with Google...' : (
-                                    <>
-                                        <GoogleIcon />
-                                        Sign in with Google
-                                    </>
-                                )}
                             </button>
 
                             {/* Remember Me */}
