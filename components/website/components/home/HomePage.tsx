@@ -744,7 +744,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             )}
 
             {/* Smoke Shader Section with Glassy Card */}
-            <div className={`relative w-full h-screen ${enableShader ? '' : 'bg-blue-900'}`}>
+            <div className={`relative w-full h-screen ${enableShader ? '' : 'bg-blue-950'}`}>
                 {enableShader ? <SmokeShader /> : null}
                 
                 {/* Flight Simulator Style Grid */}
