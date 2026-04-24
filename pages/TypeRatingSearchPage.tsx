@@ -111,7 +111,7 @@ export default function TypeRatingSearchPage() {
     }
     
     if (activeCategory !== 'all') {
-      aircraft = getAircraftByCategory(activeCategory);
+      aircraft = aircraft.filter(a => a.category === activeCategory);
     }
     
     if (searchQuery) {
