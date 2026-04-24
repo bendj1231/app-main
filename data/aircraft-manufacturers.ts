@@ -5240,6 +5240,644 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
+    id: 'h215',
+    manufacturerId: 'airbus',
+    model: 'H215',
+    category: 'helicopter',
+    subcategory: 'heavy-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H215 (formerly AS332 Super Puma Mk2) is the slightly smaller, more rugged sibling of the H225. It is heavily used for heavy-lift work and firefighting operations worldwide.',
+    firstFlight: 1979,
+    specifications: {
+      maxTakeoffWeight: '9,500 kg',
+      cruisingSpeed: '270 km/h',
+      range: '820 km',
+      capacity: 19,
+      engines: 2,
+      engineType: 'Makila 1A1 Turboshaft',
+      length: '15.53 m',
+      wingspan: '15.60 m',
+      height: '4.92 m'
+    },
+    trainingRequirements: {
+      minimumHours: 250,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 75,
+      simulatorHours: 18,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '75 hours',
+        topics: ['Aircraft Systems', 'Performance Planning', 'Emergency Procedures', 'Heavy Lift Operations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '18 hours',
+        topics: ['Basic Handling', 'External Load Operations', 'Mountain Flying', 'Night Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Donauwörth'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h140',
+    manufacturerId: 'airbus',
+    model: 'H140',
+    category: 'helicopter',
+    subcategory: 'light-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H140 is a brand new light twin-engine model introduced around 2025, designed to bridge the gap between the H135 and H145 with enhanced performance and capacity.',
+    firstFlight: 2025,
+    specifications: {
+      maxTakeoffWeight: '3,400 kg',
+      cruisingSpeed: '260 km/h',
+      range: '700 km',
+      capacity: 8,
+      engines: 2,
+      engineType: 'Arriel 2D Turboshaft',
+      length: '11.50 m',
+      wingspan: '10.80 m',
+      height: '3.50 m'
+    },
+    trainingRequirements: {
+      minimumHours: 150,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 55,
+      simulatorHours: 12,
+      flightHours: 8
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '55 hours',
+        topics: ['Aircraft Systems', 'Performance Planning', 'Emergency Procedures', 'Navigation']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '12 hours',
+        topics: ['Basic Handling', 'Instrument Procedures', 'Emergency Training', 'Night Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'tiger',
+    manufacturerId: 'airbus',
+    model: 'Tiger',
+    category: 'military',
+    subcategory: 'attack-helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus Tiger is a dedicated attack helicopter similar to the Apache, used by France, Germany, and Australia for anti-tank and close air support missions.',
+    firstFlight: 1991,
+    specifications: {
+      maxTakeoffWeight: '6,000 kg',
+      cruisingSpeed: '280 km/h',
+      range: '800 km',
+      capacity: 2,
+      engines: 2,
+      engineType: 'MTR 390 Turboshaft',
+      length: '14.00 m',
+      wingspan: '13.00 m',
+      height: '3.83 m'
+    },
+    trainingRequirements: {
+      minimumHours: 400,
+      requiredLicenses: ['CPL(H)', 'ME', 'Military Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 30,
+      flightHours: 20
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '100 hours',
+        topics: ['Weapons Systems', 'Tactical Operations', 'Night Vision Systems', 'Combat Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '30 hours',
+        topics: ['Attack Profiles', 'Nap-of-the-Earth Flying', 'Weapons Employment', 'Tactical Formation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Donauwörth'],
+      features: ['6-DOF Motion', 'Visual System', 'Weapons System Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Instructor rating', 'Combat Experience']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Combat Proficiency Check', 'Weapons Qualification']
+    }
+  },
+  {
+    id: 'nh90',
+    manufacturerId: 'airbus',
+    model: 'NH90',
+    category: 'military',
+    subcategory: 'tactical-helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus NH90 is a large, high-tech multi-role military helicopter built in partnership with other European companies. It is the first helicopter with full "Fly-by-Wire" controls.',
+    firstFlight: 1995,
+    specifications: {
+      maxTakeoffWeight: '10,600 kg',
+      cruisingSpeed: '300 km/h',
+      range: '1,200 km',
+      capacity: 20,
+      engines: 2,
+      engineType: 'Turbomeca RTM322 Turboshaft',
+      length: '16.13 m',
+      wingspan: '16.30 m',
+      height: '5.23 m'
+    },
+    trainingRequirements: {
+      minimumHours: 350,
+      requiredLicenses: ['CPL(H)', 'ME', 'Military Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 90,
+      simulatorHours: 25,
+      flightHours: 15
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '90 hours',
+        topics: ['Fly-by-Wire Systems', 'Mission Systems', 'Tactical Operations', 'Naval Operations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '25 hours',
+        topics: ['FBW Handling', 'Ship Operations', 'Tactical Transport', 'Night Vision Systems']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Donauwörth'],
+      features: ['6-DOF Motion', 'Visual System', 'FBW Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Instructor rating', 'FBW Experience']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'Mission Systems Training']
+    }
+  },
+  {
+    id: 'uh-72-lakota',
+    manufacturerId: 'airbus',
+    model: 'UH-72 Lakota',
+    category: 'military',
+    subcategory: 'helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus UH-72 Lakota is the military version of the H145, used extensively by the U.S. Army for training, medevac, and utility missions.',
+    firstFlight: 2006,
+    specifications: {
+      maxTakeoffWeight: '3,700 kg',
+      cruisingSpeed: '250 km/h',
+      range: '680 km',
+      capacity: 9,
+      engines: 2,
+      engineType: 'Arriel 2E Turboshaft',
+      length: '13.03 m',
+      wingspan: '11.00 m',
+      height: '3.86 m'
+    },
+    trainingRequirements: {
+      minimumHours: 200,
+      requiredLicenses: ['CPL(H)', 'ME', 'Military Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 60,
+      simulatorHours: 15,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '60 hours',
+        topics: ['Military Systems', 'Mission Planning', 'Emergency Procedures', 'Instrument Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '15 hours',
+        topics: ['Military Operations', 'Formation Flying', 'Night Vision Systems', 'Tactical Procedures']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Columbus'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'Military Systems Training']
+    }
+  },
+  {
+    id: 'as365-dauphin',
+    manufacturerId: 'airbus',
+    model: 'AS365 Dauphin',
+    category: 'helicopter',
+    subcategory: 'medium-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus AS365 Dauphin is a sleek, fast helicopter famous for its "Fenestron" (shrouded) tail rotor. It is the "father" of the H155 and still widely used for VIP transport and offshore missions.',
+    firstFlight: 1975,
+    specifications: {
+      maxTakeoffWeight: '4,250 kg',
+      cruisingSpeed: '275 km/h',
+      range: '800 km',
+      capacity: 12,
+      engines: 2,
+      engineType: 'Arriel 2C Turboshaft',
+      length: '11.63 m',
+      wingspan: '11.94 m',
+      height: '3.99 m'
+    },
+    trainingRequirements: {
+      minimumHours: 180,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 65,
+      simulatorHours: 14,
+      flightHours: 8
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '65 hours',
+        topics: ['Fenestron Systems', 'Aircraft Systems', 'Performance Planning', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '14 hours',
+        topics: ['Fenestron Handling', 'Instrument Procedures', 'Emergency Training', 'VIP Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bo-105',
+    manufacturerId: 'airbus',
+    model: 'BO-105',
+    category: 'helicopter',
+    subcategory: 'light-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus BO-105 is a legendary small twin-engine helicopter known for being the first that could perform loops and rolls. It is highly maneuverable and still in service for law enforcement and EMS.',
+    firstFlight: 1967,
+    specifications: {
+      maxTakeoffWeight: '2,500 kg',
+      cruisingSpeed: '242 km/h',
+      range: '575 km',
+      capacity: 5,
+      engines: 2,
+      engineType: 'Allison 250-C20 Turboshaft',
+      length: '8.84 m',
+      wingspan: '9.84 m',
+      height: '3.00 m'
+    },
+    trainingRequirements: {
+      minimumHours: 150,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 50,
+      simulatorHours: 12,
+      flightHours: 8
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '50 hours',
+        topics: ['Aerobatic Capability', 'Aircraft Systems', 'Performance Planning', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '12 hours',
+        topics: ['Advanced Handling', 'Aerobatic Maneuvers', 'Emergency Training', 'Precision Flying']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'bk-117',
+    manufacturerId: 'airbus',
+    model: 'BK-117',
+    category: 'helicopter',
+    subcategory: 'medium-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus BK-117 is the predecessor to the H145 and still widely seen as life-flight/medical helicopters. It was developed in partnership with Kawasaki.',
+    firstFlight: 1979,
+    specifications: {
+      maxTakeoffWeight: '3,350 kg',
+      cruisingSpeed: '250 km/h',
+      range: '680 km',
+      capacity: 10,
+      engines: 2,
+      engineType: 'LTS 101-750B-1 Turboshaft',
+      length: '9.91 m',
+      wingspan: '11.00 m',
+      height: '3.36 m'
+    },
+    trainingRequirements: {
+      minimumHours: 160,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 55,
+      simulatorHours: 13,
+      flightHours: 8
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '55 hours',
+        topics: ['Aircraft Systems', 'Performance Planning', 'Emergency Procedures', 'EMS Operations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '13 hours',
+        topics: ['Basic Handling', 'EMS Operations', 'Instrument Procedures', 'Emergency Training']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'gazelle',
+    manufacturerId: 'airbus',
+    model: 'Gazelle',
+    category: 'military',
+    subcategory: 'scout-helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus Gazelle is a fast, thin scout helicopter with a very distinctive look, still used by many militaries for reconnaissance and light attack missions.',
+    firstFlight: 1967,
+    specifications: {
+      maxTakeoffWeight: '1,800 kg',
+      cruisingSpeed: '310 km/h',
+      range: '670 km',
+      capacity: 4,
+      engines: 1,
+      engineType: 'Astazou XIV Turboshaft',
+      length: '11.97 m',
+      wingspan: '10.50 m',
+      height: '3.15 m'
+    },
+    trainingRequirements: {
+      minimumHours: 120,
+      requiredLicenses: ['CPL(H)', 'Military Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 45,
+      simulatorHours: 10,
+      flightHours: 6
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '45 hours',
+        topics: ['Scout Operations', 'Navigation', 'Emergency Procedures', 'Tactical Flying']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '10 hours',
+        topics: ['Nap-of-the-Earth Flying', 'Reconnaissance Procedures', 'Formation Flying', 'Night Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['400 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'Tactical Training']
+    }
+  },
+  {
+    id: 'cityairbus',
+    manufacturerId: 'airbus',
+    model: 'CityAirbus',
+    category: 'helicopter',
+    subcategory: 'evtol',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus CityAirbus is an all-electric "flying taxi" (eVTOL) project designed for urban air mobility and short-range passenger transport.',
+    firstFlight: 2024,
+    specifications: {
+      maxTakeoffWeight: '2,200 kg',
+      cruisingSpeed: '120 km/h',
+      range: '100 km',
+      capacity: 4,
+      engines: 8,
+      engineType: 'Electric Motors',
+      length: '6.20 m',
+      wingspan: '11.30 m',
+      height: '2.90 m'
+    },
+    trainingRequirements: {
+      minimumHours: 100,
+      requiredLicenses: ['PPL(H)', 'eVTOL Rating'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 5
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '40 hours',
+        topics: ['Electric Propulsion', 'Autonomous Systems', 'Urban Air Mobility', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '10 hours',
+        topics: ['eVTOL Handling', 'Autonomous Operations', 'Urban Navigation', 'Emergency Training']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'eVTOL Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['300 hours on type', 'TRI certification', 'Instructor rating', 'eVTOL Experience']
+      }
+    ],
+    certification: {
+      authority: 'EASA',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'eVTOL Systems Training']
+    }
+  },
+  {
+    id: 'vsr700',
+    manufacturerId: 'airbus',
+    model: 'VSR700',
+    category: 'military',
+    subcategory: 'drone-helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus VSR700 is an unmanned (drone) helicopter designed for navies to launch from ships for reconnaissance and surveillance missions.',
+    firstFlight: 2022,
+    specifications: {
+      maxTakeoffWeight: '700 kg',
+      cruisingSpeed: '180 km/h',
+      range: '900 km',
+      capacity: 0,
+      engines: 1,
+      engineType: 'Arriel 2D Turboshaft',
+      length: '5.90 m',
+      wingspan: '6.20 m',
+      height: '2.20 m'
+    },
+    trainingRequirements: {
+      minimumHours: 50,
+      requiredLicenses: ['UAV Operator License'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 30,
+      simulatorHours: 15,
+      flightHours: 5
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '30 hours',
+        topics: ['UAV Systems', 'Autonomous Operations', 'Naval Operations', 'Mission Planning']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '15 hours',
+        topics: ['Remote Operations', 'Ship Launch/Recovery', 'Surveillance Missions', 'Emergency Procedures']
+      }
+    ],
+    simulatorDetails: {
+      type: 'UAV Simulator',
+      locations: ['Marignane'],
+      features: ['Visual System', 'Autonomous Simulation', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'UAV Instructor',
+        requirements: ['200 hours on type', 'UAV Instructor certification', 'Remote Pilot Experience']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'UAV Systems Training']
+    }
+  },
+  {
     id: 'a220',
     manufacturerId: 'airbus',
     model: 'A220',
