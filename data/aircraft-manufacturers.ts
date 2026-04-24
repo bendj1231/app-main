@@ -198,6 +198,7 @@ export interface AircraftTypeRating {
   model: string;
   category: 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military';
   image: string;
+  sketchfabId?: string;
   description: string;
   firstFlight: number;
   specifications: AircraftSpecs;
@@ -958,6 +959,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A320',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'feaa475ce5824121be0380a42987007f',
     description: 'The Airbus A320 is a narrow-body, medium-range, twin-engine jet airliner. It was the first member of the A320 family, which was launched in March 1984.',
     firstFlight: 1987,
     specifications: {
@@ -1020,6 +1022,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'feaa475ce5824121be0380a42987007f',
     description: 'The Airbus A330 is a wide-body, twin-engine jet airliner. It was designed to replace the earlier A300.',
     firstFlight: 1992,
     specifications: {
@@ -1082,7 +1085,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A350 XWB is a long-range, twin-engine, wide-body jet airliner. It was the first Airbus aircraft with both a fuselage and wing structure made primarily of carbon-fiber-reinforced polymer.',
+    sketchfabId: 'feaa475ce5824121be0380a42987007f',
+    description: 'The Airbus A350 is a long-range, wide-body, twin-engine jet airliner. It is the first Airbus aircraft with both fuselage and wing structures made primarily of carbon-fiber-reinforced polymer.',
     firstFlight: 2013,
     specifications: {
       maxTakeoffWeight: '280,000 kg',
@@ -1144,7 +1148,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A380',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A380 is a wide-body, four-engine, double-deck jet airliner. It is the world\'s largest passenger airliner.',
+    sketchfabId: '9e7bfa1049ec44a2a8d8d0bdaf51533c',
+    description: 'The Airbus A380 is a double-deck, wide-body, four-engine jet airliner. It is the world\'s largest passenger airliner.',
     firstFlight: 2005,
     specifications: {
       maxTakeoffWeight: '575,000 kg',
@@ -1206,6 +1211,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A220',
     category: 'regional',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'feaa475ce5824121be0380a42987007f',
     description: 'The Airbus A220 is a family of narrow-body, twin-engine, medium-range jet airliners. It was originally developed by Bombardier as the CSeries.',
     firstFlight: 2013,
     specifications: {
@@ -1269,6 +1275,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '737',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '41a1ae9e252d41bda7c63cfe9fab5a02',
     description: 'The Boeing 737 is a narrow-body, twin-engine, short- to medium-range jet airliner. It is the best-selling commercial jet airliner in history.',
     firstFlight: 1967,
     specifications: {
@@ -1331,6 +1338,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '747',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '9e7bfa1049ec44a2a8d8d0bdaf51533c',
     description: 'The Boeing 747 is a wide-body, four-engine jet airliner. It was the first wide-body jet airliner and became known as the "Queen of the Skies".',
     firstFlight: 1969,
     specifications: {
@@ -1393,6 +1401,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '777',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '41a1ae9e252d41bda7c63cfe9fab5a02',
     description: 'The Boeing 777 is a long-range, wide-body twin-engine jet airliner. It is the world\'s largest twin-engine jet airliner.',
     firstFlight: 1994,
     specifications: {
@@ -1455,6 +1464,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '787',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '41a1ae9e252d41bda7c63cfe9fab5a02',
     description: 'The Boeing 787 Dreamliner is a long-range, wide-body, twin-engine jet airliner. It is the first airliner to use composite materials for most of its construction.',
     firstFlight: 2009,
     specifications: {

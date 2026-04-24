@@ -2,6 +2,78 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase } from 'lucide-react';
 import { manufacturers, aircraftTypeRatings, Manufacturer, AircraftTypeRating, getManufacturerById, getAircraftByManufacturer, getAircraftByCategory } from '../data/aircraft-manufacturers';
 
+// Cache for fetched thumbnail URLs
+const thumbnailCache: Record<string, string> = {};
+
+function SketchfabThumbnail({
+  sketchfabId,
+  alt,
+  className,
+  onError,
+}: {
+  sketchfabId: string;
+  alt: string;
+  className?: string;
+  onError?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
+}) {
+  const [src, setSrc] = useState<string | null>(thumbnailCache[sketchfabId] || null);
+  const [loading, setLoading] = useState(!thumbnailCache[sketchfabId]);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    if (thumbnailCache[sketchfabId]) {
+      setSrc(thumbnailCache[sketchfabId]);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setFailed(false);
+    let cancelled = false;
+    fetch(`https://api.sketchfab.com/v3/models/${sketchfabId}`)
+      .then(r => r.json())
+      .then(data => {
+        if (cancelled) return;
+        const images: any[] = data?.thumbnails?.images || [];
+        const best = images.sort((a, b) => (b.width || 0) - (a.width || 0))[0];
+        if (best?.url) {
+          thumbnailCache[sketchfabId] = best.url;
+          setSrc(best.url);
+          setLoading(false);
+        } else {
+          setFailed(true);
+          setLoading(false);
+        }
+      })
+      .catch(() => { if (!cancelled) { setFailed(true); setLoading(false); } });
+    return () => { cancelled = true; };
+  }, [sketchfabId]);
+
+  if (loading) {
+    return (
+      <div className={`${className} flex items-center justify-center bg-slate-200 animate-pulse`}>
+        <Plane className="w-8 h-8 text-slate-400" />
+      </div>
+    );
+  }
+
+  if (failed || !src) {
+    return (
+      <div className={`${className} flex items-center justify-center bg-slate-100`}>
+        <Plane className="w-10 h-10 text-slate-400" />
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      onError={onError}
+    />
+  );
+}
+
 type Category = 'all' | 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -209,11 +281,19 @@ export default function TypeRatingSearchPage() {
             >
               {/* Thumbnail */}
               <div className="relative h-44 overflow-hidden bg-slate-100">
-                <img
-                  src={aircraft.image}
-                  alt={aircraft.model}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                {aircraft.sketchfabId ? (
+                  <SketchfabThumbnail
+                    sketchfabId={aircraft.sketchfabId}
+                    alt={aircraft.model}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <img
+                    src={aircraft.image}
+                    alt={aircraft.model}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3">
                   <span className="text-white font-serif text-base leading-tight">{aircraft.model}</span>
@@ -281,11 +361,19 @@ export default function TypeRatingSearchPage() {
 
             {/* Hero image with overlay */}
             <div className="relative h-64 md:h-80">
-              <img
-                src={selectedAircraft.image}
-                alt={selectedAircraft.model}
-                className="w-full h-full object-cover"
-              />
+              {selectedAircraft.sketchfabId ? (
+                <SketchfabThumbnail
+                  sketchfabId={selectedAircraft.sketchfabId}
+                  alt={selectedAircraft.model}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <img
+                  src={selectedAircraft.image}
+                  alt={selectedAircraft.model}
+                  className="w-full h-full object-cover"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-6 md:p-8">
