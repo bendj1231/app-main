@@ -659,8 +659,8 @@ const App = () => {
         </div>
       )}
 
-      {/* OAuth Account Check Modal */}
-      {oauthAccountCheck.checking && (
+      {/* OAuth Account Check Modal - Temporarily disabled */}
+      {false && oauthAccountCheck.checking && (
         <div style={{
           position: 'fixed',
           top: 0,
@@ -703,8 +703,8 @@ const App = () => {
         </div>
       )}
 
-      {/* OAuth Account Result Modal */}
-      {oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount !== null && (() => {
+      {/* OAuth Account Result Modal - Temporarily disabled */}
+      {false && oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount !== null && (() => {
         console.log('Rendering OAuth result modal, hasAccount:', oauthAccountCheck.hasAccount);
         return true;
       })() && (
