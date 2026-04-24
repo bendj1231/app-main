@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { shouldEnableHeavyAnimations, shouldEnable3DEffects } from '@/src/lib/device-detection';
 
 // Social Media Icons
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -1407,11 +1408,15 @@ const GridCard: React.FC<GridCardProps> = ({
         }
     };
 
+    // Check if heavy animations should be enabled based on graphics settings
+    const enableAnimations = shouldEnableHeavyAnimations();
+    const enable3DEffects = shouldEnable3DEffects();
+
     return (
         <div
             className={`relative group cursor-pointer ${className}`}
-            onMouseEnter={onHover}
-            onMouseLeave={onLeave}
+            onMouseEnter={enableAnimations ? onHover : undefined}
+            onMouseLeave={enableAnimations ? onLeave : undefined}
             onClick={handleCardClick}
         >
             {/* Directory Card - Simple text with arrow */}
@@ -1449,13 +1454,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 </div>
             ) : (
                 /* Main Card Container - Glassy UI */
-                <div className={`
-                    relative w-full h-full rounded-xl overflow-hidden
-                    bg-slate-900/40 backdrop-blur-xl border border-white/20
-                    shadow-lg shadow-black/30
-                    transition-all duration-300 ease-out
-                    ${isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}
-                `}>
+                <div className={`relative w-full h-full rounded-xl overflow-hidden bg-slate-900/40 backdrop-blur-xl border border-white/20 shadow-lg shadow-black/30 ${enableAnimations ? 'transition-all duration-300 ease-out' : ''} ${enableAnimations && isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}`}>
                     {/* Background Image / Video / Carousel / Animation */}
                     <div className="absolute inset-0">
                     {card.videoUrl ? (
@@ -1520,8 +1519,8 @@ const GridCard: React.FC<GridCardProps> = ({
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent pointer-events-none" />
                             )}
                         </div>
-                    ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) ? (
-                        // Member Journey Animation (only when not logged in)
+                    ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) && enableAnimations ? (
+                        // Member Journey Animation (only when not logged in and animations are enabled)
                         <MemberJourneyAnimation />
                     ) : (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn) ? (
                         // Discover card when logged in - use single image without carousel
@@ -1534,17 +1533,11 @@ const GridCard: React.FC<GridCardProps> = ({
                         // Carousel when logged in
                         <div className="relative w-full h-full">
                             {carouselImages.map((img, idx) => (
-                                <div key={idx} className={`
-                                    absolute inset-0 w-full h-full transition-all duration-1000
-                                    ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-100 scale-105'}
-                                `}>
+                                <div key={idx} className={`absolute inset-0 w-full h-full ${enableAnimations ? 'transition-all duration-1000' : ''} ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-100 scale-105'}`}>
                                     <img
                                         src={img}
                                         alt={`${card.title} ${idx + 1}`}
-                                        className={`
-                                            w-full h-full object-cover object-center
-                                            ${isHovered && idx === currentImageIndex && !(card.id === 'discover' && isLoggedIn) ? 'scale-110' : ''}
-                                        `}
+                                        className={`w-full h-full object-cover object-center ${enableAnimations && isHovered && idx === currentImageIndex && !(card.id === 'discover' && isLoggedIn) ? 'scale-110' : ''}`}
                                         onError={(e) => {
                                             console.error('Carousel image load error:', card.id, idx, img, e);
                                         }}
@@ -1574,10 +1567,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             {carouselImages.map((img, idx) => {
                                 const isAnimationIndex = card.animationIndices?.includes(idx);
                                 return (
-                                    <div key={idx} className={`
-                                        absolute inset-0 w-full h-full transition-all duration-1000
-                                        ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-100 scale-105'}
-                                    `}>
+                                    <div key={idx} className={`absolute inset-0 w-full h-full ${enableAnimations ? 'transition-all duration-1000' : ''} ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-100 scale-105'}`}>
                                         {isAnimationIndex ? (
                                             idx === 1 && card.id === 'discover' ? (
                                                 <DiscoverPathwaysAnimation isPlaying={idx === currentImageIndex} onSceneChange={setAnimationSceneIndex} />
@@ -1610,11 +1600,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                 {carouselImages.map((_, idx) => (
                                     <div 
                                         key={idx}
-                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                            idx === currentImageIndex 
-                                                ? 'bg-white w-4' 
-                                                : 'bg-white/50'
-                                        }`}
+                                        className={`w-2 h-2 rounded-full ${enableAnimations ? 'transition-all duration-300' : ''} ${idx === currentImageIndex ? 'bg-white w-4' : 'bg-white/50'}`}
                                     />
                                 ))}
                             </div>
@@ -1625,10 +1611,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             src={currentImage || displayImage}
                             alt={card.title}
                             style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : 'center' }}
-                            className={`
-                                w-full h-full object-cover
-                                ${isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}
-                            `}
+                            className={`w-full h-full object-cover ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
                             onError={(e) => {
                                 console.error('Image load error:', card.id, currentImage || displayImage, e);
                                 console.error('Card:', card);
