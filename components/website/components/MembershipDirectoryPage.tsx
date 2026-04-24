@@ -80,7 +80,7 @@ export const MembershipDirectoryPage: React.FC<MembershipDirectoryPageProps> = (
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
                         <img
-                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                             alt="WingMentor Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />

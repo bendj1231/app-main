@@ -17,7 +17,7 @@ export const AccountConfirmationPage: React.FC<AccountConfirmationPageProps> = (
                 <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden p-12 md:p-20 text-center">
                     <div className="max-w-2xl mx-auto">
                         <div className="mb-8 flex justify-center">
-                            <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">

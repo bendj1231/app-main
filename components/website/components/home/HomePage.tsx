@@ -1416,7 +1416,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                             {/* Card 1: Become A Member - Simplified */}
                             <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col items-center text-center shadow-xl">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                                     alt="WingMentor Logo"
                                     className="w-32 h-auto object-contain mb-3 opacity-90"
                                 />

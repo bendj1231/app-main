@@ -53,7 +53,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
                         <img
-                            src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                             alt="WingMentor Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
@@ -210,7 +210,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                                     <div className="absolute inset-0 bg-blue-900/40 mix-blend-overlay"></div>
                                     <div className="absolute inset-0 flex items-center justify-center p-12">
                                         <div className="p-8 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl text-center">
-                                            <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="Logo" className="w-20 mx-auto mb-4 opacity-50" />
+                                            <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="Logo" className="w-20 mx-auto mb-4 opacity-50" />
                                             <p className="text-blue-400 font-bold uppercase tracking-[0.3em] text-[10px] mb-2">Verified Profile</p>
                                             <p className="text-white font-serif text-2xl">ATLAS COMPLIANT</p>
                                         </div>

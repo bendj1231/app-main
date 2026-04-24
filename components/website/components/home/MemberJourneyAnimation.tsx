@@ -196,7 +196,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
               className="mt-4 mb-2"
             >
               <img
-                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                 alt="WingMentor Logo"
                 className="w-20 h-auto object-contain"
               />
@@ -314,7 +314,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                 className="mt-1 mb-1 flex justify-center"
               >
                 <img
-                  src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                  src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                   alt="WingMentor Logo"
                   className="w-10 md:w-12 h-auto object-contain"
                 />
@@ -563,7 +563,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
               transition={{ delay: 3.0, duration: 1.5 }}
             >
               <img
-                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                 alt="WingMentor Logo"
                 className="w-28 md:w-36 h-auto object-contain mb-3"
               />

@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { useEnterpriseAuth, supabase, FIREBASE_BASE } from './hooks/useEnterpriseAuth';
 
-const LOGO = 'https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR';
+const LOGO = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png';
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/dridtecu6/image/upload`;
 const CLOUDINARY_UPLOAD_PRESET = 'enterprise_unsigned';
 

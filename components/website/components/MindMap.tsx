@@ -112,7 +112,7 @@ const NODES: NodeData[] = [
     {
         id: 'wing',
         title: 'Wing Mentorship',
-        image: "https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR",
+        image: "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png",
         x: 50,
         y: 600,
         parent: 'gap',

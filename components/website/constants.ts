@@ -1,8 +1,8 @@
 
 export const IMAGES = {
-    LOGO: "https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR",
+    LOGO: "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png",
     PILOT_GAP_LOGO: "https://lh3.googleusercontent.com/d/1BKT1CFVS2HwUnX2528UchLjnFN8TeCkf",
-    HERO_ALT: "https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR",
+    HERO_ALT: "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png",
     HERO_VIDEO: "https://www.dropbox.com/scl/fi/1gd40zo6t5uityywl005v/videoSharingFinalOutput.mov?rlkey=obo681srrrhsisi34bfvbgnsh&st=2oewaq7n&raw=1",
     HUB_VIDEO: "https://www.dropbox.com/scl/fi/4gk5uoxr0vxxwstazfh6y/videoSharingFinalOutput.mov?rlkey=qy8y8bj2y88egy9njrremglom&st=oj65v4py&raw=1",
     HUB_INTERFACE: "https://lh3.googleusercontent.com/d/1LMBTc0Qr0MamUdoJt01lEclzMlNt71DQ",
@@ -11,8 +11,8 @@ export const IMAGES = {
     HERO_POSTER: "https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=3000&auto-format&fit=crop",
     PROGRAM_BG: "https://lh3.googleusercontent.com/d/1ePNiHj2v3W-bqFZfx8loTeJZUhXfLd5U",
     ABOUT_BG: "https://lh3.googleusercontent.com/d/1xZ5rv7k6fhS5Mhx_Db1TlDUkWyZDjMVb",
-    PROGRAM_HEADER_IMAGE: "https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR",
-    ABOUT_US_HEADER_IMAGE: "https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR",
+    PROGRAM_HEADER_IMAGE: "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png",
+    ABOUT_US_HEADER_IMAGE: "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png",
     RUNWAY_HOLDING_POINT: "https://lh3.googleusercontent.com/d/1i9gQqjVWESQsafz3ARNO1zupAQ_Xu6K4",
     BLACK_STRIP_BG: "https://images.unsplash.com/photo-1635245642637-293d0554581f?q=80&w=2832&auto-format&fit=crop",
     PROGRAM_DETAIL_BG: "https://lh3.googleusercontent.com/d/1uF7vUNX_5QBD0mwqXU4ILUO_-ngLd9KY",

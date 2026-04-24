@@ -28,7 +28,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
-                        src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                         alt="WingMentor Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
@@ -128,7 +128,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                                     />
                                     <span className="text-2xl font-light text-slate-400">×</span>
                                     <img
-                                        src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                                         alt="WingMentor"
                                         className="h-10 w-auto object-contain"
                                     />

@@ -177,7 +177,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="text-center mb-16 relative">
                         <div className="inline-block relative">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                                src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                                 alt="WingMentor Logo"
                                 className="mx-auto w-64 h-auto object-contain mb-8 drop-shadow-sm"
                             />

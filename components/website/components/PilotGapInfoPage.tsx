@@ -22,7 +22,7 @@ export const PilotGapInfoPage: React.FC<PilotGapInfoPageProps> = ({
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
-                        src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                         alt="WingMentor Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
@@ -136,7 +136,7 @@ export const PilotGapInfoPage: React.FC<PilotGapInfoPageProps> = ({
                         <RevealOnScroll delay={100}>
                             <div className="relative bg-white border border-slate-200 rounded-3xl p-8 md:p-16 flex flex-col items-center text-center shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                                     alt="WingMentor Logo"
                                     className="w-40 h-auto object-contain mb-6"
                                 />

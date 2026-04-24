@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     siteName: 'Pilotrecognition.com',
     images: [
       {
-        url: 'https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR',
+        url: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
         width: 1200,
         height: 630,
         alt: 'Pilotrecognition Logo',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Pilotrecognition.com | Aviation Career Recognition & Pilot Pathways',
     description: 'Transform your aviation career with Pilotrecognition.com. Industry-accredited pilot recognition profiles, EBT CBTA training, Foundation and Transition programs, AI-powered career matching, and direct airline pathways.',
-    images: ['https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR'],
+    images: ['https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png'],
   },
   robots: {
     index: true,

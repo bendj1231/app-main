@@ -530,7 +530,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     {/* Logo Section */}
                     <div className="flex items-center gap-4 group cursor-pointer" onClick={() => onNavigate('home')}>
                         <div className="w-32 h-16 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                            <img src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR" alt="Logo" className="w-full h-full object-contain" />
+                            <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="Logo" className="w-full h-full object-contain" />
                         </div>
                         <div className="flex flex-col items-center">
                             <span

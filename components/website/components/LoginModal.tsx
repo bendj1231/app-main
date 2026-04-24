@@ -159,7 +159,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                         {/* Logo - Centered, larger, and positioned lower */}
                         <div className="mt-8 mb-6 flex justify-center">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1U7pwMY1-ZsvNYC0Np3fVw5OhW3rTD5DR"
+                                src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                                 alt="WingMentor Logo"
                                 className="w-48 h-auto object-contain"
                             />
