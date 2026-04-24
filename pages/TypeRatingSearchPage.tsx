@@ -124,6 +124,17 @@ export default function TypeRatingSearchPage() {
     return aircraft;
   }, [selectedManufacturer, activeCategory, searchQuery]);
 
+  // Get available categories for selected manufacturer
+  const availableCategories = React.useMemo(() => {
+    if (!selectedManufacturer) {
+      return Object.keys(CATEGORY_LABELS) as Category[];
+    }
+    
+    const manufacturerAircraft = getAircraftByManufacturer(selectedManufacturer.id);
+    const categories = new Set(manufacturerAircraft.map(a => a.category));
+    return ['all', ...Array.from(categories)] as Category[];
+  }, [selectedManufacturer]);
+
   // Auto-scroll carousel
   useEffect(() => {
     const interval = setInterval(() => {
@@ -223,7 +234,7 @@ export default function TypeRatingSearchPage() {
 
       {/* Category filter chips */}
       <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
-        {(Object.keys(CATEGORY_LABELS) as Category[]).map(cat => (
+        {availableCategories.map(cat => (
           <button
             key={cat}
             onClick={() => { setActiveCategory(cat); setSelectedAircraft(null); }}
