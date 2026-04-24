@@ -2600,7 +2600,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     category: 'legacy',
     subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A340-200 is the initial version of the A340 family, a four-engine long-haul airliner developed to bypass early twin-engine flight restrictions. Production ended in 2011.',
+    description: 'The Airbus A340-200 is the initial version of the A340 family, a four-engine long-haul airliner developed to bypass early twin-engine flight restrictions. End of Life. No commercial airline flies this version anymore. Only 28 were ever built, and the last few were used as government "Air Force One" style planes for countries like Egypt or Qatar, but even those have largely been replaced by modern A350s.',
     firstFlight: 1991,
     specifications: {
       maxTakeoffWeight: '275,000 kg',
@@ -2852,7 +2852,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     category: 'legacy',
     subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A300B1 was the first variant of the A300, the world\'s first twin-engine wide-body airliner. It was the aircraft that launched Airbus as a company.',
+    description: 'The Airbus A300B1 was the first variant of the A300, the world\'s first twin-engine wide-body airliner. Retired. Only two were ever built. Both are long gone.',
     firstFlight: 1972,
     specifications: {
       maxTakeoffWeight: '132,000 kg',
@@ -2915,7 +2915,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     category: 'legacy',
     subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A300B2 was the production version of the A300 with increased range and capacity compared to the B1.',
+    description: 'The Airbus A300B2 was the production version of the A300 with increased range and capacity compared to the B1. Retired. These were the early 1970s models. They lack the modern tech required to fly in today\'s crowded airspace.',
     firstFlight: 1974,
     specifications: {
       maxTakeoffWeight: '142,000 kg',
@@ -2978,7 +2978,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     category: 'legacy',
     subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A300B4 was an extended range version of the A300 with center fuel tank for longer flights.',
+    description: 'The Airbus A300B4 was an extended range version of the A300 with center fuel tank for longer flights. Retired. These were the early 1970s models. They lack the modern tech required to fly in today\'s crowded airspace.',
     firstFlight: 1976,
     specifications: {
       maxTakeoffWeight: '157,000 kg',
@@ -3104,7 +3104,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     category: 'legacy',
     subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A310-200 is a shorter, longer-range derivative of the A300 family. It was the first Airbus aircraft with a two-crew glass cockpit.',
+    description: 'The Airbus A310-200 is a shorter, longer-range derivative of the A300 family. It was the first Airbus aircraft with a two-crew glass cockpit. Retired. Most were scrapped or converted years ago.',
     firstFlight: 1982,
     specifications: {
       maxTakeoffWeight: '144,000 kg',
