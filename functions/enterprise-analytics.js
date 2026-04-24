@@ -27,7 +27,7 @@ exports.trackCardView = onRequest(async (req, res) => {
 
 // ─── Application Submission ───────────────────────────────────────────────────
 exports.submitApplication = onRequest(async (req, res) => {
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
   setCORS(res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -107,7 +107,7 @@ exports.submitApplication = onRequest(async (req, res) => {
 
 // ─── Get Card Analytics ─────────────────────────────────────────────────────
 exports.getCardAnalytics = onRequest(async (req, res) => {
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
   setCORS(res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
@@ -147,7 +147,7 @@ exports.getCardAnalytics = onRequest(async (req, res) => {
 
 // ─── Get Applications for Enterprise ───────────────────────────────────────
 exports.getEnterpriseApplications = onRequest(async (req, res) => {
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
   setCORS(res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
@@ -183,7 +183,7 @@ exports.getEnterpriseApplications = onRequest(async (req, res) => {
 
 // ─── Update Application Status ────────────────────────────────────────────
 exports.updateApplicationStatus = onRequest(async (req, res) => {
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
   setCORS(res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
