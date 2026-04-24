@@ -196,7 +196,7 @@ export interface AircraftTypeRating {
   id: string;
   manufacturerId: string;
   model: string;
-  category: 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military' | 'legacy' | 'flagship';
+  category: 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military' | 'legacy' | 'flagship' | 'end-of-life';
   subcategory?: string;
   image: string;
   sketchfabId?: string;
@@ -2723,7 +2723,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a340-500',
     manufacturerId: 'airbus',
     model: 'A340-500',
-    category: 'legacy',
+    category: 'end-of-life',
     subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A340-500 is the ultra-long-range version of the A340 family with a stretched fuselage. Almost Extinct. This was a "niche" ultra-long-range plane. Almost every airline has retired them because they have four engines and burn too much fuel. Only a tiny handful exist as private VIP jets.',
@@ -3164,7 +3164,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a310-300',
     manufacturerId: 'airbus',
     model: 'A310-300',
-    category: 'legacy',
+    category: 'end-of-life',
     subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A310-300 is the extended range version of the A310 family with center fuel tank and increased MTOW. Final Phase. You won\'t find these at major airports like London or New York. They are mostly flying in Iran (Mahan Air) or as specialized military tankers (A310 MRTT) that are currently being replaced by the newer A330 MRTT.',

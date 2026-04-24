@@ -74,7 +74,7 @@ function SketchfabThumbnail({
   );
 }
 
-type Category = 'all' | 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military' | 'legacy' | 'flagship';
+type Category = 'all' | 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military' | 'legacy' | 'flagship' | 'end-of-life';
 
 const CATEGORY_LABELS: Record<string, string> = {
   'all': 'All',
@@ -86,6 +86,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   'military': 'Military',
   'legacy': 'Legacy (Retired)',
   'flagship': 'Flagship',
+  'end-of-life': 'End of Life (Phasing Out)',
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -97,6 +98,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   'military': 'bg-rose-500',
   'legacy': 'bg-slate-500',
   'flagship': 'bg-amber-500',
+  'end-of-life': 'bg-orange-500',
 };
 
 export default function TypeRatingSearchPage() {
