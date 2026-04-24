@@ -4488,9 +4488,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H125',
     category: 'helicopter',
-    subcategory: 'single-engine',
+    subcategory: 'light-single-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus H125 (formerly AS350 Écureuil) is a single-engine light utility helicopter known for its performance in high-altitude and hot conditions.',
+    description: 'The Airbus H125 (formerly AS350 Écureuil) is a single-engine light utility helicopter known for its performance in high-altitude and hot conditions. It holds the record for landing on Mt. Everest.',
     firstFlight: 1974,
     specifications: {
       maxTakeoffWeight: '2,500 kg',
@@ -4510,34 +4510,29 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       englishProficiency: 'ICAO Level 4',
       groundSchoolHours: 40,
       simulatorHours: 10,
-      flightHours: 5
+      flightHours: 10
     },
     trainingCurriculum: [
       {
         phase: 'Ground School',
-        duration: '2 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '1 week',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+        duration: '40 hours',
+        topics: ['Aircraft Systems', 'Performance Planning', 'High-Altitude Operations', 'Emergency Procedures']
       },
       {
         phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Mountain Operations']
+        duration: '10 hours',
+        topics: ['Basic Handling', 'Mountain Flying', 'High-Altitude Operations', 'Autorotations']
       }
     ],
     simulatorDetails: {
       type: 'Full Flight Simulator',
-      locations: ['Marignane', 'Dallas'],
+      locations: ['Marignane'],
       features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
     },
     instructorQualifications: [
       {
         type: 'Type Rating Instructor',
-        requirements: ['300 hours on type', 'TRI certification', 'Instructor rating']
+        requirements: ['500 hours on type', 'CFI(H)', 'Instructor rating']
       }
     ],
     certification: {
@@ -4551,9 +4546,9 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H130',
     category: 'helicopter',
-    subcategory: 'single-engine',
+    subcategory: 'light-single-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus H130 is a single-engine light helicopter featuring a fenestron tail rotor for improved safety and reduced noise.',
+    description: 'The Airbus H130 is a wide-body single-engine helicopter known as the "iPhone Pro" of sightseeing due to its huge windows and quiet Fenestron tail rotor. It\'s perfect for tourism and VIP transport.',
     firstFlight: 2012,
     specifications: {
       maxTakeoffWeight: '2,500 kg',
@@ -4614,7 +4609,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H135',
     category: 'helicopter',
-    subcategory: 'light-twin',
+    subcategory: 'light-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H135 is a light twin-engine helicopter known for its versatility in emergency medical services and law enforcement roles.',
     firstFlight: 1994,
@@ -4677,7 +4672,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H145',
     category: 'helicopter',
-    subcategory: 'light-twin',
+    subcategory: 'medium-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H145 is a light twin-engine helicopter featuring a fenestron tail rotor and advanced avionics.',
     firstFlight: 2014,
@@ -4740,7 +4735,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H155',
     category: 'helicopter',
-    subcategory: 'medium-twin',
+    subcategory: 'medium-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H155 (formerly EC155 B1) is a medium twin-engine helicopter with a spacious cabin for VIP transport.',
     firstFlight: 1997,
@@ -4866,7 +4861,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H175',
     category: 'helicopter',
-    subcategory: 'heavy-twin',
+    subcategory: 'heavy-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H175 (formerly EC175 B1) is a heavy twin-engine helicopter designed for offshore oil and gas transport.',
     firstFlight: 2009,
@@ -4929,7 +4924,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H225',
     category: 'helicopter',
-    subcategory: 'heavy-twin',
+    subcategory: 'heavy-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H225 (formerly Super Puma) is a heavy twin-engine helicopter used for offshore transport and heavy lift operations.',
     firstFlight: 1990,
@@ -5244,7 +5239,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H215',
     category: 'helicopter',
-    subcategory: 'heavy-twin',
+    subcategory: 'heavy-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H215 (formerly AS332 Super Puma Mk2) is the slightly smaller, more rugged sibling of the H225. It is heavily used for heavy-lift work and firefighting operations worldwide.',
     firstFlight: 1979,
@@ -5298,11 +5293,69 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
+    id: 'h160',
+    manufacturerId: 'airbus',
+    model: 'H160',
+    category: 'helicopter',
+    subcategory: 'medium-twin-engine',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H160 is the "Next-Gen" medium twin-engine helicopter featuring massive technological leaps like curved "Blue Edge" blades to make it incredibly quiet. It represents the future of the medium class.',
+    firstFlight: 2015,
+    specifications: {
+      maxTakeoffWeight: '6,000 kg',
+      cruisingSpeed: '290 km/h',
+      range: '870 km',
+      capacity: 12,
+      engines: 2,
+      engineType: 'Arrano Turboshaft',
+      length: '13.49 m',
+      wingspan: '13.00 m',
+      height: '4.33 m'
+    },
+    trainingRequirements: {
+      minimumHours: 200,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 70,
+      simulatorHours: 18,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '70 hours',
+        topics: ['Blue Edge Rotor System', 'Arrano Engine Systems', 'Performance Planning', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '18 hours',
+        topics: ['Advanced Handling', 'Blue Edge Operations', 'VIP Operations', 'Night Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
     id: 'h140',
     manufacturerId: 'airbus',
     model: 'H140',
     category: 'helicopter',
-    subcategory: 'light-twin',
+    subcategory: 'light-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H140 is a brand new light twin-engine model introduced around 2025, designed to bridge the gap between the H135 and H145 with enhanced performance and capacity.',
     firstFlight: 2025,
@@ -5534,7 +5587,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'AS365 Dauphin',
     category: 'helicopter',
-    subcategory: 'medium-twin',
+    subcategory: 'medium-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus AS365 Dauphin is a sleek, fast helicopter famous for its "Fenestron" (shrouded) tail rotor. It is the "father" of the H155 and still widely used for VIP transport and offshore missions.',
     firstFlight: 1975,
@@ -5592,7 +5645,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'BO-105',
     category: 'helicopter',
-    subcategory: 'light-twin',
+    subcategory: 'light-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus BO-105 is a legendary small twin-engine helicopter known for being the first that could perform loops and rolls. It is highly maneuverable and still in service for law enforcement and EMS.',
     firstFlight: 1967,
@@ -5650,7 +5703,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'BK-117',
     category: 'helicopter',
-    subcategory: 'medium-twin',
+    subcategory: 'light-twin-engine',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus BK-117 is the predecessor to the H145 and still widely seen as life-flight/medical helicopters. It was developed in partnership with Kawasaki.',
     firstFlight: 1979,
