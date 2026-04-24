@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { supabase } from '@/src/lib/supabase';
-import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info } from 'lucide-react';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import { NavigationSchema } from './seo/NavigationSchema';
 
@@ -61,6 +61,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
     const settingsDropdownRef = useRef<HTMLDivElement>(null);
     const [isAuthRestoring, setIsAuthRestoring] = useState(true);
+    const [isGraphicsModalOpen, setIsGraphicsModalOpen] = useState(false);
+    const [showGraphicsTooltip, setShowGraphicsTooltip] = useState(false);
+    const [notificationCount, setNotificationCount] = useState(0);
+    const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const notificationDropdownRef = useRef<HTMLDivElement>(null);
 
     // Fetch pilot_id and profile data from Supabase profile
     useEffect(() => {
@@ -167,13 +173,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             if (settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target as Node)) {
                 setIsSettingsDropdownOpen(false);
             }
+            if (notificationDropdownRef.current && !notificationDropdownRef.current.contains(event.target as Node)) {
+                setIsNotificationDropdownOpen(false);
+            }
         };
 
-        if (isProfileDropdownOpen || isSettingsDropdownOpen) {
+        if (isProfileDropdownOpen || isSettingsDropdownOpen || isNotificationDropdownOpen) {
             document.addEventListener('mousedown', handleClickOutside);
             return () => document.removeEventListener('mousedown', handleClickOutside);
         }
-    }, [isProfileDropdownOpen, isSettingsDropdownOpen]);
+    }, [isProfileDropdownOpen, isSettingsDropdownOpen, isNotificationDropdownOpen]);
 
     useEffect(() => {
         if (forceScrolled) return;
@@ -194,6 +203,185 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             return () => clearTimeout(timer);
         }
     }, [authLoading]);
+
+    // Show graphics tooltip on first visit (logged in or out)
+    useEffect(() => {
+        const hasSeenTooltip = localStorage.getItem('hasSeenGraphicsTooltip');
+        if (!hasSeenTooltip && !authLoading) {
+            const timer = setTimeout(() => {
+                setShowGraphicsTooltip(true);
+            }, 2000); // Show after 2 seconds
+            return () => clearTimeout(timer);
+        }
+    }, [authLoading]);
+
+    // Fetch notification count and notifications
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            if (currentUser?.uid) {
+                try {
+                    console.log('Fetching notifications for Firebase UID:', currentUser.uid);
+                    
+                    // First, get the profile ID from the Firebase UID
+                    const { data: profileData, error: profileError } = await supabase
+                        .from('profiles')
+                        .select('id')
+                        .eq('firebase_uid', currentUser.uid)
+                        .single();
+                    
+                    if (profileError || !profileData) {
+                        console.error('Error fetching profile:', profileError);
+                        // Try to fetch by email as fallback
+                        const { data: emailProfile, error: emailError } = await supabase
+                            .from('profiles')
+                            .select('id')
+                            .eq('email', currentUser.email)
+                            .single();
+                        
+                        if (emailError || !emailProfile) {
+                            console.error('Error fetching profile by email:', emailError);
+                            return;
+                        }
+                        
+                        const profileId = emailProfile.id;
+                        console.log('Found profile by email, ID:', profileId);
+                        
+                        // Fetch count
+                        const { count, error: countError } = await supabase
+                            .from('notifications')
+                            .select('*', { count: 'exact', head: true })
+                            .eq('user_id', profileId)
+                            .eq('is_read', false);
+                        
+                        if (!countError && count !== null) {
+                            setNotificationCount(count);
+                            console.log('Notification count:', count);
+                        }
+
+                        // Fetch actual notifications
+                        const { data, error } = await supabase
+                            .from('notifications')
+                            .select('*')
+                            .eq('user_id', profileId)
+                            .order('created_at', { ascending: false })
+                            .limit(10);
+                        
+                        if (!error && data) {
+                            setNotifications(data);
+                            console.log('Fetched notifications:', data.length);
+                        }
+                        return;
+                    }
+
+                    const profileId = profileData.id;
+                    console.log('Found profile by Firebase UID, ID:', profileId);
+
+                    // Fetch count
+                    const { count, error: countError } = await supabase
+                        .from('notifications')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', profileId)
+                        .eq('is_read', false);
+                    
+                    if (!countError && count !== null) {
+                        setNotificationCount(count);
+                        console.log('Notification count:', count);
+                    }
+
+                    // Fetch actual notifications
+                    const { data, error } = await supabase
+                        .from('notifications')
+                        .select('*')
+                        .eq('user_id', profileId)
+                        .order('created_at', { ascending: false })
+                        .limit(10);
+                    
+                    if (!error && data) {
+                        setNotifications(data);
+                        console.log('Fetched notifications:', data.length);
+                    }
+                } catch (err) {
+                    console.error('Error fetching notifications:', err);
+                }
+            }
+        };
+
+        fetchNotifications();
+
+        // Set up real-time subscription for new notifications
+        const subscription = supabase
+            .channel('notifications-count')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'notifications',
+                },
+                () => {
+                    fetchNotifications();
+                }
+            )
+            .subscribe();
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [currentUser]);
+
+    const markAsRead = async (notificationId: string) => {
+        await supabase
+            .from('notifications')
+            .update({ is_read: true })
+            .eq('id', notificationId);
+        
+        setNotifications(prev =>
+            prev.map(n => n.id === notificationId ? { ...n, is_read: true } : n)
+        );
+        setNotificationCount(prev => Math.max(0, prev - 1));
+    };
+
+    const markAllAsRead = async () => {
+        const unreadIds = notifications.filter(n => !n.is_read).map(n => n.id);
+        if (unreadIds.length === 0) return;
+
+        await supabase
+            .from('notifications')
+            .update({ is_read: true })
+            .in('id', unreadIds);
+
+        setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+        setNotificationCount(0);
+    };
+
+    const formatTimestamp = (date: string) => {
+        const now = new Date();
+        const timestamp = new Date(date);
+        const diff = now.getTime() - timestamp.getTime();
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 1) return 'Just now';
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        if (days < 7) return `${days}d ago`;
+        return timestamp.toLocaleDateString();
+    };
+
+    const getNotificationIcon = (type: string) => {
+        switch (type) {
+            case 'success':
+                return <CheckCircle className="w-5 h-5 text-emerald-500" />;
+            case 'error':
+                return <XCircle className="w-5 h-5 text-red-500" />;
+            case 'warning':
+                return <AlertCircle className="w-5 h-5 text-amber-500" />;
+            case 'info':
+            default:
+                return <Info className="w-5 h-5 text-blue-500" />;
+        }
+    };
 
     const navItems: NavItem[] = [
         {
@@ -544,6 +732,107 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
                         {currentUser && (
                             <>
+                                {/* Notification Bell */}
+                                <div className="relative" ref={notificationDropdownRef}>
+                                    <button 
+                                        onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
+                                        className="w-8 h-8 text-white flex items-center justify-center transition-all relative hover:text-white/80"
+                                    >
+                                        <Bell className="w-5 h-5" />
+                                        {notificationCount > 0 && (
+                                            <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 bg-white text-red-500 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-red-500">
+                                                {notificationCount > 9 ? '9+' : notificationCount}
+                                            </span>
+                                        )}
+                                    </button>
+
+                                    {/* Notification Dropdown */}
+                                    {isNotificationDropdownOpen && (
+                                        <>
+                                            <div
+                                                className="fixed inset-0 z-40"
+                                                onClick={() => setIsNotificationDropdownOpen(false)}
+                                            />
+                                            <div className="absolute right-0 top-full mt-2 w-96 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 max-h-[500px] overflow-hidden flex flex-col">
+                                                {/* Header */}
+                                                <div className="p-4 border-b border-slate-200 flex items-center justify-between">
+                                                    <h3 className="font-semibold text-slate-900">Notifications</h3>
+                                                    {notificationCount > 0 && (
+                                                        <button
+                                                            onClick={markAllAsRead}
+                                                            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                                        >
+                                                            Mark all as read
+                                                        </button>
+                                                    )}
+                                                </div>
+
+                                                {/* Notifications List */}
+                                                <div className="overflow-y-auto flex-1">
+                                                    {notifications.length === 0 ? (
+                                                        <div className="p-8 text-center">
+                                                            <Bell className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                                                            <p className="text-slate-500 text-sm">No notifications yet</p>
+                                                        </div>
+                                                    ) : (
+                                                        notifications.map(notification => (
+                                                            <div
+                                                                key={notification.id}
+                                                                className={`p-4 border-b border-slate-100 hover:bg-slate-50 transition-all ${!notification.is_read ? 'bg-blue-50/50' : ''}`}
+                                                            >
+                                                                <div className="flex items-start gap-3">
+                                                                    <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0">
+                                                                        {getNotificationIcon(notification.type)}
+                                                                    </div>
+                                                                    <div className="flex-1 min-w-0">
+                                                                        <div className="flex items-start justify-between gap-2">
+                                                                            <h4 className="font-semibold text-slate-900 text-sm">{notification.title}</h4>
+                                                                            {!notification.is_read && (
+                                                                                <span className="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-1.5" />
+                                                                            )}
+                                                                        </div>
+                                                                        <p className="text-slate-600 text-sm mt-1 line-clamp-2">{notification.message}</p>
+                                                                        <div className="flex items-center justify-between mt-2">
+                                                                            <span className="text-slate-400 text-xs">{formatTimestamp(notification.created_at)}</span>
+                                                                            <div className="flex items-center gap-2">
+                                                                                {!notification.is_read && (
+                                                                                    <button
+                                                                                        onClick={() => markAsRead(notification.id)}
+                                                                                        className="text-xs text-blue-600 hover:text-blue-700"
+                                                                                    >
+                                                                                        Mark read
+                                                                                    </button>
+                                                                                )}
+                                                                                {notification.metadata?.action_url && (
+                                                                                    <button
+                                                                                        onClick={() => {
+                                                                                            window.location.href = notification.metadata.action_url;
+                                                                                            setIsNotificationDropdownOpen(false);
+                                                                                        }}
+                                                                                        className="text-xs font-medium text-blue-600 hover:text-blue-700"
+                                                                                    >
+                                                                                        View
+                                                                                    </button>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    )}
+                                                </div>
+
+                                                {/* Footer */}
+                                                <div className="p-3 border-t border-slate-200">
+                                                    <button className="w-full text-sm text-slate-600 hover:text-slate-900 text-center py-2">
+                                                        View all notifications
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
                                 <div className="relative" ref={dropdownRef}>
                                     <button
                                         onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}

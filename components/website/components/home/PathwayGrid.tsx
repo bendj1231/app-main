@@ -158,7 +158,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'programs',
-            image: 'https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
             title: 'Programs',
             subtitle: 'Structured training pathways from flight school to airline-ready professional',
             icon: GraduationCap,
@@ -218,7 +218,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'learn-more',
-            image: 'https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
             title: 'Learn More',
             subtitle: 'Deep dive into curriculum details, mentorship structure, and success stories',
             icon: GraduationCap,
