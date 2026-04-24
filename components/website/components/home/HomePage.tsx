@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
@@ -11,6 +11,7 @@ import { SmokeShader } from '../../../ui/smoke-shader';
 import { SkyCloudShader } from '../../../ui/sky-cloud-shader';
 import { PathwayGrid } from './PathwayGrid';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
+import { getDevicePerformanceTier, shouldEnable3DEffects } from '@/src/lib/device-detection';
 
 interface HomePageProps {
     onJoinUs: () => void;
@@ -426,6 +427,31 @@ export const HomePage: React.FC<HomePageProps> = ({
         'all' | 'program' | 'systems_automation' | 'network' | 'application' | 'pathways'
     >('all');
     const scrollPositionRef = useRef(0);
+    
+    // Automatic device detection for performance optimization
+    const [deviceTier, setDeviceTier] = useState<'low' | 'medium' | 'high'>('high');
+    const [showOptimizationMessage, setShowOptimizationMessage] = useState(false);
+    const [enableShader, setEnableShader] = useState(true);
+    
+    useEffect(() => {
+        // Detect device performance on mount
+        const tier = getDevicePerformanceTier();
+        setDeviceTier(tier);
+        
+        // Disable shader on low-end devices
+        const shouldEnableShader = shouldEnable3DEffects();
+        setEnableShader(shouldEnableShader);
+        
+        // Show optimization message on low-end devices
+        if (tier === 'low') {
+            setShowOptimizationMessage(true);
+            // Auto-hide message after 5 seconds
+            const timer = setTimeout(() => {
+                setShowOptimizationMessage(false);
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, []);
 
     const allSlides: Slide[] = [
         {
@@ -706,12 +732,27 @@ export const HomePage: React.FC<HomePageProps> = ({
                 currentPage="home"
             />
 
+            {/* Optimization Message for Low-End Devices */}
+            {showOptimizationMessage && (
+                <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 text-sm">
+                    <Zap className="w-4 h-4" />
+                    <span>Running in optimized mode for smoother performance on older devices</span>
+                </div>
+            )}
+
             {/* Smoke Shader Section with Glassy Card */}
             <div className="relative w-full h-screen">
-                <SmokeShader />
+                {enableShader ? <SmokeShader /> : null}
                 
                 {/* Flight Simulator Style Grid */}
-                <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                {deviceTier === 'low' ? (
+                    // Lazy load PathwayGrid for low-end devices
+                    <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-white">Loading...</div>}>
+                        <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                    </React.Suspense>
+                ) : (
+                    <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                )}
             </div>
             
             {/* Gradient Fade Below Shader - After Discover More */}
