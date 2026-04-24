@@ -191,23 +191,6 @@ export default function TypeRatingSearchPage() {
               className="w-full pl-4 pr-11 py-3 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all"
             />
           </div>
-
-          {/* Category filter chips */}
-          <div className="mt-4 flex gap-1.5 flex-wrap justify-center">
-            {(Object.keys(CATEGORY_LABELS) as Category[]).map(cat => (
-              <button
-                key={cat}
-                onClick={() => { setActiveCategory(cat); setSelectedAircraft(null); }}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  activeCategory === cat
-                    ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white shadow-sm`
-                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                }`}
-              >
-                {CATEGORY_LABELS[cat]}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -236,6 +219,23 @@ export default function TypeRatingSearchPage() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Category filter chips */}
+      <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+        {(Object.keys(CATEGORY_LABELS) as Category[]).map(cat => (
+          <button
+            key={cat}
+            onClick={() => { setActiveCategory(cat); setSelectedAircraft(null); }}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              activeCategory === cat
+                ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white shadow-sm`
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            {CATEGORY_LABELS[cat]}
+          </button>
+        ))}
       </div>
 
       {/* Carousel Section */}
