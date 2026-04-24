@@ -848,7 +848,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Shanghai, China',
         country: 'China',
         offers: ['C919'],
-        image: 'https://www.comac.cc/content/dam/comac/training-center.jpg',
+        image: 'https://www.comac.cc/content/dam/comac/training.jpg',
         website: 'https://www.comac.cc/training'
       }
     ],
@@ -858,9 +858,243 @@ export const manufacturers: Manufacturer[] = [
       keyMarkets: ['China', 'Asia']
     },
     salaryExpectations: {
+      entryLevel: '$45,000 - $65,000',
+      midLevel: '$70,000 - $100,000',
+      seniorLevel: '$110,000 - $170,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'First Officer',
+      midLevel: 'Captain',
+      seniorLevel: 'Fleet Manager',
+      timeline: '5-8 years to Captain, 10-15 years to senior roles'
+    }
+  },
+  {
+    id: 'cessna',
+    name: 'Cessna',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Cessna_logo.svg/1200px-Cessna_logo.svg.png',
+    description: 'Cessna is an American general aviation aircraft manufacturer. They are known for their single-engine piston aircraft, business jets, and turboprops.',
+    founded: 1927,
+    headquarters: 'Wichita, Kansas, USA',
+    website: 'https://www.textronaviation.com',
+    reputationScore: 9.2,
+    totalAircraftCount: 200000,
+    trainingCenters: [
+      {
+        id: 'cessna-wichita',
+        name: 'Cessna Flight Training Wichita',
+        location: 'Wichita, USA',
+        country: 'USA',
+        offers: ['172', '182', '206', 'Citation'],
+        image: 'https://www.textronaviation.com/content/dam/textron/training-center.jpg',
+        website: 'https://www.textronaviation.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '3% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $85,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Charter Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Charter Pilot, 8-12 years to senior roles'
+    }
+  },
+  {
+    id: 'tecnam',
+    name: 'Tecnam',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Tecnam_logo.svg/1200px-Tecnam_logo.svg.png',
+    description: 'Tecnam is an Italian aircraft manufacturer specializing in light sport aircraft, general aviation aircraft, and twin-engine piston aircraft.',
+    founded: 1948,
+    headquarters: 'Capua, Italy',
+    website: 'https://www.tecnam.com',
+    reputationScore: 8.5,
+    totalAircraftCount: 5000,
+    trainingCenters: [
+      {
+        id: 'tecnam-capua',
+        name: 'Tecnam Training Center Capua',
+        location: 'Capua, Italy',
+        country: 'Italy',
+        offers: ['P92', 'P2002', 'P2006T'],
+        image: 'https://www.tecnam.com/content/dam/tecnam/training-center.jpg',
+        website: 'https://www.tecnam.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '4% annually',
+      keyMarkets: ['Europe', 'North America']
+    },
+    salaryExpectations: {
+      entryLevel: '$30,000 - $45,000',
+      midLevel: '$45,000 - $65,000',
+      seniorLevel: '$65,000 - $95,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Charter Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Charter Pilot, 8-12 years to senior roles'
+    }
+  },
+  {
+    id: 'piper',
+    name: 'Piper',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Piper_Aircraft_logo.svg/1200px-Piper_Aircraft_logo.svg.png',
+    description: 'Piper Aircraft is an American general aviation aircraft manufacturer known for their Cherokee, Archer, and Warrior series of aircraft.',
+    founded: 1927,
+    headquarters: 'Vero Beach, Florida, USA',
+    website: 'https://www.piper.com',
+    reputationScore: 9.0,
+    totalAircraftCount: 90000,
+    trainingCenters: [
+      {
+        id: 'piper-vero',
+        name: 'Piper Flight Training Vero Beach',
+        location: 'Vero Beach, USA',
+        country: 'USA',
+        offers: ['PA-28', 'PA-18', 'PA-34'],
+        image: 'https://www.piper.com/content/dam/piper/training-center.jpg',
+        website: 'https://www.piper.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '3% annually',
+      keyMarkets: ['North America', 'Europe']
+    },
+    salaryExpectations: {
+      entryLevel: '$35,000 - $50,000',
+      midLevel: '$55,000 - $85,000',
+      seniorLevel: '$80,000 - $120,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Charter Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Charter Pilot, 8-12 years to senior roles'
+    }
+  },
+  {
+    id: 'embraer',
+    name: 'Embraer',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Embraer_logo.svg/1200px-Embraer_logo.svg.png',
+    description: 'Embraer is a Brazilian aerospace conglomerate that produces commercial, military, and executive aircraft. They are known for their E-Jet family and regional aircraft.',
+    founded: 1969,
+    headquarters: 'São José dos Campos, Brazil',
+    website: 'https://www.embraer.com',
+    reputationScore: 9.1,
+    totalAircraftCount: 8000,
+    trainingCenters: [
+      {
+        id: 'embraer-sao',
+        name: 'Embraer Training Center São Paulo',
+        location: 'São José dos Campos, Brazil',
+        country: 'Brazil',
+        offers: ['E190', 'E195', 'Phenom'],
+        image: 'https://www.embraer.com/content/dam/embraer/training-center.jpg',
+        website: 'https://www.embraer.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '5% annually',
+      keyMarkets: ['South America', 'North America', 'Europe', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$50,000 - $70,000',
+      midLevel: '$80,000 - $120,000',
+      seniorLevel: '$130,000 - $180,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'First Officer',
+      midLevel: 'Captain',
+      seniorLevel: 'Fleet Manager',
+      timeline: '4-6 years to Captain, 9-14 years to senior roles'
+    }
+  },
+  {
+    id: 'cirrus',
+    name: 'Cirrus',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Cirrus_Aircraft_logo.svg/1200px-Cirrus_Aircraft_logo.svg.png',
+    description: 'Cirrus Aircraft is an American aircraft manufacturer known for their SR series of single-engine piston aircraft and the Vision SF50 personal jet.',
+    founded: 1984,
+    headquarters: 'Duluth, Minnesota, USA',
+    website: 'https://www.cirrusaircraft.com',
+    reputationScore: 9.3,
+    totalAircraftCount: 10000,
+    trainingCenters: [
+      {
+        id: 'cirrus-duluth',
+        name: 'Cirrus Training Center Duluth',
+        location: 'Duluth, USA',
+        country: 'USA',
+        offers: ['SR20', 'SR22', 'Vision SF50'],
+        image: 'https://www.cirrusaircraft.com/content/dam/cirrus/training-center.jpg',
+        website: 'https://www.cirrusaircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '6% annually',
+      keyMarkets: ['North America', 'Europe']
+    },
+    salaryExpectations: {
       entryLevel: '$40,000 - $60,000',
       midLevel: '$60,000 - $90,000',
-      seniorLevel: '$90,000 - $140,000',
+      seniorLevel: '$85,000 - $130,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Charter Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Charter Pilot, 8-12 years to senior roles'
+    }
+  },
+  {
+    id: 'atr',
+    name: 'ATR',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/ATR_logo.svg/1200px-ATR_logo.svg.png',
+    description: 'ATR is a French-Italian aircraft manufacturer specializing in regional turboprop aircraft. The ATR 42 and ATR 72 are their most popular models.',
+    founded: 1981,
+    headquarters: 'Blagnac, France',
+    website: 'https://www.atr-aircraft.com',
+    reputationScore: 8.8,
+    totalAircraftCount: 2000,
+    trainingCenters: [
+      {
+        id: 'atr-toulouse',
+        name: 'ATR Training Center Toulouse',
+        location: 'Toulouse, France',
+        country: 'France',
+        offers: ['ATR 42', 'ATR 72'],
+        image: 'https://www.atr-aircraft.com/content/dam/atr/training-center.jpg',
+        website: 'https://www.atr-aircraft.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '4% annually',
+      keyMarkets: ['Europe', 'Asia', 'South America', 'Africa']
+    },
+    salaryExpectations: {
+      entryLevel: '$45,000 - $65,000',
+      midLevel: '$70,000 - $100,000',
+      seniorLevel: '$110,000 - $160,000',
       currency: 'USD'
     },
     careerProgression: {
@@ -871,81 +1105,159 @@ export const manufacturers: Manufacturer[] = [
     }
   },
   {
-    id: 'sukhoi-superjet',
-    name: 'Sukhoi Superjet',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Sukhoi_logo.svg/1200px-Sukhoi_logo.svg.png',
-    description: 'Sukhoi Superjet (now Irkut MC-21) is a Russian regional airliner produced by Sukhoi Civil Aircraft.',
-    founded: 2000,
-    headquarters: 'Moscow, Russia',
-    website: 'https://www.irkut.com',
-    reputationScore: 7.2,
-    totalAircraftCount: 200,
+    id: 'let',
+    name: 'Let',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Let_Kunovice_logo.svg/1200px-Let_Kunovice_logo.svg.png',
+    description: 'Let Aircraft Industries is a Czech aircraft manufacturer known for their L-410 Turbolet turboprop regional airliner.',
+    founded: 1936,
+    headquarters: 'Kunovice, Czech Republic',
+    website: 'https://www.letair.cz',
+    reputationScore: 8.0,
+    totalAircraftCount: 1200,
     trainingCenters: [
       {
-        id: 'sukhoi-moscow',
-        name: 'Sukhoi Training Center Moscow',
-        location: 'Moscow, Russia',
-        country: 'Russia',
-        offers: ['Superjet 100'],
-        image: 'https://www.irkut.com/content/dam/irkut/training-center.jpg',
-        website: 'https://www.irkut.com/training'
+        id: 'let-kunovice',
+        name: 'Let Training Center Kunovice',
+        location: 'Kunovice, Czech Republic',
+        country: 'Czech Republic',
+        offers: ['L-410'],
+        image: 'https://www.letair.cz/content/dam/let/training-center.jpg',
+        website: 'https://www.letair.cz/training'
       }
     ],
     marketDemandStatistics: {
       demandLevel: 'low',
       growthRate: '2% annually',
-      keyMarkets: ['Russia', 'CIS']
+      keyMarkets: ['Europe', 'Africa', 'Asia']
     },
     salaryExpectations: {
-      entryLevel: '$35,000 - $55,000',
-      midLevel: '$55,000 - $85,000',
-      seniorLevel: '$80,000 - $130,000',
+      entryLevel: '$40,000 - $55,000',
+      midLevel: '$55,000 - $75,000',
+      seniorLevel: '$75,000 - $110,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'First Officer',
+      midLevel: 'Captain',
+      seniorLevel: 'Chief Pilot',
+      timeline: '4-6 years to Captain, 9-12 years to senior roles'
+    }
+  },
+  {
+    id: 'gulfstream',
+    name: 'Gulfstream',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Gulfstream_Aerospace_logo.svg/1200px-Gulfstream_Aerospace_logo.svg.png',
+    description: 'Gulfstream Aerospace is an American aircraft manufacturer specializing in business jets. They are known for their G-series of large-cabin business jets.',
+    founded: 1958,
+    headquarters: 'Savannah, Georgia, USA',
+    website: 'https://www.gulfstream.com',
+    reputationScore: 9.5,
+    totalAircraftCount: 3000,
+    trainingCenters: [
+      {
+        id: 'gulfstream-savannah',
+        name: 'Gulfstream Training Center Savannah',
+        location: 'Savannah, USA',
+        country: 'USA',
+        offers: ['G650', 'G700', 'G800'],
+        image: 'https://www.gulfstream.com/content/dam/gulfstream/training-center.jpg',
+        website: 'https://www.gulfstream.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'high',
+      growthRate: '5% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia', 'Middle East']
+    },
+    salaryExpectations: {
+      entryLevel: '$80,000 - $120,000',
+      midLevel: '$130,000 - $200,000',
+      seniorLevel: '$200,000 - $300,000',
+      currency: 'USD'
+    },
+    careerProgression: {
+      entryLevel: 'First Officer',
+      midLevel: 'Captain',
+      seniorLevel: 'Chief Pilot',
+      timeline: '3-5 years to Captain, 8-12 years to senior roles'
+    }
+  },
+  {
+    id: 'bombardier',
+    name: 'Bombardier',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Bombardier_logo.svg/1200px-Bombardier_logo.svg.png',
+    description: 'Bombardier is a Canadian aircraft manufacturer known for their CRJ regional jets and Challenger business jets.',
+    founded: 1942,
+    headquarters: 'Montreal, Quebec, Canada',
+    website: 'https://www.bombardier.com',
+    reputationScore: 8.9,
+    totalAircraftCount: 2000,
+    trainingCenters: [
+      {
+        id: 'bombardier-montreal',
+        name: 'Bombardier Training Center Montreal',
+        location: 'Montreal, Canada',
+        country: 'Canada',
+        offers: ['CRJ-700', 'CRJ-900', 'Challenger'],
+        image: 'https://www.bombardier.com/content/dam/bombardier/training-center.jpg',
+        website: 'https://www.bombardier.com/training'
+      }
+    ],
+    marketDemandStatistics: {
+      demandLevel: 'medium',
+      growthRate: '3% annually',
+      keyMarkets: ['North America', 'Europe', 'Asia']
+    },
+    salaryExpectations: {
+      entryLevel: '$55,000 - $75,000',
+      midLevel: '$80,000 - $120,000',
+      seniorLevel: '$130,000 - $190,000',
       currency: 'USD'
     },
     careerProgression: {
       entryLevel: 'First Officer',
       midLevel: 'Captain',
       seniorLevel: 'Fleet Manager',
-      timeline: '5-8 years to Captain, 10-15 years to senior roles'
+      timeline: '4-6 years to Captain, 9-14 years to senior roles'
     }
   },
   {
-    id: 'irkut-mc-21',
-    name: 'Irkut MC-21',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Sukhoi_logo.svg/1200px-Sukhoi_logo.svg.png',
-    description: 'Irkut MC-21 is a Russian single-aisle airliner produced by Irkut Corporation, a subsidiary of United Aircraft Corporation.',
-    founded: 2016,
-    headquarters: 'Irkutsk, Russia',
-    website: 'https://www.irkut.com',
-    reputationScore: 7.5,
-    totalAircraftCount: 50,
+    id: 'aeroprakt',
+    name: 'Aeroprakt',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Aeroprakt_logo.svg/1200px-Aeroprakt_logo.svg.png',
+    description: 'Aeroprakt is a Ukrainian aircraft manufacturer known for their A-22 Foxbat light sport aircraft.',
+    founded: 1991,
+    headquarters: 'Kyiv, Ukraine',
+    website: 'https://www.aeroprakt.com.ua',
+    reputationScore: 8.3,
+    totalAircraftCount: 500,
     trainingCenters: [
       {
-        id: 'irkut-irkutsk',
-        name: 'Irkut Training Center Irkutsk',
-        location: 'Irkutsk, Russia',
-        country: 'Russia',
-        offers: ['MC-21'],
-        image: 'https://www.irkut.com/content/dam/irkut/training-center.jpg',
-        website: 'https://www.irkut.com/training'
+        id: 'aeroprakt-kyiv',
+        name: 'Aeroprakt Training Center Kyiv',
+        location: 'Kyiv, Ukraine',
+        country: 'Ukraine',
+        offers: ['A-22 Foxbat'],
+        image: 'https://www.aeroprakt.com.ua/content/dam/aeroprakt/training-center.jpg',
+        website: 'https://www.aeroprakt.com.ua/training'
       }
     ],
     marketDemandStatistics: {
       demandLevel: 'low',
-      growthRate: '3% annually',
-      keyMarkets: ['Russia', 'CIS']
+      growthRate: '2% annually',
+      keyMarkets: ['Europe', 'Asia']
     },
     salaryExpectations: {
-      entryLevel: '$40,000 - $60,000',
-      midLevel: '$60,000 - $90,000',
-      seniorLevel: '$85,000 - $140,000',
+      entryLevel: '$25,000 - $35,000',
+      midLevel: '$35,000 - $50,000',
+      seniorLevel: '$50,000 - $75,000',
       currency: 'USD'
     },
     careerProgression: {
-      entryLevel: 'First Officer',
-      midLevel: 'Captain',
-      seniorLevel: 'Fleet Manager',
-      timeline: '5-8 years to Captain, 10-15 years to senior roles'
+      entryLevel: 'Flight Instructor',
+      midLevel: 'Charter Pilot',
+      seniorLevel: 'Chief Pilot',
+      timeline: '2-4 years to Charter Pilot, 6-10 years to senior roles'
     }
   }
 ];
@@ -959,7 +1271,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A320',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'feaa475ce5824121be0380a42987007f',
+    sketchfabId: 'ae3d357729a44f278f9ef9326977504a',
     description: 'The Airbus A320 is a narrow-body, medium-range, twin-engine jet airliner. It was the first member of the A320 family, which was launched in March 1984.',
     firstFlight: 1987,
     specifications: {
@@ -1022,7 +1334,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'feaa475ce5824121be0380a42987007f',
+    sketchfabId: '50c4ed883e00436e80a3f1c8048f549f',
     description: 'The Airbus A330 is a wide-body, twin-engine jet airliner. It was designed to replace the earlier A300.',
     firstFlight: 1992,
     specifications: {
@@ -1085,7 +1397,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'feaa475ce5824121be0380a42987007f',
+    sketchfabId: '0703224a1a7e497eaa2a860e1d3b1774',
     description: 'The Airbus A350 is a long-range, wide-body, twin-engine jet airliner. It is the first Airbus aircraft with both fuselage and wing structures made primarily of carbon-fiber-reinforced polymer.',
     firstFlight: 2013,
     specifications: {
@@ -1148,7 +1460,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A380',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: '9e7bfa1049ec44a2a8d8d0bdaf51533c',
+    sketchfabId: '98d21f9c8104445f814cef47ef992889',
     description: 'The Airbus A380 is a double-deck, wide-body, four-engine jet airliner. It is the world\'s largest passenger airliner.',
     firstFlight: 2005,
     specifications: {
@@ -1211,7 +1523,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A220',
     category: 'regional',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'feaa475ce5824121be0380a42987007f',
+    sketchfabId: 'ce4fbb839e6b4bb989422426bfc8fd1c',
     description: 'The Airbus A220 is a family of narrow-body, twin-engine, medium-range jet airliners. It was originally developed by Bombardier as the CSeries.',
     firstFlight: 2013,
     specifications: {
@@ -1268,6 +1580,365 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
     }
   },
+  // Cessna
+  {
+    id: 'cessna-172',
+    manufacturerId: 'cessna',
+    model: 'Cessna 172',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'd1b15841c29c43d0862667300bad55a4',
+    description: 'The Cessna 172 Skyhawk is a four-seat, single-engine, high wing, fixed-wing aircraft. It is the most produced aircraft in history.',
+    firstFlight: 1955,
+    specifications: {
+      maxTakeoffWeight: '1,111 kg',
+      cruisingSpeed: '122 knots',
+      range: '1,289 km',
+      capacity: 4,
+      engines: 1,
+      engineType: 'Lycoming O-320',
+      length: '8.28 m',
+      wingspan: '11.0 m',
+      height: '2.72 m'
+    },
+    trainingRequirements: {
+      minimumHours: 40,
+      requiredLicenses: ['PPL'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 40
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '6 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Wichita', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  {
+    id: 'cessna-152',
+    manufacturerId: 'cessna',
+    model: 'Cessna 152',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'f20f6eb4616e4a708241eb3c8a90340a',
+    description: 'The Cessna 152 is a two-seat, tricycle gear, general aviation airplane. It was designed primarily as a flight trainer.',
+    firstFlight: 1977,
+    specifications: {
+      maxTakeoffWeight: '757 kg',
+      cruisingSpeed: '107 knots',
+      range: '770 km',
+      capacity: 2,
+      engines: 1,
+      engineType: 'Lycoming O-235',
+      length: '7.3 m',
+      wingspan: '10.17 m',
+      height: '2.59 m'
+    },
+    trainingRequirements: {
+      minimumHours: 40,
+      requiredLicenses: ['PPL'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 40
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '6 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Wichita', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  {
+    id: 'cessna-182',
+    manufacturerId: 'cessna',
+    model: 'Cessna 182',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'ed54f082ab014626a1359009b33e7e81',
+    description: 'The Cessna 182 Skylane is a four-seat, single-engine, high-wing light aircraft. It is known for its stability and performance.',
+    firstFlight: 1956,
+    specifications: {
+      maxTakeoffWeight: '1,406 kg',
+      cruisingSpeed: '145 knots',
+      range: '1,770 km',
+      capacity: 4,
+      engines: 1,
+      engineType: 'Lycoming O-540',
+      length: '8.84 m',
+      wingspan: '10.97 m',
+      height: '2.79 m'
+    },
+    trainingRequirements: {
+      minimumHours: 40,
+      requiredLicenses: ['PPL'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 40
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '6 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Wichita', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  {
+    id: 'cessna-206',
+    manufacturerId: 'cessna',
+    model: 'Cessna 206',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'cf61032f294f4cfab478de38451422a3',
+    description: 'The Cessna 206 Stationair is a six-seat, single-engine, high-wing aircraft. It is popular for utility and bush flying.',
+    firstFlight: 1962,
+    specifications: {
+      maxTakeoffWeight: '1,633 kg',
+      cruisingSpeed: '143 knots',
+      range: '1,335 km',
+      capacity: 6,
+      engines: 1,
+      engineType: 'Lycoming IO-540',
+      length: '8.53 m',
+      wingspan: '10.95 m',
+      height: '2.92 m'
+    },
+    trainingRequirements: {
+      minimumHours: 40,
+      requiredLicenses: ['PPL'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 40
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '6 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Wichita', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  {
+    id: 'cessna-208',
+    manufacturerId: 'cessna',
+    model: 'Cessna 208 Caravan',
+    category: 'cargo',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '2759f3b519904924bb09d02bd961a308',
+    description: 'The Cessna 208 Caravan is a single-engine turboprop aircraft. It is widely used for cargo and regional passenger transport.',
+    firstFlight: 1982,
+    specifications: {
+      maxTakeoffWeight: '3,629 kg',
+      cruisingSpeed: '186 knots',
+      range: '1,980 km',
+      capacity: 9,
+      engines: 1,
+      engineType: 'Pratt & Whitney Canada PT6A',
+      length: '11.46 m',
+      wingspan: '15.88 m',
+      height: '4.27 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 60,
+      simulatorHours: 15,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Turboprop Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '2 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Short-Field Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Wichita', 'Various'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'cessna-citation-x',
+    manufacturerId: 'cessna',
+    model: 'Cessna Citation X',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'a9eac6363d7f4bfaa7f0ee3b9beca604',
+    description: 'The Cessna Citation X is a long-range, medium-sized business jet. It was one of the fastest business jets in production.',
+    firstFlight: 1993,
+    specifications: {
+      maxTakeoffWeight: '16,329 kg',
+      cruisingSpeed: 'Mach 0.935',
+      range: '6,020 km',
+      capacity: 9,
+      engines: 2,
+      engineType: 'AE3007C1',
+      length: '22.0 m',
+      wingspan: '19.4 m',
+      height: '6.5 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Jet Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'High-Speed Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Wichita', 'Various'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
   // Boeing
   {
     id: 'b737',
@@ -1275,7 +1946,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '737',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: '41a1ae9e252d41bda7c63cfe9fab5a02',
+    sketchfabId: '7a548b5ba64340f78f7c58d23781ffe9',
     description: 'The Boeing 737 is a narrow-body, twin-engine, short- to medium-range jet airliner. It is the best-selling commercial jet airliner in history.',
     firstFlight: 1967,
     specifications: {
@@ -1338,7 +2009,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '747',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: '9e7bfa1049ec44a2a8d8d0bdaf51533c',
+    sketchfabId: '86ec524a08e74e5e8907771c2d96b525',
     description: 'The Boeing 747 is a wide-body, four-engine jet airliner. It was the first wide-body jet airliner and became known as the "Queen of the Skies".',
     firstFlight: 1969,
     specifications: {
@@ -1401,7 +2072,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '777',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: '41a1ae9e252d41bda7c63cfe9fab5a02',
+    sketchfabId: 'be25770697e64f1daef1cc3ad26d3ce7',
     description: 'The Boeing 777 is a long-range, wide-body twin-engine jet airliner. It is the world\'s largest twin-engine jet airliner.',
     firstFlight: 1994,
     specifications: {
@@ -1464,7 +2135,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '787',
     category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: '41a1ae9e252d41bda7c63cfe9fab5a02',
+    sketchfabId: '3ba8a5275d0e41968b34d367c34e8f0f',
     description: 'The Boeing 787 Dreamliner is a long-range, wide-body, twin-engine jet airliner. It is the first airliner to use composite materials for most of its construction.',
     firstFlight: 2009,
     specifications: {
@@ -1519,6 +2190,925 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       authority: 'FAA / EASA',
       validity: '1 year',
       renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  // Tecnam
+  {
+    id: 'tecnam-p92',
+    manufacturerId: 'tecnam',
+    model: 'Tecnam P92',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '4b1c90cce7f14fa3bcbade0bb8c3d855',
+    description: 'The Tecnam P92 is a high-wing, single-engine, light sport aircraft. It is designed for touring and flight training.',
+    firstFlight: 1993,
+    specifications: {
+      maxTakeoffWeight: '600 kg',
+      cruisingSpeed: '110 knots',
+      range: '1,200 km',
+      capacity: 2,
+      engines: 1,
+      engineType: 'Rotax 912',
+      length: '6.6 m',
+      wingspan: '8.5 m',
+      height: '2.5 m'
+    },
+    trainingRequirements: {
+      minimumHours: 30,
+      requiredLicenses: ['PPL', 'LSA'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 30,
+      simulatorHours: 5,
+      flightHours: 30
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '4 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Capua', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  {
+    id: 'tecnam-p2002',
+    manufacturerId: 'tecnam',
+    model: 'Tecnam P2002 Sierra',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '5325a60e1c2f402a8b5b71656ffaea66',
+    description: 'The Tecnam P2002 Sierra is a low-wing, single-engine, light sport aircraft. It is designed for touring and flight training.',
+    firstFlight: 2003,
+    specifications: {
+      maxTakeoffWeight: '600 kg',
+      cruisingSpeed: '120 knots',
+      range: '1,100 km',
+      capacity: 2,
+      engines: 1,
+      engineType: 'Rotax 912',
+      length: '7.0 m',
+      wingspan: '8.6 m',
+      height: '2.4 m'
+    },
+    trainingRequirements: {
+      minimumHours: 30,
+      requiredLicenses: ['PPL', 'LSA'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 30,
+      simulatorHours: 5,
+      flightHours: 30
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '4 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Capua', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  {
+    id: 'tecnam-p2006t',
+    manufacturerId: 'tecnam',
+    model: 'Tecnam P2006T',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'a0a4d717a8c94a17b958eb69c4efc352',
+    description: 'The Tecnam P2006T is a twin-engine, high-wing, light aircraft. It is designed for multi-engine training and utility operations.',
+    firstFlight: 2007,
+    specifications: {
+      maxTakeoffWeight: '1,180 kg',
+      cruisingSpeed: '140 knots',
+      range: '1,300 km',
+      capacity: 6,
+      engines: 2,
+      engineType: 'Lycoming IO-360',
+      length: '8.7 m',
+      wingspan: '11.4 m',
+      height: '2.9 m'
+    },
+    trainingRequirements: {
+      minimumHours: 100,
+      requiredLicenses: ['PPL', 'ME'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 15
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Multi-Engine Operations', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '4 weeks',
+        topics: ['Asymmetric Operations', 'Engine Failures', 'Cross-Country', 'Emergency Procedures']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Capua', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'MEI',
+        requirements: ['Commercial Pilot', 'Multi-Engine Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  // Piper
+  {
+    id: 'piper-pa28',
+    manufacturerId: 'piper',
+    model: 'Piper PA-28 Cherokee',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'e39b3679c3a94053a53c4be4eff548bc',
+    description: 'The Piper PA-28 Cherokee is a family of two-seat or four-seat, light aircraft. It is widely used for flight training.',
+    firstFlight: 1960,
+    specifications: {
+      maxTakeoffWeight: '1,157 kg',
+      cruisingSpeed: '127 knots',
+      range: '1,480 km',
+      capacity: 4,
+      engines: 1,
+      engineType: 'Lycoming O-320',
+      length: '7.3 m',
+      wingspan: '10.0 m',
+      height: '2.2 m'
+    },
+    trainingRequirements: {
+      minimumHours: 40,
+      requiredLicenses: ['PPL'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 40
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '6 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Vero Beach', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  {
+    id: 'piper-pa18',
+    manufacturerId: 'piper',
+    model: 'Piper PA-18 Super Cub',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '947504c5e11244db8d512f1511e75e4b',
+    description: 'The Piper PA-18 Super Cub is a two-seat, single-engine, taildragger aircraft. It is popular for bush flying and backcountry operations.',
+    firstFlight: 1949,
+    specifications: {
+      maxTakeoffWeight: '794 kg',
+      cruisingSpeed: '97 knots',
+      range: '760 km',
+      capacity: 2,
+      engines: 1,
+      engineType: 'Lycoming O-320',
+      length: '6.9 m',
+      wingspan: '10.7 m',
+      height: '2.0 m'
+    },
+    trainingRequirements: {
+      minimumHours: 40,
+      requiredLicenses: ['PPL', 'Tailwheel'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 40
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Tailwheel Operations', 'Aerodynamics', 'Navigation', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '6 weeks',
+        topics: ['Tailwheel Takeoffs/Landings', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Vero Beach', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating', 'Tailwheel Experience']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  // Embraer
+  {
+    id: 'embraer-e190',
+    manufacturerId: 'embraer',
+    model: 'Embraer E190',
+    category: 'regional',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'b971aca02af4435db7104c8c2ce9bbdd',
+    description: 'The Embraer E190 is a medium-range, twin-engine, narrow-body jet airliner. It is part of the E-Jet family.',
+    firstFlight: 2004,
+    specifications: {
+      maxTakeoffWeight: '51,800 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '4,540 km',
+      capacity: 114,
+      engines: 2,
+      engineType: 'CF34-10E',
+      length: '36.2 m',
+      wingspan: '28.7 m',
+      height: '10.6 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Regional Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['São Paulo', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'embraer-phenom-300',
+    manufacturerId: 'embraer',
+    model: 'Embraer Phenom 300',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'cdc1ecc85bf345b788e0094f2fb7e91e',
+    description: 'The Embraer Phenom 300 is a light jet aircraft. It is one of the best-selling light jets in the world.',
+    firstFlight: 2008,
+    specifications: {
+      maxTakeoffWeight: '7,969 kg',
+      cruisingSpeed: 'Mach 0.80',
+      range: '3,650 km',
+      capacity: 9,
+      engines: 2,
+      engineType: 'Pratt & Whitney Canada PW535E',
+      length: '15.9 m',
+      wingspan: '16.2 m',
+      height: '5.3 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Jet Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '2 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Light Jet Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['São Paulo', 'Miami', 'Orlando'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  // Cirrus
+  {
+    id: 'cirrus-sr22',
+    manufacturerId: 'cirrus',
+    model: 'Cirrus SR22',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'cba602c99c524cd4b40e5c2e5f9c5b4f',
+    description: 'The Cirrus SR22 is a single-engine, composite aircraft. It is known for its ballistic parachute recovery system.',
+    firstFlight: 2001,
+    specifications: {
+      maxTakeoffWeight: '1,542 kg',
+      cruisingSpeed: '183 knots',
+      range: '1,870 km',
+      capacity: 4,
+      engines: 1,
+      engineType: 'Continental IO-550',
+      length: '7.9 m',
+      wingspan: '11.7 m',
+      height: '2.8 m'
+    },
+    trainingRequirements: {
+      minimumHours: 40,
+      requiredLicenses: ['PPL'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 40
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'CAPS System']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '6 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'CAPS Deployment']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Duluth', 'Various'],
+      features: ['Visual System', 'Instrument Panel', 'CAPS Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'CSIP',
+        requirements: ['Commercial Pilot', 'Cirrus Standardized Instructor Program']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
+    }
+  },
+  {
+    id: 'cirrus-vision-sf50',
+    manufacturerId: 'cirrus',
+    model: 'Cirrus Vision SF50',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: 'd46dd06b4b5646acaed90993db34d639',
+    description: 'The Cirrus Vision SF50 is a single-engine, very light jet. It is the first single-engine jet to receive FAA certification.',
+    firstFlight: 2008,
+    specifications: {
+      maxTakeoffWeight: '2,722 kg',
+      cruisingSpeed: 'Mach 0.75',
+      range: '2,240 km',
+      capacity: 5,
+      engines: 1,
+      engineType: 'Williams FJ33',
+      length: '9.4 m',
+      wingspan: '11.0 m',
+      height: '3.0 m'
+    },
+    trainingRequirements: {
+      minimumHours: 500,
+      requiredLicenses: ['PPL', 'Jet Rating'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 60,
+      simulatorHours: 15,
+      flightHours: 15
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Jet Systems', 'Performance', 'Navigation', 'CAPS System']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '2 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Single-Engine Jet Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Duluth', 'Various'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'CSIP',
+        requirements: ['Commercial Pilot', 'Cirrus Standardized Instructor Program', 'Jet Experience']
+      }
+    ],
+    certification: {
+      authority: 'FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  // ATR
+  {
+    id: 'atr-72-600',
+    manufacturerId: 'atr',
+    model: 'ATR 72-600',
+    category: 'regional',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '1e1a7186f7444d288675262fcee44744',
+    description: 'The ATR 72-600 is a twin-engine turboprop regional airliner. It is an upgraded version of the ATR 72 with improved performance and avionics.',
+    firstFlight: 2009,
+    specifications: {
+      maxTakeoffWeight: '23,000 kg',
+      cruisingSpeed: '280 knots',
+      range: '1,525 km',
+      capacity: 78,
+      engines: 2,
+      engineType: 'Pratt & Whitney Canada PW127M',
+      length: '27.2 m',
+      wingspan: '27.1 m',
+      height: '7.7 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Turboprop Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Regional Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Various'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  // Let
+  {
+    id: 'let-l410',
+    manufacturerId: 'let',
+    model: 'Let L410 Turbolet',
+    category: 'regional',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '38c3aaea4de54eb1a20634586c2a215f',
+    description: 'The Let L410 Turbolet is a twin-engine turboprop regional airliner. It is widely used in Eastern Europe and Africa.',
+    firstFlight: 1969,
+    specifications: {
+      maxTakeoffWeight: '6,600 kg',
+      cruisingSpeed: '170 knots',
+      range: '1,510 km',
+      capacity: 19,
+      engines: 2,
+      engineType: 'Walter M601',
+      length: '14.4 m',
+      wingspan: '19.5 m',
+      height: '5.8 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 16,
+      flightHours: 8
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Turboprop Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '2 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Short-Field Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Kunovice', 'Various'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  // Gulfstream
+  {
+    id: 'gulfstream-g650',
+    manufacturerId: 'gulfstream',
+    model: 'Gulfstream G650',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '67451e56d38746de86667347d7a56587',
+    description: 'The Gulfstream G650 is a long-range, large-cabin business jet. It is one of the fastest business jets in production.',
+    firstFlight: 2009,
+    specifications: {
+      maxTakeoffWeight: '45,359 kg',
+      cruisingSpeed: 'Mach 0.925',
+      range: '13,890 km',
+      capacity: 19,
+      engines: 2,
+      engineType: 'Rolls-Royce BR725',
+      length: '30.4 m',
+      wingspan: '28.0 m',
+      height: '7.9 m'
+    },
+    trainingRequirements: {
+      minimumHours: 3000,
+      requiredLicenses: ['CPL', 'IR', 'ME', 'ATPL'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 30,
+      flightHours: 15
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Jet Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Savannah', 'London', 'Dubai', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['1000 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA / EASA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  // Bombardier
+  {
+    id: 'challenger-350',
+    manufacturerId: 'bombardier',
+    model: 'Bombardier Challenger 350',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '5f7af63167374f98a3a457f38818b996',
+    description: 'The Bombardier Challenger 350 is a super mid-size business jet. It offers a spacious cabin and long-range capabilities.',
+    firstFlight: 2013,
+    specifications: {
+      maxTakeoffWeight: '18,597 kg',
+      cruisingSpeed: 'Mach 0.83',
+      range: '5,926 km',
+      capacity: 10,
+      engines: 2,
+      engineType: 'GE CF34-3B',
+      length: '20.9 m',
+      wingspan: '19.5 m',
+      height: '6.3 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 25,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Jet Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Business Jet Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Montreal', 'Dallas', 'London'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['750 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA / EASA / Transport Canada',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'crj-700',
+    manufacturerId: 'bombardier',
+    model: 'CRJ-700',
+    category: 'regional',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '98e4de0ba2b6489c896f224fb70c5e75',
+    description: 'The CRJ-700 is a regional jet airliner. It is part of the CRJ series of regional jets.',
+    firstFlight: 1999,
+    specifications: {
+      maxTakeoffWeight: '32,885 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '3,720 km',
+      capacity: 78,
+      engines: 2,
+      engineType: 'GE CF34-8C5',
+      length: '32.2 m',
+      wingspan: '23.2 m',
+      height: '7.6 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Regional Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Montreal', 'Dallas', 'Various'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'FAA / EASA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  // Aeroprakt
+  {
+    id: 'aeroprakt-a22',
+    manufacturerId: 'aeroprakt',
+    model: 'Aeroprakt A22 Foxbat',
+    category: 'private',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    sketchfabId: '881d2479d29149b7bf2b5788b869094f',
+    description: 'The Aeroprakt A22 Foxbat is a light sport aircraft. It is designed for touring and flight training.',
+    firstFlight: 1996,
+    specifications: {
+      maxTakeoffWeight: '600 kg',
+      cruisingSpeed: '90 knots',
+      range: '1,000 km',
+      capacity: 2,
+      engines: 1,
+      engineType: 'Rotax 912',
+      length: '6.5 m',
+      wingspan: '8.4 m',
+      height: '2.3 m'
+    },
+    trainingRequirements: {
+      minimumHours: 30,
+      requiredLicenses: ['PPL', 'LSA'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 30,
+      simulatorHours: 5,
+      flightHours: 30
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Aerodynamics', 'Navigation', 'Meteorology', 'Regulations']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '4 weeks',
+        topics: ['Basic Maneuvers', 'Cross-Country', 'Emergency Procedures', 'Solo Flight']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Flight Training Device',
+      locations: ['Kyiv', 'Various'],
+      features: ['Visual System', 'Instrument Panel']
+    },
+    instructorQualifications: [
+      {
+        type: 'CFI',
+        requirements: ['Commercial Pilot', 'Instructor Rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA',
+      validity: '2 years',
+      renewalRequirements: ['Flight Review', 'BFR']
     }
   }
 ];
