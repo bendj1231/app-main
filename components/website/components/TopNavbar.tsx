@@ -3,6 +3,7 @@ import { supabase } from '@/src/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info } from 'lucide-react';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import { NavigationSchema } from './seo/NavigationSchema';
+import { GraphicsSettingsModal } from './GraphicsSettingsModal';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -1185,6 +1186,11 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     </div>
                 </div>
             </div>
+
+            <GraphicsSettingsModal 
+                isOpen={isGraphicsModalOpen}
+                onClose={() => setIsGraphicsModalOpen(false)}
+            />
 
             {/* Login Modal - moved to root level */}
         </>
