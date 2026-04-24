@@ -99,8 +99,21 @@ const CATEGORY_COLORS: Record<string, string> = {
   'flagship': 'bg-amber-500',
 };
 
+const LEGACY_SUBCATEGORY_LABELS: Record<string, string> = {
+  'retired': 'Retired',
+  'reaching-end-of-service': 'Reaching End of Service',
+  'historical': 'Historical',
+};
+
+const LEGACY_SUBCATEGORY_COLORS: Record<string, string> = {
+  'retired': 'bg-slate-600',
+  'reaching-end-of-service': 'bg-orange-500',
+  'historical': 'bg-amber-600',
+};
+
 export default function TypeRatingSearchPage() {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
+  const [activeLegacySubcategory, setActiveLegacySubcategory] = useState<string | null>(null);
   const [selectedManufacturer, setSelectedManufacturer] = useState<Manufacturer | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftTypeRating | null>(null);
@@ -118,6 +131,11 @@ export default function TypeRatingSearchPage() {
       aircraft = aircraft.filter(a => a.category === activeCategory);
     }
     
+    // Filter by legacy subcategory if legacy category is selected and a subcategory is active
+    if (activeCategory === 'legacy' && activeLegacySubcategory) {
+      aircraft = aircraft.filter(a => a.subcategory === activeLegacySubcategory);
+    }
+    
     if (searchQuery) {
       aircraft = aircraft.filter(a => 
         a.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -126,7 +144,7 @@ export default function TypeRatingSearchPage() {
     }
     
     return aircraft;
-  }, [selectedManufacturer, activeCategory, searchQuery]);
+  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, searchQuery]);
 
   // Get available categories for selected manufacturer
   const availableCategories = React.useMemo(() => {
@@ -241,7 +259,7 @@ export default function TypeRatingSearchPage() {
         {availableCategories.map(cat => (
           <button
             key={cat}
-            onClick={() => { setActiveCategory(cat); setSelectedAircraft(null); }}
+            onClick={() => { setActiveCategory(cat); setActiveLegacySubcategory(null); setSelectedAircraft(null); }}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
               activeCategory === cat
                 ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white shadow-sm`
@@ -252,6 +270,35 @@ export default function TypeRatingSearchPage() {
           </button>
         ))}
       </div>
+
+      {/* Legacy subcategory filter chips (only show when legacy is selected) */}
+      {activeCategory === 'legacy' && (
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+          <button
+            onClick={() => { setActiveLegacySubcategory(null); setSelectedAircraft(null); }}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              activeLegacySubcategory === null
+                ? 'bg-slate-500 text-white shadow-sm'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            All Legacy
+          </button>
+          {Object.entries(LEGACY_SUBCATEGORY_LABELS).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => { setActiveLegacySubcategory(key); setSelectedAircraft(null); }}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                activeLegacySubcategory === key
+                  ? `${LEGACY_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
+                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Carousel Section */}
       <div className="px-0 mb-12">
