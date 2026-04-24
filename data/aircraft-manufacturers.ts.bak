@@ -1334,7 +1334,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A220-300',
     category: 'flagship',
-    subcategory: 'game-changer',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A220-300 is increasingly popular for regional and short-haul routes. It is noted for its "clean-sheet" design and high pilot comfort.',
     firstFlight: 2015,
@@ -1396,8 +1396,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a320',
     manufacturerId: 'airbus',
     model: 'A320',
-    category: 'flagship',
-    subcategory: 'legacy-fading',
+    category: 'commercial',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: 'ae3d357729a44f278f9ef9326977504a',
     description: 'The Airbus A320 is a narrow-body, medium-range, twin-engine jet airliner. It was the first member of the A320 family, which was launched in March 1984.',
@@ -1460,8 +1460,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a318',
     manufacturerId: 'airbus',
     model: 'A318',
-    category: 'flagship',
-    subcategory: 'legacy-fading',
+    category: 'commercial',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A318 is the smallest member of the A320 family, known as the "Baby Bus". It was designed for short-haul routes with limited passenger demand.',
     firstFlight: 2002,
@@ -1523,8 +1523,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a319',
     manufacturerId: 'airbus',
     model: 'A319',
-    category: 'flagship',
-    subcategory: 'legacy-fading',
+    category: 'commercial',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A319 is a shortened version of the A320, designed for routes with lower passenger demand while maintaining the A320 family\'s commonality.',
     firstFlight: 1995,
@@ -1586,8 +1586,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a321',
     manufacturerId: 'airbus',
     model: 'A321',
-    category: 'flagship',
-    subcategory: 'legacy-fading',
+    category: 'commercial',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A321 is the stretched, highest-capacity version of the A320 family, designed for medium-haul routes with higher passenger demand.',
     firstFlight: 1993,
@@ -1713,7 +1713,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A320neo',
     category: 'flagship',
-    subcategory: 'game-changer',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A320neo is the backbone of global low-cost carriers like IndiGo and Air India. It is the most frequent choice for fresh pilots due to high hiring volume.',
     firstFlight: 2015,
@@ -1776,7 +1776,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A321neo',
     category: 'flagship',
-    subcategory: 'game-changer',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A321neo is the current "king" of narrow-body jets. With the introduction of the A321XLR, pilots can now fly 11-hour transatlantic routes previously reserved for widebodies, making this rating highly lucrative.',
     firstFlight: 2016,
@@ -1902,7 +1902,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A321XLR',
     category: 'flagship',
-    subcategory: 'game-changer',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A321XLR is a game-changer in 2026 that allows single-aisle pilots to earn "long-haul" pay scales with 11-hour transatlantic capability.',
     firstFlight: 2022,
@@ -2092,7 +2092,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A330-300',
     category: 'flagship',
-    subcategory: 'legacy-fading',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A330-300ceo is an older generation that remains heavily in service with a large pool of rated pilots, often serving as a bridge to the A350.',
     firstFlight: 1992,
@@ -2218,7 +2218,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A330-900',
     category: 'flagship',
-    subcategory: 'game-changer',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A330-900neo is a fuel-efficient widebody favorite for airlines like Delta Air Lines and TAP Air Portugal.',
     firstFlight: 2017,
@@ -2345,7 +2345,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A350-900',
     category: 'flagship',
-    subcategory: 'game-changer',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A350-900 is a highly sought-after long-haul rating. It shares a Common Type Rating with the A330, allowing pilots to fly both with only eight days of additional training.',
     firstFlight: 2013,
@@ -3164,7 +3164,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A350-900ULR',
     category: 'flagship',
-    subcategory: 'game-changer',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A350-900ULR (Ultra Long Range) is a variant capable of flying the world\'s longest routes, currently used by Singapore Airlines for non-stop flights between Singapore and New York. It is the flagship of long-range aviation.',
     firstFlight: 2018,
@@ -3227,7 +3227,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A350-1000',
     category: 'flagship',
-    subcategory: 'game-changer',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A350-1000 is the stretched, highest-capacity model of the A350 family, featuring advanced carbon-composite construction. It is the flagship of Airbus\'s current wide-body lineup.',
     firstFlight: 2016,
@@ -3290,7 +3290,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A380',
     category: 'flagship',
-    subcategory: 'resurgent',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: 'b4fbb839e6b4bb989422426bfc8fd1c',
     description: 'The Airbus A380 is the iconic double-decker quad-engine jet, the largest commercial passenger aircraft ever built. While production ended in 2021, it remains the flagship of Airbus engineering excellence.',
@@ -3353,8 +3353,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a340-200',
     manufacturerId: 'airbus',
     model: 'A340-200',
-    category: 'flagship',
-    subcategory: 'historical-flagship',
+    category: 'legacy',
+    subcategory: 'retired',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A340-200 is the initial version of the A340 family, a four-engine long-haul airliner developed to bypass early twin-engine flight restrictions. End of Life. No commercial airline flies this version anymore. Only 28 were ever built, and the last few were used as government "Air Force One" style planes for countries like Egypt or Qatar, but even those have largely been replaced by modern A350s.',
     firstFlight: 1991,
@@ -3479,8 +3479,8 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a340-500',
     manufacturerId: 'airbus',
     model: 'A340-500',
-    category: 'flagship',
-    subcategory: 'historical-flagship',
+    category: 'legacy',
+    subcategory: 'reaching-end-of-service',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A340-500 is the ultra-long-range version of the A340 family with a stretched fuselage. Almost Extinct. This was a "niche" ultra-long-range plane. Almost every airline has retired them because they have four engines and burn too much fuel. Only a tiny handful exist as private VIP jets.',
     firstFlight: 2002,
@@ -3530,195 +3530,6 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       {
         type: 'Type Rating Instructor',
         requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'a300-passenger',
-    manufacturerId: 'airbus',
-    model: 'A300',
-    category: 'flagship',
-    subcategory: 'historical-flagship',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A300 was the first twin-engine wide-body aircraft, a pioneer in modern aviation. Once the flagship wide-body of the 80s and 90s, it now only flies in cargo or specialized military roles.',
-    firstFlight: 1972,
-    specifications: {
-      maxTakeoffWeight: '142,000 kg',
-      cruisingSpeed: 'Mach 0.75',
-      range: '4,000 km',
-      capacity: 250,
-      engines: 2,
-      engineType: 'CF6-50C or JT9D-7R4',
-      length: '53.75 m',
-      wingspan: '44.84 m',
-      height: '16.54 m'
-    },
-    trainingRequirements: {
-      minimumHours: 2000,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 120,
-      simulatorHours: 24,
-      flightHours: 12
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '120 hours',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '24 hours',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '12 hours',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Wide-body Operations']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'a310-passenger',
-    manufacturerId: 'airbus',
-    model: 'A310',
-    category: 'flagship',
-    subcategory: 'historical-flagship',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A310 was a smaller version of the A300, designed for medium-haul routes. Once the flagship wide-body of the 80s and 90s, it now only flies in cargo or specialized military roles.',
-    firstFlight: 1982,
-    specifications: {
-      maxTakeoffWeight: '164,000 kg',
-      cruisingSpeed: 'Mach 0.78',
-      range: '5,200 km',
-      capacity: 220,
-      engines: 2,
-      engineType: 'CF6-80C2 or PW4156',
-      length: '46.66 m',
-      wingspan: '43.90 m',
-      height: '15.80 m'
-    },
-    trainingRequirements: {
-      minimumHours: 2000,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 120,
-      simulatorHours: 24,
-      flightHours: 12
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '120 hours',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '24 hours',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '12 hours',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Wide-body Operations']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'concorde',
-    manufacturerId: 'airbus',
-    model: 'Concorde',
-    category: 'flagship',
-    subcategory: 'historical-flagship',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'Concorde was the world\'s first supersonic passenger airliner, a joint venture between Aérospatiale and BAC. While technically not exclusively Airbus, it remains the most iconic retired flagship in the Airbus heritage. It operated from 1976 to 2003, flying at Mach 2.04.',
-    firstFlight: 1969,
-    specifications: {
-      maxTakeoffWeight: '185,000 kg',
-      cruisingSpeed: 'Mach 2.04',
-      range: '7,250 km',
-      capacity: 100,
-      engines: 4,
-      engineType: 'Rolls-Royce/Snecma Olympus 593',
-      length: '61.66 m',
-      wingspan: '25.60 m',
-      height: '12.19 m'
-    },
-    trainingRequirements: {
-      minimumHours: 5000,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Supersonic Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 200,
-      simulatorHours: 40,
-      flightHours: 20
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '200 hours',
-        topics: ['Supersonic Aerodynamics', 'Fuel Management', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '40 hours',
-        topics: ['Supersonic Operations', 'Temperature Management', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '20 hours',
-        topics: ['Supersonic Transition', 'Cruise Operations', 'Subsonic Approach']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Supersonic Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['1000 hours on type', 'TRI certification', 'Supersonic Instructor rating']
       }
     ],
     certification: {
@@ -4169,6 +3980,69 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
+    id: 'a300-600f',
+    manufacturerId: 'airbus',
+    model: 'A300-600F',
+    category: 'cargo',
+    subcategory: 'freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300-600F is a dedicated freighter variant of the A300-600, featuring a large cargo door and reinforced floor.',
+    firstFlight: 1994,
+    specifications: {
+      maxTakeoffWeight: '171,700 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '6,500 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CF6-80C2 or PW4158',
+      length: '54.10 m',
+      wingspan: '44.84 m',
+      height: '16.54 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
     id: 'a310f',
     manufacturerId: 'airbus',
     model: 'A310F',
@@ -4206,6 +4080,258 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       {
         phase: 'Simulator Training',
         duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-200f',
+    manufacturerId: 'airbus',
+    model: 'A330-200F',
+    category: 'cargo',
+    subcategory: 'freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-200F is a dedicated freighter variant of the A330-200, featuring a large cargo door and reinforced floor.',
+    firstFlight: 2009,
+    specifications: {
+      maxTakeoffWeight: '233,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '7,400 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CF6-80E1 or Trent 772',
+      length: '58.82 m',
+      wingspan: '60.3 m',
+      height: '17.39 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350f',
+    manufacturerId: 'airbus',
+    model: 'A350F',
+    category: 'flagship',
+    subcategory: 'freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A350F is the newest freighter variant entering the market to meet rising e-commerce demand. It is a clean-sheet freighter designed to compete with Boeing\'s heavy lifters.',
+    firstFlight: 2025,
+    specifications: {
+      maxTakeoffWeight: '319,000 kg',
+      cruisingSpeed: 'Mach 0.85',
+      range: '8,700 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'Trent XWB-97',
+      length: '73.79 m',
+      wingspan: '64.31 m',
+      height: '17.08 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a320p2f',
+    manufacturerId: 'airbus',
+    model: 'A320P2F',
+    category: 'cargo',
+    subcategory: 'p2f-conversion',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A320P2F is a passenger-to-freighter conversion of the A320, featuring a large cargo door and reinforced floor for cargo operations.',
+    firstFlight: 2019,
+    specifications: {
+      maxTakeoffWeight: '77,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '4,800 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '37.57 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321p2f',
+    manufacturerId: 'airbus',
+    model: 'A321P2F',
+    category: 'cargo',
+    subcategory: 'p2f-conversion',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A321P2F is a passenger-to-freighter conversion of the A321, featuring a large cargo door and reinforced floor for cargo operations.',
+    firstFlight: 2020,
+    specifications: {
+      maxTakeoffWeight: '93,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '4,500 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '44.51 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
         topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
       },
       {
@@ -7037,15 +7163,14 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
   },
   // Boeing
   {
-    id: 'b737-max',
+    id: 'b737',
     manufacturerId: 'boeing',
-    model: '737 MAX',
-    category: 'flagship',
-    subcategory: 'game-changer',
+    model: '737',
+    category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: '7a548b5ba64340f78f7c58d23781ffe9',
-    description: 'The Boeing 737 MAX is the backbone of global short-haul operations in 2026. With the MAX 8, 9, and 10 variants, it dominates the narrow-body market and remains the most sought-after rating for rapid employment.',
-    firstFlight: 2016,
+    description: 'The Boeing 737 is a narrow-body, twin-engine, short- to medium-range jet airliner. It is the best-selling commercial jet airliner in history.',
+    firstFlight: 1967,
     specifications: {
       maxTakeoffWeight: '79,000 kg',
       cruisingSpeed: 'Mach 0.78',
@@ -7101,15 +7226,14 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
-    id: 'b747-8',
+    id: 'b747',
     manufacturerId: 'boeing',
-    model: '747-8F',
-    category: 'cargo',
-    subcategory: 'production-freighter',
+    model: '747',
+    category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: '86ec524a08e74e5e8907771c2d96b525',
-    description: 'The Boeing 747-8F is the final iteration of the iconic Queen of the Skies freighter. The 747-8F continues to serve cargo operations as the largest cargo aircraft in Boeing fleet.',
-    firstFlight: 2010,
+    description: 'The Boeing 747 is a wide-body, four-engine jet airliner. It was the first wide-body jet airliner and became known as the "Queen of the Skies".',
+    firstFlight: 1969,
     specifications: {
       maxTakeoffWeight: '447,700 kg',
       cruisingSpeed: 'Mach 0.85',
@@ -7165,15 +7289,14 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
-    id: 'b777-300er',
+    id: 'b777',
     manufacturerId: 'boeing',
-    model: '777-300ER',
-    category: 'flagship',
-    subcategory: 'game-changer',
+    model: '777',
+    category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'c4b6d9e7f8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0w1x2y3z4',
-    description: 'The Boeing 777-300ER is a workhorse of long-haul operations. With its exceptional range and capacity, it remains a primary flagship for major airlines, particularly for premium routes and cargo operations.',
-    firstFlight: 2002,
+    sketchfabId: 'be25770697e64f1daef1cc3ad26d3ce7',
+    description: 'The Boeing 777 is a long-range, wide-body twin-engine jet airliner. It is the world\'s largest twin-engine jet airliner.',
+    firstFlight: 1994,
     specifications: {
       maxTakeoffWeight: '351,000 kg',
       cruisingSpeed: 'Mach 0.84',
@@ -7231,12 +7354,11 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
   {
     id: 'b787',
     manufacturerId: 'boeing',
-    model: '787 Dreamliner',
-    category: 'flagship',
-    subcategory: 'game-changer',
+    model: '787',
+    category: 'commercial',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'd5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6',
-    description: 'The Boeing 787 Dreamliner revolutionized long-haul travel with its composite airframe and fuel efficiency. The 787-8, 787-9, and 787-10 variants are in active production and highly sought-after for medium-to-long-haul routes.',
+    sketchfabId: '3ba8a5275d0e41968b34d367c34e8f0f',
+    description: 'The Boeing 787 Dreamliner is a long-range, wide-body, twin-engine jet airliner. It is the first airliner to use composite materials for most of its construction.',
     firstFlight: 2009,
     specifications: {
       maxTakeoffWeight: '254,000 kg',
@@ -7290,1414 +7412,6 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       authority: 'FAA / EASA',
       validity: '1 year',
       renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b777x',
-    manufacturerId: 'boeing',
-    model: '777X (777-8, 777-9)',
-    category: 'flagship',
-    subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6',
-    description: 'The Boeing 777X represents the future of long-haul travel with folding wingtips and advanced engines. The 777-8 and 777-9 are in testing and early delivery phases, set to become the new flagship for premium airlines in 2026.',
-    firstFlight: 2019,
-    specifications: {
-      maxTakeoffWeight: '351,500 kg',
-      cruisingSpeed: 'Mach 0.85',
-      range: '13,645 km',
-      capacity: 426,
-      engines: 2,
-      engineType: 'GE9X',
-      length: '76.7 m',
-      wingspan: '71.8 m',
-      height: '18.6 m'
-    },
-    trainingRequirements: {
-      minimumHours: 2500,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 150,
-      simulatorHours: 28,
-      flightHours: 14
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '6 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '4 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['1000 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b767-300er',
-    manufacturerId: 'boeing',
-    model: '767-300F',
-    category: 'cargo',
-    subcategory: 'p2f-conversion',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7',
-    description: 'The Boeing 767-300F is a converted freighter variant of the 767-300ER. Active in cargo operations, it serves as a medium-haul freighter with excellent range and capacity.',
-    firstFlight: 1986,
-    specifications: {
-      maxTakeoffWeight: '186,880 kg',
-      cruisingSpeed: 'Mach 0.80',
-      range: '11,065 km',
-      capacity: 269,
-      engines: 2,
-      engineType: 'GE CF6 or PW4000',
-      length: '54.9 m',
-      wingspan: '47.6 m',
-      height: '15.9 m'
-    },
-    trainingRequirements: {
-      minimumHours: 2000,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 120,
-      simulatorHours: 24,
-      flightHours: 12
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '5 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b737-ng',
-    manufacturerId: 'boeing',
-    model: '737 NG (-700, -800, -900)',
-    category: 'legacy',
-    subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: '7a548b5ba64340f78f7c58d23781ffe9',
-    description: 'The Boeing 737 Next Generation (-700, -800, -900) is in legacy-retired status as airlines transition to the 737 MAX. Once the backbone of short-haul operations, it is being rapidly phased out.',
-    firstFlight: 1997,
-    specifications: {
-      maxTakeoffWeight: '79,000 kg',
-      cruisingSpeed: 'Mach 0.78',
-      range: '5,765 km',
-      capacity: 189,
-      engines: 2,
-      engineType: 'CFM56-7B',
-      length: '42.1 m',
-      wingspan: '35.8 m',
-      height: '12.5 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1500,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 100,
-      simulatorHours: 20,
-      flightHours: 10
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b757',
-    manufacturerId: 'boeing',
-    model: '757-200 / -300',
-    category: 'legacy',
-    subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7',
-    description: 'The Boeing 757-200 and -300 are in legacy-retired status. Once a popular medium-haul aircraft, it has been retired by most airlines and replaced by more efficient 737 MAX and A321neo variants.',
-    firstFlight: 1982,
-    specifications: {
-      maxTakeoffWeight: '115,660 kg',
-      cruisingSpeed: 'Mach 0.80',
-      range: '7,222 km',
-      capacity: 239,
-      engines: 2,
-      engineType: 'CFM56 or PW2000',
-      length: '54.5 m',
-      wingspan: '38.1 m',
-      height: '13.6 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1800,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 110,
-      simulatorHours: 22,
-      flightHours: 11
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '5 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b717',
-    manufacturerId: 'boeing',
-    model: '717 (formerly MD-95)',
-    category: 'regional',
-    subcategory: 'regional-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8',
-    description: 'The Boeing 717, originally the McDonnell Douglas MD-95, was the last narrow-body aircraft designed by McDonnell Douglas before the Boeing merger. A regional jet that served short-haul routes efficiently.',
-    firstFlight: 1998,
-    specifications: {
-      maxTakeoffWeight: '79,380 kg',
-      cruisingSpeed: 'Mach 0.77',
-      range: '3,815 km',
-      capacity: 134,
-      engines: 2,
-      engineType: 'BMW Rolls-Royce BR715',
-      length: '37.8 m',
-      wingspan: '28.4 m',
-      height: '8.9 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1200,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 80,
-      simulatorHours: 16,
-      flightHours: 8
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '3 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '2 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '1 week',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['300 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b727',
-    manufacturerId: 'boeing',
-    model: '727',
-    category: 'legacy',
-    subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9',
-    description: 'The Boeing 727 was a pioneering narrow-body trijet that revolutionized short-to-medium-haul travel. Now in legacy-retired status, it was once one of the most popular aircraft globally.',
-    firstFlight: 1963,
-    specifications: {
-      maxTakeoffWeight: '95,300 kg',
-      cruisingSpeed: 'Mach 0.80',
-      range: '4,400 km',
-      capacity: 189,
-      engines: 3,
-      engineType: 'JT8D',
-      length: '46.7 m',
-      wingspan: '32.9 m',
-      height: '10.4 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1500,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 100,
-      simulatorHours: 20,
-      flightHours: 10
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b707',
-    manufacturerId: 'boeing',
-    model: '707 / 720',
-    category: 'legacy',
-    subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0',
-    description: 'The Boeing 707 and its shorter variant 720 were the first successful commercial jet airliners, revolutionizing air travel. Now in legacy-retired status, they established Boeing as a global aviation leader.',
-    firstFlight: 1957,
-    specifications: {
-      maxTakeoffWeight: '151,300 kg',
-      cruisingSpeed: 'Mach 0.80',
-      range: '10,000 km',
-      capacity: 202,
-      engines: 4,
-      engineType: 'JT3D or JT4A',
-      length: '46.6 m',
-      wingspan: '44.4 m',
-      height: '12.9 m'
-    },
-    trainingRequirements: {
-      minimumHours: 2000,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 120,
-      simulatorHours: 24,
-      flightHours: 12
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '5 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b377',
-    manufacturerId: 'boeing',
-    model: '377 Stratocruiser',
-    category: 'legacy',
-    subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1',
-    description: 'The Boeing 377 Stratocruiser was a luxurious long-range propeller airliner of the 1950s. In legacy-retired status, it represented the pinnacle of piston-engine commercial aviation before the jet age.',
-    firstFlight: 1947,
-    specifications: {
-      maxTakeoffWeight: '79,380 kg',
-      cruisingSpeed: '340 knots',
-      range: '6,800 km',
-      capacity: 100,
-      engines: 4,
-      engineType: 'R-4360 Wasp Major',
-      length: '33.6 m',
-      wingspan: '43.1 m',
-      height: '11.7 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1500,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 80,
-      simulatorHours: 16,
-      flightHours: 8
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '2 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b247',
-    manufacturerId: 'boeing',
-    model: '247',
-    category: 'legacy',
-    subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2',
-    description: 'The Boeing 247 was the first modern airliner, featuring all-metal construction, retractable landing gear, and de-icing boots. In legacy-retired status, it revolutionized commercial aviation in the 1930s.',
-    firstFlight: 1933,
-    specifications: {
-      maxTakeoffWeight: '6,800 kg',
-      cruisingSpeed: '189 knots',
-      range: '776 km',
-      capacity: 10,
-      engines: 2,
-      engineType: 'Wasp Junior',
-      length: '15.8 m',
-      wingspan: '22.6 m',
-      height: '3.4 m'
-    },
-    trainingRequirements: {
-      minimumHours: 500,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 40,
-      simulatorHours: 8,
-      flightHours: 4
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '2 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '1 week',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '1 week',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['300 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'b314',
-    manufacturerId: 'boeing',
-    model: '314 Clipper',
-    category: 'legacy',
-    subcategory: 'flying-boat',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'm4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p3',
-    description: 'The Boeing 314 Clipper was a legendary flying boat that pioneered transoceanic passenger service in the 1930s-40s. In legacy-retired status, it represented the golden age of luxury air travel before WWII.',
-    firstFlight: 1938,
-    specifications: {
-      maxTakeoffWeight: '38,000 kg',
-      cruisingSpeed: '184 knots',
-      range: '5,200 km',
-      capacity: 68,
-      engines: 4,
-      engineType: 'Twin Wasp',
-      length: '32.3 m',
-      wingspan: '46.3 m',
-      height: '6.1 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1000,
-      requiredLicenses: ['CPL', 'IR', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 60,
-      simulatorHours: 12,
-      flightHours: 6
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '3 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '2 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Miami', 'Seattle', 'Singapore', 'London'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'FAA / EASA',
-      validity: '1 year',
-      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
-    }
-  },
-  {
-    id: 'f15ex',
-    manufacturerId: 'boeing',
-    model: 'F-15EX Eagle II',
-    category: 'military',
-    subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4',
-    description: 'The F-15EX Eagle II is the latest iteration of the iconic F-15 Eagle, featuring advanced avionics, weapons systems, and improved range. A modern multirole fighter serving as the backbone of air superiority operations.',
-    firstFlight: 2021,
-    specifications: {
-      maxTakeoffWeight: '36,700 kg',
-      cruisingSpeed: 'Mach 2.5',
-      range: '4,500 km',
-      capacity: 2,
-      engines: 2,
-      engineType: 'F110-GE-129',
-      length: '19.4 m',
-      wingspan: '13.1 m',
-      height: '5.6 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1000,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 200,
-      simulatorHours: 40,
-      flightHours: 20
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '8 weeks',
-        topics: ['Systems', 'Weapons', 'Combat Tactics', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '6 weeks',
-        topics: ['Air Combat', 'Ground Attack', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '4 weeks',
-        topics: ['Combat Maneuvers', 'Weapons Delivery', 'Formation Flying']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['St. Louis', 'Eglin AFB', 'Nellis AFB'],
-      features: ['6-DOF Motion', 'Combat Visual System', 'Weapons Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['1000 hours on type', 'TRI certification', 'Combat Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'USAF',
-      validity: '2 years',
-      renewalRequirements: ['Combat currency', 'Proficiency check', 'Weapons qualification']
-    }
-  },
-  {
-    id: 'fa18f',
-    manufacturerId: 'boeing',
-    model: 'F/A-18E/F Super Hornet',
-    category: 'military',
-    subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5',
-    description: 'The F/A-18E/F Super Hornet is a multirole fighter serving as the primary strike fighter for the US Navy and Marine Corps. Features advanced avionics, AESA radar, and extended range capabilities.',
-    firstFlight: 1995,
-    specifications: {
-      maxTakeoffWeight: '29,900 kg',
-      cruisingSpeed: 'Mach 1.8',
-      range: '3,300 km',
-      capacity: 2,
-      engines: 2,
-      engineType: 'F414-GE-400',
-      length: '18.3 m',
-      wingspan: '13.6 m',
-      height: '4.9 m'
-    },
-    trainingRequirements: {
-      minimumHours: 800,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 180,
-      simulatorHours: 36,
-      flightHours: 18
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '7 weeks',
-        topics: ['Systems', 'Weapons', 'Carrier Operations', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '5 weeks',
-        topics: ['Air Combat', 'Ground Attack', 'Carrier Approaches']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '4 weeks',
-        topics: ['Carrier Operations', 'Combat Maneuvers', 'Weapons Delivery']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Pensacola', 'Lemoore', 'Oceana'],
-      features: ['6-DOF Motion', 'Carrier Visual System', 'Weapons Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['800 hours on type', 'TRI certification', 'Carrier Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'USN/USMC',
-      validity: '2 years',
-      renewalRequirements: ['Carrier currency', 'Proficiency check', 'Weapons qualification']
-    }
-  },
-  {
-    id: 'b52h',
-    manufacturerId: 'boeing',
-    model: 'B-52H Stratofortress',
-    category: 'military',
-    subcategory: 'transport-tanker',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6',
-    description: 'The B-52H Stratofortress is a legendary strategic bomber scheduled to fly until 2050+. With continuous upgrades, it remains the backbone of US strategic bombing capabilities and will serve for over 90 years.',
-    firstFlight: 1961,
-    specifications: {
-      maxTakeoffWeight: '220,000 kg',
-      cruisingSpeed: 'Mach 0.84',
-      range: '14,200 km',
-      capacity: 5,
-      engines: 8,
-      engineType: 'TF33-P-3/103',
-      length: '48.5 m',
-      wingspan: '56.4 m',
-      height: '12.4 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1500,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 250,
-      simulatorHours: 50,
-      flightHours: 25
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '10 weeks',
-        topics: ['Systems', 'Weapons', 'Strategic Operations', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '8 weeks',
-        topics: ['Strategic Bombing', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '6 weeks',
-        topics: ['Long-Range Operations', 'Weapons Delivery', 'Formation Flying']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Barksdale AFB', 'Minot AFB', 'Offutt AFB'],
-      features: ['6-DOF Motion', 'Strategic Visual System', 'Weapons Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['1500 hours on type', 'TRI certification', 'Strategic Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'USAF',
-      validity: '2 years',
-      renewalRequirements: ['Strategic currency', 'Proficiency check', 'Weapons qualification']
-    }
-  },
-  {
-    id: 'c17',
-    manufacturerId: 'boeing',
-    model: 'C-17 Globemaster III',
-    category: 'military',
-    subcategory: 'transport-tanker',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7',
-    description: 'The C-17 Globemaster III is a large military transport aircraft capable of rapid strategic delivery of troops and cargo to main operating bases or forward operating bases worldwide. Active in service with global air forces.',
-    firstFlight: 1991,
-    specifications: {
-      maxTakeoffWeight: '285,700 kg',
-      cruisingSpeed: 'Mach 0.74',
-      range: '11,480 km',
-      capacity: 102,
-      engines: 4,
-      engineType: 'F117-PW-100',
-      length: '53.0 m',
-      wingspan: '51.8 m',
-      height: '16.8 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1200,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 200,
-      simulatorHours: 40,
-      flightHours: 20
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '8 weeks',
-        topics: ['Systems', 'Cargo Operations', 'Airdrop', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '6 weeks',
-        topics: ['Airdrop Operations', 'Short Field Landings', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '4 weeks',
-        topics: ['Cargo Loading', 'Airdrop Missions', 'Short Field Operations']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Charleston AFB', 'Travis AFB', 'McChord AFB'],
-      features: ['6-DOF Motion', 'Cargo Visual System', 'Airdrop Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['1000 hours on type', 'TRI certification', 'Cargo Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'USAF/USAFR/ANG',
-      validity: '2 years',
-      renewalRequirements: ['Cargo currency', 'Proficiency check', 'Airdrop qualification']
-    }
-  },
-  {
-    id: 'ah64',
-    manufacturerId: 'boeing',
-    model: 'AH-64 Apache',
-    category: 'helicopter',
-    subcategory: 'attack-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8',
-    description: 'The AH-64 Apache is the world\'s most advanced multi-role combat helicopter. With advanced avionics, weapons systems, and night vision capabilities, it serves as the primary attack helicopter for the US Army and allied forces.',
-    firstFlight: 1975,
-    specifications: {
-      maxTakeoffWeight: '10,400 kg',
-      cruisingSpeed: '145 knots',
-      range: '480 km',
-      capacity: 2,
-      engines: 2,
-      engineType: 'T700-GE-701C',
-      length: '17.7 m',
-      wingspan: '5.2 m',
-      height: '3.9 m'
-    },
-    trainingRequirements: {
-      minimumHours: 500,
-      requiredLicenses: ['CPL', 'IR', 'Helicopter Rating', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 120,
-      simulatorHours: 30,
-      flightHours: 15
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '5 weeks',
-        topics: ['Systems', 'Weapons', 'Nap of the Earth Flying', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '4 weeks',
-        topics: ['Combat Tactics', 'Weapons Delivery', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '3 weeks',
-        topics: ['Combat Maneuvers', 'Weapons Training', 'Night Operations']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Fort Rucker', 'Fort Hood', 'Fort Campbell'],
-      features: ['6-DOF Motion', 'Combat Visual System', 'Weapons Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Combat Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'US Army',
-      validity: '2 years',
-      renewalRequirements: ['Combat currency', 'Proficiency check', 'Weapons qualification']
-    }
-  },
-  {
-    id: 'ch47',
-    manufacturerId: 'boeing',
-    model: 'CH-47 Chinook',
-    category: 'helicopter',
-    subcategory: 'heavy-lift-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 's0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9',
-    description: 'The CH-47 Chinook is a tandem-rotor heavy-lift helicopter serving as the primary transport helicopter for the US Army and allied forces. Known for its exceptional lifting capacity and versatility in combat operations.',
-    firstFlight: 1961,
-    specifications: {
-      maxTakeoffWeight: '22,680 kg',
-      cruisingSpeed: '160 knots',
-      range: '740 km',
-      capacity: 33,
-      engines: 2,
-      engineType: 'T55-L-714',
-      length: '15.5 m',
-      wingspan: '18.3 m',
-      height: '5.7 m'
-    },
-    trainingRequirements: {
-      minimumHours: 600,
-      requiredLicenses: ['CPL', 'IR', 'Helicopter Rating', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 100,
-      simulatorHours: 25,
-      flightHours: 12
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Heavy Lift Operations', 'External Load', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['External Load Operations', 'Nap of the Earth Flying', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '3 weeks',
-        topics: ['Heavy Lift Missions', 'External Load Training', 'Formation Flying']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Fort Rucker', 'Fort Hood', 'Fort Campbell'],
-      features: ['6-DOF Motion', 'Tandem Rotor Simulation', 'External Load Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['600 hours on type', 'TRI certification', 'Heavy Lift Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'US Army',
-      validity: '2 years',
-      renewalRequirements: ['Heavy lift currency', 'Proficiency check', 'External load qualification']
-    }
-  },
-  {
-    id: 'p8',
-    manufacturerId: 'boeing',
-    model: 'P-8 Poseidon',
-    category: 'military',
-    subcategory: 'surveillance-uas',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 't1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0',
-    description: 'The P-8 Poseidon is a military maritime patrol aircraft based on the 737-800ERX. Active in service with the US Navy and allied forces for anti-submarine warfare, anti-surface warfare, and intelligence gathering.',
-    firstFlight: 2009,
-    specifications: {
-      maxTakeoffWeight: '85,820 kg',
-      cruisingSpeed: 'Mach 0.74',
-      range: '8,300 km',
-      capacity: 9,
-      engines: 2,
-      engineType: 'CFM56-7B',
-      length: '39.5 m',
-      wingspan: '37.6 m',
-      height: '12.8 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1500,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 200,
-      simulatorHours: 40,
-      flightHours: 20
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '8 weeks',
-        topics: ['Systems', 'ASW Operations', 'ISR Mission Planning', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '6 weeks',
-        topics: ['Maritime Patrol', 'Submarine Detection', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '4 weeks',
-        topics: ['Maritime Patrol Missions', 'Sonobuoy Operations', 'Low-Level Operations']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Jacksonville', 'Whidbey Island', 'Sigonella'],
-      features: ['6-DOF Motion', 'Maritime Visual System', 'Sonar Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['1000 hours on type', 'TRI certification', 'Maritime Patrol Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'USN',
-      validity: '2 years',
-      renewalRequirements: ['Maritime patrol currency', 'Proficiency check', 'ASW qualification']
-    }
-  },
-  {
-    id: 'kc46',
-    manufacturerId: 'boeing',
-    model: 'KC-46 Pegasus',
-    category: 'military',
-    subcategory: 'transport-tanker',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1',
-    description: 'The KC-46 Pegasus is a military aerial refueling and strategic military transport aircraft based on the 767-200ER. Active in service with the USAF and allied forces, replacing the aging KC-135 Stratotanker fleet.',
-    firstFlight: 2015,
-    specifications: {
-      maxTakeoffWeight: '188,200 kg',
-      cruisingSpeed: 'Mach 0.82',
-      range: '12,200 km',
-      capacity: 58,
-      engines: 2,
-      engineType: 'CF6-80C2B7F',
-      length: '50.5 m',
-      wingspan: '47.6 m',
-      height: '15.9 m'
-    },
-    trainingRequirements: {
-      minimumHours: 1200,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 180,
-      simulatorHours: 36,
-      flightHours: 18
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '7 weeks',
-        topics: ['Systems', 'Aerial Refueling', 'Cargo Operations', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '5 weeks',
-        topics: ['Aerial Refueling', 'Boom Operations', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '4 weeks',
-        topics: ['Refueling Missions', 'Cargo Loading', 'Formation Flying']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['McConnell AFB', 'Altus AFB', 'Travis AFB'],
-      features: ['6-DOF Motion', 'Refueling Boom Simulation', 'Cargo Visual System']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['1000 hours on type', 'TRI certification', 'Refueling Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'USAF',
-      validity: '2 years',
-      renewalRequirements: ['Refueling currency', 'Proficiency check', 'Boom qualification']
-    }
-  },
-  {
-    id: 'v22',
-    manufacturerId: 'boeing',
-    model: 'V-22 Osprey',
-    category: 'helicopter',
-    subcategory: 'tiltrotor',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2',
-    description: 'The V-22 Osprey is a multi-mission, tiltrotor military aircraft with both vertical takeoff and landing (VTOL), and short takeoff and landing (STOL) capabilities. Joint development with Bell, serving USMC, USAF, and USN.',
-    firstFlight: 1989,
-    specifications: {
-      maxTakeoffWeight: '27,400 kg',
-      cruisingSpeed: '240 knots',
-      range: '1,700 km',
-      capacity: 24,
-      engines: 2,
-      engineType: 'Rolls-Royce T406',
-      length: '17.5 m',
-      wingspan: '14.0 m',
-      height: '6.7 m'
-    },
-    trainingRequirements: {
-      minimumHours: 800,
-      requiredLicenses: ['CPL', 'IR', 'Helicopter Rating', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 150,
-      simulatorHours: 35,
-      flightHours: 17
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '6 weeks',
-        topics: ['Systems', 'Tiltrotor Operations', 'VTOL/STOL', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '5 weeks',
-        topics: ['Tiltrotor Transitions', 'Ship Operations', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '4 weeks',
-        topics: ['VTOL Operations', 'STOL Missions', 'Ship Boarding']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['New River', 'Camp Pendleton', 'Hurlburt Field'],
-      features: ['6-DOF Motion', 'Tiltrotor Simulation', 'Ship Visual System']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['800 hours on type', 'TRI certification', 'Tiltrotor Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'USMC/USAF/USN',
-      validity: '2 years',
-      renewalRequirements: ['Tiltrotor currency', 'Proficiency check', 'VTOL qualification']
-    }
-  },
-  {
-    id: 'b17',
-    manufacturerId: 'boeing',
-    model: 'B-17 Flying Fortress',
-    category: 'military',
-    subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3',
-    description: 'The B-17 Flying Fortress was a four-engine heavy bomber developed in the 1930s for the US Army Air Corps. A historical WWII icon that played a crucial role in the strategic bombing campaign over Europe.',
-    firstFlight: 1935,
-    specifications: {
-      maxTakeoffWeight: '29,700 kg',
-      cruisingSpeed: '180 knots',
-      range: '3,200 km',
-      capacity: 10,
-      engines: 4,
-      engineType: 'Wright R-1820 Cyclone',
-      length: '22.7 m',
-      wingspan: '31.6 m',
-      height: '5.8 m'
-    },
-    trainingRequirements: {
-      minimumHours: 500,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 80,
-      simulatorHours: 16,
-      flightHours: 8
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Bombing Operations', 'Formation Flying', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '2 weeks',
-        topics: ['Bombing Runs', 'Formation Flying', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Bombing Missions', 'Formation Flying', 'Combat Operations']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Historical Museums'],
-      features: ['6-DOF Motion', 'WWII Visual System', 'Bombing Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['300 hours on type', 'TRI certification', 'Historical Aircraft Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'Historical',
-      validity: '2 years',
-      renewalRequirements: ['Historical currency', 'Proficiency check', 'Historical aircraft qualification']
-    }
-  },
-  {
-    id: 'b29',
-    manufacturerId: 'boeing',
-    model: 'B-29 Superfortress',
-    category: 'military',
-    subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3z4',
-    description: 'The B-29 Superfortress was a four-engine heavy bomber used by the US in WWII and Korea. The most advanced bomber of its time, it introduced pressurized cabins, remote-controlled turrets, and advanced fire control systems.',
-    firstFlight: 1942,
-    specifications: {
-      maxTakeoffWeight: '60,000 kg',
-      cruisingSpeed: '220 knots',
-      range: '5,200 km',
-      capacity: 11,
-      engines: 4,
-      engineType: 'Wright R-3350 Duplex-Cyclone',
-      length: '30.2 m',
-      wingspan: '43.1 m',
-      height: '8.5 m'
-    },
-    trainingRequirements: {
-      minimumHours: 800,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 100,
-      simulatorHours: 20,
-      flightHours: 10
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '5 weeks',
-        topics: ['Systems', 'Bombing Operations', 'Pressurization', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Bombing Runs', 'Remote Turret Operations', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Bombing Missions', 'High-Altitude Operations', 'Combat Operations']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Historical Museums'],
-      features: ['6-DOF Motion', 'WWII Visual System', 'Bombing Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Historical Aircraft Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'Historical',
-      validity: '2 years',
-      renewalRequirements: ['Historical currency', 'Proficiency check', 'Historical aircraft qualification']
-    }
-  },
-  {
-    id: 'f86',
-    manufacturerId: 'boeing',
-    model: 'F-86 Sabre',
-    category: 'military',
-    subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: 'y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3z4a5',
-    description: 'The F-86 Sabre was a transonic jet fighter aircraft produced by North American Aviation (acquired by Rockwell, later Boeing). A historical Korean War icon and the first swept-wing fighter in the US inventory.',
-    firstFlight: 1947,
-    specifications: {
-      maxTakeoffWeight: '8,200 kg',
-      cruisingSpeed: 'Mach 0.86',
-      range: '2,500 km',
-      capacity: 1,
-      engines: 1,
-      engineType: 'J47-GE-27',
-      length: '11.4 m',
-      wingspan: '11.3 m',
-      height: '4.5 m'
-    },
-    trainingRequirements: {
-      minimumHours: 400,
-      requiredLicenses: ['CPL', 'IR', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 5',
-      groundSchoolHours: 60,
-      simulatorHours: 15,
-      flightHours: 7
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '3 weeks',
-        topics: ['Systems', 'Jet Operations', 'Combat Tactics', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '2 weeks',
-        topics: ['Air Combat', 'Jet Operations', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Combat Maneuvers', 'Jet Operations', 'Formation Flying']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Historical Museums'],
-      features: ['6-DOF Motion', 'Korean War Visual System', 'Combat Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['300 hours on type', 'TRI certification', 'Historical Aircraft Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'Historical',
-      validity: '2 years',
-      renewalRequirements: ['Historical currency', 'Proficiency check', 'Historical aircraft qualification']
     }
   },
   // Tecnam

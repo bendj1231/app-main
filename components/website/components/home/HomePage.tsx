@@ -657,17 +657,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                         top: scrollPos,
                         behavior: 'instant'
                     });
-                    console.log(`📊 Restored scroll to ${scrollPos} after ${delay}ms, current: ${window.scrollY}`);
                 };
                 
-                // Immediate restore
-                restoreScroll(0);
-                
-                // Multiple delayed restores to ensure it sticks
+                // Single restore after a short delay
                 setTimeout(() => restoreScroll(100), 100);
-                setTimeout(() => restoreScroll(300), 300);
-                setTimeout(() => restoreScroll(500), 500);
-                setTimeout(() => restoreScroll(800), 800);
                 setTimeout(() => restoreScroll(1200), 1200);
             }
         };

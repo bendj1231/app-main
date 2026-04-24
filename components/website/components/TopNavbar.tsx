@@ -117,15 +117,18 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     }, [currentUser]);
 
     const handleLogout = async () => {
-        console.log('🔴 handleLogout called');
+        // Prevent multiple simultaneous logout calls
+        if (profileLoading) return;
+        
         try {
-            console.log('🔴 Calling logout function...');
+            setProfileLoading(true);
             await logout();
-            console.log('✅ Logout successful, navigating to home');
             onNavigate('home'); // Redirect to home after logout
             setIsMenuOpen(false);
         } catch (error) {
             console.error("❌ Failed to log out", error);
+        } finally {
+            setProfileLoading(false);
         }
     };
 

@@ -1266,16 +1266,6 @@ const GridCard: React.FC<GridCardProps> = ({
         ? card.dynamicSubtitles ? card.dynamicSubtitles[currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex] : null
         : null;
 
-    console.log('Dynamic subtitle debug:', {
-        cardId: card.id,
-        currentImageIndex,
-        animationSceneIndex,
-        dynamicSubtitles: card.dynamicSubtitles,
-        subtitleIndex: currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex,
-        currentDynamicSubtitle,
-        isEnrolledInFoundation
-    });
-
     // Use dynamic title if available, otherwise use display title
     const finalDisplayTitle = currentDynamicTitle || displayTitle;
 

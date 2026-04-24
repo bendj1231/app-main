@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe } from 'lucide-react';
 import { manufacturers, aircraftTypeRatings, Manufacturer, AircraftTypeRating, getManufacturerById, getAircraftByManufacturer, getAircraftByCategory } from '../data/aircraft-manufacturers';
 
 // Cache for fetched thumbnail URLs
@@ -175,6 +175,99 @@ const FLAGSHIP_SUBCATEGORY_COLORS: Record<string, string> = {
   'historical-flagship': 'bg-gray-700',
 };
 
+// Manufacturer Hero Component
+function ManufacturerHero({ manufacturer, onClose }: { manufacturer: Manufacturer; onClose: () => void }) {
+  return (
+    <div className="relative overflow-hidden mb-8">
+      {/* Background with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
+      
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+        <div className="flex flex-col md:flex-row gap-8 items-start">
+          {/* Manufacturer Logo */}
+          <div className="flex-shrink-0">
+            <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-2xl shadow-2xl p-6 flex items-center justify-center">
+              <img
+                src={manufacturer.logo}
+                alt={manufacturer.name}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          
+          {/* Manufacturer Info */}
+          <div className="flex-1 text-white">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h2 className="text-4xl md:text-5xl font-serif font-normal mb-2">{manufacturer.name}</h2>
+                <div className="flex items-center gap-4 text-slate-300 text-sm">
+                  <span className="flex items-center gap-1">
+                    <Building2 className="w-4 h-4" />
+                    {manufacturer.headquarters}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-4 h-4" />
+                    Founded {manufacturer.founded}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Star className="w-4 h-4 text-yellow-400" />
+                    {manufacturer.reputationScore}/10
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <p className="text-slate-300 text-lg mb-6 max-w-3xl">{manufacturer.description}</p>
+            
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-wider mb-1">
+                  <Plane className="w-4 h-4" />
+                  Aircraft
+                </div>
+                <div className="text-2xl font-bold">{manufacturer.totalAircraftCount}</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-wider mb-1">
+                  <BookOpen className="w-4 h-4" />
+                  Training Centers
+                </div>
+                <div className="text-2xl font-bold">{manufacturer.trainingCenters?.length || 0}</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-wider mb-1">
+                  <Globe className="w-4 h-4" />
+                  Partners
+                </div>
+                <div className="text-2xl font-bold">{manufacturer.airlineRecruitmentPartnerships?.length || 0}</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-wider mb-1">
+                  <Briefcase className="w-4 h-4" />
+                  Career Timeline
+                </div>
+                <div className="text-2xl font-bold">{manufacturer.careerProgression?.timeline || 'N/A'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function TypeRatingSearchPage() {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [activeLegacySubcategory, setActiveLegacySubcategory] = useState<string | null>(null);
@@ -341,6 +434,70 @@ export default function TypeRatingSearchPage() {
           ))}
         </div>
       </div>
+
+      {/* Default Hero - shows when no manufacturer is selected */}
+      {!selectedManufacturer && (
+        <div className="relative overflow-hidden mb-8">
+          {/* Background with gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
+          
+          <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+            <div className="text-center text-white">
+              <h2 className="text-4xl md:text-5xl font-serif font-normal mb-4">
+                Discover Aircraft Manufacturers' Expectations & Type Rating Requirements
+              </h2>
+              <p className="text-lg text-slate-300 mb-8 max-w-4xl mx-auto">
+                Understanding type ratings is crucial for your career. While aircraft may seem similar, each rating opens different opportunities based on market demand, airline preferences, and career progression.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-left">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Plane className="w-6 h-6 text-sky-400" />
+                    <h3 className="text-xl font-semibold">Market Demand</h3>
+                  </div>
+                  <p className="text-slate-300 text-sm">
+                    Airlines prioritize ratings based on their fleet composition. A320/A321neo dominate short-haul, while A350/A380 lead long-haul. Choose ratings matching airline expansion plans.
+                  </p>
+                </div>
+                
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-left">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Briefcase className="w-6 h-6 text-emerald-400" />
+                    <h3 className="text-xl font-semibold">Career Progression</h3>
+                  </div>
+                  <p className="text-slate-300 text-sm">
+                    Start with high-demand narrow-body ratings (A320neo, B737MAX) for faster employment. Wide-body ratings (A350, B777) offer premium routes but require more experience.
+                  </p>
+                </div>
+                
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-left">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Star className="w-6 h-6 text-yellow-400" />
+                    <h3 className="text-xl font-semibold">Strategic Choice</h3>
+                  </div>
+                  <p className="text-slate-300 text-sm">
+                    A320 vs A330: Same manufacturer, different markets. A320 = high volume, rapid hiring. A330 = medium-haul, bridge to A350. Research airline fleets before investing.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Manufacturer Hero - shows when manufacturer is selected */}
+      {selectedManufacturer && (
+        <ManufacturerHero 
+          manufacturer={selectedManufacturer} 
+          onClose={() => setSelectedManufacturer(null)} 
+        />
+      )}
 
       {/* Category filter chips */}
       <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">

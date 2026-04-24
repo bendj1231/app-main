@@ -14,7 +14,6 @@ export function getDevicePerformanceTier(): PerformanceTier {
   // Check for manual override from graphics settings
   const manualOverride = localStorage.getItem('graphicsQuality') as PerformanceTier | 'auto' | null;
   if (manualOverride && manualOverride !== 'auto') {
-    console.log('🎮 Using manual graphics override:', manualOverride);
     return manualOverride;
   }
 
@@ -24,8 +23,6 @@ export function getDevicePerformanceTier(): PerformanceTier {
   const hardwareConcurrency = navigator.hardwareConcurrency || 4;
   const deviceMemory = (navigator as any).deviceMemory || 4;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  console.log('🔍 Device Detection:', { isMobile, hardwareConcurrency, deviceMemory, prefersReducedMotion });
 
   if (prefersReducedMotion) {
     return 'low';
