@@ -196,7 +196,8 @@ export interface AircraftTypeRating {
   id: string;
   manufacturerId: string;
   model: string;
-  category: 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military';
+  category: 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military' | 'legacy' | 'flagship';
+  subcategory?: string;
   image: string;
   sketchfabId?: string;
   description: string;
@@ -1266,10 +1267,137 @@ export const manufacturers: Manufacturer[] = [
 export const aircraftTypeRatings: AircraftTypeRating[] = [
   // Airbus
   {
+    id: 'a220-100',
+    manufacturerId: 'airbus',
+    model: 'A220-100',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A220-100 is the smallest baseline model of the A220 family, originally developed by Bombardier as the CS100. It is designed for the 100-130 seat market.',
+    firstFlight: 2013,
+    specifications: {
+      maxTakeoffWeight: '60,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '6,100 km',
+      capacity: 125,
+      engines: 2,
+      engineType: 'Pratt & Whitney PW1500G',
+      length: '35.0 m',
+      wingspan: '35.1 m',
+      height: '11.5 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a220-300',
+    manufacturerId: 'airbus',
+    model: 'A220-300',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A220-300 is the stretched version of the A220 family, originally developed by Bombardier as the CS300. It is designed for the 130-160 seat market.',
+    firstFlight: 2015,
+    specifications: {
+      maxTakeoffWeight: '67,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '6,300 km',
+      capacity: 160,
+      engines: 2,
+      engineType: 'Pratt & Whitney PW1500G',
+      length: '38.9 m',
+      wingspan: '35.1 m',
+      height: '11.5 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
     id: 'a320',
     manufacturerId: 'airbus',
     model: 'A320',
     category: 'commercial',
+    subcategory: 'narrow-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: 'ae3d357729a44f278f9ef9326977504a',
     description: 'The Airbus A320 is a narrow-body, medium-range, twin-engine jet airliner. It was the first member of the A320 family, which was launched in March 1984.',
@@ -1329,10 +1457,515 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
+    id: 'a318',
+    manufacturerId: 'airbus',
+    model: 'A318',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A318 is the smallest member of the A320 family, known as the "Baby Bus". It was designed for short-haul routes with limited passenger demand.',
+    firstFlight: 2002,
+    specifications: {
+      maxTakeoffWeight: '68,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '5,950 km',
+      capacity: 132,
+      engines: 2,
+      engineType: 'CFM56-5B',
+      length: '31.44 m',
+      wingspan: '34.1 m',
+      height: '12.56 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a319',
+    manufacturerId: 'airbus',
+    model: 'A319',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A319 is a shortened version of the A320, designed for routes with lower passenger demand while maintaining the A320 family\'s commonality.',
+    firstFlight: 1995,
+    specifications: {
+      maxTakeoffWeight: '75,500 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '6,700 km',
+      capacity: 156,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '33.84 m',
+      wingspan: '34.1 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321',
+    manufacturerId: 'airbus',
+    model: 'A321',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A321 is the stretched, highest-capacity version of the A320 family, designed for medium-haul routes with higher passenger demand.',
+    firstFlight: 1993,
+    specifications: {
+      maxTakeoffWeight: '93,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '5,950 km',
+      capacity: 220,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '44.51 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Beijing'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a319neo',
+    manufacturerId: 'airbus',
+    model: 'A319neo',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A319neo is the upgraded A319 featuring larger, more efficient engines and aerodynamic "Sharklets" for improved fuel efficiency.',
+    firstFlight: 2017,
+    specifications: {
+      maxTakeoffWeight: '79,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '7,200 km',
+      capacity: 160,
+      engines: 2,
+      engineType: 'CFM LEAP-1A or PW1100G',
+      length: '33.84 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a320neo',
+    manufacturerId: 'airbus',
+    model: 'A320neo',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A320neo is the modernized iteration of the A320 featuring larger, more efficient engines and aerodynamic "Sharklets" for 15% fuel savings.',
+    firstFlight: 2015,
+    specifications: {
+      maxTakeoffWeight: '79,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '6,850 km',
+      capacity: 180,
+      engines: 2,
+      engineType: 'CFM LEAP-1A or PW1100G',
+      length: '37.57 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Beijing'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321neo',
+    manufacturerId: 'airbus',
+    model: 'A321neo',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A321neo is the upgraded A321 featuring larger, more efficient engines and aerodynamic "Sharklets" for improved fuel efficiency and range.',
+    firstFlight: 2016,
+    specifications: {
+      maxTakeoffWeight: '97,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '6,500 km',
+      capacity: 240,
+      engines: 2,
+      engineType: 'CFM LEAP-1A or PW1100G',
+      length: '44.51 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Beijing'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321lr',
+    manufacturerId: 'airbus',
+    model: 'A321LR',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A321LR (Long Range) is a modified A321neo with extra fuel tanks, enabling transatlantic flights and long-haul routes.',
+    firstFlight: 2018,
+    specifications: {
+      maxTakeoffWeight: '97,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '7,400 km',
+      capacity: 206,
+      engines: 2,
+      engineType: 'CFM LEAP-1A or PW1100G',
+      length: '44.51 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321xlr',
+    manufacturerId: 'airbus',
+    model: 'A321XLR',
+    category: 'commercial',
+    subcategory: 'narrow-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A321XLR (Extra Long Range) is the newest A321neo variant capable of flying 11 hours non-stop, competing with larger wide-body aircraft on long-haul routes.',
+    firstFlight: 2022,
+    specifications: {
+      maxTakeoffWeight: '101,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '8,700 km',
+      capacity: 244,
+      engines: 2,
+      engineType: 'CFM LEAP-1A or PW1100G',
+      length: '44.51 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
     id: 'a330',
     manufacturerId: 'airbus',
     model: 'A330',
     category: 'commercial',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: '50c4ed883e00436e80a3f1c8048f549f',
     description: 'The Airbus A330 is a wide-body, twin-engine jet airliner. It was designed to replace the earlier A300.',
@@ -1382,7 +2015,259 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     instructorQualifications: [
       {
         type: 'Type Rating Instructor',
-        requirements: ['1000 hours on type', 'TRI certification', 'Instructor rating']
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-200',
+    manufacturerId: 'airbus',
+    model: 'A330-200',
+    category: 'commercial',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-200 is the shorter fuselage, longer-range variant of the A330 family, designed for medium-to-long-haul routes.',
+    firstFlight: 1997,
+    specifications: {
+      maxTakeoffWeight: '233,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '13,450 km',
+      capacity: 253,
+      engines: 2,
+      engineType: 'CF6-80E1 or Trent 772',
+      length: '58.82 m',
+      wingspan: '60.3 m',
+      height: '17.39 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Dubai'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-300',
+    manufacturerId: 'airbus',
+    model: 'A330-300',
+    category: 'commercial',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-300 is the longer fuselage, higher-capacity variant of the A330 family, designed for medium-haul routes.',
+    firstFlight: 1992,
+    specifications: {
+      maxTakeoffWeight: '242,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '11,750 km',
+      capacity: 335,
+      engines: 2,
+      engineType: 'CF6-80E1 or Trent 772',
+      length: '63.66 m',
+      wingspan: '60.3 m',
+      height: '16.79 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Dubai'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-800',
+    manufacturerId: 'airbus',
+    model: 'A330-800',
+    category: 'commercial',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-800 is the upgraded A330-200 featuring Rolls-Royce Trent 7000 engines and aerodynamic improvements for better fuel efficiency.',
+    firstFlight: 2018,
+    specifications: {
+      maxTakeoffWeight: '251,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '15,090 km',
+      capacity: 257,
+      engines: 2,
+      engineType: 'Rolls-Royce Trent 7000',
+      length: '58.82 m',
+      wingspan: '64.0 m',
+      height: '17.39 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-900',
+    manufacturerId: 'airbus',
+    model: 'A330-900',
+    category: 'commercial',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-900 is the upgraded A330-300 featuring Rolls-Royce Trent 7000 engines and aerodynamic improvements for better fuel efficiency and range.',
+    firstFlight: 2017,
+    specifications: {
+      maxTakeoffWeight: '251,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '13,330 km',
+      capacity: 336,
+      engines: 2,
+      engineType: 'Rolls-Royce Trent 7000',
+      length: '63.66 m',
+      wingspan: '64.0 m',
+      height: '16.79 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Dubai'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
       }
     ],
     certification: {
@@ -1396,6 +2281,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A350',
     category: 'commercial',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: '0703224a1a7e497eaa2a860e1d3b1774',
     description: 'The Airbus A350 is a long-range, wide-body, twin-engine jet airliner. It is the first Airbus aircraft with both fuselage and wing structures made primarily of carbon-fiber-reinforced polymer.',
@@ -1445,7 +2331,196 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     instructorQualifications: [
       {
         type: 'Type Rating Instructor',
-        requirements: ['1500 hours on type', 'TRI certification', 'Instructor rating']
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-900',
+    manufacturerId: 'airbus',
+    model: 'A350-900',
+    category: 'commercial',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A350-900 is the baseline model of the A350 family, featuring advanced carbon-composite construction and excellent fuel efficiency.',
+    firstFlight: 2013,
+    specifications: {
+      maxTakeoffWeight: '280,000 kg',
+      cruisingSpeed: 'Mach 0.85',
+      range: '15,000 km',
+      capacity: 325,
+      engines: 2,
+      engineType: 'Trent XWB-84',
+      length: '66.80 m',
+      wingspan: '64.31 m',
+      height: '17.05 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Dubai'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-900ulr',
+    manufacturerId: 'airbus',
+    model: 'A350-900ULR',
+    category: 'flagship',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A350-900ULR (Ultra Long Range) is a variant capable of flying the world\'s longest routes, currently used by Singapore Airlines for non-stop flights between Singapore and New York. It is the flagship of long-range aviation.',
+    firstFlight: 2018,
+    specifications: {
+      maxTakeoffWeight: '280,000 kg',
+      cruisingSpeed: 'Mach 0.85',
+      range: '18,000 km',
+      capacity: 161,
+      engines: 2,
+      engineType: 'Trent XWB-97',
+      length: '66.80 m',
+      wingspan: '64.31 m',
+      height: '17.05 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Ultra-Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350-1000',
+    manufacturerId: 'airbus',
+    model: 'A350-1000',
+    category: 'flagship',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A350-1000 is the stretched, highest-capacity model of the A350 family, featuring advanced carbon-composite construction. It is the flagship of Airbus\'s current wide-body lineup.',
+    firstFlight: 2016,
+    specifications: {
+      maxTakeoffWeight: '319,000 kg',
+      cruisingSpeed: 'Mach 0.85',
+      range: '16,100 km',
+      capacity: 440,
+      engines: 2,
+      engineType: 'Trent XWB-97',
+      length: '73.79 m',
+      wingspan: '64.31 m',
+      height: '17.08 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Dubai'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
       }
     ],
     certification: {
@@ -1458,21 +2533,22 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a380',
     manufacturerId: 'airbus',
     model: 'A380',
-    category: 'commercial',
+    category: 'flagship',
+    subcategory: 'wide-body',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    sketchfabId: '98d21f9c8104445f814cef47ef992889',
-    description: 'The Airbus A380 is a double-deck, wide-body, four-engine jet airliner. It is the world\'s largest passenger airliner.',
+    sketchfabId: 'b4fbb839e6b4bb989422426bfc8fd1c',
+    description: 'The Airbus A380 is the iconic double-decker quad-engine jet, the largest commercial passenger aircraft ever built. While production ended in 2021, it remains the flagship of Airbus engineering excellence.',
     firstFlight: 2005,
     specifications: {
       maxTakeoffWeight: '575,000 kg',
       cruisingSpeed: 'Mach 0.85',
-      range: '15,200 km',
+      range: '15,700 km',
       capacity: 555,
       engines: 4,
       engineType: 'GP7200 or Trent 900',
       length: '72.72 m',
       wingspan: '79.75 m',
-      height: '24.45 m'
+      height: '24.09 m'
     },
     trainingRequirements: {
       minimumHours: 3000,
@@ -1508,13 +2584,2659 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     instructorQualifications: [
       {
         type: 'Type Rating Instructor',
-        requirements: ['2000 hours on type', 'TRI certification', 'Instructor rating']
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
       }
     ],
     certification: {
       authority: 'EASA / FAA',
       validity: '1 year',
       renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a340-200',
+    manufacturerId: 'airbus',
+    model: 'A340-200',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A340-200 is the initial version of the A340 family, a four-engine long-haul airliner developed to bypass early twin-engine flight restrictions. Production ended in 2011.',
+    firstFlight: 1991,
+    specifications: {
+      maxTakeoffWeight: '275,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '14,800 km',
+      capacity: 239,
+      engines: 4,
+      engineType: 'CFM56-5C4',
+      length: '59.39 m',
+      wingspan: '60.3 m',
+      height: '16.84 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a340-300',
+    manufacturerId: 'airbus',
+    model: 'A340-300',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A340-300 is the most popular variant of the A340 family, featuring a longer fuselage and higher capacity. Production ended in 2011.',
+    firstFlight: 1991,
+    specifications: {
+      maxTakeoffWeight: '275,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '13,700 km',
+      capacity: 295,
+      engines: 4,
+      engineType: 'CFM56-5C4',
+      length: '63.60 m',
+      wingspan: '60.3 m',
+      height: '16.84 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a340-500',
+    manufacturerId: 'airbus',
+    model: 'A340-500',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A340-500 is the ultra-long-range version of the A340 family with a stretched fuselage. Production ended in 2011.',
+    firstFlight: 2002,
+    specifications: {
+      maxTakeoffWeight: '368,000 kg',
+      cruisingSpeed: 'Mach 0.83',
+      range: '16,700 km',
+      capacity: 313,
+      engines: 4,
+      engineType: 'Trent 553',
+      length: '67.90 m',
+      wingspan: '63.45 m',
+      height: '17.10 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Ultra-Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a340-600',
+    manufacturerId: 'airbus',
+    model: 'A340-600',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A340-600 is the stretched, high-capacity version of the A340 family, the longest Airbus aircraft until the A350-1000. Production ended in 2011.',
+    firstFlight: 2001,
+    specifications: {
+      maxTakeoffWeight: '368,000 kg',
+      cruisingSpeed: 'Mach 0.83',
+      range: '14,600 km',
+      capacity: 380,
+      engines: 4,
+      engineType: 'Trent 556',
+      length: '75.30 m',
+      wingspan: '63.45 m',
+      height: '17.22 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300b1',
+    manufacturerId: 'airbus',
+    model: 'A300B1',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300B1 was the first variant of the A300, the world\'s first twin-engine wide-body airliner. It was the aircraft that launched Airbus as a company.',
+    firstFlight: 1972,
+    specifications: {
+      maxTakeoffWeight: '132,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '3,500 km',
+      capacity: 250,
+      engines: 2,
+      engineType: 'CF6-50C',
+      length: '53.75 m',
+      wingspan: '44.84 m',
+      height: '16.24 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300b2',
+    manufacturerId: 'airbus',
+    model: 'A300B2',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300B2 was the production version of the A300 with increased range and capacity compared to the B1.',
+    firstFlight: 1974,
+    specifications: {
+      maxTakeoffWeight: '142,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '4,200 km',
+      capacity: 270,
+      engines: 2,
+      engineType: 'CF6-50C or JT9D-59A',
+      length: '53.75 m',
+      wingspan: '44.84 m',
+      height: '16.24 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300b4',
+    manufacturerId: 'airbus',
+    model: 'A300B4',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300B4 was an extended range version of the A300 with center fuel tank for longer flights.',
+    firstFlight: 1976,
+    specifications: {
+      maxTakeoffWeight: '157,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '5,500 km',
+      capacity: 280,
+      engines: 2,
+      engineType: 'CF6-50C or JT9D-59A',
+      length: '53.75 m',
+      wingspan: '44.84 m',
+      height: '16.24 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-600',
+    manufacturerId: 'airbus',
+    model: 'A300-600',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300-600 was the modernized, definitive version of the A300 family with glass cockpit and improved aerodynamics.',
+    firstFlight: 1983,
+    specifications: {
+      maxTakeoffWeight: '171,700 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '7,500 km',
+      capacity: 297,
+      engines: 2,
+      engineType: 'CF6-80C2 or PW4158',
+      length: '54.10 m',
+      wingspan: '44.84 m',
+      height: '16.54 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310-200',
+    manufacturerId: 'airbus',
+    model: 'A310-200',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A310-200 is a shorter, longer-range derivative of the A300 family. It was the first Airbus aircraft with a two-crew glass cockpit.',
+    firstFlight: 1982,
+    specifications: {
+      maxTakeoffWeight: '144,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '6,800 km',
+      capacity: 220,
+      engines: 2,
+      engineType: 'CF6-80A3 or JT9D-7R4',
+      length: '46.66 m',
+      wingspan: '43.90 m',
+      height: '15.80 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310-300',
+    manufacturerId: 'airbus',
+    model: 'A310-300',
+    category: 'legacy',
+    subcategory: 'wide-body',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A310-300 is the extended range version of the A310 family with center fuel tank and increased MTOW.',
+    firstFlight: 1985,
+    specifications: {
+      maxTakeoffWeight: '164,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '9,600 km',
+      capacity: 250,
+      engines: 2,
+      engineType: 'CF6-80C2 or PW4152',
+      length: '46.66 m',
+      wingspan: '43.90 m',
+      height: '15.80 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a300-600f',
+    manufacturerId: 'airbus',
+    model: 'A300-600F',
+    category: 'cargo',
+    subcategory: 'freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A300-600F is a dedicated freighter variant of the A300-600, featuring a large cargo door and reinforced floor.',
+    firstFlight: 1994,
+    specifications: {
+      maxTakeoffWeight: '171,700 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '6,500 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CF6-80C2 or PW4158',
+      length: '54.10 m',
+      wingspan: '44.84 m',
+      height: '16.54 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a310f',
+    manufacturerId: 'airbus',
+    model: 'A310F',
+    category: 'cargo',
+    subcategory: 'freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A310F is a freighter variant of the A310, featuring a large cargo door and reinforced floor for cargo operations.',
+    firstFlight: 1988,
+    specifications: {
+      maxTakeoffWeight: '164,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '7,500 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CF6-80C2 or PW4152',
+      length: '46.66 m',
+      wingspan: '43.90 m',
+      height: '15.80 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-200f',
+    manufacturerId: 'airbus',
+    model: 'A330-200F',
+    category: 'cargo',
+    subcategory: 'freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330-200F is a dedicated freighter variant of the A330-200, featuring a large cargo door and reinforced floor.',
+    firstFlight: 2009,
+    specifications: {
+      maxTakeoffWeight: '233,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '7,400 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CF6-80E1 or Trent 772',
+      length: '58.82 m',
+      wingspan: '60.3 m',
+      height: '17.39 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a350f',
+    manufacturerId: 'airbus',
+    model: 'A350F',
+    category: 'cargo',
+    subcategory: 'freighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A350F is a clean-sheet freighter designed to compete with Boeing\'s heavy lifters, featuring advanced carbon-composite construction.',
+    firstFlight: 2025,
+    specifications: {
+      maxTakeoffWeight: '319,000 kg',
+      cruisingSpeed: 'Mach 0.85',
+      range: '8,700 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'Trent XWB-97',
+      length: '73.79 m',
+      wingspan: '64.31 m',
+      height: '17.08 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a320p2f',
+    manufacturerId: 'airbus',
+    model: 'A320P2F',
+    category: 'cargo',
+    subcategory: 'p2f-conversion',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A320P2F is a passenger-to-freighter conversion of the A320, featuring a large cargo door and reinforced floor for cargo operations.',
+    firstFlight: 2019,
+    specifications: {
+      maxTakeoffWeight: '77,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '4,800 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '37.57 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a321p2f',
+    manufacturerId: 'airbus',
+    model: 'A321P2F',
+    category: 'cargo',
+    subcategory: 'p2f-conversion',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A321P2F is a passenger-to-freighter conversion of the A321, featuring a large cargo door and reinforced floor for cargo operations.',
+    firstFlight: 2020,
+    specifications: {
+      maxTakeoffWeight: '93,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '4,500 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '44.51 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330p2f',
+    manufacturerId: 'airbus',
+    model: 'A330P2F',
+    category: 'cargo',
+    subcategory: 'p2f-conversion',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330P2F is a passenger-to-freighter conversion of the A330, featuring a large cargo door and reinforced floor for cargo operations.',
+    firstFlight: 2017,
+    specifications: {
+      maxTakeoffWeight: '233,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '7,400 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'CF6-80E1 or Trent 772',
+      length: '58.82 m',
+      wingspan: '60.3 m',
+      height: '17.39 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Cargo Operations', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Cargo Handling']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Cargo Loading']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj-twentytwenty',
+    manufacturerId: 'airbus',
+    model: 'ACJ TwoTwenty',
+    category: 'private',
+    subcategory: 'corporate-jet',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus ACJ TwoTwenty is the corporate jet version of the A220, offering long-range capability in a compact size.',
+    firstFlight: 2018,
+    specifications: {
+      maxTakeoffWeight: '67,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '11,100 km',
+      capacity: 25,
+      engines: 2,
+      engineType: 'Pratt & Whitney PW1500G',
+      length: '38.9 m',
+      wingspan: '35.1 m',
+      height: '11.5 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj318',
+    manufacturerId: 'airbus',
+    model: 'ACJ318',
+    category: 'private',
+    subcategory: 'corporate-jet',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus ACJ318 is the corporate jet version of the A318, offering long-range capability in a compact size.',
+    firstFlight: 2005,
+    specifications: {
+      maxTakeoffWeight: '68,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '8,300 km',
+      capacity: 18,
+      engines: 2,
+      engineType: 'CFM56-5B',
+      length: '31.44 m',
+      wingspan: '34.1 m',
+      height: '12.56 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj319',
+    manufacturerId: 'airbus',
+    model: 'ACJ319',
+    category: 'private',
+    subcategory: 'corporate-jet',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus ACJ319 is the corporate jet version of the A319, offering long-range capability and spacious cabin.',
+    firstFlight: 2003,
+    specifications: {
+      maxTakeoffWeight: '75,500 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '11,650 km',
+      capacity: 19,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '33.84 m',
+      wingspan: '34.1 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj320',
+    manufacturerId: 'airbus',
+    model: 'ACJ320',
+    category: 'private',
+    subcategory: 'corporate-jet',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus ACJ320 is the corporate jet version of the A320, offering long-range capability and spacious cabin.',
+    firstFlight: 2001,
+    specifications: {
+      maxTakeoffWeight: '77,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '11,100 km',
+      capacity: 19,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '37.57 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj321',
+    manufacturerId: 'airbus',
+    model: 'ACJ321',
+    category: 'private',
+    subcategory: 'corporate-jet',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus ACJ321 is the corporate jet version of the A321, offering the longest range and most spacious cabin in the A320 family.',
+    firstFlight: 2004,
+    specifications: {
+      maxTakeoffWeight: '93,000 kg',
+      cruisingSpeed: 'Mach 0.78',
+      range: '11,750 km',
+      capacity: 25,
+      engines: 2,
+      engineType: 'CFM56 or V2500',
+      length: '44.51 m',
+      wingspan: '35.8 m',
+      height: '11.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj330',
+    manufacturerId: 'airbus',
+    model: 'ACJ330',
+    category: 'private',
+    subcategory: 'corporate-jet',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus ACJ330 is the corporate jet version of the A330, offering ultra-long-range capability and spacious cabin.',
+    firstFlight: 2008,
+    specifications: {
+      maxTakeoffWeight: '242,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '17,500 km',
+      capacity: 50,
+      engines: 2,
+      engineType: 'CF6-80E1 or Trent 700',
+      length: '63.66 m',
+      wingspan: '60.3 m',
+      height: '16.79 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Long-Range Navigation']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj340',
+    manufacturerId: 'airbus',
+    model: 'ACJ340',
+    category: 'private',
+    subcategory: 'corporate-jet',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus ACJ340 is the corporate jet version of the A340, offering ultra-long-range capability with four engines.',
+    firstFlight: 2005,
+    specifications: {
+      maxTakeoffWeight: '275,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '18,500 km',
+      capacity: 50,
+      engines: 4,
+      engineType: 'CFM56-5C4',
+      length: '63.60 m',
+      wingspan: '60.3 m',
+      height: '16.84 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Ultra-Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'acj350',
+    manufacturerId: 'airbus',
+    model: 'ACJ350',
+    category: 'private',
+    subcategory: 'corporate-jet',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus ACJ350 is the corporate jet version of the A350, featuring advanced carbon-composite construction and ultra-long-range capability.',
+    firstFlight: 2015,
+    specifications: {
+      maxTakeoffWeight: '280,000 kg',
+      cruisingSpeed: 'Mach 0.85',
+      range: '20,550 km',
+      capacity: 50,
+      engines: 2,
+      engineType: 'Trent XWB',
+      length: '67.09 m',
+      wingspan: '64.31 m',
+      height: '17.08 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 150,
+      simulatorHours: 28,
+      flightHours: 14
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Ultra-Long-Range Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Dubai'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a400m',
+    manufacturerId: 'airbus',
+    model: 'A400M Atlas',
+    category: 'military',
+    subcategory: 'tactical-transport',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A400M Atlas is a four-engine turboprop tactical airlifter with strategic capabilities, designed to replace older military transport aircraft.',
+    firstFlight: 2009,
+    specifications: {
+      maxTakeoffWeight: '141,000 kg',
+      cruisingSpeed: '780 km/h',
+      range: '8,900 km',
+      capacity: 116,
+      engines: 4,
+      engineType: 'TP400-D6 Turboprop',
+      length: '43.84 m',
+      wingspan: '42.40 m',
+      height: '14.66 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Tactical Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Seville', 'Toulouse'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330-mrtt',
+    manufacturerId: 'airbus',
+    model: 'A330 MRTT',
+    category: 'military',
+    subcategory: 'tanker-transport',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus A330 MRTT (Multi Role Tanker Transport) is a military derivative of the A330 used for aerial refueling and transport.',
+    firstFlight: 2007,
+    specifications: {
+      maxTakeoffWeight: '233,000 kg',
+      cruisingSpeed: 'Mach 0.82',
+      range: '14,800 km',
+      capacity: 285,
+      engines: 2,
+      engineType: 'CF6-80E1 or Trent 700',
+      length: '63.66 m',
+      wingspan: '60.3 m',
+      height: '16.79 m'
+    },
+    trainingRequirements: {
+      minimumHours: 2000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 120,
+      simulatorHours: 24,
+      flightHours: 12
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Refueling Operations']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Refueling Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Aerial Refueling']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Toulouse', 'Getafe'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'c295',
+    manufacturerId: 'airbus',
+    model: 'C295',
+    category: 'military',
+    subcategory: 'tactical-transport',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus C295 is a robust, twin-turboprop tactical transport and maritime patrol aircraft.',
+    firstFlight: 1997,
+    specifications: {
+      maxTakeoffWeight: '23,200 kg',
+      cruisingSpeed: '480 km/h',
+      range: '5,700 km',
+      capacity: 71,
+      engines: 2,
+      engineType: 'TP400-D6 Turboprop',
+      length: '19.35 m',
+      wingspan: '25.81 m',
+      height: '6.76 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Tactical Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Seville'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'cn235',
+    manufacturerId: 'airbus',
+    model: 'CN235',
+    category: 'military',
+    subcategory: 'tactical-transport',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus CN235 is a medium-range twin-turboprop transport aircraft, originally a joint venture with CASA.',
+    firstFlight: 1983,
+    specifications: {
+      maxTakeoffWeight: '16,000 kg',
+      cruisingSpeed: '450 km/h',
+      range: '4,500 km',
+      capacity: 51,
+      engines: 2,
+      engineType: 'CT7-9C Turboprop',
+      length: '21.40 m',
+      wingspan: '24.60 m',
+      height: '8.18 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1500,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Tactical Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Seville'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'eurofighter-typhoon',
+    manufacturerId: 'airbus',
+    model: 'Eurofighter Typhoon',
+    category: 'military',
+    subcategory: 'fighter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Eurofighter Typhoon is a twin-engine, canard-delta wing, multirole fighter. Airbus is a major partner in the consortium that builds this aircraft.',
+    firstFlight: 1994,
+    specifications: {
+      maxTakeoffWeight: '23,500 kg',
+      cruisingSpeed: 'Mach 2.0',
+      range: '2,900 km',
+      capacity: 1,
+      engines: 2,
+      engineType: 'EJ200',
+      length: '15.96 m',
+      wingspan: '10.95 m',
+      height: '5.28 m'
+    },
+    trainingRequirements: {
+      minimumHours: 1000,
+      requiredLicenses: ['CPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 200,
+      simulatorHours: 40,
+      flightHours: 20
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '8 weeks',
+        topics: ['Systems', 'Combat Systems', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '6 weeks',
+        topics: ['Normal Operations', 'Combat Operations', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '4 weeks',
+        topics: ['Takeoff and Landing', 'Combat Maneuvers', 'Air Combat']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Manching', 'Cotswold'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Combat missions', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h125',
+    manufacturerId: 'airbus',
+    model: 'H125',
+    category: 'helicopter',
+    subcategory: 'single-engine',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H125 (formerly AS350 Écureuil) is a single-engine light utility helicopter known for its performance in high-altitude and hot conditions.',
+    firstFlight: 1974,
+    specifications: {
+      maxTakeoffWeight: '2,500 kg',
+      cruisingSpeed: '250 km/h',
+      range: '660 km',
+      capacity: 6,
+      engines: 1,
+      engineType: 'Arriel 2D Turboshaft',
+      length: '10.93 m',
+      wingspan: '10.69 m',
+      height: '3.14 m'
+    },
+    trainingRequirements: {
+      minimumHours: 100,
+      requiredLicenses: ['PPL(H)', 'Helicopter Rating'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 5
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '2 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '1 week',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Mountain Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Dallas'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['300 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h130',
+    manufacturerId: 'airbus',
+    model: 'H130',
+    category: 'helicopter',
+    subcategory: 'single-engine',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H130 is a single-engine light helicopter featuring a fenestron tail rotor for improved safety and reduced noise.',
+    firstFlight: 2012,
+    specifications: {
+      maxTakeoffWeight: '2,500 kg',
+      cruisingSpeed: '250 km/h',
+      range: '660 km',
+      capacity: 6,
+      engines: 1,
+      engineType: 'Arriel 2D Turboshaft',
+      length: '10.93 m',
+      wingspan: '10.69 m',
+      height: '3.14 m'
+    },
+    trainingRequirements: {
+      minimumHours: 100,
+      requiredLicenses: ['PPL(H)', 'Helicopter Rating'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 10,
+      flightHours: 5
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '2 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '1 week',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Mountain Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Dallas'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['300 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h135',
+    manufacturerId: 'airbus',
+    model: 'H135',
+    category: 'helicopter',
+    subcategory: 'light-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H135 is a light twin-engine helicopter known for its versatility in emergency medical services and law enforcement roles.',
+    firstFlight: 1994,
+    specifications: {
+      maxTakeoffWeight: '2,950 kg',
+      cruisingSpeed: '254 km/h',
+      range: '635 km',
+      capacity: 7,
+      engines: 2,
+      engineType: 'Arriel 2B Turboshaft',
+      length: '10.26 m',
+      wingspan: '10.20 m',
+      height: '3.32 m'
+    },
+    trainingRequirements: {
+      minimumHours: 150,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 50,
+      simulatorHours: 12,
+      flightHours: 6
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '2 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'EMS Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Dallas'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['400 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h145',
+    manufacturerId: 'airbus',
+    model: 'H145',
+    category: 'helicopter',
+    subcategory: 'light-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H145 is a light twin-engine helicopter featuring a fenestron tail rotor and advanced avionics.',
+    firstFlight: 2014,
+    specifications: {
+      maxTakeoffWeight: '3,700 kg',
+      cruisingSpeed: '250 km/h',
+      range: '680 km',
+      capacity: 9,
+      engines: 2,
+      engineType: 'Arriel 2E Turboshaft',
+      length: '13.03 m',
+      wingspan: '11.00 m',
+      height: '3.86 m'
+    },
+    trainingRequirements: {
+      minimumHours: 150,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 50,
+      simulatorHours: 12,
+      flightHours: 6
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '3 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '2 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'EMS Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Dallas'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['400 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h155',
+    manufacturerId: 'airbus',
+    model: 'H155',
+    category: 'helicopter',
+    subcategory: 'medium-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H155 (formerly EC155 B1) is a medium twin-engine helicopter with a spacious cabin for VIP transport.',
+    firstFlight: 1997,
+    specifications: {
+      maxTakeoffWeight: '5,500 kg',
+      cruisingSpeed: '280 km/h',
+      range: '850 km',
+      capacity: 13,
+      engines: 2,
+      engineType: 'Arriel 2C2 Turboshaft',
+      length: '12.64 m',
+      wingspan: '12.60 m',
+      height: '4.01 m'
+    },
+    trainingRequirements: {
+      minimumHours: 200,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 60,
+      simulatorHours: 15,
+      flightHours: 8
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'VIP Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h160',
+    manufacturerId: 'airbus',
+    model: 'H160',
+    category: 'helicopter',
+    subcategory: 'medium-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H160 is a medium twin-engine helicopter featuring advanced aerodynamics and Blue Edge blades for reduced noise.',
+    firstFlight: 2015,
+    specifications: {
+      maxTakeoffWeight: '6,000 kg',
+      cruisingSpeed: '300 km/h',
+      range: '1,200 km',
+      capacity: 12,
+      engines: 2,
+      engineType: 'Arrano Turboshaft',
+      length: '13.46 m',
+      wingspan: '13.00 m',
+      height: '4.35 m'
+    },
+    trainingRequirements: {
+      minimumHours: 200,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 60,
+      simulatorHours: 15,
+      flightHours: 8
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Offshore Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h175',
+    manufacturerId: 'airbus',
+    model: 'H175',
+    category: 'helicopter',
+    subcategory: 'heavy-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H175 (formerly EC175 B1) is a heavy twin-engine helicopter designed for offshore oil and gas transport.',
+    firstFlight: 2009,
+    specifications: {
+      maxTakeoffWeight: '7,500 kg',
+      cruisingSpeed: '300 km/h',
+      range: '1,300 km',
+      capacity: 16,
+      engines: 2,
+      engineType: 'PT6C-67E Turboshaft',
+      length: '14.74 m',
+      wingspan: '14.80 m',
+      height: '4.66 m'
+    },
+    trainingRequirements: {
+      minimumHours: 300,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Offshore Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Aberdeen'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h225',
+    manufacturerId: 'airbus',
+    model: 'H225',
+    category: 'helicopter',
+    subcategory: 'heavy-twin',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H225 (formerly Super Puma) is a heavy twin-engine helicopter used for offshore transport and heavy lift operations.',
+    firstFlight: 1990,
+    specifications: {
+      maxTakeoffWeight: '11,000 kg',
+      cruisingSpeed: '280 km/h',
+      range: '880 km',
+      capacity: 24,
+      engines: 2,
+      engineType: 'Makila 2A1 Turboshaft',
+      length: '16.80 m',
+      wingspan: '16.20 m',
+      height: '4.98 m'
+    },
+    trainingRequirements: {
+      minimumHours: 300,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Heavy Lift Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Aberdeen'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
+    }
+  },
+  {
+    id: 'nh90',
+    manufacturerId: 'airbus',
+    model: 'NH90',
+    category: 'military',
+    subcategory: 'helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The NH90 is a medium-sized, twin-engine multi-role military helicopter developed by NHIndustries (Airbus is a partner).',
+    firstFlight: 1995,
+    specifications: {
+      maxTakeoffWeight: '10,600 kg',
+      cruisingSpeed: '280 km/h',
+      range: '1,200 km',
+      capacity: 20,
+      engines: 2,
+      engineType: 'T700-T6E1 Turboshaft',
+      length: '16.13 m',
+      wingspan: '13.00 m',
+      height: '5.23 m'
+    },
+    trainingRequirements: {
+      minimumHours: 300,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Military Operations']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Combat Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Tactical Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Combat missions', 'Proficiency check']
+    }
+  },
+  {
+    id: 'tiger',
+    manufacturerId: 'airbus',
+    model: 'Tiger',
+    category: 'military',
+    subcategory: 'attack-helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus Tiger is a four-bladed, twin-engine attack helicopter developed by Eurocopter (now Airbus Helicopters).',
+    firstFlight: 1991,
+    specifications: {
+      maxTakeoffWeight: '6,600 kg',
+      cruisingSpeed: '280 km/h',
+      range: '800 km',
+      capacity: 2,
+      engines: 2,
+      engineType: 'MTR390 Turboshaft',
+      length: '13.99 m',
+      wingspan: '13.00 m',
+      height: '3.83 m'
+    },
+    trainingRequirements: {
+      minimumHours: 500,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 30,
+      flightHours: 15
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '6 weeks',
+        topics: ['Systems', 'Combat Systems', 'Navigation', 'Emergency Procedures']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '5 weeks',
+        topics: ['Normal Operations', 'Combat Operations', 'Emergency Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '4 weeks',
+        topics: ['Takeoff and Landing', 'Combat Maneuvers', 'Attack Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane', 'Bückeburg'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['800 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Combat missions', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h145m',
+    manufacturerId: 'airbus',
+    model: 'H145M',
+    category: 'military',
+    subcategory: 'helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H145M is the military variant of the H145, featuring advanced mission systems for special operations and armed reconnaissance.',
+    firstFlight: 2014,
+    specifications: {
+      maxTakeoffWeight: '3,700 kg',
+      cruisingSpeed: '250 km/h',
+      range: '680 km',
+      capacity: 8,
+      engines: 2,
+      engineType: 'Arriel 2E Turboshaft',
+      length: '13.03 m',
+      wingspan: '11.00 m',
+      height: '3.86 m'
+    },
+    trainingRequirements: {
+      minimumHours: 200,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 60,
+      simulatorHours: 15,
+      flightHours: 8
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '4 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Military Operations']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '3 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Combat Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '2 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Special Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Combat missions', 'Proficiency check']
+    }
+  },
+  {
+    id: 'h225m',
+    manufacturerId: 'airbus',
+    model: 'H225M Caracal',
+    category: 'military',
+    subcategory: 'helicopter',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus H225M Caracal is the military variant of the H225, used for special operations, combat search and rescue, and tactical transport.',
+    firstFlight: 2000,
+    specifications: {
+      maxTakeoffWeight: '11,000 kg',
+      cruisingSpeed: '280 km/h',
+      range: '1,200 km',
+      capacity: 28,
+      engines: 2,
+      engineType: 'Makila 2A1 Turboshaft',
+      length: '16.80 m',
+      wingspan: '16.20 m',
+      height: '4.98 m'
+    },
+    trainingRequirements: {
+      minimumHours: 300,
+      requiredLicenses: ['CPL(H)', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 80,
+      simulatorHours: 20,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '5 weeks',
+        topics: ['Systems', 'Performance', 'Navigation', 'Military Operations']
+      },
+      {
+        phase: 'Simulator Training',
+        duration: '4 weeks',
+        topics: ['Normal Operations', 'Abnormal Procedures', 'Combat Procedures']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '3 weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Special Operations']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Full Flight Simulator',
+      locations: ['Marignane'],
+      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['600 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Combat missions', 'Proficiency check']
     }
   },
   {
