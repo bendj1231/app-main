@@ -719,6 +719,31 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     {currentUser ? 'Access Portal' : 'Login'}
                                 </button>
 
+                                {/* Graphics Settings Button - Always visible */}
+                                <div className="relative group">
+                                    <button
+                                        onClick={() => setIsGraphicsModalOpen(true)}
+                                        className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
+                                        title="Graphics Settings"
+                                    >
+                                        <Monitor className="w-4 h-4" />
+                                        {showGraphicsTooltip && (
+                                            <button
+                                                onClick={() => {
+                                                    setShowGraphicsTooltip(false);
+                                                    localStorage.setItem('hasSeenGraphicsTooltip', 'true');
+                                                    setIsGraphicsModalOpen(true);
+                                                }}
+                                                className="absolute right-0 top-full mt-2 px-2 py-1.5 bg-white rounded shadow-lg border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-300 hover:bg-slate-50 transition-colors cursor-pointer"
+                                            >
+                                                <p className="text-[10px] text-slate-700 font-medium">
+                                                    Adjust graphics
+                                                </p>
+                                            </button>
+                                        )}
+                                    </button>
+                                </div>
+
                                 {/* Pathways Button */}
                                 <button
                                     onClick={() => onNavigate('pathways-modern-light')}
@@ -995,6 +1020,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                 >
                                                     <User className="w-4 h-4" />
                                                     View Recognition Profile
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setIsGraphicsModalOpen(true);
+                                                        setIsProfileDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <Monitor className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">Graphics Settings</span>
                                                 </button>
                                                 <button
                                                     onClick={() => {
