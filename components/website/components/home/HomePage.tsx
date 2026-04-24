@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap } from 'lucide-react';
@@ -11,7 +10,7 @@ import { SmokeShader } from '../../../ui/smoke-shader';
 import { SkyCloudShader } from '../../../ui/sky-cloud-shader';
 import { PathwayGrid } from './PathwayGrid';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
-import { getDevicePerformanceTier, shouldEnable3DEffects } from '@/src/lib/device-detection';
+import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier } from '@/src/lib/device-detection';
 
 interface HomePageProps {
     onJoinUs: () => void;
@@ -62,9 +61,13 @@ const AnimatedHeader: React.FC = () => {
     ];
 
     useEffect(() => {
+        // Get animation duration multiplier based on device tier
+        const multiplier = getAnimationDurationMultiplier();
+        const intervalTime = 2500 * multiplier;
+        
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % items.length);
-        }, 2500);
+        }, intervalTime);
         return () => clearInterval(interval);
     }, []);
 

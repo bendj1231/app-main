@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { shouldEnableHeavyAnimations } from '@/src/lib/device-detection';
 
 interface RevealOnScrollProps {
     children: React.ReactNode;
@@ -13,8 +14,17 @@ export const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
 }) => {
     const [isVisible, setIsVisible] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
+    
+    // Check if animations should be enabled
+    const enableAnimations = shouldEnableHeavyAnimations();
 
     useEffect(() => {
+        // Skip animations on low-end devices
+        if (!enableAnimations) {
+            setIsVisible(true);
+            return;
+        }
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -34,7 +44,7 @@ export const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
                 observer.disconnect();
             }
         };
-    }, [delay]);
+    }, [delay, enableAnimations]);
 
     return (
         <div
