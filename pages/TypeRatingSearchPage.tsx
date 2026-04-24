@@ -231,7 +231,7 @@ export default function TypeRatingSearchPage() {
               <img
                 src={manufacturer.logo}
                 alt={manufacturer.name}
-                className="w-24 h-24 object-contain mx-auto"
+                className="w-32 h-32 object-contain mx-auto"
               />
             </button>
           ))}
