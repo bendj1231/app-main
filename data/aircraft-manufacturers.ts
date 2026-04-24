@@ -280,7 +280,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'airbus',
     name: 'Airbus',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
+    logo: 'https://1000logos.net/wp-content/uploads/2020/03/Airbus-Logo.png',
     description: 'Airbus SE is a European multinational aerospace corporation. The company designs, manufactures and sells civil and military aerospace products worldwide.',
     founded: 1970,
     headquarters: 'Blagnac, France',
@@ -328,7 +328,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'boeing',
     name: 'Boeing',
-    logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/2/22/Boeing_logo.svg/1200px-Boeing_logo.svg.png',
+    logo: 'https://media.designrush.com/inspiration_images/661396/conversions/1-mobile.jpg',
     description: 'The Boeing Company is an American multinational corporation that designs, manufactures, and sells airplanes, rotorcraft, rockets, satellites, and missiles worldwide.',
     founded: 1916,
     headquarters: 'Chicago, Illinois, USA',
@@ -376,7 +376,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'embraer',
     name: 'Embraer',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Embraer_logo.svg/1200px-Embraer_logo.svg.png',
+    logo: 'https://cdn.freebiesupply.com/logos/large/2x/embraer-logo-png-transparent.png',
     description: 'Embraer S.A. is a Brazilian aerospace conglomerate that produces commercial, military, executive and agricultural aircraft and provides aeronautical services.',
     founded: 1969,
     headquarters: 'São José dos Campos, Brazil',
@@ -415,7 +415,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'bombardier',
     name: 'Bombardier',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bombardier_logo.svg/1200px-Bombardier_logo.svg.png',
+    logo: 'https://avioradar.net/wp-content/uploads/2024/04/Bombardier_new_logo_Foto_C_Bombardier-900x506.png',
     description: 'Bombardier Inc. is a Canadian multinational manufacturer of trains and aircraft. The aerospace division was sold to Airbus and Viking Air in 2020.',
     founded: 1942,
     headquarters: 'Montreal, Quebec, Canada',
@@ -454,7 +454,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'gulfstream',
     name: 'Gulfstream',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Gulfstream_Logo.svg/1200px-Gulfstream_Logo.svg.png',
+    logo: 'https://download.logo.wine/logo/Gulfstream_Aerospace/Gulfstream_Aerospace-Logo.wine.png',
     description: 'Gulfstream Aerospace is an American aircraft manufacturer and a wholly owned subsidiary of General Dynamics.',
     founded: 1958,
     headquarters: 'Savannah, Georgia, USA',
@@ -493,7 +493,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'cessna',
     name: 'Cessna',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cessna_logo.svg/1200px-Cessna_logo.svg.png',
+    logo: 'https://static.cdnlogo.com/logos/c/90/cessna-aircraft.png',
     description: 'Cessna is an American general aviation aircraft manufacturing corporation headquartered in Wichita, Kansas. It is now a subsidiary of Textron Aviation.',
     founded: 1927,
     headquarters: 'Wichita, Kansas, USA',
@@ -532,7 +532,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'dassault-falcon',
     name: 'Dassault Falcon',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Dassault_Aviation_logo.svg/1200px-Dassault_Aviation_logo.svg.png',
+    logo: 'https://brandcenter.dassault-aviation.com/assets/contents/img/dassault-falcon-jet.png',
     description: 'Dassault Falcon is a French manufacturer of business jets and military aircraft. It is a subsidiary of Dassault Aviation.',
     founded: 1936,
     headquarters: 'Paris, France',
@@ -571,7 +571,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'pilatus',
     name: 'Pilatus',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Pilatus_Aircraft_logo.svg/1200px-Pilatus_Aircraft_logo.svg.png',
+    logo: 'https://alberthaviation.com/wp-content/uploads/2024/09/pilatus-e1727204799134.jpg',
     description: 'Pilatus Aircraft Ltd. is a Swiss manufacturer of aircraft and systems. It is known for its PC-12 turboprop and PC-24 business turboprop aircraft.',
     founded: 1939,
     headquarters: 'Stans, Switzerland',
@@ -610,7 +610,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'beechcraft',
     name: 'Beechcraft',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Beechcraft_logo.svg/1200px-Beechcraft_logo.svg.png',
+    logo: 'https://1000logos.net/wp-content/uploads/2020/09/Beechcraft-logo.png',
     description: 'Beechcraft Corporation is an American manufacturer of general aviation and military aircraft, ranging from light single-engine aircraft to business jets.',
     founded: 1932,
     headquarters: 'Wichita, Kansas, USA',
@@ -649,7 +649,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'sikorsky',
     name: 'Sikorsky',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Sikorsky_logo.svg/1200px-Sikorsky_logo.svg.png',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/9/97/Sikorsky_Aircraft_Logo.png',
     description: 'Sikorsky Aircraft is an American aircraft manufacturer based in Stratford, Connecticut. It is a subsidiary of Lockheed Martin.',
     founded: 1925,
     headquarters: 'Stratford, Connecticut, USA',
@@ -688,7 +688,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'leonardo',
     name: 'Leonardo',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Leonardo_S.p.A._logo.svg/1200px-Leonardo_S.p.A._logo.svg.png',
+    logo: 'https://1000logos.net/wp-content/uploads/2023/05/Leonardo-Logo.jpg',
     description: 'Leonardo S.p.A. is an Italian multinational company that produces helicopters, aircraft, and defense systems.',
     founded: 1948,
     headquarters: 'Rome, Italy',
@@ -727,7 +727,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'atr',
     name: 'ATR',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/ATR_logo.svg/1200px-ATR_logo.svg.png',
+    logo: 'https://www.atr-aircraft.com/wp-content/uploads/2020/11/ATR_logo3-1.jpg',
     description: 'ATR is a French-Italian aircraft manufacturer headquartered in Blagnac, France. It produces regional airliners.',
     founded: 1981,
     headquarters: 'Blagnac, France',
@@ -766,7 +766,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'de-havilland',
     name: 'De Havilland',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/De_Havilland_logo.svg/1200px-De_Havilland_logo.svg.png',
+    logo: 'https://cdn.shoplightspeed.com/shops/603831/files/6133705/890x820x2/red-canoe-brands-sticker-dehavilland-canada-beaver.jpg',
     description: 'De Havilland Canada was a Canadian aircraft manufacturer. The company is now part of Viking Air, which supports the DHC-8 Twin Otter and other legacy aircraft.',
     founded: 1928,
     headquarters: 'Toronto, Ontario, Canada',
@@ -805,7 +805,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'mitsubishi-mrj',
     name: 'Mitsubishi MRJ',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Mitsubishi_Aircraft_logo.svg/1200px-Mitsubishi_Aircraft_logo.svg.png',
+    logo: 'https://www.theworldfolio.com/img_db/companies/company-571a2d0dd032c.jpg',
     description: 'Mitsubishi SpaceJet (formerly MRJ) was a regional jet project by Mitsubishi Aircraft Corporation. The program was suspended in 2020.',
     founded: 2008,
     headquarters: 'Nagoya, Japan',
@@ -834,7 +834,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'comac-c919',
     name: 'COMAC C919',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/COMAC_logo.svg/1200px-COMAC_logo.svg.png',
+    logo: 'https://www.aviationtoday.com/wp-content/uploads/2024/12/air-12-11-photo-4.png',
     description: 'COMAC C919 is a Chinese narrow-body airliner produced by Commercial Aircraft Corporation of China (COMAC).',
     founded: 2008,
     headquarters: 'Shanghai, China',
@@ -873,7 +873,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'cessna',
     name: 'Cessna',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Cessna_logo.svg/1200px-Cessna_logo.svg.png',
+    logo: 'https://static.cdnlogo.com/logos/c/90/cessna-aircraft.png',
     description: 'Cessna is an American general aviation aircraft manufacturer. They are known for their single-engine piston aircraft, business jets, and turboprops.',
     founded: 1927,
     headquarters: 'Wichita, Kansas, USA',
@@ -912,7 +912,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'tecnam',
     name: 'Tecnam',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Tecnam_logo.svg/1200px-Tecnam_logo.svg.png',
+    logo: 'https://logowik.com/content/uploads/images/tecnam3113.logowik.com.webp',
     description: 'Tecnam is an Italian aircraft manufacturer specializing in light sport aircraft, general aviation aircraft, and twin-engine piston aircraft.',
     founded: 1948,
     headquarters: 'Capua, Italy',
@@ -951,7 +951,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'piper',
     name: 'Piper',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Piper_Aircraft_logo.svg/1200px-Piper_Aircraft_logo.svg.png',
+    logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Piper_logo.svg/1280px-Piper_logo.svg.png',
     description: 'Piper Aircraft is an American general aviation aircraft manufacturer known for their Cherokee, Archer, and Warrior series of aircraft.',
     founded: 1927,
     headquarters: 'Vero Beach, Florida, USA',
@@ -990,7 +990,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'embraer',
     name: 'Embraer',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Embraer_logo.svg/1200px-Embraer_logo.svg.png',
+    logo: 'https://cdn.freebiesupply.com/logos/large/2x/embraer-logo-png-transparent.png',
     description: 'Embraer is a Brazilian aerospace conglomerate that produces commercial, military, and executive aircraft. They are known for their E-Jet family and regional aircraft.',
     founded: 1969,
     headquarters: 'São José dos Campos, Brazil',
@@ -1029,7 +1029,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'cirrus',
     name: 'Cirrus',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Cirrus_Aircraft_logo.svg/1200px-Cirrus_Aircraft_logo.svg.png',
+    logo: 'https://www.flyingmag.com/wp-content/uploads/sites/2/2024/02/cirrus-1.jpeg',
     description: 'Cirrus Aircraft is an American aircraft manufacturer known for their SR series of single-engine piston aircraft and the Vision SF50 personal jet.',
     founded: 1984,
     headquarters: 'Duluth, Minnesota, USA',
@@ -1068,7 +1068,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'atr',
     name: 'ATR',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/ATR_logo.svg/1200px-ATR_logo.svg.png',
+    logo: 'https://www.atr-aircraft.com/wp-content/uploads/2020/11/ATR_logo3-1.jpg',
     description: 'ATR is a French-Italian aircraft manufacturer specializing in regional turboprop aircraft. The ATR 42 and ATR 72 are their most popular models.',
     founded: 1981,
     headquarters: 'Blagnac, France',
@@ -1107,7 +1107,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'let',
     name: 'Let',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Let_Kunovice_logo.svg/1200px-Let_Kunovice_logo.svg.png',
+    logo: 'https://www.let.cz/images/logos/logo_new_s.png',
     description: 'Let Aircraft Industries is a Czech aircraft manufacturer known for their L-410 Turbolet turboprop regional airliner.',
     founded: 1936,
     headquarters: 'Kunovice, Czech Republic',
@@ -1146,7 +1146,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'gulfstream',
     name: 'Gulfstream',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Gulfstream_Aerospace_logo.svg/1200px-Gulfstream_Aerospace_logo.svg.png',
+    logo: 'https://download.logo.wine/logo/Gulfstream_Aerospace/Gulfstream_Aerospace-Logo.wine.png',
     description: 'Gulfstream Aerospace is an American aircraft manufacturer specializing in business jets. They are known for their G-series of large-cabin business jets.',
     founded: 1958,
     headquarters: 'Savannah, Georgia, USA',
@@ -1185,7 +1185,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'bombardier',
     name: 'Bombardier',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Bombardier_logo.svg/1200px-Bombardier_logo.svg.png',
+    logo: 'https://avioradar.net/wp-content/uploads/2024/04/Bombardier_new_logo_Foto_C_Bombardier-900x506.png',
     description: 'Bombardier is a Canadian aircraft manufacturer known for their CRJ regional jets and Challenger business jets.',
     founded: 1942,
     headquarters: 'Montreal, Quebec, Canada',
@@ -1224,7 +1224,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'aeroprakt',
     name: 'Aeroprakt',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Aeroprakt_logo.svg/1200px-Aeroprakt_logo.svg.png',
+    logo: 'https://aeroprakt.eu/images/Aeroprakt_logo_www.png',
     description: 'Aeroprakt is a Ukrainian aircraft manufacturer known for their A-22 Foxbat light sport aircraft.',
     founded: 1991,
     headquarters: 'Kyiv, Ukraine',
