@@ -4,7 +4,6 @@ import { aircraftModels, AircraftModel } from '../data/aircraft-models';
 import { useAuth } from '../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../portal/hooks/usePathwaysIntelligence';
 import { TypeRatingRecommendationBanner } from '../portal/components/PathwaysIntelligenceWidgets';
-import { PathwaysHeader } from '../components/website/components/PathwaysHeader';
 
 // ── Per-aircraft enrichment data ────────────────────────────────────────────
 interface AircraftInfo {
@@ -566,7 +565,20 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
-      <PathwaysHeader onBack={() => onNavigate ? onNavigate('pathways-modern') : window.history.back()} onNavigate={onNavigate} />
+
+      {/* Header Nav */}
+      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
+          <button
+            onClick={() => onNavigate ? onNavigate('pathways-modern') : window.history.back()}
+            className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
+          <span className="text-sm font-semibold text-slate-900">Aircraft Type-Ratings</span>
+        </div>
+      </div>
 
       {/* Hero */}
       <div className="relative overflow-hidden pt-16 pb-12 px-6">
