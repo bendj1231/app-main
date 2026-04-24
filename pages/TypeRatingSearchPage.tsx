@@ -222,7 +222,7 @@ export default function TypeRatingSearchPage() {
             <button
               key={manufacturer.id}
               onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 p-6 rounded-xl border-2 transition-all ${
+              className={`flex-shrink-0 w-72 p-6 rounded-xl border-2 transition-all ${
                 selectedManufacturer?.id === manufacturer.id
                   ? 'ring-2 ring-sky-500 border-sky-500/50 bg-sky-50'
                   : 'border-slate-200 hover:border-slate-400 bg-white'
