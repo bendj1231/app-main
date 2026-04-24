@@ -116,8 +116,6 @@ const HELICOPTER_SUBCATEGORY_LABELS: Record<string, string> = {
   'light-twin-engine': 'Light Twin-Engine',
   'medium-twin-engine': 'Medium Twin-Engine',
   'heavy-twin-engine': 'Heavy Twin-Engine',
-  'evtol': 'eVTOL',
-  'drone-helicopter': 'Drone',
 };
 
 const HELICOPTER_SUBCATEGORY_COLORS: Record<string, string> = {
@@ -125,8 +123,6 @@ const HELICOPTER_SUBCATEGORY_COLORS: Record<string, string> = {
   'light-twin-engine': 'bg-blue-500',
   'medium-twin-engine': 'bg-indigo-500',
   'heavy-twin-engine': 'bg-purple-500',
-  'evtol': 'bg-emerald-500',
-  'drone-helicopter': 'bg-teal-500',
 };
 
 export default function TypeRatingSearchPage() {
