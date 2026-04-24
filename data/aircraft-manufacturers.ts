@@ -376,7 +376,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'embraer',
     name: 'Embraer',
-    logo: 'https://cdn.freebiesupply.com/logos/large/2x/embraer-logo-png-transparent.png',
+    logo: 'https://1000logos.net/wp-content/uploads/2023/05/Embraer-Logo.jpg',
     description: 'Embraer S.A. is a Brazilian aerospace conglomerate that produces commercial, military, executive and agricultural aircraft and provides aeronautical services.',
     founded: 1969,
     headquarters: 'São José dos Campos, Brazil',
@@ -990,7 +990,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'embraer',
     name: 'Embraer',
-    logo: 'https://cdn.freebiesupply.com/logos/large/2x/embraer-logo-png-transparent.png',
+    logo: 'https://1000logos.net/wp-content/uploads/2023/05/Embraer-Logo.jpg',
     description: 'Embraer is a Brazilian aerospace conglomerate that produces commercial, military, and executive aircraft. They are known for their E-Jet family and regional aircraft.',
     founded: 1969,
     headquarters: 'São José dos Campos, Brazil',

@@ -222,7 +222,7 @@ export default function TypeRatingSearchPage() {
             <button
               key={manufacturer.id}
               onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 p-4 rounded-xl border-2 transition-all ${
+              className={`flex-shrink-0 p-6 rounded-xl border-2 transition-all ${
                 selectedManufacturer?.id === manufacturer.id
                   ? 'ring-2 ring-sky-500 border-sky-500/50 bg-sky-50'
                   : 'border-slate-200 hover:border-slate-400 bg-white'
@@ -231,15 +231,8 @@ export default function TypeRatingSearchPage() {
               <img
                 src={manufacturer.logo}
                 alt={manufacturer.name}
-                className="w-16 h-16 object-contain mb-2 mx-auto"
+                className="w-24 h-24 object-contain mx-auto"
               />
-              <div className="text-center">
-                <p className="font-medium text-slate-900 text-sm">{manufacturer.name}</p>
-                <div className="flex items-center justify-center gap-1 mt-1">
-                  <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                  <span className="text-xs text-slate-600">{manufacturer.reputationScore}</span>
-                </div>
-              </div>
             </button>
           ))}
         </div>
