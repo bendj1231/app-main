@@ -4173,7 +4173,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A400M Atlas',
     category: 'military',
-    subcategory: 'tactical-transport',
+    subcategory: 'transport-tanker',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A400M Atlas is a four-engine turboprop tactical airlifter with strategic capabilities, designed to replace older military transport aircraft.',
     firstFlight: 2009,
@@ -4236,7 +4236,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A330 MRTT',
     category: 'military',
-    subcategory: 'tanker-transport',
+    subcategory: 'transport-tanker',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus A330 MRTT (Multi Role Tanker Transport) is a military derivative of the A330 used for aerial refueling and transport.',
     firstFlight: 2007,
@@ -4425,7 +4425,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'Eurofighter Typhoon',
     category: 'military',
-    subcategory: 'fighter',
+    subcategory: 'combat-stealth',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Eurofighter Typhoon is a twin-engine, canard-delta wing, multirole fighter. Airbus is a major partner in the consortium that builds this aircraft.',
     firstFlight: 1994,
@@ -4794,69 +4794,6 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
-    id: 'h160',
-    manufacturerId: 'airbus',
-    model: 'H160',
-    category: 'helicopter',
-    subcategory: 'medium-twin',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus H160 is a medium twin-engine helicopter featuring advanced aerodynamics and Blue Edge blades for reduced noise.',
-    firstFlight: 2015,
-    specifications: {
-      maxTakeoffWeight: '6,000 kg',
-      cruisingSpeed: '300 km/h',
-      range: '1,200 km',
-      capacity: 12,
-      engines: 2,
-      engineType: 'Arrano Turboshaft',
-      length: '13.46 m',
-      wingspan: '13.00 m',
-      height: '4.35 m'
-    },
-    trainingRequirements: {
-      minimumHours: 200,
-      requiredLicenses: ['CPL(H)', 'ME'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 60,
-      simulatorHours: 15,
-      flightHours: 8
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
-      },
-      {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Offshore Operations']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Marignane'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
-      }
-    ],
-    certification: {
-      authority: 'EASA / FAA',
-      validity: '1 year',
-      renewalRequirements: ['3 takeoffs and landings', 'Proficiency check']
-    }
-  },
-  {
     id: 'h175',
     manufacturerId: 'airbus',
     model: 'H175',
@@ -4987,7 +4924,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'NH90',
     category: 'military',
-    subcategory: 'helicopter',
+    subcategory: 'attack-tactical-helicopter',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The NH90 is a medium-sized, twin-engine multi-role military helicopter developed by NHIndustries (Airbus is a partner).',
     firstFlight: 1995,
@@ -5050,7 +4987,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'Tiger',
     category: 'military',
-    subcategory: 'attack-helicopter',
+    subcategory: 'attack-tactical-helicopter',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus Tiger is a four-bladed, twin-engine attack helicopter developed by Eurocopter (now Airbus Helicopters).',
     firstFlight: 1991,
@@ -5113,7 +5050,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H145M',
     category: 'military',
-    subcategory: 'helicopter',
+    subcategory: 'utility-helicopter',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H145M is the military variant of the H145, featuring advanced mission systems for special operations and armed reconnaissance.',
     firstFlight: 2014,
@@ -5176,7 +5113,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'H225M Caracal',
     category: 'military',
-    subcategory: 'helicopter',
+    subcategory: 'attack-tactical-helicopter',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus H225M Caracal is the military variant of the H225, used for special operations, combat search and rescue, and tactical transport.',
     firstFlight: 2000,
@@ -5409,127 +5346,11 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     }
   },
   {
-    id: 'tiger',
-    manufacturerId: 'airbus',
-    model: 'Tiger',
-    category: 'military',
-    subcategory: 'attack-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus Tiger is a dedicated attack helicopter similar to the Apache, used by France, Germany, and Australia for anti-tank and close air support missions.',
-    firstFlight: 1991,
-    specifications: {
-      maxTakeoffWeight: '6,000 kg',
-      cruisingSpeed: '280 km/h',
-      range: '800 km',
-      capacity: 2,
-      engines: 2,
-      engineType: 'MTR 390 Turboshaft',
-      length: '14.00 m',
-      wingspan: '13.00 m',
-      height: '3.83 m'
-    },
-    trainingRequirements: {
-      minimumHours: 400,
-      requiredLicenses: ['CPL(H)', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 100,
-      simulatorHours: 30,
-      flightHours: 20
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '100 hours',
-        topics: ['Weapons Systems', 'Tactical Operations', 'Night Vision Systems', 'Combat Procedures']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '30 hours',
-        topics: ['Attack Profiles', 'Nap-of-the-Earth Flying', 'Weapons Employment', 'Tactical Formation']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Marignane', 'Donauwörth'],
-      features: ['6-DOF Motion', 'Visual System', 'Weapons System Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['600 hours on type', 'TRI certification', 'Instructor rating', 'Combat Experience']
-      }
-    ],
-    certification: {
-      authority: 'Military Authority',
-      validity: '1 year',
-      renewalRequirements: ['Combat Proficiency Check', 'Weapons Qualification']
-    }
-  },
-  {
-    id: 'nh90',
-    manufacturerId: 'airbus',
-    model: 'NH90',
-    category: 'military',
-    subcategory: 'tactical-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus NH90 is a large, high-tech multi-role military helicopter built in partnership with other European companies. It is the first helicopter with full "Fly-by-Wire" controls.',
-    firstFlight: 1995,
-    specifications: {
-      maxTakeoffWeight: '10,600 kg',
-      cruisingSpeed: '300 km/h',
-      range: '1,200 km',
-      capacity: 20,
-      engines: 2,
-      engineType: 'Turbomeca RTM322 Turboshaft',
-      length: '16.13 m',
-      wingspan: '16.30 m',
-      height: '5.23 m'
-    },
-    trainingRequirements: {
-      minimumHours: 350,
-      requiredLicenses: ['CPL(H)', 'ME', 'Military Rating'],
-      medicalCertificate: 'Class 1',
-      englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 90,
-      simulatorHours: 25,
-      flightHours: 15
-    },
-    trainingCurriculum: [
-      {
-        phase: 'Ground School',
-        duration: '90 hours',
-        topics: ['Fly-by-Wire Systems', 'Mission Systems', 'Tactical Operations', 'Naval Operations']
-      },
-      {
-        phase: 'Flight Training',
-        duration: '25 hours',
-        topics: ['FBW Handling', 'Ship Operations', 'Tactical Transport', 'Night Vision Systems']
-      }
-    ],
-    simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Marignane', 'Donauwörth'],
-      features: ['6-DOF Motion', 'Visual System', 'FBW Simulation']
-    },
-    instructorQualifications: [
-      {
-        type: 'Type Rating Instructor',
-        requirements: ['600 hours on type', 'TRI certification', 'Instructor rating', 'FBW Experience']
-      }
-    ],
-    certification: {
-      authority: 'Military Authority',
-      validity: '1 year',
-      renewalRequirements: ['Proficiency Check', 'Mission Systems Training']
-    }
-  },
-  {
     id: 'uh-72-lakota',
     manufacturerId: 'airbus',
     model: 'UH-72 Lakota',
     category: 'military',
-    subcategory: 'helicopter',
+    subcategory: 'utility-helicopter',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus UH-72 Lakota is the military version of the H145, used extensively by the U.S. Army for training, medevac, and utility missions.',
     firstFlight: 2006,
@@ -5579,7 +5400,239 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     certification: {
       authority: 'Military Authority',
       validity: '1 year',
-      renewalRequirements: ['Proficiency Check', 'Military Systems Training']
+      renewalRequirements: ['Combat missions', 'Proficiency check']
+    }
+  },
+  {
+    id: 'neuron',
+    manufacturerId: 'airbus',
+    model: 'nEUROn',
+    category: 'military',
+    subcategory: 'combat-stealth',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The nEUROn is an experimental European stealth combat drone (UCAV). Airbus (CASA/EADS) was a major partner in developing its stealth and flight systems. It serves as a technology demonstrator.',
+    firstFlight: 2012,
+    specifications: {
+      maxTakeoffWeight: '7,000 kg',
+      cruisingSpeed: 'Mach 0.8',
+      range: '2,900 km',
+      capacity: 0,
+      engines: 2,
+      engineType: 'Adour Mk951 Turbofan',
+      length: '10.00 m',
+      wingspan: '12.50 m',
+      height: '2.50 m'
+    },
+    trainingRequirements: {
+      minimumHours: 200,
+      requiredLicenses: ['UAV Operator License', 'Military Rating'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 60,
+      simulatorHours: 30,
+      flightHours: 10
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '60 hours',
+        topics: ['Stealth Systems', 'Autonomous Operations', 'UCAV Systems', 'Mission Planning']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '30 hours',
+        topics: ['Remote Operations', 'Stealth Missions', 'Autonomous Flight', 'Emergency Procedures']
+      }
+    ],
+    simulatorDetails: {
+      type: 'UAV Simulator',
+      locations: ['Istres'],
+      features: ['Visual System', 'Autonomous Simulation', 'Stealth Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'UAV Instructor',
+        requirements: ['300 hours on type', 'UAV Instructor certification', 'Remote Pilot Experience']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'UCAV Systems Training']
+    }
+  },
+  {
+    id: 'bird-of-prey',
+    manufacturerId: 'airbus',
+    model: 'Bird of Prey',
+    category: 'military',
+    subcategory: 'combat-stealth',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus Bird of Prey is a high-subsonic interceptor drone designed to hunt down and "neutralize" enemy kamikaze drones autonomously. It\'s a new for 2026 platform.',
+    firstFlight: 2026,
+    specifications: {
+      maxTakeoffWeight: '800 kg',
+      cruisingSpeed: 'Mach 0.85',
+      range: '1,500 km',
+      capacity: 0,
+      engines: 1,
+      engineType: 'Electric/Hybrid Propulsion',
+      length: '5.50 m',
+      wingspan: '7.20 m',
+      height: '1.80 m'
+    },
+    trainingRequirements: {
+      minimumHours: 100,
+      requiredLicenses: ['UAV Operator License', 'Military Rating'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 40,
+      simulatorHours: 20,
+      flightHours: 5
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '40 hours',
+        topics: ['Autonomous Interception', 'Drone Countermeasures', 'AI Systems', 'Mission Planning']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '20 hours',
+        topics: ['Autonomous Interception', 'Drone Neutralization', 'Swarm Operations', 'Emergency Procedures']
+      }
+    ],
+    simulatorDetails: {
+      type: 'UAV Simulator',
+      locations: ['Manching'],
+      features: ['Visual System', 'Autonomous Simulation', 'Drone Countermeasure Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'UAV Instructor',
+        requirements: ['200 hours on type', 'UAV Instructor certification', 'AI Systems Experience']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'AI Systems Training']
+    }
+  },
+  {
+    id: 'zephyr',
+    manufacturerId: 'airbus',
+    model: 'Zephyr',
+    category: 'military',
+    subcategory: 'surveillance-uas',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus Zephyr is a solar-powered "pseudo-satellite" (HAPS) that flies in the stratosphere for 60+ days at a time, providing constant surveillance or 5G signal.',
+    firstFlight: 2018,
+    specifications: {
+      maxTakeoffWeight: '75 kg',
+      cruisingSpeed: '70 km/h',
+      range: 'Unlimited (solar powered)',
+      capacity: 0,
+      engines: 2,
+      engineType: 'Electric Motors',
+      length: '5.00 m',
+      wingspan: '25.00 m',
+      height: '1.20 m'
+    },
+    trainingRequirements: {
+      minimumHours: 50,
+      requiredLicenses: ['UAV Operator License', 'Military Rating'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 30,
+      simulatorHours: 15,
+      flightHours: 5
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '30 hours',
+        topics: ['Solar Systems', 'Stratospheric Operations', 'Surveillance Systems', 'Long-Endurance Flight']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '15 hours',
+        topics: ['Remote Operations', 'Stratospheric Flight', 'Surveillance Missions', 'Emergency Procedures']
+      }
+    ],
+    simulatorDetails: {
+      type: 'UAV Simulator',
+      locations: ['Farnborough'],
+      features: ['Visual System', 'Stratospheric Simulation', 'Long-Endurance Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'UAV Instructor',
+        requirements: ['150 hours on type', 'UAV Instructor certification', 'HAPS Experience']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'HAPS Systems Training']
+    }
+  },
+  {
+    id: 'capa-x',
+    manufacturerId: 'airbus',
+    model: 'Capa-X',
+    category: 'military',
+    subcategory: 'surveillance-uas',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The Airbus Capa-X is a modular "heavy" drone (120kg) selected by the European Defence Agency for electronic warfare and cargo delivery in combat zones. It\'s a new for 2026 platform.',
+    firstFlight: 2026,
+    specifications: {
+      maxTakeoffWeight: '120 kg',
+      cruisingSpeed: '180 km/h',
+      range: '1,200 km',
+      capacity: 30,
+      engines: 2,
+      engineType: 'Heavy-Duty Electric Motors',
+      length: '4.50 m',
+      wingspan: '8.00 m',
+      height: '1.50 m'
+    },
+    trainingRequirements: {
+      minimumHours: 80,
+      requiredLicenses: ['UAV Operator License', 'Military Rating'],
+      medicalCertificate: 'Class 2',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 35,
+      simulatorHours: 18,
+      flightHours: 6
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School',
+        duration: '35 hours',
+        topics: ['Modular Systems', 'Electronic Warfare', 'Cargo Operations', 'Mission Planning']
+      },
+      {
+        phase: 'Flight Training',
+        duration: '18 hours',
+        topics: ['Remote Operations', 'EW Missions', 'Cargo Delivery', 'Emergency Procedures']
+      }
+    ],
+    simulatorDetails: {
+      type: 'UAV Simulator',
+      locations: ['Manching'],
+      features: ['Visual System', 'EW Simulation', 'Cargo Simulation']
+    },
+    instructorQualifications: [
+      {
+        type: 'UAV Instructor',
+        requirements: ['180 hours on type', 'UAV Instructor certification', 'EW Systems Experience']
+      }
+    ],
+    certification: {
+      authority: 'Military Authority',
+      validity: '1 year',
+      renewalRequirements: ['Proficiency Check', 'EW Systems Training']
     }
   },
   {
@@ -5761,7 +5814,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'Gazelle',
     category: 'military',
-    subcategory: 'scout-helicopter',
+    subcategory: 'utility-helicopter',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus Gazelle is a fast, thin scout helicopter with a very distinctive look, still used by many militaries for reconnaissance and light attack missions.',
     firstFlight: 1967,
@@ -5877,7 +5930,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'VSR700',
     category: 'military',
-    subcategory: 'drone-helicopter',
+    subcategory: 'surveillance-uas',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     description: 'The Airbus VSR700 is an unmanned (drone) helicopter designed for navies to launch from ships for reconnaissance and surveillance missions.',
     firstFlight: 2022,

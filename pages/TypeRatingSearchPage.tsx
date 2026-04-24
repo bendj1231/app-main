@@ -116,6 +116,8 @@ const HELICOPTER_SUBCATEGORY_LABELS: Record<string, string> = {
   'light-twin-engine': 'Light Twin-Engine',
   'medium-twin-engine': 'Medium Twin-Engine',
   'heavy-twin-engine': 'Heavy Twin-Engine',
+  'evtol': 'eVTOL',
+  'drone-helicopter': 'Drone',
 };
 
 const HELICOPTER_SUBCATEGORY_COLORS: Record<string, string> = {
@@ -123,12 +125,33 @@ const HELICOPTER_SUBCATEGORY_COLORS: Record<string, string> = {
   'light-twin-engine': 'bg-blue-500',
   'medium-twin-engine': 'bg-indigo-500',
   'heavy-twin-engine': 'bg-purple-500',
+  'evtol': 'bg-emerald-500',
+  'drone-helicopter': 'bg-teal-500',
+};
+
+const MILITARY_SUBCATEGORY_LABELS: Record<string, string> = {
+  'transport-tanker': 'Transport & Tanker',
+  'tactical-transport': 'Tactical Transport',
+  'combat-stealth': 'Combat & Stealth',
+  'attack-tactical-helicopter': 'Attack/Tactical Heli',
+  'utility-helicopter': 'Utility/Scout Heli',
+  'surveillance-uas': 'Surveillance & UAS',
+};
+
+const MILITARY_SUBCATEGORY_COLORS: Record<string, string> = {
+  'transport-tanker': 'bg-slate-700',
+  'tactical-transport': 'bg-stone-600',
+  'combat-stealth': 'bg-red-600',
+  'attack-tactical-helicopter': 'bg-orange-600',
+  'utility-helicopter': 'bg-amber-600',
+  'surveillance-uas': 'bg-cyan-600',
 };
 
 export default function TypeRatingSearchPage() {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [activeLegacySubcategory, setActiveLegacySubcategory] = useState<string | null>(null);
   const [activeHelicopterSubcategory, setActiveHelicopterSubcategory] = useState<string | null>(null);
+  const [activeMilitarySubcategory, setActiveMilitarySubcategory] = useState<string | null>(null);
   const [selectedManufacturer, setSelectedManufacturer] = useState<Manufacturer | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<AircraftTypeRating | null>(null);
@@ -156,6 +179,11 @@ export default function TypeRatingSearchPage() {
       aircraft = aircraft.filter(a => a.subcategory === activeHelicopterSubcategory);
     }
     
+    // Filter by military subcategory if military category is selected and a subcategory is active
+    if (activeCategory === 'military' && activeMilitarySubcategory) {
+      aircraft = aircraft.filter(a => a.subcategory === activeMilitarySubcategory);
+    }
+    
     if (searchQuery) {
       aircraft = aircraft.filter(a => 
         a.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -164,7 +192,7 @@ export default function TypeRatingSearchPage() {
     }
     
     return aircraft;
-  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, searchQuery]);
+  }, [selectedManufacturer, activeCategory, activeLegacySubcategory, activeHelicopterSubcategory, activeMilitarySubcategory, searchQuery]);
 
   // Get available categories for selected manufacturer
   const availableCategories = React.useMemo(() => {
@@ -279,7 +307,7 @@ export default function TypeRatingSearchPage() {
         {availableCategories.map(cat => (
           <button
             key={cat}
-            onClick={() => { setActiveCategory(cat); setActiveLegacySubcategory(null); setActiveHelicopterSubcategory(null); setSelectedAircraft(null); }}
+            onClick={() => { setActiveCategory(cat); setActiveLegacySubcategory(null); setActiveHelicopterSubcategory(null); setActiveMilitarySubcategory(null); setSelectedAircraft(null); }}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
               activeCategory === cat
                 ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white shadow-sm`
@@ -340,6 +368,35 @@ export default function TypeRatingSearchPage() {
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                 activeHelicopterSubcategory === key
                   ? `${HELICOPTER_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
+                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Military subcategory filter chips (only show when military is selected) */}
+      {activeCategory === 'military' && (
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+          <button
+            onClick={() => { setActiveMilitarySubcategory(null); setSelectedAircraft(null); }}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              activeMilitarySubcategory === null
+                ? 'bg-slate-500 text-white shadow-sm'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            All Military
+          </button>
+          {Object.entries(MILITARY_SUBCATEGORY_LABELS).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => { setActiveMilitarySubcategory(key); setSelectedAircraft(null); }}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                activeMilitarySubcategory === key
+                  ? `${MILITARY_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
               }`}
             >
