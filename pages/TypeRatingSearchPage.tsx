@@ -1,19 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, LayoutGrid, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Filter, MapPin, GraduationCap, Briefcase, TrendingUp, Users, Award, Globe, Clock, Shield, Zap, Heart } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase } from 'lucide-react';
 import { manufacturers, aircraftTypeRatings, Manufacturer, AircraftTypeRating, getManufacturerById, getAircraftByManufacturer, getAircraftByCategory } from '../data/aircraft-manufacturers';
 
-export default function TypeRatingSearchPageNew() {
-  // State for manufacturer carousel
+type Category = 'all' | 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  'all': 'All',
+  'commercial': 'Commercial',
+  'private': 'Private',
+  'cargo': 'Cargo',
+  'regional': 'Regional',
+  'helicopter': 'Helicopter',
+  'military': 'Military',
+};
+
+const CATEGORY_COLORS: Record<string, string> = {
+  'commercial': 'bg-blue-500',
+  'private': 'bg-emerald-500',
+  'cargo': 'bg-purple-500',
+  'regional': 'bg-sky-500',
+  'helicopter': 'bg-teal-500',
+  'military': 'bg-rose-500',
+};
+
+export default function TypeRatingSearchPage() {
+  const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [selectedManufacturer, setSelectedManufacturer] = useState<Manufacturer | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'commercial' | 'private' | 'cargo' | 'regional' | 'helicopter' | 'military'>('all');
-  const [selectedAircraft, setSelectedAircraft] = useState<AircraftTypeRating | null>(null);
-  const [activeDetailTab, setActiveDetailTab] = useState<'overview' | 'training' | 'specifications' | 'career'>('overview');
   const [searchQuery, setSearchQuery] = useState('');
-  
-  const manufacturerCarouselRef = useRef<HTMLDivElement>(null);
-  const aircraftCarouselRef = useRef<HTMLDivElement>(null);
-  
-  // Filter aircraft based on selected manufacturer and category
+  const [selectedAircraft, setSelectedAircraft] = useState<AircraftTypeRating | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
+
   const filteredAircraft = React.useMemo(() => {
     let aircraft = aircraftTypeRatings;
     
@@ -21,8 +38,8 @@ export default function TypeRatingSearchPageNew() {
       aircraft = getAircraftByManufacturer(selectedManufacturer.id);
     }
     
-    if (selectedCategory !== 'all') {
-      aircraft = getAircraftByCategory(selectedCategory);
+    if (activeCategory !== 'all') {
+      aircraft = getAircraftByCategory(activeCategory);
     }
     
     if (searchQuery) {
@@ -33,301 +50,369 @@ export default function TypeRatingSearchPageNew() {
     }
     
     return aircraft;
-  }, [selectedManufacturer, selectedCategory, searchQuery]);
-  
-  // Scroll manufacturer carousel
-  const scrollManufacturers = (direction: 'left' | 'right') => {
-    if (manufacturerCarouselRef.current) {
-      const scrollAmount = 300;
-      manufacturerCarouselRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
+  }, [selectedManufacturer, activeCategory, searchQuery]);
+
+  // Auto-scroll carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!carouselRef.current) return;
+      const el = carouselRef.current;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll - 10) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: 288, behavior: 'smooth' });
+      }
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [filteredAircraft]);
+
+  const scroll = (dir: 'left' | 'right') =>
+    carouselRef.current?.scrollBy({ left: dir === 'left' ? -288 : 288, behavior: 'smooth' });
+
+  const handleSelect = (aircraft: AircraftTypeRating) => {
+    setSelectedAircraft(aircraft);
+    setTimeout(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   };
-  
-  // Scroll aircraft carousel
-  const scrollAircraft = (direction: 'left' | 'right') => {
-    if (aircraftCarouselRef.current) {
-      const scrollAmount = 300;
-      aircraftCarouselRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
+
+  const getManufacturer = (aircraft: AircraftTypeRating) => {
+    return getManufacturerById(aircraft.manufacturerId);
   };
-  
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Type Rating Search</h1>
-              <p className="text-slate-600 dark:text-slate-400 mt-1">Discover and compare aircraft type ratings</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search aircraft..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-            </div>
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+
+      {/* Header Nav */}
+      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
+          <button
+            onClick={() => window.history.back()}
+            className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
+          <span className="text-sm font-semibold text-slate-900">Aircraft Type-Ratings</span>
+        </div>
+      </div>
+
+      {/* Hero */}
+      <div className="relative overflow-hidden pt-16 pb-12 px-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-500 mb-3">3D Models & Type Rating Info</p>
+          <h1 className="text-4xl md:text-6xl font-serif font-normal leading-tight mb-4 text-slate-900">
+            Aircraft <span style={{ color: '#DAA520' }}>Type Ratings</span>
+          </h1>
+          <p className="text-lg md:text-xl mb-2 text-slate-500">
+            Explore · Manufacturers · Requirements · Specifications
+          </p>
+
+          {/* Search */}
+          <div className="mt-8 max-w-lg mx-auto relative">
+            <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search aircraft, manufacturers..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full pl-4 pr-11 py-3 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all"
+            />
           </div>
-          
-          {/* Category Tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {(['all', 'commercial', 'private', 'cargo', 'regional', 'helicopter', 'military'] as const).map((category) => (
+
+          {/* Category filter chips */}
+          <div className="mt-4 flex gap-1.5 flex-wrap justify-center">
+            {(Object.keys(CATEGORY_LABELS) as Category[]).map(cat => (
               <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                  selectedCategory === category
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                key={cat}
+                onClick={() => { setActiveCategory(cat); setSelectedAircraft(null); }}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeCategory === cat
+                    ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white shadow-sm`
+                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                {category.charAt(0).toUpperCase() + category.slice(1)}
+                {CATEGORY_LABELS[cat]}
               </button>
             ))}
           </div>
         </div>
       </div>
-      
+
       {/* Manufacturer Carousel */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Manufacturers</h2>
-            <div className="flex gap-2">
-              <button
-                onClick={() => scrollManufacturers('left')}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-              >
-                <ChevronLeft className="w-5 h-5 text-slate-600 dark:text-slate-300" />
-              </button>
-              <button
-                onClick={() => scrollManufacturers('right')}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-              >
-                <ChevronRight className="w-5 h-5 text-slate-600 dark:text-slate-300" />
-              </button>
-            </div>
-          </div>
-          <div
-            ref={manufacturerCarouselRef}
-            className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide"
-          >
-            {manufacturers.map((manufacturer) => (
-              <button
-                key={manufacturer.id}
-                onClick={() => setSelectedManufacturer(selectedManufacturer?.id === manufacturer.id ? null : manufacturer)}
-                className={`flex-shrink-0 p-4 rounded-xl border-2 transition-all ${
-                  selectedManufacturer?.id === manufacturer.id
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 bg-white dark:bg-slate-700'
-                }`}
-              >
-                <img
-                  src={manufacturer.logo}
-                  alt={manufacturer.name}
-                  className="w-16 h-16 object-contain mb-2"
-                />
-                <div className="text-center">
-                  <p className="font-medium text-slate-900 dark:text-white text-sm">{manufacturer.name}</p>
-                  <div className="flex items-center justify-center gap-1 mt-1">
-                    <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                    <span className="text-xs text-slate-600 dark:text-slate-400">{manufacturer.reputationScore}</span>
-                  </div>
+      <div className="max-w-7xl mx-auto px-6 mb-8">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-serif font-normal text-slate-900">Browse Manufacturers</h2>
+          <p className="text-sm text-slate-500">{manufacturers.length} manufacturers available</p>
+        </div>
+        <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+          {manufacturers.map(manufacturer => (
+            <button
+              key={manufacturer.id}
+              onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
+              className={`flex-shrink-0 p-4 rounded-xl border-2 transition-all ${
+                selectedManufacturer?.id === manufacturer.id
+                  ? 'ring-2 ring-sky-500 border-sky-500/50 bg-sky-50'
+                  : 'border-slate-200 hover:border-slate-400 bg-white'
+              }`}
+            >
+              <img
+                src={manufacturer.logo}
+                alt={manufacturer.name}
+                className="w-16 h-16 object-contain mb-2 mx-auto"
+              />
+              <div className="text-center">
+                <p className="font-medium text-slate-900 text-sm">{manufacturer.name}</p>
+                <div className="flex items-center justify-center gap-1 mt-1">
+                  <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                  <span className="text-xs text-slate-600">{manufacturer.reputationScore}</span>
                 </div>
-              </button>
-            ))}
-          </div>
+              </div>
+            </button>
+          ))}
         </div>
       </div>
-      
-      {/* Aircraft Carousel */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-            {selectedManufacturer ? `${selectedManufacturer.name} Aircraft` : 'All Aircraft'}
-            <span className="text-slate-500 dark:text-slate-400 font-normal ml-2">({filteredAircraft.length})</span>
-          </h2>
+
+      {/* Carousel Section */}
+      <div className="px-0 mb-12">
+        <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-serif font-normal text-slate-900">Browse Aircraft</h2>
+            <p className="text-sm text-slate-500">{filteredAircraft.length} aircraft available</p>
+          </div>
+          {/* Scroll arrows */}
           <div className="flex gap-2">
-            <button
-              onClick={() => scrollAircraft('left')}
-              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5 text-slate-600 dark:text-slate-300" />
+            <button onClick={() => scroll('left')} className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+              <ChevronLeft className="w-5 h-5" />
             </button>
-            <button
-              onClick={() => scrollAircraft('right')}
-              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-            >
-              <ChevronRight className="w-5 h-5 text-slate-600 dark:text-slate-300" />
+            <button onClick={() => scroll('right')} className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
-        
-        {filteredAircraft.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-            <Plane className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-600 dark:text-slate-400">No aircraft found matching your criteria</p>
-          </div>
-        ) : (
-          <div
-            ref={aircraftCarouselRef}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-          >
-            {filteredAircraft.map((aircraft) => (
-              <button
-                key={aircraft.id}
-                onClick={() => setSelectedAircraft(aircraft)}
-                className={`p-4 rounded-xl border-2 transition-all text-left ${
-                  selectedAircraft?.id === aircraft.id
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 bg-white dark:bg-slate-800'
-                }`}
-              >
+
+        {/* Edge-to-edge carousel */}
+        <div
+          ref={carouselRef}
+          className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
+          {filteredAircraft.map(aircraft => (
+            <div
+              key={aircraft.id}
+              onClick={() => handleSelect(aircraft)}
+              className={`flex-shrink-0 w-72 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 border ${
+                selectedAircraft?.id === aircraft.id
+                  ? 'ring-2 ring-sky-500 border-sky-500/50'
+                  : 'border-slate-200 hover:border-slate-400'
+              } bg-white group`}
+            >
+              {/* Thumbnail */}
+              <div className="relative h-44 overflow-hidden bg-slate-100">
                 <img
                   src={aircraft.image}
                   alt={aircraft.model}
-                  className="w-full h-32 object-cover rounded-lg mb-3"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-1">{aircraft.model}</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-2 line-clamp-2">{aircraft.description}</p>
-                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                  <Calendar className="w-3 h-3" />
-                  <span>First Flight: {aircraft.firstFlight}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3">
+                  <span className="text-white font-serif text-base leading-tight">{aircraft.model}</span>
+                  <div className="flex items-center gap-1 text-white/70 text-xs mt-0.5">
+                    <Plane className="w-3 h-3" />
+                    {CATEGORY_LABELS[aircraft.category]}
+                  </div>
                 </div>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-      
-      {/* Aircraft Detail Panel */}
-      {selectedAircraft && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{selectedAircraft.model}</h2>
-              <button
-                onClick={() => setSelectedAircraft(null)}
-                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-              >
-                <CheckCircle2 className="w-6 h-6 text-slate-600 dark:text-slate-300" />
-              </button>
+              </div>
+              {/* Card body */}
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <img
+                    src={getManufacturer(aircraft)?.logo || '/logo.png'}
+                    alt={getManufacturer(aircraft)?.name || 'Manufacturer'}
+                    className="h-6 object-contain"
+                  />
+                  <span className="text-xs text-slate-600">{getManufacturer(aircraft)?.name}</span>
+                </div>
+                <p className="text-xs text-slate-500 line-clamp-2">{aircraft.description}</p>
+              </div>
             </div>
-            
-            {/* Detail Tabs */}
-            <div className="border-b border-slate-200 dark:border-slate-700">
-              <div className="flex gap-4 px-4">
-                {(['overview', 'training', 'specifications', 'career'] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveDetailTab(tab)}
-                    className={`px-4 py-3 font-medium border-b-2 transition-colors ${
-                      activeDetailTab === tab
-                        ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                        : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                  >
-                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Empty state — no aircraft selected */}
+      {!selectedAircraft && (
+        <div ref={detailRef} className="max-w-7xl mx-auto px-6 mb-16">
+          <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-white p-10 md:p-16 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 rounded-full bg-sky-50 flex items-center justify-center">
+                <MousePointerClick className="w-10 h-10 text-sky-400" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-serif font-normal text-slate-800 mb-3">Select an Aircraft to Explore</h2>
+            <p className="text-slate-500 max-w-xl mx-auto mb-8 leading-relaxed">
+              Choose any aircraft from the carousel above to view its specifications, training requirements, manufacturer details, and career information.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+              {[
+                { icon: <Plane className="w-5 h-5 text-sky-500" />, label: 'Aircraft Specifications' },
+                { icon: <DollarSign className="w-5 h-5 text-emerald-500" />, label: 'Training Costs' },
+                { icon: <Building2 className="w-5 h-5 text-purple-500" />, label: 'Manufacturer Info' },
+                { icon: <Gauge className="w-5 h-5 text-rose-500" />, label: 'Performance Specs' },
+                { icon: <Calendar className="w-5 h-5 text-amber-500" />, label: 'Aircraft History' },
+                { icon: <BookOpen className="w-5 h-5 text-indigo-500" />, label: 'Training Requirements' },
+                { icon: <Briefcase className="w-5 h-5 text-teal-500" />, label: 'Career Info' },
+                { icon: <Star className="w-5 h-5 text-yellow-500" />, label: 'Reputation Score' },
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                  {item.icon}
+                  <span className="text-xs font-medium text-slate-600 text-center">{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Selected Aircraft Detail Panel */}
+      {selectedAircraft && (
+        <div ref={detailRef} className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-lg">
+
+            {/* Hero image with overlay */}
+            <div className="relative h-64 md:h-80">
+              <img
+                src={selectedAircraft.image}
+                alt={selectedAircraft.model}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 p-6 md:p-8">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className={`text-xs font-bold tracking-[0.2em] uppercase text-sky-400 bg-sky-500/20 px-3 py-1 rounded-full border border-sky-400/30`}>
+                    {CATEGORY_LABELS[selectedAircraft.category]}
+                  </span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-serif text-white mb-2">{selectedAircraft.model}</h2>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <span className="flex items-center gap-1.5 text-sky-300 text-sm">
+                    <img src={getManufacturer(selectedAircraft)?.logo || '/logo.png'} alt="Manufacturer" className="h-4 w-auto object-contain opacity-80" />
+                    {getManufacturer(selectedAircraft)?.name}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Info bar — manufacturer + cost + age */}
+            <div className="px-6 md:px-8 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <img src={getManufacturer(selectedAircraft)?.logo || '/logo.png'} alt={getManufacturer(selectedAircraft)?.name} className="h-8 object-contain" />
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-slate-400">Manufacturer</p>
+                  <p className="text-sm font-semibold text-slate-800">{getManufacturer(selectedAircraft)?.name}</p>
+                </div>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">First Flight</p>
+                <p className="text-sm font-semibold text-slate-800">{selectedAircraft.firstFlight}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">Category</p>
+                <p className="text-sm font-semibold text-slate-800 capitalize">{selectedAircraft.category}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">Reputation</p>
+                <div className="flex items-center gap-1">
+                  <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                  <span className="text-sm font-semibold text-slate-800">{getManufacturer(selectedAircraft)?.reputationScore}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Description Section — requirements + specs */}
+            <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8 border-b border-slate-100">
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-slate-900">Training Requirements</h3>
+                <ul className="space-y-2.5 mb-6">
+                  <li className="flex items-start gap-3 text-sm text-slate-500">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    Minimum Flight Hours: {selectedAircraft.trainingRequirements.minimumHours}
+                  </li>
+                  <li className="flex items-start gap-3 text-sm text-slate-500">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    Ground School: {selectedAircraft.trainingRequirements.groundSchoolHours} hours
+                  </li>
+                  <li className="flex items-start gap-3 text-sm text-slate-500">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    Simulator Training: {selectedAircraft.trainingRequirements.simulatorHours} hours
+                  </li>
+                  <li className="flex items-start gap-3 text-sm text-slate-500">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    Flight Training: {selectedAircraft.trainingRequirements.flightHours} hours
+                  </li>
+                </ul>
+                <h3 className="text-lg font-semibold mb-3 text-slate-900">Description</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{selectedAircraft.description}</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-slate-900">Technical Specifications</h3>
+                <div className="space-y-2">
+                  {Object.entries(selectedAircraft.specifications).map(([key, value]) => (
+                    <div key={key} className="flex items-center justify-between py-2 border-b border-slate-50">
+                      <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                      <span className="text-sm font-medium text-slate-800">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Training Curriculum */}
+            <div className="px-6 md:px-8 py-6 border-b border-slate-100">
+              <h3 className="text-lg font-semibold mb-4 text-slate-900">Training Curriculum</h3>
+              <div className="space-y-4">
+                {selectedAircraft.trainingCurriculum.map((item, i) => (
+                  <div key={i} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-slate-900">{item.phase}</h4>
+                      <span className="text-xs text-slate-500 bg-white px-2 py-1 rounded">{item.duration}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {item.topics.map((topic, j) => (
+                        <span key={j} className="text-xs text-slate-600 bg-white px-2 py-1 rounded border border-slate-200">{topic}</span>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
-            
-            {/* Detail Content */}
-            <div className="p-6">
-              {activeDetailTab === 'overview' && (
-                <div>
-                  <img
-                    src={selectedAircraft.image}
-                    alt={selectedAircraft.model}
-                    className="w-full h-64 object-cover rounded-xl mb-6"
-                  />
-                  <p className="text-slate-700 dark:text-slate-300 mb-4">{selectedAircraft.description}</p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                      <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-                      <p className="text-sm text-slate-600 dark:text-slate-400">First Flight</p>
-                      <p className="font-semibold text-slate-900 dark:text-white">{selectedAircraft.firstFlight}</p>
-                    </div>
-                    <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                      <Plane className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Category</p>
-                      <p className="font-semibold text-slate-900 dark:text-white capitalize">{selectedAircraft.category}</p>
-                    </div>
+
+            {/* Simulator Details */}
+            <div className="px-6 md:px-8 py-6">
+              <h3 className="text-lg font-semibold mb-4 text-slate-900">Simulator Training</h3>
+              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Simulator Type</p>
+                    <p className="font-semibold text-slate-900">{selectedAircraft.simulatorDetails.type}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Available Locations</p>
+                    <p className="font-semibold text-slate-900">{selectedAircraft.simulatorDetails.locations.join(', ')}</p>
                   </div>
                 </div>
-              )}
-              
-              {activeDetailTab === 'training' && (
-                <div>
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Training Requirements</h3>
-                  <div className="space-y-4">
-                    <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                      <Gauge className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Minimum Flight Hours</p>
-                      <p className="font-semibold text-slate-900 dark:text-white">{selectedAircraft.trainingRequirements.minimumHours} hours</p>
-                    </div>
-                    <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                      <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Ground School</p>
-                      <p className="font-semibold text-slate-900 dark:text-white">{selectedAircraft.trainingRequirements.groundSchoolHours} hours</p>
-                    </div>
-                    <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                      <Plane className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Simulator Training</p>
-                      <p className="font-semibold text-slate-900 dark:text-white">{selectedAircraft.trainingRequirements.simulatorHours} hours</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {activeDetailTab === 'specifications' && (
-                <div>
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Technical Specifications</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    {Object.entries(selectedAircraft.specifications).map(([key, value]) => (
-                      <div key={key} className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                        <p className="text-sm text-slate-600 dark:text-slate-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</p>
-                        <p className="font-semibold text-slate-900 dark:text-white">{value}</p>
-                      </div>
+                <div className="mt-3">
+                  <p className="text-xs text-slate-500 mb-1">Features</p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedAircraft.simulatorDetails.features.map((feature, i) => (
+                      <span key={i} className="text-xs text-slate-600 bg-white px-2 py-1 rounded border border-slate-200">{feature}</span>
                     ))}
                   </div>
                 </div>
-              )}
-              
-              {activeDetailTab === 'career' && (
-                <div>
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Career Information</h3>
-                  <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg mb-4">
-                    <Briefcase className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Job Market</p>
-                    <p className="font-semibold text-slate-900 dark:text-white">High demand across major airlines</p>
-                  </div>
-                  <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg mb-4">
-                    <DollarSign className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Average Salary</p>
-                    <p className="font-semibold text-slate-900 dark:text-white">$80,000 - $150,000 USD</p>
-                  </div>
-                  <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                    <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Growth Prospects</p>
-                    <p className="font-semibold text-slate-900 dark:text-white">Excellent - projected 5% annual growth</p>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
+
           </div>
         </div>
       )}
