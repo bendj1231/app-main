@@ -7,16 +7,21 @@ import {
   Trash2, Eye, EyeOff, Upload, X, Check, AlertCircle,
   Users, TrendingUp, Star, Globe, Menu, Bell, ExternalLink,
   FileText, Clock, MapPin, DollarSign, Shield, RefreshCw,
-  ShieldCheck, UserCheck, UserX, ChevronDown, Download
+  ShieldCheck, UserCheck, UserX, ChevronDown, Download, Video, History,
+  GraduationCap
 } from 'lucide-react';
 import { useEnterpriseAuth, supabase, FIREBASE_BASE } from './hooks/useEnterpriseAuth';
+import { InterviewerDashboard } from './InterviewerDashboard';
+import { InterviewHistoryPage } from './InterviewHistoryPage';
+import { FlightSchoolPortal } from './FlightSchoolPortal';
+import ResumeViewer from './ResumeViewer';
 
 const LOGO = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png';
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/dridtecu6/image/upload`;
 const CLOUDINARY_UPLOAD_PRESET = 'enterprise_unsigned';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'analytics' | 'settings' | 'support' | 'admin';
+type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'analytics' | 'settings' | 'support' | 'admin' | 'interviews' | 'interview-history' | 'flight-school';
 
 // ─── 72 Airlines List ────────────────────────────────────────────────────────
 const AIRLINE_LIST = [
@@ -58,18 +63,21 @@ const NAV = [
   { id: 'airline-expectations', label: 'Airline Expectations', icon: Building2 },
   { id: 'pilot-search', label: 'Pilot Search', icon: Search },
   { id: 'applications', label: 'Applications', icon: Users },
+  { id: 'interviews', label: 'Interviews', icon: Video },
   { id: 'analytics', label: 'Analytics', icon: TrendingUp },
   { id: 'settings', label: 'Account Settings', icon: Settings },
   { id: 'support', label: 'Contact Support', icon: HelpCircle },
 ] as const;
 
+const FLIGHT_SCHOOL_NAV = { id: 'flight-school', label: 'Flight School', icon: GraduationCap };
 const ADMIN_NAV = { id: 'admin', label: 'Enterprise Admin', icon: ShieldCheck };
 
-function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, isManager }: {
+function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, isManager, isFlightSchool }: {
   page: Page; setPage: (p: Page) => void;
   account: any; onLogout: () => void;
   collapsed: boolean; setCollapsed: (v: boolean) => void;
   isManager: boolean;
+  isFlightSchool: boolean;
 }) {
   return (
     <div className={`h-screen bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'} shrink-0`}>
@@ -89,21 +97,36 @@ function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, is
 
       {/* Nav */}
       <nav className="flex-1 p-2 space-y-0.5 overflow-y-auto">
-        {NAV.map(({ id, label, icon: Icon }) => (
+        {isFlightSchool ? (
           <button
-            key={id}
-            onClick={() => setPage(id as Page)}
+            key={FLIGHT_SCHOOL_NAV.id}
+            onClick={() => setPage(FLIGHT_SCHOOL_NAV.id as Page)}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-              page === id
-                ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+              page === FLIGHT_SCHOOL_NAV.id
+                ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30'
+                : 'text-slate-400 hover:text-emerald-400 hover:bg-emerald-800/20'
             }`}
           >
-            <Icon className="w-4 h-4 shrink-0" />
-            {!collapsed && <span>{label}</span>}
+            <FLIGHT_SCHOOL_NAV.icon className="w-4 h-4 shrink-0" />
+            {!collapsed && <span>{FLIGHT_SCHOOL_NAV.label}</span>}
           </button>
-        ))}
-        {isManager && (
+        ) : (
+          NAV.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              onClick={() => setPage(id as Page)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                page === id
+                  ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+              }`}
+            >
+              <Icon className="w-4 h-4 shrink-0" />
+              {!collapsed && <span>{label}</span>}
+            </button>
+          ))
+        )}
+        {isManager && !isFlightSchool && (
           <>
             {!collapsed && <div className="px-3 pt-3 pb-1"><p className="text-slate-600 text-[10px] font-bold uppercase tracking-wider">Manager</p></div>}
             <button
@@ -156,6 +179,7 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedApp, setSelectedApp] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
+  const [showResumeViewer, setShowResumeViewer] = useState(false);
 
   const loadApplications = async () => {
     if (!account?.id) return;
@@ -262,7 +286,10 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
                 {groupedByStatus[stage]?.map((app: any) => (
                   <div
                     key={app.id}
-                    onClick={() => setSelectedApp(app)}
+                    onClick={() => {
+                      setSelectedApp(app);
+                      setShowResumeViewer(true);
+                    }}
                     className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 cursor-pointer hover:border-slate-600 transition-all"
                   >
                     <p className="text-white font-medium text-sm truncate">{app.pilot_name}</p>
@@ -286,7 +313,7 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
 
       {/* Application Detail Modal */}
       <AnimatePresence>
-        {selectedApp && (
+        {selectedApp && !showResumeViewer && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -375,26 +402,49 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
 
                 {/* Email Link */}
                 <div className="border-t border-slate-800 pt-4">
-                  <a
-                    href={`mailto:${selectedApp.pilot_email}?subject=Re: Your Application to ${account?.airline_name}`}
-                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Email Pilot
-                  </a>
+                  <div className="flex gap-3">
+                    <a
+                      href={`mailto:${selectedApp.pilot_email}?subject=Re: Your Application to ${account?.airline_name}`}
+                      className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Email Pilot
+                    </a>
+                    <button
+                      onClick={() => setShowResumeViewer(true)}
+                      className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 text-sm"
+                    >
+                      <FileText className="w-4 h-4" />
+                      View Full Resume
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Resume Viewer Modal */}
+      {selectedApp && (
+        <ResumeViewer
+          isOpen={showResumeViewer}
+          onClose={() => {
+            setShowResumeViewer(false);
+            setSelectedApp(null);
+          }}
+          applicationId={selectedApp.id}
+          enterpriseAccountId={account?.id}
+        />
+      )}
     </div>
   );
 }
 
 // ─── Analytics Page ───────────────────────────────────────────────────────────
-function AnalyticsPage({ user, account }: { user: any; account: any }) {
+function AnalyticsPage({ user, account, isFlightSchool, flightSchoolId }: { user: any; account: any; isFlightSchool?: boolean; flightSchoolId?: string }) {
   const [analytics, setAnalytics] = useState<any[]>([]);
+  const [referralMetrics, setReferralMetrics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
 
@@ -415,9 +465,48 @@ function AnalyticsPage({ user, account }: { user: any; account: any }) {
     }
   };
 
+  const loadReferralMetrics = async () => {
+    if (!isFlightSchool || !flightSchoolId) return;
+    try {
+      const { data } = await supabase
+        .from('referral_analytics')
+        .select('*')
+        .eq('flight_school_id', flightSchoolId)
+        .order('period_start', { ascending: false })
+        .limit(30);
+
+      if (data) {
+        const aggregated = data.reduce((acc: any, curr) => {
+          acc.total_referrals += curr.total_referrals || 0;
+          acc.clicked_referrals += curr.clicked_referrals || 0;
+          acc.sign_ups += curr.sign_ups || 0;
+          acc.completed_signups += curr.completed_signups || 0;
+          acc.total_commission += curr.total_commission || 0;
+          acc.paid_commission += curr.paid_commission || 0;
+          acc.pending_commission += curr.pending_commission || 0;
+          return acc;
+        }, {
+          total_referrals: 0,
+          clicked_referrals: 0,
+          sign_ups: 0,
+          completed_signups: 0,
+          total_commission: 0,
+          paid_commission: 0,
+          pending_commission: 0
+        });
+        setReferralMetrics(aggregated);
+      }
+    } catch (e) {
+      console.error('Error loading referral metrics:', e);
+    }
+  };
+
   useEffect(() => {
     loadAnalytics();
-  }, [account?.id, timeRange]);
+    if (isFlightSchool) {
+      loadReferralMetrics();
+    }
+  }, [account?.id, timeRange, isFlightSchool, flightSchoolId]);
 
   // Calculate totals
   const totalViews = analytics.reduce((sum, card) => sum + (card.view_count || 0), 0);
@@ -433,9 +522,9 @@ function AnalyticsPage({ user, account }: { user: any; account: any }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-emerald-400" /> Performance Analytics
+            <TrendingUp className="w-6 h-6 text-emerald-400" /> {isFlightSchool ? 'Referral & Performance Analytics' : 'Performance Analytics'}
           </h1>
-          <p className="text-slate-400 text-sm mt-1">Track views, applications, and conversion rates</p>
+          <p className="text-slate-400 text-sm mt-1">{isFlightSchool ? 'Track referrals, commissions, and performance' : 'Track views, applications, and conversion rates'}</p>
         </div>
         <div className="flex gap-2">
           {(['7d', '30d', '90d', 'all'] as const).map(range => (
@@ -453,6 +542,46 @@ function AnalyticsPage({ user, account }: { user: any; account: any }) {
           ))}
         </div>
       </div>
+
+      {/* Referral Performance Metrics (Flight Schools Only) */}
+      {isFlightSchool && referralMetrics && (
+        <div className="grid grid-cols-4 gap-4">
+          <div className="bg-gradient-to-br from-emerald-600/20 to-teal-600/20 border border-emerald-500/30 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <Users className="w-5 h-5 text-emerald-400" />
+              <span className="text-slate-400 text-sm">Total Referrals</span>
+            </div>
+            <p className="text-3xl font-bold text-white">{referralMetrics.total_referrals}</p>
+            <p className="text-slate-500 text-xs mt-1">{referralMetrics.clicked_referrals} clicked</p>
+          </div>
+          <div className="bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-blue-500/30 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <GraduationCap className="w-5 h-5 text-blue-400" />
+              <span className="text-slate-400 text-sm">Sign-ups</span>
+            </div>
+            <p className="text-3xl font-bold text-white">{referralMetrics.sign_ups}</p>
+            <p className="text-slate-500 text-xs mt-1">{referralMetrics.completed_signups} completed</p>
+          </div>
+          <div className="bg-gradient-to-br from-amber-600/20 to-orange-600/20 border border-amber-500/30 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign className="w-5 h-5 text-amber-400" />
+              <span className="text-slate-400 text-sm">Total Commission</span>
+            </div>
+            <p className="text-3xl font-bold text-white">${referralMetrics.total_commission.toFixed(2)}</p>
+            <p className="text-slate-500 text-xs mt-1">${referralMetrics.pending_commission.toFixed(2)} pending</p>
+          </div>
+          <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="w-5 h-5 text-purple-400" />
+              <span className="text-slate-400 text-sm">Conversion Rate</span>
+            </div>
+            <p className="text-3xl font-bold text-white">
+              {referralMetrics.sign_ups > 0 ? ((referralMetrics.completed_signups / referralMetrics.sign_ups) * 100).toFixed(1) : 0}%
+            </p>
+            <p className="text-slate-500 text-xs mt-1">Sign-up to complete</p>
+          </div>
+        </div>
+      )}
 
       {/* Summary Stats */}
       <div className="grid grid-cols-4 gap-4">
@@ -1680,6 +1809,8 @@ export function EnterprisePortalApp() {
   const [page, setPage] = useState<Page>('dashboard');
   const [collapsed, setCollapsed] = useState(false);
   const [isManager, setIsManager] = useState(false);
+  const [isFlightSchool, setIsFlightSchool] = useState(false);
+  const [flightSchoolId, setFlightSchoolId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !user) window.location.href = '/enterprise/login';
@@ -1691,6 +1822,22 @@ export function EnterprisePortalApp() {
     if (!user?.id) return;
     supabase.from('profiles').select('is_enterprise_manager').eq('id', user.id).single()
       .then(({ data }) => setIsManager(data?.is_enterprise_manager === true));
+  }, [user?.id]);
+
+  // Check if user is a flight school admin
+  useEffect(() => {
+    if (!user?.id) return;
+    supabase.from('flight_school_admins')
+      .select('flight_school_id')
+      .eq('user_id', user.id)
+      .single()
+      .then(({ data }) => {
+        if (data) {
+          setIsFlightSchool(true);
+          setFlightSchoolId(data.flight_school_id);
+          setPage('flight-school');
+        }
+      });
   }, [user?.id]);
 
   if (loading) {
@@ -1705,7 +1852,7 @@ export function EnterprisePortalApp() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
-      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); window.location.href = '/enterprise/login'; }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} />
+      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); window.location.href = '/enterprise/login'; }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} isFlightSchool={isFlightSchool} />
       <main className="flex-1 overflow-y-auto p-6 lg:p-8">
         {page === 'dashboard' && <Dashboard user={user} account={account} />}
         {page === 'pathway-cards' && <PathwayCardsPage user={user} account={account} />}
@@ -1713,10 +1860,13 @@ export function EnterprisePortalApp() {
         {page === 'airline-expectations' && <AirlineExpectationsPage user={user} account={account} />}
         {page === 'pilot-search' && <PilotSearchPage user={user} />}
         {page === 'applications' && <ApplicationsPage user={user} account={account} />}
-        {page === 'analytics' && <AnalyticsPage user={user} account={account} />}
+        {page === 'interviews' && <InterviewerDashboard user={user} account={account} />}
+        {page === 'interview-history' && <InterviewHistoryPage user={user} />}
+        {page === 'analytics' && <AnalyticsPage user={user} account={account} isFlightSchool={isFlightSchool} flightSchoolId={flightSchoolId || undefined} />}
         {page === 'settings' && <SettingsPage user={user} account={account} refreshAccount={refreshAccount} upsertEnterpriseAccount={upsertEnterpriseAccount} />}
         {page === 'support' && <SupportPage user={user} account={account} />}
         {page === 'admin' && isManager && <AdminPanel user={user} />}
+        {page === 'flight-school' && isFlightSchool && flightSchoolId && <FlightSchoolPortal flightSchoolId={flightSchoolId} user={user} />}
       </main>
     </div>
   );

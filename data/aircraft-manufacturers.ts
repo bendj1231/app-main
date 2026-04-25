@@ -7,7 +7,9 @@ export interface Manufacturer {
   id: string;
   name: string;
   logo: string;
+  heroImage?: string;
   description: string;
+  whyChooseRating?: string;
   founded: number;
   headquarters: string;
   website: string;
@@ -201,6 +203,20 @@ export interface AircraftTypeRating {
   image: string;
   sketchfabId?: string;
   description: string;
+  whyChooseRating?: string;
+  demandLevel?: 'none' | 'low' | 'high';
+  conditionallyNew?: 'red' | 'amber' | 'green';
+  lifecycleStage?: 'early-career' | 'mid-career' | 'end-of-life';
+  orderBacklog?: { orders: number; delivered: number };
+  operatorCount?: number;
+  totalDeliveries?: number;
+  steepApproachCertified?: boolean;
+  engineType?: string;
+  rangeVersatility?: 'short' | 'medium' | 'long' | 'versatile';
+  cabinFeatures?: string[];
+  news?: NewsItem[];
+  careerScore?: number;
+  pilotCount?: number;
   firstFlight: number;
   specifications: AircraftSpecs;
   trainingRequirements: TrainingRequirements;
@@ -217,7 +233,7 @@ export interface AircraftSpecs {
   maxTakeoffWeight: string;
   cruisingSpeed: string;
   range: string;
-  capacity: number;
+  capacity: number | string;
   engines: number;
   engineType: string;
   length: string;
@@ -282,7 +298,9 @@ export const manufacturers: Manufacturer[] = [
     id: 'airbus',
     name: 'Airbus',
     logo: 'https://1000logos.net/wp-content/uploads/2020/03/Airbus-Logo.png',
-    description: 'Airbus SE is a European multinational aerospace corporation. The company designs, manufactures and sells civil and military aerospace products worldwide.',
+    heroImage: 'https://static0.simpleflyingimages.com/wordpress/wp-content/uploads/2020/10/A320-Family-production-increase.jpeg',
+    description: 'Airbus offers the most comprehensive and authoritative type rating programs directly from the manufacturer. With the world\'s largest Airbus simulator fleet and OEM-direct training, pilots gain unparalleled expertise on the A320 family, A330, A350, and A220. Airbus training is globally recognized by airlines, providing pilots with a competitive edge in career advancement and access to the world\'s most popular commercial aircraft fleet.',
+    whyChooseRating: 'Airbus type ratings provide pilots with direct OEM training that is recognized globally by airlines. The Airbus fly-by-wire system and common cockpit philosophy across all Airbus aircraft enable pilots to easily transition between different models, from the A320neo to the A350. With over 200,000 Airbus-rated pilots worldwide and the majority of commercial airline fleets operating Airbus aircraft, an Airbus type rating opens doors to career opportunities with airlines across Europe, Asia, the Middle East, and the Americas.',
     founded: 1970,
     headquarters: 'Blagnac, France',
     website: 'https://www.airbus.com',
@@ -1270,18 +1288,26 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     id: 'a220-100',
     manufacturerId: 'airbus',
     model: 'A220-100',
-    category: 'commercial',
-    subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A220-100 is the smallest baseline model of the A220 family, originally developed by Bombardier as the CS100. It is designed for the 100-130 seat market.',
+    category: 'flagship',
+    subcategory: 'game-changer',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    description: 'The A220-100 is the "specialist" of the family. While it shares 99% commonality with the larger -300, it is the version pilots choose for high-performance missions. It is specifically engineered for steep approaches and short runways that traditional jets can\'t touch. It occupies a niche (100-135 seats) that Boeing currently has no answer for, providing A220 pilots with unique market leverage.',
+    whyChooseRating: 'The A220-100 offers pilots the quietest cockpit in the narrow-body world with full sidestick control and active feedback—no legacy cables or pulleys. It flies like a "sports car" compared to the heavier -300, offering superior climb rates and maneuverability. With 25% less CO2 emissions, it is the "greenest" rating a pilot can hold, protecting against future environmental flight caps and ensuring long-term fleet sustainability.',
     firstFlight: 2013,
+    careerScore: 92,
+    demandLevel: 'high',
+    conditionallyNew: 'green',
+    lifecycleStage: 'early-career',
+    orderBacklog: { orders: 959, delivered: 501 },
+    operatorCount: 25,
+    totalDeliveries: 501,
     specifications: {
-      maxTakeoffWeight: '60,000 kg',
-      cruisingSpeed: 'Mach 0.78',
-      range: '6,100 km',
-      capacity: 125,
+      maxTakeoffWeight: '63,100 kg',
+      cruisingSpeed: 'Mach 0.78 (Max Mach 0.82)',
+      range: '6,390 km (3,450 nm)',
+      capacity: '100-135',
       engines: 2,
-      engineType: 'Pratt & Whitney PW1500G',
+      engineType: '2 x Pratt & Whitney PW1500G Geared Turbofan (GTF)',
       length: '35.0 m',
       wingspan: '35.1 m',
       height: '11.5 m'
@@ -1292,30 +1318,60 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       medicalCertificate: 'Class 1',
       englishProficiency: 'ICAO Level 4',
       groundSchoolHours: 100,
-      simulatorHours: 20,
-      flightHours: 10
+      simulatorHours: 40,
+      flightHours: 50
     },
     trainingCurriculum: [
       {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+        phase: 'Official License Endorsement',
+        duration: 'BD-500 (Common to both -100 and -300 variants)',
+        topics: ['Type Rating Designation']
       },
       {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+        phase: 'Ground School (Phase 1)',
+        duration: '2 Weeks (80+ hours)',
+        topics: ['Fly-By-Wire (FBW) Logic: Normal, Direct, and Alternate laws', 'Avionics Suite: 5-screen glass cockpit and cursor control units (CCU)', 'PW1500G Systems: Geared Turbofan (GTF) architecture and cooling cycles', 'Performance & Flight Planning: FMS data entry for steep approach and short-field ops']
       },
       {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+        phase: 'Simulator Training (Phase 2 - Level D FFS)',
+        duration: '3 Weeks (approx. 40 hours)',
+        topics: ['Automation Management: Manual flight to full Autoflight/FMS integration', 'Upset Recovery & FBW Protections: Hard Protections of the A220 envelope', 'Abnormal Ops: V1 cuts, engine fires, and flight control malfunctions', 'Specialty Certification: Category III Autoland and Steep Approach (London City Airport qualification)']
+      },
+      {
+        phase: 'Base Training & LOFT (Phase 3)',
+        duration: 'Variable',
+        topics: ['Base Training: 6 Takeoffs and Landings (for pilots without previous heavy jet experience)', 'LOFT (Line Oriented Flight Training): Real-world scenario-based simulator sessions', 'IOE/Line Check: 4-6 flight sectors on the line with a Check Airman before final sign-off']
+      },
+      {
+        phase: 'Pro-Tip',
+        duration: 'Note',
+        topics: ['Training footprints may be reduced for pilots already holding an Airbus FBW rating (A320/A330/A350) through Cross-Crew Qualification (CCQ) programs at select airlines']
+      },
+      {
+        phase: 'Checkride Prep: Common Training Pitfalls',
+        duration: 'Essential Knowledge',
+        topics: [
+          'The "Mouse" Learning Curve (Cursor Control Unit): Practice menu logic during ground school - mastery of CCD is 50% of the battle',
+          'Over-Reliance on "Hard Protections": Practice manual flight raw-data skills - protections vanish in Direct Law',
+          'Geared Turbofan (GTF) Engine Spool Times: Be decisive with throttles on Go-Around, understand Bowed Rotor Protection logic',
+          'Steep Approach Management (LCY Ops): Trust Autothrottle logic on 5.5-degree glide slope, watch speed trend vector',
+          'Glass Cockpit Information Overload: Develop disciplined Scan Pattern, focus on PFD and Navigation displays'
+        ]
+      },
+      {
+        phase: 'Checkride Ready Checklist',
+        duration: 'Self-Assessment',
+        topics: [
+          'FMS Setup: Can you program a full flight plan, including SID/STAR change, in under 2 minutes?',
+          'Memory Items: Do you know Engine Fire/Severe Damage and Abnormal Start items by heart?',
+          'Automation: Do you know exactly how to drop a level of automation if flight director gives bad data?'
+        ]
       }
     ],
     simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse', 'Miami', 'Singapore'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+      type: 'Level D Full Flight Simulator (FFS) - Highest fidelity',
+      locations: ['Montreal (CAE)', 'Miami (Airbus)', 'Atlanta (Delta)', 'Riga (airBaltic)', 'Zurich (Lufthansa)', 'Frankfurt (FTA)', 'Paris (Air France)', 'Singapore (AATC)', 'Seoul (Korean Air)'],
+      features: ['6-DOF Motion: Full six-degree-of-freedom electric motion systems', 'Visual System: 200x40 degree FOV with high-definition satellite imagery', 'Onboard Instructor Station (IOS): Real-time weather, system failure injection, and flight data playback']
     },
     instructorQualifications: [
       {
@@ -1335,17 +1391,53 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A220-300',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'The Airbus A220-300 is increasingly popular for regional and short-haul routes. It is noted for its "clean-sheet" design and high pilot comfort.',
+    image: 'https://accaviation.com/wp-content/uploads/2025/04/A220.jpg',
+    description: 'The Airbus A220 is a modern, single-aisle aircraft family designed for the 100 to 160-seat market. Originally developed by Bombardier as the CSeries, it was rebranded as the A220 after Airbus acquired a majority stake in July 2018. Known for high efficiency, advanced Fly-By-Wire cockpit, and superior passenger comfort. The A220-300 is tailored for larger markets with typical seating of 120-150 passengers. As of March 2026, there are 501 aircraft delivered and 25 commercial operators worldwide. Delta Air Lines leads with 85 active A220s, followed by JetBlue (61), Air France (55), Breeze Airways (54), and airBaltic (54).',
+    whyChooseRating: 'With advanced fly-by-wire systems, fuel efficiency, and growing airline adoption worldwide, the A220-300 type rating offers pilots excellent career opportunities. The aircraft\'s modern cockpit and commonality with Airbus systems provide a solid foundation for progression to larger Airbus aircraft like the A320neo and A350 families. Pilots rated on the A220-300 gain access to a rapidly expanding fleet with strong demand across Europe, Asia, and North America.',
+    demandLevel: 'high',
+    conditionallyNew: 'green',
+    lifecycleStage: 'early-career',
+    orderBacklog: { orders: 900, delivered: 501 },
+    operatorCount: 25,
+    totalDeliveries: 501,
+    steepApproachCertified: true,
+    engineType: 'Pratt & Whitney PW1500G GTF',
+    rangeVersatility: 'versatile',
+    cabinFeatures: ['Lower cabin altitude', 'Larger windows', '2-3 seating', 'XL overhead bins'],
+    news: [
+      {
+        id: 'news-1',
+        title: 'Airbus A220 Production Rate to Reach 14 Aircraft per Month by End of 2026',
+        date: '2026-04-20',
+        summary: 'Airbus has updated its production plans for the A220 program, aiming to reach a rate of 14 aircraft per month to meet high demand, with the ramp-up expected to reach its peak by the end of 2026 or into 2027, according to updated reports following supply chain improvements.',
+        url: 'https://www.airbus.com/en/newsroom/stories/2026-04-a220-production-ramp-up'
+      },
+      {
+        id: 'news-2',
+        title: 'Delta Air Lines A220 Fleet Commitment Reaches 145 Aircraft',
+        date: '2026-04-10',
+        summary: 'As of April 2026, Delta Air Lines total firm commitment to the Airbus A220 family stands at 145 aircraft. Official records and recent aviation reports from 2026 confirm Delta continues to expand its A220 fleet as part of its modernization strategy.',
+        url: 'https://news.delta.com/2026-04-delta-a220-fleet-update'
+      },
+      {
+        id: 'news-3',
+        title: 'A220 Program Officially Passes 500th Delivery Milestone',
+        date: '2026-04-05',
+        summary: 'The Airbus A220 program officially passed its 500th delivery milestone in April 2026, with the total reaching 501 aircraft by the end of March 2026. Long-time customer airBaltic was recognized as the recipient of the 500th aircraft, strengthening its position as the world\'s largest operator of the A220 type.',
+        url: 'https://www.flightglobal.com/2026-04-a220-500-delivery-milestone'
+      }
+    ],
+    careerScore: 92,
+    pilotCount: 5000,
     firstFlight: 2015,
     specifications: {
-      maxTakeoffWeight: '67,000 kg',
+      maxTakeoffWeight: '70,900 kg',
       cruisingSpeed: 'Mach 0.78',
       range: '6,300 km',
       capacity: 160,
       engines: 2,
       engineType: 'Pratt & Whitney PW1500G',
-      length: '38.9 m',
+      length: '38.7 m',
       wingspan: '35.1 m',
       height: '11.5 m'
     },
@@ -1397,20 +1489,28 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturerId: 'airbus',
     model: 'A320',
     category: 'flagship',
-    subcategory: 'legacy-fading',
+    subcategory: 'versatile-champion',
     image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
     sketchfabId: 'ae3d357729a44f278f9ef9326977504a',
-    description: 'The Airbus A320 is a narrow-body, medium-range, twin-engine jet airliner. It was the first member of the A320 family, which was launched in March 1984.',
+    description: 'The Airbus A320 is the world\'s best-selling airliner family and the pioneer of digital Fly-By-Wire technology in commercial aviation. It replaced traditional cables and pulleys with electronic signals and a sidestick controller, setting the standard for every subsequent Airbus model. Today, the A320neo variant offers 20% lower fuel burn, making it the primary choice for airlines worldwide.',
+    whyChooseRating: 'An A320 rating is the most portable credential in aviation. With one landing or takeoff occurring every two seconds globally, job security is unrivaled. Pilots rated on the A320 can transition to the widebody A330 or A350 in as little as 8-10 days due to cockpit commonality through Cross-Crew Qualification (CCQ).',
     firstFlight: 1987,
+    careerScore: 98,
+    demandLevel: 'high',
+    conditionallyNew: 'green',
+    lifecycleStage: 'mid-career',
+    orderBacklog: { orders: 6000, delivered: 12000 },
+    operatorCount: 375,
+    totalDeliveries: 12000,
     specifications: {
-      maxTakeoffWeight: '77,000 kg',
-      cruisingSpeed: 'Mach 0.78',
-      range: '6,150 km',
-      capacity: 180,
+      maxTakeoffWeight: '78,000 kg (CEO) / 79,000 kg (NEO)',
+      cruisingSpeed: 'Mach 0.78 (Max Mach 0.82)',
+      range: '6,200 km (CEO) / 6,400 km (NEO)',
+      capacity: '150-180',
       engines: 2,
-      engineType: 'CFM56 or V2500',
+      engineType: 'CEO: CFM56 or IAE V2500 / NEO: Pratt & Whitney PW1100G or CFM LEAP-1A',
       length: '37.57 m',
-      wingspan: '35.8 m',
+      wingspan: '35.8 m (with Sharklets)',
       height: '11.76 m'
     },
     trainingRequirements: {
@@ -1418,31 +1518,132 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
       requiredLicenses: ['CPL', 'IR', 'ME'],
       medicalCertificate: 'Class 1',
       englishProficiency: 'ICAO Level 4',
-      groundSchoolHours: 100,
-      simulatorHours: 20,
-      flightHours: 10
+      groundSchoolHours: 120,
+      simulatorHours: 40,
+      flightHours: 50
     },
     trainingCurriculum: [
       {
-        phase: 'Ground School',
-        duration: '4 weeks',
-        topics: ['Systems', 'Performance', 'Navigation', 'Emergency Procedures']
+        phase: 'Ground School (Phase 1)',
+        duration: '4 Weeks',
+        topics: ['Systems: Deep dive into Hydraulics, Electrics, and the Electronic Centralized Aircraft Monitor (ECAM)', 'Fly-By-Wire Logic: Understanding Normal, Alternate, and Direct flight laws', 'FMGS: Navigation, performance database entry, and managed vs. selected guidance']
       },
       {
-        phase: 'Simulator Training',
-        duration: '3 weeks',
-        topics: ['Normal Operations', 'Abnormal Procedures', 'Emergency Procedures']
+        phase: 'Simulator Training (Phase 2 - Level D FFS)',
+        duration: '3 Weeks',
+        topics: ['Normal Operations: Cold & Dark setup, auto-flight management, and cockpit flows', 'Non-Normal Ops: Engine failures (V1 cuts), hydraulic losses, and dual-FMGC failures', 'Emergency Procedures: Smoke/Fire/Fumes and Emergency Descents', 'Checkride: A 4-hour evaluation by an authorized TRE (Type Rating Examiner)']
       },
       {
-        phase: 'Flight Training',
-        duration: '2 weeks',
-        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+        phase: 'Flight Training (Phase 3)',
+        duration: 'Variable',
+        topics: ['Base Training: 6 Takeoffs and Landings on the actual aircraft (for first-time jet pilots)', 'IOE (Initial Operating Experience): Flying regular passenger routes under the supervision of a Line Training Captain']
+      },
+      {
+        phase: 'Pilot Recognition Tip',
+        duration: 'Note',
+        topics: ['The A320 uses a Common Cockpit philosophy. Once a pilot holds this rating, they are eligible for Shortened Transition Training to the A330, A340, or A350 through CCQ (Cross-Crew Qualification)']
+      },
+      {
+        phase: 'Checkride Prep: Common Training Pitfalls',
+        duration: 'Essential Knowledge',
+        topics: [
+          'ECAM Discipline (The Golden Rule): Pilot Flying (PF) must fly while Pilot Monitoring (PM) performs ECAM actions only after PF confirms "ECAM Actions"',
+          'FMA Oversight: Every time you make a change, you must read the Flight Mode Annunciator (FMA) - if you don\'t say the mode out loud, the computer is flying',
+          'Managed vs. Selected Guidance: "Push to give it to the computer (Managed), Pull to take it yourself (Selected)" - don\'t mix them up',
+          'Sidestick Over-Controlling: A320 is "Neutral Stability" - make a correction and let go, don\'t pump the stick',
+          'Alpha Floor Surprise: To disconnect Alpha Floor, push intuitive disconnect buttons on thrust levers and move to idle detent'
+        ]
+      },
+      {
+        phase: 'Checkride Ready Checklist',
+        duration: 'Self-Assessment',
+        topics: [
+          'Hand-Flying: Can you fly a raw-data ILS (no flight director, no autothrust) without exceeding +/- 1 dot of deviation?',
+          'Engine Failure at V1: Are you staying on centerline using the Beta Target (blue trapezoid) rather than looking outside?',
+          'Landing Technique: Are you starting the flare at 20-30 feet and hearing the "Retard" callout before moving levers to idle?'
+        ]
       }
     ],
     simulatorDetails: {
-      type: 'Full Flight Simulator',
-      locations: ['Toulouse', 'Miami', 'Singapore', 'Beijing'],
-      features: ['6-DOF Motion', 'Visual System', 'Instructor Station']
+      type: 'Level D Full Flight Simulator (FFS) - The gold standard for "Zero Flight Time Training" (ZFTT)',
+      locations: ['Toulouse (Airbus)', 'Miami (Airbus/CAE)', 'Singapore (AATC)', 'Beijing (Airbus)', 'Hamburg', 'Dubai (Emirates/CAE)', 'Phoenix', 'Madrid (Airbus)', 'Delhi/Gurugram (Air India/IndiGo)'],
+      features: ['6-DOF Motion: Electric motion actuators for precise flight feel', 'Visual System: High-definition 200° collimated visual displays', 'Instructor Station: Tablet-controlled scenario injection (Windshear, Bird Strikes, Systems Failures)']
+    },
+    instructorQualifications: [
+      {
+        type: 'Type Rating Instructor',
+        requirements: ['500 hours on type', 'TRI certification', 'Instructor rating']
+      }
+    ],
+    certification: {
+      authority: 'EASA / FAA',
+      validity: '1 year',
+      renewalRequirements: ['6 takeoffs and landings', '1 approach', 'Proficiency check']
+    }
+  },
+  {
+    id: 'a330',
+    manufacturerId: 'airbus',
+    model: 'A330',
+    category: 'flagship',
+    subcategory: 'widebody',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    description: 'The A330 is one of the most successful wide-body aircraft in history. It was designed alongside the four-engine A340, sharing a near-identical flight deck. Today, the family has evolved into the A330neo (-800 and -900 variants), which uses Rolls-Royce Trent 7000 engines and A350-style wings to fly further and more efficiently. For pilots, the A330 offers a seamless step up from the A320 with minimal "Difference Training."',
+    whyChooseRating: 'The A330 rating is a "passport" to global wide-body carriers. It is the backbone of major carriers like Delta, Cathay Pacific, Qatar Airways, and Turkish Airlines. For A320-rated pilots, the transition is famously smooth via Cross-Crew Qualification (CCQ) - only 8-10 working days of training instead of a full month-long type rating.',
+    firstFlight: 1992,
+    careerScore: 94,
+    demandLevel: 'high',
+    conditionallyNew: 'green',
+    lifecycleStage: 'mid-career',
+    orderBacklog: { orders: 300, delivered: 1500 },
+    operatorCount: 120,
+    totalDeliveries: 1500,
+    specifications: {
+      maxTakeoffWeight: '242,000 kg (A330-300/900)',
+      cruisingSpeed: 'Mach 0.82 (Max Mach 0.86)',
+      range: '11,750 km (ceo) / 13,334 km (neo)',
+      capacity: '250-300',
+      engines: 2,
+      engineType: 'A330ceo: GE CF6-80E1, Pratt & Whitney PW4000, or RR Trent 700 / A330neo: Rolls-Royce Trent 7000',
+      length: '58.8 m (-200) / 63.6 m (-300/900)',
+      wingspan: '64 m (neo)',
+      height: '17.4 m'
+    },
+    trainingRequirements: {
+      minimumHours: 3000,
+      requiredLicenses: ['ATPL', 'IR', 'ME'],
+      medicalCertificate: 'Class 1',
+      englishProficiency: 'ICAO Level 4',
+      groundSchoolHours: 100,
+      simulatorHours: 40,
+      flightHours: 50
+    },
+    trainingCurriculum: [
+      {
+        phase: 'Ground School (4 Weeks)',
+        duration: '4 Weeks',
+        topics: ['A330 Systems', 'Wide-body Performance', 'Fuel System (Trim Tank)', 'Weight & Balance']
+      },
+      {
+        phase: 'Simulator Training (3 Weeks)',
+        duration: '3 Weeks',
+        topics: ['Normal Operations', 'Non-Normal Procedures', 'Emergency Procedures', 'Engine Failures']
+      },
+      {
+        phase: 'Flight Training (2 Weeks)',
+        duration: '2 Weeks',
+        topics: ['Takeoff and Landing', 'Cruise Operations', 'Approach and Go-Around']
+      },
+      {
+        phase: 'Cross-Crew Qualification (CCQ) Secret',
+        duration: '8-10 Days for A320-rated pilots',
+        topics: ['If already A320 rated, pilots do not need a full month-long type rating', 'CCQ Course: Only 8-10 working days', 'Flight laws, sidestick feel, and ECAM logic are virtually identical', 'Primary differences: larger physical size, fuel system (trim tank), and weight-related performance']
+      }
+    ],
+    simulatorDetails: {
+      type: 'Level D Full Flight Simulator (FFS)',
+      locations: ['Toulouse', 'Miami', 'Singapore', 'Dubai', 'Hong Kong', 'Bangalore'],
+      features: ['A330/A340 Commonality training', 'Upset Prevention Recovery Training (UPRT)', '6-DOF Motion', 'High-Definition Visual Systems']
     },
     instructorQualifications: [
       {

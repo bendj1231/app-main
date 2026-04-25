@@ -1,7 +1,8 @@
 import React from 'react';
 import { Icons } from '../icons';
-import { MessageCircle, Settings, Home, LogOut } from 'lucide-react';
+import { MessageCircle, Settings, Home, LogOut, CreditCard } from 'lucide-react';
 import styles from './Sidebar.module.css';
+import UpgradeCTA from '../../components/UpgradeCTA';
 
 interface SidebarProps {
     mainView: any;
@@ -9,6 +10,7 @@ interface SidebarProps {
     onNavigate: (view: any) => void;
     onNavigateToMainApp?: (page?: string) => void;
     isDarkMode?: boolean;
+    userId?: string;
 }
 
 const navItems = [
@@ -19,9 +21,11 @@ const navItems = [
     { id: 'recognition', title: 'Recognition', subtitle: 'Awards' },
     { id: 'wingmentor-network', title: 'Network', subtitle: 'Community hub' },
     { id: 'w1000', title: 'W1000', subtitle: 'Advanced training' },
+    { id: 'atlas-resume', title: 'Atlas Resume', subtitle: 'Build your resume' },
+    { id: 'subscription', title: 'Subscription', subtitle: 'Billing & plans' },
 ];
 
-export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate, onNavigateToMainApp, isDarkMode = false }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate, onNavigateToMainApp, isDarkMode = false, userId }) => {
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>
@@ -66,6 +70,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                         })}
                     </div>
                 </section>
+
+                {/* Upgrade CTA for free-tier users */}
+                {userId && (
+                    <div style={{ padding: '1rem' }}>
+                        <UpgradeCTA 
+                            userId={userId} 
+                            onUpgrade={() => onNavigate('subscription')} 
+                            compact 
+                            variant="card"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

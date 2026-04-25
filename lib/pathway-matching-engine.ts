@@ -85,8 +85,10 @@ export class PathwayMatchingEngine {
   };
 
   private userBehaviorData: Map<string, any> = new Map();
+  private consensusSystem: any;
 
-  constructor() {
+  constructor(consensusSystem?: any) {
+    this.consensusSystem = consensusSystem;
     this.loadUserBehaviorData();
   }
 
@@ -352,6 +354,111 @@ export class PathwayMatchingEngine {
   clearBehaviorData(): void {
     this.userBehaviorData.clear();
     localStorage.removeItem('pathwayBehaviorTracking');
+  }
+
+  /**
+   * Get AI-powered personalized pathway recommendations
+   */
+  async getAIRecommendations(profile: PilotProfile, pathways: Pathway[]): Promise<any> {
+    if (!this.consensusSystem) {
+      return this.getRuleBasedRecommendations(profile, pathways);
+    }
+
+    const topPathways = this.calculateMatches(pathways, profile).slice(0, 10);
+    const pathwayTitles = topPathways.map(m => m.pathway.title);
+
+    const prompt = `
+As an expert aviation career advisor, analyze this pilot profile and provide personalized pathway recommendations:
+
+Pilot Profile:
+- Total Flight Hours: ${profile.totalFlightHours}
+- Licenses: ${profile.licenses.join(', ')}
+- Recognition Score: ${profile.overallRecognitionScore}
+- Career Goals: ${profile.careerGoals.join(', ')}
+- Experience Level: ${profile.experienceLevel}
+- Preferred Regions: ${profile.preferredRegions.join(', ')}
+
+Top Matching Pathways: ${pathwayTitles.join(', ')}
+
+Provide recommendations in JSON format with:
+- recommendedPathways: array of pathway titles (top 5, prioritized)
+- reasoning: explanation for each recommendation
+- alternativePaths: array of pathway titles to consider (3-5)
+- skillFocus: specific skills to develop
+- timing: optimal timing for applications
+
+Consider: career trajectory, industry demand, growth potential, and personal fit.
+`;
+
+    try {
+      const consensus = await this.consensusSystem.getConsensusRecommendation(prompt, { profile, pathways });
+      return {
+        type: 'ai-powered',
+        recommendations: consensus.consensusRecommendations,
+        confidence: consensus.confidence,
+        reasoning: consensus.reasoning,
+        timestamp: new Date().toISOString()
+      };
+    } catch {
+      return this.getRuleBasedRecommendations(profile, pathways);
+    }
+  }
+
+  /**
+   * Get rule-based recommendations (fallback)
+   */
+  private getRuleBasedRecommendations(profile: PilotProfile, pathways: Pathway[]): any {
+    const matches = this.calculateMatches(pathways, profile);
+    const topMatches = matches.slice(0, 5);
+
+    return {
+      type: 'rule-based',
+      recommendedPathways: topMatches.map(m => m.pathway.title),
+      reasoning: topMatches.map(m => `${m.pathway.title}: ${m.matchReasons.join(', ')}`),
+      alternativePaths: matches.slice(5, 10).map(m => m.pathway.title),
+      skillFocus: this.getSkillFocus(profile),
+      timing: this.getOptimalTiming(profile),
+      confidence: 70,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  /**
+   * Get skill focus based on profile
+   */
+  private getSkillFocus(profile: PilotProfile): string[] {
+    const focus: string[] = [];
+
+    if (!profile.licenses.includes('cpl')) {
+      focus.push('Commercial Pilot License');
+    }
+    if (!profile.licenses.includes('ir')) {
+      focus.push('Instrument Rating');
+    }
+    if (profile.totalFlightHours < 500) {
+      focus.push('Build flight hours');
+    }
+    if (profile.overallRecognitionScore < 400) {
+      focus.push('Improve recognition score');
+    }
+
+    return focus;
+  }
+
+  /**
+   * Get optimal timing for applications
+   */
+  private getOptimalTiming(profile: PilotProfile): string {
+    if (profile.totalFlightHours < 250) {
+      return 'Focus on building hours before applying to major pathways';
+    }
+    if (profile.totalFlightHours < 500) {
+      return 'Start applying to regional pathways within 3-6 months';
+    }
+    if (profile.totalFlightHours < 1000) {
+      return 'Good timing for most pathway applications';
+    }
+    return 'Excellent timing for all pathway types';
   }
 }
 

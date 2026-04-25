@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, ArrowRight, Database, Users, ClipboardList, Plane, ChevronLeft, ChevronRight, ShoppingBag, Wrench, Clock, Activity, PieChart, Map, Share2, LineChart } from 'lucide-react';
+import { Bell, ArrowRight, Database, Users, ClipboardList, Plane, ChevronLeft, ChevronRight, ShoppingBag, Wrench, Clock, Activity, PieChart, Map, Share2, LineChart, Brain, Sparkles, TrendingUp, Target } from 'lucide-react';
 import { View } from '../types';
+import { AICoachingDashboard } from './AICoachingDashboard';
 
 interface DashboardProps {
   onNavigate: (view: View) => void;
   userName: string;
   userRole: string;
   jotFormConnected: boolean;
+  userId?: string;
+  isPremium?: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, jotFormConnected }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, jotFormConnected, userId, isPremium = false }) => {
   // Main Apps Carousel State
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -19,6 +22,29 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, j
   const [currentToolSlide, setCurrentToolSlide] = useState(0);
   const [toolTouchStart, setToolTouchStart] = useState<number | null>(null);
   const [toolTouchEnd, setToolTouchEnd] = useState<number | null>(null);
+
+  // AI Coaching Section State
+  const [showAICoaching, setShowAICoaching] = useState(false);
+  const [unreadAlerts, setUnreadAlerts] = useState(0);
+
+  // Load unread alerts
+  useEffect(() => {
+    if (isPremium && userId) {
+      loadUnreadAlerts();
+    }
+  }, [isPremium, userId]);
+
+  const loadUnreadAlerts = async () => {
+    try {
+      const response = await fetch(`/api/notifications/history/${userId}`);
+      const data = await response.json();
+      if (data.success) {
+        setUnreadAlerts(data.data.unreadCount || 0);
+      }
+    } catch (error) {
+      console.error('Failed to load unread alerts:', error);
+    }
+  };
 
   const apps = [
     {
@@ -212,8 +238,23 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, j
           <p className="text-slate-600 text-lg mt-1 font-medium">Introducing apps for pilots made by pilots</p>
           <p className="text-slate-400 text-sm mt-2">Welcome back, {userRole} {userName}.</p>
         </div>
-        <div className="text-sm text-slate-400 hidden md:block pt-2">
-           {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+        <div className="flex items-center gap-4">
+          {isPremium && unreadAlerts > 0 && (
+            <button
+              onClick={() => setShowAICoaching(true)}
+              className="relative p-2 bg-violet-100 text-violet-600 rounded-lg hover:bg-violet-200 transition-colors"
+            >
+              <Bell size={20} />
+              {unreadAlerts > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {unreadAlerts}
+                </span>
+              )}
+            </button>
+          )}
+          <div className="text-sm text-slate-400 hidden md:block pt-2">
+             {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          </div>
         </div>
       </div>
 
@@ -306,6 +347,77 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, j
          </div>
       </div>
 
+      {/* AI Coaching Section - Premium Feature */}
+      <div className="bg-gradient-to-r from-violet-600 to-purple-600 rounded-lg p-6 text-white">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <Brain size={32} />
+            <div>
+              <h2 className="text-2xl font-bold">AI Career Coaching</h2>
+              <p className="text-violet-100">Personalized AI-powered career guidance</p>
+            </div>
+          </div>
+          {isPremium ? (
+            <button
+              onClick={() => setShowAICoaching(!showAICoaching)}
+              className="bg-white text-violet-600 px-6 py-3 rounded-lg font-semibold hover:bg-violet-50 transition-colors"
+            >
+              {showAICoaching ? 'Close' : 'Open AI Coaching'}
+            </button>
+          ) : (
+            <button
+              onClick={() => onNavigate(View.SUBSCRIPTION)}
+              className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              <Sparkles size={20} />
+              <span>Unlock Premium</span>
+            </button>
+          )}
+        </div>
+
+        {showAICoaching && isPremium && (
+          <AICoachingDashboard
+            userId={userId}
+            isPremium={isPremium}
+            pilotProfile={{
+              totalFlightHours: 250,
+              licenses: ['ppl', 'cpl'],
+              overallRecognitionScore: 380,
+              careerGoals: ['airline_career'],
+              experienceLevel: 'intermediate'
+            }}
+          />
+        )}
+
+        {!isPremium && (
+          <div className="mt-4 bg-white/10 rounded-lg p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-2">
+                <Bell size={20} />
+                <div>
+                  <p className="font-semibold">Real-time Job Alerts</p>
+                  <p className="text-sm text-violet-200">Get notified about opportunities</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <TrendingUp size={20} />
+                <div>
+                  <p className="font-semibold">Market Intelligence</p>
+                  <p className="text-sm text-violet-200">Salary trends & demand data</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Target size={20} />
+                <div>
+                  <p className="font-semibold">AI Pathway Matching</p>
+                  <p className="text-sm text-violet-200">Personalized recommendations</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* News Feed Section */}
       <div>
         <div className="flex items-center justify-between mb-6">
@@ -338,7 +450,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, j
 
       {/* Analytics Section - Conditional */}
       {jotFormConnected ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 animate-fadeIn">
           <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition-shadow">
              <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-slate-700">Flight Time</h3>
@@ -387,6 +499,45 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, j
                   <div className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">+2.5%</div>
                </div>
                <p className="text-xs text-slate-400">Average Grade (Last 5 Flights)</p>
+             </div>
+          </div>
+
+          {/* AI Coaching Insights Summary */}
+          <div className="bg-gradient-to-br from-violet-500 to-purple-600 p-6 rounded-xl shadow-sm border border-violet-200 flex flex-col justify-between hover:shadow-md transition-shadow">
+             <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-white">AI Coaching</h3>
+                <div className="p-2 bg-white/20 text-white rounded-lg">
+                  <Brain size={20} />
+                </div>
+             </div>
+              <div>
+               {isPremium ? (
+                 <>
+                   <div className="flex items-center gap-3 mb-2">
+                      <div className="text-3xl font-bold text-white">Active</div>
+                      <div className="text-xs font-bold text-white bg-white/20 px-2 py-1 rounded-full">Premium</div>
+                   </div>
+                   <button 
+                     onClick={() => setShowAICoaching(true)}
+                     className="text-xs font-bold text-white uppercase tracking-wide hover:text-violet-200 flex items-center gap-1 mt-3"
+                   >
+                     View Insights <ArrowRight size={12} />
+                   </button>
+                 </>
+               ) : (
+                 <>
+                   <div className="flex items-center gap-3 mb-2">
+                      <div className="text-3xl font-bold text-white">Locked</div>
+                      <div className="text-xs font-bold text-white bg-white/20 px-2 py-1 rounded-full">Premium</div>
+                   </div>
+                   <button 
+                     onClick={() => onNavigate(View.SUBSCRIPTION)}
+                     className="text-xs font-bold text-white uppercase tracking-wide hover:text-violet-200 flex items-center gap-1 mt-3"
+                   >
+                     Unlock Now <ArrowRight size={12} />
+                   </button>
+                 </>
+               )}
              </div>
           </div>
         </div>

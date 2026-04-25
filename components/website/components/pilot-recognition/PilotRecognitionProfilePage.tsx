@@ -4,6 +4,10 @@ import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { PilotLicensureExperiencePage } from './PilotLicensureExperiencePage';
+import { RecognitionScoreDisplay } from '../../../RecognitionScoreDisplay';
+import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
+import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
+import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
 
 interface PilotRecognitionProfilePageProps {
     onNavigate: (page: string) => void;
@@ -48,6 +52,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [recognitionScore, setRecognitionScore] = useState<RecognitionScore | null>(null);
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
+    const { score: recognitionScoreData, loading: scoreDataLoading } = useRecognitionScore();
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -787,34 +792,35 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </h1>
 
                     {/* Recognition Score Display */}
-                    <div style={{ marginTop: '1.5rem' }}>
-                        {loadingScore ? (
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
-                                <Loader2 style={{ width: 24, height: 24, animation: 'spin 1s linear infinite' }} />
-                                <span style={{ color: '#64748b', fontSize: '0.875rem' }}>Loading your recognition score...</span>
-                            </div>
-                        ) : scoreError ? (
-                            <div style={{ color: '#ef4444', fontSize: '0.875rem', textAlign: 'center' }}>{scoreError}</div>
-                        ) : recognitionScore ? (
-                            <div style={{
-                                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(248, 250, 252, 0.1))',
-                                borderRadius: '16px',
-                                padding: '1.5rem',
-                                border: '1px solid rgba(59, 130, 246, 0.2)',
-                                textAlign: 'center',
-                                maxWidth: '400px',
-                                margin: '0 auto'
-                            }}>
-                                <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600, marginBottom: '0.5rem' }}>
-                                    Wingmentor Recognition Engine PR
-                                </p>
-                                <div style={{ fontSize: '3rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>
-                                    {recognitionScore.totalRecognition.toFixed(1)}%
-                                </div>
-                                <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
-                                    Recognition Score
-                                </p>
-                            </div>
+                    <div style={{ marginTop: '1.5rem', width: '100%', maxWidth: '600px' }}>
+                        {recognitionScoreData ? (
+                            <RecognitionScoreDisplay
+                                score={calculateRecognitionScore({
+                                    stats: {
+                                        totalHours: profileData?.total_hours || 0,
+                                        picHours: profileData?.pic_hours || 0,
+                                        ifrHours: profileData?.ifr_hours || 0,
+                                        nightHours: profileData?.night_hours || 0,
+                                    },
+                                    experience: {
+                                        years: profileData?.experience_years || 0,
+                                        achievements: profileData?.certifications?.length || 0,
+                                        licenses: profileData?.type_ratings?.length || 0,
+                                    },
+                                    assessments: {
+                                        programCompletion: 0,
+                                        performanceScore: profileData?.overall_recognition_score || 0,
+                                    },
+                                    mentorship: {
+                                        hours: 0,
+                                        observations: 0,
+                                        cases: 0,
+                                    },
+                                })}
+                                loading={scoreDataLoading}
+                                showBreakdown={false}
+                                showRecommendations={false}
+                            />
                         ) : null}
                     </div>
                 </header>
@@ -1156,6 +1162,43 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 </div>
                             </div>
                         </CategorySection>
+
+                        {/* Score Optimization Guide */}
+                        <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>Recognition Score Optimization</h2>
+                                <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Improve your pilot recognition score</span>
+                            </div>
+                            <ScoreOptimizationGuide
+                                currentScore={calculateRecognitionScore({
+                                    stats: {
+                                        totalHours: profileData?.total_hours || 0,
+                                        picHours: 0,
+                                        ifrHours: 0,
+                                        nightHours: 0,
+                                    },
+                                    experience: {
+                                        years: 0,
+                                        achievements: 0,
+                                        licenses: 0,
+                                    },
+                                    assessments: {
+                                        programCompletion: 0,
+                                        performanceScore: profileData?.overall_recognition_score || 0,
+                                    },
+                                    mentorship: {
+                                        hours: 0,
+                                        observations: 0,
+                                        cases: 0,
+                                    },
+                                })}
+                                isPremium={false}
+                                userId={profileData?.user_id}
+                                limit={3}
+                                onViewAll={() => onNavigate('score-optimization')}
+                                onNavigate={onNavigate}
+                            />
+                        </div>
 
                         <CategorySection title="Career & Interests" description="Professional information and pathway preferences">
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>

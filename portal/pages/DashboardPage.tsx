@@ -7,6 +7,9 @@ import PilotLicensureExperiencePage from './PilotLicensureExperiencePage';
 import { PathwaysCarousel } from '../components/PathwaysCarousel';
 import { PathwayStrategyCarousel } from '../components/PathwayStrategyCarousel';
 import { IndustryExpectationsCarousel } from '../components/IndustryExpectationsCarousel';
+import { ScoreOptimizationGuide } from '../../components/ScoreOptimizationGuide';
+import { useRecognitionScore } from '../../src/hooks/useRecognitionScore';
+import { calculateRecognitionScore } from '../../lib/pilot-recognition-score';
 
 interface DashboardPageProps {
   onBack: () => void;
@@ -810,6 +813,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     { id: 'emirates', name: 'Emirates', logo: 'EK', status: 'pending' as const },
     { id: 'flydubai', name: 'flydubai', logo: 'FZ', status: 'available' as const }
   ]);
+  const { score: recognitionScore, loading: scoreLoading } = useRecognitionScore();
   const baseCardStyle: React.CSSProperties = {
     background: isDarkMode 
       ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
@@ -2197,6 +2201,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </p>
               </div>
             </div>
+
 
             {/* Official Documentation Section */}
             <div style={{ marginBottom: '3rem' }}>

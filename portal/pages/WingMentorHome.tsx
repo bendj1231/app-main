@@ -27,6 +27,8 @@ import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { MentorLogbookPage } from './MentorLogbookPage';
 import { DigitalLogbookDirectoryPage } from '../../components/website/components/DigitalLogbookDirectoryPage';
 import { PathwayCarousel } from '../components/PathwayCarousel';
+import SubscriptionDashboard from '../../components/SubscriptionDashboard';
+import AtlasResumeBuilder from '../../components/AtlasResumeBuilder';
 import { getUserTrack, getTrackConfig, canAccessPage, getRedirectPage } from '../config/accessControl';
 import { getEnrollmentStatus, supabase } from '../lib/supabase-auth';
 import PilotGapModulePage from './PilotGapModulePage';
@@ -243,6 +245,10 @@ export type MainView =
   | 'recognition'
   | 'pilot-portfolio'
   | 'program-progress'
+  | 'wingmentor-network'
+  | 'w1000'
+  | 'atlas-resume'
+  | 'subscription'
   | 'foundational'
   | 'foundational-get-started'
   | 'foundational-onboarding'
@@ -252,7 +258,6 @@ export type MainView =
   | 'transition'
   | 'pilot-profile'
   | 'contact'
-  | 'wingmentor-network'
   | 'aviation-expectations'
   | 'atpl-pathway'
   | 'private-sector'
@@ -3692,7 +3697,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       case 'mentor-logbook':
         return <MentorLogbookPage onBack={() => setMainView('pilot-portfolio')} userProfile={userProfile ?? undefined} />;
       case 'atlas-resume':
-        return <AtlasResumePage onBack={() => setMainView('recognition')} onPrint={() => setMainView('printable-resume')} userProfile={userProfile} />;
+        return <AtlasResumeBuilder onBack={() => setMainView('pilot-portfolio')} />;
       case 'wingmentor-network':
         return <WingMentorNetworkPage onBack={() => setMainView('dashboard')} onLogout={onLogout} />;
       case 'aviation-expectations':

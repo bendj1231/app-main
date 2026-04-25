@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal } from 'lucide-react';
+import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal, CreditCard } from 'lucide-react';
 
 interface SettingsDirectoryPageProps {
     onBack: () => void;
@@ -13,6 +13,7 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
             title: 'Account',
             items: [
                 { name: 'Profile Settings', icon: User, description: 'Update your personal information', action: 'portal' },
+                { name: 'Subscription & Billing', icon: CreditCard, description: 'Manage your subscription plan', action: 'subscription' },
                 { name: 'Notifications', icon: Bell, description: 'Manage your notification preferences', action: 'notifications' },
             ]
         },

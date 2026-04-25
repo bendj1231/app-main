@@ -3,6 +3,8 @@ import { Icons } from '../icons';
 import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
 import { supabase } from '../lib/supabase-auth';
+import { RecognitionScoreCard } from '../../components/RecognitionScoreCard';
+import { useRecognitionScore } from '../../src/hooks/useRecognitionScore';
 
 interface PilotProfilePageProps {
   onBack: () => void;
@@ -753,10 +755,11 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
   const [mentorHoursLabel, setMentorHoursLabel] = useState('Unenrolled');
   const [latestLogbookHours, setLatestLogbookHours] = useState(0);
   const { portfolio, updatePortfolio } = usePilotPortfolio(userProfile?.uid);
+  const { score: recognitionScore, rank: recognitionRank, loading: scoreLoading } = useRecognitionScore();
 
   useEffect(() => {
     const fetchFirebaseData = async () => {
-      if (!userProfile?.uid || !db) {
+      if (!userProfile?.uid) {
         return;
       }
 
@@ -1199,6 +1202,18 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
                             View Atlas Resume
                           </button>
                         </div>
+                      </div>
+                      
+                      {/* Recognition Score Card */}
+                      <div className="pilot-profile-glass-card" style={{ ...baseCardStyle }}>
+                        <RecognitionScoreCard
+                          score={recognitionScore?.total_score || 0}
+                          tier={recognitionScore?.score_tier}
+                          rank={recognitionRank || undefined}
+                          showRank={true}
+                          showShare={true}
+                          compact={false}
+                        />
                       </div>
                     </div>
 

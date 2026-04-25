@@ -2,12 +2,14 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { FlightSchoolOnboarding } from '../../components/referral';
 
 const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY';
 const FIREBASE_BASE = 'https://us-central1-pilotrecognition-airline.cloudfunctions.net';
 
 const EnterpriseAccessPage = () => {
+    const [accessType, setAccessType] = useState<'enterprise' | 'flightSchool'>('enterprise');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -143,6 +145,48 @@ const EnterpriseAccessPage = () => {
         }
     };
 
+    // Show flight school onboarding if selected
+    if (accessType === 'flightSchool') {
+        return (
+            <div className="min-h-screen bg-slate-900 py-12 px-4">
+                <div className="max-w-4xl mx-auto">
+                    {/* Back Button */}
+                    <button
+                        onClick={() => setAccessType('enterprise')}
+                        className="mb-6 flex items-center gap-2 text-white hover:text-blue-200 transition-colors"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span>Back to Enterprise Access</span>
+                    </button>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-white rounded-2xl shadow-2xl overflow-hidden"
+                    >
+                        {/* Header */}
+                        <div className="bg-gradient-to-r from-emerald-900 to-slate-900 px-8 py-8">
+                            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                                Flight School Partnership
+                            </h1>
+                            <p className="text-emerald-200 text-lg">
+                                Earn $20 per pilot referral through our partnership program
+                            </p>
+                        </div>
+
+                        {/* Flight School Onboarding Component */}
+                        <div className="p-8">
+                            <FlightSchoolOnboarding />
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+        );
+    }
+
     if (submitted) {
         return (
             <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
@@ -200,6 +244,37 @@ const EnterpriseAccessPage = () => {
                         <p className="text-blue-200 text-lg">
                             Access the Verified Pilot Recognition Database & Industry Pathways
                         </p>
+                    </div>
+
+                    {/* Access Type Toggle */}
+                    <div className="px-8 py-6 border-b border-slate-200">
+                        <div className="flex gap-4">
+                            <button
+                                onClick={() => setAccessType('enterprise')}
+                                className={`flex-1 px-6 py-3 rounded-xl font-medium transition-all ${
+                                    accessType === 'enterprise'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                }`}
+                            >
+                                Enterprise / Airline
+                            </button>
+                            <button
+                                onClick={() => setAccessType('flightSchool')}
+                                className={`flex-1 px-6 py-3 rounded-xl font-medium transition-all ${
+                                    accessType === 'flightSchool'
+                                        ? 'bg-emerald-600 text-white'
+                                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                }`}
+                            >
+                                Flight School
+                            </button>
+                        </div>
+                        {accessType === 'flightSchool' && (
+                            <p className="text-emerald-600 text-sm mt-3">
+                                💰 Earn $20 per pilot who completes the program through your referral
+                            </p>
+                        )}
                     </div>
 
                     {/* Form */}

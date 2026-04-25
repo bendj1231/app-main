@@ -47,7 +47,7 @@ const CENTERS: RatingCenter[] = [
     location: 'Toulouse, France',
     flag: '🇫🇷',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
-    heroImg: 'https://static0.simpleflyingimages.com/wordpress/wp-content/uploads/2024/09/training-and-flight-operations-campus-_ai-bld-simbay.jpg?q=49&fit=crop&w=825&dpr=2',
+    heroImg: 'https://i.ytimg.com/vi/kreOPxL7b9w/sddefault.jpg',
     website: 'https://www.airbus.com/en/products-services/commercial-aircraft/the-airbus-difference/airbus-services/airbus-training',
     description: "The Airbus Training Centre in Toulouse is the OEM-authorised centre of excellence for all Airbus type ratings. With the world's largest fleet of Airbus simulators, it offers the most comprehensive and authoritative type rating programs directly from the manufacturer.",
     typesOffered: ['Airbus A220', 'Airbus A320 Family', 'Airbus A330', 'Airbus A350', 'Airbus A380'],

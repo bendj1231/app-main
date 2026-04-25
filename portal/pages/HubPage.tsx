@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
+import { RecognitionDashboard } from '../../components/RecognitionDashboard';
 
 interface HubPageProps {
     onSelectCategory: (category: 'programs' | 'pathways' | 'applications') => void;
@@ -212,6 +213,39 @@ export const HubPage: React.FC<HubPageProps> = ({ onSelectCategory, onLogout, us
                         </div>
 
                         <PilotPortfolioCard onClick={() => onSelectCategory('applications')} userProfile={userProfile} />
+
+                        {/* Recognition Dashboard Card */}
+                        {onRecognition && (
+                            <div className="horizontal-card" style={{ cursor: 'pointer', padding: '1rem 2rem', border: '2px solid #0ea5e9' }} onClick={onRecognition}>
+                                <div className="horizontal-card-content-wrapper">
+                                    <div style={{ maxWidth: '70%', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                        <div style={{ fontSize: '1.5rem', color: '#000000', fontWeight: 'bold' }}>•</div>
+                                        <div className="horizontal-card-content" style={{ padding: '2rem 0', textAlign: 'left', flex: 1, maxWidth: '100%' }}>
+                                            <h3 className="horizontal-card-title" style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recognition Dashboard</h3>
+                                            <p className="horizontal-card-desc" style={{ maxWidth: '100%', marginBottom: 0, color: '#64748b', fontSize: '1rem', lineHeight: 1.6 }}>
+                                                View your recognition score, leaderboard position, and optimization tips in one comprehensive dashboard.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="hub-card-arrow">
+                                        <Icons.ArrowRight style={{ width: 24, height: 24 }} />
+                                    </div>
+                                </div>
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    background: '#0ea5e9',
+                                    color: 'white',
+                                    padding: '0.25rem 0.75rem',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 600,
+                                    borderBottomLeftRadius: '8px'
+                                }}>
+                                    SCORE
+                                </div>
+                            </div>
+                        )}
 
                         {/* Mentor Management Card - Only for Super Admins */}
                         {userProfile?.role === 'super_admin' && onMentorManagement && (

@@ -13,7 +13,8 @@ export enum View {
   WELCOME_GUIDE = 'WELCOME_GUIDE',
   SETTINGS = 'SETTINGS',
   SIGN_IN = 'SIGN_IN',
-  WEBSITE = 'WEBSITE'
+  WEBSITE = 'WEBSITE',
+  SUBSCRIPTION = 'SUBSCRIPTION'
 }
 
 export interface ProgramLogEntry {

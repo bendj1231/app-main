@@ -9,6 +9,30 @@ exports.getCardAnalytics = enterpriseAnalytics.getCardAnalytics;
 exports.getEnterpriseApplications = enterpriseAnalytics.getEnterpriseApplications;
 exports.updateApplicationStatus = enterpriseAnalytics.updateApplicationStatus;
 
+// Airlines functions
+const airlines = require('./airlines');
+exports.getAirlines = airlines.getAirlines;
+exports.getAirlineById = airlines.getAirlineById;
+exports.getAirlinesByAircraft = airlines.getAirlinesByAircraft;
+const {
+  getAircraftMetrics,
+  updateAircraftMetrics,
+  getAllAircraftMetrics,
+  getPilotCountForAircraft,
+  updatePilotCountForAircraft,
+  recalculateCareerScore
+} = require('./airlines');
+exports.updateAirline = airlines.updateAirline;
+exports.addAircraftToFleet = airlines.addAircraftToFleet;
+exports.removeAircraftFromFleet = airlines.removeAircraftFromFleet;
+exports.getAirlineRecruitment = airlines.getAirlineRecruitment;
+exports.getAircraftMetrics = getAircraftMetrics;
+exports.updateAircraftMetrics = updateAircraftMetrics;
+exports.getAllAircraftMetrics = getAllAircraftMetrics;
+exports.getPilotCountForAircraft = getPilotCountForAircraft;
+exports.updatePilotCountForAircraft = updatePilotCountForAircraft;
+exports.recalculateCareerScore = recalculateCareerScore;
+
 // Health check function
 exports.healthCheck = onRequest(async (req, res) => {
   const supabase = createClient(
