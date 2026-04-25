@@ -6769,39 +6769,62 @@ exports.pathways_getTypeRatingRecommendations = onRequest(async (req, res) => {
     const scores = computeRFormula(profile);
     const currentRatings = (scores.typeRatings || []).map(r => r.toLowerCase());
 
-    // Get type ratings from database
+    // Check if user is admin
+    const isAdmin = profile.email === 'benjamintigerbowler@gmail.com';
+
+    // Try to get type ratings from database first
+    let typeRatingData = [];
+    let dataSource = 'static'; // Default to static data
+
     const { data: typeRatings, error: trError } = await supabase
       .from('type_ratings')
       .select('*')
       .order('jobs_unlocked', { ascending: false });
 
-    if (trError || !typeRatings || typeRatings.length === 0) {
-      return res.status(404).json({ error: 'No type ratings data found' });
+    if (!trError && typeRatings && typeRatings.length > 0) {
+      // Database has data - use it
+      dataSource = 'database';
+
+      // Get airline associations for each type rating
+      const { data: airlineTypeRatings } = await supabase
+        .from('airline_type_ratings')
+        .select('*');
+
+      // Build type rating data with airlines
+      typeRatingData = typeRatings.map(tr => {
+        const airlines = (airlineTypeRatings || [])
+          .filter(atr => atr.type_rating_id === tr.id)
+          .map(atr => atr.airline_name);
+
+        return {
+          id: tr.id,
+          rating: tr.code,
+          family: tr.family,
+          manufacturer: tr.manufacturer,
+          airlines: airlines,
+          costUSD: tr.cost_usd,
+          jobsUnlocked: tr.jobs_unlocked,
+          priority: tr.priority,
+          description: tr.description
+        };
+      });
+    } else {
+      // Database empty - fall back to static data
+      dataSource = 'static';
+
+      typeRatingData = [
+        { rating: 'A320', family: 'Airbus A320 Family', manufacturer: 'Airbus', airlines: ['IndiGo', 'EasyJet', 'Lufthansa', 'Swiss', 'TAP', 'Vueling', 'Wizz Air', 'AirAsia', 'Cebu Pacific', 'Philippine Airlines'], costUSD: 35000, jobsUnlocked: 94, priority: 'critical', description: 'Single-aisle commercial aircraft, most popular narrow-body in the world' },
+        { rating: 'B737', family: 'Boeing 737 Family', manufacturer: 'Boeing', airlines: ['Ryanair', 'Southwest', 'Alaska', 'GOL', 'Korean Air', 'Lion Air', 'Norwegian', 'WestJet', 'Aeromexico'], costUSD: 30000, jobsUnlocked: 87, priority: 'critical', description: 'Single-aisle commercial aircraft, most popular Boeing model' },
+        { rating: 'A350', family: 'Airbus A350', manufacturer: 'Airbus', airlines: ['Qatar Airways', 'Singapore Airlines', 'Cathay Pacific', 'Air France', 'Finnair', 'Japan Airlines', 'Vietnam Airlines'], costUSD: 55000, jobsUnlocked: 38, priority: 'high', description: 'Wide-body, long-range aircraft' },
+        { rating: 'B777', family: 'Boeing 777', manufacturer: 'Boeing', airlines: ['Emirates', 'Qatar Airways', 'United', 'Delta', 'Korean Air', 'Etihad', 'Turkish Airlines', 'Air France'], costUSD: 50000, jobsUnlocked: 42, priority: 'high', description: 'Wide-body, long-range aircraft' },
+        { rating: 'B787', family: 'Boeing 787 Dreamliner', manufacturer: 'Boeing', airlines: ['ANA', 'JAL', 'British Airways', 'LOT Polish', 'Oman Air', 'Scoot', 'Norwegian', 'Etihad'], costUSD: 45000, jobsUnlocked: 35, priority: 'high', description: 'Wide-body, fuel-efficient aircraft' },
+        { rating: 'ATR', family: 'ATR 72/42', manufacturer: 'ATR', airlines: ['Regional carriers', 'Commuter airlines', 'Island operators', 'Charter ops'], costUSD: 18000, jobsUnlocked: 28, priority: 'medium', description: 'Turboprop regional aircraft' },
+        { rating: 'CRJ', family: 'Canadair Regional Jet', manufacturer: 'Bombardier', airlines: ['SkyWest', 'Mesa', 'Republic', 'Air Wisconsin', 'PSA'], costUSD: 20000, jobsUnlocked: 22, priority: 'medium', description: 'Regional jet aircraft' },
+        { rating: 'E175', family: 'Embraer 175/190/195', manufacturer: 'Embraer', airlines: ['Horizon Air', 'Republic', 'Regional operators', 'Azul'], costUSD: 22000, jobsUnlocked: 19, priority: 'medium', description: 'Regional jet aircraft' },
+        { rating: 'A380', family: 'Airbus A380', manufacturer: 'Airbus', airlines: ['Emirates', 'Singapore Airlines', 'British Airways', 'Qantas', 'Korean Air'], costUSD: 60000, jobsUnlocked: 12, priority: 'prestige', description: 'Double-deck, wide-body aircraft' },
+        { rating: 'B747', family: 'Boeing 747', manufacturer: 'Boeing', airlines: ['Cargo operators', 'Cargolux', 'Korean Air', 'Nippon Cargo', 'Atlas Air'], costUSD: 45000, jobsUnlocked: 15, priority: 'medium', description: 'Queen of the Skies, wide-body aircraft' }
+      ];
     }
-
-    // Get airline associations for each type rating
-    const { data: airlineTypeRatings } = await supabase
-      .from('airline_type_ratings')
-      .select('*');
-
-    // Build type rating data with airlines
-    const typeRatingData = typeRatings.map(tr => {
-      const airlines = (airlineTypeRatings || [])
-        .filter(atr => atr.type_rating_id === tr.id)
-        .map(atr => atr.airline_name);
-
-      return {
-        id: tr.id,
-        rating: tr.code,
-        family: tr.family,
-        manufacturer: tr.manufacturer,
-        airlines: airlines,
-        costUSD: tr.cost_usd,
-        jobsUnlocked: tr.jobs_unlocked,
-        priority: tr.priority,
-        description: tr.description
-      };
-    });
 
     // Filter out ratings pilot already has, compute ROI
     const recommendations = typeRatingData
@@ -6839,7 +6862,8 @@ exports.pathways_getTypeRatingRecommendations = onRequest(async (req, res) => {
     const totalMajorAirlines = 60; // Total major airlines in database
     const coverageScore = Math.round((totalAirlinesAccessible / totalMajorAirlines) * 100);
 
-    return res.json({
+    // Build response with data source indicator for admins
+    const response = {
       success: true,
       recommendations,
       currentPortfolio: currentRatings,
@@ -6847,7 +6871,16 @@ exports.pathways_getTypeRatingRecommendations = onRequest(async (req, res) => {
       coverageScore,
       coverageLabel: `You can fly for ${totalAirlinesAccessible} of ${totalMajorAirlines} major airlines`,
       pilotScore: scores.totalScore
-    });
+    };
+
+    // Add data source indicator for admin users
+    if (isAdmin) {
+      response.dataSource = dataSource;
+      response.dataSourceLabel = dataSource === 'static' ? '⚠️ Using static data (database empty)' : '✅ Using database data';
+      response.dataSourceHighlight = dataSource === 'static' ? 'yellow' : 'green';
+    }
+
+    return res.json(response);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
