@@ -2336,22 +2336,82 @@ exports.matchPathway = onRequest(async (req, res) => {
       return res.status(400).json({ error: 'userId required' });
     }
 
+    // Get pilot profile
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
 
-    if (profileError) {
-      return res.status(500).json({ error: profileError.message });
+    if (profileError || !profile) {
+      return res.status(404).json({ error: 'Pilot profile not found' });
     }
 
-    const matchedPathway = {
-      pathwayId: 'path-001',
-      name: 'Commercial Pilot Pathway',
-      matchScore: 0.85,
-      reason: 'Based on flight hours and qualifications'
-    };
+    // Get all pathways from database
+    const { data: pathways, error: pathwaysError } = await supabase
+      .from('career_pathways')
+      .select('*');
+
+    if (pathwaysError || !pathways || pathways.length === 0) {
+      return res.status(404).json({ error: 'No pathways found' });
+    }
+
+    // Calculate match score for each pathway
+    const scoredPathways = pathways.map(pathway => {
+      const pilotHours = profile.total_flight_hours || 0;
+      const pathwayMinHours = pathway.min_hours || 0;
+      
+      // Hours score (30%): 100% if pilot meets or exceeds minimum
+      const hoursScore = pilotHours >= pathwayMinHours ? 1 : (pilotHours / pathwayMinHours);
+      
+      // Type ratings score (30%): Check if pilot has required ratings
+      const pilotRatings = profile.aircraft_rated_on || '';
+      const requiredRatings = pathway.required_type_ratings || [];
+      const matchingRatings = requiredRatings.filter(r => 
+        pilotRatings.toLowerCase().includes(r.toLowerCase())
+      );
+      const ratingScore = requiredRatings.length > 0 
+        ? (matchingRatings.length / requiredRatings.length) 
+        : 0.5; // Default if no specific requirements
+      
+      // ICAO level score (20%): Compare pilot's ICAO level
+      const pilotIcao = profile.language_icao_level || 0;
+      const requiredIcao = pathway.required_icao_level || 4;
+      const icaoScore = pilotIcao >= requiredIcao ? 1 : (pilotIcao / requiredIcao);
+      
+      // Behavioral score (15%): Compare pilot's behavioral score
+      const pilotBehavioral = profile.behavioral_sjt_score || 0;
+      const requiredBehavioral = pathway.required_behavioral_score || 60;
+      const behavioralScore = pilotBehavioral >= requiredBehavioral ? 1 : (pilotBehavioral / requiredBehavioral);
+      
+      // License type score (5%): Check if pilot has required license
+      const pilotLicense = profile.license_type || '';
+      const requiredLicense = pathway.required_license || '';
+      const licenseScore = pilotLicense.toLowerCase() === requiredLicense.toLowerCase() ? 1 : 0.5;
+      
+      // Calculate total match score
+      const matchScore = (hoursScore * 0.3) + (ratingScore * 0.3) + (icaoScore * 0.2) + (behavioralScore * 0.15) + (licenseScore * 0.05);
+      
+      // Generate reason
+      const reasons = [];
+      if (pilotHours >= pathwayMinHours) reasons.push(`${pilotHours.toLocaleString()} flight hours`);
+      if (matchingRatings.length > 0) reasons.push(`Matches ${matchingRatings.length}/${requiredRatings.length} required ratings: ${matchingRatings.join(', ')}`);
+      if (pilotIcao >= requiredIcao) reasons.push(`ICAO Level ${pilotIcao}`);
+      if (pilotBehavioral >= requiredBehavioral) reasons.push(`Behavioral score ${pilotBehavioral}`);
+      
+      return {
+        pathwayId: pathway.id,
+        name: pathway.name,
+        matchScore: Math.round(matchScore * 100) / 100,
+        reason: reasons.length > 0 ? `Matches based on ${reasons.join(', ')}` : 'Partial match based on profile'
+      };
+    });
+
+    // Sort by match score descending
+    scoredPathways.sort((a, b) => b.matchScore - a.matchScore);
+
+    // Return the highest-scoring pathway
+    const matchedPathway = scoredPathways[0];
 
     return res.json(matchedPathway);
   } catch (error) {
