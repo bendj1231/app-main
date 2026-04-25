@@ -6769,32 +6769,53 @@ exports.pathways_getTypeRatingRecommendations = onRequest(async (req, res) => {
     const scores = computeRFormula(profile);
     const currentRatings = (scores.typeRatings || []).map(r => r.toLowerCase());
 
-    // Type rating unlock data: airlines per rating type
-    const typeRatingData = [
-      { rating: 'A320', family: 'Airbus A320 Family', airlines: ['IndiGo', 'EasyJet', 'Lufthansa', 'Swiss', 'TAP', 'Vueling', 'Wizz Air', 'AirAsia', 'Cebu Pacific', 'Philippine Airlines'], costUSD: 35000, jobsUnlocked: 94, priority: 'critical' },
-      { rating: 'B737', family: 'Boeing 737 Family', airlines: ['Ryanair', 'Southwest', 'Alaska', 'GOL', 'Korean Air', 'Lion Air', 'Norwegian', 'WestJet', 'Aeromexico'], costUSD: 30000, jobsUnlocked: 87, priority: 'critical' },
-      { rating: 'A350', family: 'Airbus A350', airlines: ['Qatar Airways', 'Singapore Airlines', 'Cathay Pacific', 'Air France', 'Finnair', 'Japan Airlines', 'Vietnam Airlines'], costUSD: 55000, jobsUnlocked: 38, priority: 'high' },
-      { rating: 'B777', family: 'Boeing 777', airlines: ['Emirates', 'Qatar Airways', 'United', 'Delta', 'Korean Air', 'Etihad', 'Turkish Airlines', 'Air France'], costUSD: 50000, jobsUnlocked: 42, priority: 'high' },
-      { rating: 'B787', family: 'Boeing 787 Dreamliner', airlines: ['ANA', 'JAL', 'British Airways', 'LOT Polish', 'Oman Air', 'Scoot', 'Norwegian', 'Etihad'], costUSD: 45000, jobsUnlocked: 35, priority: 'high' },
-      { rating: 'ATR', family: 'ATR 72/42', airlines: ['Regional carriers', 'Commuter airlines', 'Island operators', 'Charter ops'], costUSD: 18000, jobsUnlocked: 28, priority: 'medium' },
-      { rating: 'CRJ', family: 'Canadair Regional Jet', airlines: ['SkyWest', 'Mesa', 'Republic', 'Air Wisconsin', 'PSA'], costUSD: 20000, jobsUnlocked: 22, priority: 'medium' },
-      { rating: 'E175', family: 'Embraer 175/190/195', airlines: ['Horizon Air', 'Republic', 'Regional operators', 'Azul'], costUSD: 22000, jobsUnlocked: 19, priority: 'medium' },
-      { rating: 'A380', family: 'Airbus A380', airlines: ['Emirates', 'Singapore Airlines', 'British Airways', 'Qantas', 'Korean Air'], costUSD: 60000, jobsUnlocked: 12, priority: 'prestige' },
-      { rating: 'B747', family: 'Boeing 747', airlines: ['Cargo operators', 'Cargolux', 'Korean Air', 'Nippon Cargo', 'Atlas Air'], costUSD: 45000, jobsUnlocked: 15, priority: 'medium' }
-    ];
+    // Get type ratings from database
+    const { data: typeRatings, error: trError } = await supabase
+      .from('type_ratings')
+      .select('*')
+      .order('jobs_unlocked', { ascending: false });
+
+    if (trError || !typeRatings || typeRatings.length === 0) {
+      return res.status(404).json({ error: 'No type ratings data found' });
+    }
+
+    // Get airline associations for each type rating
+    const { data: airlineTypeRatings } = await supabase
+      .from('airline_type_ratings')
+      .select('*');
+
+    // Build type rating data with airlines
+    const typeRatingData = typeRatings.map(tr => {
+      const airlines = (airlineTypeRatings || [])
+        .filter(atr => atr.type_rating_id === tr.id)
+        .map(atr => atr.airline_name);
+
+      return {
+        id: tr.id,
+        rating: tr.code,
+        family: tr.family,
+        manufacturer: tr.manufacturer,
+        airlines: airlines,
+        costUSD: tr.cost_usd,
+        jobsUnlocked: tr.jobs_unlocked,
+        priority: tr.priority,
+        description: tr.description
+      };
+    });
 
     // Filter out ratings pilot already has, compute ROI
     const recommendations = typeRatingData
       .filter(tr => !currentRatings.some(cr => tr.rating.toLowerCase().includes(cr) || cr.includes(tr.rating.toLowerCase())))
       .map(tr => {
-        // ROI calculation: assume average FO salary boost of $20k/yr for major airline
-        const avgSalaryBoostPerYear = tr.priority === 'critical' ? 25000 : tr.priority === 'high' ? 20000 : 15000;
+        // ROI calculation: assume average FO salary boost based on priority
+        const avgSalaryBoostPerYear = tr.priority === 'critical' ? 25000 : tr.priority === 'high' ? 20000 : tr.priority === 'prestige' ? 30000 : 15000;
         const breakevenMonths = Math.round((tr.costUSD / avgSalaryBoostPerYear) * 12);
         const scoreImpact = Math.round(tr.jobsUnlocked * 0.15); // estimated score uplift
 
         return {
           rating: tr.rating,
           family: tr.family,
+          manufacturer: tr.manufacturer,
           airlines: tr.airlines,
           costUSD: tr.costUSD,
           jobsUnlocked: tr.jobsUnlocked,
@@ -6803,6 +6824,7 @@ exports.pathways_getTypeRatingRecommendations = onRequest(async (req, res) => {
           roiMonths: breakevenMonths,
           roiLabel: `Break even in ~${breakevenMonths} months at target salary`,
           estimatedScoreImpact: `+${scoreImpact} more job matches`,
+          description: tr.description,
           programLink: `/portal/type-ratings/${tr.rating.toLowerCase()}`
         };
       })
@@ -6814,7 +6836,8 @@ exports.pathways_getTypeRatingRecommendations = onRequest(async (req, res) => {
       currentRatings.some(cr => tr.rating.toLowerCase().includes(cr) || cr.includes(tr.rating.toLowerCase()))
     );
     const totalAirlinesAccessible = new Set(currentPortfolio.flatMap(tr => tr.airlines)).size;
-    const coverageScore = Math.round((totalAirlinesAccessible / 60) * 100);
+    const totalMajorAirlines = 60; // Total major airlines in database
+    const coverageScore = Math.round((totalAirlinesAccessible / totalMajorAirlines) * 100);
 
     return res.json({
       success: true,
@@ -6822,7 +6845,7 @@ exports.pathways_getTypeRatingRecommendations = onRequest(async (req, res) => {
       currentPortfolio: currentRatings,
       airlinesAccessible: totalAirlinesAccessible,
       coverageScore,
-      coverageLabel: `You can fly for ${totalAirlinesAccessible} of 60 major airlines`,
+      coverageLabel: `You can fly for ${totalAirlinesAccessible} of ${totalMajorAirlines} major airlines`,
       pilotScore: scores.totalScore
     });
   } catch (error) {
