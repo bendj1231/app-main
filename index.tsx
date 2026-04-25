@@ -80,6 +80,8 @@ import { PilotedDronesPage } from './components/website/components/pathways/Pilo
 import { PilotGapInfoPage } from './components/website/components/PilotGapInfoPage';
 import { PilotRecognitionPage } from './components/website/components/pilot-recognition/PilotRecognitionPage';
 import { PilotRecognitionProfilePage } from './components/website/components/pilot-recognition/PilotRecognitionProfilePage';
+import { ScoreOptimizationPage } from './components/website/components/pilot-recognition/ScoreOptimizationPage';
+import { RecognitionScoreInfoPage } from './components/website/components/pilot-recognition/RecognitionScoreInfoPage';
 import { RecognitionCareerMatchesPage } from './components/website/components/pilot-recognition/RecognitionCareerMatchesPage';
 import { AirTaxiPathwaysPage } from './components/website/components/pathways/AirTaxiPathwaysPage';
 import { CadetProgramsPathwaysPage } from './components/website/components/pathways/CadetProgramsPathwaysPage';
@@ -134,6 +136,7 @@ import { PilotGapAboutPage } from './components/website/components/PilotGapAbout
 import { useAuth } from './src/contexts/AuthContext'; // New Import
 import { LoginModal } from './components/website/components/LoginModal';
 import { SettingsDirectoryPage } from './components/website/components/SettingsDirectoryPage';
+import { SubscriptionPage } from './components/website/components/SubscriptionPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -428,19 +431,6 @@ const App = () => {
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
   const { currentUser, logout, oauthAccountCheck, resetOauthAccountCheck, resetOauthAccountCheckOnly } = useAuth(); // Get current user, logout, and OAuth account check
 
-  // Auto-dismiss OAuth result modal for existing accounts after 5 seconds and navigate to home page
-  useEffect(() => {
-    console.log('oauthAccountCheck state:', oauthAccountCheck);
-    if (oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount === true) {
-      console.log('Auto-dismissing modal in 5 seconds and navigating to home page');
-      const timer = setTimeout(() => {
-        resetOauthAccountCheck();
-        navigateTo('home');
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [oauthAccountCheck, resetOauthAccountCheck]);
-
   // Fetch user's enrollment status from Supabase
   useEffect(() => {
     const fetchEnrollmentStatus = async () => {
@@ -703,110 +693,6 @@ const App = () => {
         </div>
       )}
 
-      {/* OAuth Account Result Modal */}
-      {oauthAccountCheck.checking === false && oauthAccountCheck.hasAccount !== null && (() => {
-        console.log('Rendering OAuth result modal, hasAccount:', oauthAccountCheck.hasAccount);
-        return true;
-      })() && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(15, 23, 42, 0.9)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 10000,
-          padding: '20px'
-        }}>
-          <div style={{
-            background: 'white',
-            borderRadius: '20px',
-            padding: '40px',
-            maxWidth: '500px',
-            width: '100%',
-            textAlign: 'center',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-          }}>
-            {oauthAccountCheck.hasAccount ? (
-              <>
-                <div style={{
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #10b981, #059669)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 24px'
-                }}>
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                </div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#1e293b', marginBottom: '12px' }}>
-                  Account Found!
-                </h2>
-                <p style={{ color: '#64748b', lineHeight: '1.6', marginBottom: '24px' }}>
-                  Logging you in to your account please wait shortly...
-                </p>
-              </>
-            ) : (
-              <>
-                <div style={{
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 24px'
-                }}>
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="8.5" cy="7" r="4"></circle>
-                    <line x1="20" y1="8" x2="20" y2="14"></line>
-                    <line x1="23" y1="11" x2="17" y2="11"></line>
-                  </svg>
-                </div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#1e293b', marginBottom: '12px' }}>
-                  New Account
-                </h2>
-                <p style={{ color: '#64748b', lineHeight: '1.6', marginBottom: '24px' }}>
-                  Create an account through the Become a Member page to get started.
-                </p>
-                <button
-                  onClick={async () => {
-                    // Log user out before navigating to become-member to prevent logged in state confusion
-                    await logout();
-                    resetOauthAccountCheckOnly();
-                    navigateTo('become-member');
-                  }}
-                  style={{
-                    background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
-                    color: 'white',
-                    border: 'none',
-                    padding: '14px 28px',
-                    borderRadius: '12px',
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                >
-                  Go to Become a Member
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Global Loading Overlay */}
       <div className={`loading-overlay ${!loading ? 'hidden' : ''}`}>
         <div className="loading-content">
@@ -996,6 +882,21 @@ const App = () => {
           <PilotRecognitionProfilePage
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
+          />
+        )}
+
+        {currentPage === 'score-optimization' && (
+          <ScoreOptimizationPage
+            onBack={() => navigateTo('pilot-recognition-profile')}
+            onNavigate={navigateTo}
+          />
+        )}
+
+        {currentPage === 'recognition-score-info' && (
+          <RecognitionScoreInfoPage
+            onBack={() => navigateTo('pilot-recognition-profile')}
+            onNavigate={navigateTo}
+            onLogin={navigateToPortal}
           />
         )}
 
@@ -1227,6 +1128,11 @@ const App = () => {
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
             onLogin={navigateToPortal}
+          />
+        )}
+        {currentPage === 'subscription' && (
+          <SubscriptionPage
+            onBack={() => navigateTo('settings')}
           />
         )}
         {currentPage === 'programs-pathways' && (

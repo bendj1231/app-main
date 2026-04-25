@@ -531,22 +531,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     }`}>
                 <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
                     {/* Logo Section */}
-                    <div className="flex items-center gap-4 group cursor-pointer" onClick={() => onNavigate('home')}>
-                        <div className="w-32 h-16 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                            <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="Logo" className="w-full h-full object-contain" />
-                        </div>
-                        <div className="flex flex-col items-center">
+                    <div className="flex items-center group cursor-pointer" onClick={() => onNavigate('home')}>
+                        <div className="transition-all duration-300 group-hover:scale-105">
                             <span
-                                className={`${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'
-                                    } text-xs font-bold tracking-[0.4em] uppercase leading-none mb-1 group-hover:text-blue-400 transition-colors`}
+                                className="text-xl font-black tracking-widest leading-none group-hover:text-blue-400 transition-colors"
+                                style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 900 }}
                             >
-                                Pilot Recognition
-                            </span>
-                            <span
-                                className={`${isLight || (isDark && scrolled) ? 'text-slate-600' : 'text-white/60'
-                                    } text-[8px] font-medium tracking-[0.2em] uppercase leading-none group-hover:text-white transition-colors`}
-                            >
-                                PROGRAMS & PATHWAYS
+                                <span className={`${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'}`}>Pilot</span>
+                                <span className="text-red-600">Recognition</span>
+                                <span className={`${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'} text-sm`}>.com</span>
                             </span>
                         </div>
                     </div>
@@ -765,7 +758,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <div className="relative" ref={notificationDropdownRef}>
                                     <button 
                                         onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
-                                        className="w-8 h-8 text-white flex items-center justify-center transition-all relative hover:text-white/80"
+                                        className={`w-8 h-8 flex items-center justify-center transition-all relative ${isLight || (isDark && scrolled) ? 'text-slate-900 hover:text-slate-700' : 'text-white hover:text-white/80'}`}
                                     >
                                         <Bell className="w-5 h-5" />
                                         {notificationCount > 0 && (
@@ -830,6 +823,17 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                                         className="text-xs text-blue-600 hover:text-blue-700"
                                                                                     >
                                                                                         Mark read
+                                                                                    </button>
+                                                                                )}
+                                                                                {(notification.type === 'cadet_match' || notification.type === 'pathway_match') && (
+                                                                                    <button
+                                                                                        onClick={() => {
+                                                                                            onNavigate('recognition-career-matches');
+                                                                                            setIsNotificationDropdownOpen(false);
+                                                                                        }}
+                                                                                        className="text-xs font-medium text-blue-600 hover:text-blue-700"
+                                                                                    >
+                                                                                        View Pathway
                                                                                     </button>
                                                                                 )}
                                                                                 {notification.metadata?.action_url && (

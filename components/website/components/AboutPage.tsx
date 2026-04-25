@@ -432,6 +432,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             <h3 className="font-bold text-lg mb-4">Platform</h3>
                             <ul className="space-y-2 text-slate-400 text-sm">
                                 <li><a onClick={() => onNavigate('pilot-recognition')} className="hover:text-white cursor-pointer transition-colors">Pilot Recognition</a></li>
+                                <li><a onClick={() => onNavigate('recognition-score-info')} className="hover:text-white cursor-pointer transition-colors">Recognition Score</a></li>
                                 <li><a onClick={() => onNavigate('recognition-career-matches')} className="hover:text-white cursor-pointer transition-colors">Pathways</a></li>
                                 <li><a href="https://pilotterminal.com" target="_blank" rel="noopener noreferrer" className="hover:text-white cursor-pointer transition-colors">Pilot Terminal</a></li>
                                 <li><a onClick={() => onNavigate('about')} className="hover:text-white cursor-pointer transition-colors">Foundation Program</a></li>
