@@ -7390,3 +7390,533 @@ exports.getEnterprisePathwayCards = onRequest(async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
+
+// ==================== PROGRAM MANAGEMENT FUNCTIONS ====================
+
+// Get program details by ID
+exports.getProgramDetails = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { programId } = req.query;
+    if (!programId) return res.status(400).json({ error: 'programId required' });
+
+    const { data, error } = await supabase
+      .from('programs')
+      .select('*')
+      .eq('id', programId)
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Search programs by criteria
+exports.searchPrograms = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { query, category, level, limit = 20 } = req.query;
+
+    let dbQuery = supabase
+      .from('programs')
+      .select('*')
+      .limit(parseInt(limit));
+
+    if (query) dbQuery = dbQuery.or(`title.ilike.%${query}%,description.ilike.%${query}%`);
+    if (category) dbQuery = dbQuery.eq('category', category);
+    if (level) dbQuery = dbQuery.eq('level', level);
+
+    const { data, error } = await dbQuery;
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get program categories
+exports.getProgramCategories = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { data, error } = await supabase
+      .from('programs')
+      .select('category')
+      .not('category', 'is', null);
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    const categories = [...new Set(data.map(p => p.category))];
+    return res.json(categories);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get program recommendations for user
+exports.getProgramRecommendations = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { userId } = req.query;
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('total_flight_hours, license_type, aircraft_rated_on')
+      .eq('id', userId)
+      .single();
+
+    const { data, error } = await supabase
+      .from('programs')
+      .select('*')
+      .limit(10);
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({ programs: data, userProfile: profile });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// ==================== ASSESSMENT MANAGEMENT FUNCTIONS ====================
+
+// Create new assessment
+exports.createAssessment = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { programId, title, description, questions } = req.body;
+    if (!programId || !title) return res.status(400).json({ error: 'programId and title required' });
+
+    const { data, error } = await supabase
+      .from('assessments')
+      .insert({ program_id: programId, title, description, questions })
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Update assessment
+exports.updateAssessment = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { assessmentId, ...updates } = req.body;
+    if (!assessmentId) return res.status(400).json({ error: 'assessmentId required' });
+
+    const { data, error } = await supabase
+      .from('assessments')
+      .update(updates)
+      .eq('id', assessmentId)
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete assessment
+exports.deleteAssessment = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { assessmentId } = req.body;
+    if (!assessmentId) return res.status(400).json({ error: 'assessmentId required' });
+
+    const { error } = await supabase
+      .from('assessments')
+      .delete()
+      .eq('id', assessmentId);
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json({ success: true });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get assessment questions
+exports.getAssessmentQuestions = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { assessmentId } = req.query;
+    if (!assessmentId) return res.status(400).json({ error: 'assessmentId required' });
+
+    const { data, error } = await supabase
+      .from('assessments')
+      .select('questions')
+      .eq('id', assessmentId)
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Add question to assessment
+exports.addAssessmentQuestion = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { assessmentId, question } = req.body;
+    if (!assessmentId || !question) return res.status(400).json({ error: 'assessmentId and question required' });
+
+    const { data: current } = await supabase
+      .from('assessments')
+      .select('questions')
+      .eq('id', assessmentId)
+      .single();
+
+    const updatedQuestions = [...(current.questions || []), question];
+
+    const { data, error } = await supabase
+      .from('assessments')
+      .update({ questions: updatedQuestions })
+      .eq('id', assessmentId)
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Remove question from assessment
+exports.removeAssessmentQuestion = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { assessmentId, questionIndex } = req.body;
+    if (!assessmentId || questionIndex === undefined) return res.status(400).json({ error: 'assessmentId and questionIndex required' });
+
+    const { data: current } = await supabase
+      .from('assessments')
+      .select('questions')
+      .eq('id', assessmentId)
+      .single();
+
+    const updatedQuestions = current.questions.filter((_, i) => i !== questionIndex);
+
+    const { data, error } = await supabase
+      .from('assessments')
+      .update({ questions: updatedQuestions })
+      .eq('id', assessmentId)
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// ==================== INSTRUCTOR FEATURES FUNCTIONS ====================
+
+// Get instructor list
+exports.getInstructorList = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { programId, limit = 20 } = req.query;
+
+    let query = supabase
+      .from('instructors')
+      .select('*')
+      .limit(parseInt(limit));
+
+    if (programId) query = query.eq('program_id', programId);
+
+    const { data, error } = await query;
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get instructor profile
+exports.getInstructorProfile = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { instructorId } = req.query;
+    if (!instructorId) return res.status(400).json({ error: 'instructorId required' });
+
+    const { data, error } = await supabase
+      .from('instructors')
+      .select('*')
+      .eq('id', instructorId)
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Assign instructor to program
+exports.assignInstructor = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { programId, instructorId } = req.body;
+    if (!programId || !instructorId) return res.status(400).json({ error: 'programId and instructorId required' });
+
+    const { data, error } = await supabase
+      .from('program_instructors')
+      .insert({ program_id: programId, instructor_id: instructorId })
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get instructor schedule
+exports.getInstructorSchedule = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { instructorId, startDate, endDate } = req.query;
+    if (!instructorId) return res.status(400).json({ error: 'instructorId required' });
+
+    let query = supabase
+      .from('instructor_schedule')
+      .select('*')
+      .eq('instructor_id', instructorId);
+
+    if (startDate) query = query.gte('date', startDate);
+    if (endDate) query = query.lte('date', endDate);
+
+    const { data, error } = await query;
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// ==================== ANALYTICS FUNCTIONS ====================
+
+// Get program analytics
+exports.getProgramAnalytics = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { programId } = req.query;
+    if (!programId) return res.status(400).json({ error: 'programId required' });
+
+    const { data: enrollments } = await supabase
+      .from('program_enrollments')
+      .select('*')
+      .eq('program_id', programId);
+
+    const totalEnrollments = enrollments?.length || 0;
+    const completedEnrollments = enrollments?.filter(e => e.status === 'completed').length || 0;
+    const completionRate = totalEnrollments > 0 ? (completedEnrollments / totalEnrollments) * 100 : 0;
+
+    return res.json({
+      totalEnrollments,
+      completedEnrollments,
+      completionRate,
+      activeEnrollments: enrollments?.filter(e => e.status === 'active').length || 0
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get student progress report
+exports.getStudentProgressReport = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { userId, programId } = req.query;
+    if (!userId || !programId) return res.status(400).json({ error: 'userId and programId required' });
+
+    const { data: enrollment } = await supabase
+      .from('program_enrollments')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('program_id', programId)
+      .single();
+
+    const { data: progress } = await supabase
+      .from('program_progress')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('program_id', programId);
+
+    return res.json({ enrollment, progress });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get completion rates
+exports.getCompletionRates = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { data: programs } = await supabase
+      .from('programs')
+      .select('id, title');
+
+    const completionRates = await Promise.all(
+      programs.map(async (program) => {
+        const { data: enrollments } = await supabase
+          .from('program_enrollments')
+          .select('status')
+          .eq('program_id', program.id);
+
+        const total = enrollments?.length || 0;
+        const completed = enrollments?.filter(e => e.status === 'completed').length || 0;
+        const rate = total > 0 ? (completed / total) * 100 : 0;
+
+        return {
+          programId: program.id,
+          programTitle: program.title,
+          totalEnrollments: total,
+          completedEnrollments: completed,
+          completionRate: rate
+        };
+      })
+    );
+
+    return res.json(completionRates);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Get assessment statistics
+exports.getAssessmentStatistics = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { assessmentId } = req.query;
+    if (!assessmentId) return res.status(400).json({ error: 'assessmentId required' });
+
+    const { data: results } = await supabase
+      .from('assessment_results')
+      .select('score, completed_at')
+      .eq('assessment_id', assessmentId);
+
+    const totalAttempts = results?.length || 0;
+    const averageScore = totalAttempts > 0 
+      ? results.reduce((sum, r) => sum + r.score, 0) / totalAttempts 
+      : 0;
+    const passRate = totalAttempts > 0 
+      ? (results.filter(r => r.score >= 70).length / totalAttempts) * 100 
+      : 0;
+
+    return res.json({
+      totalAttempts,
+      averageScore,
+      passRate,
+      highestScore: Math.max(...(results?.map(r => r.score) || [0])),
+      lowestScore: Math.min(...(results?.map(r => r.score) || [0]))
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// ==================== CERTIFICATE MANAGEMENT FUNCTIONS ====================
+
+// Get certificate template
+exports.getCertificateTemplate = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { templateId } = req.query;
+    if (!templateId) return res.status(400).json({ error: 'templateId required' });
+
+    const { data, error } = await supabase
+      .from('certificate_templates')
+      .select('*')
+      .eq('id', templateId)
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Update certificate template
+exports.updateCertificateTemplate = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { templateId, ...updates } = req.body;
+    if (!templateId) return res.status(400).json({ error: 'templateId required' });
+
+    const { data, error } = await supabase
+      .from('certificate_templates')
+      .update(updates)
+      .eq('id', templateId)
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Revoke certificate
+exports.revokeCertificate = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { certificateId, reason } = req.body;
+    if (!certificateId) return res.status(400).json({ error: 'certificateId required' });
+
+    const { data, error } = await supabase
+      .from('certificates')
+      .update({ status: 'revoked', revocation_reason: reason, revoked_at: new Date().toISOString() })
+      .eq('id', certificateId)
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Renew certificate
+exports.renewCertificate = onRequest(async (req, res) => {
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  try {
+    const { certificateId, expiryDate } = req.body;
+    if (!certificateId) return res.status(400).json({ error: 'certificateId required' });
+
+    const { data, error } = await supabase
+      .from('certificates')
+      .update({ 
+        status: 'active', 
+        expiry_date: expiryDate, 
+        renewed_at: new Date().toISOString(),
+        renewal_count: supabase.raw('renewal_count + 1')
+      })
+      .eq('id', certificateId)
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
