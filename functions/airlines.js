@@ -1,17 +1,20 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
+// Helper function to get Supabase client
+const getSupabase = () => {
+  return createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+  );
+};
 
 /**
  * Get all airlines with their aircraft fleets
  */
 exports.getAirlines = onRequest(async (req, res) => {
   try {
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('airlines')
       .select('*')
@@ -32,16 +35,17 @@ exports.getAirlines = onRequest(async (req, res) => {
  */
 exports.getAirlineById = onRequest(async (req, res) => {
   try {
-    const { airlineId } = req.query;
-
-    if (!airlineId) {
-      return res.status(400).json({ error: 'airlineId is required' });
+    const { id } = req.query;
+    
+    if (!id) {
+      return res.status(400).json({ error: 'Airline ID is required' });
     }
 
+    const supabase = getSupabase();
     const { data: airline, error: airlineError } = await supabase
       .from('airlines')
       .select('*')
-      .eq('id', airlineId)
+      .eq('id', id)
       .single();
 
     if (airlineError) {
@@ -52,7 +56,7 @@ exports.getAirlineById = onRequest(async (req, res) => {
       return res.status(404).json({ error: 'Airline not found' });
     }
 
-    // Get aircraft fleet for this airline
+    const airlineId = airline.id;
     const { data: aircraft, error: aircraftError } = await supabase
       .from('airline_aircraft')
       .select('*')
@@ -82,6 +86,7 @@ exports.getAirlinesByAircraft = onRequest(async (req, res) => {
       return res.status(400).json({ error: 'aircraftId is required' });
     }
 
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('airline_aircraft')
       .select('airlines(*), aircraft_type')
@@ -104,17 +109,18 @@ exports.getAirlinesByAircraft = onRequest(async (req, res) => {
  */
 exports.updateAirline = onRequest(async (req, res) => {
   try {
-    const { airlineId } = req.query;
+    const { id } = req.query;
     const updates = req.body;
 
-    if (!airlineId) {
-      return res.status(400).json({ error: 'airlineId is required' });
+    if (!id) {
+      return res.status(400).json({ error: 'Airline ID is required' });
     }
 
-    const { data, error } = await supabase
+    const supabase = getSupabase();
+    const { error } = await supabase
       .from('airlines')
       .update(updates)
-      .eq('id', airlineId)
+      .eq('id', id)
       .select()
       .single();
 
@@ -133,12 +139,13 @@ exports.updateAirline = onRequest(async (req, res) => {
  */
 exports.addAircraftToFleet = onRequest(async (req, res) => {
   try {
-    const { airlineId, aircraftId, quantity = 1 } = req.body;
+    const { airlineId, aircraftId } = req.body;
 
     if (!airlineId || !aircraftId) {
       return res.status(400).json({ error: 'airlineId and aircraftId are required' });
     }
 
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('airline_aircraft')
       .insert({
@@ -171,6 +178,7 @@ exports.removeAircraftFromFleet = onRequest(async (req, res) => {
       return res.status(400).json({ error: 'airlineId and aircraftId are required' });
     }
 
+    const supabase = getSupabase();
     const { error } = await supabase
       .from('airline_aircraft')
       .delete()
@@ -198,6 +206,7 @@ exports.getAirlineRecruitment = onRequest(async (req, res) => {
       return res.status(400).json({ error: 'airlineId is required' });
     }
 
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('airline_recruitment')
       .select('*')
@@ -225,6 +234,7 @@ exports.getAircraftMetrics = onRequest(async (req, res) => {
       return res.status(400).json({ error: 'aircraftId is required' });
     }
 
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('aircraft_metrics')
       .select('*')
@@ -265,6 +275,7 @@ exports.updateAircraftMetrics = onRequest(async (req, res) => {
     if (demandLevel !== undefined) updateData.demand_level = demandLevel;
     updateData.updated_at = new Date().toISOString();
 
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('aircraft_metrics')
       .update(updateData)
@@ -287,6 +298,7 @@ exports.updateAircraftMetrics = onRequest(async (req, res) => {
  */
 exports.getAllAircraftMetrics = onRequest(async (req, res) => {
   try {
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('aircraft_metrics')
       .select('*')
@@ -313,6 +325,7 @@ exports.getPilotCountForAircraft = onRequest(async (req, res) => {
       return res.status(400).json({ error: 'aircraftId is required' });
     }
 
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('pilot_type_ratings')
       .select('id')
@@ -340,6 +353,7 @@ exports.updatePilotCountForAircraft = onRequest(async (req, res) => {
       return res.status(400).json({ error: 'aircraftId is required' });
     }
 
+    const supabase = getSupabase();
     // Get current count
     const { data: currentData, error: fetchError } = await supabase
       .from('aircraft_metrics')
@@ -387,6 +401,7 @@ exports.recalculateCareerScore = onRequest(async (req, res) => {
       return res.status(400).json({ error: 'aircraftId is required' });
     }
 
+    const supabase = getSupabase();
     // Get all metrics for the aircraft
     const { data: metrics, error: metricsError } = await supabase
       .from('aircraft_metrics')
