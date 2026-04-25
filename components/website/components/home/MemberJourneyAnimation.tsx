@@ -197,7 +197,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             >
               <img
                 src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                alt="WingMentor Logo"
+                alt="PilotRecognition Logo"
                 className="w-20 h-auto object-contain"
               />
             </motion.div>
@@ -315,7 +315,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
               >
                 <img
                   src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                  alt="WingMentor Logo"
+                  alt="PilotRecognition Logo"
                   className="w-10 md:w-12 h-auto object-contain"
                 />
               </motion.div>
@@ -339,7 +339,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
 
                 {/* Description */}
                 <p className="text-white/70 text-[6px] md:text-[8px] leading-tight mb-1 text-center max-w-[110px]">
-                  Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies.
+                  Access personalized program enrollment, pathway briefs, and PilotRecognition Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies.
                 </p>
 
                 {/* Learn More Button */}
@@ -366,11 +366,12 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
                   </p>
                 </div>
 
-                {/* WingMentor Account Label */}
-                <p className="text-[5px] md:text-[6px] font-bold tracking-[0.08em] uppercase text-slate-400 mb-1">
-                  WINGMENTOR ACCOUNT
-                </p>
-                
+                {/* PilotRecognition Account Label */}
+                <div className="absolute top-0 left-0 right-0 bg-white px-2 py-1 border-b border-slate-200">
+                  <p className="text-[6px] font-bold text-blue-700 uppercase tracking-wider text-center">
+                    PILOTRECOGNITION ACCOUNT
+                  </p>
+                </div>
                 <div className="space-y-1.5 md:space-y-2">
                   {/* Email Input - visible immediately, typing starts after */}
                   <div className="h-5 md:h-6 bg-slate-100 border border-slate-300 rounded-lg flex items-center px-1.5 md:px-2 overflow-hidden relative">
@@ -564,7 +565,7 @@ export const MemberJourneyAnimation: React.FC<MemberJourneyAnimationProps> = () 
             >
               <img
                 src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                alt="WingMentor Logo"
+                alt="PilotRecognition Logo"
                 className="w-28 md:w-36 h-auto object-contain mb-3"
               />
               <motion.p

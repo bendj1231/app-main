@@ -171,7 +171,7 @@ export const WebsitePage: React.FC<WebsitePageProps> = ({
                 <div className="absolute top-0 left-0 right-0 z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
                     <div className="flex items-center gap-3">
                         <img src={IMAGES.LOGO} alt="Logo" className="w-10 h-10 object-contain" />
-                        <span className="text-white font-bold text-xl tracking-wider brand-font">WING MENTOR</span>
+                        <span className="text-white font-bold text-xl tracking-wider brand-font">PILOT RECOGNITION</span>
                     </div>
                     <button onClick={onGoToHub} className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-md border border-white/20 transition-all">
                         Enter Hub
@@ -338,24 +338,6 @@ export const WebsitePage: React.FC<WebsitePageProps> = ({
                 </div>
                 <MindMap />
             </section>
-
-            {/* --- FOOTER --- */}
-            <footer className="bg-zinc-950 text-white py-16 border-t border-zinc-900">
-                <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div className="flex items-center gap-4">
-                        <img src={IMAGES.LOGO} alt="Wing Mentor" className="w-12 h-12 opacity-80" />
-                        <div>
-                            <h4 className="font-bold tracking-wider brand-font">WING MENTOR</h4>
-                            <p className="text-zinc-500 text-sm">Professional Pilot Development</p>
-                        </div>
-                    </div>
-                    <div className="flex gap-8 text-zinc-400 text-sm">
-                        <a href="#" className="hover:text-white transition-colors">Terms</a>
-                        <a href="#" className="hover:text-white transition-colors">Privacy</a>
-                        <a href="#" className="hover:text-white transition-colors">Support</a>
-                    </div>
-                </div>
-            </footer>
 
         </div>
     );

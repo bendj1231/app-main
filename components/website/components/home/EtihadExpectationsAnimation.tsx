@@ -82,7 +82,7 @@ export const EtihadExpectationsAnimation: React.FC<EtihadExpectationsAnimationPr
           <div className="text-center">
             <img
               src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-              alt="WingMentor Logo"
+              alt="PilotRecognition Logo"
               className="mx-auto w-16 h-auto object-contain mb-1"
             />
             <p className="text-[5px] font-bold tracking-[0.3em] uppercase text-blue-700 mb-1">

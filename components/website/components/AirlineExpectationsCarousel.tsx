@@ -1212,12 +1212,6 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
       <div className="relative w-full bg-white py-12 overflow-hidden">
       {/* Header - Centered */}
       <div className="w-full px-8 mb-8 text-center">
-        {/* WingMentor Logo */}
-        <img
-          src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-          alt="WingMentor Logo"
-          className="mx-auto w-56 h-auto object-contain mb-4"
-        />
         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
           Strategic Career Intelligence
         </p>
@@ -1232,10 +1226,10 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
       {/* Regional Selector and Description */}
       <div className="w-full px-8 py-4">
         <p className="text-center text-slate-700 text-base md:text-lg mb-4 max-w-3xl mx-auto leading-relaxed">
-          Explore detailed expectations, requirements, and career progression opportunities from leading airlines worldwide. Each airline profile provides comprehensive insights into <strong>salary ranges</strong>, <strong>required flight hours</strong>, <strong>type ratings</strong>, and <strong>unique benefits</strong> to help you make informed career decisions. Our <strong>AI-powered pathway matching</strong> system analyzes your verified PilotRecognition profile against airline requirements to identify optimal career opportunities.
+          We seek the answers that all pilots need to know: <strong>What sets your airline apart in the industry?</strong> <strong>What unique value does your airline offer pilots?</strong> <strong>What makes you different?</strong> <strong>What are the benefits of your pilot programs?</strong> <strong>What are your requirements?</strong> <strong>What type of pilots are you looking for?</strong> <strong>How can I align my recognition profile with your airline?</strong> The airlines we contact provide direct expectations and answers pilots need to know to align their careers toward their airline.
         </p>
         <p className="text-center text-slate-600 text-sm mb-4 max-w-3xl mx-auto leading-relaxed">
-          Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that the airline expectations we provide align with the exacting standards required by leading manufacturers and operators. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> presents your credentials in the standardized format preferred by major airlines worldwide.
+          Through our partnership with the <strong>Airbus Head of Training</strong> in EBT CBTA and the <strong>Etihad Cadet Program</strong>, we ensure that the airline expectations we provide align with the exacting standards required by leading manufacturers and operators. Both partners recognize that pilots need to understand new industry standards, systems, and training methods. With thousands of pilots asking about requirements daily—80% lacking clear information—we bridge this communication gap. The industry only offers job boards. PilotRecognition provides direct understanding and career direction, helping pilots align with the new systems and training methods the industry now uses. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> presents your credentials in the standardized format preferred by major airlines worldwide.
         </p>
       </div>
 
@@ -1509,14 +1503,8 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
 
       {/* Bottom Description */}
       <div className="max-w-4xl mx-auto px-6 mt-12 pt-8 border-t border-slate-100">
-        <p className="text-base md:text-lg text-slate-700 leading-relaxed text-center mb-4">
-          Explore detailed expectations, requirements, and career progression opportunities from leading airlines worldwide. Each airline profile provides comprehensive insights into <strong>salary ranges</strong>, <strong>required flight hours</strong>, <strong>type ratings</strong>, and <strong>unique benefits</strong> to help you make informed career decisions. Our <strong>AI-powered pathway matching</strong> system analyzes your verified PilotRecognition profile against airline requirements to identify optimal career opportunities.
-        </p>
-        <p className="text-sm text-slate-600 leading-relaxed text-center mb-3">
-          Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that the airline expectations we provide align with the exacting standards required by leading manufacturers and operators. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> presents your credentials in the standardized format preferred by major airlines worldwide, while our <strong>blockchain-verifiable certifications</strong> provide operators with confidence in your verified competencies.
-        </p>
-        <p className="text-xs text-slate-400 text-center">
-          Swipe through to discover airline-specific requirements and compare opportunities across global carriers. Our platform connects you directly to 5000+ pilots and operators through our <strong>Pilot Terminal</strong> social network and <strong>enterprise integration</strong>, creating a transparent and efficient recruitment marketplace.
+        <p className="text-base md:text-lg text-slate-700 leading-relaxed text-center">
+          Swipe through to discover airline-specific requirements and compare opportunities across global carriers. The airlines we contact provide direct expectations and answers pilots need to align their careers toward their airline.
         </p>
       </div>
 

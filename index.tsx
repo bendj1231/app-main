@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef, useLayoutEffect, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './index.css';
 import { View } from './types';
 import {
@@ -305,7 +305,7 @@ initializeAnalyticsServices();
 
 const App = () => {
   const [jotFormConnected, setJotFormConnected] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [loadingType, setLoadingType] = useState<'website' | 'portal'>('website');
   const [currentPage, setCurrentPage] = useState<any>('home');
   const [scrollToSection, setScrollToSection] = useState<string | null>(null);
@@ -503,11 +503,16 @@ const App = () => {
   }, [currentUser]);
 
   useEffect(() => {
+    // Skip loading screen for home page
+    if (currentPage === 'home') {
+      setLoading(false);
+      return;
+    }
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [currentPage]);
 
   // Debug logging
   useEffect(() => {
@@ -545,6 +550,12 @@ const App = () => {
   }, []);
 
   const navigateTo = (page: any, data?: any) => {
+    // Special handling for Next.js App Router pages
+    if (page === 'recognition-plus' || page === 'pilot-recognition') {
+      window.location.href = '/recognition-plus';
+      return;
+    }
+
     const [basePage, hash] = String(page).includes('#') ? String(page).split('#') : [page, null];
     setScrollToSection(hash || null);
 
@@ -808,6 +819,7 @@ const App = () => {
             onBack={() => navigateTo('home')}
             onNavigate={navigateTo}
             onLogin={navigateToPortal}
+            isAdmin={currentUser?.email === 'benjamintigerbowler@gmail.com'}
           />
         )}
 
@@ -870,13 +882,6 @@ const App = () => {
           />
         )}
 
-        {currentPage === 'pilot-recognition' && (
-          <PilotRecognitionPage
-            onBack={() => navigateTo('home')}
-            onNavigate={navigateTo}
-            onLogin={navigateToPortal}
-          />
-        )}
 
         {currentPage === 'pilot-recognition-profile' && (
           <PilotRecognitionProfilePage
@@ -1503,7 +1508,6 @@ root.render(
           <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/transition-program" element={<TransitionProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/airbus-aligned-ebt-cbta-programs" element={<EBTCBTAPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
-          <Route path="/pilot-recognition" element={<PilotRecognitionPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/become-member" element={<BecomeMemberPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Pathways Pages */}
           <Route path="/emirates-atpl" element={<EmiratesAtplPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />

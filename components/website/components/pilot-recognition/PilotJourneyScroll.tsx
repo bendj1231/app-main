@@ -441,11 +441,6 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
       <ContainerScroll
         titleComponent={
           <>
-            <img
-              src={IMAGES.LOGO}
-              alt="WingMentor Logo"
-              className="mx-auto w-48 md:w-64 h-auto object-contain mb-6 opacity-90"
-            />
             <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
               The Pilot Portal.
               <br />
@@ -454,7 +449,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
               </span>
             </h1>
             <p className="text-sm md:text-base text-slate-600 max-w-xl mx-auto mt-4 mb-3">
-              <span className="font-bold text-slate-800">The first step towards your Pilot recognition.</span> Join WingMentor network to gain access to the programs, pathways, and pilot recognition.
+              <span className="font-bold text-slate-800">Your central hub for pilot development and industry connection.</span> Develop your recognition profile, access a network to chat with pilots in your program, share industry insights and knowledge, and access the Pilot Terminal for up-to-date information. Pathways are publicly available on both the portal and website—with personalized recommendations shown when logged in based on your profile.
             </p>
             <a 
               onClick={(e) => {

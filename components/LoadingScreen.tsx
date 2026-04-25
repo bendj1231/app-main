@@ -69,12 +69,15 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ logoUrl, userName, onComp
 
         {/* Logo with subtle animation */}
         <div className="relative mb-8">
-          <div className="absolute inset-0 bg-sky-500/20 blur-3xl rounded-full animate-pulse"></div>
-          <img
-            src={logoUrl}
-            alt="WingMentor"
-            className="w-24 h-24 object-contain relative z-10 animate-pulse"
-          />
+          <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full animate-pulse"></div>
+          <div className="relative z-10 animate-pulse">
+            <span
+              className="text-3xl font-extrabold tracking-tight leading-none text-blue-500"
+              style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
+            >
+              PilotRecognition.com
+            </span>
+          </div>
         </div>
 
         {/* Main Text */}

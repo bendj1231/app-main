@@ -13,6 +13,7 @@ interface TopNavbarProps {
     isLight?: boolean;
     onLoginModalOpen?: () => void;
     currentPage?: string;
+    pathwayGridRef?: React.RefObject<HTMLDivElement>;
 }
 
 interface NavSubItem {
@@ -39,10 +40,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     isLight = false,
     onLoginModalOpen,
     currentPage = '',
+    pathwayGridRef,
 }) => {
     const { currentUser, logout, loading: authLoading, signupInProgress } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(forceScrolled);
+    const [passedPathwayGrid, setPassedPathwayGrid] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
     const [pilotId, setPilotId] = useState<string>('');
@@ -192,10 +195,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         if (forceScrolled) return;
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
+
+            // Check if we've scrolled past the pathwaygrid section
+            if (pathwayGridRef?.current) {
+                const pathwayGridBottom = pathwayGridRef.current.getBoundingClientRect().bottom;
+                setPassedPathwayGrid(pathwayGridBottom < 0);
+            }
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [forceScrolled]);
+    }, [forceScrolled, pathwayGridRef]);
 
     // Detect when auth restoration is complete
     useEffect(() => {
@@ -396,7 +405,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Platform', name: 'The Pilot Portal', target: 'home', bullets: ['Login Access', 'Dashboard', 'Member Area'] },
                 { name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
                 { name: 'Carousel Cards', target: 'home', bullets: ['Program Highlights', 'Feature Showcase', 'Dynamic Content'] },
-                { name: 'Pilot Recognition', target: 'pilot-recognition', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'Pilot Recognition', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
                 { name: 'ATS Pilot Data Formatting Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
                 { category: 'About', name: 'About Us', target: 'about', bullets: ['Brief Overview', 'Mission', 'Our Values'] },
                 { name: 'Become a Member', target: 'become-member', bullets: ['Join Network', 'Create Account', 'Start Journey'] }
@@ -455,10 +464,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         },
         {
             name: 'Pilot Recognition',
-            target: 'pilot-recognition',
+            target: 'recognition-plus',
             subItems: [
                 { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Profile', target: 'pilot-recognition', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'Pilot Recognition Profile', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
                 { name: 'Recognition Career Matches', target: 'recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] },
                 { name: 'Examination Results', target: 'examination-results-directory', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
                 { name: 'Digital Logbook', target: 'digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
@@ -471,7 +480,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'The Digital Ecosystem', name: 'WingMentor W1000 Suite', target: 'w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
                 { name: 'Hinfact AIRBUS integrated applications', target: 'hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
                 { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Systems', target: 'pilot-recognition', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'Pilot Recognition Systems', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
                 { category: 'Program Access', name: 'Foundation Program application', target: 'foundational-application', bullets: ['Join Global Registry', 'Start Mentorship', 'Build Profile'] },
                 { name: 'Transition Program Application', target: 'transition-application', bullets: ['Optimize Career', 'Advanced Training', 'Direct Broker Entry'] },
             ]
@@ -481,6 +490,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             target: 'membership',
             subItems: [
                 { category: 'The Network', name: 'Benefits of Membership', target: 'membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
+                { category: 'Premium Tier', name: 'Recognition Plus', target: 'recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
                 { name: 'Become a Member', target: 'become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] }
             ]
         },
@@ -512,7 +522,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     { name: 'About', url: '/about' },
                     { name: 'Programs', url: '/programs' },
                     { name: 'Pathways', url: '/discover-pathways' },
-                    { name: 'Pilot Recognition', url: '/pilot-recognition' },
+                    { name: 'Pilot Recognition', url: '/recognition-plus' },
                     { name: 'Applications', url: '/pilot-recognition' },
                     { name: 'Membership', url: '/become-member' },
                     { name: 'Contact', url: '/contact-support' }
@@ -531,15 +541,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     }`}>
                 <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
                     {/* Logo Section */}
-                    <div className="flex items-center group cursor-pointer" onClick={() => onNavigate('home')}>
-                        <div className="transition-all duration-300 group-hover:scale-105">
+                    <div className="flex items-center gap-4 group cursor-pointer" onClick={() => onNavigate('home')}>
+                        <div className="flex flex-col items-center transition-all duration-300 group-hover:scale-110">
                             <span
-                                className="text-xl font-black tracking-widest leading-none group-hover:text-blue-400 transition-colors"
-                                style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 900 }}
+                                className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) ? 'text-black' : 'text-white'
+                                    } text-lg font-extrabold tracking-tight leading-none`}
+                                style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
                             >
-                                <span className={`${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'}`}>Pilot</span>
-                                <span className="text-red-600">Recognition</span>
-                                <span className={`${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'} text-sm`}>.com</span>
+                                PilotRecognition.com
                             </span>
                         </div>
                     </div>
@@ -1020,7 +1029,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                             <div className="p-4 border-t border-slate-200 space-y-2">
                                                 <button
                                                     onClick={() => {
-                                                        onNavigate('pilot-recognition');
+                                                        onNavigate('recognition-plus');
                                                         setIsProfileDropdownOpen(false);
                                                     }}
                                                     className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors"
@@ -1080,7 +1089,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                 </button>
                                                 <button
                                                     onClick={() => {
-                                                        onNavigate('pilot-recognition');
+                                                        onNavigate('recognition-plus');
                                                         setIsSettingsDropdownOpen(false);
                                                     }}
                                                     className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"

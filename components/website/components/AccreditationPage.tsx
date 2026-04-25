@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plane, Shield, Users, CheckCircle2, ChevronRight, Globe, Building2, Zap, Briefcase } from 'lucide-react';
+import { Shield, Users, CheckCircle2, Globe, Zap } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { IMAGES } from '../../../src/lib/website-constants';
@@ -10,28 +10,22 @@ interface AccreditationPageProps {
     onLogin: () => void;
 }
 
-const ACCREDITATION_URL = "/images/accreditation-1.png";
-const ACCREDITATION_2_URL = "/images/accreditation-2.png";
-const ACCREDITATION_3_URL = "/images/accreditation-3.png";
-const ACCREDITATION_4_URL = "/images/accreditation-4.png";
-const ACCREDITATION_5_URL = "/images/accreditation-5.png";
-
 export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, onNavigate, onLogin }) => {
     const partnershipTiles = [
         {
-            title: "Airbus Head of Training",
+            title: "AIRBUS HEAD OF TRAINING",
             desc: "Supported by Airbus Head of Training in EBT CBTA, ensuring alignment with the highest international standards in evidence-based training and competency-based training and assessment. Our partnership provides direct access to <strong>AIRBUS 9 core competencies</strong> framework, ensuring that verified competencies translate directly to operational readiness for leading manufacturers worldwide.",
         },
         {
-            title: "Etihad Cadet Program",
+            title: "ETIHAD CADET PROGRAM",
             desc: "Strategic partnership with Etihad Cadet Program and Head of Training, providing direct access to flagship carrier expectations and training standards. This collaboration ensures our pilots are prepared for the exacting requirements of major carriers, with pathway matching that aligns verified competencies with <strong>cadet program opportunities</strong> and direct airline recruitment channels.",
         },
         {
-            title: "Verified Competency Database",
+            title: "VERIFIED COMPETENCY DATABASE",
             desc: "Access to verified data on pilot professional competencies through our PilotRecognition platform, including <strong>EBT CBTA AIRBUS 9 core competencies</strong> and behavioral assessments. Our <strong>blockchain-verifiable certifications</strong> provide operators with confidence in pilot credentials, while our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> ensures standardized presentation across global recruitment systems.",
         },
         {
-            title: "Direct Industry Connections",
+            title: "DIRECT INDUSTRY CONNECTIONS",
             desc: "Platform access for operators to post jobs and airline expectations, connecting directly to 5000+ pilots seeking opportunities in the aviation industry. Through our <strong>Pilot Terminal</strong> social network and <strong>enterprise integration</strong>, operators can access candidates with verified competencies, recognition scores, and pathway interests, creating a transparent and efficient recruitment marketplace.",
         }
     ];
@@ -59,7 +53,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                             Industry Alignment | Global Standards | Professional Excellence
                         </span>
                         <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
-                            WingMentor is the aviation industry’s first Competency Assurance Network. We are connecting all pilots,
+                            WingMentor is the aviation industry's first Competency Assurance Network. We are connecting all pilots,
                             whether you are a low-timer searching for pathways or a seasoned captain seeking new opportunities.
                         </p>
                     </RevealOnScroll>
@@ -95,6 +89,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                                 <p className="text-blue-800/80 text-sm leading-relaxed">
                                     Direct engagement with over 1,000 aspiring pilots, aligning their career pathways with real-world airline expectations from day one.
                                 </p>
+                                <p className="text-blue-900 text-sm font-semibold mt-4 mb-1">Etihad Museum Event</p>
                             </div>
                         </RevealOnScroll>
                     </div>
@@ -116,7 +111,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                     <RevealOnScroll>
                         <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                            Stewardship
+                            STEWARDSHIP
                         </p>
                         <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                             The Essential Go-Between for Pilots & Industry
@@ -146,7 +141,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                     <RevealOnScroll>
                         <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                            Global Standards
+                            GLOBAL STANDARDS
                         </p>
                         <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                             Excellence in Global Industry Connection
@@ -188,7 +183,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                     <RevealOnScroll>
                         <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                            Industry Stewardship
+                            INDUSTRY STEWARDSHIP
                         </p>
                         <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                             Guardians of the Profession
@@ -245,11 +240,11 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 </div>
             </div>
 
-            {/* Strategic Partnerships Grid - Matches "Pillars of Professional Growth" */}
+            {/* Strategic Partnerships Grid */}
             <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                 <RevealOnScroll>
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        Collaboration
+                        COLLABORATION
                     </p>
                     <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
                         Pilot Recognition
@@ -258,7 +253,6 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
             </div>
 
             <div className="py-12 px-6 max-w-7xl mx-auto border-t border-slate-50">
-
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {partnershipTiles.map((tile, idx) => (
                         <div key={idx} className="p-10 bg-slate-50/50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group">
@@ -279,10 +273,10 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                         Strategic presence at the Etihad Museum UAE Career Fair, represented by leading aviation governing bodies.
                     </p>
                     <div className="flex flex-wrap justify-center gap-12 md:gap-20 items-center opacity-80 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                        <img src={IMAGES.ACCREDITATION_1} alt="Promising Future" className="h-10 md:h-12 w-auto object-contain" />
-                        <img src={IMAGES.ACCREDITATION_2} alt="Airbus" className="h-10 md:h-12 w-auto object-contain" />
-                        <img src={IMAGES.ACCREDITATION_3} alt="Etihad Airways" className="h-10 md:h-12 w-auto object-contain" />
-                        <img src={IMAGES.ACCREDITATION_5} alt="WM Pilot Group" className="h-12 md:h-16 w-auto object-contain" />
+                        <p className="text-slate-800 font-bold">Promising Future</p>
+                        <p className="text-slate-800 font-bold">Airbus</p>
+                        <p className="text-slate-800 font-bold">Etihad Airways</p>
+                        <p className="text-slate-800 font-bold">WM Pilot Group</p>
                     </div>
                 </div>
             </div>

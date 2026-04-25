@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
@@ -205,7 +206,7 @@ const tabsData = [
                     <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-slate-200 mb-4">
                         <h4 className="font-bold text-slate-900 mb-2 text-xs">Industry Recognition Standards</h4>
                         <p className="text-xs text-slate-600 leading-relaxed mb-2">
-                            WingMentor follows EASA, FAA, and ICAO standards for pilot competency verification.
+                            PilotRecognition follows EASA, FAA, and ICAO standards for pilot competency verification.
                         </p>
                         <div className="flex flex-wrap gap-2">
                             <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">EASA Compliant</span>
@@ -317,7 +318,7 @@ const tabsData = [
                     <div className="bg-slate-100/30 backdrop-blur-sm rounded-xl p-4 border border-slate-200">
                         <h4 className="font-bold text-slate-900 mb-2 text-xs">Personalized Strategy Recommendations</h4>
                         <p className="text-xs text-slate-600 leading-relaxed mb-2">
-                            Based on your PRP data, WingMentor provides customized career roadmaps.
+                            Based on your PRP data, PilotRecognition provides customized career roadmaps.
                         </p>
                         <div className="flex flex-wrap gap-2">
                             <span className="px-3 py-1 bg-white/20 rounded-full text-[9px] font-medium text-slate-600 border border-slate-200">Real-Time Matching</span>
@@ -426,11 +427,13 @@ export const HomePage: React.FC<HomePageProps> = ({
 }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [scrolled, setScrolled] = useState(false);
+    const [isConnectingIndustryExpanded, setIsConnectingIndustryExpanded] = useState(false);
     const [activeCategory, setActiveCategory] = useState<
         'all' | 'program' | 'systems_automation' | 'network' | 'application' | 'pathways'
     >('all');
     const scrollPositionRef = useRef(0);
-    
+    const pathwayGridRef = useRef<HTMLDivElement>(null);
+
     // Automatic device detection for performance optimization
     const [deviceTier, setDeviceTier] = useState<'low' | 'medium' | 'high'>('high');
     const [showOptimizationMessage, setShowOptimizationMessage] = useState(false);
@@ -494,7 +497,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             subtitle: "For pilots seeking an Emirates‑standard ATPL and GCAA license.",
             category: 'pathways',
             description:
-                "Wing Mentor provides a structured Emirates ATPL Pathway through partner schools such as Fujairah Aviation, combining full ATPL training with license conversion inside the UAE. Pilots currently under the FAA system are guided through a smooth transition into EASA standards while completing their ATPL. The overall investment is comparable to many flight instructor ratings, while earning a respected GCAA license aligned with Emirates‑standard expectations—positioning you as a globally recognizable candidate whether you plan to fly in Dubai, the Philippines, or other international markets.",
+                "PilotRecognition provides a structured Emirates ATPL Pathway through partner schools such as Fujairah Aviation, combining full ATPL training with license conversion inside the UAE. Pilots currently under the FAA system are guided through a smooth transition into EASA standards while completing their ATPL. The overall investment is comparable to many flight instructor ratings, while earning a respected GCAA license aligned with Emirates‑standard expectations—positioning you as a globally recognizable candidate whether you plan to fly in Dubai, the Philippines, or other international markets.",
             regions: [
                 { name: "UAE", flag: "🇦🇪" },
                 { name: "UK", flag: "🇬🇧" },
@@ -510,7 +513,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             subtitle: "For pilots under 1,000 hours stuck in the gap.",
             category: 'pathways',
             description:
-                "WingMentor offers direct pilot pathways into the emerging air taxi sector, including leading industry players such as Archer and Joby—who have openly highlighted the need for pilots within this gap, typically under 1,000 hours. We also open routes into unmanned drone operations that are pilot-controlled from the ground. Through our network you gain strategic insight, connections, and a clear roadmap for how your current skills translate into this new segment.",
+                "PilotRecognition offers direct pilot pathways into the emerging air taxi sector, including leading industry players such as Archer and Joby—who have openly highlighted the need for pilots within this gap, typically under 1,000 hours. We also open routes into unmanned drone operations that are pilot-controlled from the ground. Through our network you gain strategic insight, connections, and a clear roadmap for how your current skills translate into this new segment.",
             isDarkCard: true
         },
         {
@@ -589,7 +592,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         },
         {
             image: "https://lh3.googleusercontent.com/d/1klsusO1TwuXnDWrke-HzadozUrF9ri4u",
-            title: "WingMentor W1000",
+            title: "PilotRecognition W1000",
             category: 'application',
             subtitle: "The Professional Standard in glass cockpit familiarity.",
             description: "An application software inspired by the G1000 with our modern systems and simulators perfect suite for pilots to refresh on areas such as IFR, CPL examinations, and integrated Gleims examination software.",
@@ -608,7 +611,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
     const filteredSlides = allSlides.filter(slide => {
         if (activeCategory === 'all') {
-            const excludedFromAll = ["Examination Terminal", "Pilot Gap Forum", "WingMentor W1000"];
+            const excludedFromAll = ["Examination Terminal", "Pilot Gap Forum", "PilotRecognition W1000"];
             return !excludedFromAll.includes(slide.title);
         }
         if (activeCategory === 'pathways') {
@@ -725,6 +728,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 isLight={isOverWhite}
                 isDark={!isOverWhite}
                 onLoginModalOpen={onLoginModalOpen}
+                pathwayGridRef={pathwayGridRef}
                 currentPage="home"
             />
 
@@ -744,10 +748,14 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {deviceTier === 'low' ? (
                     // Lazy load PathwayGrid for low-end devices
                     <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-white">Loading...</div>}>
-                        <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                        <div ref={pathwayGridRef}>
+                            <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                        </div>
                     </React.Suspense>
                 ) : (
-                    <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                    <div ref={pathwayGridRef}>
+                        <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
+                    </div>
                 )}
             </div>
             
@@ -758,16 +766,14 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="relative bg-white pt-24 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll delay={100}>
-                        <img
-                            src={IMAGES.LOGO}
-                            alt="WingMentor Logo"
-                            className="mx-auto w-48 md:w-64 h-auto object-contain mb-8 opacity-90"
-                        />
+                        <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-slate-400 mb-2">
+                            PILOTRECOGNITION.COM
+                        </p>
                         <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
                             ABOUT US
                         </p>
                         <h2 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
-                            Industry-First Accredited Pilot Experience & Recognition Programs
+                            Connecting the Industry to Pilots: From Recognition Towards Aviation Pathways
                         </h2>
                         <p className="text-xl font-medium tracking-wide text-slate-700 italic mb-10">
                             Bridging the Gap Between License and Career
@@ -775,11 +781,31 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                         <div className="max-w-4xl mx-auto space-y-8 mb-12">
                             <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                                WingMentor is the aviation industry's first Competency Assurance Network, designed to solve the critical "experience gap" in the modern pilot market. We are connecting all pilots, whether you are a low-timer pilot looking for pathways, a seasoned instructor looking for evolution in their current career, or a time-constrained airline captain looking for opportunities. We are speaking in direct relation with various Airlines, manufacturers, emerging air taxis, and many more. Making the connection between pilot & Industry Expectations, demands & Pilot Recognition easier like never before.
+                                PilotRecognition is on a mission to solve the aviation industry's critical talent loss crisis. Many pilots feel alone and foreshadowed in a fragile market, afraid to make a move that might cost them their current position after several years. Our strategy connects the industry from both sides—pilots seeking opportunities and airlines, manufacturers, and aviation partners seeking qualified talent—through transparent communication and structured pathways. We address the experience gap by validating pilot competencies through evidence-based assessments and recognition programs, ensuring that skilled pilots don't leave the industry due to lack of opportunity, unclear career progression, or fear of losing their hard-earned positions. While our subscription model is not mandatory, it is preferred in the industry to demonstrate that you value your professional recognition as much as your training and career investment.
                             </p>
                             <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                                Through our proprietary Verified Pilot Database and ATLAS-compliant profiling, we transform raw flight hours into data-driven professional competencies recognized by manufacturers and recruiters. By facilitating direct access to industry veterans and "hidden" job markets, WingMentor ensures that pilots don't just graduate—they transition seamlessly into the cockpit with the insights, network, and credibility the industry demands.
+                                Our services solve a critical need: the disconnect between pilot qualifications and industry recognition. Through our proprietary Verified Pilot Database and ATLAS-compliant profiling, we transform raw flight hours into data-driven professional competencies that manufacturers, airlines, and recruiters can actually evaluate and trust. We provide comprehensive recognition programs, evidence-based skill assessments, and verified documentation that bridge the gap between training and employment. Our aim is to give every pilot the tools to demonstrate their true capabilities beyond just flight hours—connecting them directly with industry veterans, decision-makers, and "hidden" job markets that value demonstrated competency. PilotRecognition ensures that pilots don't just graduate with a license—they transition seamlessly into the cockpit with the verified insights, professional network, and industry credibility that today's competitive aviation market demands.
                             </p>
+                            
+                            {!isConnectingIndustryExpanded && (
+                                <button
+                                    onClick={() => setIsConnectingIndustryExpanded(true)}
+                                    className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group px-4 py-2 bg-white border-2 border-blue-600 rounded-lg"
+                                >
+                                    READ MORE <ChevronDown className="w-4 h-4" />
+                                </button>
+                            )}
+
+                            {isConnectingIndustryExpanded && (
+                                <>
+                                    <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+                                        PilotRecognition is a neutral platform—not a flight school, not an airline, and not a manufacturer—where pilots can access the industry directly and receive exact information rather than waiting months for outdated application systems. We provide pathways directly from the industry, alongside our own programs designed to develop your pilot recognition profile to align with industry expectations. Our programs emphasize discipline and leadership skill development—core values that future captains hold within their companies—which is why the industry values our approach. We build and develop the pilot mindset and industry-aligned role models. Our pathways include type ratings where you learn directly from manufacturers and airline expectations, giving you precise information about what airlines require. Additionally, our pilot recognition AI—available through subscription—recommends personalized pathways based on your profile, helping you navigate the complex aviation landscape with clarity.
+                                    </p>
+                                    <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+                                        Crucially, PilotRecognition is aligned with insurance underwriters, adding significant value and transparency to pilot risk contracts that airlines negotiate but rarely discuss with pilots. Most pilots are unaware that their experience level carries a financial price—airlines pay higher insurance premiums for low-timer pilots due to perceived risk, while experienced high-timer pilots represent lower risk. By providing verified competency documentation and recognition scores, we help pilots demonstrate their actual risk profile beyond mere flight hours, creating transparency that benefits both pilots and employers in insurance negotiations and career advancement.
+                                    </p>
+                                </>
+                            )}
                         </div>
 
                         <button
@@ -1004,11 +1030,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div id="membership" className="relative bg-white pt-12 pb-0 px-6 overflow-hidden">
                     <div className="max-w-6xl mx-auto text-center relative z-20 mb-12">
                         <RevealOnScroll delay={100}>
-                            <img
-                                src={IMAGES.LOGO}
-                                alt="WingMentor Logo"
-                                className="mx-auto w-64 h-auto object-contain mb-2"
-                            />
                             <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                                 Programs | Pilot Recognition | Pathways
                             </p>
@@ -1019,15 +1040,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 Comprehensive pilot credentialing through verified data, EBT/CBTA assessments, and industry-standard portfolio building
                             </p>
                             <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mb-12">
-                                Your Pilot Recognition Profile is a living document that evolves with your aviation career. It captures your examination scores, 
-                                EBT/CBTA competency ratings, mentorship records, flight hours, and interview assessments — all formatted into an ATS-compatible 
-                                ATLAS CV that major airlines use to screen candidates. From student pilots to seasoned instructors, the PRP provides 
-                                verifiable proof of your professional capabilities.
+                                Your Pilot Recognition Profile serves as your professional beacon to the aviation industry. It captures your flight hours, experience, behavioural scores, cognitive thinking, and constructivism from the Foundation Program if enrolled. This profile tells the industry: look at me, recognize me—this is who I am, this is my experience, this is the program I've completed, and these are my interview assessments. Through direct contact with the industry—including flight schools, type rating centres, operators, private jet sector, airlines, and emerging air taxi and eVTOL sectors—we gather their specific requirements and expectations. Your profile helps you discover opportunities across sectors you may not even know exist. Imagine an operator contacting you: "We've read your profile, we've watched your interview assessment and evaluation—we think you'll be a perfect candidate for us. Are you interested in undergoing this pathway?" Your profile helps you understand what each sector needs and how to align your profile against their standards, making it easier for employers to recognize your capabilities and for you to find opportunities across the aviation landscape.
                             </p>
 
                             {/* Pilot Journey Animation */}
-                            <div className="max-w-4xl mx-auto mb-12">
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+                            <div className="max-w-6xl mx-auto mb-12">
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-stretch">
                                     {/* Step 1: Foundation Program */}
                                     <div className="relative group h-full">
                                         <div className="bg-white rounded-xl p-4 border border-slate-200 hover:border-slate-400 transition-all duration-300 h-full flex flex-col">
@@ -1110,6 +1128,61 @@ export const HomePage: React.FC<HomePageProps> = ({
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className="hidden md:block absolute top-1/2 -right-2 transform -translate-y-1/2 z-10">
+                                            <div className="w-4 h-4 border-t border-r border-slate-300 rotate-45"></div>
+                                        </div>
+                                    </div>
+
+                                    {/* Step 4: Recognition Plus */}
+                                    <div className="relative group h-full">
+                                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-4 border-2 border-red-500 hover:border-red-400 transition-all duration-300 h-full flex flex-col shadow-lg">
+                                            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 text-white text-sm font-bold mb-3 mx-auto shadow-sm">
+                                                4
+                                            </div>
+                                            <h3 className="text-sm font-bold text-white mb-1 text-center">Recognition Plus</h3>
+                                            <p className="text-[10px] text-red-400 font-medium text-center mb-2">Verified Priority Pipeline</p>
+                                            <p className="text-xs text-slate-300 mb-3 leading-relaxed">AI-ranked for partner airline hiring surges with interview fast-track</p>
+                                            <div className="space-y-1.5 mt-auto">
+                                                <div className="flex items-center gap-2 text-[10px] text-slate-300 group/item relative">
+                                                    <div className="w-1 h-1 rounded-full bg-red-400"></div>
+                                                    <span>OEM Aligned Profiles</span>
+                                                    <div className="hidden group-hover/item:block absolute left-0 top-full mt-1 bg-slate-700 text-white text-[9px] p-2 rounded shadow-lg z-50 w-40">
+                                                        Profile aligned with manufacturer standards from Airbus, Boeing, etc.
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-[10px] text-slate-300 group/item relative">
+                                                    <div className="w-1 h-1 rounded-full bg-red-400"></div>
+                                                    <span>Co-Pilot AI Career Strategist</span>
+                                                    <div className="hidden group-hover/item:block absolute left-0 top-full mt-1 bg-slate-700 text-white text-[9px] p-2 rounded shadow-lg z-50 w-40">
+                                                        AI alerts for hireable milestones and pathway recommendations
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-[10px] text-slate-300 group/item relative">
+                                                    <div className="w-1 h-1 rounded-full bg-red-400"></div>
+                                                    <span>Wingman Capital Access</span>
+                                                    <div className="hidden group-hover/item:block absolute left-0 top-full mt-1 bg-slate-700 text-white text-[9px] p-2 rounded shadow-lg z-50 w-40">
+                                                        Pre-approved training and type-rating loans
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-[10px] text-slate-300 group/item relative">
+                                                    <div className="w-1 h-1 rounded-full bg-red-400"></div>
+                                                    <span>Zero-Fail Compliance</span>
+                                                    <div className="hidden group-hover/item:block absolute left-0 top-full mt-1 bg-slate-700 text-white text-[9px] p-2 rounded shadow-lg z-50 w-40">
+                                                        24/7 automated monitoring of licenses and medicals
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-[10px] text-slate-300 group/item relative">
+                                                    <div className="w-1 h-1 rounded-full bg-red-400"></div>
+                                                    <span>Predictive Medical Alerts</span>
+                                                    <div className="hidden group-hover/item:block absolute left-0 top-full mt-1 bg-slate-700 text-white text-[9px] p-2 rounded shadow-lg z-50 w-40">
+                                                        60-day warnings with AME slot suggestions
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <Link to="/recognition-plus" className="block mt-4 text-center text-[10px] text-red-400 hover:text-red-300 underline font-medium">
+                                                Learn more
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1128,7 +1201,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                         <div>
                                             <p className="text-[10px] text-red-200 uppercase tracking-[0.2em] mb-1">Pilot Recognition Profile</p>
                                             <h4 className="text-2xl font-bold text-white">{pilotId || userDisplayName || userEmail?.split('@')[0] || 'Pilot'}</h4>
-                                            <p className="text-sm text-red-100">WingMentor Recognition Portfolio</p>
+                                            <p className="text-sm text-red-100">PilotRecognition Portfolio</p>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-[10px] text-red-200 uppercase tracking-[0.2em] mb-2">SHARE LINK</p>
@@ -1277,7 +1350,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                 <div className="bg-slate-50/20 px-6 py-3 border-t border-slate-200">
                                     <p className="text-[10px] text-slate-500 text-center">
-                                        This ATLAS-formatted CV is machine-readable by airline ATS systems and includes verified competency data from the WingMentor Foundation Program.
+                                        This ATLAS-formatted CV is machine-readable by airline ATS systems and includes verified competency data from the PilotRecognition Foundation Program.
                                     </p>
                                 </div>
                             </div>
@@ -1407,42 +1480,127 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                         <div className="max-w-6xl mx-auto space-y-6">
                             {/* Card 1: Become A Member - Simplified */}
-                            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col items-center text-center shadow-xl">
-                                <img
-                                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                                    alt="WingMentor Logo"
-                                    className="w-32 h-auto object-contain mb-3 opacity-90"
-                                />
-
-                                <p className="text-[9px] font-bold tracking-[0.3em] uppercase text-blue-900 mb-2">
-                                    Pilot Database Recognition & Network Access
-                                </p>
-                                <h2 className="text-xl md:text-3xl font-serif text-white mb-4 leading-tight">
-                                    Become A Member To Access
+                            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl max-w-2xl mx-auto">
+                                <h2 className="text-2xl md:text-4xl font-serif text-slate-900 mb-8 leading-tight text-center">
+                                    Create Your Pilot Recognition Profile
                                 </h2>
 
-                                {/* Auto-Cycling Tabs Component */}
-                                <AutoCyclingTabs onJoinUs={onJoinUs} />
+                                {/* Create Profile Button */}
+                                <button
+                                    onClick={onJoinUs}
+                                    className="w-full max-w-md bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-xl font-bold uppercase tracking-[0.15em] transition-all shadow-lg flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-95 mb-4 mx-auto"
+                                >
+                                    Create Account
+                                </button>
 
-                                {/* Become a Member Button - Simplified */}
-                                <div className="mt-4 w-full max-w-md flex flex-col items-center">
-                                    <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-blue-900 mb-2 animate-pulse">Join the Pilot Network & Get Recognized</span>
-                                    <button
-                                        onClick={onJoinUs}
-                                        className="w-full bg-[#050A30] hover:bg-[#070D3D] text-white py-3 rounded-xl font-bold uppercase tracking-[0.15em] transition-all shadow-lg shadow-blue-900/10 hover:shadow-blue-900/30 flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-95 border border-white/10"
-                                    >
-                                        Become a Member
+                                {/* Social Login Option */}
+                                <button
+                                    onClick={onLogin}
+                                    className="w-full max-w-md bg-white hover:bg-slate-50 text-slate-900 py-4 rounded-xl font-bold uppercase tracking-[0.15em] transition-all shadow-lg border-2 border-slate-200 flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-95 mb-8 mx-auto"
+                                >
+                                    Sign in with Google
+                                </button>
+
+                                {/* Recognition Plus Section */}
+                                <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 rounded-2xl p-6 mb-8">
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-xl flex items-center justify-center shrink-0">
+                                            <span className="text-white font-bold text-lg">+</span>
+                                        </div>
+                                        <div className="text-left">
+                                            <h3 className="text-lg font-bold text-slate-900 mb-2">Recognition Plus</h3>
+                                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                                Unlock premium features including verified priority pipeline, AI career strategist, interview fast-track, OEM-aligned profiles, and predictive medical alerts.
+                                            </p>
+                                            <a href="/recognition-plus" className="text-amber-600 hover:text-amber-700 text-sm font-bold underline">
+                                                Learn more about Recognition Plus →
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Comparison Table */}
+                                <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-6 mb-8 overflow-x-auto">
+                                    <h3 className="text-lg font-bold text-slate-900 mb-4 text-center">Platform Components</h3>
+                                    <table className="w-full text-xs">
+                                        <thead>
+                                            <tr>
+                                                <th className="text-left py-2 px-2 font-semibold text-slate-900 w-1/5">Component</th>
+                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Profile</th>
+                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Program</th>
+                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Pathways</th>
+                                                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/3" colSpan={2}>Recognition Plus</th>
+                                            </tr>
+                                            <tr className="border-b-2 border-slate-300">
+                                                <th className="text-left py-2 px-2 font-semibold text-slate-900 w-1/5"></th>
+                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
+                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
+                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
+                                                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/6">AI</th>
+                                                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/6">Priority</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr className="border-b border-slate-200 bg-slate-100">
+                                                <td className="py-2 px-2 text-slate-900 font-semibold">Profile</td>
+                                                <td className="py-2 px-2 text-center text-blue-600">Credentials display</td>
+                                                <td className="py-2 px-2 text-center text-slate-700">Free enrollment</td>
+                                                <td className="py-2 px-2 text-center text-slate-700">Direct entry pathways</td>
+                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+                                            </tr>
+                                            <tr className="border-b border-slate-200">
+                                                <td className="py-2 px-2 text-slate-900 font-semibold">Programs</td>
+                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+                                                <td className="py-2 px-2 text-center text-slate-700">50+ hours mentorship</td>
+                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+                                                <td className="py-2 px-2 text-center text-slate-700">✓ Earned priority</td>
+                                            </tr>
+                                            <tr className="border-b border-slate-200 bg-slate-100">
+                                                <td className="py-2 px-2 text-slate-900 font-semibold">Pathways</td>
+                                                <td className="py-2 px-2 text-center text-blue-600">Profile matching</td>
+                                                <td className="py-2 px-2 text-center text-slate-700">Interview access</td>
+                                                <td className="py-2 px-2 text-center text-slate-700">Unlimited sectors</td>
+                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+                                                <td className="py-2 px-2 text-center text-slate-700">Pool access</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-2 px-2 text-amber-900 font-semibold">Recognition Plus</td>
+                                                <td className="py-2 px-2 text-center text-amber-600">OEM aligned</td>
+                                                <td className="py-2 px-2 text-center text-amber-600">Fast-track</td>
+                                                <td className="py-2 px-2 text-center text-amber-600">AI recommendations</td>
+                                                <td className="py-2 px-2 text-center text-amber-600">Verification</td>
+                                                <td className="py-2 px-2 text-center text-amber-600">✓ First in pools</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button onClick={() => onNavigate('membership')} className="block text-center text-blue-600 hover:text-blue-700 text-sm font-bold underline mt-4">
+                                        View full comparison →
                                     </button>
-                                    <div className="mt-3 flex items-center justify-center gap-4">
-                                        <span className="text-slate-300 text-[9px] font-bold uppercase tracking-[0.15em]">Verified Access</span>
-                                        <div className="w-0.5 h-0.5 rounded-full bg-slate-300"></div>
-                                        <span className="text-slate-300 text-[9px] font-bold uppercase tracking-[0.15em]">Restricted Community</span>
-                                    </div>
-                                    <div className="mt-3 max-w-md bg-white/5 p-2 rounded-lg border border-white/10">
-                                        <p className="text-[8px] text-slate-300 font-medium tracking-tight leading-relaxed text-center">
-                                            Service fees apply for professional awards, certifications, and program completions.
-                                        </p>
-                                    </div>
+                                </div>
+
+                                {/* Contact Us */}
+                                <div className="mb-8 text-center">
+                                    <p className="text-slate-600 text-sm mb-2">
+                                        Want to inquire? <a href="#" className="text-blue-600 hover:text-blue-700 underline font-semibold">Contact us</a>
+                                    </p>
+                                    <p className="text-slate-600 text-sm">
+                                        Want to know more? <a href="#" className="text-blue-600 hover:text-blue-700 underline font-semibold">Learn about our platform</a>
+                                    </p>
+                                </div>
+
+                                {/* Operator CTA */}
+                                <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6">
+                                    <p className="text-slate-900 text-sm mb-2 font-semibold text-center">
+                                        Are you an operator?
+                                    </p>
+                                    <button
+                                        onClick={() => window.location.href = '/enterprise-access'}
+                                        className="w-full text-blue-600 hover:text-blue-700 text-sm font-bold underline text-center"
+                                    >
+                                        Click here for enterprise access
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1452,7 +1610,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div className="text-center mt-4 mb-6 max-w-3xl mx-auto">
                             <p className="text-white italic text-xs md:text-sm leading-relaxed">
                                 <span className="text-blue-900 font-bold block mb-1 not-italic uppercase tracking-widest text-[10px]">Progressive Pathway Recommendation</span>
-                                Doing the Foundational Program first will give you a <strong className="text-white">preferred edge</strong> within the WingMentor Pilot Database.
+                                Doing the Foundational Program first will give you a <strong className="text-white">preferred edge</strong> within the PilotRecognition Pilot Database.
                             </p>
                         </div>
 
@@ -1464,7 +1622,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     Airlines, Operators, or Regulatory Authorities?
                                 </h3>
                                 <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
-                                    WingMentor provides an industry-standard database of candidates vetted through EBT CBTA familiarization and Hinfact.
+                                    PilotRecognition provides an industry-standard database of candidates vetted through EBT CBTA familiarization and Hinfact.
                                 </p>
                                 <button onClick={() => window.location.href = '/enterprise-access'} className="inline-flex items-center justify-center px-6 py-2 text-xs font-bold text-white uppercase tracking-widest bg-slate-900 border border-slate-900 rounded-lg group">
                                         <span>Contact for Enterprise Access</span>
@@ -1490,13 +1648,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-4 gap-8 mb-8">
                         <div>
-                            <h3 className="font-bold text-lg mb-4">WingMentor</h3>
+                            <h3 className="font-bold text-lg mb-4">PilotRecognition</h3>
                             <p className="text-slate-400 text-sm">The Aviation Industry's First Pilot Recognition-Based Platform</p>
                         </div>
                         <div>
                             <h3 className="font-bold text-lg mb-4">Platform</h3>
                             <ul className="space-y-2 text-slate-400 text-sm">
-                                <li><a href="/pilot-recognition" className="hover:text-white cursor-pointer transition-colors">Pilot Recognition</a></li>
+                                <li><a href="/recognition-plus" className="hover:text-white cursor-pointer transition-colors">Pilot Recognition</a></li>
                                 <li><a href="/recognition-career-matches" className="hover:text-white cursor-pointer transition-colors">Pathways</a></li>
                                 <li><a href="/programs" className="hover:text-white cursor-pointer transition-colors">Programs</a></li>
                                 <li><a href="/airline-expectations" className="hover:text-white cursor-pointer transition-colors">Airline Expectations</a></li>
@@ -1514,7 +1672,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div>
                             <h3 className="font-bold text-lg mb-4">Contact</h3>
                             <ul className="space-y-2 text-slate-400 text-sm">
-                                <li><a href="mailto:wingmentorprogram@gmail.com" className="hover:text-white cursor-pointer transition-colors">wingmentorprogram@gmail.com</a></li>
+                                <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
                                 <li><a href="mailto:wmpilotgroup@gmail.com" className="hover:text-white cursor-pointer transition-colors">wmpilotgroup@gmail.com</a></li>
                                 <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
                             </ul>
@@ -1529,7 +1687,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         </div>
                     </div>
                     <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
-                        <p>&copy; 2024 WingMentor - WM Pilot Group. All rights reserved.</p>
+                        <p>&copy; 2024 PilotRecognition - WM Pilot Group. All rights reserved.</p>
                     </div>
                 </div>
             </footer>
