@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { supabase } from '@/shared/lib/supabase';
+import { supabaseEdge } from '@/shared/lib/supabase-edge';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2026-04-22.dahlia',
@@ -20,7 +20,7 @@ export default async function handler(req: Request) {
       });
     }
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const { data: { user }, error: authError } = await supabaseEdge.auth.getUser();
     
     if (authError || !user || user.id !== userId) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -29,7 +29,7 @@ export default async function handler(req: Request) {
       });
     }
 
-    const { data: subscription } = await supabase
+    const { data: subscription } = await supabaseEdge
       .from('subscriptions')
       .select('stripe_subscription_id, stripe_price_id')
       .eq('user_id', userId)
@@ -50,7 +50,7 @@ export default async function handler(req: Request) {
       price: newPriceId,
     });
 
-    await supabase.from('subscriptions').update({
+    await supabaseEdge.from('subscriptions').update({
       stripe_price_id: newPriceId,
     }).eq('user_id', userId);
 
