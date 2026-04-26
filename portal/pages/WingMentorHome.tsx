@@ -3678,16 +3678,6 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             userProfile={userProfile ?? undefined} 
           />
         );
-      case 'program-progress':
-        return (
-          <ProgramProgressPage 
-            userProfile={userProfile ?? undefined}
-            onBack={() => setMainView('pilot-portfolio')}
-            completedModules={[]}
-            onViewExaminationPortal={() => setMainView('examination-portal')}
-            onViewSyllabus={() => setMainView('foundational')}
-          />
-        );
       case 'logbook':
         return <LogbookPage onBack={() => setMainView('pilot-portfolio')} userProfile={userProfile} />;
       case 'digital-logbook':
