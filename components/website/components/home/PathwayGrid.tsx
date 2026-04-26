@@ -857,7 +857,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         >
             <div
                 ref={gridInteractionRef}
-                className="relative w-full max-w-[1200px] xl:max-w-[1400px]"
+                className="relative w-full max-w-[1000px] xl:max-w-[1100px]"
                 onMouseEnter={handleGridMouseEnter}
                 onMouseLeave={handleGridMouseLeave}
                 style={{ touchAction: 'pan-y', cursor: 'grab', overscrollBehaviorX: 'contain' }}
@@ -960,7 +960,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             x: { type: "spring", stiffness: 300, damping: 30 },
                             opacity: { duration: 0.3 },
                         }}
-                        className="w-full max-w-[1200px] xl:max-w-[1400px] mx-auto"
+                        className="w-full max-w-[1000px] xl:max-w-[1100px] mx-auto"
                     >
                         <motion.div
                             variants={containerVariants}
@@ -973,7 +973,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {/* Top row: Member & Discover */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-2.5 mb-4 md:mb-4">
                                         {currentCards.slice(0, 2).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[320px] md:h-[350px] lg:h-[380px] xl:h-[400px]">
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[260px] md:h-[280px] lg:h-[300px] xl:h-[320px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -981,7 +981,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {/* Bottom row: Programs, Recognition, Pathways */}
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-2.5 mb-4 md:mb-6">
                                         {currentCards.slice(2).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[150px] md:h-[128px] lg:h-[136px] xl:h-[144px]">
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[120px] md:h-[100px] lg:h-[110px] xl:h-[115px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
