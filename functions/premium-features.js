@@ -1,10 +1,10 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co',
-  process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY
-);
+const supabaseUrl = process.env.SUPABASE_URL || process.env.supabaseUrl || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.supabaseAnonKey || process.env.SUPABASE_KEY || process.env.supabaseKey;
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Premium Features ($100/year subscription) - 49 functions
 

@@ -1564,12 +1564,12 @@ const GridCard: React.FC<GridCardProps> = ({
                             </div>
                         </div>
                     ) : shouldUseCarousel && carouselImages ? (
-                        // Carousel with multiple images or animations
+                        // Carousel with multiple images or animations - Redesigned
                         <div className="relative w-full h-full">
                             {carouselImages.map((img, idx) => {
                                 const isAnimationIndex = card.animationIndices?.includes(idx);
                                 return (
-                                    <div key={idx} className={`absolute inset-0 w-full h-full ${enableAnimations ? 'transition-all duration-1000' : ''} ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-100 scale-105'}`}>
+                                    <div key={idx} className={`absolute inset-0 w-full h-full ${enableAnimations ? 'transition-all duration-700 ease-out' : ''} ${idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}>
                                         {isAnimationIndex ? (
                                             idx === 1 && card.id === 'discover' ? (
                                                 <DiscoverPathwaysAnimation isPlaying={idx === currentImageIndex} onSceneChange={setAnimationSceneIndex} />
@@ -1584,7 +1584,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                                 alt={`${card.title} ${idx + 1}`}
                                                 className={`
                                                     w-full h-full object-cover
-                                                    ${isHovered && idx === currentImageIndex ? 'scale-110' : ''}
+                                                    ${isHovered && idx === currentImageIndex ? 'scale-105' : ''}
                                                 `}
                                                 onError={(e) => {
                                                     console.error('General carousel image load error:', card.id, idx, img, e);
@@ -1597,12 +1597,63 @@ const GridCard: React.FC<GridCardProps> = ({
                                     </div>
                                 );
                             })}
-                            {/* Carousel Indicators */}
-                            <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                            {/* Glass UI Carousel Controls */}
+                            <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between">
+                                {/* Slide Counter */}
+                                <div className="px-3 py-1.5 bg-black/40 backdrop-blur-md border border-white/20 rounded-full">
+                                    <span className="text-white text-xs font-medium">
+                                        {currentImageIndex + 1} / {carouselImages.length}
+                                    </span>
+                                </div>
+                                {/* Navigation Arrows */}
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleManualNavigation('prev');
+                                        }}
+                                        className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
+                                    >
+                                        <ChevronLeft className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                                    </button>
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleManualNavigation('next');
+                                        }}
+                                        className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
+                                    >
+                                        <ChevronRight className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                                    </button>
+                                </div>
+                            </div>
+                            {/* Progress Bar */}
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-20">
+                                <div 
+                                    className={`h-full bg-white/80 transition-all duration-300 ${enableAnimations ? '' : ''}`}
+                                    style={{ width: `${((currentImageIndex + 1) / carouselImages.length) * 100}%` }}
+                                />
+                            </div>
+                            {/* Glass UI Dot Indicators */}
+                            <div className="absolute top-4 right-4 z-20 flex gap-2">
                                 {carouselImages.map((_, idx) => (
-                                    <div 
+                                    <button
                                         key={idx}
-                                        className={`w-2 h-2 rounded-full ${enableAnimations ? 'transition-all duration-300' : ''} ${idx === currentImageIndex ? 'bg-white w-4' : 'bg-white/50'}`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            setIsPaused(true);
+                                            setCurrentImageIndex(idx);
+                                            if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+                                            pauseTimeoutRef.current = setTimeout(() => setIsPaused(false), 10000);
+                                        }}
+                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                            idx === currentImageIndex
+                                                ? 'bg-white w-6 shadow-lg shadow-white/50'
+                                                : 'bg-white/40 hover:bg-white/60 w-2'
+                                        }`}
                                     />
                                 ))}
                             </div>
