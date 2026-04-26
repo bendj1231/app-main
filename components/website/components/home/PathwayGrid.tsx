@@ -857,7 +857,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         >
             <div
                 ref={gridInteractionRef}
-                className="relative w-full max-w-[1100px] xl:max-w-[1200px]"
+                className="relative w-full max-w-[1200px] xl:max-w-[1400px]"
                 onMouseEnter={handleGridMouseEnter}
                 onMouseLeave={handleGridMouseLeave}
                 style={{ touchAction: 'pan-y', cursor: 'grab', overscrollBehaviorX: 'contain' }}
@@ -960,7 +960,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             x: { type: "spring", stiffness: 300, damping: 30 },
                             opacity: { duration: 0.3 },
                         }}
-                        className="w-full max-w-[980px] xl:max-w-[1040px] mx-auto"
+                        className="w-full max-w-[1200px] xl:max-w-[1400px] mx-auto"
                     >
                         <motion.div
                             variants={containerVariants}
@@ -973,7 +973,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {/* Top row: Member & Discover */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-2.5 mb-4 md:mb-4">
                                         {currentCards.slice(0, 2).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[240px] md:h-[250px] lg:h-[265px] xl:h-[280px]">
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[320px] md:h-[350px] lg:h-[380px] xl:h-[400px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -1412,12 +1412,15 @@ const GridCard: React.FC<GridCardProps> = ({
             {/* Directory Card - Simple text with arrow */}
             {card.isDirectory ? (
                 <div className={`
-                    relative w-full h-full rounded-xl overflow-hidden
-                    bg-slate-900/40 backdrop-blur-xl border border-white/20
-                    shadow-lg shadow-black/30
-                    transition-all duration-300 ease-out
+                    relative w-full h-full rounded-lg overflow-hidden
+                    bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
+                    border border-white/20 shadow-2xl shadow-black/50
+                    before:content-[''] before:absolute before:inset-0 before:rounded-lg
+                    before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
+                    before:transition-opacity before:duration-300
+                    transition-all duration-500 ease-out
                     flex items-center justify-between px-4 md:px-6
-                    ${isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}
+                    ${isHovered ? 'scale-[1.03] shadow-black/70 before:opacity-100 border-white/30' : 'scale-100'}
                 `}>
                     <div className="flex flex-col">
                         {!(card.id === 'discover' && currentImageIndex === 0) && (
@@ -1432,10 +1435,10 @@ const GridCard: React.FC<GridCardProps> = ({
                         )}
                     </div>
                     <div className={`
-                        w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center
-                        bg-white/10 border border-white/20
+                        w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center
+                        bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
                         transition-all duration-300
-                        ${isHovered ? 'bg-white/20 scale-110' : ''}
+                        ${isHovered ? 'bg-white/20 scale-110 border-white/40' : ''}
                     `}>
                         <svg className="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -1443,8 +1446,17 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 </div>
             ) : (
-                /* Main Card Container - Glassy UI */
-                <div className={`relative w-full h-full rounded-xl overflow-hidden bg-slate-900/40 backdrop-blur-xl border border-white/20 shadow-lg shadow-black/30 ${enableAnimations ? 'transition-all duration-300 ease-out' : ''} ${enableAnimations && isHovered ? 'scale-[1.02] bg-slate-900/50 border-white/40 shadow-2xl shadow-black/40' : 'scale-100'}`}>
+                /* Main Card Container - Enhanced Floating Glass UI */
+                <div className={`
+                    relative w-full h-full rounded-lg overflow-hidden
+                    bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
+                    border border-white/20 shadow-2xl shadow-black/50
+                    before:content-[''] before:absolute before:inset-0 before:rounded-lg
+                    before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
+                    before:transition-opacity before:duration-300
+                    ${enableAnimations ? 'transition-all duration-500 ease-out' : ''}
+                    ${enableAnimations && isHovered ? 'scale-[1.03] shadow-black/70 before:opacity-100 border-white/30' : 'scale-100'}
+                `}>
                     {/* Background Image / Video / Carousel / Animation */}
                     <div className="absolute inset-0">
                     {card.videoUrl ? (
