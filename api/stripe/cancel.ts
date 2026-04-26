@@ -1,8 +1,19 @@
 import Stripe from 'stripe';
-import { supabaseEdge } from '@/shared/lib/supabase-edge';
+import { createClient } from '@supabase/supabase-js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2026-04-22.dahlia',
+});
+
+// Edge-compatible Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false,
+  },
 });
 
 export default async function handler(req: Request) {
@@ -20,7 +31,7 @@ export default async function handler(req: Request) {
       });
     }
 
-    const { data: { user }, error: authError } = await supabaseEdge.auth.getUser();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
     if (authError || !user || user.id !== userId) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -29,7 +40,7 @@ export default async function handler(req: Request) {
       });
     }
 
-    const { data: subscription } = await supabaseEdge
+    const { data: subscription } = await supabase
       .from('subscriptions')
       .select('stripe_subscription_id')
       .eq('user_id', userId)
@@ -46,7 +57,7 @@ export default async function handler(req: Request) {
       cancel_at_period_end: true,
     });
 
-    await supabaseEdge.from('subscriptions').update({
+    await supabase.from('subscriptions').update({
       cancel_at_period_end: true,
     }).eq('user_id', userId);
 
