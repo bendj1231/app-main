@@ -39,6 +39,7 @@ export interface Manufacturer {
   simulatorPracticeSessions?: SimulatorSessionInfo;
   groundSchoolModules?: GroundSchoolModule[];
   progressTracking?: ProgressTrackingInfo;
+  expectations?: ManufacturerExpectations;
 }
 
 export interface TrainingCenter {
@@ -189,9 +190,21 @@ export interface GroundSchoolModule {
 }
 
 export interface ProgressTrackingInfo {
+  enabled: boolean;
   features: string[];
   certificationTracking: boolean;
   milestoneAlerts: boolean;
+}
+
+export interface ManufacturerExpectations {
+  overview: string;
+  trainingRequirements: string[];
+  careerPath: string;
+  keySkills: string[];
+  salaryRange: string;
+  demandOutlook: string;
+  commonRoles: string[];
+  additionalNotes?: string;
 }
 
 export interface AircraftTypeRating {
@@ -347,7 +360,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'boeing',
     name: 'Boeing',
-    logo: 'https://media.designrush.com/inspiration_images/661396/conversions/1-mobile.jpg',
+    logo: 'https://freepnglogo.com/images/all_img/boeing-logo-e30b.png',
     description: 'The Boeing Company is an American multinational corporation that designs, manufactures, and sells airplanes, rotorcraft, rockets, satellites, and missiles worldwide.',
     founded: 1916,
     headquarters: 'Chicago, Illinois, USA',
@@ -390,12 +403,35 @@ export const manufacturers: Manufacturer[] = [
       midLevel: 'Captain',
       seniorLevel: 'Chief Pilot / Director of Operations',
       timeline: '6-10 years to Captain, 12-18 years to senior roles'
+    },
+    expectations: {
+      overview: 'Boeing pilots are among the most sought-after in the aviation industry, with opportunities across commercial airlines, cargo operations, and private aviation.',
+      trainingRequirements: [
+        'Commercial Pilot License (CPL) with Multi-Engine Instrument Rating',
+        'Airline Transport Pilot License (ATPL) for Captain positions',
+        'Type rating for specific Boeing aircraft models (737, 777, 787, etc.)',
+        'Minimum 1,500-2,500 flight hours depending on aircraft type',
+        'Class 1 Medical Certificate',
+        'ICAO Level 4+ English proficiency',
+        'Recurrent simulator training every 6-12 months'
+      ],
+      careerPath: 'Typically starts as a First Officer on narrow-body aircraft (737), progressing to wide-body (777/787) as experience grows. Captain positions require 3,000-5,000+ hours.',
+      keySkills: [
+        'Advanced aircraft systems knowledge',
+        'Crew Resource Management (CRM)',
+        'Instrument flying proficiency',
+        'Emergency procedures mastery',
+        'Leadership and decision-making'
+      ],
+      salaryRange: '$80,000 - $350,000+ annually (varies by region, airline, and experience)',
+      demandOutlook: 'Strong demand for Boeing pilots continues, especially for 737 MAX and 787 Dreamliner ratings. Cargo operations also offer significant opportunities.',
+      commonRoles: ['First Officer', 'Captain', 'Training Captain', 'Fleet Manager', 'Chief Pilot']
     }
   },
   {
     id: 'embraer',
     name: 'Embraer',
-    logo: 'https://1000logos.net/wp-content/uploads/2023/05/Embraer-Logo.jpg',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Embraer_logo.svg/3840px-Embraer_logo.svg.png',
     description: 'Embraer S.A. is a Brazilian aerospace conglomerate that produces commercial, military, executive and agricultural aircraft and provides aeronautical services.',
     founded: 1969,
     headquarters: 'São José dos Campos, Brazil',
@@ -434,7 +470,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'bombardier',
     name: 'Bombardier',
-    logo: 'https://avioradar.net/wp-content/uploads/2024/04/Bombardier_new_logo_Foto_C_Bombardier-900x506.png',
+    logo: 'https://download.logo.wine/logo/Bombardier_Inc./Bombardier_Inc.-Logo.wine.png',
     description: 'Bombardier Inc. is a Canadian multinational manufacturer of trains and aircraft. The aerospace division was sold to Airbus and Viking Air in 2020.',
     founded: 1942,
     headquarters: 'Montreal, Quebec, Canada',
@@ -551,7 +587,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'dassault-falcon',
     name: 'Dassault Falcon',
-    logo: 'https://brandcenter.dassault-aviation.com/assets/contents/img/dassault-falcon-jet.png',
+    logo: 'https://www.skyservice.com/wp-content/uploads/2023/08/dassault.png',
     description: 'Dassault Falcon is a French manufacturer of business jets and military aircraft. It is a subsidiary of Dassault Aviation.',
     founded: 1936,
     headquarters: 'Paris, France',
@@ -590,7 +626,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'pilatus',
     name: 'Pilatus',
-    logo: 'https://alberthaviation.com/wp-content/uploads/2024/09/pilatus-e1727204799134.jpg',
+    logo: 'https://swartzaviationgroup.com/wp-content/uploads/2025/04/Pilatus.png',
     description: 'Pilatus Aircraft Ltd. is a Swiss manufacturer of aircraft and systems. It is known for its PC-12 turboprop and PC-24 business turboprop aircraft.',
     founded: 1939,
     headquarters: 'Stans, Switzerland',
@@ -707,7 +743,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'leonardo',
     name: 'Leonardo',
-    logo: 'https://1000logos.net/wp-content/uploads/2023/05/Leonardo-Logo.jpg',
+    logo: 'https://iconlogovector.com/uploads/images/2025/04/lg-67fd7d3a3dbc5-Leonardo.webp',
     description: 'Leonardo S.p.A. is an Italian multinational company that produces helicopters, aircraft, and defense systems.',
     founded: 1948,
     headquarters: 'Rome, Italy',
@@ -746,7 +782,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'atr',
     name: 'ATR',
-    logo: 'https://www.atr-aircraft.com/wp-content/uploads/2020/11/ATR_logo3-1.jpg',
+    logo: 'https://images.seeklogo.com/logo-png/43/2/atr-logo-png_seeklogo-433115.png',
     description: 'ATR is a French-Italian aircraft manufacturer headquartered in Blagnac, France. It produces regional airliners.',
     founded: 1981,
     headquarters: 'Blagnac, France',
@@ -785,7 +821,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'de-havilland',
     name: 'De Havilland',
-    logo: 'https://cdn.shoplightspeed.com/shops/603831/files/6133705/890x820x2/red-canoe-brands-sticker-dehavilland-canada-beaver.jpg',
+    logo: 'https://upload.wikimedia.org/wikipedia/en/c/ca/De_Havilland.png',
     description: 'De Havilland Canada was a Canadian aircraft manufacturer. The company is now part of Viking Air, which supports the DHC-8 Twin Otter and other legacy aircraft.',
     founded: 1928,
     headquarters: 'Toronto, Ontario, Canada',
@@ -824,7 +860,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'mitsubishi-mrj',
     name: 'Mitsubishi MRJ',
-    logo: 'https://www.theworldfolio.com/img_db/companies/company-571a2d0dd032c.jpg',
+    logo: 'https://image.pitchbook.com/M35hhwSoZmMCkeXDGeQYTR6rDoP1546610261630_200x200',
     description: 'Mitsubishi SpaceJet (formerly MRJ) was a regional jet project by Mitsubishi Aircraft Corporation. The program was suspended in 2020.',
     founded: 2008,
     headquarters: 'Nagoya, Japan',
@@ -853,7 +889,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'comac-c919',
     name: 'COMAC C919',
-    logo: 'https://www.aviationtoday.com/wp-content/uploads/2024/12/air-12-11-photo-4.png',
+    logo: 'https://www.logo.wine/a/logo/Comac/Comac-Logo.wine.svg',
     description: 'COMAC C919 is a Chinese narrow-body airliner produced by Commercial Aircraft Corporation of China (COMAC).',
     founded: 2008,
     headquarters: 'Shanghai, China',
@@ -890,48 +926,9 @@ export const manufacturers: Manufacturer[] = [
     }
   },
   {
-    id: 'cessna',
-    name: 'Cessna',
-    logo: 'https://static.cdnlogo.com/logos/c/90/cessna-aircraft.png',
-    description: 'Cessna is an American general aviation aircraft manufacturer. They are known for their single-engine piston aircraft, business jets, and turboprops.',
-    founded: 1927,
-    headquarters: 'Wichita, Kansas, USA',
-    website: 'https://www.textronaviation.com',
-    reputationScore: 9.2,
-    totalAircraftCount: 200000,
-    trainingCenters: [
-      {
-        id: 'cessna-wichita',
-        name: 'Cessna Flight Training Wichita',
-        location: 'Wichita, USA',
-        country: 'USA',
-        offers: ['172', '182', '206', 'Citation'],
-        image: 'https://www.textronaviation.com/content/dam/textron/training-center.jpg',
-        website: 'https://www.textronaviation.com/training'
-      }
-    ],
-    marketDemandStatistics: {
-      demandLevel: 'high',
-      growthRate: '3% annually',
-      keyMarkets: ['North America', 'Europe', 'Asia']
-    },
-    salaryExpectations: {
-      entryLevel: '$35,000 - $50,000',
-      midLevel: '$55,000 - $85,000',
-      seniorLevel: '$80,000 - $120,000',
-      currency: 'USD'
-    },
-    careerProgression: {
-      entryLevel: 'Flight Instructor',
-      midLevel: 'Charter Pilot',
-      seniorLevel: 'Chief Pilot',
-      timeline: '3-5 years to Charter Pilot, 8-12 years to senior roles'
-    }
-  },
-  {
     id: 'tecnam',
     name: 'Tecnam',
-    logo: 'https://logowik.com/content/uploads/images/tecnam3113.logowik.com.webp',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Primary_Logo_-_Tecnam.png',
     description: 'Tecnam is an Italian aircraft manufacturer specializing in light sport aircraft, general aviation aircraft, and twin-engine piston aircraft.',
     founded: 1948,
     headquarters: 'Capua, Italy',
@@ -1007,48 +1004,9 @@ export const manufacturers: Manufacturer[] = [
     }
   },
   {
-    id: 'embraer',
-    name: 'Embraer',
-    logo: 'https://1000logos.net/wp-content/uploads/2023/05/Embraer-Logo.jpg',
-    description: 'Embraer is a Brazilian aerospace conglomerate that produces commercial, military, and executive aircraft. They are known for their E-Jet family and regional aircraft.',
-    founded: 1969,
-    headquarters: 'São José dos Campos, Brazil',
-    website: 'https://www.embraer.com',
-    reputationScore: 9.1,
-    totalAircraftCount: 8000,
-    trainingCenters: [
-      {
-        id: 'embraer-sao',
-        name: 'Embraer Training Center São Paulo',
-        location: 'São José dos Campos, Brazil',
-        country: 'Brazil',
-        offers: ['E190', 'E195', 'Phenom'],
-        image: 'https://www.embraer.com/content/dam/embraer/training-center.jpg',
-        website: 'https://www.embraer.com/training'
-      }
-    ],
-    marketDemandStatistics: {
-      demandLevel: 'high',
-      growthRate: '5% annually',
-      keyMarkets: ['South America', 'North America', 'Europe', 'Asia']
-    },
-    salaryExpectations: {
-      entryLevel: '$50,000 - $70,000',
-      midLevel: '$80,000 - $120,000',
-      seniorLevel: '$130,000 - $180,000',
-      currency: 'USD'
-    },
-    careerProgression: {
-      entryLevel: 'First Officer',
-      midLevel: 'Captain',
-      seniorLevel: 'Fleet Manager',
-      timeline: '4-6 years to Captain, 9-14 years to senior roles'
-    }
-  },
-  {
     id: 'cirrus',
     name: 'Cirrus',
-    logo: 'https://www.flyingmag.com/wp-content/uploads/sites/2/2024/02/cirrus-1.jpeg',
+    logo: 'https://brandlogos.net/wp-content/uploads/2022/02/cirrus_aircraft-logo-brandlogos.net_.png',
     description: 'Cirrus Aircraft is an American aircraft manufacturer known for their SR series of single-engine piston aircraft and the Vision SF50 personal jet.',
     founded: 1984,
     headquarters: 'Duluth, Minnesota, USA',
@@ -1082,45 +1040,6 @@ export const manufacturers: Manufacturer[] = [
       midLevel: 'Charter Pilot',
       seniorLevel: 'Chief Pilot',
       timeline: '3-5 years to Charter Pilot, 8-12 years to senior roles'
-    }
-  },
-  {
-    id: 'atr',
-    name: 'ATR',
-    logo: 'https://www.atr-aircraft.com/wp-content/uploads/2020/11/ATR_logo3-1.jpg',
-    description: 'ATR is a French-Italian aircraft manufacturer specializing in regional turboprop aircraft. The ATR 42 and ATR 72 are their most popular models.',
-    founded: 1981,
-    headquarters: 'Blagnac, France',
-    website: 'https://www.atr-aircraft.com',
-    reputationScore: 8.8,
-    totalAircraftCount: 2000,
-    trainingCenters: [
-      {
-        id: 'atr-toulouse',
-        name: 'ATR Training Center Toulouse',
-        location: 'Toulouse, France',
-        country: 'France',
-        offers: ['ATR 42', 'ATR 72'],
-        image: 'https://www.atr-aircraft.com/content/dam/atr/training-center.jpg',
-        website: 'https://www.atr-aircraft.com/training'
-      }
-    ],
-    marketDemandStatistics: {
-      demandLevel: 'medium',
-      growthRate: '4% annually',
-      keyMarkets: ['Europe', 'Asia', 'South America', 'Africa']
-    },
-    salaryExpectations: {
-      entryLevel: '$45,000 - $65,000',
-      midLevel: '$70,000 - $100,000',
-      seniorLevel: '$110,000 - $160,000',
-      currency: 'USD'
-    },
-    careerProgression: {
-      entryLevel: 'First Officer',
-      midLevel: 'Captain',
-      seniorLevel: 'Fleet Manager',
-      timeline: '4-7 years to Captain, 9-14 years to senior roles'
     }
   },
   {
@@ -1163,87 +1082,9 @@ export const manufacturers: Manufacturer[] = [
     }
   },
   {
-    id: 'gulfstream',
-    name: 'Gulfstream',
-    logo: 'https://download.logo.wine/logo/Gulfstream_Aerospace/Gulfstream_Aerospace-Logo.wine.png',
-    description: 'Gulfstream Aerospace is an American aircraft manufacturer specializing in business jets. They are known for their G-series of large-cabin business jets.',
-    founded: 1958,
-    headquarters: 'Savannah, Georgia, USA',
-    website: 'https://www.gulfstream.com',
-    reputationScore: 9.5,
-    totalAircraftCount: 3000,
-    trainingCenters: [
-      {
-        id: 'gulfstream-savannah',
-        name: 'Gulfstream Training Center Savannah',
-        location: 'Savannah, USA',
-        country: 'USA',
-        offers: ['G650', 'G700', 'G800'],
-        image: 'https://www.gulfstream.com/content/dam/gulfstream/training-center.jpg',
-        website: 'https://www.gulfstream.com/training'
-      }
-    ],
-    marketDemandStatistics: {
-      demandLevel: 'high',
-      growthRate: '5% annually',
-      keyMarkets: ['North America', 'Europe', 'Asia', 'Middle East']
-    },
-    salaryExpectations: {
-      entryLevel: '$80,000 - $120,000',
-      midLevel: '$130,000 - $200,000',
-      seniorLevel: '$200,000 - $300,000',
-      currency: 'USD'
-    },
-    careerProgression: {
-      entryLevel: 'First Officer',
-      midLevel: 'Captain',
-      seniorLevel: 'Chief Pilot',
-      timeline: '3-5 years to Captain, 8-12 years to senior roles'
-    }
-  },
-  {
-    id: 'bombardier',
-    name: 'Bombardier',
-    logo: 'https://avioradar.net/wp-content/uploads/2024/04/Bombardier_new_logo_Foto_C_Bombardier-900x506.png',
-    description: 'Bombardier is a Canadian aircraft manufacturer known for their CRJ regional jets and Challenger business jets.',
-    founded: 1942,
-    headquarters: 'Montreal, Quebec, Canada',
-    website: 'https://www.bombardier.com',
-    reputationScore: 8.9,
-    totalAircraftCount: 2000,
-    trainingCenters: [
-      {
-        id: 'bombardier-montreal',
-        name: 'Bombardier Training Center Montreal',
-        location: 'Montreal, Canada',
-        country: 'Canada',
-        offers: ['CRJ-700', 'CRJ-900', 'Challenger'],
-        image: 'https://www.bombardier.com/content/dam/bombardier/training-center.jpg',
-        website: 'https://www.bombardier.com/training'
-      }
-    ],
-    marketDemandStatistics: {
-      demandLevel: 'medium',
-      growthRate: '3% annually',
-      keyMarkets: ['North America', 'Europe', 'Asia']
-    },
-    salaryExpectations: {
-      entryLevel: '$55,000 - $75,000',
-      midLevel: '$80,000 - $120,000',
-      seniorLevel: '$130,000 - $190,000',
-      currency: 'USD'
-    },
-    careerProgression: {
-      entryLevel: 'First Officer',
-      midLevel: 'Captain',
-      seniorLevel: 'Fleet Manager',
-      timeline: '4-6 years to Captain, 9-14 years to senior roles'
-    }
-  },
-  {
     id: 'aeroprakt',
     name: 'Aeroprakt',
-    logo: 'https://aeroprakt.eu/images/Aeroprakt_logo_www.png',
+    logo: 'https://www.aeropraktsouthafrica.co.za/img/logo.png',
     description: 'Aeroprakt is a Ukrainian aircraft manufacturer known for their A-22 Foxbat light sport aircraft.',
     founded: 1991,
     headquarters: 'Kyiv, Ukraine',

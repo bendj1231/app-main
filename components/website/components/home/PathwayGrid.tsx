@@ -120,9 +120,9 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             image: '',
             loggedInImages: ['/images/accessportal.png'],
             loggedInImage: '/images/accessportal.png',
-            title: 'Become a Member',
+            title: 'Discover Pathways',
             loggedInTitle: 'Access Portal',
-            subtitle: 'Join our aviation community and unlock exclusive benefits',
+            subtitle: 'AI-powered pathway matching for your aviation career',
             loggedInSubtitle: 'Enter your member dashboard and resources',
             icon: Play,
             badge: null,
@@ -133,7 +133,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'discover',
-            images: ['/pr2.png', '/images/airline-operations.png'],
+            images: ['/pr2.png', '/images/airline-operations.png', 'https://www.shutterstock.com/editorial/image-editorial/M3T6A6y2NfDdA9x1NjE2MTU=/airbus-aircrafts-displayed-mock-up-center-aircraft-manufacturer-440nw-10161051k.jpg'],
             image: '/pr2.png',
             loggedInImages: ['/pr2.png'],
             loggedInImage: '/pr2.png',
@@ -142,29 +142,29 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'Foundation Program Enroll',
             loggedInTitle: 'Foundation Program Enroll',
             enrolledTitle: 'Foundation Program Access',
-            dynamicTitles: ['Foundation Program Enroll', 'Discover Expectations', 'Discover Type Ratings Search', 'Discover Pilot Matched Jobs', 'Discover Pathways'],
-            dynamicSubtitles: ['Start your aviation career with comprehensive mentorship', 'Align your Recognition Profile with an Airline Expectation', 'Profile-Matched Aircraft Type Rating Recommendations', 'AI-powered job matching based on your qualifications and experience', 'Discover comprehensive career pathways from student to captain'],
+            dynamicTitles: ['Featured: Foundation Program', 'Airline Expectations', 'Type Rating Search', 'AI Job Matching', 'Career Pathways'],
+            dynamicSubtitles: ['50+ hours mentorship. Start your journey today!', 'Match your profile to airline standards', 'Find your perfect aircraft type rating', 'AI matches you with your dream airline job', 'From student to captain - your complete pathway'],
             subtitle: 'Align your Recognition Profile with an Airline Expectation',
             loggedInSubtitle: 'Align your Recognition Profile with an Airline Expectation',
             enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
             icon: Map,
-            badge: null,
+            badge: 'Now Open',
             accentColor: 'from-emerald-500/80 to-teal-400/80',
             isCarousel: true,
             isCarouselWhenLoggedIn: true,
             isCarouselWhenEnrolled: true,
             hasArrows: true,
-            animationIndices: [1],
+            animationIndices: [],
             enrollNow: false,
         },
         {
-            id: 'programs',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-            title: 'Programs',
-            subtitle: 'Structured training pathways from flight school to airline-ready professional',
-            icon: GraduationCap,
+            id: 'pathways',
+            image: '/images/airline-operations.png',
+            title: 'Pathways',
+            subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
+            icon: ShoppingBag,
             badge: null,
-            accentColor: 'from-amber-500/80 to-orange-400/80',
+            accentColor: 'from-rose-500/80 to-pink-400/80',
         },
         {
             id: 'pilot-recognition',
@@ -176,13 +176,13 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             accentColor: 'from-violet-500/80 to-purple-400/80',
         },
         {
-            id: 'pathways',
-            image: '/images/airline-operations.png',
-            title: 'Pathways',
-            subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
-            icon: ShoppingBag,
+            id: 'programs',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
+            title: 'Programs',
+            subtitle: 'Structured training pathways from flight school to airline-ready professional',
+            icon: GraduationCap,
             badge: null,
-            accentColor: 'from-rose-500/80 to-pink-400/80',
+            accentColor: 'from-amber-500/80 to-orange-400/80',
         },
     ],
     programs: [
@@ -398,9 +398,9 @@ const dummyCards = [
         image: '',
         loggedInImages: ['/images/accessportal.png'],
         loggedInImage: '/images/accessportal.png',
-        title: 'Become a Member',
+        title: 'Discover Pathways',
         loggedInTitle: 'Access Portal',
-        subtitle: 'Join our aviation community and unlock exclusive benefits',
+        subtitle: 'AI-powered pathway matching for your aviation career',
         loggedInSubtitle: 'Enter your member dashboard and resources',
         icon: Play,
         badge: null,
@@ -411,7 +411,7 @@ const dummyCards = [
     },
     {
         id: 'discover',
-        images: ['/pr2.png', '/images/airline-operations.png'],
+        images: ['/pr2.png', '/images/airline-operations.png', 'https://www.shutterstock.com/editorial/image-editorial/M3T6A6y2NfDdA9x1NjE2MTU=/airbus-aircrafts-displayed-mock-up-center-aircraft-manufacturer-440nw-10161051k.jpg'],
         image: '/pr2.png',
         loggedInImages: ['/pr2.png'],
         loggedInImage: '/pr2.png',
@@ -420,29 +420,29 @@ const dummyCards = [
         title: 'Foundation Program Enroll',
         loggedInTitle: 'Foundation Program Enroll',
         enrolledTitle: 'Foundation Program Access',
-        dynamicTitles: ['Foundation Program Enroll', 'Discover Expectations', 'Discover Type Ratings Search', 'Discover Pilot Matched Jobs', 'Discover Pathways'],
-        dynamicSubtitles: ['Start your aviation career with comprehensive mentorship', 'Align your Recognition Profile with an Airline Expectation', 'Profile-Matched Aircraft Type Rating Recommendations', 'AI-powered job matching based on your qualifications and experience', 'Discover comprehensive career pathways from student to captain'],
+        dynamicTitles: ['Featured: Foundation Program', 'Airline Expectations', 'Type Rating Search', 'AI Job Matching', 'Career Pathways'],
+        dynamicSubtitles: ['50+ hours mentorship. Start your journey today!', 'Match your profile to airline standards', 'Find your perfect aircraft type rating', 'AI matches you with your dream airline job', 'From student to captain - your complete pathway'],
         subtitle: 'Align your Recognition Profile with an Airline Expectation',
         loggedInSubtitle: 'Align your Recognition Profile with an Airline Expectation',
         enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
         icon: Map,
-        badge: null,
+        badge: 'Now Open',
         accentColor: 'from-emerald-500/80 to-teal-400/80',
         isCarousel: true,
         isCarouselWhenLoggedIn: true,
         isCarouselWhenEnrolled: true,
         hasArrows: true,
-        animationIndices: [1],
+        animationIndices: [],
         enrollNow: false,
     },
     {
-        id: 'programs',
-        image: 'https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g',
-        title: 'Programs',
-        subtitle: 'Structured training pathways from flight school to airline-ready professional',
-        icon: GraduationCap,
+        id: 'pathways',
+        image: '/images/airline-operations.png',
+        title: 'Pathways',
+        subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
+        icon: ShoppingBag,
         badge: null,
-        accentColor: 'from-amber-500/80 to-orange-400/80',
+        accentColor: 'from-rose-500/80 to-pink-400/80',
     },
     {
         id: 'pilot-recognition',
@@ -454,13 +454,13 @@ const dummyCards = [
         accentColor: 'from-violet-500/80 to-purple-400/80',
     },
     {
-        id: 'pathways',
-        image: '/images/airline-operations.png',
-        title: 'Pathways',
-        subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
-        icon: ShoppingBag,
+        id: 'programs',
+        image: 'https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g',
+        title: 'Programs',
+        subtitle: 'Structured training pathways from flight school to airline-ready professional',
+        icon: GraduationCap,
         badge: null,
-        accentColor: 'from-rose-500/80 to-pink-400/80',
+        accentColor: 'from-amber-500/80 to-orange-400/80',
     },
 ];
 
@@ -981,7 +981,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {/* Bottom row: Programs, Recognition, Pathways */}
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-2.5 mb-4 md:mb-6">
                                         {currentCards.slice(2).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[120px] md:h-[100px] lg:h-[110px] xl:h-[115px]">
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[160px] md:h-[140px] lg:h-[150px] xl:h-[160px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -1564,7 +1564,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             </div>
                         </div>
                     ) : shouldUseCarousel && carouselImages ? (
-                        // Carousel - Billboard Style with Simple Buttons
+                        // Carousel - Pure Billboard Style (No Controls)
                         <div className="relative w-full h-full">
                             {carouselImages.map((img, idx) => {
                                 const isAnimationIndex = card.animationIndices?.includes(idx);
@@ -1599,30 +1599,6 @@ const GridCard: React.FC<GridCardProps> = ({
                             })}
                             {/* Subtle Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                            
-                            {/* Billboard-Style Navigation Buttons */}
-                            <div className="absolute bottom-6 left-6 right-6 z-30 flex justify-between items-end">
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        handleManualNavigation('prev');
-                                    }}
-                                    className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 group"
-                                >
-                                    <ChevronLeft className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-                                </button>
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        handleManualNavigation('next');
-                                    }}
-                                    className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 group"
-                                >
-                                    <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-                                </button>
-                            </div>
                         </div>
                     ) : displayImage || currentImage ? (
                         // Single image
@@ -1651,8 +1627,12 @@ const GridCard: React.FC<GridCardProps> = ({
                 </div>
 
                 {/* Badge */}
-                {(isEnrolledInFoundation ? card.enrolledBadge : card.badge) && (
-                    <div className="absolute top-3 right-3 px-2 py-1 bg-yellow-500/90 text-black text-xs font-bold rounded">
+                {card.id === 'discover' ? (
+                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-md border border-white/30 text-white text-xs font-bold rounded-lg shadow-lg">
+                        {currentImageIndex === 0 ? 'Now Open' : currentImageIndex === 1 ? 'Discover Requirements' : ''}
+                    </div>
+                ) : (isEnrolledInFoundation ? card.enrolledBadge : card.badge) && (
+                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-md border border-white/30 text-white text-xs font-bold rounded-lg shadow-lg">
                         {isEnrolledInFoundation ? card.enrolledBadge : card.badge}
                     </div>
                 )}
@@ -1706,22 +1686,24 @@ const GridCard: React.FC<GridCardProps> = ({
                                 <h3 className={`font-normal text-2xl md:text-3xl lg:text-4xl tracking-wide ${card.id === 'credentials' ? 'text-black' : 'text-white'}`} style={{ fontFamily: 'Georgia, serif' }}>
                                     {finalDisplayTitle}
                                 </h3>
-                            {/* Glassy Join Now button for member card only */}
+                            {/* Glassy Become a Member button for member/pathways card */}
                             {card.id === 'member' && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        if (isLoggedIn) {
-                                            onNavigate('portal');
-                                        } else {
-                                            onNavigate('become-member');
-                                        }
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    {isLoggedIn ? 'Access Portal' : 'Join Now'}
-                                </button>
+                                <div className="absolute bottom-4 right-4 z-40">
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            if (isLoggedIn) {
+                                                onNavigate('portal');
+                                            } else {
+                                                onNavigate('become-member');
+                                            }
+                                        }}
+                                        className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
+                                    >
+                                        {isLoggedIn ? 'Access Portal' : 'Become a Member'}
+                                    </button>
+                                </div>
                             )}
                             {/* Glassy Enroll Now button for foundation card */}
                             {card.enrollNow && (

@@ -545,7 +545,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         <div className="flex flex-col items-center transition-all duration-300 group-hover:scale-110">
                             <span
                                 className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) ? 'text-black' : 'text-white'
-                                    } text-lg font-extrabold tracking-tight leading-none`}
+                                    } text-2xl font-extrabold tracking-tight leading-none`}
                                 style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
                             >
                                 PilotRecognition.com

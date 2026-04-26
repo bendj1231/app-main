@@ -766,14 +766,11 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="relative bg-white pt-24 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll delay={100}>
-                        <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-slate-400 mb-2">
-                            PILOTRECOGNITION.COM
-                        </p>
-                        <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
+                        <p className="text-lg font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
                             ABOUT US
                         </p>
-                        <h2 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
-                            Connecting the Industry to Pilots: From Recognition Towards Aviation Pathways
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 leading-tight mb-4">
+                            Connecting Pilots to Aviation Pathways
                         </h2>
                         <p className="text-xl font-medium tracking-wide text-slate-700 italic mb-10">
                             Bridging the Gap Between License and Career

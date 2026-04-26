@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users } from 'lucide-react';
 import { manufacturers, aircraftTypeRatings, Manufacturer, AircraftTypeRating, getManufacturerById, getAircraftByManufacturer, getAircraftByCategory } from '../data/aircraft-manufacturers';
+import { MeshGradient } from '@paper-design/shaders-react';
 
 // Career Score Calculation Function
 function calculateCareerScore(aircraft: AircraftTypeRating, pilotProfile?: {
@@ -275,96 +276,6 @@ const FLAGSHIP_SUBCATEGORY_COLORS: Record<string, string> = {
   'historical-flagship': 'bg-gray-700',
 };
 
-// Manufacturer Hero Component
-function ManufacturerHero({ manufacturer, onClose }: { manufacturer: Manufacturer; onClose: () => void }) {
-  return (
-    <div className="relative overflow-hidden mb-8 min-h-[500px]">
-      {/* Background image with Netflix-style blue theme overlay */}
-      {manufacturer.heroImage && (
-        <>
-          <div 
-            className="absolute inset-0 bg-cover bg-no-repeat"
-            style={{ backgroundImage: `url(${manufacturer.heroImage})`, backgroundPosition: 'right center' }}
-          />
-          {/* Netflix-style gradient overlays with blue theme - fade from left to right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-900/90 via-blue-800/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-blue-950/70 to-transparent" />
-          {/* Blur overlay on left side of image */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-950/30 backdrop-blur-sm to-transparent" />
-        </>
-      )}
-      {!manufacturer.heroImage && (
-        <>
-          {/* Background with gradient fallback */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900" />
-          <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent" />
-          
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
-        </>
-      )}
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-12 h-full flex flex-col">
-        {/* Content on the left side */}
-        <div className="flex-1 flex flex-col justify-center text-white">
-          <div className="max-w-2xl">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h2 className="text-4xl md:text-6xl font-serif font-normal mb-2">{manufacturer.name}</h2>
-                <div className="flex items-center gap-4 text-slate-300 text-sm">
-                  <span className="flex items-center gap-1">
-                    <Building2 className="w-4 h-4" />
-                    {manufacturer.headquarters}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    Founded {manufacturer.founded}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-yellow-400" />
-                    {manufacturer.reputationScore}/10
-                  </span>
-                </div>
-              </div>
-              <button
-                onClick={onClose}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <p className="text-slate-300 text-lg mb-6 max-w-xl">{manufacturer.description}</p>
-            
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                  Aircrafts Listed
-                </div>
-                <div className="text-xl font-bold">87</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                  Preferred Type of Pilots
-                </div>
-                <div className="text-sm font-bold leading-tight">600-1500 hours</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                  Pilots Rated
-                </div>
-                <div className="text-xl font-bold">200,000-250,000+</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function TypeRatingSearchPage() {
   const [activeCategory, setActiveCategory] = useState<Category>('flagship');
   const [activeLegacySubcategory, setActiveLegacySubcategory] = useState<string | null>(null);
@@ -465,10 +376,20 @@ export default function TypeRatingSearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+    <div className="min-h-screen relative text-slate-900 font-sans">
+      {/* MeshGradient Background */}
+      <div className="fixed inset-0 z-0">
+        <MeshGradient
+          className="w-full h-full"
+          colors={["#4a4a4d", "#60606a", "#7a7a8b", "#ffffff"]}
+          speed={1.0}
+          backgroundColor="#4a4a4d"
+        />
+      </div>
+      <div className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-0" />
 
       {/* Header Nav */}
-      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 relative">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
           <button
             onClick={() => window.history.back()}
@@ -482,70 +403,69 @@ export default function TypeRatingSearchPage() {
       </div>
 
       {/* Hero */}
-      <div className="relative overflow-hidden pt-16 pb-12 px-6">
+      <div className="relative overflow-hidden pt-16 pb-12 px-6 z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-500 mb-3">3D Models & Type Rating Info</p>
           <h1 className="text-4xl md:text-6xl font-serif font-normal leading-tight mb-4 text-slate-900">
             Aircraft <span style={{ color: '#DAA520' }}>Type Ratings</span>
           </h1>
-          <p className="text-lg md:text-xl mb-2 text-slate-500">
+          <p className="text-lg md:text-xl mb-2 text-black">
             Explore · Manufacturers · Requirements · Specifications
           </p>
 
           {/* Search */}
           <div className="mt-8 max-w-lg mx-auto relative">
-            <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search aircraft, manufacturers..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-4 pr-11 py-3 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all"
-            />
+            <div className="relative">
+              <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search aircraft, manufacturers..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full pl-4 pr-11 py-3 rounded-xl border border-white/30 bg-white/90 backdrop-blur-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all shadow-lg"
+              />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Manufacturer Carousel */}
-      <div className="max-w-7xl mx-auto px-6 mb-8">
-        <div className="mb-4 flex items-center justify-between">
+      <div className="w-full mb-8 relative z-10">
+        <div className="px-6 mb-4 flex items-center justify-between">
           <h2 className="text-2xl font-serif font-normal text-slate-900">Browse Manufacturers</h2>
-          <p className="text-sm text-slate-500">{manufacturers.length} manufacturers available</p>
+          <p className="text-sm text-black">{manufacturers.length} manufacturers available</p>
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+        <div className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
           {manufacturers.map(manufacturer => (
             <button
               key={manufacturer.id}
               onClick={() => { setSelectedManufacturer(manufacturer); setSelectedAircraft(null); }}
-              className={`flex-shrink-0 w-72 p-6 rounded-xl border-2 transition-all ${
+              className={`flex-shrink-0 w-72 p-6 rounded-xl border-2 transition-all relative overflow-hidden ${
                 selectedManufacturer?.id === manufacturer.id
-                  ? 'ring-2 ring-sky-500 border-sky-500/50 bg-sky-50'
-                  : 'border-slate-200 hover:border-slate-400 bg-white'
+                  ? 'ring-2 ring-sky-500 border-sky-500/50 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl shadow-2xl shadow-black/30'
+                  : 'border-white/20 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl hover:border-white/30 hover:from-white/20 hover:shadow-lg shadow-black/20'
               }`}
             >
+              <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent pointer-events-none" />
               <img
                 src={manufacturer.logo}
                 alt={manufacturer.name}
-                className="w-32 h-32 object-contain mx-auto"
+                className="w-48 h-48 object-contain mx-auto relative z-10"
               />
             </button>
           ))}
         </div>
       </div>
 
-      {/* Default Hero - shows when no manufacturer is selected */}
-      {!selectedManufacturer && (
-        <div className="relative overflow-hidden mb-8">
-          {/* Background with gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
-          
-          <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+      {/* Hero Section - Unified component for both default and manufacturer-specific content */}
+      <div className="relative overflow-hidden mb-8 z-10 min-h-[600px]">
+        {/* Dark blue background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+          {!selectedManufacturer ? (
             <div className="text-center text-white">
               <h2 className="text-4xl md:text-5xl font-serif font-normal mb-4">
                 Discover Aircraft Manufacturers' Expectations & Type Rating Requirements
@@ -586,28 +506,636 @@ export default function TypeRatingSearchPage() {
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-white">
+              <div className="flex flex-col md:flex-row gap-8">
+                {/* Left side - Header, metadata, and stats */}
+                <div className="md:w-1/3">
+                  <h2 className="text-5xl md:text-7xl font-serif font-normal mb-4">{selectedManufacturer.name}</h2>
+                  <div className="space-y-2 text-slate-300 text-sm mb-6">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="w-4 h-4" />
+                      <span>{selectedManufacturer.headquarters}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <span>Founded {selectedManufacturer.founded}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Star className="w-4 h-4 text-yellow-400" />
+                      <span>{selectedManufacturer.reputationScore}/10</span>
+                    </div>
+                  </div>
+                  
+                  {/* Stats under header */}
+                  <div className="space-y-3">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
+                        {selectedManufacturer.id === 'boeing' ? 'Active Boeing Fleet' : selectedManufacturer.id === 'airbus' ? 'Active Type Ratings' : selectedManufacturer.id === 'embraer' ? 'Aircraft Delivered' : selectedManufacturer.id === 'bombardier' ? 'Active Fleet' : selectedManufacturer.id === 'gulfstream' ? 'Active Global Fleet' : selectedManufacturer.id === 'cessna' ? 'Cessna 172 Production' : selectedManufacturer.id === 'dassault-falcon' ? 'Active Global Fleet' : selectedManufacturer.id === 'pilatus' ? 'Active Fleet' : selectedManufacturer.id === 'beechcraft' ? 'Active Fleet' : selectedManufacturer.id === 'sikorsky' ? 'Global Fleet' : selectedManufacturer.id === 'leonardo' ? 'Active Fleet' : selectedManufacturer.id === 'atr' ? 'Active Global Fleet' : selectedManufacturer.id === 'de-havilland' ? 'Active Fleet' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'Active Fleet' : selectedManufacturer.id === 'comac-c919' ? 'Active Fleet' : selectedManufacturer.id === 'tecnam' ? 'Active Fleet' : selectedManufacturer.id === 'piper' ? 'Active Fleet' : selectedManufacturer.id === 'cirrus' ? 'Active Fleet' : selectedManufacturer.id === 'let' ? 'Active Fleet' : selectedManufacturer.id === 'aeroprakt' ? 'Active Fleet' : 'Aircrafts Listed'}
+                      </div>
+                      <div className="text-2xl font-bold">
+                        {selectedManufacturer.id === 'boeing' ? '12,000-14,000' : selectedManufacturer.id === 'airbus' ? '6-8 (Commercial)' : selectedManufacturer.id === 'embraer' ? '9,000+ (since 1969)' : selectedManufacturer.id === 'bombardier' ? '5,200+ Business Jets' : selectedManufacturer.id === 'gulfstream' ? '3,500-4,000 Aircraft' : selectedManufacturer.id === 'cessna' ? '44,000+ Units' : selectedManufacturer.id === 'dassault-falcon' ? '2,150-2,200 Jets' : selectedManufacturer.id === 'pilatus' ? '2,650+ Units' : selectedManufacturer.id === 'beechcraft' ? '32,700+ Units' : selectedManufacturer.id === 'sikorsky' ? '7,000+ Aircraft' : selectedManufacturer.id === 'leonardo' ? '2,950+ Units' : selectedManufacturer.id === 'atr' ? '1,200-1,300 Aircraft' : selectedManufacturer.id === 'de-havilland' ? '2,150-2,350 Units' : selectedManufacturer.id === 'mitsubishi-mrj' ? '1,400-1,700 Units' : selectedManufacturer.id === 'comac-c919' ? '245-255 Units' : selectedManufacturer.id === 'tecnam' ? '6,250-7,050 Units' : selectedManufacturer.id === 'piper' ? '31,600-32,700 Units' : selectedManufacturer.id === 'cirrus' ? '10,500-11,000 Units' : selectedManufacturer.id === 'let' ? '350-500 Units' : selectedManufacturer.id === 'aeroprakt' ? '3,100-3,500 Units' : '87'}
+                      </div>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
+                        {selectedManufacturer.id === 'boeing' ? 'Crewing Ratio' : selectedManufacturer.id === 'airbus' ? 'Primary Rating' : selectedManufacturer.id === 'embraer' ? 'Major Ratings' : selectedManufacturer.id === 'bombardier' ? 'Key Rating' : selectedManufacturer.id === 'gulfstream' ? 'Pilot Ratio' : selectedManufacturer.id === 'cessna' ? 'Active Fleet' : selectedManufacturer.id === 'dassault-falcon' ? 'Pilot Ratio' : selectedManufacturer.id === 'pilatus' ? 'Primary Model' : selectedManufacturer.id === 'beechcraft' ? 'Primary Model' : selectedManufacturer.id === 'sikorsky' ? 'Primary Civil Model' : selectedManufacturer.id === 'leonardo' ? 'Primary Model' : selectedManufacturer.id === 'atr' ? 'Pilot Ratio' : selectedManufacturer.id === 'de-havilland' ? 'Primary Model' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'Primary Rating' : selectedManufacturer.id === 'comac-c919' ? 'Primary Model' : selectedManufacturer.id === 'tecnam' ? 'Primary Model' : selectedManufacturer.id === 'piper' ? 'Primary Model' : selectedManufacturer.id === 'cirrus' ? 'Primary Model' : selectedManufacturer.id === 'let' ? 'Pilot Ratio' : selectedManufacturer.id === 'aeroprakt' ? 'Primary Model' : 'Preferred Type of Pilots'}
+                      </div>
+                      <div className="text-base font-bold leading-tight">
+                        {selectedManufacturer.id === 'boeing' ? '10-14 pilots/aircraft' : selectedManufacturer.id === 'airbus' ? 'A320 Family (4+ variants)' : selectedManufacturer.id === 'embraer' ? '~4-6 (Commercial & Business)' : selectedManufacturer.id === 'bombardier' ? 'CL30/CL60 (Gold Standard)' : selectedManufacturer.id === 'gulfstream' ? '3-6 pilots/aircraft' : selectedManufacturer.id === 'cessna' ? '24,000+ Skyhawks' : selectedManufacturer.id === 'dassault-falcon' ? '3-6 pilots/aircraft' : selectedManufacturer.id === 'pilatus' ? 'PC-12 Series' : selectedManufacturer.id === 'beechcraft' ? 'King Air Series' : selectedManufacturer.id === 'sikorsky' ? 'S-92 / S-76' : selectedManufacturer.id === 'leonardo' ? 'AW139' : selectedManufacturer.id === 'atr' ? '12-16 pilots/aircraft' : selectedManufacturer.id === 'de-havilland' ? 'Dash 8 Series' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'CL-65 (CRJ Series)' : selectedManufacturer.id === 'comac-c919' ? 'C919 Series' : selectedManufacturer.id === 'tecnam' ? 'Light Trainers' : selectedManufacturer.id === 'piper' ? 'Piston Singles' : selectedManufacturer.id === 'cirrus' ? 'SR Series' : selectedManufacturer.id === 'let' ? '10-12 pilots/aircraft' : selectedManufacturer.id === 'aeroprakt' ? 'A-22 Series' : '600-1500 hours'}
+                      </div>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
+                        {selectedManufacturer.id === 'boeing' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'airbus' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'embraer' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'bombardier' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'gulfstream' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'cessna' ? 'Qualified Pilots' : selectedManufacturer.id === 'dassault-falcon' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'pilatus' ? 'Qualified Pilots' : selectedManufacturer.id === 'beechcraft' ? 'Qualified Pilots' : selectedManufacturer.id === 'sikorsky' ? 'Qualified Pilots' : selectedManufacturer.id === 'leonardo' ? 'Qualified Pilots' : selectedManufacturer.id === 'atr' ? 'Pilots Rated Worldwide' : selectedManufacturer.id === 'de-havilland' ? 'Qualified Pilots' : selectedManufacturer.id === 'mitsubishi-mrj' ? 'Qualified Pilots' : selectedManufacturer.id === 'comac-c919' ? 'Qualified Pilots' : selectedManufacturer.id === 'tecnam' ? 'Qualified Pilots' : selectedManufacturer.id === 'piper' ? 'Qualified Pilots' : selectedManufacturer.id === 'cirrus' ? 'Qualified Pilots' : selectedManufacturer.id === 'let' ? 'Qualified Pilots' : selectedManufacturer.id === 'aeroprakt' ? 'Qualified Pilots' : 'Pilots Rated'}
+                      </div>
+                      <div className="text-2xl font-bold">
+                        {selectedManufacturer.id === 'boeing' ? '135,000-155,000' : selectedManufacturer.id === 'airbus' ? '180,000-220,000+' : selectedManufacturer.id === 'embraer' ? '45,000-60,000' : selectedManufacturer.id === 'bombardier' ? '50,000-65,000' : selectedManufacturer.id === 'gulfstream' ? '12,000-18,000' : selectedManufacturer.id === 'cessna' ? '1.2M-1.5M' : selectedManufacturer.id === 'dassault-falcon' ? '8,000-11,000' : selectedManufacturer.id === 'pilatus' ? '11,000-15,000' : selectedManufacturer.id === 'beechcraft' ? '110,000-135,000' : selectedManufacturer.id === 'sikorsky' ? '45,000-55,000' : selectedManufacturer.id === 'leonardo' ? '18,000-22,000' : selectedManufacturer.id === 'atr' ? '18,000-22,000' : selectedManufacturer.id === 'de-havilland' ? '15,000-20,000' : selectedManufacturer.id === 'mitsubishi-mrj' ? '16,000-22,000' : selectedManufacturer.id === 'comac-c919' ? '3,500-5,000' : selectedManufacturer.id === 'tecnam' ? '115,000-145,000' : selectedManufacturer.id === 'piper' ? '250,000-350,000' : selectedManufacturer.id === 'cirrus' ? '60,000-80,000' : selectedManufacturer.id === 'let' ? '4,500-7,000' : selectedManufacturer.id === 'aeroprakt' ? '8,000-12,000' : '200,000-250,000+'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Center - Empty */}
+                <div className="md:w-1/3"></div>
+                
+                {/* Right center - Description */}
+                <div className="md:w-1/3 flex items-center">
+                  {selectedManufacturer.id === 'boeing' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Boeing Rating Estimates by Family:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>Boeing 737 Series:</span>
+                            <span className="font-semibold">95,000 – 110,000</span>
+                          </div>
+                          <p className="text-slate-400">The "workhorse" of the fleet; most common rating</p>
+                          <div className="flex justify-between">
+                            <span>Boeing 777 / 787:</span>
+                            <span className="font-semibold">35,000 – 45,000</span>
+                          </div>
+                          <p className="text-slate-400">Common for long-haul carriers</p>
+                          <div className="flex justify-between">
+                            <span>Legacy/Cargo (747, 757, 767):</span>
+                            <span className="font-semibold">5,000 – 10,000</span>
+                          </div>
+                          <p className="text-slate-400">Standard for cargo giants like FedEx and UPS</p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'airbus' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Active Airbus Type Ratings:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>A320 Family:</span>
+                            <span className="font-semibold">Most common globally</span>
+                          </div>
+                          <p className="text-slate-400">Covers A318, A319, A320, A321 (CEO & NEO versions)</p>
+                          <div className="flex justify-between">
+                            <span>A330 / A350:</span>
+                            <span className="font-semibold">High commonality</span>
+                          </div>
+                          <p className="text-slate-400">Transition in 5-8 days via CCQ</p>
+                          <div className="flex justify-between">
+                            <span>A220:</span>
+                            <span className="font-semibold">Standalone rating</span>
+                          </div>
+                          <p className="text-slate-400">Former Bombardier CSeries</p>
+                          <div className="flex justify-between">
+                            <span>A380:</span>
+                            <span className="font-semibold">Standalone rating</span>
+                          </div>
+                          <p className="text-slate-400">The "Superjumbo"</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">60-70% of Airbus pilots hold the A320 family rating</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'embraer' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Core Embraer Type Ratings:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>ERJ 170/190 (E-Jet):</span>
+                            <span className="font-semibold">Most popular</span>
+                          </div>
+                          <p className="text-slate-400">Covers E170, E175, E190, E195; E2 series via differences course</p>
+                          <div className="flex justify-between">
+                            <span>ERJ 135/145:</span>
+                            <span className="font-semibold">Regional workhorses</span>
+                          </div>
+                          <p className="text-slate-400">Also covers Legacy 600/650 business jets</p>
+                          <div className="flex justify-between">
+                            <span>Phenom 100/300:</span>
+                            <span className="font-semibold">Business jets</span>
+                          </div>
+                          <p className="text-slate-400">Phenom 300: world's best-selling light jet</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">High commonality between regional and business variants</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'bombardier' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Estimated Rated Pilots by Category:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>Regional Jets (CRJ Series):</span>
+                            <span className="font-semibold">25,000 – 30,000</span>
+                          </div>
+                          <p className="text-slate-400">CRJ200, 700, 900; 1,200+ in global service</p>
+                          <div className="flex justify-between">
+                            <span>Business Jets (Challenger/Global):</span>
+                            <span className="font-semibold">20,000 – 25,000</span>
+                          </div>
+                          <p className="text-slate-400">5,200+ jets operated globally</p>
+                          <div className="flex justify-between">
+                            <span>Turboprops (Dash 8/Q-Series):</span>
+                            <span className="font-semibold">10,000 – 15,000</span>
+                          </div>
+                          <p className="text-slate-400">900+ active units for regional airlines</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">CL30/CL60: Gold standard for corporate pilots</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'gulfstream' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Rated Pilots by Aircraft Generation:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>G650 / G700 / G800:</span>
+                            <span className="font-semibold">3,000 – 4,500</span>
+                          </div>
+                          <p className="text-slate-400">~750+ units; newest ultra-long-range models</p>
+                          <div className="flex justify-between">
+                            <span>G500 / G600:</span>
+                            <span className="font-semibold">1,600 – 2,400</span>
+                          </div>
+                          <p className="text-slate-400">~400+ units</p>
+                          <div className="flex justify-between">
+                            <span>G550 / G-V (Legacy):</span>
+                            <span className="font-semibold">2,800 – 4,200</span>
+                          </div>
+                          <p className="text-slate-400">~700+ units; legacy long-range</p>
+                          <div className="flex justify-between">
+                            <span>G280 (Super Mid-Size):</span>
+                            <span className="font-semibold">1,200 – 1,800</span>
+                          </div>
+                          <p className="text-slate-400">~300+ units</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">Contract pilot market: $2,000-$4,500+ per day</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'cessna' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Citation Business Jet Type Ratings:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>CE-500:</span>
+                            <span className="font-semibold">12,000 – 15,000</span>
+                          </div>
+                          <p className="text-slate-400">Citation I, II, V, Ultra (10 variations)</p>
+                          <div className="flex justify-between">
+                            <span>CE-525 (CJ):</span>
+                            <span className="font-semibold">10,000 – 12,000</span>
+                          </div>
+                          <p className="text-slate-400">CitationJet, CJ1, CJ2, CJ3, CJ4 series</p>
+                          <div className="flex justify-between">
+                            <span>CE-560XL:</span>
+                            <span className="font-semibold">8,000 – 10,000</span>
+                          </div>
+                          <p className="text-slate-400">Excel, XLS, XLS+, Citation Ascend</p>
+                          <div className="flex justify-between">
+                            <span>CE-680 / 700:</span>
+                            <span className="font-semibold">5,000 – 8,000</span>
+                          </div>
+                          <p className="text-slate-400">Sovereign, Latitude, Longitude</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">Total Citation fleet: 8,000+ jets (largest business jet fleet)</p>
+                        <p className="text-slate-400 mt-2 italic">Cessna 150-172: Most rated aircraft worldwide (1.2M-1.5M qualified pilots with SEL rating)</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'dassault-falcon' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Rated Pilots by Falcon Family:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>Falcon 7X / 8X (Tri-jets):</span>
+                            <span className="font-semibold">1,500 – 1,800</span>
+                          </div>
+                          <p className="text-slate-400">~300+ units; specialized for hot/high airports</p>
+                          <div className="flex justify-between">
+                            <span>Falcon 2000 Series:</span>
+                            <span className="font-semibold">2,600 – 3,250</span>
+                          </div>
+                          <p className="text-slate-400">~650+ units (twin-jets)</p>
+                          <div className="flex justify-between">
+                            <span>Falcon 900 Series:</span>
+                            <span className="font-semibold">2,000 – 2,500</span>
+                          </div>
+                          <p className="text-slate-400">~500+ units (tri-jets)</p>
+                          <div className="flex justify-between">
+                            <span>Legacy Models (10, 20, 50):</span>
+                            <span className="font-semibold">1,500 – 2,000</span>
+                          </div>
+                          <p className="text-slate-400">~600+ units</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">EASy Flight Deck enables easy transitions between Falcon models</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'pilatus' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Qualified Pilots by Model:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>PC-12 Series:</span>
+                            <span className="font-semibold">9,000 – 11,500</span>
+                          </div>
+                          <p className="text-slate-400">~2,100+ units; original, NG, NGX, PC-12 PRO</p>
+                          <div className="flex justify-between">
+                            <span>PC-24 Super Versatile Jet:</span>
+                            <span className="font-semibold">1,500 – 2,500</span>
+                          </div>
+                          <p className="text-slate-400">~250+ units; requires specific type rating</p>
+                          <div className="flex justify-between">
+                            <span>PC-21 / PC-7:</span>
+                            <span className="font-semibold">500 – 1,000</span>
+                          </div>
+                          <p className="text-slate-400">~300+ units; military trainers</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">PC-12: Single Engine Turbine (SET) class rating</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'beechcraft' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Qualified Pilots by Category:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>King Air Series:</span>
+                            <span className="font-semibold">35,000 – 45,000</span>
+                          </div>
+                          <p className="text-slate-400">~7,500+ units; "gold standard" turboprop</p>
+                          <div className="flex justify-between">
+                            <span>Piston Singles (Bonanza):</span>
+                            <span className="font-semibold">60,000 – 75,000</span>
+                          </div>
+                          <p className="text-slate-400">~18,000+ units; no type rating required</p>
+                          <div className="flex justify-between">
+                            <span>Piston Twins (Baron):</span>
+                            <span className="font-semibold">12,000 – 15,000</span>
+                          </div>
+                          <p className="text-slate-400">~6,000+ units; requires MEL rating</p>
+                          <div className="flex justify-between">
+                            <span>Regional/Military (B1900/T-6):</span>
+                            <span className="font-semibold">3,000 – 5,000</span>
+                          </div>
+                          <p className="text-slate-400">~1,200+ units; cargo/regional & military</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">King Air 350/360: Requires BE-300 type rating (6,000-8,000 pilots)</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'sikorsky' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Qualified Pilots by Category:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>S-92 (Offshore/SAR):</span>
+                            <span className="font-semibold">2,000 – 2,500</span>
+                          </div>
+                          <p className="text-slate-400">196 active units; high-stakes offshore operations</p>
+                          <div className="flex justify-between">
+                            <span>S-76 (VIP/Medical):</span>
+                            <span className="font-semibold">2,500 – 3,500</span>
+                          </div>
+                          <p className="text-slate-400">534 active units; "limousine of the sky"</p>
+                          <div className="flex justify-between">
+                            <span>Civilian S-70 (Firefighting):</span>
+                            <span className="font-semibold">1,500 – 2,000</span>
+                          </div>
+                          <p className="text-slate-400">Retired military airframes</p>
+                          <div className="flex justify-between">
+                            <span>Military (Black Hawk/CH-53):</span>
+                            <span className="font-semibold">35,000 – 40,000</span>
+                          </div>
+                          <p className="text-slate-400">30+ nations operating Black Hawk family</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">S-92 and S-76 require specific type ratings</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'leonardo' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Rated Pilots by Model Family:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>AW139:</span>
+                            <span className="font-semibold">8,000 – 10,000</span>
+                          </div>
+                          <p className="text-slate-400">~1,200+ units; world's best-selling intermediate twin</p>
+                          <div className="flex justify-between">
+                            <span>AW109 / AW119:</span>
+                            <span className="font-semibold">4,000 – 6,000</span>
+                          </div>
+                          <p className="text-slate-400">~1,000+ units; VIP/corporate & turbine training</p>
+                          <div className="flex justify-between">
+                            <span>AW169 / AW189:</span>
+                            <span className="font-semibold">2,500 – 3,500</span>
+                          </div>
+                          <p className="text-slate-400">~350+ units; new-generation "AWFamily" jets</p>
+                          <div className="flex justify-between">
+                            <span>Military/Other (AW101/Lynx):</span>
+                            <span className="font-semibold">3,000 – 4,000</span>
+                          </div>
+                          <p className="text-slate-400">~400+ units; heavy-lift & naval crews</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">AWFamily: Shared cockpit enables differences training</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'atr' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">ATR Type Rating Facts:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>Common Type Rating:</span>
+                            <span className="font-semibold">ATR 42 & ATR 72</span>
+                          </div>
+                          <p className="text-slate-400">Pilots certified on one fly both with minimal differences training</p>
+                          <div className="flex justify-between">
+                            <span>Global Market Share:</span>
+                            <span className="font-semibold">80% Regional Turboprop</span>
+                          </div>
+                          <p className="text-slate-400">200 operators in 100 countries</p>
+                          <div className="flex justify-between">
+                            <span>Training Hubs:</span>
+                            <span className="font-semibold">Toulouse, Paris, Singapore, Miami</span>
+                          </div>
+                          <p className="text-slate-400">Thousands of ratings processed annually</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">ATR 72-600F: Cargo variant with FedEx adds freight pilots</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'de-havilland' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Rated Pilots by Aircraft Category:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>Dash 8 (Q100/200/300/400):</span>
+                            <span className="font-semibold">10,000 – 15,000</span>
+                          </div>
+                          <p className="text-slate-400">~750-850 units; includes popular Q400</p>
+                          <div className="flex justify-between">
+                            <span>DHC-6 Twin Otter:</span>
+                            <span className="font-semibold">2,500 – 3,500</span>
+                          </div>
+                          <p className="text-slate-400">~500-600 units; "bush plane" icon (1,000th delivery March 2026)</p>
+                          <div className="flex justify-between">
+                            <span>Legacy Bush Planes (Beaver/Otter):</span>
+                            <span className="font-semibold">1,500 – 2,500</span>
+                          </div>
+                          <p className="text-slate-400">~900+ units; many single-pilot operations</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">Dash 8: 12-16 pilots/aircraft for high-frequency schedules</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'mitsubishi-mrj' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Qualified Pilots by Category:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>MHI RJ (CRJ Series):</span>
+                            <span className="font-semibold">15,000 – 20,000</span>
+                          </div>
+                          <p className="text-slate-400">~1,100-1,300 units; CL-65 type rating</p>
+                          <div className="flex justify-between">
+                            <span>Mitsubishi MU-2:</span>
+                            <span className="font-semibold">600 – 1,000</span>
+                          </div>
+                          <p className="text-slate-400">~250-300 units; requires SFAR 108 training</p>
+                          <div className="flex justify-between">
+                            <span>MU-300 Diamond (Beechjet 400):</span>
+                            <span className="font-semibold">200 – 400</span>
+                          </div>
+                          <p className="text-slate-400">~50-100 units; requires BE-400 type rating</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">SpaceJet: Cancelled February 2023 (0 pilots)</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'comac-c919' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Rated Pilots by Aircraft Family:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>ARJ21 / C909:</span>
+                            <span className="font-semibold">2,800 – 4,000</span>
+                          </div>
+                          <p className="text-slate-400">~210 units; primary workhorse (rebranded C909 in 2024)</p>
+                          <div className="flex justify-between">
+                            <span>C919 Series:</span>
+                            <span className="font-semibold">500 – 1,000</span>
+                          </div>
+                          <p className="text-slate-400">~35-45 units; 32 delivered by end of 2025, 33 expected in 2026</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">C919: Fleet expected to double in 2026</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'tecnam' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Qualified Pilots by Category:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>Light Trainers (P92, P2002, P-Mentor):</span>
+                            <span className="font-semibold">90,000 – 110,000</span>
+                          </div>
+                          <p className="text-slate-400">~5,500-6,000 units; standard training aircraft (65+ countries)</p>
+                          <div className="flex justify-between">
+                            <span>P2006T (Twin Engine):</span>
+                            <span className="font-semibold">15,000 – 20,000</span>
+                          </div>
+                          <p className="text-slate-400">~600-800 units; popular multi-engine trainer</p>
+                          <div className="flex justify-between">
+                            <span>P2012 Traveller (Regional):</span>
+                            <span className="font-semibold">1,500 – 2,500</span>
+                          </div>
+                          <p className="text-slate-400">~150-250 units; regional airlines like Cape Air</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">Most models use SEL/MEL class ratings (no type rating)</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'piper' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Qualified Pilots by Category:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>Piston Singles (Archer, Warrior, Cherokee):</span>
+                            <span className="font-semibold">200,000 – 250,000</span>
+                          </div>
+                          <p className="text-slate-400">~25,000+ units; backbone of global flight training</p>
+                          <div className="flex justify-between">
+                            <span>Piston Twins (Seminole, Seneca):</span>
+                            <span className="font-semibold">40,000 – 60,000</span>
+                          </div>
+                          <p className="text-slate-400">~5,000+ units; Seminole is world's most popular multi-engine trainer</p>
+                          <div className="flex justify-between">
+                            <span>Turboprops (M500, M600/SLS, M700):</span>
+                            <span className="font-semibold">8,000 – 12,000</span>
+                          </div>
+                          <p className="text-slate-400">~1,200+ units; high-performance "M-Class" aircraft</p>
+                          <div className="flex justify-between">
+                            <span>Piper Cheyenne (Legacy):</span>
+                            <span className="font-semibold">1,500 – 2,500</span>
+                          </div>
+                          <p className="text-slate-400">~400-500 units; older twin-engine turboprops</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">130,000+ aircraft produced since inception</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'cirrus' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Qualified Pilots by Category:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>SR Series (SR20, SR22, SR22T):</span>
+                            <span className="font-semibold">55,000 – 70,000</span>
+                          </div>
+                          <p className="text-slate-400">~9,500+ units; "plane with the parachute" (10,000+ total delivered)</p>
+                          <div className="flex justify-between">
+                            <span>Vision Jet (SF50):</span>
+                            <span className="font-semibold">1,500 – 2,500</span>
+                          </div>
+                          <p className="text-slate-400">~600+ units; requires SF50 type rating (world's best-selling light jet)</p>
+                          <div className="flex justify-between">
+                            <span>TRAC Series (Training):</span>
+                            <span className="font-semibold">8,000 – 12,000</span>
+                          </div>
+                          <p className="text-slate-400">~400-500 units; used by United Aviate Academy and Lufthansa</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">SR22: Best-selling high-performance piston for 22 consecutive years</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'let' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">L-410 Rating Facts:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>Active Fleet:</span>
+                            <span className="font-semibold">350-500 Units</span>
+                          </div>
+                          <p className="text-slate-400">Over 1,200 L-410 aircraft produced since 1969</p>
+                          <div className="flex justify-between">
+                            <span>Regional Airlines:</span>
+                            <span className="font-semibold">10-14 pilots/aircraft</span>
+                          </div>
+                          <p className="text-slate-400">High-frequency short-haul schedules</p>
+                          <div className="flex justify-between">
+                            <span>Utility & Military:</span>
+                            <span className="font-semibold">6-8 pilots/aircraft</span>
+                          </div>
+                          <p className="text-slate-400">Medevac, cargo, maritime patrol roles</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">L-410 NG: Garmin G3000 avionics; STOL capabilities in 50+ countries</p>
+                      </div>
+                    </div>
+                  ) : selectedManufacturer.id === 'aeroprakt' ? (
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                      <p>{selectedManufacturer.description}</p>
+                      <div className="space-y-2">
+                        <p className="font-semibold text-white">Qualified Pilots by Model:</p>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between">
+                            <span>A-22 Series (Foxbat):</span>
+                            <span className="font-semibold">6,500 – 9,500</span>
+                          </div>
+                          <p className="text-slate-400">~2,500+ units; widely used in flight schools globally</p>
+                          <div className="flex justify-between">
+                            <span>A-32 Series (Vixxen):</span>
+                            <span className="font-semibold">1,500 – 2,500</span>
+                          </div>
+                          <p className="text-slate-400">~500-800 units; popular with cross-country private owners</p>
+                          <div className="flex justify-between">
+                            <span>Legacy/Other (A-20, A-24):</span>
+                            <span className="font-semibold">300 – 500</span>
+                          </div>
+                          <p className="text-slate-400">~100-200 units; niche enthusiast communities</p>
+                        </div>
+                        <p className="text-slate-400 mt-2 italic">LSA/ultralight: No type rating required (Sport Pilot/PPL with SEL)</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-slate-300 text-lg leading-relaxed">{selectedManufacturer.description}</p>
+                  )}
+                  {/* Read more about manufacturer expectations */}
+                  {selectedManufacturer && (
+                    <button
+                      onClick={() => window.location.href = `/manufacturer/${selectedManufacturer.id}/expectations`}
+                      className="mt-4 px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium rounded-lg transition-colors"
+                    >
+                      Read more about {selectedManufacturer.name} expectations
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
-      {/* Manufacturer Hero - shows when manufacturer is selected */}
-      {selectedManufacturer && (
-        <ManufacturerHero 
-          manufacturer={selectedManufacturer} 
-          onClose={() => setSelectedManufacturer(null)} 
+      {/* Manufacturer logo below hero section */}
+      <div className="relative z-10 flex justify-center -mt-8 mb-8">
+        <img
+          src={selectedManufacturer?.id === 'boeing' ? '/beoinglogo.png' : selectedManufacturer?.id === 'embraer' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Embraer_logo.svg/3840px-Embraer_logo.svg.png' : selectedManufacturer?.id === 'bombardier' ? 'https://download.logo.wine/logo/Bombardier_Inc./Bombardier_Inc.-Logo.wine.png' : selectedManufacturer?.id === 'dassault-falcon' ? 'https://www.skyservice.com/wp-content/uploads/2023/08/dassault.png' : selectedManufacturer?.id === 'pilatus' ? 'https://swartzaviationgroup.com/wp-content/uploads/2025/04/Pilatus.png' : selectedManufacturer?.id === 'leonardo' ? 'https://iconlogovector.com/uploads/images/2025/04/lg-67fd7d3a3dbc5-Leonardo.webp' : selectedManufacturer?.id === 'atr' ? 'https://images.seeklogo.com/logo-png/43/2/atr-logo-png_seeklogo-433115.png' : selectedManufacturer?.id === 'de-havilland' ? 'https://upload.wikimedia.org/wikipedia/en/c/ca/De_Havilland.png' : selectedManufacturer?.id === 'mitsubishi-mrj' ? 'https://image.pitchbook.com/M35hhwSoZmMCkeXDGeQYTR6rDoP1546610261630_200x200' : selectedManufacturer?.id === 'comac-c919' ? 'https://www.logo.wine/a/logo/Comac/Comac-Logo.wine.svg' : selectedManufacturer?.id === 'tecnam' ? 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Primary_Logo_-_Tecnam.png' : selectedManufacturer?.id === 'piper' ? 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Piper_logo.svg/1280px-Piper_logo.svg.png' : selectedManufacturer?.id === 'cirrus' ? 'https://brandlogos.net/wp-content/uploads/2022/02/cirrus_aircraft-logo-brandlogos.net_.png' : selectedManufacturer?.id === 'let' ? 'https://www.let.cz/images/logos/logo_new_s.png' : selectedManufacturer?.id === 'aeroprakt' ? 'https://www.aeropraktsouthafrica.co.za/img/logo.png' : (selectedManufacturer ? selectedManufacturer.logo : manufacturers[0]?.logo)}
+          alt={selectedManufacturer ? selectedManufacturer.name : manufacturers[0]?.name}
+          className="w-48 h-24 object-contain"
         />
-      )}
+      </div>
 
+      {/* White background for content below hero */}
+      <div className="relative z-10 bg-white pb-12">
       {/* Category filter chips */}
-      <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+      <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10 pt-8">
         {availableCategories.map(cat => (
           <button
             key={cat}
             onClick={() => { setActiveCategory(cat); setActiveLegacySubcategory(null); setActiveHelicopterSubcategory(null); setActiveMilitarySubcategory(null); setActiveCargoSubcategory(null); setActiveFlagshipSubcategory(null); setSelectedAircraft(null); }}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
               activeCategory === cat
-                ? `${CATEGORY_COLORS[cat] || 'bg-sky-500'} text-white shadow-sm`
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'bg-sky-500 text-white shadow-sm ring-2 ring-sky-500/50'
+                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
             }`}
           >
             {CATEGORY_LABELS[cat]}
@@ -617,13 +1145,13 @@ export default function TypeRatingSearchPage() {
 
       {/* Legacy subcategory filter chips (only show when legacy is selected) */}
       {activeCategory === 'legacy' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
           <button
             onClick={() => { setActiveLegacySubcategory(null); setSelectedAircraft(null); }}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
               activeLegacySubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'bg-slate-500 text-white shadow-sm ring-2 ring-slate-500/50'
+                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
             }`}
           >
             All Legacy
@@ -632,10 +1160,10 @@ export default function TypeRatingSearchPage() {
             <button
               key={key}
               onClick={() => { setActiveLegacySubcategory(key); setSelectedAircraft(null); }}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
                 activeLegacySubcategory === key
-                  ? `${LEGACY_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? `${LEGACY_SUBCATEGORY_COLORS[key]} text-white shadow-sm ring-2 ring-slate-500/50`
+                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
               }`}
             >
               {label}
@@ -646,13 +1174,13 @@ export default function TypeRatingSearchPage() {
 
       {/* Helicopter subcategory filter chips (only show when helicopter is selected) */}
       {activeCategory === 'helicopter' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
           <button
             onClick={() => { setActiveHelicopterSubcategory(null); setSelectedAircraft(null); }}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
               activeHelicopterSubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'bg-slate-500 text-white shadow-sm ring-2 ring-slate-500/50'
+                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
             }`}
           >
             All Helicopters
@@ -661,10 +1189,10 @@ export default function TypeRatingSearchPage() {
             <button
               key={key}
               onClick={() => { setActiveHelicopterSubcategory(key); setSelectedAircraft(null); }}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
                 activeHelicopterSubcategory === key
-                  ? `${HELICOPTER_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? `${HELICOPTER_SUBCATEGORY_COLORS[key]} text-white shadow-sm ring-2 ring-slate-500/50`
+                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
               }`}
             >
               {label}
@@ -675,13 +1203,13 @@ export default function TypeRatingSearchPage() {
 
       {/* Military subcategory filter chips (only show when military is selected) */}
       {activeCategory === 'military' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
           <button
             onClick={() => { setActiveMilitarySubcategory(null); setSelectedAircraft(null); }}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
               activeMilitarySubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'bg-slate-500 text-white shadow-sm ring-2 ring-slate-500/50'
+                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
             }`}
           >
             All Military
@@ -690,10 +1218,10 @@ export default function TypeRatingSearchPage() {
             <button
               key={key}
               onClick={() => { setActiveMilitarySubcategory(key); setSelectedAircraft(null); }}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
                 activeMilitarySubcategory === key
-                  ? `${MILITARY_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? `${MILITARY_SUBCATEGORY_COLORS[key]} text-white shadow-sm ring-2 ring-slate-500/50`
+                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
               }`}
             >
               {label}
@@ -704,13 +1232,13 @@ export default function TypeRatingSearchPage() {
 
       {/* Cargo subcategory filter chips (only show when cargo is selected) */}
       {activeCategory === 'cargo' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
           <button
             onClick={() => { setActiveCargoSubcategory(null); setSelectedAircraft(null); }}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
               activeCargoSubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'bg-slate-500 text-white shadow-sm ring-2 ring-slate-500/50'
+                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
             }`}
           >
             All Cargo
@@ -719,10 +1247,10 @@ export default function TypeRatingSearchPage() {
             <button
               key={key}
               onClick={() => { setActiveCargoSubcategory(key); setSelectedAircraft(null); }}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
                 activeCargoSubcategory === key
-                  ? `${CARGO_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? `${CARGO_SUBCATEGORY_COLORS[key]} text-white shadow-sm ring-2 ring-slate-500/50`
+                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
               }`}
             >
               {label}
@@ -733,13 +1261,13 @@ export default function TypeRatingSearchPage() {
 
       {/* Flagship subcategory filter chips (only show when flagship is selected) */}
       {activeCategory === 'flagship' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-1.5 flex-wrap justify-center">
+        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
           <button
             onClick={() => { setActiveFlagshipSubcategory(null); setSelectedAircraft(null); }}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
               activeFlagshipSubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'bg-white text-blue-900 border border-blue-900 shadow-sm ring-2 ring-blue-900/50'
+                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
             }`}
           >
             All Flagship
@@ -748,10 +1276,10 @@ export default function TypeRatingSearchPage() {
             <button
               key={key}
               onClick={() => { setActiveFlagshipSubcategory(key); setSelectedAircraft(null); }}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
                 activeFlagshipSubcategory === key
-                  ? `${FLAGSHIP_SUBCATEGORY_COLORS[key]} text-white shadow-sm`
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'bg-white text-blue-900 border border-blue-900 shadow-sm ring-2 ring-blue-900/50'
+                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
               }`}
             >
               {label}
@@ -761,7 +1289,7 @@ export default function TypeRatingSearchPage() {
       )}
 
       {/* Carousel Section */}
-      <div className="px-0 mb-12">
+      <div className="px-0 mb-12 relative z-10">
         <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-serif font-normal text-slate-900">Browse Aircraft</h2>
@@ -817,18 +1345,6 @@ export default function TypeRatingSearchPage() {
                     {CATEGORY_LABELS[aircraft.category]}
                   </div>
                 </div>
-              </div>
-              {/* Card body */}
-              <div className="p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <img
-                    src={getManufacturer(aircraft)?.logo || '/logo.png'}
-                    alt={getManufacturer(aircraft)?.name || 'Manufacturer'}
-                    className="h-6 object-contain"
-                  />
-                  <span className="text-xs text-slate-600">{getManufacturer(aircraft)?.name}</span>
-                </div>
-                <p className="text-xs text-slate-500 line-clamp-2">{aircraft.description}</p>
               </div>
             </div>
           ))}
@@ -2018,6 +2534,7 @@ export default function TypeRatingSearchPage() {
           </div>
         </div>
       )}
+      </div>
 
       {/* Extended Info Modal */}
       {showExtendedInfo && selectedAircraft && selectedAircraft.id === 'a220-300' && (

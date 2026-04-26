@@ -224,7 +224,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         alt="WingMentor Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
-                    <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
+                    <p className="text-xl font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                         About Us
                     </p>
                     <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
