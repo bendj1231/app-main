@@ -1564,7 +1564,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             </div>
                         </div>
                     ) : shouldUseCarousel && carouselImages ? (
-                        // Carousel with multiple images or animations - Redesigned
+                        // Carousel - Billboard Style with Simple Buttons
                         <div className="relative w-full h-full">
                             {carouselImages.map((img, idx) => {
                                 const isAnimationIndex = card.animationIndices?.includes(idx);
@@ -1597,65 +1597,31 @@ const GridCard: React.FC<GridCardProps> = ({
                                     </div>
                                 );
                             })}
-                            {/* Glass UI Carousel Controls */}
-                            <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between">
-                                {/* Slide Counter */}
-                                <div className="px-3 py-1.5 bg-black/40 backdrop-blur-md border border-white/20 rounded-full">
-                                    <span className="text-white text-xs font-medium">
-                                        {currentImageIndex + 1} / {carouselImages.length}
-                                    </span>
-                                </div>
-                                {/* Navigation Arrows */}
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            handleManualNavigation('prev');
-                                        }}
-                                        className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
-                                    >
-                                        <ChevronLeft className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
-                                    </button>
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            handleManualNavigation('next');
-                                        }}
-                                        className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
-                                    >
-                                        <ChevronRight className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
-                                    </button>
-                                </div>
-                            </div>
-                            {/* Progress Bar */}
-                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-20">
-                                <div 
-                                    className={`h-full bg-white/80 transition-all duration-300 ${enableAnimations ? '' : ''}`}
-                                    style={{ width: `${((currentImageIndex + 1) / carouselImages.length) * 100}%` }}
-                                />
-                            </div>
-                            {/* Glass UI Dot Indicators */}
-                            <div className="absolute top-4 right-4 z-20 flex gap-2">
-                                {carouselImages.map((_, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            setIsPaused(true);
-                                            setCurrentImageIndex(idx);
-                                            if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
-                                            pauseTimeoutRef.current = setTimeout(() => setIsPaused(false), 10000);
-                                        }}
-                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                            idx === currentImageIndex
-                                                ? 'bg-white w-6 shadow-lg shadow-white/50'
-                                                : 'bg-white/40 hover:bg-white/60 w-2'
-                                        }`}
-                                    />
-                                ))}
+                            {/* Subtle Gradient Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                            
+                            {/* Billboard-Style Navigation Buttons */}
+                            <div className="absolute bottom-6 left-6 right-6 z-30 flex justify-between items-end">
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        handleManualNavigation('prev');
+                                    }}
+                                    className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 group"
+                                >
+                                    <ChevronLeft className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+                                </button>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        handleManualNavigation('next');
+                                    }}
+                                    className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 group"
+                                >
+                                    <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+                                </button>
                             </div>
                         </div>
                     ) : displayImage || currentImage ? (

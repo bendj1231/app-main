@@ -1,8 +1,9 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
+const { config } = require('firebase-functions');
 
-const supabaseUrl = process.env.SUPABASE_URL || process.env.supabaseUrl || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.supabaseAnonKey || process.env.SUPABASE_KEY || process.env.supabaseKey;
+const supabaseUrl = config().supabase.url || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+const supabaseKey = config().supabase.anon_key;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
