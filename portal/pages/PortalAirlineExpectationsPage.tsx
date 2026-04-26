@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Plane, MapPin, DollarSign, Clock, Globe, Star, Cpu, Users, Brain, Shield, Target, GraduationCap, CheckCircle2, Search, Briefcase, Zap, TrendingUp } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { PilotAptitudeTest } from '../../components/PilotAptitudeTest';
@@ -12,6 +12,8 @@ interface Airline {
   name: string;
   location: string;
   salaryRange: string;
+  salaryRangePublic?: string;
+  salaryRangeDetailed?: string;
   flightHours: string;
   tags: string[];
   image: string;
@@ -23,10 +25,18 @@ interface Airline {
   futureDemand?: string;
   flag?: string;
   region: Region;
+  assessmentProcessPublic?: string;
+  assessmentProcessDetailed?: string;
+  dataSource?: string;
+  lastUpdated?: string;
+  verificationStatus?: string;
+  verificationNotes?: string;
   expectations?: Array<{
     title: string;
     desc: string;
     bullets: string[];
+    icon?: any;
+    color?: string;
   }>;
   futureFleetPlans?: {
     newAircraft: string[];
@@ -55,6 +65,8 @@ interface Airline {
     };
     assessmentProcess?: {
       day1?: string;
+      day2?: string;
+      day3?: string;
       technicalFocus?: string;
       simulatorCheck?: string;
     };
@@ -62,6 +74,8 @@ interface Airline {
       rostering?: string;
       culture?: string;
       bonds?: string;
+      roster?: string;
+      training?: string;
     };
     compensationBenefits?: {
       salary?: string;
@@ -93,28 +107,6 @@ interface Airline {
       directEntryCaptains?: string;
       applicationMethod?: string;
       assessmentProcess?: string;
-    };
-    starMethodQuestions?: {
-      integrityHonesty?: {
-        question?: string;
-        guidance?: string;
-      };
-      commitmentLoyalty?: {
-        question?: string;
-        guidance?: string;
-      };
-      ethicalStandards?: {
-        question?: string;
-        guidance?: string;
-      };
-      accountability?: {
-        question?: string;
-        guidance?: string;
-      };
-      resilience?: {
-        question?: string;
-        guidance?: string;
-      };
     };
     preparationResources?: {
       psychometricCognitive?: {
@@ -148,21 +140,21 @@ interface Airline {
 
 const AIRLINES: Airline[] = [
   // Middle East
-  { id: 'qatar', name: 'Qatar Airways', location: 'Qatar', salaryRange: '$100,000 – $265,000 USD/Year (Total Package)', flightHours: '1,000 hrs (FO) / 6,000 hrs (DEC)', tags: ['5-Star Airline', 'Tax-Free', 'Worldwide Routes'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/qatar-airways.jpg', cardImage: 'https://upload.wikimedia.org/wikipedia/commons/c/c2/Qatar_Airways_Logo.png', description: 'Qatar Airways is renowned for its exceptional service standards and global network spanning over 160 destinations. With competitive tax-free salary packages, modern aircraft fleet, and rapid career progression opportunities.', fleet: 'Boeing 777, 787, Airbus A350, A380 (active until 2032), A320, A321neo (2026 deliveries), B777-9 (2027 deliveries)', currentFleet: 'Boeing 777, 787, Airbus A350, A380, A320', fleetWithEndOfService: [
+  { id: 'qatar', name: 'Qatar Airways', location: 'Qatar', salaryRange: '$100,000 – $300,000 USD/Year (Total Package)', salaryRangePublic: '$100,000-300,000/year', salaryRangeDetailed: '$100,000 – $300,000 USD/Year (Total Package)', assessmentProcessPublic: 'Multi-stage assessment including psychometric testing, technical exams, simulator evaluation, and competency-based interviews', assessmentProcessDetailed: 'Multi-stage assessment including psychometric testing, technical exams, simulator evaluation, and competency-based interviews', flightHours: '1,000 hrs (FO) / 6,000 hrs (DEC)', tags: ['5-Star Airline', 'Tax-Free', 'Worldwide Routes'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/qatar-airways.jpg', cardImage: 'https://upload.wikimedia.org/wikipedia/commons/c/c2/Qatar_Airways_Logo.png', description: 'Qatar Airways is renowned for its exceptional service standards and global network spanning over 160 destinations. With competitive tax-free salary packages, modern aircraft fleet, and rapid career progression opportunities.', fleet: 'Boeing 777, 787, Airbus A350, A380, A320, A321neo, B777-9', currentFleet: 'Boeing 777, 787, Airbus A350, A380, A320, A321neo', dataSource: 'Airbus public delivery data, aviation industry reports, pilot community forums, Qatar Airways career portal', lastUpdated: 'April 2026', verificationStatus: 'unverified', verificationNotes: 'This airline is currently unverified on pilotrecognition.com. Airbus aircraft specifications sourced from public Airbus announcements and industry reports for pilot awareness purposes—not for competitive intelligence.', fleetWithEndOfService: [
     { aircraft: 'Boeing 777', endOfService: 'Ongoing' },
     { aircraft: 'Boeing 787', endOfService: 'Ongoing' },
     { aircraft: 'Airbus A350', endOfService: 'Ongoing' },
-    { aircraft: 'Airbus A380', endOfService: '2032' },
+    { aircraft: 'Airbus A380', endOfService: 'Phasing out (fleet reduction ongoing)' },
     { aircraft: 'Airbus A320', endOfService: 'Phasing out' }
-  ], futureDemand: 'A321neo (2026 deliveries), B777-9 (2027 deliveries)', region: 'Middle East', expectations: [
+  ], futureDemand: 'Fleet modernization with new aircraft deliveries planned (Source: Airbus Orders & Deliveries data)', region: 'Middle East', expectations: [
     { title: '5-Star Service Standards', desc: 'Qatar Airways expects pilots to maintain the highest service standards. Excellence in passenger interaction and cultural sensitivity is essential.', bullets: ['Premium Service', 'Cultural Awareness', 'Communication Skills'] },
     { title: 'Technical Excellence', desc: 'Strict adherence to SOPs and automation management. Qatar operates modern Airbus and Boeing fleets requiring advanced technical proficiency.', bullets: ['SOP Compliance', 'Automation Mastery', 'Type Rating'] },
     { title: 'Team Leadership', desc: 'CRM and crew resource management are critical. Pilots must demonstrate leadership in multi-cultural crew environments.', bullets: ['CRM Excellence', 'Leadership', 'Teamwork'] },
     { title: 'Adaptability', desc: 'Global operations require flexibility with varying time zones, regulations, and cultural contexts across 160+ destinations.', bullets: ['Flexibility', 'Global Operations', 'Regulatory Knowledge'] }
   ], futureFleetPlans: {
     newAircraft: ['Boeing 787-9', 'Airbus A350-1000', 'Boeing 777-9'],
-    retiringAircraft: ['Airbus A330-200', 'Airbus A340-600'],
-    expansionPlans: 'Expanding to 250+ destinations by 2030 with focus on Asia-Pacific and North America routes'
+    retiringAircraft: ['Airbus A380 (progressive phase-out)'],
+    expansionPlans: 'Fleet modernization with focus on fuel-efficient aircraft'
   }, aircraftDemand: {
     airbusPreference: 55,
     boeingPreference: 45,
@@ -176,99 +168,76 @@ const AIRLINES: Airline[] = [
     languageRequirements: ['English (Fluent/Level 4+)']
   }, detailedInfo: {
     entryRequirements: {
-      captain: 'Direct Entry Captain (DEC): Minimum 6,000 hours total flying time. Command Experience: Minimum 2,000 hours as Pilot-in-Command (PIC) on multi-crew, multi-engine commercial jets with a MTOW of ≥50 Tonnes. Competitive Benchmark: Candidates with 7,000+ total hours and 3,000+ PIC hours on long-haul types (B777/A350) are prioritized.',
-      firstOfficer: 'Non-Type Rated (NTR): Minimum 1,000 hours on multi-crew, multi-engine EFIS jets with a MTOW of ≥20 Tonnes. Type Rated: Minimum 500 hours on type (e.g., B777, B787, A320, A350) with a total time of 1,500+ hours.',
-      licenses: 'License: Valid ICAO ATPL (Frozen ATPL accepted for FO roles only). Medical: Valid ICAO Class 1 Medical Certificate. English: ICAO English Proficiency Level 4 minimum (Level 5 or 6 is the competitive standard for 2026). Recency: Must have operated as a pilot on a multi-crew, multi-engine jet within the last 12 months.',
-      additional: 'Language: English (Fluent/Level 4+). Arabic is not required or preferred for flight operations. Additional Edge: ETOPS experience is highly valued due to Qatar\'s long-haul network. Education: A University Degree is not mandatory but is a significant "tie-breaker" for career progression into management or training roles.'
+      captains: 'Direct Entry Captain (DEC): Minimum 6,000 hours total flying time. Command Experience: Minimum 2,000 hours as Pilot-in-Command (PIC) on multi-crew, multi-engine commercial jets with a MTOW of ≥50 Tonnes. Competitive Benchmark: Candidates with 7,000+ total hours and 3,000+ PIC hours on long-haul types (B777/A350) are prioritized.',
+      firstOfficers: 'Non-Type Rated (NTR): Minimum 1,000 hours on multi-crew, multi-engine EFIS jets with a MTOW of ≥20 Tonnes. Type Rated: Minimum 500 hours on type (e.g., B777, B787, A320, A350) with a total time of 1,500+ hours.',
+      licensesMedical: 'License: Valid ICAO ATPL (Frozen ATPL accepted for FO roles only). Medical: Valid ICAO Class 1 Medical Certificate. English: ICAO English Proficiency Level 4 minimum (Level 5 or 6 is the competitive standard for 2026).',
+      recency: 'Must have operated as a pilot on a multi-crew, multi-engine jet within the last 12 months.'
     },
     assessmentProcess: {
-      onlinePsychometrics: 'Propel Personality Questionnaire (200 questions) and Symbiotics Cognitive Reasoning Tests immediately after applying.',
-      videoScreening: '10-minute automated or live interview screening.',
-      dohaAssessment: '50-question ATPL written exam (70% pass mark strictly enforced), Group Exercise (survival scenarios like jungle or Mars), and technical interview covering operational scenarios.',
-      simulatorCheck: 'Conducted on B787 or A320; focus is on raw-data manual handling (no flight director/autothrottle) and CRM.'
+      day1: 'Digital screening including personality assessment and cognitive reasoning tests.',
+      technicalFocus: 'Technical assessment including written exams and competency-based interviews.',
+      simulatorCheck: 'Simulator evaluation focusing on manual handling skills and CRM.'
     },
     workingConditions: {
-      rostering: 'Rosters can be demanding, often involving back-to-back night flights or long-haul routes. Guaranteed minimum of 8 days off per month, though these may be interspersed with standby days.',
-      culture: 'Former pilots describe a "mercenary" culture where high professional standards are expected, and management is often perceived as strict or punitive.',
-      bonds: 'New joiners receiving type ratings may be required to sign a 5-year training bond.'
+      roster: 'Rosters can be demanding, often involving back-to-back night flights or long-haul routes. Guaranteed minimum of 8 days off per month, though these may be interspersed with standby days.',
+      culture: 'High professional standards expected, with strict adherence to procedures and policies.',
+      training: 'New joiners receiving type ratings may be required to sign training bonds.'
     },
     compensationBenefits: {
-      salary: 'Tax-Free Salary: Junior First Officers start at $100,000+ annually. Senior Captains can exceed $265,000 when including flying pay, housing allowances ($4,000/month), and education support. Basic Salary: Paid in Qatari Riyals (QAR). Fixed exchange rate: $1 = 3.64 QAR.',
-      housing: 'Fully furnished company housing or monthly housing allowance (up to $4,000 USD/month if not using company-provided villas/apartments).',
-      travelPerks: 'Global staff travel benefits (ID90/ID50 tickets) for pilots and their immediate family.',
-      insurance: 'Comprehensive health coverage, life insurance, loss-of-license insurance, and education allowances for up to three children.'
+      salary: 'Competitive tax-free salary package with comprehensive benefits including housing allowances, education support, and flying pay. Specific figures should be confirmed during recruitment process.',
+      livingSupport: 'Housing support provided through company housing or monthly allowance.',
+      travelPerks: 'Global staff travel benefits for pilots and immediate family.',
+      insurance: 'Comprehensive health coverage, life insurance, loss-of-license insurance, and education allowances.'
     },
     profileAlignment: {
-      globalMobility: 'Emphasize willingness to relocate to Doha with family. Qatar Airways values cultural fit and long-term commitment to the region.',
-      technicalIntegrity: 'Demonstrate mastery of ATPL theory and manual flying skills. The 50-question ATPL exam and raw-data simulator check require deep technical knowledge.',
-      companyValues: 'Align STAR-method answers with the 5 core values, especially "One Team" and "Honesty and Loyalty". Show understanding of Qatar\'s premium brand expectations.',
-      standardization: 'Highlight your experience with standardized procedures and global operations. Qatar values pilots who can maintain consistency across diverse cultural contexts.'
+      technicalMastery: 'Demonstrate strong technical knowledge and manual flying skills.',
+      crmManualFlying: 'Emphasize CRM excellence and manual flying capabilities.',
+      professionalism: 'Align with premium brand expectations and maintain high professional standards.',
+      culturalAdaptability: 'Demonstrate willingness to relocate and cultural adaptability.'
     },
     latestUpdates: {
-      fleetNews: 'Delivery of Airbus A321neo began in 2026 to replace the aging A320 fleet. Massive order of 90+ Boeing 777-9 aircraft with deliveries starting in 2027.',
-      futureOrders: 'Boeing 777-9 (777X) expansion with 94 aircraft including 60 777-9s, and Airbus A321neo transition with 50 aircraft in 2026.',
-      a380Status: 'The A380 fleet is expected to remain in service until at least 2032 due to sustained demand.',
-      openings: 'Active recruitment is ongoing for Type Rated First Officers (A320, A350, B777, B787) and Direct Entry Captains to support network expansion across Africa and the Kingdom of Saudi Arabia.'
+      fleetNews: 'Fleet modernization ongoing with focus on fuel-efficient aircraft.',
+      futureOrders: 'Orders placed for next-generation aircraft with deliveries planned in coming years.',
+      a380Status: 'Fleet adjustments in line with industry trends.',
+      openings: 'Active recruitment ongoing for various positions.'
     },
     coreCompetencies: {
-      oneTeam: 'Evaluated during the Group Exercise, often a "survival scenario" (e.g., jungle or Mars). You must build consensus without voting and avoid being overly dominant or passive.',
-      drivingExcellence: 'Tested through a 50-question ATPL written exam and a technical interview featuring operational scenarios like Monsoon or Volcanic Ash.',
-      customerFirst: 'While pilots aren\'t customer-facing, this value translates to Operational Reliability and maintaining the airline\'s premium brand.',
-      safetySituational: 'Tested in the Simulator Assessment (B787 or A320). You\'ll face raw-data ILS, engine failures, or cargo fires where manual control and threat management are critical.',
-      futureFleetInsights: 'Aligning your profile means understanding the specific aircraft you will likely fly. Boeing 777X expansion (94 aircraft including 60 777-9s with 2027 deliveries), Airbus A321neo transition (50 aircraft in 2026), and A380 active until at least 2032.'
+      oneTeam: 'Evaluated through group exercises assessing teamwork and leadership skills.',
+      drivingExcellence: 'Tested through technical exams and interviews evaluating operational knowledge.',
+      customerFirst: 'Assessed through scenarios evaluating operational reliability and brand alignment.',
+      safetySituational: 'Tested in simulator assessments evaluating manual control and threat management.',
+      futureFleetInsights: 'Understanding aircraft fleet composition helps pilots align their profiles with airline needs.'
     },
     recruitmentStatus: {
-      typeRatedPositions: 'Continuous recruitment for A320, A350, B777, and B787 fleets to support rapid network expansion across Africa and the Kingdom of Saudi Arabia.',
-      directEntryCaptains: 'Specific openings for Global Express and A320 Captains in regional hubs.',
-      applicationMethod: 'All legitimate recruitment must go through the Qatar Airways Careers Portal.',
-      assessmentProcess: 'You will likely face a Propel personality questionnaire and Symbiotics cognitive reasoning tests immediately after applying.'
-    },
-    starMethodQuestions: {
-      integrityHonesty: {
-        question: 'Tell me about a time you made a mistake on the flight deck that no one else noticed. How did you handle it?',
-        guidance: 'Focus on immediate transparency—reporting the error through proper safety channels even if it was "invisible."'
-      },
-      commitmentLoyalty: {
-        question: 'Describe a situation where you had to represent your current airline during a difficult operational delay. How did you maintain a positive image of the brand?',
-        guidance: 'Prioritize the company\'s reputation and long-term goals over short-term personal convenience. Mention research on Doha\'s schooling or housing to show deliberate long-term commitment.'
-      },
-      ethicalStandards: {
-        question: 'Have you ever seen a colleague deviate from Standard Operating Procedures (SOPs)? What action did you take and why?',
-        guidance: 'Demonstrate commitment to safety standards and ethical behavior even when it\'s uncomfortable.'
-      },
-      accountability: {
-        question: 'Tell me about a time you received constructive criticism from a Captain or trainer. How did you respond to that feedback?',
-        guidance: 'Show willingness to learn and improve based on feedback, maintaining professional growth mindset.'
-      },
-      resilience: {
-        question: 'Qatar Airways operates a high-tempo 24/7 roster. Tell me about a time you had to manage a demanding schedule while maintaining professional standards.',
-        guidance: 'Highlight ability to maintain performance and professionalism under pressure and demanding schedules.'
-      }
+      typeRatedPositions: 'Continuous recruitment for type-rated positions.',
+      directEntryCaptains: 'Direct entry captain positions available for qualified candidates.',
+      applicationMethod: 'Apply through official airline career portals.',
+      assessmentProcess: 'Multi-stage assessment process including technical evaluation and competency-based interviews.'
     },
     preparationResources: {
       psychometricCognitive: {
-        description: 'Qatar Airways uses providers like Propel International (personality) and Symbiotics (cognitive reasoning). Practice the exact sections tested: Numerical and Verbal Reasoning, Spatial and Abstract Reasoning, Perceptual Speed and Accuracy.',
-        cost: '~$35 - $100/year',
-        providers: ['PilotAptitudeTest.com (~$37)', 'LatestPilotJobs', 'Propel International', 'Symbiotics']
+        description: 'Essential for the initial screening. Practice with personality questionnaires and cognitive reasoning tests.',
+        cost: '~$50-100',
+        providers: ['Various assessment providers']
       },
       atplQuestionBank: {
-        description: 'The on-site assessment in Doha includes a 50-question multiple-choice exam drawn from JAA/EASA question banks. A 70% pass mark is strictly enforced.',
-        cost: '~$50 - $120/year',
-        details: 'Access to updated ATPL databases is critical for the technical exam.'
+        description: 'Critical for technical written exams. Focus on performance, navigation, and operational procedures.',
+        cost: '~$60-120',
+        details: 'ATPL Question Bank (various providers)'
       },
       interviewCoaching: {
-        description: 'Premium courses provide the latest HR and technical "gouge" including STAR method training for competency-based questions and insights into Group Exercises.',
-        cost: '~$99 (One-time)',
-        providers: ['Flight Deck Consulting', 'AirlinePrep'],
-        topics: ['STAR method training', 'Competency-based questions', 'Group Exercise scenarios', 'Survival scenarios (jungle/Mars base)']
+        description: 'Preparation for competency-based interviews using STAR method. Focus on airline values and aviation scenarios.',
+        cost: '~$150-300',
+        providers: ['Career coaching services'],
+        topics: ['STAR Method', 'Airline Values', 'Competency Questions']
       },
       technicalGuides: {
         description: 'Essential for preparing for deep-dive questions on your current aircraft type, high-altitude aerodynamics, and performance.',
         cost: '~$60',
-        examples: 'Ace the Technical Pilot Interview (approx. QAR 217 / $60)'
+        examples: 'Technical interview preparation guides'
       },
       cvAudit: {
-        description: 'To ensure your flight hours and professional experience meet the exact heavy jet (≥50T) requirements.',
+        description: 'To ensure your flight hours and professional experience meet the requirements.',
         cost: '~$150 - $300'
       }
     }
@@ -300,20 +269,20 @@ const AIRLINES: Airline[] = [
   { id: 'saudia', name: 'Saudia', location: 'Saudi Arabia', salaryRange: '$80,000 - $140,000/year', flightHours: '2,500+ hrs TT', tags: ['Jeddah Hub', 'Skyteam', 'Growing Network'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/saudia.jpg', cardImage: 'https://static.wikia.nocookie.net/aviation-airport/images/d/de/Logo_of_Saudia.svg.png/revision/latest?cb=20240530125824', description: 'Saudia is Saudi Arabia\'s flag carrier undergoing rapid transformation. Pilots have opportunities in a rapidly modernizing fleet with growing international destinations.', region: 'Middle East' },
   { id: 'omanair', name: 'Oman Air', location: 'Oman', salaryRange: '$65,000 - $120,000/year', flightHours: '2,000+ hrs TT', tags: ['Muscat Hub', 'Oneworld', 'Growing Fleet'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776687736/airline-expectations/oman-air.webp', cardImage: 'https://download.logo.wine/logo/Oman_Air/Oman_Air-Logo.wine.png', description: 'Oman Air is the national carrier of Oman. Operating from Muscat with a growing Boeing 787 Dreamliner fleet, offering pilots opportunities in the dynamic Middle East market.', fleet: 'Boeing 787 Dreamliner, 737', region: 'Middle East' },
   // Asia
-  { id: 'singapore', name: 'Singapore Airlines', location: 'Singapore', salaryRange: '$120,000 - $180,000/year', flightHours: '3,000+ hrs TT', tags: ['Premium Carrier', 'Asian Hub', 'Great Benefits'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/singapore-airlines.jpg', cardImage: 'https://static.vecteezy.com/system/resources/previews/055/210/889/non_2x/singapore-airlines-logo-free-download-singapore-airlines-logo-free-png.png', description: 'Singapore Airlines maintains one of the highest service standards globally, offering comprehensive benefits and a strategic Asian hub location.', fleet: 'Airbus A350, A380, Boeing 777, 787', region: 'Asia', expectations: [
+  { id: 'singapore', name: 'Singapore Airlines', location: 'Singapore', salaryRange: '$120,000 - $180,000/year', flightHours: '3,000+ hrs TT', tags: ['Premium Carrier', 'Asian Hub', 'Great Benefits'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/singapore-airlines.jpg', cardImage: 'https://static.vecteezy.com/system/resources/previews/055/210/889/non_2x/singapore-airlines-logo-free-download-singapore-airlines-logo-free-png.png', description: 'Singapore Airlines maintains one of the highest service standards globally, offering comprehensive benefits and a strategic Asian hub location.', fleet: 'Airbus A350, A380 (phasing out), Boeing 777, 787', region: 'Asia', expectations: [
     { title: 'Singapore Girl Service', desc: 'World-renowned service standards. Pilots must exemplify the Singapore Girl tradition of excellence in passenger service.', bullets: ['Service Excellence', 'Hospitality', 'Professionalism'] },
     { title: 'Asian Network Expertise', desc: 'Strategic Singapore hub requires knowledge of Asian routes, weather patterns, and regional regulations.', bullets: ['Asian Routes', 'Regional Knowledge', 'Hub Operations'] },
     { title: 'Technical Precision', desc: 'SIA operates modern Airbus and Boeing fleets with strict adherence to technical procedures and automation management.', bullets: ['Fleet Mastery', 'SOP Compliance', 'Automation Skills'] },
     { title: 'Cultural Sensitivity', desc: 'Operating across diverse Asian cultures requires exceptional cultural awareness and communication abilities.', bullets: ['Cultural Awareness', 'Communication', 'Adaptability'] }
   ], futureFleetPlans: {
     newAircraft: ['Boeing 777-9', 'Airbus A350-1000'],
-    retiringAircraft: ['Boeing 777-200ER', 'Airbus A330-300'],
+    retiringAircraft: ['Boeing 777-200ER', 'Airbus A330-300', 'Airbus A380 (progressive phase-out)'],
     expansionPlans: 'Focusing on long-haul expansion to Europe and North America with new A350 and 777X aircraft'
   }, aircraftDemand: {
     airbusPreference: 60,
     boeingPreference: 40,
     primaryManufacturer: 'Airbus',
-    trendingAircraft: ['Airbus A350', 'Boeing 777X', 'Airbus A380']
+    trendingAircraft: ['Airbus A350', 'Boeing 777X']
   }, pilotRequirements: {
     minHours: 3000,
     preferredHours: 5000,
@@ -440,12 +409,36 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
   onNavigate,
   isDarkMode = true,
 }) => {
+  const { userProfile } = useAuth();
   const [selectedAirline, setSelectedAirline] = useState<Airline | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [regionFilter, setRegionFilter] = useState<Region>('All');
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState('Overview');
-  const { userProfile } = useAuth();
+  const [hasRecognitionAccess, setHasRecognitionAccess] = useState(false);
+
+  // Check for recognition access
+  useEffect(() => {
+    if (userProfile?.projects?.includes('recognition')) {
+      setHasRecognitionAccess(true);
+    }
+  }, [userProfile]);
+
+  // Helper function to get salary range based on recognition access
+  const getSalaryRange = (airline: Airline) => {
+    if (hasRecognitionAccess && airline.salaryRangeDetailed) {
+      return airline.salaryRangeDetailed;
+    }
+    return airline.salaryRangePublic || airline.salaryRange;
+  };
+
+  // Helper function to get assessment process based on recognition access
+  const getAssessmentProcess = (airline: Airline) => {
+    if (hasRecognitionAccess && airline.assessmentProcessDetailed) {
+      return airline.assessmentProcessDetailed;
+    }
+    return airline.assessmentProcessPublic || 'Multi-stage assessment process';
+  };
 
   const filteredAirlines = AIRLINES.filter(a => {
     const matchesRegion = regionFilter === 'All' || a.region === regionFilter;
@@ -487,7 +480,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
           className="w-full h-full"
           colors={["#ffffff", "#f8fbff", "#f0f7ff", "#e8f5ff"]}
           speed={1.0}
-          backgroundColor="#ffffff"
         />
       </div>
       <div className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-0" />
@@ -685,8 +677,18 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                         Salary Range
                       </div>
                       <div className="text-2xl font-bold">
-                        {selectedAirline.salaryRange}
+                        {getSalaryRange(selectedAirline)}
                       </div>
+                      {!hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
+                        <div className="mt-2">
+                          <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">Pilotrecognition+ Membership for more accurate details</span>
+                        </div>
+                      )}
+                      {hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
+                        <div className="mt-2">
+                          <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full">Recognition Plus</span>
+                        </div>
+                      )}
                     </div>
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
                       <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
@@ -827,7 +829,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                 <h2 className="text-4xl md:text-5xl font-serif text-white mb-2">{selectedAirline.name}</h2>
                 <div className="flex items-center gap-4 flex-wrap">
                   <span className="flex items-center gap-1.5 text-white/80 text-sm"><MapPin className="w-4 h-4" />{selectedAirline.location}</span>
-                  <span className="flex items-center gap-1.5 text-emerald-300 text-sm font-medium"><DollarSign className="w-4 h-4" />{selectedAirline.salaryRange}</span>
+                  <span className="flex items-center gap-1.5 text-emerald-300 text-sm font-medium"><DollarSign className="w-4 h-4" />{getSalaryRange(selectedAirline)}</span>
                   <span className="flex items-center gap-1.5 text-sky-300 text-sm"><Clock className="w-4 h-4" />{selectedAirline.flightHours}</span>
                 </div>
               </div>
@@ -1093,7 +1095,13 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                     <div className="space-y-3">
                       <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
                         <p className={`text-xs ${subtext} mb-1`}>Salary Range</p>
-                        <p className={`font-semibold ${text}`}>{selectedAirline.salaryRange}</p>
+                        <p className={`font-semibold ${text}`}>{getSalaryRange(selectedAirline)}</p>
+                        {!hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
+                          <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full ml-2">Pilotrecognition+ Membership for more accurate details</span>
+                        )}
+                        {hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
+                          <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full ml-2">Recognition Plus</span>
+                        )}
                       </div>
                       <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
                         <p className={`text-xs ${subtext} mb-1`}>Flight Hours Required</p>
@@ -1103,6 +1111,32 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                         <p className={`text-xs ${subtext} mb-1`}>Location</p>
                         <p className={`font-semibold ${text}`}>{selectedAirline.location}</p>
                       </div>
+                      {selectedAirline.assessmentProcessPublic && (
+                        <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
+                          <p className={`text-xs ${subtext} mb-1`}>Assessment Process</p>
+                          <p className={`font-semibold ${text}`}>{getAssessmentProcess(selectedAirline)}</p>
+                          {!hasRecognitionAccess && selectedAirline.assessmentProcessDetailed && (
+                            <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full ml-2 mt-2 inline-block">Pilotrecognition+ Membership for more accurate details</span>
+                          )}
+                          {hasRecognitionAccess && selectedAirline.assessmentProcessDetailed && (
+                            <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full ml-2 mt-2 inline-block">Recognition Plus</span>
+                          )}
+                        </div>
+                      )}
+                      {selectedAirline.dataSource && (
+                        <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
+                          <p className={`text-xs ${subtext} mb-1`}>Data Source</p>
+                          <p className={`font-semibold ${text} text-xs`}>{selectedAirline.dataSource}</p>
+                          {selectedAirline.lastUpdated && (
+                            <p className={`text-xs ${subtext} mt-1`}>Updated: {selectedAirline.lastUpdated}</p>
+                          )}
+                          {selectedAirline.verificationStatus && (
+                            <div className={`mt-1 text-xs ${selectedAirline.verificationStatus === 'verified' ? 'text-green-400' : selectedAirline.verificationStatus === 'pending' ? 'text-yellow-400' : 'text-red-400'}`}>
+                              Status: {selectedAirline.verificationStatus.charAt(0).toUpperCase() + selectedAirline.verificationStatus.slice(1)}
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* CTA for Aptitude Test */}
@@ -1189,65 +1223,72 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
               {activeTab === 'Requirements' && selectedAirline.detailedInfo && (
                 <div className="space-y-6">
-                  {selectedAirline.detailedInfo.entryRequirements && (
-                    <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
-                      <h4 className={`text-lg font-semibold mb-4 ${text}`}>Entry Requirements (2026)</h4>
-                      <div className="space-y-3">
-                        {selectedAirline.detailedInfo.entryRequirements.captain && (
-                          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                            <p className={`font-semibold text-sm mb-2 ${text}`}>Captain Requirements</p>
-                            <ul className={`space-y-1 text-xs ${subtext}`}>
-                              {selectedAirline.detailedInfo.entryRequirements.captain.split('\n').map((req, idx) => (
-                                <li key={idx} className="flex items-start gap-2">
-                                  <span className="text-sky-500">•</span>
-                                  <span>{req.trim()}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        {selectedAirline.detailedInfo.entryRequirements.firstOfficer && (
-                          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                            <p className={`font-semibold text-sm mb-2 ${text}`}>First Officer Requirements</p>
-                            <ul className={`space-y-1 text-xs ${subtext}`}>
-                              {selectedAirline.detailedInfo.entryRequirements.firstOfficer.split('\n').map((req, idx) => (
-                                <li key={idx} className="flex items-start gap-2">
-                                  <span className="text-sky-500">•</span>
-                                  <span>{req.trim()}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        {selectedAirline.detailedInfo.entryRequirements.licenses && (
-                          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                            <p className={`font-semibold text-sm mb-2 ${text}`}>Licenses & Certifications</p>
-                            <ul className={`space-y-1 text-xs ${subtext}`}>
-                              {selectedAirline.detailedInfo.entryRequirements.licenses.split('\n').map((req, idx) => (
-                                <li key={idx} className="flex items-start gap-2">
-                                  <span className="text-sky-500">•</span>
-                                  <span>{req.trim()}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        {selectedAirline.detailedInfo.entryRequirements.additional && (
-                          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                            <p className={`font-semibold text-sm mb-2 ${text}`}>Additional Requirements</p>
-                            <ul className={`space-y-1 text-xs ${subtext}`}>
-                              {selectedAirline.detailedInfo.entryRequirements.additional.split('\n').map((req, idx) => (
-                                <li key={idx} className="flex items-start gap-2">
-                                  <span className="text-sky-500">•</span>
-                                  <span>{req.trim()}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                  {!hasRecognitionAccess ? (
+                    <div className={`rounded-xl p-8 text-center ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
+                      <Shield className={`w-12 h-12 mx-auto mb-4 ${isDarkMode ? 'text-slate-600' : 'text-slate-400'}`} />
+                      <h4 className={`text-lg font-semibold mb-2 ${text}`}>Recognition Plus Required</h4>
+                      <p className={`text-sm ${subtext} mb-4`}>Detailed entry requirements, assessment processes, and compensation information require PilotRecognition+ membership for access.</p>
+                      <div className={`inline-block px-4 py-2 rounded-lg bg-red-500 text-white text-sm font-medium`}>
+                        Upgrade to PilotRecognition+ for detailed insights
                       </div>
                     </div>
-                  )}
+                  ) : (
+                    <>
+                      {selectedAirline.detailedInfo.entryRequirements && (
+                        <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className={`text-lg font-semibold ${text}`}>Entry Requirements (2026)</h4>
+                            <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full">Recognition Plus</span>
+                          </div>
+                          <div className="space-y-3">
+                            {selectedAirline.detailedInfo.entryRequirements.captains && (
+                              <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
+                                <p className={`font-semibold text-sm mb-2 ${text}`}>Captain Requirements</p>
+                                <ul className={`space-y-1 text-xs ${subtext}`}>
+                                  {selectedAirline.detailedInfo.entryRequirements.captains.split('\n').map((req, idx) => (
+                                    <li key={idx} className="flex items-start gap-2">
+                                      <span className="text-sky-500">•</span>
+                                      <span>{req.trim()}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {selectedAirline.detailedInfo.entryRequirements.firstOfficers && (
+                              <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
+                                <p className={`font-semibold text-sm mb-2 ${text}`}>First Officer Requirements</p>
+                                <ul className={`space-y-1 text-xs ${subtext}`}>
+                                  {selectedAirline.detailedInfo.entryRequirements.firstOfficers.split('\n').map((req, idx) => (
+                                    <li key={idx} className="flex items-start gap-2">
+                                      <span className="text-sky-500">•</span>
+                                      <span>{req.trim()}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {selectedAirline.detailedInfo.entryRequirements.licensesMedical && (
+                              <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
+                                <p className={`font-semibold text-sm mb-2 ${text}`}>Licenses & Certifications</p>
+                                <ul className={`space-y-1 text-xs ${subtext}`}>
+                                  {selectedAirline.detailedInfo.entryRequirements.licensesMedical.split('\n').map((req, idx) => (
+                                    <li key={idx} className="flex items-start gap-2">
+                                      <span className="text-sky-500">•</span>
+                                      <span>{req.trim()}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {selectedAirline.detailedInfo.entryRequirements.recency && (
+                              <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
+                                <p className={`font-semibold text-sm mb-2 ${text}`}>Recency Requirements</p>
+                                <p className={`text-xs ${subtext}`}>{selectedAirline.detailedInfo.entryRequirements.recency}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
 
                   {selectedAirline.detailedInfo.assessmentProcess && (
                     <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
@@ -1324,7 +1365,10 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
                   {selectedAirline.detailedInfo.compensationBenefits && (
                     <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
-                      <h4 className={`text-lg font-semibold mb-4 ${text}`}>Compensation & Benefits</h4>
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className={`text-lg font-semibold ${text}`}>Compensation & Benefits</h4>
+                        <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full">Recognition Plus</span>
+                      </div>
                       <div className="space-y-3">
                         {selectedAirline.detailedInfo.compensationBenefits.salary && (
                           <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
@@ -1332,16 +1376,16 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                             <p className={`text-xs ${subtext}`}>{selectedAirline.detailedInfo.compensationBenefits.salary}</p>
                           </div>
                         )}
-                        {selectedAirline.detailedInfo.compensationBenefits.housing && (
+                        {selectedAirline.detailedInfo.compensationBenefits.livingSupport && (
                           <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                            <p className={`font-semibold text-sm mb-2 ${text}`}>Housing</p>
-                            <p className={`text-xs ${subtext}`}>{selectedAirline.detailedInfo.compensationBenefits.housing}</p>
+                            <p className={`font-semibold text-sm mb-2 ${text}`}>Living Support</p>
+                            <p className={`text-xs ${subtext}`}>{selectedAirline.detailedInfo.compensationBenefits.livingSupport}</p>
                           </div>
                         )}
-                        {selectedAirline.detailedInfo.compensationBenefits.travel && (
+                        {selectedAirline.detailedInfo.compensationBenefits.travelPerks && (
                           <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
                             <p className={`font-semibold text-sm mb-2 ${text}`}>Travel Perks</p>
-                            <p className={`text-xs ${subtext}`}>{selectedAirline.detailedInfo.compensationBenefits.travel}</p>
+                            <p className={`text-xs ${subtext}`}>{selectedAirline.detailedInfo.compensationBenefits.travelPerks}</p>
                           </div>
                         )}
                         {selectedAirline.detailedInfo.compensationBenefits.insurance && (
@@ -1352,6 +1396,8 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                         )}
                       </div>
                     </div>
+                  )}
+                    </>
                   )}
                 </div>
               )}
@@ -1469,75 +1515,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                             <p className={`text-sm ${subtext}`}>Core competency alignment information is not yet available for {selectedAirline.name}.</p>
                           </div>
                         )}
-
-                        {selectedAirline.detailedInfo?.starMethodQuestions && (
-                          <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
-                            <h4 className={`text-lg font-semibold mb-4 ${text}`}>STAR-Method Interview Questions (Honesty & Loyalty)</h4>
-                            <p className={`text-xs ${subtext} mb-4`}>Qatar Airways uses STAR-method (Situation, Task, Action, Result) questions to probe your integrity and dedication to Doha.</p>
-                            <div className="space-y-4">
-                              {selectedAirline.detailedInfo.starMethodQuestions.integrityHonesty && (
-                                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                  <div className="flex items-start gap-3 mb-2">
-                                    <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                      <Shield className="w-3 h-3 text-purple-400" />
-                                    </div>
-                                    <p className={`font-medium text-sm ${text}`}>Integrity & Honesty</p>
-                                  </div>
-                                  <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.integrityHonesty.question}"</p>
-                                  <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.integrityHonesty.guidance}</p>
-                                </div>
-                              )}
-                              {selectedAirline.detailedInfo.starMethodQuestions.commitment && (
-                                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                  <div className="flex items-start gap-3 mb-2">
-                                    <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                      <Shield className="w-3 h-3 text-purple-400" />
-                                    </div>
-                                    <p className={`font-medium text-sm ${text}`}>Commitment (Loyalty)</p>
-                                  </div>
-                                  <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.commitment.question}"</p>
-                                  <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.commitment.guidance}</p>
-                                </div>
-                              )}
-                              {selectedAirline.detailedInfo.starMethodQuestions.ethicalStandards && (
-                                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                  <div className="flex items-start gap-3 mb-2">
-                                    <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                      <Shield className="w-3 h-3 text-purple-400" />
-                                    </div>
-                                    <p className={`font-medium text-sm ${text}`}>Ethical Standards</p>
-                                  </div>
-                                  <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.ethicalStandards.question}"</p>
-                                  <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.ethicalStandards.guidance}</p>
-                                </div>
-                              )}
-                              {selectedAirline.detailedInfo.starMethodQuestions.accountability && (
-                                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                  <div className="flex items-start gap-3 mb-2">
-                                    <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                      <Shield className="w-3 h-3 text-purple-400" />
-                                    </div>
-                                    <p className={`font-medium text-sm ${text}`}>Accountability</p>
-                                  </div>
-                                  <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.accountability.question}"</p>
-                                  <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.accountability.guidance}</p>
-                                </div>
-                              )}
-                              {selectedAirline.detailedInfo.starMethodQuestions.resilience && (
-                                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                  <div className="flex items-start gap-3 mb-2">
-                                    <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                      <Shield className="w-3 h-3 text-purple-400" />
-                                    </div>
-                                    <p className={`font-medium text-sm ${text}`}>Resilience (Loyalty)</p>
-                                  </div>
-                                  <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.resilience.question}"</p>
-                                  <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.resilience.guidance}</p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
                       </div>
                       <div className="absolute inset-0 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm rounded-xl">
                         <div className="text-center">
@@ -1609,75 +1586,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                           <p className={`text-sm ${subtext}`}>Core competency alignment information is not yet available for {selectedAirline.name}.</p>
                         </div>
                       )}
-
-                      {selectedAirline.detailedInfo?.starMethodQuestions ? (
-                        <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
-                          <h4 className={`text-lg font-semibold mb-4 ${text}`}>STAR-Method Interview Questions (Honesty & Loyalty)</h4>
-                          <p className={`text-xs ${subtext} mb-4`}>Qatar Airways uses STAR-method (Situation, Task, Action, Result) questions to probe your integrity and dedication to Doha.</p>
-                          <div className="space-y-4">
-                            {selectedAirline.detailedInfo.starMethodQuestions.integrityHonesty && (
-                              <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                <div className="flex items-start gap-3 mb-2">
-                                  <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                    <Shield className="w-3 h-3 text-purple-400" />
-                                  </div>
-                                  <p className={`font-medium text-sm ${text}`}>Integrity & Honesty</p>
-                                </div>
-                                <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.integrityHonesty.question}"</p>
-                                <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.integrityHonesty.guidance}</p>
-                              </div>
-                            )}
-                            {selectedAirline.detailedInfo.starMethodQuestions.commitment && (
-                              <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                <div className="flex items-start gap-3 mb-2">
-                                  <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                    <Shield className="w-3 h-3 text-purple-400" />
-                                  </div>
-                                  <p className={`font-medium text-sm ${text}`}>Commitment (Loyalty)</p>
-                                </div>
-                                <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.commitment.question}"</p>
-                                <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.commitment.guidance}</p>
-                              </div>
-                            )}
-                            {selectedAirline.detailedInfo.starMethodQuestions.ethicalStandards && (
-                              <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                <div className="flex items-start gap-3 mb-2">
-                                  <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                    <Shield className="w-3 h-3 text-purple-400" />
-                                  </div>
-                                  <p className={`font-medium text-sm ${text}`}>Ethical Standards</p>
-                                </div>
-                                <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.ethicalStandards.question}"</p>
-                                <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.ethicalStandards.guidance}</p>
-                              </div>
-                            )}
-                            {selectedAirline.detailedInfo.starMethodQuestions.accountability && (
-                              <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                <div className="flex items-start gap-3 mb-2">
-                                  <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                    <Shield className="w-3 h-3 text-purple-400" />
-                                  </div>
-                                  <p className={`font-medium text-sm ${text}`}>Accountability</p>
-                                </div>
-                                <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.accountability.question}"</p>
-                                <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.accountability.guidance}</p>
-                              </div>
-                            )}
-                            {selectedAirline.detailedInfo.starMethodQuestions.resilience && (
-                              <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                                <div className="flex items-start gap-3 mb-2">
-                                  <div className={`w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0`}>
-                                    <Shield className="w-3 h-3 text-purple-400" />
-                                  </div>
-                                  <p className={`font-medium text-sm ${text}`}>Resilience (Loyalty)</p>
-                                </div>
-                                <p className={`text-xs ${subtext} mb-2`}>"{selectedAirline.detailedInfo.starMethodQuestions.resilience.question}"</p>
-                                <p className={`text-xs ${subtext}`}>Guidance: {selectedAirline.detailedInfo.starMethodQuestions.resilience.guidance}</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ) : null}
                     </div>
                   )}
                 </div>
@@ -2057,6 +1965,21 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                     {tag}
                   </span>
                 ))}
+              </div>
+            </div>
+
+            {/* Data Disclaimer */}
+            <div className={`px-6 md:px-8 pb-6 border-t ${isDarkMode ? 'border-slate-800' : 'border-slate-200'} pt-5`}>
+              <div className={`p-3 rounded-lg bg-slate-100 border border-slate-300`}>
+                <div className="flex items-start gap-2">
+                  <Shield className={`w-4 h-4 text-slate-700 mt-0.5 flex-shrink-0`} />
+                  <div>
+                    <p className={`text-xs font-semibold text-slate-900 mb-1`}>Data Disclaimer</p>
+                    <p className={`text-xs text-slate-800 leading-relaxed`}>
+                      PilotRecognition.com is operated by a university research pilot group for the benefit of helping pilots to be aware and connect more to the industry. This platform matches pilots with current industry information publicly available and sourced across the internet through various credible sources to help pilots align their profiles. All information presented is compiled from publicly available sources for informational purposes only. This platform is not currently affiliated with, endorsed by, or sponsored by any airline, though we plan to establish partnerships in the future. Airline logos, trademarks, and branding are used under fair use principles solely for identification and informational purposes to help pilots understand industry requirements. No airline has verified, endorsed, or approved any information on this platform. All salary ranges, requirements, and assessment processes are estimates based on available public data and may not reflect current airline policies. Airbus aircraft specifications and fleet information are sourced from public Airbus announcements, aviation industry reports, and publicly available delivery data for pilot awareness purposes only—not for competitive intelligence. We welcome data sharing agreements with Airbus to ensure accuracy and offer to remove or correct inaccurate data per Airbus request. PilotRecognition+ membership provides AI-powered data comparison tools to help pilots align their profiles with airline expectations. This platform serves as a pilot recognition channel for Airbus and other manufacturers to address pilots with recognition profiles. Any fees charged are solely for platform development and AI optimization services, not for access to airline data. Users should conduct their own due diligence and verify all information directly with official airline sources before making career decisions. This platform provides general guidance only and does not constitute professional career, legal, or financial advice. We assume no liability for decisions made based on information provided herein.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
