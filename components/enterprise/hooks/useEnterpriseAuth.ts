@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co',
-  import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-);
+import { supabase } from '../../../shared/lib/supabase';
 
 const FIREBASE_BASE = 'https://us-central1-pilotrecognition-airline.cloudfunctions.net';
 

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { manufacturers } from '@/data/aircraft-manufacturers';
+import { typeRatingService, ManufacturerCamel } from '@/src/services/typeRatingService';
 import { notFound } from 'next/navigation';
 
 interface PageProps {
@@ -9,7 +9,7 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const manufacturer = manufacturers.find(m => m.id === params.id);
+  const manufacturer = await typeRatingService.getManufacturerById(params.id);
   
   if (!manufacturer) {
     return {
@@ -53,8 +53,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function ManufacturerExpectationsPage({ params }: PageProps) {
-  const manufacturer = manufacturers.find(m => m.id === params.id);
+export default async function ManufacturerExpectationsPage({ params }: PageProps) {
+  const manufacturer = await typeRatingService.getManufacturerById(params.id);
   
   if (!manufacturer) {
     notFound();

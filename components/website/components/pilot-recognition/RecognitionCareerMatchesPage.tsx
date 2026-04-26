@@ -324,7 +324,7 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
-                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
+                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png"
                         alt="WingMentor Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />

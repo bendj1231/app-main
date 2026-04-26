@@ -54,16 +54,9 @@ export const PathwaysHeader: React.FC<PathwaysHeaderProps> = ({ onBack, onNaviga
                 <ArrowLeft className="w-5 h-5" />
               </button>
               
-              {/* WingMentor Logo */}
-              <img 
-                src="/logo.png" 
-                alt="WingMentor Logo" 
-                className="h-14 w-auto object-contain"
-              />
-              
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">
-                  pilotrecognition.com
+                <h1 className="text-2xl font-bold">
+                  <span className="text-black">PILOT</span> <span className="text-red-500">RECOGNITION</span><span className="text-black">.com</span>
                 </h1>
                 <p className="text-slate-500 text-sm">powered by Wingmentor</p>
               </div>

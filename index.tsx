@@ -74,6 +74,7 @@ import { AccreditationPage } from './components/website/components/Accreditation
 import TypeRatingSearchPage from './pages/TypeRatingSearchPage';
 import TypeRatingCentersPage from './pages/TypeRatingCentersPage';
 import JobListingsPage from './pages/JobListingsPage';
+import ManufacturerExpectationsPage from './pages/manufacturer/_id/expectations/page';
 import { EmiratesAtplPage } from './components/website/components/pathways/EmiratesAtplPage';
 import { EmergingAirTaxiPage } from './components/website/components/pathways/EmergingAirTaxiPage';
 import { PilotedDronesPage } from './components/website/components/pathways/PilotedDronesPage';
@@ -1499,6 +1500,8 @@ root.render(
             </ProtectedRoute>
           } />
           <Route path="/type-rating-search" element={<TypeRatingSearchPage />} />
+          <Route path="/type-rating-centers" element={<TypeRatingCentersPage />} />
+          <Route path="/manufacturer/:id/expectations" element={<ManufacturerExpectationsPage />} />
           <Route path="/airline-expectations" element={<AirlineExpectationsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/discover-pathways" element={<PathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />

@@ -13,6 +13,15 @@ const getSupabase = () => {
  * Get all airlines with their aircraft fleets
  */
 exports.getAirlines = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const supabase = getSupabase();
     const { data, error } = await supabase
@@ -34,9 +43,18 @@ exports.getAirlines = onRequest(async (req, res) => {
  * Get airline by ID with their aircraft fleet
  */
 exports.getAirlineById = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { id } = req.query;
-    
+
     if (!id) {
       return res.status(400).json({ error: 'Airline ID is required' });
     }
@@ -79,6 +97,15 @@ exports.getAirlineById = onRequest(async (req, res) => {
  * Get airlines operating a specific aircraft type
  */
 exports.getAirlinesByAircraft = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { aircraftId } = req.query;
 
@@ -108,6 +135,15 @@ exports.getAirlinesByAircraft = onRequest(async (req, res) => {
  * Update airline information
  */
 exports.updateAirline = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'PUT, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { id } = req.query;
     const updates = req.body;
@@ -138,6 +174,15 @@ exports.updateAirline = onRequest(async (req, res) => {
  * Add aircraft to airline fleet
  */
 exports.addAircraftToFleet = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { airlineId, aircraftId } = req.body;
 
@@ -171,6 +216,15 @@ exports.addAircraftToFleet = onRequest(async (req, res) => {
  * Remove aircraft from airline fleet
  */
 exports.removeAircraftFromFleet = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { airlineId, aircraftId } = req.query;
 
@@ -199,6 +253,15 @@ exports.removeAircraftFromFleet = onRequest(async (req, res) => {
  * Get airline recruitment information
  */
 exports.getAirlineRecruitment = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { airlineId } = req.query;
 
@@ -227,6 +290,15 @@ exports.getAirlineRecruitment = onRequest(async (req, res) => {
  * Get aircraft metrics for pilot information
  */
 exports.getAircraftMetrics = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { aircraftId } = req.query;
 
@@ -259,6 +331,15 @@ exports.getAircraftMetrics = onRequest(async (req, res) => {
  * Update aircraft metrics (orders, operators, etc.)
  */
 exports.updateAircraftMetrics = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'PUT, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { aircraftId } = req.query;
     const { orders, delivered, operatorCount, lifecycleStage, demandLevel } = req.body;
@@ -297,6 +378,15 @@ exports.updateAircraftMetrics = onRequest(async (req, res) => {
  * Get all aircraft metrics for dashboard
  */
 exports.getAllAircraftMetrics = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const supabase = getSupabase();
     const { data, error } = await supabase
@@ -318,6 +408,15 @@ exports.getAllAircraftMetrics = onRequest(async (req, res) => {
  * Get pilot count for a specific aircraft type rating
  */
 exports.getPilotCountForAircraft = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { aircraftId } = req.query;
 
@@ -345,6 +444,15 @@ exports.getPilotCountForAircraft = onRequest(async (req, res) => {
  * Update pilot count for an aircraft type rating
  */
 exports.updatePilotCountForAircraft = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'PUT, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { aircraftId } = req.query;
     const { increment } = req.body;
@@ -393,6 +501,15 @@ exports.updatePilotCountForAircraft = onRequest(async (req, res) => {
  * Recalculate career score for an aircraft
  */
 exports.recalculateCareerScore = onRequest(async (req, res) => {
+  // Handle CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
   try {
     const { aircraftId } = req.query;
     const { pilotProfile } = req.body;

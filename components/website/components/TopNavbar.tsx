@@ -94,7 +94,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     if (data) {
                         // Safely set values with fallbacks for missing or invalid data
                         setPilotId(data.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot');
-                        setProfileImageUrl(data.profile_image_url || '');
+                        setProfileImageUrl(data.profile_image_url || null);
                         setTotalHours(typeof data.total_flight_hours === 'number' ? data.total_flight_hours : 0);
                         setLastFlown(data.last_flown || '');
                         setMentorshipHours(typeof data.mentorship_hours === 'number' ? data.mentorship_hours : 0);
@@ -545,10 +545,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         <div className="flex flex-col items-center transition-all duration-300 group-hover:scale-110">
                             <span
                                 className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) ? 'text-black' : 'text-white'
-                                    } text-2xl font-extrabold tracking-tight leading-none`}
+                                    } text-2xl tracking-tight leading-none`}
                                 style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
                             >
-                                PilotRecognition.com
+                                <span className="text-black">pilot</span>
+                                <span className="text-red-600">recognition</span>
+                                <span className="text-black">.com</span>
                             </span>
                         </div>
                     </div>

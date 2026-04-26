@@ -33,7 +33,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onN
                 
                 if (data) {
                     setPilotId(data.pilot_id || '');
-                    setProfileImageUrl(data.profile_image_url || '');
+                    setProfileImageUrl(data.profile_image_url || null);
                     setTotalHours(data.total_flight_hours || 0);
                     setMentorshipHours(data.mentorship_hours || 0);
                     setRecognitionScore(data.recognition_score || 0);

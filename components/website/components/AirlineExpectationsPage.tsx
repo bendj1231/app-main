@@ -142,6 +142,60 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             {/* Airline Expectations Carousel */}
             <AirlineExpectationsCarousel onNavigate={onNavigate} onLogin={onLogin} />
 
+            {/* Hero Section - Airline Statistics */}
+            {!selectedAirline && (
+                <div className="relative overflow-hidden mb-8 z-10 min-h-[600px]">
+                    {/* Dark blue background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+                    
+                    <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+                        <div className="text-center text-white">
+                            {/* Worldwide Stats */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mb-8">
+                                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="text-3xl font-bold">500+</div>
+                                    <div className="text-sm text-slate-300">Airlines Worldwide</div>
+                                </div>
+                                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="text-3xl font-bold">350,000+</div>
+                                    <div className="text-sm text-slate-300">Active Pilots</div>
+                                </div>
+                                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="text-3xl font-bold">25,000+</div>
+                                    <div className="text-sm text-slate-300">Aircraft in Service</div>
+                                </div>
+                                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="text-3xl font-bold">150+</div>
+                                    <div className="text-sm text-slate-300">Countries Served</div>
+                                </div>
+                            </div>
+
+                            <h2 className="text-4xl md:text-5xl font-serif font-normal mb-4">
+                                Discover Airline Expectations & Requirements
+                            </h2>
+                            <p className="text-lg md:text-xl text-slate-300 mb-6 max-w-3xl mx-auto">
+                                Understanding what airlines really look for in pilot candidates—beyond flight hours.
+                                Explore requirements, expectations, and career pathways from leading airlines worldwide.
+                            </p>
+                            
+                            <div className="max-w-2xl mx-auto text-slate-400 text-sm leading-relaxed">
+                                <p className="mb-4">
+                                    Browse through our comprehensive database of airline requirements, including minimum qualifications,
+                                    preferred credentials, training pathways, and career progression opportunities. Our partnership with
+                                    <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> ensures that
+                                    the expectations we provide align with the exacting standards required by leading airlines.
+                                </p>
+                                <p>
+                                    From legacy carriers to regional airlines and emerging carriers, understand what each airline values
+                                    in pilot candidates and how to position yourself for success in your aviation career.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Selected Airline Hero Section - Netflix-style */}
             {selectedAirline && (
                 <div className="relative h-[70vh] min-h-[500px]">

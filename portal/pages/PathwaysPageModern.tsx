@@ -212,7 +212,8 @@ const getAirlineLogo = (airline: string): string => {
     }
   }
 
-  return '';
+  // Return null instead of empty string to avoid empty src warning
+  return null as any;
 };
 
 // Helper to extract aircraft from job title
@@ -1633,15 +1634,17 @@ const PathwayCard: React.FC<{
         {/* Bottom - Content */}
         <div className="mt-3 space-y-2">
           <div className="flex items-start gap-3">
-            <img
-              src={airlineLogo}
-              alt={pathway.airline}
-              className="h-8 w-auto object-contain flex-shrink-0"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }}
-            />
+            {airlineLogo && (
+              <img
+                src={airlineLogo}
+                alt={pathway.airline}
+                className="h-8 w-auto object-contain flex-shrink-0"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+            )}
             <div className="flex-1 min-w-0">
               <h3 className={`text-lg font-bold ${textColor} truncate`}>{pathway.name}</h3>
               <p className={`${textColorLight} text-sm`}>{pathway.airline}</p>

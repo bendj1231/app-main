@@ -239,7 +239,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'type-rating-search',
-            image: '/typerating2.png',
+            image: '/typeratingsrch.png',
             title: 'Type-Rating Search',
             subtitle: 'Find aircraft type ratings and training centers worldwide',
             icon: Plane,
@@ -1605,7 +1605,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         <img
                             src={currentImage || displayImage}
                             alt={card.title}
-                            style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : 'center' }}
+                            style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : card.id === 'type-rating-search' ? 'top 20% center' : 'center' }}
                             className={`w-full h-full object-cover ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
                             onError={(e) => {
                                 console.error('Image load error:', card.id, currentImage || displayImage, e);
