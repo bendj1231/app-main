@@ -9,6 +9,22 @@ const getSupabase = () => {
   );
 };
 
+// Helper function to check if user has Recognition Plus subscription
+async function checkRecognitionPlusAccess(userId, supabase) {
+  const { data: subscription, error } = await supabase
+    .from('subscriptions')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('status', 'active')
+    .eq('plan', 'recognition_plus')
+    .single();
+
+  if (error || !subscription) {
+    return false;
+  }
+  return true;
+}
+
 /**
  * Get all airlines with their aircraft fleets
  */
@@ -512,13 +528,21 @@ exports.recalculateCareerScore = onRequest(async (req, res) => {
 
   try {
     const { aircraftId } = req.query;
-    const { pilotProfile } = req.body;
+    const { pilotProfile, userId } = req.body;
 
     if (!aircraftId) {
       return res.status(400).json({ error: 'aircraftId is required' });
     }
+    if (!userId) return res.status(400).json({ error: 'userId required' });
 
     const supabase = getSupabase();
+
+    // Check Recognition Plus subscription
+    const hasAccess = await checkRecognitionPlusAccess(userId, supabase);
+    if (!hasAccess) {
+      return res.status(403).json({ error: 'Recognition Plus subscription required' });
+    }
+
     // Get all metrics for the aircraft
     const { data: metrics, error: metricsError } = await supabase
       .from('aircraft_metrics')

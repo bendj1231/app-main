@@ -2,6 +2,22 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
 
+// Helper function to check if user has Recognition Plus subscription
+async function checkRecognitionPlusAccess(userId, supabase) {
+  const { data: subscription, error } = await supabase
+    .from('subscriptions')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('status', 'active')
+    .eq('plan', 'recognition_plus')
+    .single();
+
+  if (error || !subscription) {
+    return false;
+  }
+  return true;
+}
+
 exports.generateAtlasCV = onRequest(async (req, res) => {
   const supabase = createClient(
     process.env.SUPABASE_URL,
@@ -13,6 +29,12 @@ exports.generateAtlasCV = onRequest(async (req, res) => {
 
     if (!userId) {
       return res.status(400).json({ error: 'userId required' });
+    }
+
+    // Check Recognition Plus subscription
+    const hasAccess = await checkRecognitionPlusAccess(userId, supabase);
+    if (!hasAccess) {
+      return res.status(403).json({ error: 'Recognition Plus subscription required' });
     }
 
     // Fetch profile data

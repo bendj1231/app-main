@@ -7,6 +7,22 @@ function setCORS(res) {
   res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 }
 
+// Helper function to check if user has enterprise account access
+async function checkEnterpriseAccess(userId, enterpriseAccountId, supabase) {
+  // Check if user is associated with the enterprise account
+  const { data: membership, error } = await supabase
+    .from('enterprise_account_members')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('enterprise_account_id', enterpriseAccountId)
+    .single();
+
+  if (error || !membership) {
+    return false;
+  }
+  return true;
+}
+
 // ─── View Count Tracking ────────────────────────────────────────────────────
 exports.trackCardView = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
@@ -15,8 +31,15 @@ exports.trackCardView = onRequest(async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { cardId } = req.body;
+    const { cardId, userId, enterpriseAccountId } = req.body;
     if (!cardId) return res.status(400).json({ error: 'cardId required' });
+    if (!userId || !enterpriseAccountId) return res.status(400).json({ error: 'userId and enterpriseAccountId required' });
+
+    // Check enterprise access
+    const hasAccess = await checkEnterpriseAccess(userId, enterpriseAccountId, supabase);
+    if (!hasAccess) {
+      return res.status(403).json({ error: 'Enterprise account access required' });
+    }
 
     await supabase.rpc('increment_card_view', { card_id: cardId });
     return res.json({ success: true });
@@ -36,6 +59,7 @@ exports.submitApplication = onRequest(async (req, res) => {
     const { 
       cardId, 
       pilotProfileId,
+      userId,
       coverLetter,
       resumeUrl,
       pilotName,
@@ -50,6 +74,7 @@ exports.submitApplication = onRequest(async (req, res) => {
     if (!cardId || !pilotProfileId) {
       return res.status(400).json({ error: 'cardId and pilotProfileId required' });
     }
+    if (!userId) return res.status(400).json({ error: 'userId required' });
 
     // Get enterprise account id from card
     const { data: card, error: cardError } = await supabase
@@ -60,6 +85,12 @@ exports.submitApplication = onRequest(async (req, res) => {
 
     if (cardError || !card) {
       return res.status(404).json({ error: 'Card not found' });
+    }
+
+    // Check enterprise access
+    const hasAccess = await checkEnterpriseAccess(userId, card.enterprise_account_id, supabase);
+    if (!hasAccess) {
+      return res.status(403).json({ error: 'Enterprise account access required' });
     }
 
     // Create application
@@ -113,10 +144,17 @@ exports.getCardAnalytics = onRequest(async (req, res) => {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { enterpriseAccountId, cardId } = req.query;
+    const { enterpriseAccountId, cardId, userId } = req.query;
     
     if (!enterpriseAccountId) {
       return res.status(400).json({ error: 'enterpriseAccountId required' });
+    }
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    // Check enterprise access
+    const hasAccess = await checkEnterpriseAccess(userId, enterpriseAccountId, supabase);
+    if (!hasAccess) {
+      return res.status(403).json({ error: 'Enterprise account access required' });
     }
 
     // Base query
@@ -153,10 +191,17 @@ exports.getEnterpriseApplications = onRequest(async (req, res) => {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { enterpriseAccountId, status } = req.query;
+    const { enterpriseAccountId, status, userId } = req.query;
     
     if (!enterpriseAccountId) {
       return res.status(400).json({ error: 'enterpriseAccountId required' });
+    }
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    // Check enterprise access
+    const hasAccess = await checkEnterpriseAccess(userId, enterpriseAccountId, supabase);
+    if (!hasAccess) {
+      return res.status(403).json({ error: 'Enterprise account access required' });
     }
 
     let query = supabase
@@ -189,10 +234,28 @@ exports.updateApplicationStatus = onRequest(async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { applicationId, status, notes, interviewDate, interviewLocation, rating } = req.body;
+    const { applicationId, status, notes, interviewDate, interviewLocation, rating, userId } = req.body;
     
     if (!applicationId || !status) {
       return res.status(400).json({ error: 'applicationId and status required' });
+    }
+    if (!userId) return res.status(400).json({ error: 'userId required' });
+
+    // Get enterprise account id from application
+    const { data: application, error: appError } = await supabase
+      .from('pilot_applications')
+      .select('enterprise_account_id')
+      .eq('id', applicationId)
+      .single();
+
+    if (appError || !application) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+
+    // Check enterprise access
+    const hasAccess = await checkEnterpriseAccess(userId, application.enterprise_account_id, supabase);
+    if (!hasAccess) {
+      return res.status(403).json({ error: 'Enterprise account access required' });
     }
 
     const updates = { status };
