@@ -39,6 +39,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
+import { getPhilippianFlightSchoolCount, Region } from '../../data/flight-schools';
 import {
   RadarChart,
   ScoreVelocityBadge,
@@ -55,6 +56,354 @@ import {
 } from '../components/PathwaysIntelligenceWidgets';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { supabase } from '../../src/lib/supabase';
+
+// ============================================================================
+// HARDCODED CATEGORY CONSTANTS
+// ============================================================================
+
+const GENERAL_CATEGORIES = [
+  {
+    id: 'da486dd1-8832-4ec3-843b-1cbd3c9b8718',
+    name: 'Pilot Training & Certification',
+    description: 'From student pilot to commercial pilot certifications',
+    icon: null,
+    display_order: 1
+  },
+  {
+    id: '9c6dc768-ecac-408f-b62c-d3f72ae8e509',
+    name: 'Career Progression',
+    description: 'Career advancement and transition pathways',
+    icon: null,
+    display_order: 2
+  },
+  {
+    id: '0cc029df-b6f9-4f6d-b4e3-c7bd3d89cbe8',
+    name: 'Commercial Operations',
+    description: 'Charter, corporate, and cargo operations',
+    icon: null,
+    display_order: 3
+  },
+  {
+    id: '9865e475-1b3a-4d16-8a2f-cdd443dd7975',
+    name: 'Specialized Operations',
+    description: 'Agricultural, firefighting, and specialized aviation',
+    icon: null,
+    display_order: 4
+  },
+  {
+    id: '37c42b2b-1f4c-4f64-b1a1-dd1f84623023',
+    name: 'Humanitarian & Aid',
+    description: 'Humanitarian missions and disaster response',
+    icon: null,
+    display_order: 5
+  },
+  {
+    id: 'c5f16476-44c0-4c3e-88db-85813efb96a0',
+    name: 'Remote & Bush Operations',
+    description: 'Bush flying and remote operations',
+    icon: null,
+    display_order: 6
+  },
+  {
+    id: 'd5855477-a76d-42be-abae-e18fce201ac8',
+    name: 'Emerging Technologies',
+    description: 'eVTOL, drones, and aviation technology',
+    icon: null,
+    display_order: 7
+  },
+  {
+    id: 'c76a0f63-734c-4d1d-8cf4-b7ad3bdeed0b',
+    name: 'Military & Government',
+    description: 'Military and government aviation',
+    icon: null,
+    display_order: 8
+  },
+  {
+    id: 'a37e4e35-d6f6-4af9-bb7f-30d06df21935',
+    name: 'Aviation Support Services',
+    description: 'Management, engineering, and support services',
+    icon: null,
+    display_order: 9
+  },
+  {
+    id: '66be62e7-bc8b-48ca-978c-0fb15e3901a7',
+    name: 'Aviation Industry',
+    description: 'Sales, consulting, and industry roles',
+    icon: null,
+    display_order: 10
+  }
+];
+
+const PATHWAYS = [
+  // Pilot Training & Certification
+  {
+    id: 'c39c880b-dce1-4c6a-88b6-c5bf19eb07d0',
+    general_category_id: 'da486dd1-8832-4ec3-843b-1cbd3c9b8718',
+    name: 'Student Pilot Pathway',
+    description: 'From zero to first solo flight',
+    icon: null,
+    display_order: 1
+  },
+  {
+    id: '83806ec2-6376-4b65-bcd8-4fc25391cc71',
+    general_category_id: 'da486dd1-8832-4ec3-843b-1cbd3c9b8718',
+    name: 'Private Pilot Pathway',
+    description: 'Private pilot license and recreational flying',
+    icon: null,
+    display_order: 2
+  },
+  {
+    id: '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1',
+    general_category_id: 'da486dd1-8832-4ec3-843b-1cbd3c9b8718',
+    name: 'Commercial Pilot Pathway',
+    description: 'Commercial pilot certification and ratings',
+    icon: null,
+    display_order: 3
+  },
+  // Career Progression
+  {
+    id: '48dabe06-87f2-4227-98ed-78e8d96b2d8b',
+    general_category_id: '9c6dc768-ecac-408f-b62c-d3f72ae8e509',
+    name: 'Airline Transport Pilot Pathway',
+    description: 'ATP certification and airline entry',
+    icon: null,
+    display_order: 1
+  },
+  {
+    id: 'da3b7514-925d-4024-9341-08248d52cdb9',
+    general_category_id: '9c6dc768-ecac-408f-b62c-d3f72ae8e509',
+    name: 'Flight Instructor Pathway',
+    description: 'CFI, CFII, MEI instructor ratings',
+    icon: null,
+    display_order: 2
+  },
+  {
+    id: 'a7dfe793-df6f-4286-8bd2-afa0653a608d',
+    general_category_id: '9c6dc768-ecac-408f-b62c-d3f72ae8e509',
+    name: 'Cadet Pilot Pathway',
+    description: 'Airline-sponsored cadet programs',
+    icon: null,
+    display_order: 3
+  },
+  {
+    id: 'c18c5eb8-5b0a-4ba1-ac17-fe0e658f1dd7',
+    general_category_id: '9c6dc768-ecac-408f-b62c-d3f72ae8e509',
+    name: 'Low Timer Pilot Pathway',
+    description: 'Entry-level positions for low-time pilots',
+    icon: null,
+    display_order: 4
+  },
+  {
+    id: '4f160ab4-d94f-496a-9099-5386ffa456ec',
+    general_category_id: '9c6dc768-ecac-408f-b62c-d3f72ae8e509',
+    name: 'High Timer Pilot Pathway',
+    description: 'Advanced positions for experienced pilots',
+    icon: null,
+    display_order: 5
+  },
+  {
+    id: '8d3faf3f-a892-4902-b82c-93980080dac9',
+    general_category_id: '9c6dc768-ecac-408f-b62c-d3f72ae8e509',
+    name: 'Regional Airline Pathway',
+    description: 'Regional airline career progression',
+    icon: null,
+    display_order: 6
+  },
+  {
+    id: 'fbb3a1be-432e-4c85-b23b-c1cce9d32913',
+    general_category_id: '9c6dc768-ecac-408f-b62c-d3f72ae8e509',
+    name: 'Major Airline Pathway',
+    description: 'Major airline career progression',
+    icon: null,
+    display_order: 7
+  },
+  // Commercial Operations
+  {
+    id: '9145209b-d0de-4b43-a2bd-d7f523f8f230',
+    general_category_id: '0cc029df-b6f9-4f6d-b4e3-c7bd3d89cbe8',
+    name: 'Charter Pilot Pathway',
+    description: 'Part 135 charter operations',
+    icon: null,
+    display_order: 1
+  },
+  {
+    id: 'e11079f9-3506-4543-b273-a8410464b396',
+    general_category_id: '0cc029df-b6f9-4f6d-b4e3-c7bd3d89cbe8',
+    name: 'Corporate Pilot Pathway',
+    description: 'Part 91 corporate aviation',
+    icon: null,
+    display_order: 2
+  },
+  {
+    id: '9aab7b85-3f81-43ca-8d8b-421ee658ecaf',
+    general_category_id: '0cc029df-b6f9-4f6d-b4e3-c7bd3d89cbe8',
+    name: 'Cargo Pilot Pathway',
+    description: 'Cargo and freight operations',
+    icon: null,
+    display_order: 3
+  },
+  {
+    id: 'acdea7e3-fdfb-4d2e-a711-c653bd6e38ab',
+    general_category_id: '0cc029df-b6f9-4f6d-b4e3-c7bd3d89cbe8',
+    name: 'Private Sector Pathway',
+    description: 'Private aviation and recreational flying',
+    icon: null,
+    display_order: 4
+  },
+  // Specialized Operations
+  {
+    id: '1c04e201-07f8-49f5-a899-b80742281ed8',
+    general_category_id: '9865e475-1b3a-4d16-8a2f-cdd443dd7975',
+    name: 'Specialized Pathway',
+    description: 'Agricultural, firefighting, and specialized ops',
+    icon: null,
+    display_order: 1
+  },
+  // Humanitarian & Aid
+  {
+    id: 'c311583f-a6c1-4c38-b33f-ec1ff091501d',
+    general_category_id: '37c42b2b-1f4c-4f64-b1a1-dd1f84623023',
+    name: 'Humanitarian Aviation Pathway',
+    description: 'Aid relief and humanitarian missions',
+    icon: null,
+    display_order: 1
+  },
+  // Remote & Bush Operations
+  {
+    id: '519a5814-a26d-431b-838f-d09dbf62586c',
+    general_category_id: 'c5f16476-44c0-4c3e-88db-85813efb96a0',
+    name: 'Bush Pilot Pathway',
+    description: 'Bush flying and remote operations',
+    icon: null,
+    display_order: 1
+  },
+  // Emerging Technologies
+  {
+    id: '8a2ccd30-b6dd-49a8-a451-8d32ce42bf22',
+    general_category_id: 'd5855477-a76d-42be-abae-e18fce201ac8',
+    name: 'Emerging Air Taxi Pathway',
+    description: 'eVTOL and urban air mobility',
+    icon: null,
+    display_order: 1
+  },
+  {
+    id: '3a9e3d74-5937-4a68-ab0c-c11f8524c8ef',
+    general_category_id: 'd5855477-a76d-42be-abae-e18fce201ac8',
+    name: 'Drones/UAV Pathway',
+    description: 'Commercial drone operations',
+    icon: null,
+    display_order: 2
+  },
+  {
+    id: '18a40676-b17d-400e-9449-4b65c4c44e38',
+    general_category_id: 'd5855477-a76d-42be-abae-e18fce201ac8',
+    name: 'Aviation Technology Pathway',
+    description: 'Aviation software and technology',
+    icon: null,
+    display_order: 3
+  },
+  // Military & Government
+  {
+    id: '5b6097c0-edef-4d89-90bc-9a0fa46aba84',
+    general_category_id: 'c76a0f63-734c-4d1d-8cf4-b7ad3bdeed0b',
+    name: 'Military Aviation Pathway',
+    description: 'Military pilot training and transition',
+    icon: null,
+    display_order: 1
+  },
+  {
+    id: 'e9877f93-5972-45a7-a635-e6fbf42b43c5',
+    general_category_id: 'c76a0f63-734c-4d1d-8cf4-b7ad3bdeed0b',
+    name: 'Government Aviation Pathway',
+    description: 'Federal and government aviation',
+    icon: null,
+    display_order: 2
+  },
+  // Aviation Support Services
+  {
+    id: '90a230e0-7b1c-4209-9617-27d3bf06fd7a',
+    general_category_id: 'a37e4e35-d6f6-4af9-bb7f-30d06df21935',
+    name: 'Aviation Management Pathway',
+    description: 'Airport and airline management',
+    icon: null,
+    display_order: 1
+  },
+  {
+    id: '7af9bb04-8a9c-4ab2-86f4-b470f8a57f60',
+    general_category_id: 'a37e4e35-d6f6-4af9-bb7f-30d06df21935',
+    name: 'Aviation Engineering Pathway',
+    description: 'Aircraft design and maintenance',
+    icon: null,
+    display_order: 2
+  },
+  {
+    id: 'fceb071c-3b7c-4399-a7da-ad6e96af7aeb',
+    general_category_id: 'a37e4e35-d6f6-4af9-bb7f-30d06df21935',
+    name: 'Aviation Safety Pathway',
+    description: 'Safety inspection and investigation',
+    icon: null,
+    display_order: 3
+  },
+  {
+    id: '9129d24d-6a71-4ce8-a26d-a5b3a0fc65d4',
+    general_category_id: 'a37e4e35-d6f6-4af9-bb7f-30d06df21935',
+    name: 'Aviation Law Pathway',
+    description: 'Aviation law and regulatory affairs',
+    icon: null,
+    display_order: 4
+  },
+  {
+    id: '4c381227-42a4-410b-8309-9887fb73a243',
+    general_category_id: 'a37e4e35-d6f6-4af9-bb7f-30d06df21935',
+    name: 'Aviation Medicine Pathway',
+    description: 'Aviation medical examiner and physiology',
+    icon: null,
+    display_order: 5
+  },
+  // Aviation Industry
+  {
+    id: 'bf917a9c-7c76-41f7-b2a2-68c48ac113d9',
+    general_category_id: '66be62e7-bc8b-48ca-978c-0fb15e3901a7',
+    name: 'Aviation Sales Pathway',
+    description: 'Aircraft and aviation sales',
+    icon: null,
+    display_order: 1
+  },
+  {
+    id: '78352948-c4eb-4ed8-ab5d-8f34e5012c91',
+    general_category_id: '66be62e7-bc8b-48ca-978c-0fb15e3901a7',
+    name: 'Aviation Consulting Pathway',
+    description: 'Aviation consulting services',
+    icon: null,
+    display_order: 2
+  },
+  {
+    id: '9390d75d-2e82-470a-a130-8422956690dd',
+    general_category_id: '66be62e7-bc8b-48ca-978c-0fb15e3901a7',
+    name: 'Aviation Media Pathway',
+    description: 'Aviation journalism and media',
+    icon: null,
+    display_order: 3
+  },
+  {
+    id: 'f7033e10-e979-49af-858d-19ab97d6435e',
+    general_category_id: '66be62e7-bc8b-48ca-978c-0fb15e3901a7',
+    name: 'Aviation Education Pathway',
+    description: 'Aviation education and training',
+    icon: null,
+    display_order: 4
+  },
+  {
+    id: '88bf9e99-1fa5-4d64-9d1f-9697aec3cda3',
+    general_category_id: '66be62e7-bc8b-48ca-978c-0fb15e3901a7',
+    name: 'Aviation Research Pathway',
+    description: 'Aviation research and development',
+    icon: null,
+    display_order: 5
+  }
+];
+
+// Sub-pathways will be fetched from Supabase for card details
 
 // React Three Fiber for 3D Aircraft Models
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -319,6 +668,7 @@ interface PathwayData {
   image: string;
   matchProbability: number;
   aircraftType: string; // X-Plane 3D model identifier
+  region?: Region;
   requirements: {
     totalHours: number;
     multiEngineHours?: number;
@@ -2192,7 +2542,6 @@ const ThreeStagePathwayFilter: React.FC<{
   selectedGeneralCategory?: string | null;
   onNavigateToPathway?: (pathwayId: string) => void;
 }> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory, onNavigateToPathway }) => {
-  console.log('[DEBUG] ThreeStagePathwayFilter mounted with onNavigateToPathway:', !!onNavigateToPathway);
   const [pathways, setPathways] = useState<Pathway[]>([]);
   const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
 
@@ -2334,13 +2683,13 @@ const ThreeStagePathwayFilter: React.FC<{
         // Custom branded cards for each Student Pilot sub-pathway (using actual UUIDs from database)
         const studentPilotCards: Record<string, any> = {
           // Part 61 Flight School Pathway
-          'be6b0f3f-a5dc-43a2-a2b2-88ee5328beca': {
-            image: 'https://sp-ao.shortpixel.ai/client/to_webp,q_lossy,ret_img,w_1024,h_683/https://www.flightschoolusa.com/wp-content/uploads/2025/04/Student-pilot-1024x683.png',
+          'aa7e455f-5b75-44d2-be26-d2ca05a38bc7': {
+            image: 'https://sp-ao.shortpixel.ai/client/to_webp,q_lossy,ret_img,w_1024,h=683/https://www.flightschoolusa.com/wp-content/uploads/2025/04/Student-pilot-1024x683.png',
             airline: 'Flight Schools',
             description: 'Flexible training schedule with certified flight instructors at local airports. Train at your own pace with personalized instruction. Flight schools offer the most flexibility for students who need to balance training with work or school. Requires minimum 40 hours flight time (20 dual, 10 solo, 5 cross-country) before checkride. Ideal for self-motivated learners who prefer a customized training approach.',
           },
           // Part 141 Flight School Pathway
-          'aa7e455f-5b75-44d2-be26-d2ca05a38bc7': {
+          'be6b0f3f-a5dc-43a2-a2b2-88ee5328beca': {
             image: 'https://cdn.prod.website-files.com/674f1a73a4a6599b28ca801f/67b661a1f9cc1d331881e163_w221129_252.jpg',
             airline: 'Fast Track Pilot',
             description: 'Structured FAA-approved curriculum with reduced hour requirements. Accelerated training path with minimum 35 hours before checkride. Fast track pilot programs follow a standardized syllabus approved by the FAA, ensuring consistent quality and faster completion times. Often includes VA benefits, GI Bill acceptance, and structured ground school. Best for students seeking a fast-track path to their pilot certificate with professional instruction.',
@@ -2745,16 +3094,8 @@ const ThreeStagePathwayFilter: React.FC<{
                   <button
                     onClick={() => {
                       const targetCard = selectedCard || cardsWithWingMentor[1];
-                      console.log('[DEBUG] Discover pathway button clicked');
-                      console.log('[DEBUG] Selected card:', selectedCard);
-                      console.log('[DEBUG] Target card:', targetCard);
-                      console.log('[DEBUG] Target card ID:', targetCard?.id);
-                      console.log('[DEBUG] onNavigateToPathway function exists:', !!onNavigateToPathway);
                       if (targetCard && onNavigateToPathway) {
-                        console.log('[DEBUG] Calling onNavigateToPathway with ID:', targetCard.id);
                         onNavigateToPathway(targetCard.id);
-                      } else {
-                        console.log('[DEBUG] ERROR: Cannot navigate - targetCard:', !!targetCard, 'onNavigateToPathway:', !!onNavigateToPathway);
                       }
                     }}
                     className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md cursor-pointer hover:scale-105 transition-transform ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}
@@ -2915,7 +3256,7 @@ const ThreeStagePathwayFilter: React.FC<{
                 <div className="max-w-3xl mx-auto text-center">
                   <div className="mt-2">
                     <span className="text-xs font-medium text-white/60">
-                      There are {cardsWithWingMentor.length - 1} pathways available for {selectedCard?.name || cardsWithWingMentor[1]?.name || pathway.name}
+                      There are {getPhilippianFlightSchoolCount()} CAAP-approved flight schools available for {selectedCard?.name || cardsWithWingMentor[1]?.name || pathway.name}
                     </span>
                   </div>
                   {pathway.description && (
@@ -3293,7 +3634,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   onNavigateToMainApp,
   mode = 'pathways'
 }) => {
-  console.log('[DEBUG] PathwaysPageModern received onNavigateToPathway:', !!onNavigateToPathway);
   const [expandedPathway, setExpandedPathway] = useState<string | null>(selectedPathwayId || null);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
@@ -3313,6 +3653,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
   const [canPostPathways, setCanPostPathways] = useState(false);
   const [enterprisePathwayCards, setEnterprisePathwayCards] = useState<PathwayData[]>([]);
+  const [regionFilter, setRegionFilter] = useState<Region>('All');
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
@@ -3588,6 +3929,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       (pathway.airline || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       pathway.locations.some(l => (l || '').toLowerCase().includes(searchQuery.toLowerCase()));
     
+    // Region filtering
+    const matchesRegion = regionFilter === 'All' || pathway.region === regionFilter;
+    
     // Match probability filtering
     let matchesMatchFilter = true;
     if (matchFilter !== 'all') {
@@ -3640,7 +3984,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       }
     }
     
-    return matchesCategory && matchesSearch && matchesMatchFilter && matchesPositionFilter && matchesViewFilter;
+    return matchesCategory && matchesSearch && matchesRegion && matchesMatchFilter && matchesPositionFilter && matchesViewFilter;
   }).filter(pathway => !pathway.id.includes('wingmentor-intro'));
 
   // Add intro card at the beginning
@@ -4122,6 +4466,24 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
         {/* Search & Filter */}
         <div className="mb-8 space-y-4 text-center">
+          {/* Region Filter */}
+          <div className="flex justify-center flex-wrap gap-2">
+            {(['All', 'Asia', 'Europe', 'Americas', 'Oceania', 'Africa', 'Middle East'] as Region[]).map((region) => (
+              <button
+                key={region}
+                onClick={() => setRegionFilter(region)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  regionFilter === region
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : isDarkMode
+                    ? 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50'
+                    : 'bg-white/70 border border-slate-300/50 text-slate-600 hover:bg-slate-200/50'
+                }`}
+              >
+                {region === 'All' ? 'All Regions' : region}
+              </button>
+            ))}
+          </div>
           <div className="flex justify-center">
             <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
           </div>
@@ -4351,15 +4713,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
         {/* ThreeStagePathwayFilter - Inline Pathways Display */}
         {mode === 'pathways' && (
-          <>
-            {console.log('[DEBUG] Rendering ThreeStagePathwayFilter with onNavigateToPathway:', !!onNavigateToPathway)}
-            <ThreeStagePathwayFilter
-              isDarkMode={isDarkMode}
-              pathwayCards={allPathways}
-              selectedGeneralCategory={hierarchySelection.generalCategory || null}
-              onNavigateToPathway={onNavigateToPathway}
-            />
-          </>
+          <ThreeStagePathwayFilter
+            isDarkMode={isDarkMode}
+            pathwayCards={allPathways}
+            selectedGeneralCategory={hierarchySelection.generalCategory || null}
+            onNavigateToPathway={onNavigateToPathway}
+          />
         )}
 
           {/* Job Position Filter */}

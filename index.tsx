@@ -1207,12 +1207,10 @@ const App = () => {
           <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} onNavigateToPathway={(pathwayId) => { setSelectedPathwayId(pathwayId); setCurrentPage('pathways-detail'); }} />
         )}
         {currentPage === 'pathways-detail' && (
-          <PathwaysPageModern
-            isDarkMode={true}
-            initialCategory={selectedPathwayCategory || 'all'}
-            selectedPathwayId={selectedPathwayId || undefined}
+          <PathwayDetailPage
+            pathwayId={selectedPathwayId || ''}
+            onBack={() => setCurrentPage('pathways-modern')}
             onNavigate={navigateTo}
-            onNavigateToPathway={(pathwayId) => { setSelectedPathwayId(pathwayId); setCurrentPage('pathways-detail'); }}
           />
         )}
         {currentPage === 'portal' && showDirectEnrollmentLoading && (
