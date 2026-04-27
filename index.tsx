@@ -130,6 +130,7 @@ import { ProgramsPathwaysPage } from './components/website/components/programs/P
 import { ProgramsPage } from './components/website/components/programs/ProgramsPage';
 import { PathwaysPage } from './components/website/components/pathways/PathwaysPage';
 import { PathwaysPageModern } from './portal/pages/PathwaysPageModern';
+import PathwayDetailPage from './portal/pages/PathwayDetailPage';
 import { PortalAirlineExpectationsPage } from './portal/pages/PortalAirlineExpectationsPage';
 import { PortalPageHeader } from './portal/components/PortalPageHeader';
 const PortalWrapper = lazy(() => import('./components/website/components/portal/PortalWrapper').then(m => ({ default: m.PortalWrapper })));
@@ -1188,7 +1189,7 @@ const App = () => {
           />
         )}
         {currentPage === 'pathways-modern' && (
-          <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />
+          <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} onNavigateToPathway={(pathwayId) => { setSelectedPathwayId(pathwayId); setCurrentPage('pathways-detail'); }} />
         )}
         {currentPage === 'portal-airline-expectations' && (
           <PortalAirlineExpectationsPage onBack={() => navigateTo('pathways-modern')} onNavigate={navigateTo} isDarkMode={false} />
@@ -1203,14 +1204,15 @@ const App = () => {
           <JobListingsPage onNavigate={navigateTo} />
         )}
         {currentPage === 'pathways-modern-light' && (
-          <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} />
+          <PathwaysPageModern isDarkMode={false} onNavigate={navigateTo} onNavigateToPathway={(pathwayId) => { setSelectedPathwayId(pathwayId); setCurrentPage('pathways-detail'); }} />
         )}
         {currentPage === 'pathways-detail' && (
-          <PathwaysPageModern 
+          <PathwaysPageModern
             isDarkMode={true}
             initialCategory={selectedPathwayCategory || 'all'}
             selectedPathwayId={selectedPathwayId || undefined}
             onNavigate={navigateTo}
+            onNavigateToPathway={(pathwayId) => { setSelectedPathwayId(pathwayId); setCurrentPage('pathways-detail'); }}
           />
         )}
         {currentPage === 'portal' && showDirectEnrollmentLoading && (

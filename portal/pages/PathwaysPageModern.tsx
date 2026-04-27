@@ -2192,6 +2192,7 @@ const ThreeStagePathwayFilter: React.FC<{
   selectedGeneralCategory?: string | null;
   onNavigateToPathway?: (pathwayId: string) => void;
 }> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory, onNavigateToPathway }) => {
+  console.log('[DEBUG] ThreeStagePathwayFilter mounted with onNavigateToPathway:', !!onNavigateToPathway);
   const [pathways, setPathways] = useState<Pathway[]>([]);
   const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
 
@@ -3292,6 +3293,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   onNavigateToMainApp,
   mode = 'pathways'
 }) => {
+  console.log('[DEBUG] PathwaysPageModern received onNavigateToPathway:', !!onNavigateToPathway);
   const [expandedPathway, setExpandedPathway] = useState<string | null>(selectedPathwayId || null);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
