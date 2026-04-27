@@ -40,7 +40,8 @@ import {
 import MilitaryPathwaysPage from './MilitaryPathwaysPage';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
-import { getPhilippianFlightSchoolCount, Region } from '../../data/flight-schools';
+import { getPhilippianFlightSchoolCount, Region, DUMMY_FLIGHT_SCHOOLS } from '../../data/flight-schools';
+import { DUMMY_MILITARY_PATHWAYS } from '../../data/military-pathways';
 import {
   RadarChart,
   ScoreVelocityBadge,
@@ -3147,7 +3148,7 @@ const ThreeStagePathwayFilter: React.FC<{
               {selectedCard && cardsWithWingMentor.some(c => c.id === selectedCard.id) && (
                 <div className="mt-6 relative">
                   {/* Ghost Cards Background */}
-                  <div className="absolute inset-0 -left-[50vw] w-[200vw] overflow-hidden opacity-10 pointer-events-none">
+                  <div className="absolute inset-0 -left-[50vw] w-[200vw] overflow-hidden opacity-20 pointer-events-none">
                     <style>{`
                       @keyframes scroll-left {
                         0% { transform: translateX(0); }
@@ -3163,20 +3164,37 @@ const ThreeStagePathwayFilter: React.FC<{
                         
                         // Check if selected card is a sub-pathway card (has pathwayId)
                         if (selectedCard.pathwayId) {
-                          // Get the detailed cards for this sub-pathway (same as detailed page)
-                          const detailedCards = getFilteredPathwayCards(selectedCard.pathwayId, selectedCard.id);
-                          // Filter out WingMentor intro cards
-                          ghostCardsToShow = detailedCards.filter(c => !c.id.includes('wingmentor'));
+                          const cardName = selectedCard.name?.toLowerCase() || '';
+                          
+                          // For Flight Schools sub-pathway, show DUMMY_FLIGHT_SCHOOLS cards
+                          if (cardName.includes('flight school') || selectedCard.id === 'aa7e455f-5b75-44d2-be26-d2ca05a38bc7') {
+                            ghostCardsToShow = DUMMY_FLIGHT_SCHOOLS.filter(s => s.id !== 'wingmentor-intro').map(fs => ({
+                              id: fs.id,
+                              name: fs.name,
+                              aircraftType: fs.name,
+                              image: fs.image,
+                              airline: fs.location,
+                              description: fs.description,
+                            }));
+                          } else if (cardName.includes('military') || selectedCard.id === '81753376-b823-4909-b82f-664acab13dae') {
+                            // For Military Training sub-pathway, show DUMMY_MILITARY_PATHWAYS cards
+                            ghostCardsToShow = DUMMY_MILITARY_PATHWAYS.filter(m => m.id !== 'military-intro').map(mp => ({
+                              id: mp.id,
+                              name: mp.name,
+                              aircraftType: mp.name,
+                              image: mp.image,
+                              airline: mp.branch,
+                              description: mp.description,
+                            }));
+                          } else {
+                            // For other sub-pathways, show sibling sub-pathways
+                            const pathwayCards = getFilteredPathwayCards(selectedCard.pathwayId, null);
+                            ghostCardsToShow = pathwayCards.filter(c => !c.id.includes('wingmentor'));
+                          }
+                          
                           // Repeat to fill the ghost scroll
                           if (ghostCardsToShow.length > 0) {
                             ghostCardsToShow = [...ghostCardsToShow, ...ghostCardsToShow, ...ghostCardsToShow];
-                          } else {
-                            // Fallback to showing cards from the pathway
-                            const pathwayCards = getFilteredPathwayCards(selectedCard.pathwayId, null);
-                            ghostCardsToShow = pathwayCards.filter(c => !c.id.includes('wingmentor'));
-                            if (ghostCardsToShow.length > 0) {
-                              ghostCardsToShow = [...ghostCardsToShow, ...ghostCardsToShow, ...ghostCardsToShow];
-                            }
                           }
                         } else {
                           // Show the selected card repeated
