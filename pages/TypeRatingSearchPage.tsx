@@ -327,10 +327,14 @@ interface TypeRatingSearchPageProps {
 }
 
 export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingSearchPageProps) {
-  const { currentUser, userProfile, isLoggedIn } = useAuth();
+  const { currentUser, userProfile } = useAuth();
   const [searchParams] = useSearchParams();
   const auth = useAuth();
   const [activeCategory, setActiveCategory] = useState<Category>('flagship');
+
+  // Check subscription status
+  const isRecognitionPlus = userProfile?.subscription_tier === 'recognition_plus' || userProfile?.subscription_tier === 'enterprise';
+  const isLoggedIn = !!currentUser;
   const [activeLegacySubcategory, setActiveLegacySubcategory] = useState<string | null>(null);
   const [activeHelicopterSubcategory, setActiveHelicopterSubcategory] = useState<string | null>(null);
   const [activeMilitarySubcategory, setActiveMilitarySubcategory] = useState<string | null>(null);
@@ -344,6 +348,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const carouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [showRequirements, setShowRequirements] = useState(false);
 
   // Data from Supabase
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
@@ -509,7 +514,6 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           className="w-full h-full"
           colors={["#4a4a4d", "#60606a", "#7a7a8b", "#ffffff"]}
           speed={1.0}
-          backgroundColor="#4a4a4d"
         />
       </div>
       <div className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-0" />
@@ -626,6 +630,32 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             Explore · Manufacturers · Requirements · Specifications
           </p>
 
+          {/* Authentication/Subscription Status Banner */}
+          {!isLoggedIn ? (
+            <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 max-w-2xl mx-auto">
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Sign in to view your profile</h3>
+              <p className="text-sm text-slate-600 mb-3">
+                Subscribe to Recognition + to compare your profile with manufacturer type ratings and expectations & requirements.
+              </p>
+              <p className="text-sm text-slate-600 mb-4">
+                Log in to see your flight hours, recognition score, and personalized recommendations.
+              </p>
+              <button
+                onClick={() => onNavigate && onNavigate('login')}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                Sign In
+              </button>
+            </div>
+          ) : isRecognitionPlus ? (
+            <div className="mt-6 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-6 max-w-2xl mx-auto">
+              <div className="flex items-center justify-center gap-2">
+                <Award className="w-5 h-5 text-emerald-600" />
+                <h3 className="text-lg font-semibold text-emerald-900">Recognition + member pilotrecognition+</h3>
+              </div>
+            </div>
+          ) : null}
+
           {/* Search */}
           <div className="mt-8 max-w-lg mx-auto relative">
             <div className="relative">
@@ -720,6 +750,114 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               <p className="text-lg text-slate-300 mb-8 max-w-4xl mx-auto">
                 Understanding type ratings is crucial for your career. While aircraft may seem similar, each rating opens different opportunities based on market demand, airline preferences, and career progression.
               </p>
+
+              {/* Type Rating Requirements Section */}
+              <div className="max-w-5xl mx-auto mb-12">
+                <h3 className="text-2xl font-semibold mb-6 text-left">Type Rating Requirements</h3>
+                
+                {!showRequirements ? (
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-left">
+                    <p className="text-slate-300 text-sm mb-4">
+                      Understanding type rating requirements is essential for your career progression. Learn about regulatory prerequisites, training structure, and operational details before enrolling in a course.
+                    </p>
+                    <button
+                      onClick={() => setShowRequirements(true)}
+                      className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg transition-colors"
+                    >
+                      Learn More
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {/* 1. Regulatory Prerequisites & Eligibility */}
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-left mb-6">
+                      <h4 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                        <Shield className="w-5 h-5 text-sky-400" />
+                        1. Regulatory Prerequisites & Eligibility
+                      </h4>
+                      <p className="text-slate-300 text-sm mb-4">
+                        Before a pilot can enroll in a type rating course, they must meet specific certification and experience thresholds:
+                      </p>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Minimum Licenses:</strong> Most candidates need a Commercial Pilot License (CPL) or an Airline Transport Pilot (ATP) certificate.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Instrument Rating (IR):</strong> Mandatory for all turbine aircraft operations.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Flight Experience:</strong> Multi-pilot aeroplanes often require at least 70 hours of Pilot-in-Command (PIC) time.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Theoretical Knowledge:</strong> Pilots must have passed the ATPL theoretical knowledge examinations.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Medical Certification:</strong> Usually a First or Second Class medical certificate is required for commercial operations.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 2. Training Structure & Components */}
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-left mb-6">
+                      <h4 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                        <BookOpen className="w-5 h-5 text-sky-400" />
+                        2. Training Structure & Components
+                      </h4>
+                      <p className="text-slate-300 text-sm mb-4">
+                        Pilots look for the breakdown of the training phases to plan their time and study focus:
+                      </p>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Ground School (Theory):</strong> Typically 80–120 hours covering aircraft systems (hydraulics, electrics, fuel), limitations, and performance data.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Simulator Training:</strong> Core certification using Level C or D Full Flight Simulators (FFS), often involving 30–50 hours.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Course Modules:</strong> Information on Differences Training (for similar models within a type) or Cross-Crew Qualification (CCQ) for transitioning between related aircraft (e.g., Airbus A320 to A330).</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 3. Operational & Career Details */}
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-left mb-6">
+                      <h4 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                        <Briefcase className="w-5 h-5 text-sky-400" />
+                        3. Operational & Career Details
+                      </h4>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Currency Requirements:</strong> Type ratings don't expire, but "currency" (e.g., three takeoffs and landings within 90 days) is needed to exercise privileges.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Insurance Minimums:</strong> Many operators or insurance underwriters require 100–300 hours of supervised operation in-type before a pilot can fly as PIC.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><strong>Associated Costs:</strong> For self-funded pilots, total costs can range from $28,000 to $45,000, including examiner fees and study materials.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <button
+                      onClick={() => setShowRequirements(false)}
+                      className="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white text-sm font-semibold rounded-lg transition-colors"
+                    >
+                      Show Less
+                    </button>
+                  </>
+                )}
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-left">
