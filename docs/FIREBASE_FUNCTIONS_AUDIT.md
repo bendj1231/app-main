@@ -6,9 +6,21 @@
 
 ## Summary
 
-- **Functions that can be removed:** ~380 (simple SELECT queries that can use direct Supabase client)
-- **Functions to keep:** ~35 (business logic, AI operations, complex calculations, external API calls)
-- **Estimated Cost Savings:** 90%+ reduction in Firebase invocations
+- **Total Functions:** 415
+- **Functions Removed:** 216 (simple SELECT queries that can use direct Supabase client)
+  - Pathway Functions: 4
+  - Manufacturer Functions: 63
+  - Premium Features: 49
+  - Type Rating Functions: 7
+  - Programs Functions: 81
+  - Airlines Functions: 12
+- **Functions Kept:** 199 (business logic, AI operations, complex calculations, external API calls)
+  - Recognition Plus: 49
+  - Enterprise Analytics: 5
+  - Airlines: 1 (recalculateCareerScore)
+  - generateAtlasCV: 1
+  - Other business logic functions: 143
+- **Estimated Cost Savings:** 52% reduction in Firebase invocations
 
 ## Functions by Category
 
@@ -94,37 +106,72 @@ Most are simple SELECT queries:
 ---
 
 ### 7. Recognition Plus Functions (49 functions)
-**Status:** MIXED
+**Status:** KEEP ALL (business logic)
 
-**Functions to KEEP (business logic/AI):**
+**All functions contain business logic and should be kept:**
 - optimizeProfileWithAI - AI-powered optimization
 - verifyCredentialsAutomated - Automated verification
 - assignOEMBadges - Badge assignment logic
 - generateSmartRecommendations - AI recommendations
-- matchPathwaysWithAI - AI matching
-- analyzeFlightPerformance - Performance analysis
-- syncFlightData - Data synchronization
-- generatePredictiveInsights - AI predictions
+- fullProfileVerification - Verification logic
+- validateCredentialsAdvanced - Advanced validation logic
+- assignPremiumRecognitionStatus - Status assignment with subscription check
+- getPerformanceAnalyticsDashboard - Analytics calculation
+- calculatePerformanceMetrics - Metrics calculation
+- getAdvancedAnalytics - Advanced analytics calculation
+- trackContinuousImprovement - Improvement tracking logic
+- optimizePerformanceWithAI - AI optimization logic
+- integrateFlightLogs - Flight log integration logic
+- analyzeFlightPerformance - Performance analysis logic
+- syncFlightData - Data sync logic
+- analyzeSkillsGap - Skills gap analysis logic
+- identifySkillGaps - Skill identification logic
+- recommendSkillsTraining - Training recommendation logic
+- getAIEnhancedCurriculum - AI curriculum generation
+- generateAdaptiveLearningPaths - Learning path generation
+- provideAIGuidedMentorship - AI mentorship logic
+- getPersonalizedLearningRecommendations - AI recommendations
 - runCompleteAISuite - AI operations
-- Any function with "AI", "analyze", "calculate", "sync" in the name
+- getAdvancedAIAnalytics - AI analytics
+- generatePredictiveInsights - AI predictions
+- enableFullAIAutomation - AI automation
+- matchPathwaysWithAI - AI matching
+- getAirlineAlignedRecommendations - AI recommendations
+- matchDataDrivenPathways - Data-driven matching
+- getAdvancedCareerInsights - Career insights calculation
+- generatePredictiveCareerAnalytics - Predictive analytics
+- recommendSkillsBasedPathways - Skills-based recommendations
+- assignPremiumPathwayAccess - Access control with subscription check
+- placeFeaturedProfile - Profile placement logic
+- enableDirectOperatorVisibility - Visibility control logic
+- assignShortlistPriority - Priority assignment logic
+- grantEarlyAccessToOpportunities - Access control logic
 
-**Functions to REPLACE (simple SELECT/UPDATE):**
-- getPerformanceAnalyticsDashboard
-- getAdvancedAnalytics
-- getAdvancedCareerInsights
-- assignPremiumRecognitionStatus (can be done via RLS)
-- placeFeaturedProfile (can be done via RLS)
-- enableDirectOperatorVisibility (can be done via RLS)
-- grantEarlyAccessToOpportunities (can be done via RLS)
-
-**Recommendation:** Keep ~20 AI/business logic functions, replace ~29 simple data access functions.
+**Rationale:** All functions contain business logic, AI operations, subscription checks, and complex calculations. They are NOT simple SELECT queries.
 
 ---
 
 ### 8. Airlines Functions (13 functions)
-**Status:** NEEDS REVIEW
+**Status:** MOSTLY CAN BE REPLACED
 
-These functions likely contain airline-specific business logic. Review each one to determine if they can be replaced.
+**Functions to REPLACE (simple CRUD operations):**
+- getAirlines - Simple SELECT query
+- getAirlineById - SELECT with join
+- getAirlinesByAircraft - SELECT with filter
+- updateAirline - UPDATE (can use RLS)
+- addAircraftToFleet - INSERT (can use RLS)
+- removeAircraftFromFleet - DELETE (can use RLS)
+- getAirlineRecruitment - SELECT query
+- getAircraftMetrics - SELECT query
+- updateAircraftMetrics - UPDATE (can use RLS)
+- getAllAircraftMetrics - SELECT query
+- getPilotCountForAircraft - SELECT query
+- updatePilotCountForAircraft - UPDATE with increment (can use RLS with trigger)
+
+**Functions to KEEP (business logic):**
+- recalculateCareerScore - Complex career score calculation
+
+**Recommendation:** Replace 12 functions with direct Supabase client, keep 1 function.
 
 ---
 
