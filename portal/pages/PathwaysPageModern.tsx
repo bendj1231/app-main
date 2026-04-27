@@ -38,6 +38,8 @@ import {
   ChevronUp
 } from 'lucide-react';
 import MilitaryPathwaysPage from './MilitaryPathwaysPage';
+import SpecialPathwaysPage from './SpecialPathwaysPage';
+import LicensureTypeRatingPage from './LicensureTypeRatingPage';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { getPhilippianFlightSchoolCount, Region, DUMMY_FLIGHT_SCHOOLS } from '../../data/flight-schools';
@@ -2900,6 +2902,321 @@ const ThreeStagePathwayFilter: React.FC<{
       return [cadetProgrammesCard, ...subPathwayCards];
     }
     
+    // LICENSURE & TYPE RATING CENTERS PATHWAY - Custom branded cards for specific sub-pathways
+    if (pathwayName.toLowerCase().includes('licensure') || pathwayName.toLowerCase().includes('type rating')) {
+      console.log('[DEBUG] Creating Licensure & Type Rating Centers cards for', subPathwaysForPathway.length, 'sub-pathways');
+      
+      return subPathwaysForPathway.map((sp, index) => {
+        // Custom branded cards for Licensure & Type Rating Centers sub-pathways
+        const licensureCards: Record<string, any> = {
+          // Type Rating Centers
+          'a02f4e29-e165-415f-a3b3-669edbd7deb1': {
+            image: 'https://www.caepacific.com/wp-content/uploads/2021/03/CAE-Philippines-Training-Center.jpg',
+            airline: 'Type Rating Centers',
+            description: 'World-class type rating training centers. Comprehensive training programs for Airbus and Boeing aircraft types. State-of-the-art simulators and experienced instructors. Offers type ratings for A320, B737, A330, B777, and more. Direct pathway to airline careers with recognized certifications.',
+          },
+          // Instrument Rating Pathway
+          'cc996aa7-a075-4be7-beef-f917dd1f41db': {
+            image: 'https://i.ytimg.com/vi/ApAGDJGhSag/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCEJ3oeB8h0vSy8q8KxGx-OWp1f-A',
+            airline: 'Instrument Rating',
+            description: 'Earn your Instrument Rating to fly in all weather conditions and airspace. Master instrument flight rules (IFR), navigation, and approach procedures. Essential for professional pilots and those seeking expanded flying capabilities. Includes simulator training, real-world IFR experience, and preparation for the instrument knowledge and practical tests.',
+          },
+          // ATPL Pathway
+          '54655935-92de-4aad-b82b-703152ffce25': {
+            image: 'https://www.wingpath.in/blog_images/what-is-atpl-in-india-6ihgy-1000x700.png',
+            airline: 'ATPL Pathway',
+            description: 'Build flight hours to meet Airline Transport Pilot requirements. Track progress toward 1,500 hours with structured hour building programs. Options include flight instruction, charter operations, ferry flights, and regional airline experience. Essential for airline career advancement and command opportunities.',
+          },
+          // Seaplane Rating Pathway
+          'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8': {
+            image: 'https://images.unsplash.com/photo-1507199129876-44d2b3190c1a?w=800&q=80',
+            airline: 'Seaplane Rating',
+            description: 'Add a seaplane rating to your pilot certificate. Learn water operations, seaplane handling, and amphibious aircraft procedures. Master takeoff and landing on water, floatplane operations, and seaplane-specific emergency procedures. Opens up new flying opportunities in remote locations and scenic destinations.',
+          },
+          // Multi Engine Rating Pathway
+          'e94ba893-fa83-47b1-90f9-98905dc6685a': {
+            image: 'https://thumbs.dreamstime.com/b/cessna-caravan-14103370.jpg',
+            airline: 'Multi-Engine Rating',
+            description: 'Earn your multi-engine rating to fly complex aircraft with multiple engines. Master engine-out procedures, asymmetric thrust management, and multi-engine performance planning. Essential for airline and corporate aviation careers. Includes training on twin-engine aircraft with advanced avionics systems.',
+          },
+          // UPRT Rating Pathway
+          '078eea1a-271f-4392-a802-9a2ea4c36da0': {
+            image: 'https://www.flight-safety.com/wp-content/uploads/2021/06/uprt-training.jpg',
+            airline: 'UPRT Rating',
+            description: 'Upset Prevention and Recovery Training. Learn to recognize and recover from aircraft upsets and unusual attitudes. Essential for airline pilot certification and safety. Includes both theoretical and practical training in upset scenarios. Required for many airline training programs and improves overall flight safety awareness.',
+          },
+          // CFI Rating Pathway
+          '4d4b6568-3759-432e-9193-e0dba88425aa': {
+            image: 'https://media.pea.com/wp-content/uploads/2023/06/flight-instructor-training-1024x607.jpeg',
+            airline: 'CFI Rating',
+            description: 'Certified Flight Instructor rating. Teach others to fly and build valuable flight hours. Learn instructional techniques, student evaluation, and flight training standards. Essential for career advancement and hour building. Includes training for CFI, CFII, and MEI ratings. Opens doors to teaching opportunities and accelerates career progression toward airline positions.',
+          },
+        };
+        
+        const branded = licensureCards[sp.id] || {};
+        
+        const card = {
+          id: sp.id,
+          name: branded.airline || sp.name,
+          aircraftType: sp.id,
+          airline: branded.airline || 'WingMentor',
+          description: branded.description || sp.description || 'Training pathway for pilot certification',
+          locations: ['USA', 'Global'],
+          matchProbability: 85 + (index * 2),
+          hiringStatus: 'actively_hiring' as const,
+          requirements: { totalHours: 0, typeRatings: [] },
+          image: branded.image || '/images/accessportal.png',
+          pathwayId: pathwayId,
+          category: 'type-rating' as const,
+        };
+        return card;
+      });
+    }
+
+    // CADET PATHWAYS PATHWAY - Custom branded cards for specific sub-pathways
+    if (pathwayName.toLowerCase().includes('cadet')) {
+      console.log('[DEBUG] Creating Cadet Pathways cards for', subPathwaysForPathway.length, 'sub-pathways');
+      
+      return subPathwaysForPathway.map((sp, index) => {
+        // Custom branded cards for Cadet Pathways sub-pathways
+        const cadetCards: Record<string, any> = {
+          // Envoy Air Cadet Program
+          'ad478411-9367-4cf4-9d81-8c08ff62320c': {
+            image: 'https://www.envoyair.com/wp-content/uploads/2024/03/IMG_CadetProgram_MeganSnow.jpg',
+            airline: 'Envoy Air Cadet Program',
+            description: 'American Airlines Group cadet program with guaranteed FO position. Financial assistance available with tuition reimbursement. Flow-through to American Airlines with Embraer fleet. Requires 40+ hours, CPL, Class 1 Medical, US citizenship or permanent residency.',
+          },
+          // Air Cambodia Cadet Programme
+          'fe2d9b27-4290-463e-b88a-9bdbddd8330e': {
+            image: 'https://s28477.pcdn.co/wp-content/uploads/2024/10/CAngkor_1-984x554.png',
+            airline: 'Air Cambodia Cadet Programme',
+            description: 'Sponsored training with A320 type rating and guaranteed job. Monthly stipend of $2,000 during training. Located in Phnom Penh, Cambodia. Age 18-35, high school diploma, and Medical 1 required. Direct pathway to airline career with guaranteed employment.',
+          },
+          // Cebu Pacific Cadet Pilot Program
+          'c6ad6407-cfce-42a2-961f-4c98fabff31b': {
+            image: 'https://images.jgsummit.com.ph/2021/12/15/0f999ad31e634dc5a90ad0d350cbe86ddfc4eca3.jpg',
+            airline: 'Cebu Pacific Cadet Pilot Program',
+            description: 'Full training sponsorship with A320 fleet. Manila-based with Philippine network coverage. Age 18-35, college graduate, Class 1 medical, Filipino citizen required. Low-cost leader with excellent career progression opportunities within the airline.',
+          },
+          // Qantas Cadet Pilot Programme
+          '9b751720-bcce-4d47-974a-19c6a4206a92': {
+            image: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Qantas.svg/1200px-Qantas.svg.png',
+            airline: 'Qantas Cadet Pilot Programme',
+            description: 'World-class cadet program with full sponsorship. Training on Airbus and Boeing fleets. Australia-based with global opportunities. Australian citizen or permanent resident required. Excellent career progression with Asia-Pacifics leading airline.',
+          },
+          // Cathay Pacific Cadet Programme
+          '887eddf3-e65a-4d7a-a15f-dc9d3ef2a73a': {
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
+            airline: 'Cathay Pacific Cadet Programme',
+            description: 'Full sponsorship cadet program with A350/B777 training. Monthly stipend of HKD 5,000 during training. All training costs covered. HK permanent residency required. Age 18-40. Direct entry to Cathay Pacific with definite return to Hong Kong.',
+          },
+          // FlyDubai Cadet Programme
+          'c0a22135-7845-4b28-a9ec-79ac75861a5c': {
+            image: 'https://cdn.uc.assets.prezly.com/5f1fd10f-a9bc-4bf0-aa29-b9a26dc42407/-/crop/1952x1066/0,272/-/preview/-/resize/1108x/-/quality/best/-/format/auto/',
+            airline: 'FlyDubai Cadet Programme',
+            description: 'Full training sponsorship with B737 MAX fleet. Competitive salary after training. Dubai-based with career progression opportunities. Age 18-30, high school diploma required. UAE resident or eligible candidates preferred.',
+          },
+          // Ryanair Future Flyer Program
+          '120e4ce7-3913-4034-9c60-f744c3bacb26': {
+            image: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png',
+            airline: 'Ryanair Future Flyer Program',
+            description: 'Self-funded training with fast upgrade on B737 fleet. Europes largest low-cost airline with 500+ aircraft. EU passport required. 250 hours and B737 type rating needed. Rolling intake with excellent career progression.',
+          },
+          // Air Arabia Cadet Program
+          '6f815347-9f68-4c6c-942c-bcaffa2da6f9': {
+            image: 'https://ifa2.vpcstechnology.com/wp-content/uploads/2020/06/Air-Arabia-Cadet-Pilot-Program.jpg',
+            airline: 'Air Arabia Cadet Program',
+            description: 'Full sponsorship with A320 fleet and GCC network. Monthly salary during training. Sharjah-based with various GCC bases. Age 18-30, high school diploma, Class 1 medical required. Career progression opportunities within the airline.',
+          },
+          // Singapore Airlines Cadet Program
+          'b36e0435-70c1-4d61-b0f6-28a815bb1d85': {
+            image: 'https://upload.wikimedia.org/wikipedia/en/thumb/6/2b/Singapore_Airlines_logo.svg/1200px-Singapore_Airlines_logo.svg.png',
+            airline: 'Singapore Airlines Cadet Program',
+            description: 'World-class cadet program with full sponsorship. Training on Airbus and Boeing fleets. Singapore-based with global opportunities. Singapore citizen or permanent resident required. Excellent career progression with Asia-Pacifics leading airline.',
+          },
+          // Airline-Sponsored Cadet Pathway
+          'a8270b67-4171-4a47-9ef4-ed9304f18478': {
+            image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+            airline: 'Airline-Sponsored Cadet Pathway',
+            description: 'Airline-sponsored training programs with guaranteed employment. Full or partial training sponsorship with partner airlines. Includes structured flight training, ground school, and mentorship. Direct pathway to first officer positions with major airlines. Competitive selection process with medical and age requirements.',
+          },
+          // Government-Funded Cadet Pathway
+          '7072bf71-b488-4e97-999d-a32ebec81ab3': {
+            image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+            airline: 'Government-Funded Cadet Pathway',
+            description: 'Government-sponsored training programs for aspiring pilots. Full or partial funding from government aviation initiatives. Includes structured flight training, ground school, and mentorship. Direct pathway to national airline positions. Competitive selection process with nationality and medical requirements.',
+          },
+          // Academy-Based Cadet Pathway
+          '67a8a0b5-d793-4284-aa87-9da3ebc84882': {
+            image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+            airline: 'Academy-Based Cadet Pathway',
+            description: 'Flight academy-based training programs with structured curriculum. Professional flight training schools with experienced instructors. Includes comprehensive ground school, simulator training, and flight instruction. Direct pathway to airline careers through academy partnerships. High-quality training with industry-standard equipment.',
+          },
+          // Ab-Initio Cadet Pathway
+          '6e6fad3e-53a4-473f-816e-a924fc494bec': {
+            image: 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
+            airline: 'Ab-Initio Cadet Pathway',
+            description: 'Zero-to-hero training programs for aspiring pilots with no prior experience. Complete training from private pilot to commercial pilot license. Includes ground school, flight training, and type ratings. Ideal for students starting their aviation career from scratch. Comprehensive training with airline career progression.',
+          },
+          // International Cadet Pathway
+          '850fd8d1-83c2-4cce-8704-fb779e57ee5c': {
+            image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
+            airline: 'International Cadet Pathway',
+            description: 'International training programs with global airline partnerships. Multi-country training opportunities with diverse fleet experience. Includes international licensing, language training, and cross-cultural preparation. Direct pathway to global airline careers. Ideal for pilots seeking international opportunities and global network exposure.',
+          },
+          // Etihad Airways Cadet Programme
+          '9a527b17-59ae-4caa-afe3-ba8fdd833301': {
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/etihad-airways-new.jpg',
+            airline: 'Etihad Airways Cadet Programme',
+            description: 'Full sponsorship cadet program with Airbus and Boeing training. Abu Dhabi-based with global network. Comprehensive training with excellent career progression. UAE national or eligible candidates preferred. Age 18-30 requirements.',
+          },
+          // Lufthansa Cadet Pilot Programme
+          '35eb4303-9b70-48ba-b8e0-7d32d247f143': {
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/lufthansa.jpg',
+            airline: 'Lufthansa Cadet Pilot Programme',
+            description: 'Germanys premier cadet program with full sponsorship. Training on Airbus and Boeing fleets. Based in Germany with European opportunities. German language proficiency required. Excellent career progression within Lufthansa Group.',
+          },
+          // British Airways Cadet Programme
+          '493a5527-ebe0-43af-a169-ea76e469c852': {
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/british-airways.jpg',
+            airline: 'British Airways Cadet Programme',
+            description: 'UKs flagship cadet program with full sponsorship. Training on Airbus and Boeing fleets. Heathrow-based with global opportunities. UK citizen or right to work required. World-class training with excellent career progression.',
+          },
+          // Jetstar Cadet Pilot Programme
+          'f4d2a35e-ca41-435a-8cba-cf97d95ba2ff': {
+            image: 'https://cdn.cabincrewwings.com/wp-content/uploads/2019/04/jetstar.jpg',
+            airline: 'Jetstar Cadet Pilot Programme',
+            description: 'Qantas Group cadet program with A320 fleet. Melbourne-based with various Australian bases. Training sponsorship available. Age 18-30, high school diploma, Class 1 medical, Australian citizen or permanent resident required. Qantas Group airline with Asia-Pacific network.',
+          },
+          // SkyWest Pilot Pathway Program
+          '78024e77-15db-43ec-bbf8-f7f6c069beec': {
+            image: 'https://www.thrustflight.com/wp-content/uploads/2022/11/skywest-airlines-2-768x512.jpg',
+            airline: 'SkyWest Pilot Pathway Program',
+            description: 'Major airline flow program with E175/CRJ fleet. Financial assistance and guaranteed FO position. Salt Lake City-based with various bases. Private Pilot License required. US citizen or permanent resident. Flow-through to major airlines with tuition reimbursement.',
+          },
+          // JetBlue Gateway Program
+          'c94254e7-1b7c-4945-b66d-6829e0e4ee87': {
+            image: 'https://sanpedrosun.s3.us-west-1.amazonaws.com/wp-content/uploads/2023/12/09170529/Belizean-pilot-flies-JetBlues-inaugural-flight-to-Belize-3-657x438.jpg',
+            airline: 'JetBlue Gateway Program',
+            description: 'Direct-to-airline pathway with A320/A220 fleet. New York-based with various bases. High school graduate, age 18+, US citizen or permanent resident, Class 1 medical required. Direct-to-airline program with East Coast network opportunities.',
+          },
+          // Emirates Cadet Pilot Programme
+          '778f6c91-7b34-4bd0-8354-2af631f6373c': {
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png',
+            airline: 'Emirates Cadet Pilot Programme',
+            description: 'Full training sponsorship with A380/A350 fleet. Dubai-based with global network. Age 18-28, high school diploma, UAE national or resident, ICAO Level 4 required. 5-star airline with global opportunities. Comprehensive training with excellent career progression.',
+          },
+          // easyJet Cadet Pilot Programme
+          '7c511727-576c-4469-b074-0830c9bd6662': {
+            image: 'https://www.cae.com/content/images/civil-aviation/_webp/easyJet_crew_.jpg_webp_40cd750bba9870f18aada2478b24840a.webp',
+            airline: 'easyJet Cadet Pilot Programme',
+            description: 'Training sponsorship with A320 fleet. London-based with various European bases. Age 18-30, high school diploma, Class 1 medical, EU passport or work permit required. European low-cost leader with growing network. Excellent career progression.',
+          },
+          // Wizz Air Cadet Pilot Programme
+          'dd73bae1-3053-4643-bcb0-04db085f986b': {
+            image: 'https://betteraviationjobs.com/storage/2019/11/Wizz-Air-Airbus-A321neo.jpg',
+            airline: 'Wizz Air Cadet Pilot Programme',
+            description: 'Training sponsorship with A321neo fleet. Budapest-based with various European bases. Age 18-30, high school diploma, Class 1 medical, EU passport or work permit required. European low-cost carrier with growing network. Career progression opportunities.',
+          },
+          // Air India Cadet Pilot Programme
+          '5be245c1-2cd2-42e0-8dd4-828424df939f': {
+            image: 'https://blog.topcrewaviation.com/wp-content/uploads/2024/04/Air-India-A350.jpg',
+            airline: 'Air India Cadet Pilot Programme',
+            description: 'Full training sponsorship with A350/B787 fleet. New Delhi-based with various Indian bases. Age 18-30, 12th grade or equivalent, Class 1 medical, Indian citizen required. Tata Group airline with global network. Comprehensive training with excellent career progression.',
+          },
+          // SpiceJet Cadet Pilot Programme
+          'cd30235c-521e-47bd-aa15-7e26877529d3': {
+            image: 'https://airinsight.com/wp-content/uploads/2019/04/SpiceJetMAX.jpg',
+            airline: 'SpiceJet Cadet Pilot Programme',
+            description: 'Training sponsorship with B737 fleet. Gurugram-based with various Indian bases. Age 18-30, 12th grade or equivalent, Class 1 medical, Indian citizen required. Indian low-cost carrier with growing network. Career progression opportunities within the airline.',
+          },
+          // Royal Brunei Cadet Pilot Programme
+          'ab9de5c3-c94b-4784-b630-7d4b6cf82144': {
+            image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+            airline: 'Royal Brunei Cadet Pilot Programme',
+            description: 'Full training sponsorship program. Bandar Seri Begawan-based with Southeast Asian network. Comprehensive training with excellent career progression. Brunei national or eligible candidates preferred. Direct pathway to airline career with guaranteed employment.',
+          },
+          // Philippine Airlines Cadet Pilot Programme
+          '2f9f92d7-f95d-4503-9b83-3a80d9fc8926': {
+            image: 'https://upload.wikimedia.org/wikipedia/en/thumb/3/3d/Philippine_Airlines_logo.svg/1200px-Philippine_Airlines_logo.svg.png',
+            airline: 'Philippine Airlines Cadet Pilot Programme',
+            description: 'Full sponsorship with Airbus and Boeing fleet. Manila-based with global network. Filipino citizen or permanent resident required. Age requirements apply. Philippines flag carrier with excellent career progression. Comprehensive training program with guaranteed employment.',
+          },
+        };
+        
+        const branded = cadetCards[sp.id] || {};
+        
+        const card = {
+          id: sp.id,
+          name: branded.airline || sp.name,
+          aircraftType: sp.id,
+          airline: branded.airline || 'WingMentor',
+          description: branded.description || sp.description || 'Airline-sponsored cadet training program',
+          locations: ['USA', 'Global'],
+          matchProbability: 90 + (index * 1),
+          hiringStatus: 'actively_hiring' as const,
+          requirements: { totalHours: 0, typeRatings: [] },
+          image: branded.image || '/images/accessportal.png',
+          pathwayId: pathwayId,
+          category: 'cadet-programme' as const,
+        };
+        return card;
+      });
+    }
+
+    // DRONES & PILOTLESS DRONES PATHWAY - Custom branded cards for specific sub-pathways
+    if (pathwayName.toLowerCase().includes('drone') || pathwayName.toLowerCase().includes('pilotless')) {
+      console.log('[DEBUG] Creating Drones & Pilotless Drones cards for', subPathwaysForPathway.length, 'sub-pathways');
+      
+      return subPathwaysForPathway.map((sp, index) => {
+        // Custom branded cards for Drones & Pilotless Drones sub-pathways
+        const droneCards: Record<string, any> = {
+          // Joby Aviation Pilot
+          '4594f1c1-4efb-4c1b-88ca-498642886e12': {
+            image: 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
+            airline: 'Joby Aviation Pilot',
+            description: 'eVTOL leader with electric aviation technology. Santa Cruz-based with global opportunities. Requires 1,500+ hours TT, helicopter rating, test pilot experience. Stock options and competitive salary. Leading the future of urban air mobility with innovative electric aircraft.',
+          },
+          // Archer Aviation Pilot
+          'bc266023-13ad-421d-aa16-198596c89834': {
+            image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+            airline: 'Archer Aviation Pilot',
+            description: 'Midnight aircraft with urban air mobility focus. San Jose-based with various locations. Requires 1,200+ hours TT, fixed wing experience, instrument rating. Competitive pay and career progression. Electric aviation innovator transforming regional transportation.',
+          },
+          // Lilium Jet Pilot
+          'b9ae809c-18e5-4ccf-a3c5-c08a910bf379': {
+            image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+            airline: 'Lilium Jet Pilot',
+            description: 'Electric jet pioneer with regional air mobility. Munich-based with global opportunities. Requires 1,000+ hours TT, EASA license, type rating preferred. Innovative technology with electric jet propulsion. Leading the way in sustainable aviation.',
+          },
+          // Drone Test Pilot
+          '143fff6f-3a63-4555-9046-6fa0441bbb79': {
+            image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+            airline: 'Drone Test Pilot',
+            description: 'UAV operations with autonomous systems testing. Global opportunities with various companies. Requires 500+ hours TT, UAV certificate, technical background. Growing field in autonomous systems and testing. Emerging technology with excellent career prospects.',
+          },
+        };
+        
+        const branded = droneCards[sp.id] || {};
+        
+        const card = {
+          id: sp.id,
+          name: branded.airline || sp.name,
+          aircraftType: sp.id,
+          airline: branded.airline || 'WingMentor',
+          description: branded.description || sp.description || 'Drone or UAV pilot training program',
+          locations: ['USA', 'Global'],
+          matchProbability: 85 + (index * 2),
+          hiringStatus: 'actively_hiring' as const,
+          requirements: { totalHours: 0, typeRatings: [] },
+          image: branded.image || '/images/accessportal.png',
+          pathwayId: pathwayId,
+          category: 'airtaxi-drones' as const,
+        };
+        return card;
+      });
+    }
+    
     // Check if there are pre-defined cards for OTHER pathways (not Student Pilot)
     const pathwaySpecificCards = pathwayCards.filter(card => card.pathwayId === pathwayId);
     
@@ -3167,7 +3484,7 @@ const ThreeStagePathwayFilter: React.FC<{
                           const cardName = selectedCard.name?.toLowerCase() || '';
                           
                           // For Flight Schools sub-pathway, show DUMMY_FLIGHT_SCHOOLS cards
-                          if (cardName.includes('flight school') || selectedCard.id === 'aa7e455f-5b75-44d2-be26-d2ca05a38bc7') {
+                          if (cardName.includes('flight school') || cardName.includes('fast track') || cardName.includes('university') || cardName.includes('bachelor') || selectedCard.id === 'aa7e455f-5b75-44d2-be26-d2ca05a38bc7' || selectedCard.id === 'be6b0f3f-a5dc-43a2-a2b2-88ee5328beca' || selectedCard.id === 'f77fc867-9ed8-4e7e-a056-45448094e99c') {
                             ghostCardsToShow = DUMMY_FLIGHT_SCHOOLS.filter(s => s.id !== 'wingmentor-intro').map(fs => ({
                               id: fs.id,
                               name: fs.name,
@@ -3735,6 +4052,31 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [enterprisePathwayCards, setEnterprisePathwayCards] = useState<PathwayData[]>([]);
   const [regionFilter, setRegionFilter] = useState<Region>('All');
   const [showMilitaryPathwaysPage, setShowMilitaryPathwaysPage] = useState(false);
+  const [showSpecialPathwaysPage, setShowSpecialPathwaysPage] = useState(false);
+  const [showLicensureTypeRatingPage, setShowLicensureTypeRatingPage] = useState(false);
+
+  // Debug: Log when showSpecialPathwaysPage changes
+  useEffect(() => {
+    console.log('[DEBUG] showSpecialPathwaysPage changed to:', showSpecialPathwaysPage);
+    if (showSpecialPathwaysPage) {
+      window.scrollTo(0, 0);
+    }
+  }, [showSpecialPathwaysPage]);
+
+  // Debug: Log when showLicensureTypeRatingPage changes
+  useEffect(() => {
+    console.log('[DEBUG] showLicensureTypeRatingPage changed to:', showLicensureTypeRatingPage);
+    if (showLicensureTypeRatingPage) {
+      window.scrollTo(0, 0);
+    }
+  }, [showLicensureTypeRatingPage]);
+
+  // Scroll to top when Military Pathways page is opened
+  useEffect(() => {
+    if (showMilitaryPathwaysPage) {
+      window.scrollTo(0, 0);
+    }
+  }, [showMilitaryPathwaysPage]);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
@@ -4173,6 +4515,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     if (pathwayId === '81753376-b823-4909-b82f-664acab13dae') {
       console.log('[DEBUG] MATCH! Setting showMilitaryPathwaysPage to true');
       setShowMilitaryPathwaysPage(true);
+    } else if (pathwayId === 'aaa44819-37ec-40e7-a6cf-6d1990040d65' || pathwayId === 'a02f4e29-e165-415f-a3b3-669edbd7deb1') {
+      console.log('[DEBUG] MATCH! Setting showLicensureTypeRatingPage to true');
+      setShowLicensureTypeRatingPage(true);
     } else if (onNavigateToPathway) {
       console.log('[DEBUG] Calling onNavigateToPathway');
       onNavigateToPathway(pathwayId);
@@ -4933,6 +5278,33 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             onBack={() => setShowMilitaryPathwaysPage(false)}
           />
         </div>
+      )}
+
+      {/* Special Pathways Page */}
+      {showSpecialPathwaysPage && (
+        <>
+          {console.log('[DEBUG] Rendering SpecialPathwaysPage, showSpecialPathwaysPage:', showSpecialPathwaysPage)}
+          <div className="absolute inset-0 z-[200] bg-white overflow-auto">
+            <SpecialPathwaysPage
+              pathwayId="d36018dd-a116-4925-83ca-6acb414f4020"
+              onBack={() => setShowSpecialPathwaysPage(false)}
+              onNavigate={onNavigate}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Licensure & Type Rating Page */}
+      {showLicensureTypeRatingPage && (
+        <>
+          {console.log('[DEBUG] Rendering LicensureTypeRatingPage, showLicensureTypeRatingPage:', showLicensureTypeRatingPage)}
+          <div className="absolute inset-0 z-[200] bg-slate-900 overflow-auto">
+            <LicensureTypeRatingPage
+              pathwayId="aaa44819-37ec-40e7-a6cf-6d1990040d65"
+              onBack={() => setShowLicensureTypeRatingPage(false)}
+            />
+          </div>
+        </>
       )}
       </div>
     </div>
