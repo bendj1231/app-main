@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Search, MapPin, Star, DollarSign, GraduationCap, Award, Plane, Users, Clock, CheckCircle2, X } from 'lucide-react';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
-import MeshGradient from '../components/MeshGradient';
 import { DUMMY_FLIGHT_SCHOOLS, Region } from '../../data/flight-schools';
 import { useAuth } from '../../src/contexts/AuthContext';
+import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co',

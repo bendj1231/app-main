@@ -2985,9 +2985,33 @@ const ThreeStagePathwayFilter: React.FC<{
                 <style>{`
                   .pathway-sub-carousel::-webkit-scrollbar { display: none; }
                   .pathway-sub-carousel { -ms-overflow-style: none; scrollbar-width: none; }
+                  .pathway-sub-carousel {
+                    scroll-snap-type: x mandatory;
+                    scroll-behavior: smooth;
+                  }
+                  .pathway-sub-carousel > div {
+                    scroll-snap-align: center;
+                  }
+                  @keyframes blink-fade {
+                    0%, 100% { opacity: 0.5; }
+                    50% { opacity: 1; }
+                  }
+                  .selection-indicator {
+                    animation: blink-fade 2s ease-in-out infinite;
+                  }
                 `}</style>
+
+                {/* Floating Selection Indicator above carousel */}
+                <div className="text-center mb-4 relative z-50">
+                  <div className="selection-indicator inline-block">
+                    <span className={`text-2xl font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-600'} drop-shadow-lg`}>
+                      {selectedCard ? selectedCard.name : 'Select a card'}
+                    </span>
+                  </div>
+                </div>
+
                 <div
-                  className="pathway-sub-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4 px-4 sm:px-6 lg:px-8 xl:px-12"
+                  className="pathway-sub-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4 px-4 sm:px-6 lg:px-8 xl-px-12"
                   style={{
                     WebkitOverflowScrolling: 'touch',
                     cursor: 'grab',
@@ -3088,24 +3112,25 @@ const ThreeStagePathwayFilter: React.FC<{
                 </div>
               </div>
 
-              {/* Discover Pathway Button */}
-              <div className="mt-4 px-4 sm:px-6 lg:px-8 xl:px-12">
-                <div className="max-w-3xl mx-auto text-center">
-                  <button
-                    onClick={() => {
-                      const targetCard = selectedCard || cardsWithWingMentor[1];
-                      if (targetCard && onNavigateToPathway) {
-                        onNavigateToPathway(targetCard.id);
-                      }
-                    }}
-                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md cursor-pointer hover:scale-105 transition-transform ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}
-                  >
-                    <span className="text-xs font-semibold text-white">
-                      Discover pathway
-                    </span>
-                  </button>
+              {/* Discover Pathway Button - Only show when a pathway is selected */}
+              {selectedCard && (
+                <div className="mt-4 px-4 sm:px-6 lg:px-8 xl-px-12">
+                  <div className="max-w-3xl mx-auto text-center">
+                    <button
+                      onClick={() => {
+                        if (selectedCard && onNavigateToPathway) {
+                          onNavigateToPathway(selectedCard.id);
+                        }
+                      }}
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md cursor-pointer hover:scale-105 transition-transform ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}
+                    >
+                      <span className="text-xs font-semibold text-white">
+                        Discover pathway
+                      </span>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
               
               {/* Selected Card Context Header - Under the selected card */}
               {selectedCard && cardsWithWingMentor.some(c => c.id === selectedCard.id) && (
@@ -4556,7 +4581,31 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
+              .pathways-carousel {
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+              }
+              .pathways-carousel > div {
+                scroll-snap-align: center;
+              }
+              @keyframes blink-fade-main {
+                0%, 100% { opacity: 0.5; }
+                50% { opacity: 1; }
+              }
+              .selection-indicator-main {
+                animation: blink-fade-main 2s ease-in-out infinite;
+              }
             `}</style>
+
+            {/* Floating Selection Indicator above carousel */}
+            <div className="text-center mb-4 relative z-50">
+              <div className="selection-indicator-main inline-block">
+                <span className={`text-2xl font-bold ${isDarkMode ? 'text-purple-400' : 'text-purple-600'} drop-shadow-lg`}>
+                  {selectedPathwayForMatch ? selectedPathwayForMatch.name : 'Select a card'}
+                </span>
+              </div>
+            </div>
+
             <div
               ref={carouselRef}
               className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4"
