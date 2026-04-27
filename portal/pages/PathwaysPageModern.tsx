@@ -4670,7 +4670,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             <div className="flex items-center gap-3">
               {/* Profile section */}
               {currentUser ? (
-                <div className="flex items-center gap-2">
+                <div className="relative flex items-center gap-2" ref={dropdownRef}>
                   <div className="flex flex-col items-end">
                     <span className="text-xs font-semibold text-slate-900">
                       {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
@@ -4739,24 +4739,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <button className={`p-2 rounded-lg ${buttonBg} ${buttonText}`}>
                 <Bell className="w-5 h-5" />
               </button>
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                  className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
-                >
-                  {userProfile?.profile_image_url ? (
-                    <img 
-                      src={userProfile.profile_image_url} 
-                      alt="Profile" 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-white font-bold text-sm">
-                      {currentUser?.email?.charAt(0) || 'U'}
-                    </span>
-                  )}
-                </button>
-
+              <div className="relative">
                 {/* Profile Dropdown Menu */}
                 {isProfileDropdownOpen && (
                   <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
