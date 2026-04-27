@@ -1,8 +1,7 @@
 /**
- * Service for fetching type rating and manufacturer data from Firebase functions
+ * Service for fetching type rating and manufacturer data from Supabase
  */
-
-const FUNCTION_BASE_URL = 'https://us-central1-pilotrecognition-recognition.cloudfunctions.net';
+import { supabase } from '../lib/supabase';
 
 export interface Manufacturer {
   id: string;
@@ -142,12 +141,13 @@ class TypeRatingService {
    */
   async getAllManufacturers(): Promise<ManufacturerCamel[]> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/getAllManufacturers`);
-      const result = await response.json();
-      if (result.success) {
-        return result.data.map((item: any) => toCamelCase(item));
-      }
-      throw new Error(result.error || 'Failed to fetch manufacturers');
+      const { data, error } = await supabase
+        .from('manufacturers')
+        .select('*')
+        .order('name');
+      
+      if (error) throw error;
+      return (data || []).map((item: any) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching manufacturers:', error);
       throw error;
@@ -159,12 +159,14 @@ class TypeRatingService {
    */
   async getManufacturerById(id: string): Promise<ManufacturerCamel> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/getManufacturerById?id=${id}`);
-      const result = await response.json();
-      if (result.success) {
-        return toCamelCase(result.data);
-      }
-      throw new Error(result.error || 'Failed to fetch manufacturer');
+      const { data, error } = await supabase
+        .from('manufacturers')
+        .select('*')
+        .eq('id', id)
+        .single();
+      
+      if (error) throw error;
+      return toCamelCase(data);
     } catch (error) {
       console.error('Error fetching manufacturer:', error);
       throw error;
@@ -176,12 +178,13 @@ class TypeRatingService {
    */
   async getAllAircraftTypeRatings(): Promise<AircraftTypeRatingCamel[]> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/getAllAircraftTypeRatings`);
-      const result = await response.json();
-      if (result.success) {
-        return result.data.map((item: any) => toCamelCase(item));
-      }
-      throw new Error(result.error || 'Failed to fetch aircraft type ratings');
+      const { data, error } = await supabase
+        .from('aircraft_type_ratings')
+        .select('*')
+        .order('model');
+      
+      if (error) throw error;
+      return (data || []).map((item: any) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft type ratings:', error);
       throw error;
@@ -193,12 +196,14 @@ class TypeRatingService {
    */
   async getAircraftByManufacturer(manufacturerId: string): Promise<AircraftTypeRatingCamel[]> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/getAircraftByManufacturer?manufacturerId=${manufacturerId}`);
-      const result = await response.json();
-      if (result.success) {
-        return result.data.map((item: any) => toCamelCase(item));
-      }
-      throw new Error(result.error || 'Failed to fetch aircraft');
+      const { data, error } = await supabase
+        .from('aircraft_type_ratings')
+        .select('*')
+        .eq('manufacturer_id', manufacturerId)
+        .order('model');
+      
+      if (error) throw error;
+      return (data || []).map((item: any) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft by manufacturer:', error);
       throw error;
@@ -210,12 +215,14 @@ class TypeRatingService {
    */
   async getAircraftByCategory(category: string): Promise<AircraftTypeRatingCamel[]> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/getAircraftByCategory?category=${category}`);
-      const result = await response.json();
-      if (result.success) {
-        return result.data.map((item: any) => toCamelCase(item));
-      }
-      throw new Error(result.error || 'Failed to fetch aircraft');
+      const { data, error } = await supabase
+        .from('aircraft_type_ratings')
+        .select('*')
+        .eq('category', category)
+        .order('model');
+      
+      if (error) throw error;
+      return (data || []).map((item: any) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft by category:', error);
       throw error;
@@ -227,12 +234,14 @@ class TypeRatingService {
    */
   async getAircraftBySubcategory(subcategory: string): Promise<AircraftTypeRatingCamel[]> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/getAircraftBySubcategory?subcategory=${subcategory}`);
-      const result = await response.json();
-      if (result.success) {
-        return result.data.map((item: any) => toCamelCase(item));
-      }
-      throw new Error(result.error || 'Failed to fetch aircraft');
+      const { data, error } = await supabase
+        .from('aircraft_type_ratings')
+        .select('*')
+        .eq('subcategory', subcategory)
+        .order('model');
+      
+      if (error) throw error;
+      return (data || []).map((item: any) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft by subcategory:', error);
       throw error;
@@ -244,12 +253,14 @@ class TypeRatingService {
    */
   async getAircraftById(id: string): Promise<AircraftTypeRatingCamel> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/getAircraftById?id=${id}`);
-      const result = await response.json();
-      if (result.success) {
-        return toCamelCase(result.data);
-      }
-      throw new Error(result.error || 'Failed to fetch aircraft');
+      const { data, error } = await supabase
+        .from('aircraft_type_ratings')
+        .select('*')
+        .eq('id', id)
+        .single();
+      
+      if (error) throw error;
+      return toCamelCase(data);
     } catch (error) {
       console.error('Error fetching aircraft:', error);
       throw error;
@@ -261,12 +272,14 @@ class TypeRatingService {
    */
   async searchAircraft(query: string): Promise<AircraftTypeRatingCamel[]> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/searchAircraft?query=${encodeURIComponent(query)}`);
-      const result = await response.json();
-      if (result.success) {
-        return result.data.map((item: any) => toCamelCase(item));
-      }
-      throw new Error(result.error || 'Failed to search aircraft');
+      const { data, error } = await supabase
+        .from('aircraft_type_ratings')
+        .select('*')
+        .or(`model.ilike.%${query}%,description.ilike.%${query}%`)
+        .order('model');
+      
+      if (error) throw error;
+      return (data || []).map((item: any) => toCamelCase(item));
     } catch (error) {
       console.error('Error searching aircraft:', error);
       throw error;
@@ -278,12 +291,13 @@ class TypeRatingService {
    */
   async getAircraftWithManufacturer(): Promise<any[]> {
     try {
-      const response = await fetch(`${FUNCTION_BASE_URL}/getAircraftWithManufacturer`);
-      const result = await response.json();
-      if (result.success) {
-        return result.data.map((item: any) => toCamelCase(item));
-      }
-      throw new Error(result.error || 'Failed to fetch aircraft with manufacturer');
+      const { data, error } = await supabase
+        .from('aircraft_type_ratings')
+        .select('*, manufacturers(*)')
+        .order('model');
+      
+      if (error) throw error;
+      return (data || []).map((item: any) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft with manufacturer:', error);
       throw error;
