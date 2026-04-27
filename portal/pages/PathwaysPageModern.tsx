@@ -37,6 +37,7 @@ import {
   ArrowLeft,
   ChevronUp
 } from 'lucide-react';
+import MilitaryPathwaysPage from './MilitaryPathwaysPage';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { getPhilippianFlightSchoolCount, Region } from '../../data/flight-schools';
@@ -2631,6 +2632,16 @@ const ThreeStagePathwayFilter: React.FC<{
     }
   }, [selectedPathway]);
 
+  // Reset selectedCard when general category changes
+  useEffect(() => {
+    setSelectedCard(null);
+  }, [selectedGeneralCategory]);
+
+  // Reset selectedCard when pathway changes
+  useEffect(() => {
+    setSelectedCard(null);
+  }, [selectedPathway]);
+
   const handlePathwayClick = (pathwayId: string) => {
     setSelectedPathway(pathwayId);
     setSelectedSubPathway(null);
@@ -3004,8 +3015,8 @@ const ThreeStagePathwayFilter: React.FC<{
                 {/* Floating Selection Indicator above carousel */}
                 <div className="text-center mb-4 relative z-50">
                   <div className="selection-indicator inline-block">
-                    <span className={`text-2xl font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-600'} drop-shadow-lg`}>
-                      {selectedCard ? selectedCard.name : 'Select a card'}
+                    <span className={`text-sm font-normal text-white/50`}>
+                      {selectedCard ? selectedCard.name : 'Swipe left or right and click to select a card'}
                     </span>
                   </div>
                 </div>
@@ -3118,8 +3129,14 @@ const ThreeStagePathwayFilter: React.FC<{
                   <div className="max-w-3xl mx-auto text-center">
                     <button
                       onClick={() => {
+                        console.log('[DEBUG] Discover pathway button clicked');
+                        console.log('[DEBUG] selectedCard:', selectedCard);
+                        console.log('[DEBUG] onNavigateToPathway exists:', !!onNavigateToPathway);
                         if (selectedCard && onNavigateToPathway) {
+                          console.log('[DEBUG] Calling onNavigateToPathway with ID:', selectedCard.id);
                           onNavigateToPathway(selectedCard.id);
+                        } else {
+                          console.log('[DEBUG] Cannot call onNavigateToPathway - selectedCard:', !!selectedCard, 'onNavigateToPathway:', !!onNavigateToPathway);
                         }
                       }}
                       className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md cursor-pointer hover:scale-105 transition-transform ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}
@@ -3679,6 +3696,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [canPostPathways, setCanPostPathways] = useState(false);
   const [enterprisePathwayCards, setEnterprisePathwayCards] = useState<PathwayData[]>([]);
   const [regionFilter, setRegionFilter] = useState<Region>('All');
+  const [showMilitaryPathwaysPage, setShowMilitaryPathwaysPage] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
@@ -4104,6 +4122,24 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     const pathway = allPathways.find(p => p.id === pathwayId);
     if (pathway) {
       setSelectedPathwayForMatch(pathway);
+    }
+  };
+
+  const handleNavigateToPathway = (pathwayId: string) => {
+    console.log('[DEBUG] handleNavigateToPathway called with ID:', pathwayId);
+    console.log('[DEBUG] showMilitaryPathwaysPage state:', showMilitaryPathwaysPage);
+    console.log('[DEBUG] Checking if pathwayId matches Military ID:', pathwayId === '81753376-b823-4909-b82f-664acab13dae');
+    console.log('[DEBUG] onNavigateToPathway exists:', !!onNavigateToPathway);
+
+    // Check if this is the Military pathway
+    if (pathwayId === '81753376-b823-4909-b82f-664acab13dae') {
+      console.log('[DEBUG] MATCH! Setting showMilitaryPathwaysPage to true');
+      setShowMilitaryPathwaysPage(true);
+    } else if (onNavigateToPathway) {
+      console.log('[DEBUG] Calling onNavigateToPathway');
+      onNavigateToPathway(pathwayId);
+    } else {
+      console.log('[DEBUG] No match and no onNavigateToPathway handler');
     }
   };
 
@@ -4600,8 +4636,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             {/* Floating Selection Indicator above carousel */}
             <div className="text-center mb-4 relative z-50">
               <div className="selection-indicator-main inline-block">
-                <span className={`text-2xl font-bold ${isDarkMode ? 'text-purple-400' : 'text-purple-600'} drop-shadow-lg`}>
-                  {selectedPathwayForMatch ? selectedPathwayForMatch.name : 'Select a card'}
+                <span className={`text-sm font-normal text-white/50`}>
+                  {selectedPathwayForMatch ? selectedPathwayForMatch.name : 'Swipe left or right and click to select a card'}
                 </span>
               </div>
             </div>
@@ -4766,7 +4802,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             isDarkMode={isDarkMode}
             pathwayCards={allPathways}
             selectedGeneralCategory={hierarchySelection.generalCategory || null}
-            onNavigateToPathway={onNavigateToPathway}
+            onNavigateToPathway={handleNavigateToPathway}
           />
         )}
 
@@ -4850,6 +4886,16 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           isDarkMode={isDarkMode}
           onClose={() => setSelectedPathwayForMatch(null)}
         />
+      )}
+
+      {/* Military Pathways Page */}
+      {showMilitaryPathwaysPage && (
+        <div className="absolute inset-0 z-[100] bg-white overflow-auto">
+          <MilitaryPathwaysPage
+            pathwayId="military"
+            onBack={() => setShowMilitaryPathwaysPage(false)}
+          />
+        </div>
       )}
       </div>
     </div>

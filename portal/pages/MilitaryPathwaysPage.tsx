@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Search, MapPin, Star, Shield, Users, Clock, Award, Plane, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, MapPin, Star, Shield, Users, Clock, Award, Plane, X, ArrowLeft, User, Settings, Bell, LogOut, Globe } from 'lucide-react';
 import { DUMMY_MILITARY_PATHWAYS, MilitaryBranch } from '../../data/military-pathways';
 import { useAuth } from '../../src/contexts/AuthContext';
 
@@ -10,32 +10,20 @@ interface MilitaryPathwaysPageProps {
   onNavigate?: (page: string) => void;
 }
 
-// Search Bar component
-const SearchBar: React.FC<{ onSearch: (query: string) => void; isDarkMode?: boolean }> = ({ onSearch, isDarkMode = true }) => (
-  <div className="relative w-[600px] flex items-center gap-3">
-    <div className="relative flex-1">
-      <Search className={`absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
-      <input
-        type="text"
-        placeholder="Search military pathways, branches, or locations..."
-        className={`w-full pl-4 pr-12 py-4 backdrop-blur border rounded-lg focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all ${
-          isDarkMode
-            ? 'bg-slate-800/50 border-slate-700/50 text-white placeholder-slate-400'
-            : 'bg-white/70 border-slate-300/50 text-slate-900 placeholder-slate-500'
-        }`}
-        onChange={(e) => onSearch(e.target.value)}
-      />
-    </div>
-  </div>
-);
+type Region = 'All' | 'Asia' | 'Europe' | 'Americas' | 'Oceania' | 'Africa' | 'Middle East';
 
 const MilitaryPathwaysPage: React.FC<MilitaryPathwaysPageProps> = ({ pathwayId, onBack, onNavigate }) => {
+  console.log('[DEBUG] MilitaryPathwaysPage mounted with pathwayId:', pathwayId);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMilitaryPathway, setSelectedMilitaryPathway] = useState<any>(null);
   const militaryCarouselRef = useRef<HTMLDivElement>(null);
   const [branchFilter, setBranchFilter] = useState<MilitaryBranch>('All');
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [regionFilter, setRegionFilter] = useState<Region>('All');
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const { currentUser } = useAuth();
+  
+  // Mock user profile
+  const userProfile = { pilot_id: currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot' };
 
   // Filter military pathways by branch
   const filteredMilitaryPathways = DUMMY_MILITARY_PATHWAYS.filter(pathway => {
@@ -86,235 +74,395 @@ const MilitaryPathwaysPage: React.FC<MilitaryPathwaysPageProps> = ({ pathwayId, 
   };
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-slate-900' : 'bg-slate-50'}`}>
-      {/* Header */}
-      <div className={`sticky top-0 z-50 backdrop-blur-md ${isDarkMode ? 'bg-slate-900/80 border-b border-slate-700' : 'bg-white/80 border-b border-slate-200'}`}>
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={onBack}
-              className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-slate-800 text-white' : 'hover:bg-slate-100 text-slate-700'}`}
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-              Military Flight Training
-            </h1>
+    <div className="min-h-screen relative">
+      {/* Navigation Bar */}
+      <header className="bg-white border-b border-slate-200 backdrop-blur-sm sticky top-0 z-50">
+        <div className="mx-auto pr-6 py-4 w-full max-w-[1800px]">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
+                {/* Back Button */}
+                <button
+                  onClick={onBack}
+                  className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 hover:scale-105 transition-transform"
+                  title="Back to Pathways"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+                {/* PilotRecognition.com Logo */}
+                <div className="flex flex-col">
+                  <span style={{ fontFamily: 'Georgia, serif' }} className="text-black text-2xl font-normal">
+                    Discover <span className="text-red-600">Pathways</span>
+                  </span>
+                  <span className="text-xs text-slate-600 font-normal">
+                    pilotrecognition.com
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Centered Navigation Buttons */}
+            <div className="flex items-center justify-center flex-1 gap-3">
+              {[
+                { label: 'Airline Expectations', page: 'portal-airline-expectations' },
+                { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
+                { label: 'Pilot Pathways', page: 'pathways-modern' },
+                { label: 'Job Listings', page: 'job-listings' },
+              ].map(({ label, page }) => {
+                const isActive = page === 'pathways-modern';
+                return (
+                  <button
+                    key={page}
+                    onClick={() => onNavigate && onNavigate(page)}
+                    className={`text-[0.6rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${
+                      isActive
+                        ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
+                        : 'text-slate-900'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right side items */}
+            <div className="flex items-center gap-3">
+              {/* Profile section */}
+              {currentUser ? (
+                <div className="flex items-center gap-2">
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs font-semibold text-slate-900">
+                      {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
+                    </span>
+                    <span className="text-[10px] text-slate-500">Signed In</span>
+                  </div>
+                  <button
+                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform"
+                  >
+                    {userProfile?.profile_image_url ? (
+                      <img
+                        src={userProfile.profile_image_url}
+                        alt="Profile"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <User className="w-5 h-5" />
+                    )}
+                  </button>
+                  {/* Profile Dropdown */}
+                  {isProfileDropdownOpen && (
+                    <div className="absolute right-16 top-16 bg-white border border-slate-200 rounded-lg shadow-lg py-2 w-48 z-50">
+                      <button className="w-full px-4 py-2 text-left text-sm hover:bg-slate-100 flex items-center gap-2">
+                        <Settings className="w-4 h-4" />
+                        Settings
+                      </button>
+                      <button className="w-full px-4 py-2 text-left text-sm hover:bg-slate-100 flex items-center gap-2">
+                        <Bell className="w-4 h-4" />
+                        Notifications
+                      </button>
+                      <hr className="my-2" />
+                      <button className="w-full px-4 py-2 text-left text-sm hover:bg-slate-100 flex items-center gap-2 text-red-600">
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button className="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-6 py-2 rounded-lg transition-colors">
+                  Become a Member
+                </button>
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Shield className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`} />
-            <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-              {searchFilteredPathways.length - 1} Pathways Available
-            </span>
+        </div>
+      </header>
+
+      {/* Top section with shader */}
+      <div className="relative z-10 bg-gradient-to-b from-transparent to-slate-900">
+        <div className="p-8 pt-20">
+          {/* Main Header - in shader section */}
+          <div className="max-w-4xl mx-auto mb-8">
+            <h1 className="text-6xl font-serif mb-4 text-center">
+              <span className="text-black">Pathways</span> <span className="text-red-400">Military Training</span>
+            </h1>
+            <p className="text-slate-300 mb-2 text-center text-lg">Discover and compare military aviation pathways to achieve your aviation goals</p>
+            <p className="text-slate-400 mb-8 text-center">Pathway ID: {pathwayId}</p>
+
+            {/* Search Bar */}
+            <div className="mb-8 space-y-4 text-center">
+              <div className="flex justify-center">
+                <div className="relative w-[600px]">
+                  <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Search military pathways..."
+                    className="w-full pl-4 pr-12 py-4 bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-slate-900 placeholder-slate-500"
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* Geographical Location Categories */}
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <Globe className="w-4 h-4 text-slate-500" />
+                <span className="text-sm font-medium text-slate-600 mr-2">Region:</span>
+                {(['All', 'Asia', 'Europe', 'Americas', 'Oceania', 'Africa', 'Middle East'] as Region[]).map((region) => (
+                  <button
+                    key={region}
+                    onClick={() => setRegionFilter(region)}
+                    className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all border-2 ${
+                      regionFilter === region
+                        ? 'bg-sky-500 text-white border-sky-500 shadow-md'
+                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    {region}
+                  </button>
+                ))}
+              </div>
+
+              {/* Branch Filter */}
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <Shield className="w-4 h-4 text-slate-500" />
+                <span className="text-sm font-medium text-slate-600 mr-2">Branch:</span>
+                {(['All', 'Air Force', 'Navy', 'Army', 'Marine Corps', 'RAF', 'Coast Guard', 'Police', 'Defense Contractor'] as MilitaryBranch[]).map((branch) => (
+                  <button
+                    key={branch}
+                    onClick={() => setBranchFilter(branch)}
+                    className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all border-2 ${
+                      branchFilter === branch
+                        ? 'bg-sky-500 text-white border-sky-500 shadow-md'
+                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    {branch === 'All' ? 'All Branches' : branch}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Military Pathways Carousel - in shader section */}
+          <div className="px-8 pb-12">
+            <div className="w-screen left-1/2 -translate-x-1/2 relative">
+              <div className="mb-4 pr-4 pl-8 w-full">
+                <div className="text-left">
+                  <h2
+                    className="text-3xl md:text-4xl font-normal text-white"
+                    style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                  >
+                    Military Programs
+                  </h2>
+                  <p className="text-slate-400 text-xs mt-1">
+                    Discover military aviation pathways for your career
+                  </p>
+                </div>
+              </div>
+
+              {/* Carousel Container */}
+              <div className="relative w-screen left-1/2 -translate-x-1/2">
+                <style>{`
+                  .military-pathways-carousel::-webkit-scrollbar { display: none; }
+                  .military-pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
+                `}</style>
+                <div
+                  ref={militaryCarouselRef}
+                  className="military-pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4"
+                  style={{
+                    WebkitOverflowScrolling: 'touch',
+                    cursor: 'grab',
+                    paddingLeft: '0px',
+                    paddingRight: 'calc(50vw - 300px)',
+                  }}
+                >
+                  {searchFilteredPathways.map((pathway) => (
+                    <div
+                      key={pathway.id}
+                      data-card-id={pathway.id}
+                      onClick={(e) => {
+                        setSelectedMilitaryPathway(pathway);
+
+                        // Scroll card to center
+                        const cardElement = e.currentTarget as HTMLElement;
+                        const carousel = cardElement.parentElement;
+                        if (carousel && cardElement) {
+                          const cardCenterInContainer = cardElement.offsetLeft + cardElement.offsetWidth / 2;
+                          const targetScrollLeft = cardCenterInContainer - carousel.offsetWidth / 2;
+
+                          carousel.scrollTo({
+                            left: targetScrollLeft,
+                            behavior: 'smooth'
+                          });
+                        }
+                      }}
+                      className={`flex-shrink-0 w-[600px] rounded-xl overflow-hidden cursor-pointer transition-all ${
+                        selectedMilitaryPathway?.id === pathway.id
+                          ? 'ring-2 ring-blue-500'
+                          : 'hover:ring-2 hover:ring-blue-400'
+                      }`}
+                    >
+                      {pathway.id === 'military-intro' ? (
+                        // Military Intro Card - Glassy UI without image
+                        <div className="h-80 bg-white/10 backdrop-blur-xl border border-white/20 flex flex-col items-center justify-center p-8">
+                          <h3 className="text-2xl font-semibold mb-4 text-white text-center">{pathway.name}</h3>
+                          <p className="text-slate-300 mb-6 text-center text-lg">{pathway.description}</p>
+                          <div className="flex items-center gap-4 text-slate-400 text-sm">
+                            <span className="flex items-center gap-2">
+                              <ChevronLeft className="w-5 h-5" />
+                              Swipe left
+                            </span>
+                            <span>or</span>
+                            <span className="flex items-center gap-2">
+                              Swipe right
+                              <ChevronRight className="w-5 h-5" />
+                            </span>
+                            <span>to select a pathway</span>
+                          </div>
+                        </div>
+                      ) : (
+                        // Regular Military Pathway Card
+                        <div className="relative h-80">
+                          <img
+                            src={pathway.image}
+                            alt={pathway.name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                          <div className="absolute bottom-0 left-0 p-6">
+                            <h3 className="text-xl font-semibold mb-2 text-white">{pathway.name}</h3>
+                            <div className="flex justify-between items-center text-sm">
+                              <div className="flex items-center gap-2">
+                                <MapPin className="w-4 h-4 text-slate-300" />
+                                <span className="text-slate-300">{pathway.location}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                                <span className="text-white">{pathway.rating}</span>
+                              </div>
+                            </div>
+                            <p className="text-slate-300 text-sm mt-2 line-clamp-2">{pathway.description}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Search Bar */}
-        <div className="flex justify-center mb-8">
-          <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
-        </div>
-
-        {/* Branch Filter */}
-        <div className="flex justify-center flex-wrap gap-2 mb-8">
-          {(['All', 'Air Force', 'Navy', 'Army', 'Marine Corps'] as MilitaryBranch[]).map((branch) => (
+      {/* White background section */}
+      <div className="relative z-10 bg-white text-slate-900">
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          {/* Header Context with Navigation Buttons */}
+          <div className="flex items-center justify-between mb-8">
+            {/* Left Arrow */}
             <button
-              key={branch}
-              onClick={() => setBranchFilter(branch)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                branchFilter === branch
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : isDarkMode
-                  ? 'bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700'
-                  : 'bg-white border border-slate-300 text-slate-600 hover:bg-slate-50'
-              }`}
+              onClick={() => scrollMilitaryCarousel('left')}
+              className="bg-slate-100 hover:bg-slate-200 rounded-full p-3 transition-colors"
             >
-              {branch === 'All' ? 'All Branches' : branch}
+              <ChevronLeft className="w-6 h-6 text-slate-600" />
             </button>
-          ))}
-        </div>
 
-        {/* Military Pathways Carousel */}
-        <div className="relative">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-              Military Aviation Programs
-            </h2>
-            <div className="flex gap-2">
-              <button
-                onClick={() => scrollMilitaryCarousel('left')}
-                className={`p-2 rounded-lg ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-300'}`}
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => scrollMilitaryCarousel('right')}
-                className={`p-2 rounded-lg ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-300'}`}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
+            {/* Centered Header */}
+            <div className="flex-1 text-center px-4">
+              <h1 className="text-6xl font-serif mb-4">
+                <span className="text-black">{selectedMilitaryPathway?.name || 'Military Programs'}</span>
+              </h1>
+              <p className="text-slate-600 mb-2 text-lg">{selectedMilitaryPathway?.description || 'Discover and compare military aviation pathways to achieve your aviation goals'}</p>
+              <p className="text-slate-500 mb-8">Pathway ID: {pathwayId}</p>
             </div>
+
+            {/* Right Arrow */}
+            <button
+              onClick={() => scrollMilitaryCarousel('right')}
+              className="bg-slate-100 hover:bg-slate-200 rounded-full p-3 transition-colors"
+            >
+              <ChevronRight className="w-6 h-6 text-slate-600" />
+            </button>
           </div>
 
-          <div
-            ref={militaryCarouselRef}
-            className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {searchFilteredPathways.map((pathway) => (
+          {/* Selected Pathway Details */}
+          <AnimatePresence>
+            {selectedMilitaryPathway && selectedMilitaryPathway.id !== 'military-intro' && (
               <motion.div
-                key={pathway.id}
-                data-card-id={pathway.id}
-                onClick={() => setSelectedMilitaryPathway(pathway)}
-                className={`flex-shrink-0 w-80 rounded-2xl overflow-hidden cursor-pointer transition-all ${
-                  selectedMilitaryPathway?.id === pathway.id
-                    ? 'ring-4 ring-blue-500 scale-105'
-                    : isDarkMode
-                    ? 'bg-slate-800 hover:bg-slate-700'
-                    : 'bg-white hover:bg-slate-50 border border-slate-300'
-                }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="bg-slate-100 rounded-xl p-8 mb-6"
               >
-                {pathway.image && (
-                  <div className="h-48 overflow-hidden">
-                    <img
-                      src={pathway.image}
-                      alt={pathway.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <div className="p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                      {pathway.name}
-                    </h3>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                      <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                        {pathway.rating}
-                      </span>
-                    </div>
-                  </div>
-                  <p className={`text-sm mb-3 line-clamp-2 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-                    {pathway.description}
-                  </p>
-                  <div className="flex items-center gap-2 text-sm">
-                    <MapPin className={`w-4 h-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
-                    <span className={isDarkMode ? 'text-slate-300' : 'text-slate-600'}>
-                      {pathway.location}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm mt-2">
-                    <Clock className={`w-4 h-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
-                    <span className={isDarkMode ? 'text-slate-300' : 'text-slate-600'}>
-                      {pathway.serviceCommitment}
-                    </span>
-                  </div>
-                  {pathway.branch !== 'All' && (
-                    <div className="mt-3">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                        pathway.branch === 'Air Force' ? 'bg-blue-100 text-blue-800' :
-                        pathway.branch === 'Navy' ? 'bg-blue-100 text-blue-800' :
-                        pathway.branch === 'Army' ? 'bg-green-100 text-green-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {pathway.branch}
-                      </span>
+                <div className="flex items-start gap-6">
+                  {selectedMilitaryPathway.image && (
+                    <div className="flex-shrink-0">
+                      <img
+                        src={selectedMilitaryPathway.image}
+                        alt={selectedMilitaryPathway.name}
+                        className="w-48 h-48 object-cover rounded-xl"
+                      />
                     </div>
                   )}
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold mb-2 text-slate-900">
+                      {selectedMilitaryPathway.name}
+                    </h2>
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="flex items-center gap-1">
+                        <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                        <span className="font-bold text-slate-900">
+                          {selectedMilitaryPathway.rating}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-5 h-5 text-slate-500" />
+                        <span className="text-slate-600">
+                          {selectedMilitaryPathway.location}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-5 h-5 text-slate-500" />
+                        <span className="text-slate-600">
+                          {selectedMilitaryPathway.serviceCommitment}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="mb-4 text-slate-600">
+                      {selectedMilitaryPathway.description}
+                    </p>
+                    {selectedMilitaryPathway.branch !== 'All' && (
+                      <div className="mb-4">
+                        <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${
+                          selectedMilitaryPathway.branch === 'Air Force' ? 'bg-blue-100 text-blue-800' :
+                          selectedMilitaryPathway.branch === 'Navy' ? 'bg-blue-100 text-blue-800' :
+                          selectedMilitaryPathway.branch === 'Army' ? 'bg-green-100 text-green-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>
+                          {selectedMilitaryPathway.branch}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex gap-3">
+                      <button
+                        className="px-6 py-3 rounded-lg font-medium transition-all bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        Apply Now
+                      </button>
+                      <button
+                        className="px-6 py-3 rounded-lg font-medium transition-all bg-slate-200 hover:bg-slate-300 text-slate-700"
+                      >
+                        Learn More
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
+            )}
+          </AnimatePresence>
         </div>
-
-        {/* Selected Pathway Details */}
-        <AnimatePresence>
-          {selectedMilitaryPathway && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className={`mt-8 p-6 rounded-2xl ${isDarkMode ? 'bg-slate-800' : 'bg-white border border-slate-300'}`}
-            >
-              <div className="flex items-start gap-6">
-                {selectedMilitaryPathway.image && (
-                  <div className="flex-shrink-0">
-                    <img
-                      src={selectedMilitaryPathway.image}
-                      alt={selectedMilitaryPathway.name}
-                      className="w-48 h-48 object-cover rounded-xl"
-                    />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <h2 className={`text-2xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                    {selectedMilitaryPathway.name}
-                  </h2>
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                      <span className={`font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                        {selectedMilitaryPathway.rating}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MapPin className={`w-5 h-5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
-                      <span className={isDarkMode ? 'text-slate-300' : 'text-slate-600'}>
-                        {selectedMilitaryPathway.location}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className={`w-5 h-5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
-                      <span className={isDarkMode ? 'text-slate-300' : 'text-slate-600'}>
-                        {selectedMilitaryPathway.serviceCommitment}
-                      </span>
-                    </div>
-                  </div>
-                  <p className={`mb-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                    {selectedMilitaryPathway.description}
-                  </p>
-                  {selectedMilitaryPathway.branch !== 'All' && (
-                    <div className="mb-4">
-                      <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${
-                        selectedMilitaryPathway.branch === 'Air Force' ? 'bg-blue-100 text-blue-800' :
-                        selectedMilitaryPathway.branch === 'Navy' ? 'bg-blue-100 text-blue-800' :
-                        selectedMilitaryPathway.branch === 'Army' ? 'bg-green-100 text-green-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {selectedMilitaryPathway.branch}
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex gap-3">
-                    <button
-                      className={`px-6 py-3 rounded-lg font-medium transition-all ${
-                        isDarkMode
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
-                      }`}
-                    >
-                      Apply Now
-                    </button>
-                    <button
-                      className={`px-6 py-3 rounded-lg font-medium transition-all ${
-                        isDarkMode
-                          ? 'bg-slate-700 hover:bg-slate-600 text-white'
-                          : 'bg-slate-200 hover:bg-slate-300 text-slate-700'
-                      }`}
-                    >
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Search, MapPin, Star, DollarSign, GraduationCap, Award, Plane, Users, Clock, CheckCircle2, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, MapPin, Star, DollarSign, GraduationCap, Award, Plane, Users, Clock, CheckCircle2, X, ArrowLeft, User, Settings, Bell, LogOut, Globe } from 'lucide-react';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { DUMMY_FLIGHT_SCHOOLS, Region } from '../../data/flight-schools';
 import { useAuth } from '../../src/contexts/AuthContext';
@@ -185,18 +185,6 @@ const PathwayDetailPage: React.FC<PathwayDetailPageProps> = ({ pathwayId, onBack
 
   return (
     <div className="min-h-screen relative">
-      {/* MeshGradient Background - Top section only */}
-      <div className="fixed top-0 left-0 right-0 h-[700px] z-0">
-        <MeshGradient
-          className="w-full h-full"
-          colors={["#0f172a", "#1e3a5f", "#334155", "#1e293b"]}
-          speed={0.8}
-        />
-      </div>
-
-      {/* Gradient overlay for smooth transition to white */}
-      <div className="fixed top-0 left-0 right-0 h-[500px] z-0 bg-gradient-to-b from-transparent via-transparent to-white pointer-events-none" />
-
       {/* Navigation Bar */}
       <header className="bg-white border-b border-slate-200 backdrop-blur-sm sticky top-0 z-50">
         <div className="mx-auto pr-6 py-4 w-full max-w-[1800px]">

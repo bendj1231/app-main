@@ -1,4 +1,4 @@
-export type MilitaryBranch = 'All' | 'Air Force' | 'Navy' | 'Army' | 'Marine Corps';
+export type MilitaryBranch = 'All' | 'Air Force' | 'Navy' | 'Army' | 'Marine Corps' | 'RAF' | 'Coast Guard' | 'Police' | 'Defense Contractor';
 
 export interface MilitaryPathway {
   id: string;
@@ -30,7 +30,7 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Colorado Springs, Colorado',
     rating: 4.9,
     serviceCommitment: '10 years',
-    image: 'https://www.usafa.af.mil/Portals/14/Photos/2022/06/220616-F-YM425-1002.JPG?ver=2022-06-17-125327-667',
+    image: 'https://www.airandspaceforces.com/app/uploads/2020/07/6255683-scaled.jpg',
     branch: 'Air Force' as MilitaryBranch
   },
   {
@@ -40,7 +40,7 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Nationwide',
     rating: 4.7,
     serviceCommitment: '8-10 years',
-    image: 'https://www.afrotc.com/sites/default/files/2021-09/AFROTC_Logo_0.png',
+    image: 'https://d1ldvf68ux039x.cloudfront.net/thumbs/frames/video/2208/855196/DOD_109182983.0000001/2000w_q95.jpg',
     branch: 'Air Force' as MilitaryBranch
   },
   {
@@ -50,29 +50,29 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Maxwell AFB, Alabama',
     rating: 4.6,
     serviceCommitment: '8-10 years',
-    image: 'https://media.defense.gov/2019/Mar/08/2002106653/-1/-1/0/190308-F-QY965-002.JPG',
+    image: 'https://www.airforce.com/content/dam/airforce/en/dm-test/OTS_dmHeader.jpg',
     branch: 'Air Force' as MilitaryBranch
   },
   // Navy
   {
     id: 'military-4',
-    name: 'Naval Academy',
-    description: 'Elite naval officer training with aviation career paths. Offers bachelor\'s degree and flight training for selected midshipmen. Highly competitive with comprehensive education.',
-    location: 'Annapolis, Maryland',
+    name: 'NATO',
+    description: 'NATO provides opportunities for military pilots through cooperative programs and training exercises. International aviation training and collaboration across allied nations.',
+    location: 'International',
     rating: 4.9,
-    serviceCommitment: '8-10 years',
-    image: 'https://www.usna.edu/Images/homepage/hero-images/hero-home.jpg',
+    serviceCommitment: 'Varies',
+    image: 'https://www.collectivemag.com/wp-content/uploads/2026/03/pilote-suede-1024x771.jpg',
     branch: 'Navy' as MilitaryBranch
   },
   {
     id: 'military-5',
-    name: 'NROTC',
-    description: 'Naval Reserve Officers Training Corps for college students. Scholarships and flight training opportunities available. Commission as Navy or Marine Corps officer.',
-    location: 'Nationwide',
-    rating: 4.7,
-    serviceCommitment: '8-10 years',
-    image: 'https://www.nrotc.navy.mil/Portals/82/NROTC_Logo.png?ver=2020-01-15-110234-980',
-    branch: 'Navy' as MilitaryBranch
+    name: 'RAF',
+    description: 'Royal Air Force offers world-class flight training and career opportunities for military pilots. Elite aviation training with advanced aircraft and international operations.',
+    location: 'United Kingdom',
+    rating: 4.9,
+    serviceCommitment: '12 years',
+    image: 'https://www.raf.mod.uk/sites/raf-beta/assets/Image/A%20Main%20RAF%20News%20Imagery/CRN-OFFICIAL-20200521-0425-0004.jpg',
+    branch: 'RAF' as MilitaryBranch
   },
   {
     id: 'military-6',
@@ -81,7 +81,7 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Newport, Rhode Island',
     rating: 4.6,
     serviceCommitment: '8-10 years',
-    image: 'https://www.navy.mil/Portals/54/Content/News/2021/March/210325-N-NO997-1001.JPG?ver=2021-03-25-103732-390',
+    image: 'https://bloximages.chicago2.vip.townnews.com/militarynews.com/content/tncms/assets/v3/editorial/2/cc/2cc822e2-49a6-590e-be02-0139f6f2583a/4cacf4f731220.image.jpg',
     branch: 'Navy' as MilitaryBranch
   },
   // Army
@@ -92,7 +92,7 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'West Point, New York',
     rating: 4.9,
     serviceCommitment: '8-10 years',
-    image: 'https://www.westpoint.edu/sites/default/files/2022-06/west-point-campus-aerial.jpg',
+    image: 'https://api.army.mil/e2/c/images/2022/03/25/96646228/original.jpg',
     branch: 'Army' as MilitaryBranch
   },
   {
@@ -102,7 +102,7 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Nationwide',
     rating: 4.7,
     serviceCommitment: '8 years',
-    image: 'https://www.armyrotc.com/wp-content/uploads/2021/09/Army-ROTC-Logo.png',
+    image: 'https://www.nsu.edu/NSU/media/Photos/2022/rotc/TM50003-A11-NSU-ROTC-017.jpg',
     branch: 'Army' as MilitaryBranch
   },
   {
@@ -112,8 +112,81 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Fort Benning, Georgia',
     rating: 4.6,
     serviceCommitment: '8 years',
-    image: 'https://www.army.mil/e2/c/downloads/2021/08/210823-A-ZZ614-001.JPG',
+    image: 'https://www.goarmy.com/content/dam/goarmy/heros/officer-candidate-school-induction_lg.jpg',
     branch: 'Army' as MilitaryBranch
+  },
+  {
+    id: 'military-13',
+    name: 'Rotary-Wing Aviator (153A)',
+    description: 'The primary helicopter pilots who operate the AH-64 Apache, UH-60 Black Hawk, and CH-47 Chinook.',
+    location: 'Fort Rucker, Alabama',
+    rating: 4.8,
+    serviceCommitment: '6 years',
+    image: 'https://armyaviationmagazine.com/images/articles/15_12/cwob_a.jpg',
+    branch: 'Army' as MilitaryBranch
+  },
+  {
+    id: 'military-14',
+    name: 'Fixed-Wing Aviator (155A)',
+    description: 'Responsible for flying the Army\'s fixed-wing fleet for intelligence gathering and transport.',
+    location: 'Fort Rucker, Alabama',
+    rating: 4.7,
+    serviceCommitment: '6 years',
+    image: 'https://d1ldvf68ux039x.cloudfront.net/thumbs/photos/2306/7856835/2000w_q95.jpg',
+    branch: 'Army' as MilitaryBranch
+  },
+  {
+    id: 'military-15',
+    name: 'Aviation Officer (15A)',
+    description: 'Pilots who also serve as leaders and mission commanders, overseeing flight platoons and coordination.',
+    location: 'Fort Rucker, Alabama',
+    rating: 4.9,
+    serviceCommitment: '8-10 years',
+    image: 'https://www.adfcareers.gov.au/-/media/ADF/jobs/Air-Force/officer-aviation/New-Hero-Image-Aviation-Officer.jpg?sc_lang=en',
+    branch: 'Army' as MilitaryBranch
+  },
+  {
+    id: 'military-16',
+    name: 'Unmanned Aircraft Systems Operator (15W)',
+    description: 'Often referred to as "drone pilots," they operate UAVs for reconnaissance and surveillance.',
+    location: 'Fort Huachuca, Arizona',
+    rating: 4.5,
+    serviceCommitment: '4-6 years',
+    image: 'https://www.operationmilitarykids.org/wp-content/uploads/2019/10/Army-Unmanned-Aerial-Vehicle-Operator-MOS-15W.jpg',
+    branch: 'Army' as MilitaryBranch
+  },
+  // Coast Guard
+  {
+    id: 'military-17',
+    name: 'Coast Guard Pilot',
+    description: 'Coast Guard pilots perform search and rescue, law enforcement, and environmental protection missions. Operate helicopters and fixed-wing aircraft in challenging maritime environments.',
+    location: 'Elizabeth City, North Carolina',
+    rating: 4.8,
+    serviceCommitment: '8-10 years',
+    image: 'https://foundationforwomenwarriors.org/wp-content/uploads/2020/06/Jeanine-Menze-1.jpg',
+    branch: 'Coast Guard' as MilitaryBranch
+  },
+  // Police
+  {
+    id: 'military-18',
+    name: 'NPAS (National Police Air Service)',
+    description: 'UK National Police Air Service provides aerial support for law enforcement operations across England and Wales. Operates helicopters and fixed-wing aircraft for search, pursuit, and surveillance missions.',
+    location: 'United Kingdom',
+    rating: 4.6,
+    serviceCommitment: 'Varies',
+    image: 'https://www.airmedandrescue.com/sites/amr/files/styles/og_image/public/2022-05/gpolv.jpg?h=7c5055f4&itok=Lr4TtIcB',
+    branch: 'Police' as MilitaryBranch
+  },
+  // Defense Contractor
+  {
+    id: 'military-19',
+    name: 'Defense Contractor Pilot',
+    description: 'Test pilots and demonstration pilots for major defense contractors like Lockheed Martin, Boeing, Northrop Grumman. Fly advanced military aircraft for testing, development, and customer demonstrations.',
+    location: 'Various Locations',
+    rating: 4.7,
+    serviceCommitment: 'Varies',
+    image: 'https://www.aerotechnews.com/wp-content/uploads/2018/06/F22-pilot1.jpg',
+    branch: 'Defense Contractor' as MilitaryBranch
   },
   // Marine Corps
   {
@@ -123,7 +196,7 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Quantico, Virginia',
     rating: 4.7,
     serviceCommitment: '8-10 years',
-    image: 'https://www.marines.mil/Portals/1/Marines%20OCS%20Logo.jpg?ver=2020-06-01-120234-567',
+    image: 'https://www.liveabout.com/thmb/04fsj5C8TWZJ4XzDKJceIbV2ZWE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/IMG_8107-5aa1c53a8e1b6e00360489ee.JPG',
     branch: 'Marine Corps' as MilitaryBranch
   },
   {
@@ -133,7 +206,7 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Quantico, Virginia',
     rating: 4.6,
     serviceCommitment: '8-10 years',
-    image: 'https://www.marines.mil/Portals/1/PLC%20Logo.jpg?ver=2020-06-01-120234-890',
+    image: 'https://www.operationmilitarykids.org/wp-content/uploads/2020/01/Marine-Corps-Pilot-Requirements.png',
     branch: 'Marine Corps' as MilitaryBranch
   },
   {
@@ -143,7 +216,7 @@ export const DUMMY_MILITARY_PATHWAYS: MilitaryPathway[] = [
     location: 'Nationwide',
     rating: 4.7,
     serviceCommitment: '8-10 years',
-    image: 'https://www.marines.mil/Portals/1/Marine%20NROTC%20Logo.jpg?ver=2020-06-01-120234-123',
+    image: 'https://media.defense.gov/2016/Nov/02/2001663065/-1/-1/0/161102-M-AF661-004.JPG',
     branch: 'Marine Corps' as MilitaryBranch
   }
 ];
