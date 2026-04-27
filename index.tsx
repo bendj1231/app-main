@@ -7,6 +7,17 @@ import React, { useState, useEffect, useRef, useLayoutEffect, lazy, Suspense } f
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './index.css';
+
+// Suppress ResizeObserver loop warning (benign framer-motion issue)
+const resizeObserverErrorHandler = (e: ErrorEvent) => {
+  if (e.message === 'ResizeObserver loop completed with undelivered notifications.') {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    e.stopPropagation();
+  }
+};
+
+window.addEventListener('error', resizeObserverErrorHandler);
 import { View } from './types';
 import {
   LayoutDashboard,
@@ -1499,7 +1510,7 @@ root.render(
               </Suspense>
             </ProtectedRoute>
           } />
-          <Route path="/type-rating-search" element={<TypeRatingSearchPage />} />
+          <Route path="/type-rating-search" element={<TypeRatingSearchPage onNavigate={(page) => window.location.href = `/${page}`} onBack={() => window.location.href = '/pathways-modern'} />} />
           <Route path="/type-rating-centers" element={<TypeRatingCentersPage />} />
           <Route path="/manufacturer/:id/expectations" element={<ManufacturerExpectationsPage />} />
           <Route path="/airline-expectations" element={<AirlineExpectationsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />

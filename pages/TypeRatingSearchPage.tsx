@@ -1,9 +1,52 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award } from 'lucide-react';
-import { manufacturers, aircraftTypeRatings, Manufacturer, AircraftTypeRating, getManufacturerById, getAircraftByManufacturer, getAircraftByCategory } from '../data/aircraft-manufacturers';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '../src/contexts/AuthContext';
+import { supabase } from '../src/lib/supabase';
+
+// Types from Supabase schema
+interface Manufacturer {
+  id: string;
+  name: string;
+  logo: string;
+  hero_image?: string;
+  description?: string;
+  founded?: number;
+  headquarters?: string;
+  website?: string;
+  reputation_score?: number;
+  total_aircraft_count?: number;
+  hero_stats?: any;
+  rating_estimates?: any;
+}
+
+interface AircraftTypeRating {
+  id: string;
+  model: string;
+  manufacturer_id: string;
+  category: string;
+  subcategory?: string;
+  image?: string;
+  sketchfab_id?: string;
+  description?: string;
+  conditionally_new?: boolean;
+  first_flight?: string;
+  why_choose_rating?: string;
+  specifications?: any;
+  news?: any;
+  training_requirements?: any;
+  hiring_requirements?: any;
+  compensation_data?: any;
+  comparison_data?: any;
+  show_career_outlook?: boolean;
+  extended_info_content?: any;
+  demandLevel?: 'high' | 'medium' | 'low';
+  lifecycleStage?: 'early-career' | 'mid-career' | 'mature' | 'retiring';
+  orderBacklog?: { orders: number; delivered: number };
+  operatorCount?: number;
+  pilotCount?: number;
+}
 
 // Career Score Calculation Function
 function calculateCareerScore(aircraft: AircraftTypeRating, pilotProfile?: {
@@ -278,7 +321,12 @@ const FLAGSHIP_SUBCATEGORY_COLORS: Record<string, string> = {
   'historical-flagship': 'bg-gray-700',
 };
 
-export default function TypeRatingSearchPage() {
+interface TypeRatingSearchPageProps {
+  onNavigate?: (page: string) => void;
+  onBack?: () => void;
+}
+
+export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingSearchPageProps) {
   const { currentUser, userProfile, isLoggedIn } = useAuth();
   const [searchParams] = useSearchParams();
   const auth = useAuth();
@@ -295,6 +343,46 @@ export default function TypeRatingSearchPage() {
   const [activeTab, setActiveTab] = useState('Overview');
   const carouselRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  // Data from Supabase
+  const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
+  const [aircraftTypeRatings, setAircraftTypeRatings] = useState<AircraftTypeRating[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
+
+  // Fetch manufacturers and aircraft from Supabase
+  useEffect(() => {
+    const fetchData = async () => {
+      setDataLoading(true);
+      try {
+        // Fetch manufacturers
+        const { data: manufacturersData, error: manufacturersError } = await supabase
+          .from('manufacturers')
+          .select('*');
+        if (manufacturersError) {
+          console.error('Error fetching manufacturers:', manufacturersError);
+        } else {
+          setManufacturers(manufacturersData || []);
+        }
+
+        // Fetch aircraft type ratings
+        const { data: aircraftData, error: aircraftError } = await supabase
+          .from('aircraft_type_ratings')
+          .select('*');
+        if (aircraftError) {
+          console.error('Error fetching aircraft:', aircraftError);
+        } else {
+          setAircraftTypeRatings(aircraftData || []);
+        }
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Handle URL parameters for pre-selection
   useEffect(() => {
@@ -320,7 +408,7 @@ export default function TypeRatingSearchPage() {
     let aircraft = aircraftTypeRatings;
     
     if (selectedManufacturer) {
-      aircraft = aircraft.filter(a => a.manufacturerId === selectedManufacturer.id);
+      aircraft = aircraft.filter(a => a.manufacturer_id === selectedManufacturer.id);
     }
     
     if (activeCategory !== 'all') {
@@ -355,7 +443,7 @@ export default function TypeRatingSearchPage() {
     if (searchQuery) {
       aircraft = aircraft.filter(a => 
         a.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        a.manufacturerId.toLowerCase().includes(searchQuery.toLowerCase())
+        a.manufacturer_id.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     
@@ -395,12 +483,22 @@ export default function TypeRatingSearchPage() {
   };
 
   const getManufacturer = (aircraft: AircraftTypeRating) => {
-    return getManufacturerById(aircraft.manufacturerId);
+    return manufacturers.find(m => m.id === aircraft.manufacturer_id);
   };
 
   // Helper function to get manufacturer by ID (for direct access)
-  const getManufacturerByIdHelper = (id: string): Manufacturer | undefined => {
+  const getManufacturerById = (id: string) => {
     return manufacturers.find(m => m.id === id);
+  };
+
+  // Helper function to get aircraft by manufacturer
+  const getAircraftByManufacturer = (manufacturerId: string) => {
+    return aircraftTypeRatings.filter(a => a.manufacturer_id === manufacturerId);
+  };
+
+  // Helper function to get aircraft by category
+  const getAircraftByCategory = (category: string) => {
+    return aircraftTypeRatings.filter(a => a.category === category);
   };
 
   return (
@@ -420,7 +518,7 @@ export default function TypeRatingSearchPage() {
       <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 relative">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
           <button
-            onClick={() => window.history.back()}
+            onClick={() => onNavigate ? onNavigate('pathways-modern') : onBack ? onBack() : window.history.back()}
             className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -436,7 +534,7 @@ export default function TypeRatingSearchPage() {
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-500 mb-3">3D Models & Type Rating Info</p>
           <h1 className="text-4xl md:text-6xl font-serif font-normal leading-tight mb-4 text-slate-900">
-            Aircraft <span style={{ color: '#DAA520' }}>Type Ratings</span>
+            Aircraft <span style={{ color: '#dc2626' }}>Type Ratings</span>
           </h1>
           <p className="text-lg md:text-xl mb-2 text-black">
             Explore · Manufacturers · Requirements · Specifications
@@ -577,7 +675,7 @@ export default function TypeRatingSearchPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Star className="w-4 h-4 text-yellow-400" />
-                      <span>{selectedManufacturer.reputationScore}/10</span>
+                      <span>{selectedManufacturer.reputation_score || 0}/10</span>
                     </div>
                   </div>
                   
@@ -1541,7 +1639,14 @@ export default function TypeRatingSearchPage() {
           className="flex gap-4 overflow-x-auto pb-4 px-6 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         >
-          {filteredAircraft.map(aircraft => (
+          {dataLoading ? (
+            <div className="flex gap-4 w-full">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="flex-shrink-0 w-72 h-64 rounded-2xl bg-slate-200 animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            filteredAircraft.map(aircraft => (
             <div
               key={aircraft.id}
               onClick={() => handleSelect(aircraft)}
@@ -1553,17 +1658,30 @@ export default function TypeRatingSearchPage() {
             >
               {/* Thumbnail */}
               <div className="relative h-44 overflow-hidden bg-slate-100">
-                {aircraft.sketchfabId ? (
+                {aircraft.sketchfab_id ? (
                   <SketchfabThumbnail
-                    sketchfabId={aircraft.sketchfabId}
+                    sketchfabId={aircraft.sketchfab_id}
                     alt={aircraft.model}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
                   <img
-                    src={aircraft.image}
+                    src={
+                      (aircraft.image && !aircraft.image.includes('efqjszksldcdm6kbnzoq.png'))
+                        ? aircraft.image
+                        : manufacturers.find(m => m.id === aircraft.manufacturer_id)?.logo || 'https://via.placeholder.com/288x176?text=No+Image'
+                    }
                     alt={aircraft.model}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      console.error('Image failed to load:', aircraft.model, aircraft.image);
+                      const manufacturer = manufacturers.find(m => m.id === aircraft.manufacturer_id);
+                      if (manufacturer?.logo && e.currentTarget.src !== manufacturer.logo) {
+                        e.currentTarget.src = manufacturer.logo;
+                      } else {
+                        e.currentTarget.src = 'https://via.placeholder.com/288x176?text=No+Image';
+                      }
+                    }}
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
@@ -1576,7 +1694,7 @@ export default function TypeRatingSearchPage() {
                 </div>
               </div>
             </div>
-          ))}
+          )))}
         </div>
       </div>
 
@@ -1623,9 +1741,9 @@ export default function TypeRatingSearchPage() {
 
             {/* Hero image with overlay */}
             <div className="relative h-64 md:h-80">
-              {selectedAircraft.sketchfabId ? (
+              {selectedAircraft.sketchfab_id ? (
                 <SketchfabThumbnail
-                  sketchfabId={selectedAircraft.sketchfabId}
+                  sketchfabId={selectedAircraft.sketchfab_id}
                   alt={selectedAircraft.model}
                   className="w-full h-full object-cover"
                 />
@@ -1634,6 +1752,15 @@ export default function TypeRatingSearchPage() {
                   src={selectedAircraft.image}
                   alt={selectedAircraft.model}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error('Detail image failed to load:', selectedAircraft.model, selectedAircraft.image);
+                    const manufacturer = manufacturers.find(m => m.id === selectedAircraft.manufacturer_id);
+                    if (manufacturer?.logo) {
+                      e.currentTarget.src = manufacturer.logo;
+                    } else {
+                      e.currentTarget.src = 'https://via.placeholder.com/800x400?text=No+Image';
+                    }
+                  }}
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -1653,17 +1780,10 @@ export default function TypeRatingSearchPage() {
                 </div>
                 {/* Indicators */}
                 <div className="flex flex-wrap gap-2">
-                  {selectedAircraft.careerScore ? (
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-sky-400 backdrop-blur-xl shadow-lg">
-                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                      Career Score: {selectedAircraft.careerScore}/100
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-sky-400 backdrop-blur-xl shadow-lg">
-                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                      Career Score: {calculateCareerScore(selectedAircraft)}/100
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-sky-400 backdrop-blur-xl shadow-lg">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    Career Score: {calculateCareerScore(selectedAircraft)}/100
+                  </div>
                   {selectedAircraft.demandLevel && (
                     <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-xl border-2 ${
                       selectedAircraft.demandLevel === 'high' ? 'bg-emerald-500 text-white border-emerald-400' :
@@ -1737,7 +1857,7 @@ export default function TypeRatingSearchPage() {
                 <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">Reputation</p>
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                  <span className="text-sm font-semibold text-slate-800">{getManufacturer(selectedAircraft)?.reputationScore}</span>
+                  <span className="text-sm font-semibold text-slate-800">{getManufacturer(selectedAircraft)?.reputation_score || 0}</span>
                 </div>
               </div>
             </div>
@@ -1788,10 +1908,10 @@ export default function TypeRatingSearchPage() {
                   <div>
                     <h3 className="text-lg font-semibold mb-3 text-slate-900">Technical Specifications</h3>
                     <div className="space-y-2">
-                      {Object.entries(selectedAircraft.specifications).map(([key, value]) => (
+                      {Object.entries(selectedAircraft.specifications as Record<string, any>).map(([key, value]) => (
                         <div key={key} className="flex items-center justify-between py-2 border-b border-slate-50">
                           <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                          <span className="text-sm font-medium text-slate-800">{value}</span>
+                          <span className="text-sm font-medium text-slate-800">{String(value)}</span>
                         </div>
                       ))}
                     </div>
@@ -2721,7 +2841,7 @@ export default function TypeRatingSearchPage() {
             <div className="px-6 md:px-8 py-6 border-b border-slate-100">
               <h3 className="text-lg font-semibold mb-4 text-slate-900">Training Curriculum</h3>
               <div className="space-y-4">
-                {selectedAircraft.trainingCurriculum.map((item, i) => (
+                {selectedAircraft.training_requirements?.curriculum?.map((item: any, i: number) => (
                   <div key={i} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-semibold text-slate-900">{item.phase}</h4>
@@ -2744,17 +2864,17 @@ export default function TypeRatingSearchPage() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-slate-500 mb-1">Simulator Type</p>
-                    <p className="font-semibold text-slate-900">{selectedAircraft.simulatorDetails.type}</p>
+                    <p className="font-semibold text-slate-900">{(selectedAircraft.training_requirements?.simulator as any)?.type || 'Full Flight Simulator'}</p>
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 mb-1">Available Locations</p>
-                    <p className="font-semibold text-slate-900">{selectedAircraft.simulatorDetails.locations.join(', ')}</p>
+                    <p className="font-semibold text-slate-900">{((selectedAircraft.training_requirements?.simulator as any)?.locations || []).join(', ')}</p>
                   </div>
                 </div>
                 <div className="mt-3">
                   <p className="text-xs text-slate-500 mb-1">Features</p>
                   <div className="flex flex-wrap gap-2">
-                    {selectedAircraft.simulatorDetails.features.map((feature, i) => (
+                    {((selectedAircraft.training_requirements?.simulator as any)?.features || []).map((feature: string, i: number) => (
                       <span key={i} className="text-xs text-slate-600 bg-white px-2 py-1 rounded border border-slate-200">{feature}</span>
                     ))}
                   </div>
@@ -2856,6 +2976,21 @@ export default function TypeRatingSearchPage() {
           </div>
         </div>
       )}
+
+      {/* Data Disclaimer */}
+      <div className="px-6 md:px-8 pb-6 border-t border-slate-200 pt-5 bg-white relative z-10">
+        <div className="p-3 rounded-lg bg-slate-100 border border-slate-300 max-w-7xl mx-auto">
+          <div className="flex items-start gap-2">
+            <Shield className="w-4 h-4 text-slate-700 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-semibold text-slate-900 mb-1">Data Disclaimer</p>
+              <p className="text-xs text-slate-800 leading-relaxed">
+                PilotRecognition.com is operated by a university research pilot group for the benefit of helping pilots to be aware and connect more to the industry. This platform matches pilots with current industry information publicly available and sourced across the internet through various credible sources to help pilots align their profiles. All information presented is compiled from publicly available sources for informational purposes only. This platform is not currently affiliated with, endorsed by, or sponsored by any airline, though we plan to establish partnerships in the future. Airline logos, trademarks, and branding are used under fair use principles solely for identification and informational purposes to help pilots understand industry requirements. No airline has verified, endorsed, or approved any information on this platform. All salary ranges, requirements, and assessment processes are estimates based on available public data and may not reflect current airline policies. Aircraft specifications and fleet information are sourced from public manufacturer announcements, aviation industry reports, and publicly available delivery data for pilot awareness purposes only—not for competitive intelligence. We welcome data sharing agreements with manufacturers to ensure accuracy and offer to remove or correct inaccurate data per manufacturer request. PilotRecognition+ membership provides AI-powered data comparison tools to help pilots align their profiles with airline expectations. Any fees charged are solely for platform development and AI optimization services, not for access to airline data. Users should conduct their own due diligence and verify all information directly with official sources before making career decisions. This platform provides general guidance only and does not constitute professional career, legal, or financial advice.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
