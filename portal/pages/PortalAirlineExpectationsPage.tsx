@@ -418,7 +418,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
   // Check for recognition access
   useEffect(() => {
-    if (userProfile?.projects?.includes('recognition')) {
+    if (userProfile?.isRecognitionPlusMember) {
       setHasRecognitionAccess(true);
     }
   }, [userProfile]);
@@ -823,16 +823,22 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                           {selectedAirline.futureDemand && (
                             <>
                               <div className="text-xs text-slate-300 mb-1">Future Demand:</div>
-                              <div className="relative">
-                                <div className="text-sm font-bold leading-tight text-emerald-300 blur-sm select-none">
+                              {userProfile?.isRecognitionPlusMember ? (
+                                <div className="text-sm font-bold leading-tight text-emerald-300">
                                   {selectedAirline.futureDemand}
                                 </div>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <span className="text-xs font-semibold text-rose-400 bg-slate-900/80 px-3 py-1 rounded-full">
-                                    Subscribe to Pilot Recognition+
-                                  </span>
+                              ) : (
+                                <div className="relative">
+                                  <div className="text-sm font-bold leading-tight text-emerald-300 blur-sm select-none">
+                                    {selectedAirline.futureDemand}
+                                  </div>
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    <span className="text-xs font-semibold text-rose-400 bg-slate-900/80 px-3 py-1 rounded-full">
+                                      Subscribe to Pilot Recognition+
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
+                              )}
                             </>
                           )}
                         </div>
