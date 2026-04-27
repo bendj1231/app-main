@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   TrendingUp, 
@@ -2191,8 +2190,8 @@ const ThreeStagePathwayFilter: React.FC<{
   isDarkMode?: boolean;
   pathwayCards?: PathwayData[];
   selectedGeneralCategory?: string | null;
-}> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory }) => {
-  const navigate = useNavigate();
+  onNavigateToPathway?: (pathwayId: string) => void;
+}> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory, onNavigateToPathway }) => {
   const [pathways, setPathways] = useState<Pathway[]>([]);
   const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
 
@@ -2745,8 +2744,16 @@ const ThreeStagePathwayFilter: React.FC<{
                   <button
                     onClick={() => {
                       const targetCard = selectedCard || cardsWithWingMentor[1];
-                      if (targetCard) {
-                        navigate(`/pathway/${targetCard.id}`);
+                      console.log('[DEBUG] Discover pathway button clicked');
+                      console.log('[DEBUG] Selected card:', selectedCard);
+                      console.log('[DEBUG] Target card:', targetCard);
+                      console.log('[DEBUG] Target card ID:', targetCard?.id);
+                      console.log('[DEBUG] onNavigateToPathway function exists:', !!onNavigateToPathway);
+                      if (targetCard && onNavigateToPathway) {
+                        console.log('[DEBUG] Calling onNavigateToPathway with ID:', targetCard.id);
+                        onNavigateToPathway(targetCard.id);
+                      } else {
+                        console.log('[DEBUG] ERROR: Cannot navigate - targetCard:', !!targetCard, 'onNavigateToPathway:', !!onNavigateToPathway);
                       }
                     }}
                     className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md cursor-pointer hover:scale-105 transition-transform ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}
@@ -3271,15 +3278,17 @@ export interface PathwaysPageModernProps {
   initialCategory?: string;
   selectedPathwayId?: string;
   onNavigate?: (page: string) => void;
+  onNavigateToPathway?: (pathwayId: string) => void;
   onNavigateToMainApp?: (page: string) => void;
   mode?: 'pathways' | 'jobs';
 }
 
-export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({ 
+export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   isDarkMode = true,
   initialCategory = 'all',
   selectedPathwayId,
   onNavigate,
+  onNavigateToPathway,
   onNavigateToMainApp,
   mode = 'pathways'
 }) => {
@@ -3753,7 +3762,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       <div className="relative z-10">
         {/* Header with Search Bar */}
         <header className="bg-white border-b border-slate-200 backdrop-blur-sm sticky top-0 z-30">
-        <div className="container mx-auto pl-2 pr-6 py-4">
+        <div className="mx-auto pr-6 py-4 w-full max-w-[1800px]">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
@@ -3772,29 +3781,86 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   <ArrowLeft className="w-5 h-5" />
                 </button>
                 {/* PilotRecognition.com Logo */}
-                <span style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }} className="text-black text-2xl">
-                  PilotRecognition.com
-                </span>
+                <div className="flex flex-col">
+                  <span style={{ fontFamily: 'Georgia, serif' }} className="text-black text-2xl font-normal">
+                    Discover <span className="text-red-600">Pathways</span>
+                  </span>
+                  <span className="text-xs text-slate-600 font-normal">
+                    pilotrecognition.com
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Search Bar - appears when scrolled */}
-            <AnimatePresence>
-              {isScrolled && (
-                <motion.div
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: 'auto', opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex-1 max-w-2xl"
+            {/* Navigation Buttons - always visible */}
+            <div className="flex items-center gap-3">
+              {[
+                { label: 'Airline Expectations', page: 'portal-airline-expectations' },
+                { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
+                { label: 'Pilot Pathways', page: 'pathways-modern' },
+                { label: 'Job Listings', page: 'job-listings' },
+              ].map(({ label, page }) => {
+                const isActive = (page === 'pathways-modern' && mode === 'pathways') || (page === 'job-listings' && mode === 'jobs');
+                return (
+                <button
+                  key={page}
+                  onClick={() => onNavigate && onNavigate(page)}
+                  className={`text-[0.6rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${
+                    isActive
+                      ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
+                      : 'text-slate-900'
+                  }`}
                 >
-                  <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} canPostPathways={canPostPathways} onPostPathway={handlePostPathwayClick} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  {label}
+                </button>
+                );
+              })}
+            </div>
 
             {/* Right side items */}
             <div className="flex items-center gap-3">
+              {/* Profile section */}
+              {currentUser ? (
+                <div className="flex items-center gap-2">
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs font-semibold text-slate-900">
+                      {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
+                    </span>
+                    <span className="text-[10px] text-slate-500">Signed In</span>
+                  </div>
+                  <button
+                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform"
+                  >
+                    {userProfile?.profile_image_url ? (
+                      <img
+                        src={userProfile.profile_image_url}
+                        alt="Profile"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <span className="text-white font-bold text-sm">
+                        {currentUser?.email?.charAt(0) || 'U'}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => onNavigate && onNavigate('login')}
+                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.1em] transition-all"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => onNavigate && onNavigate('become-member')}
+                    className="px-4 py-2 rounded-lg border-2 border-red-600 text-red-600 hover:bg-red-50 text-xs font-bold uppercase tracking-[0.1em] transition-all"
+                  >
+                    Become Member
+                  </button>
+                </div>
+              )}
               {/* Live Score Widget - only show when logged in */}
               {currentUser && (
                 <div className="flex items-center gap-2">
@@ -4040,13 +4106,14 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="mb-8 text-center">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover Pathways</p>
           <h1 className={`text-4xl md:text-5xl font-serif font-normal ${headerText} mb-2`}>
             {Object.keys(hierarchySelection).length > 0
               ? <><span style={{ color: '#ffffff' }}>Pilot Recognition</span> <span style={{ color: '#dc2626' }}>Pathways</span></>
               : <><span style={{ color: '#ffffff' }}>Pilot Recognition</span> <span style={{ color: '#dc2626' }}>Pathways</span></>
             }
           </h1>
-          <p className={`${subText} max-w-2xl mx-auto`}>
+          <p className="text-white max-w-2xl mx-auto">
             Discover and track your journey to airline careers. Our Recognition Formula calculates your real probability of success.
           </p>
         </div>
@@ -4055,29 +4122,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         <div className="mb-8 space-y-4 text-center">
           <div className="flex justify-center">
             <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
-          </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            {[
-              { label: 'Airline Expectations', page: 'portal-airline-expectations' },
-              { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
-              { label: 'Pilot Pathways', page: 'pathways-modern' },
-              { label: 'Job Listings', page: 'job-listings' },
-            ].map(({ label, page }) => {
-              const isActive = (page === 'pathways-modern' && mode === 'pathways') || (page === 'job-listings' && mode === 'jobs');
-              return (
-              <button
-                key={page}
-                onClick={() => onNavigate && onNavigate(page)}
-                className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  isActive
-                    ? 'bg-sky-400 text-white'
-                    : isDarkMode ? 'bg-sky-600 hover:bg-sky-500 text-white' : 'bg-sky-500 hover:bg-sky-600 text-white'
-                }`}
-              >
-                {label}
-              </button>
-              );
-            })}
           </div>
         </div>
 
@@ -4248,8 +4292,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
                           <div className="flex items-center justify-center gap-2 mb-1">
-                            {!isWingMentorCard && <img src={cardAirlineLogo} alt={pathway.airline} className="h-6 w-auto object-contain"
-                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
                             <h4 className="text-lg font-serif font-normal text-white">{pathway.name}</h4>
                           </div>
                           <p className="text-white/80 text-sm">{pathway.airline} · {pathway.locations.join(' | ')}</p>
@@ -4307,11 +4349,15 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
         {/* ThreeStagePathwayFilter - Inline Pathways Display */}
         {mode === 'pathways' && (
-          <ThreeStagePathwayFilter
-            isDarkMode={isDarkMode}
-            pathwayCards={allPathways}
-            selectedGeneralCategory={hierarchySelection.generalCategory || null}
-          />
+          <>
+            {console.log('[DEBUG] Rendering ThreeStagePathwayFilter with onNavigateToPathway:', !!onNavigateToPathway)}
+            <ThreeStagePathwayFilter
+              isDarkMode={isDarkMode}
+              pathwayCards={allPathways}
+              selectedGeneralCategory={hierarchySelection.generalCategory || null}
+              onNavigateToPathway={onNavigateToPathway}
+            />
+          </>
         )}
 
           {/* Job Position Filter */}

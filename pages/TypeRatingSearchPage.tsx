@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '../src/contexts/AuthContext';
 import { supabase } from '../src/lib/supabase';
@@ -515,16 +515,102 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       <div className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-0" />
 
       {/* Header Nav */}
-      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 relative">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
-          <button
-            onClick={() => onNavigate ? onNavigate('pathways-modern') : onBack ? onBack() : window.history.back()}
-            className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <img src="/logo.png" alt="WingMentor" className="h-8 w-auto object-contain" />
-          <span className="text-sm font-semibold text-slate-900">Aircraft Type-Ratings</span>
+      <div className="sticky top-0 z-30 bg-white border-b border-slate-200 backdrop-blur-sm">
+        <div className="mx-auto pr-6 py-4 w-full max-w-[1800px]">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
+                {/* Back Button */}
+                <button
+                  onClick={() => onNavigate ? onNavigate('pathways-modern') : onBack ? onBack() : window.history.back()}
+                  className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-transform hover:scale-105"
+                  title="Back to Home"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+                {/* Logo */}
+                <div className="flex flex-col">
+                  <span style={{ fontFamily: 'Georgia, serif' }} className="text-black text-2xl font-normal">
+                    Discover <span className="text-red-600">Type-Ratings</span>
+                  </span>
+                  <span className="text-xs text-slate-600 font-normal">
+                    pilotrecognition.com
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center gap-3">
+              {[
+                { label: 'Airline Expectations', page: 'portal-airline-expectations' },
+                { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
+                { label: 'Pilot Pathways', page: 'pathways-modern' },
+                { label: 'Job Listings', page: 'job-listings' },
+              ].map(({ label, page }) => {
+                const isActive = page === 'type-rating-search';
+                return (
+                <button
+                  key={page}
+                  onClick={() => onNavigate && onNavigate(page)}
+                  className="text-[0.6rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap"
+                  style={{
+                    color: isActive ? '#2563eb' : '#0f172a',
+                    borderBottom: isActive ? '2px solid #2563eb' : '2px solid transparent',
+                    paddingBottom: '4px'
+                  }}
+                >
+                  {label}
+                </button>
+                );
+              })}
+            </div>
+
+            {/* Right side items */}
+            <div className="flex items-center gap-3">
+              {/* Profile section */}
+              {currentUser ? (
+                <div className="flex items-center gap-2">
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs font-semibold text-slate-900">
+                      {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
+                    </span>
+                    <span className="text-[10px] text-slate-500">Signed In</span>
+                  </div>
+                  <button
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform"
+                  >
+                    {userProfile?.profile_image_url ? (
+                      <img
+                        src={userProfile.profile_image_url}
+                        alt="Profile"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <span className="text-white font-bold text-sm">
+                        {currentUser?.email?.charAt(0) || 'U'}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => onNavigate && onNavigate('login')}
+                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.1em] transition-all"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => onNavigate && onNavigate('become-member')}
+                    className="px-4 py-2 rounded-lg border-2 border-red-600 text-red-600 hover:bg-red-50 text-xs font-bold uppercase tracking-[0.1em] transition-all"
+                  >
+                    Become Member
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -532,7 +618,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       <div className="relative overflow-hidden pt-16 pb-12 px-6 z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-transparent to-indigo-900/10 pointer-events-none" />
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-500 mb-3">3D Models & Type Rating Info</p>
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-500 mb-3">Discover Type-Ratings</p>
           <h1 className="text-4xl md:text-6xl font-serif font-normal leading-tight mb-4 text-slate-900">
             Aircraft <span style={{ color: '#dc2626' }}>Type Ratings</span>
           </h1>
@@ -1453,167 +1539,122 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       ) : (
         // Category filter chips and manufacturer details when selected
         <>
-      {/* Category filter chips */}
-      <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10 pt-8">
-        {availableCategories.map(cat => (
-          <button
-            key={cat}
-            onClick={() => { setActiveCategory(cat); setActiveLegacySubcategory(null); setActiveHelicopterSubcategory(null); setActiveMilitarySubcategory(null); setActiveCargoSubcategory(null); setActiveFlagshipSubcategory(null); setSelectedAircraft(null); }}
-            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-              activeCategory === cat
-                ? 'bg-sky-500 text-white shadow-sm ring-2 ring-sky-500/50'
-                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-            }`}
-          >
-            {CATEGORY_LABELS[cat]}
-          </button>
-        ))}
+      {/* Category Filter Chips */}
+      <div className="max-w-7xl mx-auto px-6 mb-8 relative z-10">
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => {
+                setActiveCategory(key as Category);
+                setActiveLegacySubcategory(null);
+                setActiveHelicopterSubcategory(null);
+                setActiveMilitarySubcategory(null);
+                setActiveCargoSubcategory(null);
+                setActiveFlagshipSubcategory(null);
+              }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                activeCategory === key
+                  ? `${CATEGORY_COLORS[key] || 'bg-slate-500'} text-white shadow-lg`
+                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* Subcategory filters for specific categories */}
+        {activeCategory === 'legacy' && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {Object.entries(LEGACY_SUBCATEGORY_LABELS).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setActiveLegacySubcategory(key)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeLegacySubcategory === key
+                    ? `${LEGACY_SUBCATEGORY_COLORS[key]} text-white shadow-md`
+                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {activeCategory === 'helicopter' && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {Object.entries(HELICOPTER_SUBCATEGORY_LABELS).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setActiveHelicopterSubcategory(key)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeHelicopterSubcategory === key
+                    ? `${HELICOPTER_SUBCATEGORY_COLORS[key]} text-white shadow-md`
+                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {activeCategory === 'military' && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {Object.entries(MILITARY_SUBCATEGORY_LABELS).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setActiveMilitarySubcategory(key)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeMilitarySubcategory === key
+                    ? `${MILITARY_SUBCATEGORY_COLORS[key]} text-white shadow-md`
+                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {activeCategory === 'cargo' && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {Object.entries(CARGO_SUBCATEGORY_LABELS).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setActiveCargoSubcategory(key)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeCargoSubcategory === key
+                    ? `${CARGO_SUBCATEGORY_COLORS[key]} text-white shadow-md`
+                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {activeCategory === 'flagship' && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {Object.entries(FLAGSHIP_SUBCATEGORY_LABELS).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setActiveFlagshipSubcategory(key)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeFlagshipSubcategory === key
+                    ? `${FLAGSHIP_SUBCATEGORY_COLORS[key]} text-white shadow-md`
+                    : 'bg-white/80 border border-slate-300 text-slate-600 hover:bg-white hover:border-slate-400'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-
-      {/* Legacy subcategory filter chips (only show when legacy is selected) */}
-      {activeCategory === 'legacy' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
-          <button
-            onClick={() => { setActiveLegacySubcategory(null); setSelectedAircraft(null); }}
-            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-              activeLegacySubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm ring-2 ring-slate-500/50'
-                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-            }`}
-          >
-            All Legacy
-          </button>
-          {Object.entries(LEGACY_SUBCATEGORY_LABELS).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => { setActiveLegacySubcategory(key); setSelectedAircraft(null); }}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                activeLegacySubcategory === key
-                  ? `${LEGACY_SUBCATEGORY_COLORS[key]} text-white shadow-sm ring-2 ring-slate-500/50`
-                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Helicopter subcategory filter chips (only show when helicopter is selected) */}
-      {activeCategory === 'helicopter' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
-          <button
-            onClick={() => { setActiveHelicopterSubcategory(null); setSelectedAircraft(null); }}
-            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-              activeHelicopterSubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm ring-2 ring-slate-500/50'
-                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-            }`}
-          >
-            All Helicopters
-          </button>
-          {Object.entries(HELICOPTER_SUBCATEGORY_LABELS).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => { setActiveHelicopterSubcategory(key); setSelectedAircraft(null); }}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                activeHelicopterSubcategory === key
-                  ? `${HELICOPTER_SUBCATEGORY_COLORS[key]} text-white shadow-sm ring-2 ring-slate-500/50`
-                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Military subcategory filter chips (only show when military is selected) */}
-      {activeCategory === 'military' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
-          <button
-            onClick={() => { setActiveMilitarySubcategory(null); setSelectedAircraft(null); }}
-            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-              activeMilitarySubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm ring-2 ring-slate-500/50'
-                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-            }`}
-          >
-            All Military
-          </button>
-          {Object.entries(MILITARY_SUBCATEGORY_LABELS).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => { setActiveMilitarySubcategory(key); setSelectedAircraft(null); }}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                activeMilitarySubcategory === key
-                  ? `${MILITARY_SUBCATEGORY_COLORS[key]} text-white shadow-sm ring-2 ring-slate-500/50`
-                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Cargo subcategory filter chips (only show when cargo is selected) */}
-      {activeCategory === 'cargo' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
-          <button
-            onClick={() => { setActiveCargoSubcategory(null); setSelectedAircraft(null); }}
-            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-              activeCargoSubcategory === null
-                ? 'bg-slate-500 text-white shadow-sm ring-2 ring-slate-500/50'
-                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-            }`}
-          >
-            All Cargo
-          </button>
-          {Object.entries(CARGO_SUBCATEGORY_LABELS).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => { setActiveCargoSubcategory(key); setSelectedAircraft(null); }}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                activeCargoSubcategory === key
-                  ? `${CARGO_SUBCATEGORY_COLORS[key]} text-white shadow-sm ring-2 ring-slate-500/50`
-                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Flagship subcategory filter chips (only show when flagship is selected) */}
-      {activeCategory === 'flagship' && (
-        <div className="max-w-7xl mx-auto px-6 mb-8 flex gap-2 flex-wrap justify-center relative z-10">
-          <button
-            onClick={() => { setActiveFlagshipSubcategory(null); setSelectedAircraft(null); }}
-            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-              activeFlagshipSubcategory === null
-                ? 'bg-white text-blue-900 border border-blue-900 shadow-sm ring-2 ring-blue-900/50'
-                : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-            }`}
-          >
-            All Flagship
-          </button>
-          {Object.entries(FLAGSHIP_SUBCATEGORY_LABELS).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => { setActiveFlagshipSubcategory(key); setSelectedAircraft(null); }}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                activeFlagshipSubcategory === key
-                  ? 'bg-white text-blue-900 border border-blue-900 shadow-sm ring-2 ring-blue-900/50'
-                  : 'bg-blue-900 text-white border border-blue-800 hover:bg-blue-800 shadow-lg'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
 
       {/* Carousel Section */}
       <div className="px-0 mb-12 relative z-10">

@@ -14,11 +14,11 @@ import {
   Sparkles,
   TrendingUp,
   AlertCircle,
-  Loader2
+  Loader2,
+  ArrowLeft
 } from 'lucide-react';
 import { jobApplicationListings } from '../portal/pages/PilotJobDatabasePage';
 import { useAuth } from '../src/contexts/AuthContext';
-import { PathwaysHeader } from '../components/website/components/PathwaysHeader';
 
 interface JobListingsPageProps {
   onNavigate?: (page: string) => void;
@@ -35,7 +35,7 @@ interface JobMatch {
 }
 
 const JobListingsPage: React.FC<JobListingsPageProps> = ({ onNavigate }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, userProfile } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAircraft, setSelectedAircraft] = useState<string>('all');
   const [selectedLocation, setSelectedLocation] = useState<string>('all');
@@ -199,11 +199,109 @@ const JobListingsPage: React.FC<JobListingsPageProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
       {/* Header */}
-      <PathwaysHeader onBack={() => onNavigate?.('home')} onNavigate={onNavigate} />
+      <div className="sticky top-0 z-30 bg-white border-b border-slate-200 backdrop-blur-sm">
+        <div className="mx-auto pr-6 py-4 w-full max-w-[1800px]">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
+                {/* Back Button */}
+                <button
+                  onClick={() => onNavigate?.('home')}
+                  className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-transform hover:scale-105"
+                  title="Back to Home"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+                {/* Logo */}
+                <div className="flex flex-col">
+                  <span style={{ fontFamily: 'Georgia, serif' }} className="text-black text-2xl font-normal">
+                    Discover <span className="text-red-600">Jobs</span>
+                  </span>
+                  <span className="text-xs text-slate-600 font-normal">
+                    pilotrecognition.com
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center gap-3">
+              {[
+                { label: 'Airline Expectations', page: 'portal-airline-expectations' },
+                { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
+                { label: 'Pilot Pathways', page: 'pathways-modern' },
+                { label: 'Job Listings', page: 'job-listings' },
+              ].map(({ label, page }) => {
+                const isActive = page === 'job-listings';
+                return (
+                <button
+                  key={page}
+                  onClick={() => onNavigate && onNavigate(page)}
+                  className="text-[0.6rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap"
+                  style={{
+                    color: isActive ? '#2563eb' : '#0f172a',
+                    borderBottom: isActive ? '2px solid #2563eb' : '2px solid transparent',
+                    paddingBottom: '4px'
+                  }}
+                >
+                  {label}
+                </button>
+                );
+              })}
+            </div>
+
+            {/* Right side items */}
+            <div className="flex items-center gap-3">
+              {/* Profile section */}
+              {currentUser ? (
+                <div className="flex items-center gap-2">
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs font-semibold text-slate-900">
+                      {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
+                    </span>
+                    <span className="text-[10px] text-slate-500">Signed In</span>
+                  </div>
+                  <button
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform"
+                  >
+                    {userProfile?.profile_image_url ? (
+                      <img
+                        src={userProfile.profile_image_url}
+                        alt="Profile"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <span className="text-white font-bold text-sm">
+                        {currentUser?.email?.charAt(0) || 'U'}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => onNavigate && onNavigate('login')}
+                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.1em] transition-all"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => onNavigate && onNavigate('become-member')}
+                    className="px-4 py-2 rounded-lg border-2 border-red-600 text-red-600 hover:bg-red-50 text-xs font-bold uppercase tracking-[0.1em] transition-all"
+                  >
+                    Become Member
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
       
       {/* Page Title Section */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 text-white py-8 px-4">
         <div className="max-w-6xl mx-auto">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-400 mb-3">Discover Job Listings</p>
           <h1 className="text-3xl md:text-4xl font-serif font-normal mb-2">
             Pilot Job Listings
           </h1>

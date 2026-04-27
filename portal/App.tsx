@@ -13,6 +13,7 @@ import { LoginPage } from './pages/LoginPage';
 import { GraphicsPresetSelector, type DetectionResult, type GraphicsPreset } from './components/GraphicsPresetSelector';
 import { LoadingScreen } from './components/LoadingScreen';
 import { PathwaysPageModern } from './pages/PathwaysPageModern';
+import PathwayDetailPage from './pages/PathwayDetailPage';
 
 // Remote segment disabled for integration
 // // Declare the remote module for TypeScript
@@ -263,36 +264,32 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   
   type ViewName =
     | 'login'
+    | 'reset-password'
     | 'hub'
-    | 'dashboard'
-    | 'programs'
-    | 'pathways-modern'
-    | 'applications'
     | 'foundational'
-    | 'atpl'
-    | 'airtaxi'
-    | 'privatesector'
     | 'foundational-onboarding'
+    | 'terms-conditions'
     | 'enrollment-confirmation'
     | 'post-enrollment-slideshow'
     | 'ai-screening'
-    | 'remote-segment'
-    | 'terms-conditions'
+    | 'programs'
+    | 'pathways-modern'
+    | 'pathway-detail'
+    | 'privatesector'
     | 'mentorship'
-    | 'reset-password'
     | 'module-01'
-    | 'pilot-profile'
     | 'pilot-portfolio'
+    | 'pilot-profile'
     | 'recognition'
-    | 'verification'
+    | 'remote-segment'
     | 'job-database'
     | 'become-member'
     | 'examination-portal';
 
   const VIEW_WHITELIST: ViewName[] = [
-    'hub','dashboard','programs','pathways-modern','applications','foundational','atpl','airtaxi','privatesector',
+    'hub','programs','pathways-modern','foundational','privatesector',
     'foundational-onboarding','enrollment-confirmation','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
-    'reset-password','module-01','pilot-profile','pilot-portfolio','recognition','verification','job-database','become-member','examination-portal'
+    'reset-password','module-01','pilot-profile','pilot-portfolio','recognition','job-database','become-member','examination-portal','pathway-detail'
   ];
 
   const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'foundational' : 'hub');
@@ -300,6 +297,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   const [completedModules, setCompletedModules] = useState<string[]>([]);
   const [lastLoginEmail, setLastLoginEmail] = useState<string | null>(null);
   const [pendingHomeView, setPendingHomeView] = useState<MainView | null>(directToEnrollment ? null : 'pilot-portfolio');
+  const [selectedPathwayId, setSelectedPathwayId] = useState<string | null>(null);
 
   useEffect(() => {
     const detected = detectGraphicsPreset();
@@ -824,7 +822,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <PathwaysPageModern
           isDarkMode={isDarkMode}
           onNavigate={(page) => handleViewChange(page as ViewName)}
+          onNavigateToPathway={(pathwayId) => {
+            setSelectedPathwayId(pathwayId);
+            setCurrentView('pathway-detail');
+          }}
           onNavigateToMainApp={onNavigateToMainApp}
+        />
+      ) : currentView === 'pathway-detail' ? (
+        <PathwayDetailPage
+          pathwayId={selectedPathwayId || ''}
+          onBack={() => setCurrentView('pathways-modern')}
         />
       ) : currentView === 'privatesector' ? (
         <PrivateSectorPage onBack={() => setCurrentView('programs')} onLogout={handleLogout} />
