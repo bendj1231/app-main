@@ -185,15 +185,20 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
     if (!account?.id) return;
     setLoading(true);
     try {
-      const url = new URL(`${FIREBASE_BASE}/getEnterpriseApplications`);
-      url.searchParams.append('enterpriseAccountId', account.id);
-      if (selectedStatus !== 'all') {
-        url.searchParams.append('status', selectedStatus);
-      }
-      const res = await fetch(url.toString());
-      if (!res.ok) throw new Error('Failed to fetch');
-      const data = await res.json();
-      setApplications(data.applications || []);
+      const { data, error } = await supabase
+        .from('pilot_applications')
+        .select('*')
+        .eq('enterprise_account_id', account.id)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      // Filter by status if not 'all'
+      const filtered = selectedStatus !== 'all'
+        ? (data || []).filter(app => app.status === selectedStatus)
+        : (data || []);
+      
+      setApplications(filtered);
     } catch (e) {
       console.error('Error loading applications:', e);
     } finally {
@@ -452,12 +457,28 @@ function AnalyticsPage({ user, account, isFlightSchool, flightSchoolId }: { user
     if (!account?.id) return;
     setLoading(true);
     try {
-      const url = new URL(`${FIREBASE_BASE}/getCardAnalytics`);
-      url.searchParams.append('enterpriseAccountId', account.id);
-      const res = await fetch(url.toString());
-      if (!res.ok) throw new Error('Failed to fetch');
-      const data = await res.json();
-      setAnalytics(data.cards || []);
+      const { data: cards, error } = await supabase
+        .from('enterprise_pathway_cards')
+        .select('*')
+        .eq('enterprise_account_id', account.id)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      // Calculate CTR and conversion rates in frontend
+      const cardsWithAnalytics = (cards || []).map(card => {
+        const views = card.views || 0;
+        const applications = card.application_count || 0;
+        const ctr = views > 0 ? (applications / views * 100).toFixed(2) : '0';
+        
+        return {
+          ...card,
+          ctr: parseFloat(ctr),
+          conversion_rate: parseFloat(ctr)
+        };
+      });
+      
+      setAnalytics(cardsWithAnalytics);
     } catch (e) {
       console.error('Error loading analytics:', e);
     } finally {
@@ -1282,16 +1303,35 @@ function AirlineExpectationsPage({ user, account }: { user: any; account: any })
   const save = async () => {
     if (!user?.id) return;
     setSaving(true);
-    const res = await fetch(`${FIREBASE_BASE}/updateAirlineExpectations`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId: user.id,
-        airlineExpectationId: record?.id || null,
-        updates: { ...form, airline_name: account?.airline_name },
-      }),
-    });
-    setSaving(false);
-    if (res.ok) { setSaved(true); setTimeout(() => setSaved(false), 3000); }
+    try {
+      if (record?.id) {
+        // Update existing record
+        const { error } = await supabase
+          .from('airline_expectations')
+          .update({ ...form, airline_name: account?.airline_name })
+          .eq('id', record.id);
+        
+        if (error) throw error;
+      } else {
+        // Create new record
+        const { error } = await supabase
+          .from('airline_expectations')
+          .insert([{ 
+            ...form, 
+            airline_name: account?.airline_name,
+            enterprise_account_id: account?.id 
+          }]);
+        
+        if (error) throw error;
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch (e) {
+      console.error('Error saving expectations:', e);
+      alert('Failed to save');
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (loading) return <div className="flex items-center justify-center py-16"><div className="w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full animate-spin" /></div>;
@@ -1373,11 +1413,27 @@ function PilotSearchPage({ user }: { user: any }) {
     if (!user?.id) return;
     setLoading(true);
     setSearched(true);
-    const params = new URLSearchParams({ userId: user.id, ...Object.fromEntries(Object.entries(filters).filter(([, v]) => v)) });
-    const res = await fetch(`${FIREBASE_BASE}/searchPilotProfiles?${params}`);
-    const data = await res.json();
-    setResults(data.pilots || []);
-    setLoading(false);
+    try {
+      let query = supabase
+        .from('profiles')
+        .select('*');
+      
+      // Apply filters
+      if (filters.nationality) query = query.eq('nationality', filters.nationality);
+      if (filters.licenseType) query = query.ilike('ratings', `%${filters.licenseType}%`);
+      if (filters.minHours) query = query.gte('total_flight_hours', parseFloat(filters.minHours));
+      if (filters.icaoLevel) query = query.eq('language_icao_level', filters.icaoLevel);
+      if (filters.availabilityStatus) query = query.eq('status', filters.availabilityStatus);
+      
+      const { data, error } = await query;
+      
+      if (error) throw error;
+      setResults(data || []);
+    } catch (e) {
+      console.error('Error searching profiles:', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const exportCSV = () => {

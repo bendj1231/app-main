@@ -2,12 +2,14 @@ const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
 
 // Enterprise analytics functions
-const enterpriseAnalytics = require('./enterprise-analytics');
-exports.trackCardView = enterpriseAnalytics.trackCardView;
-exports.submitApplication = enterpriseAnalytics.submitApplication;
-exports.getCardAnalytics = enterpriseAnalytics.getCardAnalytics;
-exports.getEnterpriseApplications = enterpriseAnalytics.getEnterpriseApplications;
-exports.updateApplicationStatus = enterpriseAnalytics.updateApplicationStatus;
+const {
+  trackCardView,
+  submitApplication,
+  updateApplicationStatus
+} = require('./enterprise-analytics');
+exports.trackCardView = trackCardView;
+exports.submitApplication = submitApplication;
+exports.updateApplicationStatus = updateApplicationStatus;
 
 // Recognition Plus functions (PR+)
 const recognitionPlus = require('./recognition-plus');
@@ -2985,40 +2987,7 @@ exports.getAirlineMetrics = onRequest(async (req, res) => {
 });
 
 // Industry-Grade Airline Expectation Functions
-
-// Update airline hiring expectations (market volatility, requirements)
-exports.updateAirlineExpectations = onRequest(async (req, res) => {
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_ANON_KEY
-  );
-
-  try {
-    const { airlineId, expectations } = req.body;
-
-    if (!airlineId || !expectations) {
-      return res.status(400).json({ error: 'airlineId and expectations required' });
-    }
-
-    const { data, error } = await supabase
-      .from('airlines')
-      .update({ 
-        hiring_expectations: expectations,
-        expectations_updated_at: new Date().toISOString()
-      })
-      .eq('id', airlineId)
-      .select()
-      .single();
-
-    if (error) {
-      return res.status(500).json({ error: error.message });
-    }
-
-    return res.json({ success: true, expectations });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
+// updateAirlineExpectations - REPLACED with direct Supabase client in EnterprisePortalApp.tsx
 
 // Get airline hiring requirements (minimum hours, type ratings, etc.)
 exports.getAirlineRequirements = onRequest(async (req, res) => {
@@ -7470,105 +7439,10 @@ exports.postEnterpriseJobListing = onRequest(async (req, res) => {
   }
 });
 
-// Update airline expectations (enterprise-managed record)
-exports.updateAirlineExpectations = onRequest(async (req, res) => {
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
-  if (req.method === 'OPTIONS') return res.status(204).send('');
-  if (!['POST', 'PUT'].includes(req.method)) return res.status(405).json({ error: 'Method not allowed' });
-
-  try {
-    const { userId, airlineExpectationId, updates } = req.body;
-    if (!userId || !updates) return res.status(400).json({ error: 'userId and updates required' });
-
-    const { data: profile } = await supabase
-      .from('profiles').select('enterprise_access').eq('id', userId).single();
-    if (!profile?.enterprise_access) return res.status(403).json({ error: 'Enterprise access required' });
-
-    const { data: account } = await supabase
-      .from('enterprise_accounts').select('id').eq('profile_id', userId).single();
-    if (!account) return res.status(400).json({ error: 'Enterprise account not found' });
-
-    const allowedFields = [
-      'pilot_expectations', 'recruitment_process', 'training_programs',
-      'career_progression', 'company_culture', 'benefits_compensation',
-      'base_locations', 'fleet_information', 'minimum_requirements',
-      'preferred_qualifications', 'interview_process', 'contact_information',
-      'airline_logo_url', 'airline_website', 'company_description'
-    ];
-    const safeUpdates = {};
-    allowedFields.forEach(f => { if (updates[f] !== undefined) safeUpdates[f] = updates[f]; });
-
-    let query;
-    if (airlineExpectationId) {
-      // Update specific record — must belong to this enterprise
-      const { data: existing } = await supabase
-        .from('airline_expectations').select('enterprise_account_id').eq('id', airlineExpectationId).single();
-      if (existing?.enterprise_account_id && existing.enterprise_account_id !== account.id) {
-        return res.status(403).json({ error: 'Cannot update another enterprise\'s expectation record' });
-      }
-      query = supabase.from('airline_expectations')
-        .update({ ...safeUpdates, enterprise_account_id: account.id, last_updated_by: userId, is_enterprise_managed: true, last_updated: new Date().toISOString() })
-        .eq('id', airlineExpectationId);
-    } else {
-      // Upsert by enterprise_account_id
-      query = supabase.from('airline_expectations')
-        .upsert({ ...safeUpdates, enterprise_account_id: account.id, last_updated_by: userId, is_enterprise_managed: true, last_updated: new Date().toISOString(), created_at: new Date().toISOString(), airline_name: updates.airline_name || 'Enterprise Airline' }, { onConflict: 'enterprise_account_id' });
-    }
-
-    const { data, error } = await query.select().single();
-    if (error) return res.status(500).json({ error: error.message });
-
-    return res.json({ success: true, message: 'Airline expectations updated', data });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
+// updateAirlineExpectations - REPLACED with direct Supabase client in EnterprisePortalApp.tsx
 
 // Search pilot profiles (for enterprise/airline use — returns safe public data)
-exports.searchPilotProfiles = onRequest(async (req, res) => {
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
-  if (req.method === 'OPTIONS') return res.status(204).send('');
-  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
-
-  try {
-    const { userId, minHours, maxHours, licenseType, icaoLevel, nationality, typeRating, limit = 20, offset = 0 } = req.query;
-
-    if (!userId) return res.status(400).json({ error: 'userId required' });
-
-    const { data: caller } = await supabase
-      .from('profiles').select('enterprise_access').eq('id', userId).single();
-    if (!caller?.enterprise_access) return res.status(403).json({ error: 'Enterprise access required' });
-
-    let query = supabase
-      .from('profiles')
-      .select(`
-        id, display_name, full_name, country, nationality,
-        total_flight_hours, overall_recognition_score,
-        language_icao_level, license_id, country_of_license,
-        aircraft_rated_on, ratings, profile_image_url,
-        english_proficiency_level, technical_skills_score,
-        behavioral_sjt_score, behavioral_crm_assessment
-      `)
-      .eq('status', 'active')
-      .limit(parseInt(limit))
-      .range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
-
-    if (minHours) query = query.gte('total_flight_hours', parseFloat(minHours));
-    if (maxHours) query = query.lte('total_flight_hours', parseFloat(maxHours));
-    if (icaoLevel) query = query.eq('language_icao_level', icaoLevel);
-    if (nationality) query = query.ilike('nationality', `%${nationality}%`);
-    if (typeRating) query = query.ilike('aircraft_rated_on', `%${typeRating}%`);
-
-    const { data, error, count } = await query;
-    if (error) return res.status(500).json({ error: error.message });
-
-    return res.json({ pilots: data, total: count, limit: parseInt(limit), offset: parseInt(offset) });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
+// searchPilotProfiles - REPLACED with direct Supabase client in EnterprisePortalApp.tsx
 
 // Get enterprise pathway cards (published ones for the pathways page)
 exports.getEnterprisePathwayCards = onRequest(async (req, res) => {
