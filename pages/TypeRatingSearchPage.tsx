@@ -30,7 +30,7 @@ interface AircraftTypeRating {
   image?: string;
   sketchfab_id?: string;
   description?: string;
-  conditionally_new?: boolean;
+  conditionally_new?: 'green' | 'amber' | 'red';
   first_flight?: string;
   why_choose_rating?: string;
   specifications?: any;
@@ -1849,15 +1849,15 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       Demand: {selectedAircraft.demandLevel === 'high' ? 'High' : selectedAircraft.demandLevel === 'low' ? 'Low' : 'None'}
                     </div>
                   )}
-                  {selectedAircraft.conditionallyNew && (
+                  {selectedAircraft.conditionally_new && (
                     <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-xl border-2 ${
-                      selectedAircraft.conditionallyNew === 'green' ? 'bg-emerald-500 text-white border-emerald-400' :
-                      selectedAircraft.conditionallyNew === 'amber' ? 'bg-amber-500 text-white border-amber-400' :
+                      selectedAircraft.conditionally_new === 'green' ? 'bg-emerald-500 text-white border-emerald-400' :
+                      selectedAircraft.conditionally_new === 'amber' ? 'bg-amber-500 text-white border-amber-400' :
                       'bg-red-500 text-white border-red-400'
                     }`}>
                       <div className={`w-2 h-2 rounded-full ${
-                        selectedAircraft.conditionallyNew === 'green' ? 'bg-white' :
-                        selectedAircraft.conditionallyNew === 'amber' ? 'bg-white' :
+                        selectedAircraft.conditionally_new === 'green' ? 'bg-white' :
+                        selectedAircraft.conditionally_new === 'amber' ? 'bg-white' :
                         'bg-white'
                       }`} />
                       Conditionally New
@@ -1898,7 +1898,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">First Flight</p>
-                <p className="text-sm font-semibold text-slate-800">{selectedAircraft.firstFlight}</p>
+                <p className="text-sm font-semibold text-slate-800">{selectedAircraft.first_flight}</p>
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-0.5">Category</p>
@@ -1940,10 +1940,10 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                     <h3 className="text-lg font-semibold mb-3 text-slate-900">Description</h3>
                     <p className="text-sm text-slate-500 leading-relaxed mb-4">{selectedAircraft.description}</p>
                     
-                    {selectedAircraft.whyChooseRating && (
+                    {selectedAircraft.why_choose_rating && (
                       <>
                         <h3 className="text-lg font-semibold mb-3 text-slate-900">Why Should a Pilot Choose This Rating?</h3>
-                        <p className="text-sm text-slate-500 leading-relaxed">{selectedAircraft.whyChooseRating}</p>
+                        <p className="text-sm text-slate-500 leading-relaxed">{selectedAircraft.why_choose_rating}</p>
                         {selectedAircraft.id === 'a220-300' && (
                           <button
                             onClick={() => setShowExtendedInfo(true)}
@@ -1997,24 +1997,28 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               {activeTab === 'Training' && (
                 <div>
                   <h3 className="text-lg font-semibold mb-3 text-slate-900">Training Requirements</h3>
-                  <ul className="space-y-2.5 mb-6">
-                    <li className="flex items-start gap-3 text-sm text-slate-500">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      Minimum Flight Hours: {selectedAircraft.trainingRequirements.minimumHours}
-                    </li>
-                    <li className="flex items-start gap-3 text-sm text-slate-500">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      Ground School: {selectedAircraft.trainingRequirements.groundSchoolHours} hours
-                    </li>
-                    <li className="flex items-start gap-3 text-sm text-slate-500">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      Simulator Training: {selectedAircraft.trainingRequirements.simulatorHours} hours
-                    </li>
-                    <li className="flex items-start gap-3 text-sm text-slate-500">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      Flight Training: {selectedAircraft.trainingRequirements.flightHours} hours
-                    </li>
-                  </ul>
+                  {selectedAircraft.training_requirements ? (
+                    <ul className="space-y-2.5 mb-6">
+                      <li className="flex items-start gap-3 text-sm text-slate-500">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        Minimum Flight Hours: {selectedAircraft.training_requirements.minimumHours}
+                      </li>
+                      <li className="flex items-start gap-3 text-sm text-slate-500">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        Ground School: {selectedAircraft.training_requirements.groundSchoolHours} hours
+                      </li>
+                      <li className="flex items-start gap-3 text-sm text-slate-500">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        Simulator Training: {selectedAircraft.training_requirements.simulatorHours} hours
+                      </li>
+                      <li className="flex items-start gap-3 text-sm text-slate-500">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        Flight Training: {selectedAircraft.training_requirements.flightHours} hours
+                      </li>
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-slate-500">Training requirements data not available for this aircraft.</p>
+                  )}
                 </div>
               )}
 
