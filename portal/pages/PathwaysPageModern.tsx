@@ -2717,13 +2717,7 @@ const ThreeStagePathwayFilter: React.FC<{
             airline: 'Military Training',
             description: 'Service commitment with world-class training and full sponsorship. Join the Air Force, Navy, Army, or Marine Corps for comprehensive flight training at no cost. Receive top-tier instruction, advanced aircraft experience, and guaranteed employment. Requires service commitment (typically 8-10 years after pilot training). Offers competitive salary, benefits, and transition to commercial airlines. Highly competitive selection process requiring physical fitness, academic excellence, and leadership potential.',
           },
-          // Self-Study + Instructor Pathway
-          '4f79f084-a837-4a87-a45f-57d36c576ced': {
-            image: 'https://leopardaviation.com/wp-content/uploads/2025/10/How-Long-Does-It-Take-to-Become-a-Certified-Flight-Instructor.jpg',
-            airline: 'Self-Study Path',
-            description: 'Self-directed ground school with freelance CFI flight training. Complete ground school through online courses, books, and self-study at your own pace. Hire freelance Certified Flight Instructors for dual instruction as needed. Most cost-effective option for budget-conscious students. Requires strong self-discipline and time management. Combine with part 61 training for maximum flexibility. Ideal for students with irregular schedules or those who want to minimize training costs while maintaining quality instruction.',
-          },
-        };
+                  };
         
         const branded = studentPilotCards[sp.id] || {};
         
@@ -3164,33 +3158,59 @@ const ThreeStagePathwayFilter: React.FC<{
                       }
                     `}</style>
                     <div className="flex gap-8 ghost-scroll">
-                      {[selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard].map((card, idx) => {
-                        if (!card) return null;
-                        const isWingMentorCard = card.aircraftType === '__wingmentor__';
-                        const cardAircraftImage = isWingMentorCard
-                          ? '/logo.png'
-                          : (card.image && !card.image.startsWith('wingmentor') ? card.image : getAircraftImage(card.aircraftType));
-                        return (
-                          <div
-                            key={`ghost-${card.id}-${idx}`}
-                            className="flex flex-col items-center"
-                          >
+                      {(() => {
+                        let ghostCardsToShow;
+                        
+                        // Check if selected card is a sub-pathway card (has pathwayId)
+                        if (selectedCard.pathwayId) {
+                          // Get the detailed cards for this sub-pathway (same as detailed page)
+                          const detailedCards = getFilteredPathwayCards(selectedCard.pathwayId, selectedCard.id);
+                          // Filter out WingMentor intro cards
+                          ghostCardsToShow = detailedCards.filter(c => !c.id.includes('wingmentor'));
+                          // Repeat to fill the ghost scroll
+                          if (ghostCardsToShow.length > 0) {
+                            ghostCardsToShow = [...ghostCardsToShow, ...ghostCardsToShow, ...ghostCardsToShow];
+                          } else {
+                            // Fallback to showing cards from the pathway
+                            const pathwayCards = getFilteredPathwayCards(selectedCard.pathwayId, null);
+                            ghostCardsToShow = pathwayCards.filter(c => !c.id.includes('wingmentor'));
+                            if (ghostCardsToShow.length > 0) {
+                              ghostCardsToShow = [...ghostCardsToShow, ...ghostCardsToShow, ...ghostCardsToShow];
+                            }
+                          }
+                        } else {
+                          // Show the selected card repeated
+                          ghostCardsToShow = [selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard];
+                        }
+                        
+                        return ghostCardsToShow.map((card, idx) => {
+                          if (!card) return null;
+                          const isWingMentorCard = card.aircraftType === '__wingmentor__';
+                          const cardAircraftImage = isWingMentorCard
+                            ? '/logo.png'
+                            : (card.image && !card.image.startsWith('wingmentor') ? card.image : getAircraftImage(card.aircraftType));
+                          return (
                             <div
-                              className="flex-shrink-0 rounded-xl overflow-hidden"
-                              style={{ width: '400px', height: '200px' }}
+                              key={`ghost-${card.id}-${idx}`}
+                              className="flex flex-col items-center"
                             >
-                              <img 
-                                src={cardAircraftImage} 
-                                alt={card.name} 
-                                className="w-full h-full object-cover"
-                              />
+                              <div
+                                className="flex-shrink-0 rounded-xl overflow-hidden"
+                                style={{ width: '400px', height: '200px' }}
+                              >
+                                <img 
+                                  src={cardAircraftImage} 
+                                  alt={card.name} 
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <p className="mt-2 text-white/60 text-xs text-center font-medium">
+                                {card.name}
+                              </p>
                             </div>
-                            <p className="mt-2 text-white/60 text-xs text-center font-medium">
-                              {card.name}
-                            </p>
-                          </div>
-                        );
-                      })}
+                          );
+                        });
+                      })()}
                     </div>
                   </div>
                   
@@ -4695,7 +4715,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
                         {isWingMentorCard ? (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-                            <img src="/logo.png" alt="WingMentor" className="h-20 w-auto object-contain mb-4" />
                             <p className="text-slate-400 text-sm text-center px-8">{pathway.description}</p>
                           </div>
                         ) : (

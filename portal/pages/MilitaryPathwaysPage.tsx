@@ -18,12 +18,14 @@ const MilitaryPathwaysPage: React.FC<MilitaryPathwaysPageProps> = ({ pathwayId, 
   const [selectedMilitaryPathway, setSelectedMilitaryPathway] = useState<any>(null);
   const militaryCarouselRef = useRef<HTMLDivElement>(null);
   const [branchFilter, setBranchFilter] = useState<MilitaryBranch>('All');
-  const [regionFilter, setRegionFilter] = useState<Region>('All');
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const { currentUser } = useAuth();
   
   // Mock user profile
-  const userProfile = { pilot_id: currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot' };
+  const userProfile = { 
+    pilot_id: currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot',
+    profile_image_url: null
+  };
 
   // Filter military pathways by branch
   const filteredMilitaryPathways = DUMMY_MILITARY_PATHWAYS.filter(pathway => {
@@ -203,25 +205,6 @@ const MilitaryPathwaysPage: React.FC<MilitaryPathwaysPageProps> = ({ pathwayId, 
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-              </div>
-
-              {/* Geographical Location Categories */}
-              <div className="flex items-center justify-center gap-2 mt-6">
-                <Globe className="w-4 h-4 text-slate-500" />
-                <span className="text-sm font-medium text-slate-600 mr-2">Region:</span>
-                {(['All', 'Asia', 'Europe', 'Americas', 'Oceania', 'Africa', 'Middle East'] as Region[]).map((region) => (
-                  <button
-                    key={region}
-                    onClick={() => setRegionFilter(region)}
-                    className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all border-2 ${
-                      regionFilter === region
-                        ? 'bg-sky-500 text-white border-sky-500 shadow-md'
-                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                    }`}
-                  >
-                    {region}
-                  </button>
-                ))}
               </div>
 
               {/* Branch Filter */}
