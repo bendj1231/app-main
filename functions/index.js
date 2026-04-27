@@ -1,19 +1,13 @@
 const functions = require('firebase-functions/v2/https');
-const manufacturerFunctions = require('./manufacturer-functions');
-const premiumFeatures = require('./premium-features');
-const typeRatingFunctions = require('./type-rating-functions');
 
-// Export all manufacturer functions
-for (const [name, func] of Object.entries(manufacturerFunctions)) {
-  exports[name] = func;
-}
+// Manufacturer functions removed - using direct Supabase client instead
+// All 63 functions were simple SELECT queries that can be done from frontend
+// Use Supabase RLS policies for security
 
-// Export all premium features functions
-for (const [name, func] of Object.entries(premiumFeatures)) {
-  exports[name] = func;
-}
+// Premium features functions removed - using direct Supabase client instead
+// All 49 functions were simple SELECT queries that can be done from frontend
+// Use Supabase RLS policies for security
 
-// Export all type rating functions
-for (const [name, func] of Object.entries(typeRatingFunctions)) {
-  exports[name] = func;
-}
+// Type rating functions removed - using direct Supabase client instead
+// All 7 functions were simple SELECT queries that can be done from frontend
+// Use Supabase RLS policies for security
