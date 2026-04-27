@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   TrendingUp, 
@@ -2192,17 +2192,18 @@ const ThreeStagePathwayFilter: React.FC<{
   pathwayCards?: PathwayData[];
   selectedGeneralCategory?: string | null;
 }> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory }) => {
+  const navigate = useNavigate();
   const [pathways, setPathways] = useState<Pathway[]>([]);
   const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
-  
+
   const [selectedPathway, setSelectedPathway] = useState<string | null>(null);
   const [selectedSubPathway, setSelectedSubPathway] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<any>(null);
-  
+
   const [expandedStage, setExpandedStage] = useState<1 | 2 | 3>(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Ref for carousel
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -2741,11 +2742,19 @@ const ThreeStagePathwayFilter: React.FC<{
               {/* Discover Pathway Button */}
               <div className="mt-4 px-4 sm:px-6 lg:px-8 xl:px-12">
                 <div className="max-w-3xl mx-auto text-center">
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}>
+                  <button
+                    onClick={() => {
+                      const targetCard = selectedCard || cardsWithWingMentor[1];
+                      if (targetCard) {
+                        navigate(`/pathway/${targetCard.id}`);
+                      }
+                    }}
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md cursor-pointer hover:scale-105 transition-transform ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}
+                  >
                     <span className="text-xs font-semibold text-white">
                       Discover pathway
                     </span>
-                  </div>
+                  </button>
                 </div>
               </div>
               
