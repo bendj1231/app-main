@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
+import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   TrendingUp, 
@@ -2468,7 +2469,24 @@ const ThreeStagePathwayFilter: React.FC<{
     // COMMERCIAL PILOT PATHWAY - Custom branded cards for specific sub-pathways
     if (pathwayName.toLowerCase().includes('commercial pilot') && subPathwaysForPathway.length > 0) {
       console.log('[DEBUG] Creating Commercial Pilot cards for', subPathwaysForPathway.length, 'sub-pathways');
-      return subPathwaysForPathway.map((sp, index) => {
+      
+      // Add static Cadet Programmes card
+      const cadetProgrammesCard = {
+        id: 'cadet-programmes-commercial',
+        name: 'Cadet Programmes',
+        aircraftType: 'cadet-programmes-commercial',
+        airline: 'Cadet Programmes',
+        description: 'Sponsored airline training programs with guaranteed employment. Full or partial training sponsorship with partner airlines. Includes structured flight training, ground school, and mentorship. Direct pathway to first officer positions with major airlines. Competitive selection process with medical and age requirements. Ideal for aspiring airline pilots seeking structured career progression.',
+        locations: ['Global'],
+        matchProbability: 95,
+        hiringStatus: 'actively_hiring' as const,
+        requirements: { totalHours: 0, typeRatings: [] },
+        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
+        pathwayId: pathwayId,
+        category: 'airline-pathways' as const,
+      };
+      
+      const subPathwayCards = subPathwaysForPathway.map((sp, index) => {
         // Custom branded cards for Commercial Pilot sub-pathways
         const commercialPilotCards: Record<string, any> = {
           // Multi-Engine Rating Pathway
@@ -2521,6 +2539,9 @@ const ThreeStagePathwayFilter: React.FC<{
         };
         return card;
       });
+      
+      // Combine cadet programmes card with subpathway cards
+      return [cadetProgrammesCard, ...subPathwayCards];
     }
     
     // Check if there are pre-defined cards for OTHER pathways (not Student Pilot)
@@ -2716,9 +2737,20 @@ const ThreeStagePathwayFilter: React.FC<{
                   })}
                 </div>
               </div>
+
+              {/* Discover Pathway Button */}
+              <div className="mt-4 px-4 sm:px-6 lg:px-8 xl:px-12">
+                <div className="max-w-3xl mx-auto text-center">
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}>
+                    <span className="text-xs font-semibold text-white">
+                      Discover pathway
+                    </span>
+                  </div>
+                </div>
+              </div>
               
               {/* Selected Card Context Header - Under the selected card */}
-              {selectedCard && (
+              {selectedCard && cardsWithWingMentor.some(c => c.id === selectedCard.id) && (
                 <div className="mt-6 relative">
                   {/* Ghost Cards Background */}
                   <div className="absolute inset-0 -left-[50vw] w-[200vw] overflow-hidden opacity-10 pointer-events-none">
@@ -2864,13 +2896,9 @@ const ThreeStagePathwayFilter: React.FC<{
               {/* Centered Context Header below cards */}
               <div className="mt-6 px-4 sm:px-6 lg:px-8 xl:px-12">
                 <div className="max-w-3xl mx-auto text-center">
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-slate-100 border border-slate-200'}`}>
-                    <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                      {cardsWithWingMentor.length - 1} training options available
-                    </span>
-                    <span className="w-1 h-1 rounded-full bg-slate-400"></span>
-                    <span className={`text-xs font-semibold ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>
-                      Swipe to explore {pathway.name}
+                  <div className="mt-2">
+                    <span className="text-xs font-medium text-white/60">
+                      There are {cardsWithWingMentor.length - 1} pathways available for {selectedCard?.name || cardsWithWingMentor[1]?.name || pathway.name}
                     </span>
                   </div>
                   {pathway.description && (
@@ -3593,31 +3621,65 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
     
     return matchesCategory && matchesSearch && matchesMatchFilter && matchesPositionFilter && matchesViewFilter;
-  });
+  }).filter(pathway => !pathway.id.includes('wingmentor-intro'));
 
-  // Duplicate cards for infinite scroll illusion
-  const loopedPathways = filteredPathways.length > 0
-    ? [...filteredPathways, ...filteredPathways, ...filteredPathways]
-    : [];
+  // Add intro card at the beginning
+  const introCard: PathwayData = {
+    id: 'recommended-pathways-intro',
+    name: 'Recommended Pathways',
+    category: 'all',
+    airline: 'WingMentor',
+    description: 'Explore personalized career pathways matched to your profile and goals',
+    image: 'wingmentor-white',
+    matchProbability: 100,
+    aircraftType: '__wingmentor__',
+    requirements: {
+      totalHours: 0,
+      typeRatings: [],
+    },
+    locations: ['Global'],
+    hiringStatus: 'hiring',
+  };
+
+  const pathwaysWithIntro = [introCard, ...filteredPathways];
+
+  // Single set of cards - no infinite scroll
+  const loopedPathways = pathwaysWithIntro;
 
   // Simple scroll function like PortalAirlineExpectationsPage
   const scrollCarousel = (dir: 'left' | 'right') => {
     const container = carouselRef.current;
-    if (!container || filteredPathways.length === 0) return;
-    
-    // Scroll by fixed amount
-    container.scrollBy({ left: dir === 'left' ? -640 : 640, behavior: 'smooth' });
-    
+    if (!container || pathwaysWithIntro.length === 0) return;
+
     // Select the next/previous card based on current selection
-    const currentIndex = filteredPathways.findIndex(p => p.id === selectedCarouselPathway?.id);
+    const currentIndex = pathwaysWithIntro.findIndex(p => p.id === selectedCarouselPathway?.id);
     if (currentIndex === -1) return;
-    
+
     let newIndex = dir === 'left' ? currentIndex - 1 : currentIndex + 1;
     // Wrap around for infinite selection
-    if (newIndex < 0) newIndex = filteredPathways.length - 1;
-    if (newIndex >= filteredPathways.length) newIndex = 0;
-    
-    setSelectedCarouselPathway(filteredPathways[newIndex]);
+    if (newIndex < 0) newIndex = pathwaysWithIntro.length - 1;
+    if (newIndex >= pathwaysWithIntro.length) newIndex = 0;
+
+    setSelectedCarouselPathway(pathwaysWithIntro[newIndex]);
+
+    // Calculate scroll position to center the selected card
+    // Card width is 600px, gap is 16px (tailwind gap-4)
+    const cardWidth = 600;
+    const gap = 16;
+    const cardTotalWidth = cardWidth + gap;
+
+    // Get the card element at the new index
+    const cards = container.children;
+    if (cards[newIndex]) {
+      const cardElement = cards[newIndex] as HTMLElement;
+      const cardOffsetLeft = cardElement.offsetLeft;
+      const containerWidth = container.clientWidth;
+
+      // Calculate position to center the card
+      const scrollLeft = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+
+      container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+    }
   };
 
   // Reset cockpit activation when pathway changes
@@ -3627,39 +3689,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Set initial selected pathway
   useEffect(() => {
-    if (filteredPathways.length > 0 && !selectedCarouselPathway) {
-      setSelectedCarouselPathway(filteredPathways[0]);
+    if (pathwaysWithIntro.length > 0 && !selectedCarouselPathway) {
+      setSelectedCarouselPathway(pathwaysWithIntro[0]);
     }
-  }, [filteredPathways, selectedCarouselPathway]);
+  }, [pathwaysWithIntro, selectedCarouselPathway]);
 
-  // Infinite scroll - reset scroll position when reaching edges
-  useEffect(() => {
-    const container = carouselRef.current;
-    if (!container || filteredPathways.length === 0) return;
-
-    const cardWidth = 604; // 600px width + 4px gap
-    const totalCards = filteredPathways.length;
-    const oneSetWidth = totalCards * cardWidth;
-
-    // Initialize scroll position to middle set
-    container.scrollLeft = oneSetWidth;
-
-    const onScroll = () => {
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      
-      // When scrolled past the second set (near the end), snap to the middle set
-      if (container.scrollLeft >= oneSetWidth * 2) {
-        container.scrollLeft = oneSetWidth;
-      }
-      // When scrolled before the first set (near the beginning), snap to the middle set
-      if (container.scrollLeft <= 0) {
-        container.scrollLeft = oneSetWidth;
-      }
-    };
-
-    container.addEventListener('scroll', onScroll, { passive: true });
-    return () => container.removeEventListener('scroll', onScroll);
-  }, [filteredPathways.length]);
+  // Infinite scroll disabled - no scroll reset for recommended pathways
 
   // Keyboard navigation for arrow keys
   useEffect(() => {
@@ -4050,19 +4085,53 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
         {/* Edge-to-edge Carousel Section - Recommended Pathways */}
         <div className="w-full mb-6 relative w-screen left-1/2 -translate-x-1/2">
-          <div className="mb-6 pr-4 w-full text-left">
-            <h2
-              className="text-2xl md:text-3xl font-normal text-white text-left"
-              style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
-            >
-              Recommended Pathways
-            </h2>
-            <p className={`${subText} text-xs mt-1`}>
-              {mode === 'jobs'
-                ? <>{filteredPathways.length} of {jobApplicationListings.length}+ jobs available</>
-                : <>{filteredPathways.length} pathways available</>
-              }
-            </p>
+          <div className="mb-4 pr-4 pl-8 w-full">
+            <div className="text-left">
+              <h2
+                className="text-3xl md:text-4xl font-normal text-white text-left"
+                style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+              >
+                Recommended Pathways
+              </h2>
+              <p className={`${subText} text-xs mt-1`}>
+                {mode === 'jobs'
+                  ? <>{filteredPathways.length} of {jobApplicationListings.length}+ jobs available</>
+                  : <>{filteredPathways.length} pathways available</>
+                }
+              </p>
+            </div>
+          </div>
+
+          {/* Match Filter - Below Header */}
+          <div className="mb-4 pl-4">
+            <div className="flex items-center gap-2">
+              <span className={`text-base ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match Filter:</span>
+              <div className="flex gap-2">
+                {[
+                  { key: 'all', label: 'All', color: 'blue' },
+                  { key: 'low', label: 'Low 60-75%', color: 'amber' },
+                  { key: 'mid', label: 'Mid 75-90%', color: 'emerald' },
+                  { key: 'high', label: 'High 90%+', color: 'purple' },
+                ].map((filter) => (
+                  <button
+                    key={filter.key}
+                    onClick={() => setMatchFilter(filter.key as typeof matchFilter)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      matchFilter === filter.key
+                        ? filter.key === 'all' ? 'bg-blue-500 text-white' :
+                          filter.key === 'low' ? 'bg-amber-500 text-white' :
+                          filter.key === 'mid' ? 'bg-emerald-500 text-white' :
+                          'bg-purple-500 text-white'
+                        : isDarkMode
+                          ? 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
+                          : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50'
+                    }`}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Carousel Container */}
@@ -4200,32 +4269,29 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             </div>
           </div>
 
-          {/* Arrow Keys with Context Header */}
-          <div className="flex items-center justify-center gap-6 mt-4 w-full">
-            <button
-              onClick={() => scrollCarousel('left')}
-              className={`p-3 rounded-full border transition-all flex-shrink-0 ${isDarkMode ? 'border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white' : 'border-slate-300 bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-900'}`}
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={() => scrollCarousel('right')}
-              className={`p-3 rounded-full border transition-all flex-shrink-0 ${isDarkMode ? 'border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white' : 'border-slate-300 bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-900'}`}
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-
           {/* Selected Pathway Display */}
           {selectedCarouselPathway && (
-            <div className="text-center max-w-xl mx-auto mt-4">
-              <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
-              <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>{selectedCarouselPathway.name}</h3>
-              <p className={`${subText} text-sm mb-2`}>
-                {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
-              </p>
-              <p className={`text-sm leading-relaxed ${subText}`}>{selectedCarouselPathway.description}</p>
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <button
+                onClick={() => scrollCarousel('left')}
+                className={`p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md ${isDarkMode ? 'border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white' : 'border-black/10 bg-white/30 text-slate-600 hover:bg-white/40 hover:text-slate-900'}`}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <div className="text-center max-w-xl">
+                <p className="text-xs uppercase tracking-widest text-white/70 mb-1">Selected Pathway</p>
+                <h3 className="text-xl font-serif font-normal text-white mb-1">{selectedCarouselPathway.name}</h3>
+                <p className="text-sm text-white/70 mb-2">
+                  {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
+                </p>
+                <p className="text-sm leading-relaxed text-white/70">{selectedCarouselPathway.description}</p>
+              </div>
+              <button
+                onClick={() => scrollCarousel('right')}
+                className={`p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md ${isDarkMode ? 'border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white' : 'border-black/10 bg-white/30 text-slate-600 hover:bg-white/40 hover:text-slate-900'}`}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
             </div>
           )}
         </div>
@@ -4238,36 +4304,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             selectedGeneralCategory={hierarchySelection.generalCategory || null}
           />
         )}
-
-          {/* Match Probability Filter */}
-          <div className="flex items-center gap-3 justify-center">
-            <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match Filter:</span>
-            <div className="flex gap-2">
-              {[
-                { key: 'all', label: 'All', color: 'blue' },
-                { key: 'low', label: 'Low 60-75%', color: 'amber' },
-                { key: 'mid', label: 'Mid 75-90%', color: 'emerald' },
-                { key: 'high', label: 'High 90%+', color: 'purple' },
-              ].map((filter) => (
-                <button
-                  key={filter.key}
-                  onClick={() => setMatchFilter(filter.key as typeof matchFilter)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                    matchFilter === filter.key
-                      ? filter.key === 'all' ? 'bg-blue-500 text-white' :
-                        filter.key === 'low' ? 'bg-amber-500 text-white' :
-                        filter.key === 'mid' ? 'bg-emerald-500 text-white' :
-                        'bg-purple-500 text-white'
-                      : isDarkMode 
-                        ? 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50' 
-                        : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50'
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div>
-          </div>
 
           {/* Job Position Filter */}
           <div className="flex items-center gap-3 justify-center">
