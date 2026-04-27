@@ -1685,6 +1685,11 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                {aircraft.sketchfab_id && (
+                  <div className="absolute top-2 right-2 bg-sky-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
+                    3D
+                  </div>
+                )}
                 <div className="absolute bottom-3 left-3 right-3">
                   <span className="text-white font-serif text-base leading-tight">{aircraft.model}</span>
                   <div className="flex items-center gap-1 text-white/70 text-xs mt-0.5">
@@ -1765,6 +1770,11 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
+              {selectedAircraft.sketchfab_id && (
+                <div className="absolute top-4 right-4 bg-sky-500 text-white text-sm font-bold px-3 py-1.5 rounded-full shadow-lg z-10">
+                  3D Model Available
+                </div>
+              )}
               <div className="absolute bottom-0 left-0 p-6 md:p-8">
                 <div className="flex items-center gap-2 mb-2">
                   <span className={`text-xs font-bold tracking-[0.2em] uppercase text-sky-400 bg-sky-500/20 px-3 py-1 rounded-full border border-sky-400/30`}>
