@@ -43,6 +43,7 @@ export interface UserProfile {
   performanceScore?: number; // 0-100
   notifications?: { type: string; message: string; date: string; read: boolean }[];
   profile_image_url?: string; // Profile image URL from Cloudinary
+  isRecognitionPlusMember?: boolean; // Recognition Plus subscription status
 }
 
 export const PERMISSIONS = {

@@ -158,6 +158,25 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
       console.error('Error fetching app access:', accessErr);
     }
 
+    // Check for Recognition Plus subscription
+    let isRecognitionPlusMember = false;
+    try {
+      const { data: subscription, error: subError } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', uid)
+        .eq('status', 'active')
+        .eq('plan', 'recognition_plus')
+        .maybeSingle();
+
+      if (!subError && subscription) {
+        isRecognitionPlusMember = true;
+        console.log('🔍 [PROFILE DEBUG] Recognition Plus subscription found for user:', uid);
+      }
+    } catch (subErr) {
+      console.error('Error checking subscription:', subErr);
+    }
+
     const userProfile: UserProfile = {
       id: profile.id,
       uid: profile.firebase_uid || profile.id,
@@ -175,7 +194,8 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
       lastLogin: profile.last_login ? new Date(profile.last_login) : undefined,
       status: profile.status || 'active',
       isNewUser: profile.is_new_user || false,
-      profile_image_url: profile.profile_image_url
+      profile_image_url: profile.profile_image_url,
+      isRecognitionPlusMember
     };
 
     console.log('🔍 [PROFILE DEBUG] Final userProfile object:', {

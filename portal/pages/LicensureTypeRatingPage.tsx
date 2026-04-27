@@ -5,9 +5,10 @@ import { ArrowLeft, GraduationCap, Plane, DollarSign, MapPin, Award, CheckCircle
 interface LicensureTypeRatingPageProps {
   onBack: () => void;
   pathwayId?: string;
+  isDarkMode?: boolean;
 }
 
-const LicensureTypeRatingPage: React.FC<LicensureTypeRatingPageProps> = ({ onBack, pathwayId }) => {
+const LicensureTypeRatingPage: React.FC<LicensureTypeRatingPageProps> = ({ onBack, pathwayId, isDarkMode = false }) => {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   const licensureCards = [
@@ -88,6 +89,17 @@ const LicensureTypeRatingPage: React.FC<LicensureTypeRatingPageProps> = ({ onBac
       duration: '6-10 weeks',
       certification: 'CFI Certificate',
     },
+    {
+      id: 'dubai-emirati-atpl',
+      name: 'Dubai Emirati ATPL Pathway',
+      description: 'Pathway to Globally Recognized GCAA ATPL Theory. Designed for pilots in the UAE and abroad, delivered through Wing Mentor and Fujairah Aviation Academy. Secure GCAA ATPL theoretical credits recognized in Europe and Asia.',
+      image: 'https://www.fujairahaviation.com/wp-content/uploads/2023/01/Fujairah-Aviation-Academy-Training-Center.jpg',
+      locations: ['UAE', 'UK', 'Mauritius', 'Philippines', 'Germany'],
+      salary: 'AED 18,000 (approx. $4,900)',
+      requirements: ['CPL', 'GCAA Theory Preparation', 'UAE Security Clearance'],
+      duration: 'Distance Learning (Flexible)',
+      certification: 'GCAA ATPL Theory Credits (Frozen ATPL)',
+    },
   ];
 
   useEffect(() => {
@@ -104,189 +116,171 @@ const LicensureTypeRatingPage: React.FC<LicensureTypeRatingPageProps> = ({ onBac
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleBack}
-                className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
-              >
-                <ArrowLeft className="w-6 h-6" />
-              </button>
-              <div>
-                <h1 className="text-2xl font-bold">Pathways Licensure & Type Rating</h1>
-                <p className="text-slate-400 text-sm">Advanced training and certification programs</p>
+    <div className="dashboard-container animate-fade-in" style={{ position: 'fixed', top: '70px', left: 0, right: 0, bottom: 0, overflow: 'auto', zIndex: 10, padding: '2rem 1rem', alignItems: 'flex-start', minHeight: 'auto' }}>
+      <main className="dashboard-card" style={{ maxWidth: '1400px', padding: '2rem' }}>
+        {/* Header */}
+        <div style={{ marginBottom: '2rem' }}>
+          <button
+            onClick={handleBack}
+            className="mb-6 mt-2 text-sm font-medium flex items-center gap-2 transition-colors rounded-full px-4 py-2 shadow-sm border border-solid"
+            style={{
+              color: isDarkMode ? '#94a3b8' : undefined,
+              background: isDarkMode ? 'rgba(15, 23, 42, 0.82)' : undefined,
+              borderColor: isDarkMode ? 'rgba(71, 85, 105, 0.7)' : undefined,
+            }}
+          >
+            <ArrowLeft style={{ width: 16, height: 16 }} /> Back to Pathways
+          </button>
+
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <img
+              src="/logo.png"
+              alt="WingMentor Logo"
+              style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }}
+            />
+            <div className="tracking-widest text-xs font-bold uppercase mb-3" style={{ color: isDarkMode ? '#60a5fa' : undefined }}>
+              LICENSURE & TYPE RATING
+            </div>
+            <h1
+              style={{
+                fontFamily: 'Georgia, serif',
+                fontSize: 'clamp(2rem, 5vw, 3.25rem)',
+                fontWeight: 400,
+                color: isDarkMode ? '#f8fafc' : '#0f172a',
+                marginBottom: '1rem',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.15
+              }}
+            >
+              Advanced Training & Certification
+            </h1>
+            <p style={{ maxWidth: '700px', margin: '0 auto', fontSize: '1.05rem', color: isDarkMode ? '#94a3b8' : '#64748b', lineHeight: 1.8 }}>
+              World-class type rating centers and advanced training programs for pilots seeking specialized certifications and career advancement.
+            </p>
+          </div>
+        </div>
+
+        <div style={{ padding: '0', backgroundColor: 'transparent' }}>
+          <div className="animate-fade-in">
+            {/* Main Overview Card */}
+            <div className="horizontal-card" style={{ 
+              marginBottom: '2rem',
+              background: isDarkMode ? 'linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(30,41,59,0.94) 100%)' : 'white',
+              borderRadius: '18px',
+              padding: '1.75rem',
+              border: isDarkMode ? '1px solid rgba(71, 85, 105, 0.75)' : '1px solid #e2e8f0',
+              boxShadow: isDarkMode ? '0 18px 45px rgba(2,6,23,0.34)' : '0 18px 45px rgba(15,23,42,0.08)'
+            }}>
+              <div className="horizontal-card-content-wrapper">
+                <div style={{ maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ fontSize: '1.5rem', color: isDarkMode ? '#60a5fa' : '#0f172a', fontWeight: 'bold' }}>•</div>
+                  <div className="horizontal-card-content" style={{ padding: '1rem 0', textAlign: 'left', flex: 1, maxWidth: '100%' }}>
+                    <h3 className="horizontal-card-title" style={{ fontSize: '1.5rem', marginBottom: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Comprehensive Training Programs
+                    </h3>
+                    <p className="horizontal-card-desc" style={{ maxWidth: '100%', marginBottom: '1.5rem', color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '1rem', lineHeight: 1.6 }}>
+                      Access world-class type rating centers and advanced training programs across global locations, featuring comprehensive certification pathways for career advancement.
+                    </p>
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.875rem', padding: '0.25rem 0.75rem', background: isDarkMode ? 'rgba(245, 158, 11, 0.2)' : '#fef3c7', borderRadius: '12px', color: isDarkMode ? '#fbbf24' : '#92400e', fontWeight: 500, border: isDarkMode ? '1px solid rgba(245, 158, 11, 0.3)' : undefined }}>
+                        Type Ratings
+                      </span>
+                      <span style={{ fontSize: '0.875rem', padding: '0.25rem 0.75rem', background: isDarkMode ? 'rgba(15, 23, 42, 0.82)' : '#f1f5f9', borderRadius: '12px', color: isDarkMode ? '#cbd5e1' : '#475569', fontWeight: 500, border: isDarkMode ? '1px solid rgba(71, 85, 105, 0.72)' : undefined }}>
+                        Global Centers
+                      </span>
+                      <span style={{ fontSize: '0.875rem', padding: '0.25rem 0.75rem', background: isDarkMode ? 'rgba(34, 197, 94, 0.15)' : '#dcfce7', borderRadius: '12px', color: isDarkMode ? '#4ade80' : '#166534', fontWeight: 500, border: isDarkMode ? '1px solid rgba(34, 197, 94, 0.25)' : undefined }}>
+                        Certified Training
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Award className="w-5 h-5 text-blue-400" />
-              <span className="text-sm text-slate-400">Certified Training Centers</span>
+
+            {/* Programs Carousel - Same design as Fast Track Pilot pathway */}
+            <div className="text-center mb-4 relative z-50">
+              <div className="selection-indicator inline-block">
+                <span className={`text-sm font-normal ${isDarkMode ? 'text-white/50' : 'text-slate-500'}`}>
+                  {selectedCard ? licensureCards.find(c => c.id === selectedCard)?.name : 'Swipe left or right and click to select a card'}
+                </span>
+              </div>
+            </div>
+
+            <div
+              className="pathway-sub-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4 px-4 sm:px-6 lg:px-8 xl:px-12"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                cursor: 'grab',
+              }}
+              onMouseDown={(e) => {
+                const el = e.currentTarget;
+                el.style.cursor = 'grabbing';
+                const startX = e.pageX - el.offsetLeft;
+                const scrollLeft = el.scrollLeft;
+                const onMove = (me: MouseEvent) => {
+                  const x = me.pageX - el.offsetLeft;
+                  el.scrollLeft = scrollLeft - (x - startX);
+                };
+                const onUp = () => {
+                  el.style.cursor = 'grab';
+                  window.removeEventListener('mousemove', onMove);
+                  window.removeEventListener('mouseup', onUp);
+                };
+                window.addEventListener('mousemove', onMove);
+                window.addEventListener('mouseup', onUp);
+              }}
+            >
+              {licensureCards.map((card, idx) => {
+                const isSelected = selectedCard === card.id;
+                
+                const handleCardClick = (e: React.MouseEvent) => {
+                  e.stopPropagation();
+                  setSelectedCard(card.id);
+                  
+                  const cardElement = e.currentTarget as HTMLElement;
+                  const carousel = cardElement.parentElement;
+                  if (carousel && cardElement) {
+                    const cardCenterInContainer = cardElement.offsetLeft + cardElement.offsetWidth / 2;
+                    const targetScrollLeft = cardCenterInContainer - carousel.offsetWidth / 2;
+                    
+                    carousel.scrollTo({
+                      left: targetScrollLeft,
+                      behavior: 'smooth'
+                    });
+                  }
+                };
+                
+                return (
+                  <div
+                    key={`${card.id}-${idx}`}
+                    data-card-id={card.id}
+                    onClick={handleCardClick}
+                    className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-transparent' : ''}`}
+                    style={{ width: '600px' }}
+                  >
+                    <div className={`relative h-[300px] overflow-hidden rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
+                      <img src={card.image} alt={card.name} className="w-full h-full object-cover" loading="lazy" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                      <div className="absolute top-3 right-3 flex gap-2 items-start">
+                        <span className="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">
+                          {card.duration}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <h3 className="text-xl font-bold text-white mb-2">{card.name}</h3>
+                        <p className="text-white/80 text-sm line-clamp-2 mb-3">{card.description}</p>
+                        <div className="flex items-center gap-2">
+                          <span className="text-white/60 text-xs">{card.locations.join(', ')}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {!selectedCard ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {licensureCards.map((card, index) => (
-              <motion.div
-                key={card.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => handleCardClick(card.id)}
-                className="bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all cursor-pointer hover:shadow-xl hover:shadow-blue-500/10"
-              >
-                <div className="relative h-48">
-                  <img
-                    src={card.image}
-                    alt={card.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="text-xl font-bold">{card.name}</h3>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <p className="text-slate-300 text-sm mb-4">{card.description}</p>
-                  <div className="flex items-center gap-4 text-xs text-slate-400">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-3 h-3" />
-                      <span>{card.locations[0]}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      <span>{card.duration}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedCard}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-6"
-            >
-              {(() => {
-                const card = licensureCards.find(c => c.id === selectedCard);
-                if (!card) return null;
-                return (
-                  <>
-                    {/* Back Button */}
-                    <button
-                      onClick={() => setSelectedCard(null)}
-                      className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-                    >
-                      <ArrowLeft className="w-5 h-5" />
-                      <span>Back to all programs</span>
-                    </button>
-
-                    {/* Card Detail */}
-                    <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-slate-700">
-                      <div className="relative h-64 md:h-80">
-                        <img
-                          src={card.image}
-                          alt={card.name}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-6">
-                          <h2 className="text-3xl font-bold mb-2">{card.name}</h2>
-                          <p className="text-slate-300">{card.description}</p>
-                        </div>
-                      </div>
-                      <div className="p-6 space-y-6">
-                        {/* Quick Info */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          <div className="bg-slate-700/50 rounded-lg p-4">
-                            <div className="flex items-center gap-2 text-blue-400 mb-2">
-                              <DollarSign className="w-5 h-5" />
-                              <span className="text-sm font-medium">Cost</span>
-                            </div>
-                            <p className="text-white font-semibold">{card.salary}</p>
-                          </div>
-                          <div className="bg-slate-700/50 rounded-lg p-4">
-                            <div className="flex items-center gap-2 text-green-400 mb-2">
-                              <Clock className="w-5 h-5" />
-                              <span className="text-sm font-medium">Duration</span>
-                            </div>
-                            <p className="text-white font-semibold">{card.duration}</p>
-                          </div>
-                          <div className="bg-slate-700/50 rounded-lg p-4">
-                            <div className="flex items-center gap-2 text-purple-400 mb-2">
-                              <Award className="w-5 h-5" />
-                              <span className="text-sm font-medium">Certification</span>
-                            </div>
-                            <p className="text-white font-semibold text-sm">{card.certification}</p>
-                          </div>
-                          <div className="bg-slate-700/50 rounded-lg p-4">
-                            <div className="flex items-center gap-2 text-orange-400 mb-2">
-                              <MapPin className="w-5 h-5" />
-                              <span className="text-sm font-medium">Locations</span>
-                            </div>
-                            <p className="text-white font-semibold text-sm">{card.locations.length}+</p>
-                          </div>
-                        </div>
-
-                        {/* Requirements */}
-                        <div>
-                          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                            <GraduationCap className="w-6 h-6 text-blue-400" />
-                            Requirements
-                          </h3>
-                          <div className="space-y-2">
-                            {card.requirements.map((req, idx) => (
-                              <div key={idx} className="flex items-center gap-3 bg-slate-700/30 rounded-lg p-3">
-                                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                                <span className="text-slate-300">{req}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Locations */}
-                        <div>
-                          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                            <MapPin className="w-6 h-6 text-orange-400" />
-                            Training Locations
-                          </h3>
-                          <div className="flex flex-wrap gap-2">
-                            {card.locations.map((loc, idx) => (
-                              <span
-                                key={idx}
-                                className="px-3 py-1 bg-slate-700/50 rounded-full text-sm text-slate-300"
-                              >
-                                {loc}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* CTA */}
-                        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
-                          Learn More & Apply
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                );
-              })()}
-            </motion.div>
-          </AnimatePresence>
-        )}
-      </div>
+      </main>
     </div>
   );
 };
