@@ -2098,32 +2098,18 @@ interface SubPathway {
   is_active: boolean;
 }
 
-const ThreeStagePathwayFilter: React.FC<{
+const CategorySelection: React.FC<{
   isDarkMode?: boolean;
-  onSelectionChange: (selection: { generalCategory?: string; pathway?: string; subPathway?: string }) => void;
-  pathwayCards?: PathwayData[];
-}> = ({ isDarkMode = true, onSelectionChange, pathwayCards = [] }) => {
-  console.log('ThreeStagePathwayFilter mounted');
+  onCategorySelect: (categoryId: string | null) => void;
+  selectedCategoryId: string | null;
+}> = ({ isDarkMode = true, onCategorySelect, selectedCategoryId }) => {
   const [generalCategories, setGeneralCategories] = useState<GeneralCategory[]>([]);
-  const [pathways, setPathways] = useState<Pathway[]>([]);
-  const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
-  
-  const [selectedGeneralCategory, setSelectedGeneralCategory] = useState<string | null>(null);
-  const [selectedPathway, setSelectedPathway] = useState<string | null>(null);
-  const [selectedSubPathway, setSelectedSubPathway] = useState<string | null>(null);
-  const [selectedCard, setSelectedCard] = useState<any>(null);
-  
-  const [expandedStage, setExpandedStage] = useState<1 | 2 | 3>(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Ref for carousel
-  const carouselRef = useRef<HTMLDivElement>(null);
 
   // Fetch general categories on mount
   useEffect(() => {
     const fetchGeneralCategories = async () => {
-      console.log('Fetching general categories...');
       setLoading(true);
       setError(null);
       const { data, error } = await supabase
@@ -2135,7 +2121,6 @@ const ThreeStagePathwayFilter: React.FC<{
         console.error('Error fetching general categories:', error);
         setError(error.message);
       } else {
-        console.log('General categories fetched:', data);
         setGeneralCategories(data || []);
       }
       setLoading(false);
@@ -2143,6 +2128,82 @@ const ThreeStagePathwayFilter: React.FC<{
     
     fetchGeneralCategories();
   }, []);
+
+  return (
+    <div className="space-y-4">
+      {/* Debug info */}
+      <div className={`text-xs p-2 rounded ${isDarkMode ? 'bg-slate-800/50 text-slate-400' : 'bg-slate-200 text-slate-600'}`}>
+        Categories: {generalCategories.length} | Loading: {loading ? 'Yes' : 'No'} | Error: {error || 'None'}
+      </div>
+
+      {/* General Categories */}
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <h3 className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+            Categories
+          </h3>
+          {generalCategories.length === 0 && !loading && (
+            <span className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+              (No categories loaded)
+            </span>
+          )}
+        </div>
+        
+        {error && (
+          <div className={`text-xs p-2 rounded mb-2 ${isDarkMode ? 'bg-red-900/20 text-red-400' : 'bg-red-100 text-red-600'}`}>
+            Error: {error}
+          </div>
+        )}
+        
+        <div className="flex flex-wrap gap-2 justify-center">
+          {generalCategories.length > 0 ? (
+            generalCategories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => {
+                  console.log('Category clicked:', category.id, category.name);
+                  onCategorySelect(category.id === selectedCategoryId ? null : category.id);
+                }}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                  selectedCategoryId === category.id
+                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
+                    : isDarkMode
+                      ? 'bg-slate-800/50 text-white hover:bg-slate-700/50'
+                      : 'bg-slate-200/50 text-slate-900 hover:bg-slate-300/50'
+                }`}
+              >
+                {category.name}
+              </button>
+            ))
+          ) : (
+            <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+              {loading ? 'Loading categories...' : 'No categories available'}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ThreeStagePathwayFilter: React.FC<{
+  isDarkMode?: boolean;
+  pathwayCards?: PathwayData[];
+  selectedGeneralCategory?: string | null;
+}> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory }) => {
+  const [pathways, setPathways] = useState<Pathway[]>([]);
+  const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
+  
+  const [selectedPathway, setSelectedPathway] = useState<string | null>(null);
+  const [selectedSubPathway, setSelectedSubPathway] = useState<string | null>(null);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
+  
+  const [expandedStage, setExpandedStage] = useState<1 | 2 | 3>(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Ref for carousel
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   // Fetch pathways and their sub-pathways when general category is selected
   useEffect(() => {
@@ -2219,22 +2280,6 @@ const ThreeStagePathwayFilter: React.FC<{
     }
   }, [selectedPathway]);
 
-  // Notify parent of selection changes
-  useEffect(() => {
-    onSelectionChange({
-      generalCategory: selectedGeneralCategory || undefined,
-      pathway: selectedPathway || undefined,
-      subPathway: selectedSubPathway || undefined,
-    });
-  }, [selectedGeneralCategory, selectedPathway, selectedSubPathway, onSelectionChange]);
-
-  const handleGeneralCategoryClick = (categoryId: string) => {
-    setSelectedGeneralCategory(categoryId);
-    setSelectedPathway(null);
-    setSelectedSubPathway(null);
-    setExpandedStage(2);
-  };
-
   const handlePathwayClick = (pathwayId: string) => {
     setSelectedPathway(pathwayId);
     setSelectedSubPathway(null);
@@ -2243,19 +2288,6 @@ const ThreeStagePathwayFilter: React.FC<{
 
   const handleSubPathwayClick = (subPathwayId: string) => {
     setSelectedSubPathway(subPathwayId);
-  };
-
-  const resetToStage1 = () => {
-    setSelectedGeneralCategory(null);
-    setSelectedPathway(null);
-    setSelectedSubPathway(null);
-    setExpandedStage(1);
-  };
-
-  const resetToStage2 = () => {
-    setSelectedPathway(null);
-    setSelectedSubPathway(null);
-    setExpandedStage(2);
   };
 
   // Filter pathway cards based on selected pathway and sub-pathway
@@ -2530,55 +2562,6 @@ const ThreeStagePathwayFilter: React.FC<{
 
   return (
     <div className="space-y-4">
-      {/* Debug info */}
-      <div className={`text-xs p-2 rounded ${isDarkMode ? 'bg-slate-800/50 text-slate-400' : 'bg-slate-200 text-slate-600'}`}>
-        Categories: {generalCategories.length} | Loading: {loading ? 'Yes' : 'No'} | Error: {error || 'None'}
-      </div>
-
-      {/* Stage 1: General Categories */}
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <h3 className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-            Categories
-          </h3>
-          {generalCategories.length === 0 && !loading && (
-            <span className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-              (No categories loaded)
-            </span>
-          )}
-        </div>
-        
-        {error && (
-          <div className={`text-xs p-2 rounded mb-2 ${isDarkMode ? 'bg-red-900/20 text-red-400' : 'bg-red-100 text-red-600'}`}>
-            Error: {error}
-          </div>
-        )}
-        
-        <div className="flex flex-wrap gap-2 justify-center">
-          {generalCategories.length > 0 ? (
-            generalCategories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => handleGeneralCategoryClick(category.id)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
-                  selectedGeneralCategory === category.id
-                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                    : isDarkMode
-                      ? 'bg-slate-800/50 text-white hover:bg-slate-700/50'
-                      : 'bg-slate-200/50 text-slate-900 hover:bg-slate-300/50'
-                }`}
-              >
-                {category.name}
-              </button>
-            ))
-          ) : (
-            <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-              {loading ? 'Loading categories...' : 'No categories available'}
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Stage 2: Pathways as infinite scroll rows */}
       {selectedGeneralCategory && (
         <div className="space-y-8 w-screen relative left-1/2 -translate-x-1/2">
@@ -3291,7 +3274,22 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     pathway?: string;
     subPathway?: string;
   }>({});
-  
+
+  // Wrap setHierarchySelection in useCallback to prevent infinite loop
+  const handleHierarchySelectionChange = useCallback((selection: { generalCategory?: string; pathway?: string; subPathway?: string }) => {
+    setHierarchySelection(selection);
+  }, []);
+
+  // Wrap category selection handler in useCallback to prevent infinite loop
+  const handleCategorySelect = useCallback((categoryId: string | null) => {
+    setHierarchySelection(prev => ({
+      ...prev,
+      generalCategory: categoryId || undefined,
+      pathway: undefined,
+      subPathway: undefined,
+    }));
+  }, []);
+
   const { userProfile, currentUser } = useAuth();
 
   // Handle posting pathway cards
@@ -4037,126 +4035,31 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               );
             })}
           </div>
-          {mode === 'pathways' && (
-            <div className="flex justify-center">
-              <ThreeStagePathwayFilter
-                isDarkMode={isDarkMode}
-                onSelectionChange={(selection) => {
-                  setHierarchySelection(selection);
-                }}
-                pathwayCards={allPathways}
-              />
-            </div>
-          )}
-
-          {/* Match Probability Filter */}
-          <div className="flex items-center gap-3 justify-center">
-            <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match Filter:</span>
-            <div className="flex gap-2">
-              {[
-                { key: 'all', label: 'All', color: 'blue' },
-                { key: 'low', label: 'Low 60-75%', color: 'amber' },
-                { key: 'mid', label: 'Mid 75-90%', color: 'emerald' },
-                { key: 'high', label: 'High 90%+', color: 'purple' },
-              ].map((filter) => (
-                <button
-                  key={filter.key}
-                  onClick={() => setMatchFilter(filter.key as typeof matchFilter)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                    matchFilter === filter.key
-                      ? filter.key === 'all' ? 'bg-blue-500 text-white' :
-                        filter.key === 'low' ? 'bg-amber-500 text-white' :
-                        filter.key === 'mid' ? 'bg-emerald-500 text-white' :
-                        'bg-purple-500 text-white'
-                      : isDarkMode 
-                        ? 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50' 
-                        : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50'
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Job Position Filter */}
-          <div className="flex items-center gap-3 justify-center">
-            <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Position:</span>
-            <div className="relative">
-              <button
-                onClick={() => setIsPositionDropdownOpen(!isPositionDropdownOpen)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
-                  positionFilter !== 'all'
-                    ? 'bg-blue-500 text-white'
-                    : isDarkMode 
-                      ? 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 border border-slate-700' 
-                      : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50 border border-slate-300'
-                }`}
-              >
-                <span>{positionFilter === 'all' ? 'All Positions' : positionFilter}</span>
-                <ChevronDown className="w-4 h-4" />
-              </button>
-
-              {isPositionDropdownOpen && (
-                <div
-                  ref={dropdownRef}
-                  className={`absolute top-full left-0 mt-2 w-48 rounded-lg shadow-xl z-50 ${
-                    isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
-                  }`}
-                >
-                  {[
-                    { key: 'all', label: 'All Positions' },
-                    { key: 'Captain', label: 'Captain' },
-                    { key: 'Fighter Pilot', label: 'Fighter Pilot' },
-                    { key: 'First Officer', label: 'First Officer' },
-                    { key: 'Flight Instructor', label: 'Flight Instructor' },
-                    { key: 'Pilot Cadet', label: 'Pilot Cadet' },
-                  ].map((position) => (
-                    <button
-                      key={position.key}
-                      onClick={() => {
-                        setPositionFilter(position.key as typeof positionFilter);
-                        setIsPositionDropdownOpen(false);
-                      }}
-                      className={`w-full px-4 py-2 text-left text-sm font-medium transition-colors ${
-                        positionFilter === position.key
-                          ? 'bg-blue-500 text-white'
-                          : isDarkMode 
-                            ? 'text-slate-300 hover:bg-slate-700' 
-                            : 'text-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      {position.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
         </div>
 
-        {mode === 'jobs' && currentUser && (
-          <JobIntelligenceBanner
-            jobMatches={intelligence.jobMatches}
-            loading={intelligence.loadingJobs}
-            isDarkMode={isDarkMode}
-          />
+        {/* Category Selection */}
+        {mode === 'pathways' && (
+          <div className="flex justify-center">
+            <CategorySelection
+              isDarkMode={isDarkMode}
+              selectedCategoryId={hierarchySelection.generalCategory || null}
+              onCategorySelect={handleCategorySelect}
+            />
+          </div>
         )}
 
-        {mode === 'jobs' && currentUser && intelligence.jobMatches?.blindSpotPicks && (
-          <BlindSpotPicksRow
-            blindSpots={intelligence.jobMatches.blindSpotPicks}
-            loading={intelligence.loadingJobs}
-            isDarkMode={isDarkMode}
-          />
-        )}
-
-        {/* Edge-to-edge Carousel Section */}
-        <div className="w-full">
-          <div className="text-center mb-3 px-6">
-            <p className={`${subText} text-xs`}>
+        {/* Edge-to-edge Carousel Section - Recommended Pathways */}
+        <div className="w-full mb-6 relative w-screen left-1/2 -translate-x-1/2">
+          <div className="mb-6 pr-4 w-full text-left">
+            <h2
+              className="text-2xl md:text-3xl font-normal text-white text-left"
+              style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+            >
+              Recommended Pathways
+            </h2>
+            <p className={`${subText} text-xs mt-1`}>
               {mode === 'jobs'
-                ? <>{filteredPathways.length} of {jobApplicationListings.length}+ jobs <span className="ml-2 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">LIVE DATA</span></>
+                ? <>{filteredPathways.length} of {jobApplicationListings.length}+ jobs available</>
                 : <>{filteredPathways.length} pathways available</>
               }
             </p>
@@ -4174,7 +4077,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               style={{
                 WebkitOverflowScrolling: 'touch',
                 cursor: 'grab',
-                paddingLeft: 'calc(50vw - 300px)',
+                paddingLeft: '0px',
                 paddingRight: 'calc(50vw - 300px)',
               }}
               onMouseDown={(e) => {
@@ -4306,25 +4209,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <ChevronLeft className="w-5 h-5" />
             </button>
 
-            <div className="flex-1 flex items-center justify-center">
-              {selectedCarouselPathway && (
-                <div className="text-center max-w-xl">
-                    <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
-                    <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>{selectedCarouselPathway.name}</h3>
-                    <p className={`${subText} text-sm mb-2`}>
-                      {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
-                    </p>
-                    <div className={`rounded-lg p-3 mb-2 ${isDarkMode ? 'bg-sky-500/10 border border-sky-500/20' : 'bg-sky-50 border border-sky-200'}`}>
-                      <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>Why this pathway is recommended</p>
-                      <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                        Based on your profile, this pathway has a <strong>{selectedCarouselPathway.matchProbability}% match</strong>. Your recognition score of <strong>{intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 77}</strong> indicates alignment with this program's requirements.
-                      </p>
-                    </div>
-                    <p className={`text-sm leading-relaxed ${subText}`}>{selectedCarouselPathway.description}</p>
-                  </div>
-              )}
-            </div>
-
             <button
               onClick={() => scrollCarousel('right')}
               className={`p-3 rounded-full border transition-all flex-shrink-0 ${isDarkMode ? 'border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white' : 'border-slate-300 bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-900'}`}
@@ -4333,182 +4217,128 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             </button>
           </div>
 
-          {/* Requirements & Profile Alignment */}
-          {selectedCarouselPathway && (() => {
-            const reqMatches = analyzeRequirementAlignment(selectedCarouselPathway, recognitionProfile);
-            return (
-              <div className="w-full max-w-4xl mt-6 mx-auto">
-                <div className="text-center mb-4">
-                  <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>Requirements & Profile Alignment</h3>
-                  <p className={`${subText} text-sm`}>How your profile aligns with this pathway's requirements</p>
-                </div>
-                <GlassCard className="p-6" isDarkMode={isDarkMode}>
-                  <div className={`border-b pb-3 mb-4 ${isDarkMode ? 'border-red-500/20' : 'border-red-200'}`}>
-                    <p className="text-xs uppercase tracking-widest text-red-500 font-bold mb-2">Requirements & Profile Alignment</p>
-                    <div className={`flex flex-wrap gap-4 text-xs ${subText}`}>
-                      <div><span className="font-semibold">Updated:</span> {new Date().toLocaleDateString()}</div>
-                      <div><span className="font-semibold">Source:</span> Job Board</div>
-                      <div className="px-2 py-0.5 bg-sky-500 text-white rounded font-semibold">Airline Verified</div>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    {reqMatches.map((match, index) => {
-                      const statusColor = match.status === 'match' ? 'text-emerald-500' : match.status === 'close' ? 'text-amber-500' : 'text-red-500';
-                      const statusBg = match.status === 'match' ? (isDarkMode ? 'bg-emerald-500/10' : 'bg-emerald-50') : match.status === 'close' ? (isDarkMode ? 'bg-amber-500/10' : 'bg-amber-50') : (isDarkMode ? 'bg-red-500/10' : 'bg-red-50');
-                      const statusLabel = match.status === 'match' ? 'Met' : match.status === 'close' ? 'Close' : 'Gap';
-                      return (
-                        <div key={index} className={`flex items-center justify-between p-3 rounded-lg ${statusBg}`}>
-                          <div className="flex items-center gap-3">
-                            <div className={`w-2 h-2 rounded-full ${match.status === 'match' ? 'bg-emerald-500' : match.status === 'close' ? 'bg-amber-500' : 'bg-red-500'}`} />
-                            <span className={`text-sm font-medium ${headerText}`}>{match.label}</span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <span className={`text-xs ${subText}`}>{match.suggestion || ''}</span>
-                            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${statusColor} ${statusBg}`}>{statusLabel}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className={`mt-4 pt-4 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} flex flex-wrap gap-4 text-sm`}>
-                    <div><span className={`font-semibold ${headerText}`}>Salary:</span> <span className={subText}>Up to {selectedCarouselPathway.salary.firstYear} per year</span></div>
-                    <div><span className={`font-semibold ${headerText}`}>Positions:</span> <span className={subText}>{selectedCarouselPathway.positions} available</span></div>
-                    <div><span className={`font-semibold ${headerText}`}>Location:</span> <span className={subText}>{selectedCarouselPathway.locations.join(', ')}</span></div>
-                  </div>
-                </GlassCard>
-
-                {/* Score Display */}
-                {intelligence.fullScore && (
-                  <div className="flex flex-col items-center gap-2 mt-6">
-                    <RadarChart
-                      scores={intelligence.fullScore.breakdown}
-                      size={160}
-                      isDarkMode={isDarkMode}
-                      animate={true}
-                    />
-                    <div className="flex items-center gap-2">
-                      <span className={`text-xs font-semibold ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                        Score: {intelligence.fullScore.totalScore}/100
-                      </span>
-                      <ScoreVelocityBadge
-                        velocity={intelligence.fullScore.scoreVelocity}
-                        label={intelligence.fullScore.velocityLabel}
-                        isDarkMode={isDarkMode}
-                      />
-                    </div>
-                    <span className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>{intelligence.fullScore.rankLabel}</span>
-                  </div>
-                )}
-              </div>
-            );
-          })()}
-
-          {/* Roadmap Timeline — shown when a pathway is selected */}
+          {/* Selected Pathway Display */}
           {selectedCarouselPathway && (
-            <div className="w-full max-w-4xl mt-6">
-              <RoadmapTimeline
-                steps={intelligence.roadmap?.roadmapSteps || []}
-                loading={intelligence.loadingRoadmap}
-                isDarkMode={isDarkMode}
-              />
+            <div className="text-center max-w-xl mx-auto mt-4">
+              <p className={`text-xs uppercase tracking-widest ${subText} mb-1`}>Selected Pathway</p>
+              <h3 className={`text-xl font-serif font-normal ${headerText} mb-1`}>{selectedCarouselPathway.name}</h3>
+              <p className={`${subText} text-sm mb-2`}>
+                {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
+              </p>
+              <p className={`text-sm leading-relaxed ${subText}`}>{selectedCarouselPathway.description}</p>
             </div>
           )}
-
-          {/* 3D Aircraft View */}
-          {selectedCarouselPathway && (() => {
-            const aircraftType = selectedCarouselPathway.aircraftType || 'default';
-            const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-            // Better matching for A320 family and similar patterns
-            const hasModel = SKETCHFAB_MODELS[typeKey] || 
-              SKETCHFAB_MODELS[aircraftType] ||
-              Object.keys(SKETCHFAB_MODELS).some(key => 
-                typeKey.includes(key) || key.includes(typeKey.replace('FAMILY', ''))
-              );
-            // Map A320 family to A320 if not found
-            const effectiveType = (typeKey.includes('A320') && !SKETCHFAB_MODELS[typeKey]) ? 'A320' : aircraftType;
-            return (
-              <div className="w-full mt-6">
-                <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'}`}>
-                  <h3 className={`text-lg font-semibold ${headerText} mb-4 flex items-center gap-2`}>
-                    <Target className="w-5 h-5 text-sky-400" />
-                    3D Aircraft View
-                  </h3>
-                  {hasModel ? (
-                    <div className="aspect-video w-full rounded-lg overflow-hidden relative group">
-                      <Aircraft3DCanvas
-                        aircraftType={effectiveType}
-                        isDarkMode={isDarkMode}
-                      />
-                      {!cockpitActivated && (
-                        <div
-                          className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer transition-opacity duration-300 group-hover:opacity-100 opacity-90"
-                          onClick={() => setCockpitActivated(true)}
-                        >
-                          <div className="text-center">
-                            <img src="/logo.png" alt="WingMentor" className="w-48 h-48 object-contain mx-auto mb-1" />
-                            <p className="text-white font-semibold text-lg mb-1">Click to Interact</p>
-                            <p className="text-white/80 text-sm">Enable 3D aircraft controls</p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className={`h-48 w-full rounded-lg flex flex-col items-center justify-center ${isDarkMode ? 'bg-slate-700' : 'bg-slate-100'}`}>
-                      <Plane className={`w-12 h-12 mb-2 ${isDarkMode ? 'text-slate-600' : 'text-slate-400'}`} />
-                      <p className={`${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>3D model unavailable</p>
-                      <p className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>Aircraft not in model library</p>
-                    </div>
-                  )}
-                  <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'} mt-2 text-center`}>
-                    Interactive {aircraftType || 'Aircraft'} model
-                  </p>
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* 3D Cockpit View - A320 Family, B737, and B747 only */}
-          {selectedCarouselPathway && (() => {
-            const aircraftType = selectedCarouselPathway.aircraftType || 'default';
-            const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-            const isA320 = typeKey.includes('A318') || typeKey.includes('A319') || typeKey.includes('A319NEO') || typeKey.includes('A320') || typeKey.includes('A320NEO') || typeKey.includes('A321') || typeKey.includes('A321NEO');
-            const isB737 = typeKey.includes('B737') || typeKey.includes('737');
-            const isB747 = typeKey.includes('B747') || typeKey.includes('747');
-            const showCockpit = isA320 || isB737 || isB747;
-            if (!showCockpit) return null;
-            return (
-              <div className="w-full mt-6">
-                <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'}`}>
-                  <h4 className={`text-sm font-semibold ${isDarkMode ? 'text-slate-400' : 'text-slate-600'} uppercase tracking-wider mb-3 flex items-center gap-2`}>
-                    <LayoutGrid className="w-4 h-4" />
-                    Cockpit Interior 3D
-                  </h4>
-                  <div className="h-[500px] w-full rounded-lg relative overflow-hidden group">
-                    <Cockpit3DCanvas
-                      aircraftType={aircraftType}
-                      isDarkMode={isDarkMode}
-                    />
-                    {!cockpitActivated && (
-                      <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer transition-opacity duration-300 group-hover:opacity-100 opacity-90"
-                        onClick={() => setCockpitActivated(true)}
-                      >
-                        <div className="text-center">
-                          <img src="/logo.png" alt="WingMentor" className="w-48 h-48 object-contain mx-auto mb-1" />
-                          <p className="text-white font-semibold text-lg mb-1">Click to Interact</p>
-                          <p className="text-white/80 text-sm">Enable 3D cockpit controls</p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'} mt-2 text-center`}>
-                    {isB747 ? 'Boeing 747 Glass cockpit' : isB737 ? 'Boeing 737 Glass cockpit' : 'A320 Glass cockpit layout'}
-                  </p>
-                </div>
-              </div>
-            );
-          })()}
         </div>
+
+        {/* ThreeStagePathwayFilter - Inline Pathways Display */}
+        {mode === 'pathways' && (
+          <ThreeStagePathwayFilter
+            isDarkMode={isDarkMode}
+            pathwayCards={allPathways}
+            selectedGeneralCategory={hierarchySelection.generalCategory || null}
+          />
+        )}
+
+          {/* Match Probability Filter */}
+          <div className="flex items-center gap-3 justify-center">
+            <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match Filter:</span>
+            <div className="flex gap-2">
+              {[
+                { key: 'all', label: 'All', color: 'blue' },
+                { key: 'low', label: 'Low 60-75%', color: 'amber' },
+                { key: 'mid', label: 'Mid 75-90%', color: 'emerald' },
+                { key: 'high', label: 'High 90%+', color: 'purple' },
+              ].map((filter) => (
+                <button
+                  key={filter.key}
+                  onClick={() => setMatchFilter(filter.key as typeof matchFilter)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    matchFilter === filter.key
+                      ? filter.key === 'all' ? 'bg-blue-500 text-white' :
+                        filter.key === 'low' ? 'bg-amber-500 text-white' :
+                        filter.key === 'mid' ? 'bg-emerald-500 text-white' :
+                        'bg-purple-500 text-white'
+                      : isDarkMode 
+                        ? 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50' 
+                        : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50'
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Job Position Filter */}
+          <div className="flex items-center gap-3 justify-center">
+            <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Position:</span>
+            <div className="relative">
+              <button
+                onClick={() => setIsPositionDropdownOpen(!isPositionDropdownOpen)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                  positionFilter !== 'all'
+                    ? 'bg-blue-500 text-white'
+                    : isDarkMode 
+                      ? 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 border border-slate-700' 
+                      : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50 border border-slate-300'
+                }`}
+              >
+                <span>{positionFilter === 'all' ? 'All Positions' : positionFilter}</span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+
+              {isPositionDropdownOpen && (
+                <div
+                  ref={dropdownRef}
+                  className={`absolute top-full left-0 mt-2 w-48 rounded-lg shadow-xl z-50 ${
+                    isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
+                  }`}
+                >
+                  {[
+                    { key: 'all', label: 'All Positions' },
+                    { key: 'Captain', label: 'Captain' },
+                    { key: 'Fighter Pilot', label: 'Fighter Pilot' },
+                    { key: 'First Officer', label: 'First Officer' },
+                    { key: 'Flight Instructor', label: 'Flight Instructor' },
+                    { key: 'Pilot Cadet', label: 'Pilot Cadet' },
+                  ].map((position) => (
+                    <button
+                      key={position.key}
+                      onClick={() => {
+                        setPositionFilter(position.key as typeof positionFilter);
+                        setIsPositionDropdownOpen(false);
+                      }}
+                      className={`w-full px-4 py-2 text-left text-sm font-medium transition-colors ${
+                        positionFilter === position.key
+                          ? 'bg-blue-500 text-white'
+                          : isDarkMode 
+                            ? 'text-slate-300 hover:bg-slate-700' 
+                            : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      {position.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+        {mode === 'jobs' && currentUser && (
+          <JobIntelligenceBanner
+            jobMatches={intelligence.jobMatches}
+            loading={intelligence.loadingJobs}
+            isDarkMode={isDarkMode}
+          />
+        )}
+
+        {mode === 'jobs' && currentUser && intelligence.jobMatches?.blindSpotPicks && (
+          <BlindSpotPicksRow
+            blindSpots={intelligence.jobMatches.blindSpotPicks}
+            loading={intelligence.loadingJobs}
+            isDarkMode={isDarkMode}
+          />
+        )}
       </main>
 
       {/* Match Result Modal */}
