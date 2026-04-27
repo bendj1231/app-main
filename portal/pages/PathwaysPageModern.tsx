@@ -34,7 +34,8 @@ import {
   LogOut,
   ExternalLink,
   Bookmark,
-  ArrowLeft
+  ArrowLeft,
+  ChevronUp
 } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
@@ -52,6 +53,8 @@ import {
   AirlineReadinessBanner,
   ScoreLiveWidget,
 } from '../components/PathwaysIntelligenceWidgets';
+import { MeshGradient } from '@paper-design/shaders-react';
+import { supabase } from '../../src/lib/supabase';
 
 // React Three Fiber for 3D Aircraft Models
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -312,7 +315,7 @@ interface PathwayData {
   name: string;
   category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'type-rating' | 'airtaxi-drones';
   airline: string;
-  description: string;
+  description?: string;
   image: string;
   matchProbability: number;
   aircraftType: string; // X-Plane 3D model identifier
@@ -322,18 +325,19 @@ interface PathwayData {
     turbineHours?: number;
     typeRatings: string[];
   };
-  salary: {
+  salary?: {
     firstYear: string;
     fifthYear: string;
     bonuses: string;
   };
-  benefits: string[];
+  benefits?: string[];
   locations: string[];
-  hiringStatus: 'actively_hiring' | 'moderate' | 'limited' | 'frozen';
-  positions: number;
+  hiringStatus: 'actively_hiring' | 'moderate' | 'limited' | 'frozen' | 'hiring';
+  positions?: number;
   url?: string; // Link to original job posting
   isEnterprise?: boolean; // Posted by an enterprise/airline account
   enterpriseLogoUrl?: string; // Airline logo from Cloudinary
+  pathwayId?: string; // Reference to the career hierarchy pathway
 }
 
 interface GapAnalysis {
@@ -2069,36 +2073,841 @@ const SearchBar: React.FC<{ onSearch: (query: string) => void; isDarkMode?: bool
   </div>
 );
 
-// Category Filter - supports light/dark mode
-const CategoryFilter: React.FC<{ 
-  active: string; 
-  onChange: (cat: string) => void;
+// Three-Stage Pathway Filter - fetches from Supabase hierarchy
+interface GeneralCategory {
+  id: string;
+  name: string;
+  description: string;
+  display_order: number;
+}
+
+interface Pathway {
+  id: string;
+  general_category_id: string;
+  name: string;
+  description: string;
+  display_order: number;
+}
+
+interface SubPathway {
+  id: string;
+  pathway_id: string;
+  name: string;
+  description: string;
+  display_order: number;
+  is_active: boolean;
+}
+
+const ThreeStagePathwayFilter: React.FC<{
   isDarkMode?: boolean;
-  categoryLabels: Record<string, string>;
-  isLoggedIn?: boolean;
-}> = ({ active, onChange, isDarkMode = true, categoryLabels, isLoggedIn = false }) => {
-  // Always show all categories, maintaining order - hide recommended for logged out users
-  const orderedCategories = isLoggedIn 
-    ? ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones']
-    : ['all', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
+  onSelectionChange: (selection: { generalCategory?: string; pathway?: string; subPathway?: string }) => void;
+  pathwayCards?: PathwayData[];
+}> = ({ isDarkMode = true, onSelectionChange, pathwayCards = [] }) => {
+  console.log('ThreeStagePathwayFilter mounted');
+  const [generalCategories, setGeneralCategories] = useState<GeneralCategory[]>([]);
+  const [pathways, setPathways] = useState<Pathway[]>([]);
+  const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
   
+  const [selectedGeneralCategory, setSelectedGeneralCategory] = useState<string | null>(null);
+  const [selectedPathway, setSelectedPathway] = useState<string | null>(null);
+  const [selectedSubPathway, setSelectedSubPathway] = useState<string | null>(null);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
+  
+  const [expandedStage, setExpandedStage] = useState<1 | 2 | 3>(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Ref for carousel
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Fetch general categories on mount
+  useEffect(() => {
+    const fetchGeneralCategories = async () => {
+      console.log('Fetching general categories...');
+      setLoading(true);
+      setError(null);
+      const { data, error } = await supabase
+        .from('career_hierarchy_general_categories')
+        .select('*')
+        .order('display_order');
+      
+      if (error) {
+        console.error('Error fetching general categories:', error);
+        setError(error.message);
+      } else {
+        console.log('General categories fetched:', data);
+        setGeneralCategories(data || []);
+      }
+      setLoading(false);
+    };
+    
+    fetchGeneralCategories();
+  }, []);
+
+  // Fetch pathways and their sub-pathways when general category is selected
+  useEffect(() => {
+    if (selectedGeneralCategory) {
+      const fetchPathwaysAndSubPathways = async () => {
+        setLoading(true);
+        
+        // Fetch pathways
+        const { data: pathwaysData, error: pathwaysError } = await supabase
+          .from('career_hierarchy_pathways')
+          .select('*')
+          .eq('general_category_id', selectedGeneralCategory)
+          .order('display_order');
+        
+        if (pathwaysError) {
+          console.error('Error fetching pathways:', pathwaysError);
+          setLoading(false);
+          return;
+        }
+        
+        setPathways(pathwaysData || []);
+        
+        // Fetch all sub-pathways for these pathways
+        if (pathwaysData && pathwaysData.length > 0) {
+          const pathwayIds = pathwaysData.map(p => p.id);
+          const { data: subPathwaysData, error: subPathwaysError } = await supabase
+            .from('career_hierarchy_sub_pathways')
+            .select('*')
+            .in('pathway_id', pathwayIds)
+            .eq('is_active', true)
+            .order('display_order');
+          
+          if (subPathwaysError) {
+            console.error('Error fetching sub-pathways:', subPathwaysError);
+          } else {
+            console.log('[DEBUG] Fetched sub-pathways:', subPathwaysData?.length || 0, 'for pathways:', pathwayIds.length);
+            setSubPathways(subPathwaysData || []);
+          }
+        } else {
+          setSubPathways([]);
+        }
+        
+        setLoading(false);
+      };
+      
+      fetchPathwaysAndSubPathways();
+    } else {
+      setPathways([]);
+      setSubPathways([]);
+    }
+  }, [selectedGeneralCategory]);
+
+  // Fetch sub-pathways when pathway is selected
+  useEffect(() => {
+    if (selectedPathway) {
+      const fetchSubPathways = async () => {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('career_hierarchy_sub_pathways')
+          .select('*')
+          .eq('pathway_id', selectedPathway)
+          .eq('is_active', true)
+          .order('display_order');
+        
+        if (data && !error) {
+          setSubPathways(data);
+        }
+        setLoading(false);
+      };
+      
+      fetchSubPathways();
+    } else {
+      setSubPathways([]);
+    }
+  }, [selectedPathway]);
+
+  // Notify parent of selection changes
+  useEffect(() => {
+    onSelectionChange({
+      generalCategory: selectedGeneralCategory || undefined,
+      pathway: selectedPathway || undefined,
+      subPathway: selectedSubPathway || undefined,
+    });
+  }, [selectedGeneralCategory, selectedPathway, selectedSubPathway, onSelectionChange]);
+
+  const handleGeneralCategoryClick = (categoryId: string) => {
+    setSelectedGeneralCategory(categoryId);
+    setSelectedPathway(null);
+    setSelectedSubPathway(null);
+    setExpandedStage(2);
+  };
+
+  const handlePathwayClick = (pathwayId: string) => {
+    setSelectedPathway(pathwayId);
+    setSelectedSubPathway(null);
+    setExpandedStage(3);
+  };
+
+  const handleSubPathwayClick = (subPathwayId: string) => {
+    setSelectedSubPathway(subPathwayId);
+  };
+
+  const resetToStage1 = () => {
+    setSelectedGeneralCategory(null);
+    setSelectedPathway(null);
+    setSelectedSubPathway(null);
+    setExpandedStage(1);
+  };
+
+  const resetToStage2 = () => {
+    setSelectedPathway(null);
+    setSelectedSubPathway(null);
+    setExpandedStage(2);
+  };
+
+  // Filter pathway cards based on selected pathway and sub-pathway
+  const getFilteredPathwayCards = (pathwayId: string, subPathwayId?: string | null) => {
+    console.log('[DEBUG] getFilteredPathwayCards called:', { pathwayId, subPathwayId });
+    
+    // If a specific sub-pathway is selected, only return that card
+    if (subPathwayId) {
+      const selectedSubPathway = subPathways.find(sp => sp.id === subPathwayId);
+      console.log('[DEBUG] Selected sub-pathway:', selectedSubPathway);
+      if (selectedSubPathway) {
+        return [{
+          id: selectedSubPathway.id,
+          name: selectedSubPathway.name,
+          aircraftType: selectedSubPathway.id,
+          airline: 'WingMentor',
+          description: selectedSubPathway.description || 'Training pathway for pilot certification',
+          locations: selectedSubPathway.description ? [selectedSubPathway.description.substring(0, 50)] : ['Global'],
+          matchProbability: 95,
+          hiringStatus: 'actively_hiring' as const,
+          requirements: { totalHours: 0, typeRatings: [] },
+          image: '/images/accessportal.png',
+          pathwayId: pathwayId,
+          category: 'cadet-programme' as const,
+        }];
+      }
+    }
+    
+    // Get sub-pathways for this pathway
+    const subPathwaysForPathway = subPathways.filter(sp => sp.pathway_id === pathwayId);
+    const pathwayName = pathways.find(p => p.id === pathwayId)?.name || '';
+    
+    console.log('[DEBUG] Pathway info:', { pathwayId, pathwayName, subPathwaysCount: subPathwaysForPathway.length, allSubPathways: subPathways.length });
+    console.log('[DEBUG] Sub-pathways for this pathway:', subPathwaysForPathway.map(sp => ({ id: sp.id, name: sp.name })));
+    
+    // STUDENT PILOT PATHWAY - Always create custom branded cards from sub-pathways
+    console.log('[DEBUG] Checking Student Pilot condition:', { isStudentPilot: pathwayName.toLowerCase().includes('student pilot'), hasSubPathways: subPathwaysForPathway.length > 0 });
+    
+    if (pathwayName.toLowerCase().includes('student pilot') && subPathwaysForPathway.length > 0) {
+      console.log('[DEBUG] Creating Student Pilot cards for', subPathwaysForPathway.length, 'sub-pathways');
+      return subPathwaysForPathway.map((sp, index) => {
+        // Custom branded cards for each Student Pilot sub-pathway (using actual UUIDs from database)
+        const studentPilotCards: Record<string, any> = {
+          // Part 61 Flight School Pathway
+          'be6b0f3f-a5dc-43a2-a2b2-88ee5328beca': {
+            image: 'https://sp-ao.shortpixel.ai/client/to_webp,q_lossy,ret_img,w_1024,h_683/https://www.flightschoolusa.com/wp-content/uploads/2025/04/Student-pilot-1024x683.png',
+            airline: 'Flight Schools',
+            description: 'Flexible training schedule with certified flight instructors at local airports. Train at your own pace with personalized instruction. Flight schools offer the most flexibility for students who need to balance training with work or school. Requires minimum 40 hours flight time (20 dual, 10 solo, 5 cross-country) before checkride. Ideal for self-motivated learners who prefer a customized training approach.',
+          },
+          // Part 141 Flight School Pathway
+          'aa7e455f-5b75-44d2-be26-d2ca05a38bc7': {
+            image: 'https://cdn.prod.website-files.com/674f1a73a4a6599b28ca801f/67b661a1f9cc1d331881e163_w221129_252.jpg',
+            airline: 'Fast Track Pilot',
+            description: 'Structured FAA-approved curriculum with reduced hour requirements. Accelerated training path with minimum 35 hours before checkride. Fast track pilot programs follow a standardized syllabus approved by the FAA, ensuring consistent quality and faster completion times. Often includes VA benefits, GI Bill acceptance, and structured ground school. Best for students seeking a fast-track path to their pilot certificate with professional instruction.',
+          },
+          // University Aviation Program Pathway
+          'f77fc867-9ed8-4e7e-a056-45448094e99c': {
+            image: 'https://admissions.purdue.edu/wp-content/uploads/2025/05/brittany-gallarneau-flight-meet-our-student-1-e1747927121360.jpg',
+            airline: 'University Bachelor\'s Programs',
+            description: 'Degree + pilot training combined with financial aid options. Earn a bachelor\'s degree in aviation while completing flight training. Programs integrate ground school, simulator training, and flight hours into your curriculum. Access to university facilities, experienced instructors, and networking opportunities. Financial aid, scholarships, and federal student loans available. Graduates often have advantage with airline hiring and may qualify for reduced ATP requirements (1,250 hours instead of 1,500).',
+          },
+          // Military Flight Training Pathway
+          '81753376-b823-4909-b82f-664acab13dae': {
+            image: 'https://i.ytimg.com/vi/ODfVdiFzzWM/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDulvfhff1geQO2SuBxWbh9lWjA8A',
+            airline: 'Military Training',
+            description: 'Service commitment with world-class training and full sponsorship. Join the Air Force, Navy, Army, or Marine Corps for comprehensive flight training at no cost. Receive top-tier instruction, advanced aircraft experience, and guaranteed employment. Requires service commitment (typically 8-10 years after pilot training). Offers competitive salary, benefits, and transition to commercial airlines. Highly competitive selection process requiring physical fitness, academic excellence, and leadership potential.',
+          },
+          // Self-Study + Instructor Pathway
+          '4f79f084-a837-4a87-a45f-57d36c576ced': {
+            image: 'https://leopardaviation.com/wp-content/uploads/2025/10/How-Long-Does-It-Take-to-Become-a-Certified-Flight-Instructor.jpg',
+            airline: 'Self-Study Path',
+            description: 'Self-directed ground school with freelance CFI flight training. Complete ground school through online courses, books, and self-study at your own pace. Hire freelance Certified Flight Instructors for dual instruction as needed. Most cost-effective option for budget-conscious students. Requires strong self-discipline and time management. Combine with part 61 training for maximum flexibility. Ideal for students with irregular schedules or those who want to minimize training costs while maintaining quality instruction.',
+          },
+        };
+        
+        const branded = studentPilotCards[sp.id] || {};
+        
+        const card = {
+          id: sp.id,
+          name: branded.airline || sp.name,
+          aircraftType: sp.id,
+          airline: branded.airline || 'WingMentor',
+          description: branded.description || sp.description || 'Training pathway for pilot certification',
+          locations: ['USA', 'Global'],
+          matchProbability: 80 + (index * 3),
+          hiringStatus: 'actively_hiring' as const,
+          requirements: { totalHours: 0, typeRatings: [] },
+          image: branded.image || '/images/accessportal.png',
+          pathwayId: pathwayId,
+          category: 'cadet-programme' as const,
+        };
+        return card;
+      });
+    }
+    
+    // PRIVATE PILOT PATHWAY - Custom branded cards for specific sub-pathways
+    if (pathwayName.toLowerCase().includes('private pilot') && subPathwaysForPathway.length > 0) {
+      console.log('[DEBUG] Creating Private Pilot cards for', subPathwaysForPathway.length, 'sub-pathways');
+      return subPathwaysForPathway.map((sp, index) => {
+        // Custom branded cards for Private Pilot sub-pathways
+        const privatePilotCards: Record<string, any> = {
+          // Sport Pilot Transition Pathway
+          'd36018dd-a116-4925-83ca-6acb414f4020': {
+            image: 'https://robbreport.com/wp-content/uploads/2018/08/magnusfusion3.jpg?w=1000',
+            airline: 'Sport Pilot Transition',
+            description: 'Transition from Sport Pilot to Private Pilot license with additional training. Build on your sport pilot experience to gain more privileges and capabilities. Requires additional flight hours, cross-country training, and instrument training. Ideal pathway for sport pilots looking to advance their career and access more aircraft types.',
+          },
+          // Recreational Flight
+          'de8a9cfd-34bd-47f2-bd5a-9afd6c96e1c5': {
+            image: 'https://cdn.prod.website-files.com/65407649ec08542fb947ad21/65ebe0a864d82a05893f0cc4_SFC-self-paced-courses-24.jpg',
+            airline: 'Recreational Flight',
+            description: 'Flexible online ground school courses completed at your own pace. Study theory, regulations, and procedures from anywhere with 24/7 access. Perfect for busy pilots who need to balance training with work or personal commitments. Comprehensive curriculum covering all required knowledge areas for pilot certification.',
+          },
+          // Glass Cockpit Training
+          '2acbf9f0-27cc-4094-9943-420572483c1e': {
+            image: 'https://media.pea.com/wp-content/uploads/2023/06/altfull-view-of-G1000-Avionics-of-Cessna-172-1024x607.jpeg',
+            airline: 'Glass Cockpit Training',
+            description: 'Master modern avionics with hands-on Garmin G1000 training. Learn to operate glass cockpit systems, electronic flight displays, and advanced navigation technology. Essential for pilots transitioning from analog to glass panels. Includes simulator training and practical flight experience with G1000-equipped aircraft.',
+          },
+          // Aviation Career Path
+          'adfdacf6-211b-45b5-b62c-3b4af9757c58': {
+            image: 'https://calaero.edu/wp-content/uploads/2019/07/Decision-to-Pursue-Aviation-as-a-Career.jpg',
+            airline: 'Aviation Career Path',
+            description: 'Comprehensive career guidance and planning for aspiring pilots. Explore various aviation career paths, from commercial airlines to corporate aviation, cargo, and specialized roles. Includes mentorship programs, career counseling, and networking opportunities with industry professionals. Perfect for pilots deciding on their career trajectory or looking to transition to new aviation sectors.',
+          },
+          // Hour Building Pathway
+          '7911f9f9-c2da-4732-b9da-8108ffefc416': {
+            image: 'https://media.licdn.com/dms/image/v2/D5622AQFSILh9w9HLsQ/feedshare-shrink_800/B56ZXH7hVbGQAg-/0/1742816026128?e=2147483647&v=beta&t=YeKF6O4f6g3E8mLcYElFfK8XcsqaMsspvYC0hUHnN9k',
+            airline: 'Hour Building',
+            description: 'Build flight hours efficiently through structured hour building programs. Gain the required flight time for advanced ratings and airline qualifications. Options include ferry flights, instruction time, charter operations, and cross-country flying. Cost-effective strategies for accumulating hours while gaining valuable experience in diverse flying conditions and aircraft types.',
+          },
+          // Discover Experimental Flight
+          'c43cf6ac-c644-4b38-9c51-84d784051037': {
+            image: 'https://www.quicksilveraircraft.com/images/SPORT%202S/galeria/j-lawrence-foto-2012-1173.jpg',
+            airline: 'Discover Experimental Flight',
+            description: 'Explore experimental and amateur-built aircraft for unique flying experiences. Learn about kit aircraft, homebuilt planes, and experimental aviation regulations. Perfect for pilots interested in building their own aircraft or flying innovative designs. Offers hands-on construction experience and access to cutting-edge aviation technology.',
+          },
+          // Light Sport Aircraft Training
+          '39ec2271-baa1-441e-878f-958440c8678d': {
+            image: 'https://tecnam.com/wp-content/uploads/2025/06/GM1A8946-scaled-1.jpg',
+            airline: 'Light Sport Aircraft Training',
+            description: 'Train on modern light sport aircraft with simplified certification requirements. LSA training offers faster, more affordable path to pilot certification with lower medical standards and reduced training hours. Ideal for recreational pilots and those seeking efficient entry into aviation. Features modern aircraft like Tecnam with advanced avionics and excellent performance characteristics.',
+          },
+          // Instrument Rating Pathway
+          'cc996aa7-a075-4be7-beef-f917dd1f41db': {
+            image: 'https://i.ytimg.com/vi/ApAGDJGhSag/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCEJ3oeB8h0vSy8q8KxGx-OWp1f-A',
+            airline: 'Instrument Rating',
+            description: 'Earn your Instrument Rating to fly in all weather conditions and airspace. Master instrument flight rules (IFR), navigation, and approach procedures. Essential for professional pilots and those seeking expanded flying capabilities. Includes simulator training, real-world IFR experience, and preparation for the instrument knowledge and practical tests. Opens doors to airline careers and advanced ratings.',
+          },
+          // Multi-Engine Training
+          'c739dab5-33e5-4315-80d9-6e960f49387f': {
+            image: 'https://thumbs.dreamstime.com/b/cessna-caravan-14103370.jpg',
+            airline: 'Multi-Engine Training',
+            description: 'Transition to multi-engine aircraft and earn your multi-engine rating. Learn complex aircraft systems, engine-out procedures, and multi-engine operations. Essential for airline and corporate aviation careers. Includes training on turboprop and piston twins, performance planning, and emergency procedures. Gain experience with aircraft like Cessna Caravan and Beechcraft Baron.',
+          },
+        };
+        
+        const branded = privatePilotCards[sp.id] || {};
+        
+        const card = {
+          id: sp.id,
+          name: branded.airline || sp.name,
+          aircraftType: sp.id,
+          airline: branded.airline || 'WingMentor',
+          description: branded.description || sp.description || 'Training pathway for pilot certification',
+          locations: ['USA', 'Global'],
+          matchProbability: 80 + (index * 3),
+          hiringStatus: 'actively_hiring' as const,
+          requirements: { totalHours: 0, typeRatings: [] },
+          image: branded.image || '/images/accessportal.png',
+          pathwayId: pathwayId,
+          category: 'private' as const,
+        };
+        return card;
+      });
+    }
+    
+    // COMMERCIAL PILOT PATHWAY - Custom branded cards for specific sub-pathways
+    if (pathwayName.toLowerCase().includes('commercial pilot') && subPathwaysForPathway.length > 0) {
+      console.log('[DEBUG] Creating Commercial Pilot cards for', subPathwaysForPathway.length, 'sub-pathways');
+      return subPathwaysForPathway.map((sp, index) => {
+        // Custom branded cards for Commercial Pilot sub-pathways
+        const commercialPilotCards: Record<string, any> = {
+          // Multi-Engine Rating Pathway
+          '39ec2271-baa1-441e-878f-958440c8678d': {
+            image: 'https://tecnam.com/wp-content/uploads/2025/06/GM1A8946-scaled-1.jpg',
+            airline: 'Multi-Engine Rating',
+            description: 'Earn your multi-engine rating to fly complex aircraft with multiple engines. Master engine-out procedures, asymmetric thrust management, and multi-engine performance planning. Essential for airline and corporate aviation careers. Includes training on twin-engine aircraft with advanced avionics systems.',
+          },
+          // Instrument Rating Pathway
+          'cc996aa7-a075-4be7-beef-f917dd1f41db': {
+            image: 'https://i.ytimg.com/vi/ApAGDJGhSag/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCEJ3oeB8h0vSy8q8KxGx-OWp1f-A',
+            airline: 'Instrument Rating',
+            description: 'Earn your Instrument Rating to fly in all weather conditions and airspace. Master instrument flight rules (IFR), navigation, and approach procedures. Essential for professional pilots and those seeking expanded flying capabilities. Includes simulator training, real-world IFR experience, and preparation for the instrument knowledge and practical tests.',
+          },
+          // Commercial Single-Engine Pathway
+          'c739dab5-33e5-4315-80d9-6e960f49387f': {
+            image: 'https://thumbs.dreamstime.com/b/cessna-caravan-14103370.jpg',
+            airline: 'Commercial Single-Engine',
+            description: 'Obtain your Commercial Pilot License for single-engine aircraft. Learn advanced maneuvers, complex aircraft operations, and commercial flight regulations. Required for paid pilot operations including charter, instruction, and aerial work. Includes intensive training on performance planning, weight and balance, and emergency procedures.',
+          },
+          // Commercial Multi-Engine Pathway
+          '427408e8-62d6-42b0-a8bb-a7419868aed2': {
+            image: 'https://www.centralflighttraining.com/wp-content/uploads/2011/05/DSC_8552a-1.jpg',
+            airline: 'Commercial Multi-Engine',
+            description: 'Earn your Commercial Pilot License for multi-engine aircraft. Master complex multi-engine operations, turbine systems, and high-performance aircraft. Essential for airline pathway and corporate aviation careers. Includes training on turboprop aircraft like Cessna Caravan and regional jet preparation.',
+          },
+          // ATPL Pathway
+          '56ffd7d4-a281-4cc6-9b6f-45d949846d73': {
+            image: 'https://www.wingpath.in/blog_images/what-is-atpl-in-india-6ihgy-1000x700.png',
+            airline: 'ATPL Pathway',
+            description: 'Build flight hours to meet Airline Transport Pilot requirements. Track progress toward 1,500 hours with structured hour building programs. Options include flight instruction, charter operations, ferry flights, and regional airline experience. Essential for airline career advancement and command opportunities.',
+          },
+        };
+        
+        const branded = commercialPilotCards[sp.id] || {};
+        
+        const card = {
+          id: sp.id,
+          name: branded.airline || sp.name,
+          aircraftType: sp.id,
+          airline: branded.airline || 'WingMentor',
+          description: branded.description || sp.description || 'Training pathway for pilot certification',
+          locations: ['USA', 'Global'],
+          matchProbability: 80 + (index * 3),
+          hiringStatus: 'actively_hiring' as const,
+          requirements: { totalHours: 0, typeRatings: [] },
+          image: branded.image || '/images/accessportal.png',
+          pathwayId: pathwayId,
+          category: 'airline-pathways' as const,
+        };
+        return card;
+      });
+    }
+    
+    // Check if there are pre-defined cards for OTHER pathways (not Student Pilot)
+    const pathwaySpecificCards = pathwayCards.filter(card => card.pathwayId === pathwayId);
+    
+    if (pathwaySpecificCards.length > 0) {
+      // Ensure WingMentor card is first if it exists
+      const wingMentorCard = pathwaySpecificCards.find(card => card.aircraftType === '__wingmentor__');
+      const otherCards = pathwaySpecificCards.filter(card => card.aircraftType !== '__wingmentor__');
+      
+      if (wingMentorCard) {
+        return [wingMentorCard, ...otherCards];
+      }
+      return pathwaySpecificCards;
+    }
+    
+    // Default cards for other pathways from sub-pathways
+    if (subPathwaysForPathway.length > 0) {
+      return subPathwaysForPathway.map((sp, index) => ({
+        id: sp.id,
+        name: sp.name,
+        aircraftType: sp.id,
+        airline: 'WingMentor',
+        description: sp.description || 'Training pathway for pilot certification',
+        locations: sp.description ? [sp.description.substring(0, 50)] : ['Global'],
+        matchProbability: 85 + (index % 10),
+        hiringStatus: 'actively_hiring' as const,
+        requirements: { totalHours: 0, typeRatings: [] },
+        image: '/images/accessportal.png',
+        pathwayId: pathwayId,
+        category: 'cadet-programme' as const,
+      }));
+    }
+    
+    // Fallback: return EMPTY array instead of all cards to avoid showing wrong cards
+    console.log('[DEBUG] No cards generated, returning empty array');
+    return [];
+  };
+
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-      {orderedCategories.map((cat) => (
-        <button
-          key={cat}
-          onClick={() => onChange(cat)}
-          className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
-            active === cat
-              ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-              : isDarkMode 
-                ? 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50 hover:text-slate-200'
-                : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50 hover:text-slate-800'
-          }`}
-        >
-          {categoryLabels[cat] || String(cat).charAt(0).toUpperCase() + String(cat).slice(1)}
-        </button>
-      ))}
+    <div className="space-y-4">
+      {/* Debug info */}
+      <div className={`text-xs p-2 rounded ${isDarkMode ? 'bg-slate-800/50 text-slate-400' : 'bg-slate-200 text-slate-600'}`}>
+        Categories: {generalCategories.length} | Loading: {loading ? 'Yes' : 'No'} | Error: {error || 'None'}
+      </div>
+
+      {/* Stage 1: General Categories */}
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <h3 className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+            Categories
+          </h3>
+          {generalCategories.length === 0 && !loading && (
+            <span className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+              (No categories loaded)
+            </span>
+          )}
+        </div>
+        
+        {error && (
+          <div className={`text-xs p-2 rounded mb-2 ${isDarkMode ? 'bg-red-900/20 text-red-400' : 'bg-red-100 text-red-600'}`}>
+            Error: {error}
+          </div>
+        )}
+        
+        <div className="flex flex-wrap gap-2 justify-center">
+          {generalCategories.length > 0 ? (
+            generalCategories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => handleGeneralCategoryClick(category.id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                  selectedGeneralCategory === category.id
+                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
+                    : isDarkMode
+                      ? 'bg-slate-800/50 text-white hover:bg-slate-700/50'
+                      : 'bg-slate-200/50 text-slate-900 hover:bg-slate-300/50'
+                }`}
+              >
+                {category.name}
+              </button>
+            ))
+          ) : (
+            <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+              {loading ? 'Loading categories...' : 'No categories available'}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Stage 2: Pathways as infinite scroll rows */}
+      {selectedGeneralCategory && (
+        <div className="space-y-8 w-screen relative left-1/2 -translate-x-1/2">
+          {pathways.map((pathway) => {
+            const cards = getFilteredPathwayCards(pathway.id, selectedSubPathway);
+            console.log('[DEBUG] Rendering pathway:', pathway.name, 'Cards count:', cards.length);
+            
+            // Add WingMentor introduction card at the start
+            const wingMentorIntroCard = {
+              id: `wingmentor-${pathway.id}`,
+              name: `${pathway.name}`,
+              aircraftType: '__wingmentor__',
+              airline: 'WingMentor',
+              description: pathway.name.toLowerCase().includes('student pilot') 
+                ? 'Select a pathway below to explore training options. Scroll left or right and click or touch on any pathway card to view detailed information about pilot training programs under Student Pilots.'
+                : (pathway.description || `Explore ${pathway.name} opportunities and training options`),
+              locations: ['Global'],
+              matchProbability: 100,
+              hiringStatus: 'actively_hiring' as const,
+              requirements: { totalHours: 0, typeRatings: [] },
+              image: '/images/accessportal.png',
+              pathwayId: pathway.id,
+              category: 'cadet-programme' as const,
+            };
+            
+            const cardsWithWingMentor = cards.length > 0 ? [wingMentorIntroCard, ...cards] : [wingMentorIntroCard];
+            
+            // Create triple loop for infinite scroll effect
+            const loopedCards = [...cardsWithWingMentor, ...cardsWithWingMentor, ...cardsWithWingMentor];
+            console.log('[DEBUG] Looped cards count with WingMentor:', loopedCards.length);
+            return (
+            <div key={pathway.id} className="w-full">
+              {/* Pathway header on top left - Georgia serif font with description */}
+              <div className="mb-6 pl-4 pr-4 w-full text-left">
+                <h4 
+                  className="text-2xl md:text-3xl font-normal text-white text-left"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  {pathway.name}
+                </h4>
+                {pathway.description && (
+                  <p className="mt-2 text-sm md:text-base text-white/70 text-left">
+                    {pathway.description}
+                  </p>
+                )}
+              </div>
+
+              {/* Pathway cards - edge-to-edge infinite carousel matching main carousel */}
+              <div>
+                <style>{`
+                  .pathway-sub-carousel::-webkit-scrollbar { display: none; }
+                  .pathway-sub-carousel { -ms-overflow-style: none; scrollbar-width: none; }
+                `}</style>
+                <div
+                  className="pathway-sub-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4 px-4 sm:px-6 lg:px-8 xl:px-12"
+                  style={{
+                    WebkitOverflowScrolling: 'touch',
+                    cursor: 'grab',
+                  }}
+                  onMouseDown={(e) => {
+                    const el = e.currentTarget;
+                    el.style.cursor = 'grabbing';
+                    const startX = e.pageX - el.offsetLeft;
+                    const scrollLeft = el.scrollLeft;
+                    const onMove = (me: MouseEvent) => {
+                      const x = me.pageX - el.offsetLeft;
+                      el.scrollLeft = scrollLeft - (x - startX);
+                    };
+                    const onUp = () => {
+                      el.style.cursor = 'grab';
+                      window.removeEventListener('mousemove', onMove);
+                      window.removeEventListener('mouseup', onUp);
+                    };
+                    window.addEventListener('mousemove', onMove);
+                    window.addEventListener('mouseup', onUp);
+                  }}
+                >
+                  {loopedCards.map((card, idx) => {
+                    const cardAirlineLogo = getAirlineLogo(card.airline);
+                    const isWingMentorCard = card.aircraftType === '__wingmentor__';
+                    const cardAircraftImage = isWingMentorCard
+                      ? '/logo.png'
+                      : (card.image && !card.image.startsWith('wingmentor') ? card.image : getAircraftImage(card.aircraftType));
+                    const isSelected = selectedCard?.id === card.id;
+                    
+                    const handleCardClick = (e: React.MouseEvent) => {
+                      e.stopPropagation();
+                      setSelectedCard(card);
+                      
+                      // Scroll card to center
+                      const cardElement = e.currentTarget as HTMLElement;
+                      const carousel = cardElement.parentElement;
+                      if (carousel && cardElement) {
+                        // Calculate the position to scroll to center the card
+                        const cardCenterInContainer = cardElement.offsetLeft + cardElement.offsetWidth / 2;
+                        const targetScrollLeft = cardCenterInContainer - carousel.offsetWidth / 2;
+                        
+                        carousel.scrollTo({
+                          left: targetScrollLeft,
+                          behavior: 'smooth'
+                        });
+                      }
+                    };
+                    
+                    return (
+                    <div
+                      key={`${card.id}-${idx}`}
+                      data-card-id={card.id}
+                      onClick={handleCardClick}
+                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-transparent' : ''}`}
+                      style={{ width: '600px' }}
+                    >
+                      <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
+                        {isWingMentorCard ? (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
+                            <img src="/logo.png" alt="WingMentor" className="h-20 w-auto object-contain mb-4" />
+                            <p className="text-slate-400 text-sm text-center px-8">{card.description}</p>
+                          </div>
+                        ) : (
+                          <img src={cardAircraftImage} alt={card.aircraftType} className="w-full h-full object-cover" loading="lazy" />
+                        )}
+                        {!isWingMentorCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
+                        <div className="absolute top-3 right-3 flex gap-2 items-start">
+                          {!isWingMentorCard && (
+                            <>
+                              <button className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors">
+                                {card.matchProbability}% Match
+                              </button>
+                              <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {(card as any).recognitionScore || 41}%</span>
+                              {card.hiringStatus === 'actively_hiring' && (
+                                <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/80 text-white text-xs font-semibold">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                                  Hiring
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                          <div className="flex items-center justify-center gap-2 mb-1">
+                            <h4 className="text-lg font-serif font-normal text-white">{card.name}</h4>
+                          </div>
+                          <p className="text-white/80 text-sm">{card.airline} · {card.locations?.join(' | ') || 'Global'}</p>
+                          <p className="text-white/40 text-xs mt-1">ID: {card.id}</p>
+                          {!isWingMentorCard && card.requirements?.totalHours && (
+                            <div className="mt-2 text-white/60 text-xs">{card.requirements.totalHours} hours required</div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    );
+                  })}
+                </div>
+              </div>
+              
+              {/* Selected Card Context Header - Under the selected card */}
+              {selectedCard && (
+                <div className="mt-6 relative">
+                  {/* Ghost Cards Background */}
+                  <div className="absolute inset-0 -left-[50vw] w-[200vw] overflow-hidden opacity-10 pointer-events-none">
+                    <style>{`
+                      @keyframes scroll-left {
+                        0% { transform: translateX(0); }
+                        100% { transform: translateX(-50%); }
+                      }
+                      .ghost-scroll {
+                        animation: scroll-left 30s linear infinite;
+                      }
+                    `}</style>
+                    <div className="flex gap-8 ghost-scroll">
+                      {[selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard, selectedCard].map((card, idx) => {
+                        if (!card) return null;
+                        const isWingMentorCard = card.aircraftType === '__wingmentor__';
+                        const cardAircraftImage = isWingMentorCard
+                          ? '/logo.png'
+                          : (card.image && !card.image.startsWith('wingmentor') ? card.image : getAircraftImage(card.aircraftType));
+                        return (
+                          <div
+                            key={`ghost-${card.id}-${idx}`}
+                            className="flex flex-col items-center"
+                          >
+                            <div
+                              className="flex-shrink-0 rounded-xl overflow-hidden"
+                              style={{ width: '400px', height: '200px' }}
+                            >
+                              <img 
+                                src={cardAircraftImage} 
+                                alt={card.name} 
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <p className="mt-2 text-white/60 text-xs text-center font-medium">
+                              {card.name}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  
+                  {/* Glassy Context Component */}
+                  <div className="relative z-10 px-4 sm:px-6 lg:px-8 xl:px-12">
+                    <div className="max-w-2xl mx-auto text-center flex items-center justify-center gap-4">
+                      {/* Left Arrow */}
+                      <button
+                        onClick={() => {
+                          const currentIndex = cardsWithWingMentor.findIndex(c => c.id === selectedCard.id);
+                          if (currentIndex > 0) {
+                            const nextCard = cardsWithWingMentor[currentIndex - 1];
+                            setSelectedCard(nextCard);
+                            
+                            // Scroll to the card in carousel
+                            setTimeout(() => {
+                              const carousel = document.querySelector('.pathway-sub-carousel') as HTMLElement;
+                              if (carousel) {
+                                const cardElements = carousel.querySelectorAll('[data-card-id]');
+                                const targetCard = Array.from(cardElements).find(el => el.getAttribute('data-card-id') === nextCard.id);
+                                if (targetCard) {
+                                  const cardCenter = (targetCard as HTMLElement).offsetLeft + (targetCard as HTMLElement).offsetWidth / 2;
+                                  const targetScrollLeft = cardCenter - carousel.offsetWidth / 2;
+                                  carousel.scrollTo({
+                                    left: targetScrollLeft,
+                                    behavior: 'smooth'
+                                  });
+                                }
+                              }
+                            }, 100);
+                          }
+                        }}
+                        className="bg-gray-200/60 backdrop-blur-xl border border-gray-300/50 rounded-full p-3 shadow-2xl hover:bg-gray-200/80 transition-colors"
+                      >
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                      </button>
+                      
+                      <div className="bg-gray-200/60 backdrop-blur-xl border border-gray-300/50 rounded-2xl px-6 py-5 shadow-2xl flex-1">
+                        <h3 className="text-2xl md:text-3xl font-normal text-white mb-2" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+                          {selectedCard.name}
+                        </h3>
+                        <div className="flex items-center justify-center gap-2 mb-4">
+                          <span className="text-sm font-medium text-white/90">
+                            {selectedCard.airline}
+                          </span>
+                          <span className="w-1 h-1 rounded-full bg-white/60"></span>
+                          <span className="text-sm font-medium text-white/90">
+                            {selectedCard.locations?.join(' | ') || 'Global'}
+                          </span>
+                        </div>
+                        {selectedCard.description && (
+                          <p className="text-sm text-white/80 mb-4 leading-relaxed">
+                            {selectedCard.description}
+                          </p>
+                        )}
+                        <button
+                          onClick={() => setSelectedCard(null)}
+                          className="text-xs text-white/70 hover:text-white transition-colors"
+                        >
+                          Close
+                        </button>
+                      </div>
+                      
+                      {/* Right Arrow */}
+                      <button
+                        onClick={() => {
+                          const currentIndex = cardsWithWingMentor.findIndex(c => c.id === selectedCard.id);
+                          if (currentIndex < cardsWithWingMentor.length - 1) {
+                            const nextCard = cardsWithWingMentor[currentIndex + 1];
+                            setSelectedCard(nextCard);
+                            
+                            // Scroll to the card in carousel
+                            setTimeout(() => {
+                              const carousel = document.querySelector('.pathway-sub-carousel') as HTMLElement;
+                              if (carousel) {
+                                const cardElements = carousel.querySelectorAll('[data-card-id]');
+                                const targetCard = Array.from(cardElements).find(el => el.getAttribute('data-card-id') === nextCard.id);
+                                if (targetCard) {
+                                  const cardCenter = (targetCard as HTMLElement).offsetLeft + (targetCard as HTMLElement).offsetWidth / 2;
+                                  const targetScrollLeft = cardCenter - carousel.offsetWidth / 2;
+                                  carousel.scrollTo({
+                                    left: targetScrollLeft,
+                                    behavior: 'smooth'
+                                  });
+                                }
+                              }
+                            }, 100);
+                          }
+                        }}
+                        className="bg-gray-200/60 backdrop-blur-xl border border-gray-300/50 rounded-full p-3 shadow-2xl hover:bg-gray-200/80 transition-colors"
+                      >
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Centered Context Header below cards */}
+              <div className="mt-6 px-4 sm:px-6 lg:px-8 xl:px-12">
+                <div className="max-w-3xl mx-auto text-center">
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-slate-100 border border-slate-200'}`}>
+                    <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {cardsWithWingMentor.length - 1} training options available
+                    </span>
+                    <span className="w-1 h-1 rounded-full bg-slate-400"></span>
+                    <span className={`text-xs font-semibold ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>
+                      Swipe to explore {pathway.name}
+                    </span>
+                  </div>
+                  {pathway.description && (
+                    <p className={`mt-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                      {pathway.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+          })}
+        </div>
+      )}
+
+      {loading && (
+        <div className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+          Loading...
+        </div>
+      )}
     </div>
   );
 };
@@ -2476,6 +3285,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const carouselRef = useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
+  // 3-stage hierarchy selection state
+  const [hierarchySelection, setHierarchySelection] = useState<{
+    generalCategory?: string;
+    pathway?: string;
+    subPathway?: string;
+  }>({});
+  
   const { userProfile, currentUser } = useAuth();
 
   // Handle posting pathway cards
@@ -2705,11 +3521,22 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
 
   const filteredPathways = allPathways.filter(pathway => {
-    let matchesCategory = activeCategory === 'all' || pathway.category === activeCategory;
-    // For 'recommended' category, show pathways with high match probability (85%+)
-    if (activeCategory === 'recommended') {
-      matchesCategory = pathway.matchProbability >= 85;
+    // Use hierarchy selection for filtering if available, otherwise use activeCategory
+    let matchesCategory = true;
+    
+    if (Object.keys(hierarchySelection).length > 0) {
+      // If a hierarchy selection is made, show all pathways for now
+      // TODO: Implement mapping between hierarchy and pathway data
+      matchesCategory = true;
+    } else {
+      // Fall back to original category filtering
+      matchesCategory = activeCategory === 'all' || pathway.category === activeCategory;
+      // For 'recommended' category, show pathways with high match probability (85%+)
+      if (activeCategory === 'recommended') {
+        matchesCategory = pathway.matchProbability >= 85;
+      }
     }
+    
     const matchesSearch =
       (pathway.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (pathway.airline || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -2870,9 +3697,20 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const buttonText = isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900';
 
   return (
-    <div className={`min-h-screen ${bgGradient}`}>
-      {/* Header with Search Bar */}
-      <header className={`${headerBg} border-b ${borderColor} backdrop-blur-sm sticky top-0 z-30`}>
+    <div className={`min-h-screen ${bgGradient} relative`}>
+      {/* MeshGradient Background */}
+      <div className="fixed inset-0 z-0">
+        <MeshGradient
+          className="w-full h-full"
+          colors={["#0f172a", "#1e3a5f", "#334155", "#1e293b"]}
+          speed={0.8}
+        />
+      </div>
+
+      {/* Content wrapper with higher z-index to sit above shader */}
+      <div className="relative z-10">
+        {/* Header with Search Bar */}
+        <header className="bg-white border-b border-slate-200 backdrop-blur-sm sticky top-0 z-30">
         <div className="container mx-auto pl-2 pr-6 py-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -2891,18 +3729,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 >
                   <ArrowLeft className="w-5 h-5" />
                 </button>
-                {/* WingMentor Logo */}
-                <img 
-                  src="/logo.png" 
-                  alt="WingMentor Logo" 
-                  className="h-14 w-auto object-contain"
-                />
-                <div>
-                  <h1 className={`text-2xl font-bold ${headerText}`}>
-                    pilotrecognition.com
-                  </h1>
-                  <p className={`${subText} text-sm`}>powered by Wingmentor</p>
-                </div>
+                {/* PilotRecognition.com Logo */}
+                <span style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }} className="text-black text-2xl">
+                  PilotRecognition.com
+                </span>
               </div>
             </div>
 
@@ -3165,33 +3995,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
       </header>
 
-      {/* Profile Completion Progress Bar - Long Strip Below Header */}
-      {intelligence.fullScore && intelligence.fullScore.profileCompleteness < 90 && (
-        <div className={`w-full border-b ${isDarkMode ? 'bg-amber-500/10 border-amber-500/20' : 'bg-amber-50 border-amber-200'}`}>
-          <div className="container mx-auto px-4 py-2 flex items-center gap-4">
-            <span className={`text-sm font-semibold ${isDarkMode ? 'text-amber-400' : 'text-amber-600'} whitespace-nowrap`}>
-              Profile {intelligence.fullScore.profileCompleteness}% complete
-            </span>
-            <div className="flex-1 h-2 rounded-full bg-slate-700 overflow-hidden">
-              <div 
-                className="h-full rounded-full bg-amber-400 transition-all duration-1000"
-                style={{ width: `${intelligence.fullScore.profileCompleteness}%` }}
-              />
-            </div>
-            <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'} truncate`}>
-              Enroll in a WingMentor program to boost your Programs score
-            </span>
-          </div>
-        </div>
-      )}
-
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="mb-8 text-center">
           <h1 className={`text-4xl md:text-5xl font-serif font-normal ${headerText} mb-2`}>
-            {activeCategory === 'all'
-              ? <>Pilot Recognition <span style={{ color: '#DAA520' }}>Pathways</span></>
-              : <>{categoryLabels[activeCategory] || activeCategory} <span style={{ color: '#DAA520' }}>Pathways</span></>
+            {Object.keys(hierarchySelection).length > 0
+              ? <><span style={{ color: '#ffffff' }}>Pilot Recognition</span> <span style={{ color: '#dc2626' }}>Pathways</span></>
+              : <><span style={{ color: '#ffffff' }}>Pilot Recognition</span> <span style={{ color: '#dc2626' }}>Pathways</span></>
             }
           </h1>
           <p className={`${subText} max-w-2xl mx-auto`}>
@@ -3229,12 +4039,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
           {mode === 'pathways' && (
             <div className="flex justify-center">
-              <CategoryFilter
-                active={activeCategory}
-                onChange={setActiveCategory}
+              <ThreeStagePathwayFilter
                 isDarkMode={isDarkMode}
-                categoryLabels={categoryLabels}
-                isLoggedIn={!!currentUser}
+                onSelectionChange={(selection) => {
+                  setHierarchySelection(selection);
+                }}
+                pathwayCards={allPathways}
               />
             </div>
           )}
@@ -3701,27 +4511,29 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
       </main>
 
-
       {/* Match Result Modal */}
       {selectedPathwayForMatch && (
-        <MatchResultModal 
+        <MatchResultModal
           pathway={selectedPathwayForMatch}
           userProfile={userProfile}
           isDarkMode={isDarkMode}
           onClose={() => setSelectedPathwayForMatch(null)}
         />
       )}
+      </div>
     </div>
   );
 };
 
 // Match Result Modal Component
-const MatchResultModal: React.FC<{
+interface MatchResultModalProps {
   pathway: PathwayData;
   userProfile: any;
   isDarkMode: boolean;
   onClose: () => void;
-}> = ({ pathway, userProfile, isDarkMode, onClose }) => {
+}
+
+const MatchResultModal: React.FC<MatchResultModalProps> = ({ pathway, userProfile, isDarkMode, onClose }) => {
   const [saved, setSaved] = useState(false);
 
   // Calculate match between user profile and job requirements
