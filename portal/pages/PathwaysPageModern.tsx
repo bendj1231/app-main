@@ -40,6 +40,7 @@ import {
 import MilitaryPathwaysPage from './MilitaryPathwaysPage';
 import SpecialPathwaysPage from './SpecialPathwaysPage';
 import LicensureTypeRatingPage from './LicensureTypeRatingPage';
+import CommercialPilotPathwayPage from './CommercialPilotPathwayPage';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { getPhilippianFlightSchoolCount, Region, DUMMY_FLIGHT_SCHOOLS } from '../../data/flight-schools';
@@ -3216,6 +3217,47 @@ const ThreeStagePathwayFilter: React.FC<{
         return card;
       });
     }
+
+    // PRIVATE SECTOR PATHWAYS - Custom branded cards for specific sub-pathways
+    if (pathwayName.toLowerCase().includes('private sector')) {
+      console.log('[DEBUG] Creating Private Sector Pathways cards for', subPathwaysForPathway.length, 'sub-pathways');
+      
+      return subPathwaysForPathway.map((sp, index) => {
+        // Custom branded cards for Private Sector Pathways sub-pathways
+        const privateSectorCards: Record<string, any> = {
+          // NetJets Pilot Career
+          'c37fd15d-cf54-415b-9b7d-6811b12c20d8': {
+            image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+            airline: 'NetJets Pilot Career',
+            description: 'Fractional ownership airline with home basing. Columbus-based with global operations. Requires 2,500+ hours TT, type rating, Part 135 experience. Premium benefits and largest fleet. Leading private aviation company with stock options and competitive salary.',
+          },
+          // VistaJet Captain
+          '00188380-9854-47b5-b314-641659839a8e': {
+            image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
+            airline: 'VistaJet Captain',
+            description: 'Private charter company with worldwide operations. Malta-based with global bases. Requires 3,500+ hours TT, heavy jet type, VIP experience. Silver service and tax-free options. Premium private aviation leader with excellent benefits and career progression.',
+          },
+        };
+        
+        const branded = privateSectorCards[sp.id] || {};
+        
+        const card = {
+          id: sp.id,
+          name: branded.airline || sp.name,
+          aircraftType: sp.id,
+          airline: branded.airline || 'WingMentor',
+          description: branded.description || sp.description || 'Private sector aviation career',
+          locations: ['USA', 'Global'],
+          matchProbability: 90 + (index * 1),
+          hiringStatus: 'actively_hiring' as const,
+          requirements: { totalHours: 0, typeRatings: [] },
+          image: branded.image || '/images/accessportal.png',
+          pathwayId: pathwayId,
+          category: 'privateSector' as const,
+        };
+        return card;
+      });
+    }
     
     // Check if there are pre-defined cards for OTHER pathways (not Student Pilot)
     const pathwaySpecificCards = pathwayCards.filter(card => card.pathwayId === pathwayId);
@@ -4054,6 +4096,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [showMilitaryPathwaysPage, setShowMilitaryPathwaysPage] = useState(false);
   const [showSpecialPathwaysPage, setShowSpecialPathwaysPage] = useState(false);
   const [showLicensureTypeRatingPage, setShowLicensureTypeRatingPage] = useState(false);
+  const [showCommercialPilotPathwayPage, setShowCommercialPilotPathwayPage] = useState(false);
 
   // Debug: Log when showSpecialPathwaysPage changes
   useEffect(() => {
@@ -4071,6 +4114,14 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
   }, [showLicensureTypeRatingPage]);
 
+  // Debug: Log when showCommercialPilotPathwayPage changes
+  useEffect(() => {
+    console.log('[DEBUG] showCommercialPilotPathwayPage changed to:', showCommercialPilotPathwayPage);
+    if (showCommercialPilotPathwayPage) {
+      window.scrollTo(0, 0);
+    }
+  }, [showCommercialPilotPathwayPage]);
+
   // Scroll to top when Military Pathways page is opened
   useEffect(() => {
     if (showMilitaryPathwaysPage) {
@@ -4085,7 +4136,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     generalCategory?: string;
     pathway?: string;
     subPathway?: string;
-  }>({});
+  }>({
+    generalCategory: 'da486dd1-8832-4ec3-843b-1cbd3c9b8718', // Pilot Training & Certification
+  });
 
   // Wrap setHierarchySelection in useCallback to prevent infinite loop
   const handleHierarchySelectionChange = useCallback((selection: { generalCategory?: string; pathway?: string; subPathway?: string }) => {
@@ -4515,7 +4568,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     if (pathwayId === '81753376-b823-4909-b82f-664acab13dae') {
       console.log('[DEBUG] MATCH! Setting showMilitaryPathwaysPage to true');
       setShowMilitaryPathwaysPage(true);
-    } else if (pathwayId === 'aaa44819-37ec-40e7-a6cf-6d1990040d65' || pathwayId === 'a02f4e29-e165-415f-a3b3-669edbd7deb1') {
+    } else if (pathwayId === '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1' || pathwayId === 'cadet-programmes-commercial' || pathwayId === '39ec2271-baa1-441e-878f-958440c8678d' || pathwayId === 'c739dab5-33e5-4315-80d9-6e960f49387f') {
+      console.log('[DEBUG] MATCH! Setting showCommercialPilotPathwayPage to true');
+      setShowCommercialPilotPathwayPage(true);
+    } else if (pathwayId === 'd36018dd-a116-4925-83ca-6acb414f4020' || pathwayId === 'de8a9cfd-34bd-47f2-bd5a-9afd6c96e1c5' || pathwayId === 'c43cf6ac-c644-4b38-9c51-84d784051037' || pathwayId === '7911f9f9-c2da-4732-b9da-8108ffefc416' || pathwayId === 'adfdacf6-211b-45b5-b62c-3b4af9757c58') {
+      console.log('[DEBUG] MATCH! Setting showSpecialPathwaysPage to true');
+      setShowSpecialPathwaysPage(true);
+    } else if (pathwayId === 'aaa44819-37ec-40e7-a6cf-6d1990040d65' || pathwayId === 'a02f4e29-e165-415f-a3b3-669edbd7deb1' || pathwayId === 'cc996aa7-a075-4be7-beef-f917dd1f41db' || pathwayId === '54655935-92de-4aad-b82b-703152ffce25' || pathwayId === 'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8' || pathwayId === '4d4b6568-3759-432e-9193-e0dba88425aa' || pathwayId === '078eea1a-271f-4392-a802-9a2ea4c36da0' || pathwayId === 'e94ba893-fa83-47b1-90f9-98905dc6685a' || pathwayId === '2acbf9f0-27cc-4094-9943-420572483c1e') {
       console.log('[DEBUG] MATCH! Setting showLicensureTypeRatingPage to true');
       setShowLicensureTypeRatingPage(true);
     } else if (onNavigateToPathway) {
@@ -5302,6 +5361,19 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             <LicensureTypeRatingPage
               pathwayId="aaa44819-37ec-40e7-a6cf-6d1990040d65"
               onBack={() => setShowLicensureTypeRatingPage(false)}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Commercial Pilot Pathway Page */}
+      {showCommercialPilotPathwayPage && (
+        <>
+          {console.log('[DEBUG] Rendering CommercialPilotPathwayPage, showCommercialPilotPathwayPage:', showCommercialPilotPathwayPage)}
+          <div className="absolute inset-0 z-[200] bg-slate-900 overflow-auto">
+            <CommercialPilotPathwayPage
+              pathwayId="7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1"
+              onBack={() => setShowCommercialPilotPathwayPage(false)}
             />
           </div>
         </>

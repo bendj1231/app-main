@@ -68,29 +68,7 @@ const SpecialPathwaysPage: React.FC<SpecialPathwaysPageProps> = ({ pathwayId, on
       image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
       branch: 'Career'
     },
-    {
-      id: 'special-5',
-      name: 'Discover Experimental Flight',
-      description: 'Explore experimental and amateur-built aircraft for unique flying experiences. Learn about kit aircraft, homebuilt planes, and experimental aviation regulations.',
-      location: 'USA',
-      rating: 4.5,
-      duration: 'Varies',
-      cost: '$10,000 - $50,000',
-      image: 'https://images.unsplash.com/photo-1559628233-100c798642d4?w=800&q=80',
-      branch: 'Experimental'
-    },
-    {
-      id: 'special-6',
-      name: 'Seaplane Rating',
-      description: 'Add a seaplane rating to your pilot certificate. Learn water operations, seaplane handling, and amphibious aircraft procedures.',
-      location: 'USA',
-      rating: 4.8,
-      duration: '10-15 hours',
-      cost: '$2,500 - $4,000',
-      image: 'https://images.unsplash.com/photo-1507199129876-44d2b3190c1a?w=800&q=80',
-      branch: 'Rating'
-    },
-  ];
+      ];
 
   // Filter by search query
   const searchFilteredPathways = specialPathways.filter(pathway => {
