@@ -994,7 +994,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                     <RevealOnScroll delay={150}>
                         <div className={`relative rounded-2xl overflow-hidden shadow-2xl border group max-w-7xl mx-auto ${isDarkMode ? 'border-zinc-800 bg-zinc-950' : 'border-zinc-200 bg-white'}`}>
                             <img
-                                src="https://lh3.googleusercontent.com/d/1cyHKAiNbxXZltgOwIk5wxZg2_J_2ShGO"
+                                src="/images/landing-page-8.png"
                                 alt="Aviation Gap Strategic Blueprint"
                                 className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.01]"
                             />
