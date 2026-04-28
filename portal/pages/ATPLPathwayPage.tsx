@@ -437,7 +437,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
                   Take the next step in your aviation career with our internationally recognized ATPL pathway. Contact us to learn more about enrollment, requirements, and start dates.
                 </p>
                 <button
-                  onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com?subject=ATPL Pathway Inquiry&body=I am interested in learning more about the ATPL pathway through PilotRecognition in the UAE.'}
+                  onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com?subject=ATPL Pathway Inquiry&body=I am interested in learning more about the ATPL pathway through PilotRecognition in the UAE.'}
                   style={{
                     padding: '1rem 2.5rem',
                     background: '#2563eb',
@@ -500,7 +500,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
               transition: 'all 0.2s ease',
               boxShadow: isDarkMode ? '0 8px 18px rgba(2, 6, 23, 0.25)' : '0 1px 2px rgba(0,0,0,0.05)'
             }}
-            onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
+            onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
           >
             ✉️ Contact Support
           </button>

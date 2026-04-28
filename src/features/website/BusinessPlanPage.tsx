@@ -170,7 +170,7 @@ export const BusinessPlanPage = ({ onBack }: { onBack: () => void }) => (
 
                 <div style={{ textAlign: 'center', padding: '60px 0' }}>
                     <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#64748b', marginBottom: 24 }}>Ready to bridge the gap?</h2>
-                    <button style={{ padding: '16px 48px', fontSize: '1.1rem', fontWeight: 700, background: '#1a1a1a', color: 'white', borderRadius: 100, border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }} onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}>
+                    <button style={{ padding: '16px 48px', fontSize: '1.1rem', fontWeight: 700, background: '#1a1a1a', color: 'white', borderRadius: 100, border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }} onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}>
                         Contact Founders
                     </button>
                 </div>

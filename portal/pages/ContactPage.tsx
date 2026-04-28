@@ -193,13 +193,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                                         <div className="horizontal-card-content" style={{ padding: '2rem 0', textAlign: 'left', flex: 1, maxWidth: '100%' }}>
                                             <h3 className="horizontal-card-title" style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email Support</h3>
                                             <div style={{ fontSize: '1.125rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem', wordBreak: 'break-word' }}>
-                                                pilotrecognition@gmail.com
+                                                contact@pilotrecognition.com
                                             </div>
                                             <p className="horizontal-card-desc" style={{ maxWidth: '100%', marginBottom: '1rem', color: '#64748b', fontSize: '1rem', lineHeight: 1.6 }}>
                                                 Email the PilotRecognition team for detailed inquiries
                                             </p>
                                             <button
-                                                onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
+                                                onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
                                                 style={{
                                                     background: '#2563eb',
                                                     color: 'white',
@@ -351,7 +351,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                             transition: 'all 0.2s ease',
                             boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                         }}
-                        onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
+                        onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
                     >
                         ✉️ Contact Support
                     </button>

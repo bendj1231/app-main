@@ -3109,7 +3109,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Contact Support Button */}
               <button
-                onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
+                onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
                 style={{
                   padding: '0.75rem 2rem',
                   borderRadius: '12px',
@@ -3155,7 +3155,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               }}>
                 {/* Email */}
                 <a
-                  href="mailto:pilotrecognition@gmail.com"
+                  href="mailto:contact@pilotrecognition.com"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -3177,7 +3177,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
-                  pilotrecognition@gmail.com
+                  contact@pilotrecognition.com
                 </a>
 
                 {/* Phone */}

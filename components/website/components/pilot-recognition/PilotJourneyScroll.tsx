@@ -78,7 +78,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
       setTypingField('email');
       
       // Type email
-      const email = "pilotrecognition@gmail.com";
+      const email = "contact@pilotrecognition.com";
       for (let i = 0; i <= email.length; i++) {
         setEmailText(email.slice(0, i));
         await new Promise(r => setTimeout(r, 40));

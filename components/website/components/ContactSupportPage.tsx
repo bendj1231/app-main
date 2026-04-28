@@ -49,14 +49,14 @@ export const ContactSupportPage: React.FC<ContactSupportPageProps> = ({ onBack, 
                             <div className="space-y-6">
                                 <div>
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">In regards to the Program</p>
-                                    <a href="mailto:pilotrecognition@gmail.com" className="text-xl font-medium text-blue-600 hover:text-blue-800 transition-colors break-words">
-                                        pilotrecognition@gmail.com
+                                    <a href="mailto:contact@pilotrecognition.com" className="text-xl font-medium text-blue-600 hover:text-blue-800 transition-colors break-words">
+                                        contact@pilotrecognition.com
                                     </a>
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Wingmentor Founders & Team</p>
-                                    <a href="mailto:pilotrecognition@gmail.com" className="text-xl font-medium text-blue-600 hover:text-blue-800 transition-colors break-words">
-                                        pilotrecognition@gmail.com
+                                    <a href="mailto:contact@pilotrecognition.com" className="text-xl font-medium text-blue-600 hover:text-blue-800 transition-colors break-words">
+                                        contact@pilotrecognition.com
                                     </a>
                                 </div>
                             </div>
