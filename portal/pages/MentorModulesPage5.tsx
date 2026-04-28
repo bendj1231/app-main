@@ -9,7 +9,7 @@ export const MentorModulesPage5: React.FC<MentorModulesPage5Props> = ({ onBack }
     <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
       <div style={{ textAlign: 'center', marginBottom: '4rem', paddingTop: '2rem' }}>
         <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
+          <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
         </div>
         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
           MODULE 2 • CHAPTER 5
@@ -55,7 +55,7 @@ export const MentorModulesPage5: React.FC<MentorModulesPage5Props> = ({ onBack }
           border: '1px solid rgba(59,130,246,0.1)'
         }}>
           <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: '#1e40af', marginBottom: '1rem', textAlign: 'center' }}>
-            WingMentor Insight
+            PilotRecognition Insight
           </h3>
           <p style={{ color: '#374151', fontSize: '1.05rem', lineHeight: 1.7, marginBottom: '1.5rem', textAlign: 'center' }}>
             Great mentors do not just tell pilots what they did wrong—they help pilots discover their own areas for improvement. Self-assessment is one of the most powerful tools you can develop as a mentor.

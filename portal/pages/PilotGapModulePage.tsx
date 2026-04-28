@@ -281,7 +281,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -380,7 +380,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         WINGMENTOR SOLUTIONS
                                     </div>
@@ -388,7 +388,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                         Bridging the Gap
                                     </h3>
                                     <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '40rem', textAlign: 'left' }}>
-                                        WingMentor exists to neutralize that risk. Through our Foundational Program, we move far beyond basic CRM theory; we systematically build and verify your operational maturity. We transition you out of the training bubble and align your capabilities with the industry's most advanced frameworks: Evidence-Based Training (EBT) and Competency-Based Training and Assessment (CBTA).
+                                        PilotRecognition exists to neutralize that risk. Through our Foundational Program, we move far beyond basic CRM theory; we systematically build and verify your operational maturity. We transition you out of the training bubble and align your capabilities with the industry's most advanced frameworks: Evidence-Based Training (EBT) and Competency-Based Training and Assessment (CBTA).
                                     </p>
                                 </div>
                             </div>
@@ -435,7 +435,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         INDUSTRY INSIGHT
                                     </div>
@@ -507,7 +507,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#e11d48', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         HARD TRUTH
                                     </div>
@@ -515,11 +515,11 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                         The Recruitment Reality
                                     </h2>
                                     <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '40rem', textAlign: 'left' }}>
-                                        The hard truth is that most of the industry simply does not want to entertain low-timer pilots. WingMentor has experienced this firsthand.
+                                        The hard truth is that most of the industry simply does not want to entertain low-timer pilots. PilotRecognition has experienced this firsthand.
                                         <br /><br />
                                         We approached recruitment stalls presenting as typical 200-hour pilots to test the response. Without fail, the answer was uniform: "Scan the QR code and please move on." They tell you, "You know the requirement is 1,500 hours. Come back to us once you have that, and then we can talk."
                                         <br /><br />
-                                        WingMentor has broken the silence barrier between the airline industry and the entry-level pilot. We are not just a support network; we operate as a verified database of pilots seeking answers, coordination, and clear expectations. We act as the direct bridge of communication between you and the industry, ensuring you have a voice, a structured pathway, and the professional recognition you deserve.
+                                        PilotRecognition has broken the silence barrier between the airline industry and the entry-level pilot. We are not just a support network; we operate as a verified database of pilots seeking answers, coordination, and clear expectations. We act as the direct bridge of communication between you and the industry, ensuring you have a voice, a structured pathway, and the professional recognition you deserve.
                                     </p>
                                 </div>
                             </div>
@@ -554,7 +554,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         WINGMENTOR INSIGHT
                                     </div>
@@ -562,7 +562,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                         Mitigating the Risk
                                     </h3>
                                     <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '40rem', textAlign: 'left' }}>
-                                        WingMentor is actively working to shift this paradigm by providing the exact data insurance firms and operators need to mitigate that risk.
+                                        PilotRecognition is actively working to shift this paradigm by providing the exact data insurance firms and operators need to mitigate that risk.
                                         <br /><br />
                                         Because our pilots are rigorously vetted, continuously assessed, and fully familiarized with airline expectations, they represent a fundamentally lower liability. By tracking your performance, logging your mentorship experience, and structuring your evaluations through EBT frameworks, we transform you from an "unknown risk" into a verified, highly documented asset prior to employment.
                                     </p>
@@ -576,7 +576,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 The Connection
                             </h2>
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: 0 }}>
-                                The profile of a Low-Timer is not an isolated issue; it is the direct symptom of the "Pilot Gap." These two forces are inextricably linked, forming the core of the current aviation recruitment crisis. Having defined who you are in the eyes of the industry, we must now deconstruct the structural chasm you are expected to cross—and how WingMentor provides the bridge.
+                                The profile of a Low-Timer is not an isolated issue; it is the direct symptom of the "Pilot Gap." These two forces are inextricably linked, forming the core of the current aviation recruitment crisis. Having defined who you are in the eyes of the industry, we must now deconstruct the structural chasm you are expected to cross—and how PilotRecognition provides the bridge.
                             </p>
                         </section>
 
@@ -594,7 +594,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -671,7 +671,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 width: '100%',
                                 boxSizing: 'border-box'
                             }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 1rem auto' }} />
+                                <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 1rem auto' }} />
                                 <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>
                                     WINGMENTOR INSIGHT
                                 </div>
@@ -806,7 +806,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 border: '1px solid rgba(255, 255, 255, 0.8)',
                                 textAlign: 'center',
                             }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem', display: 'block', margin: '0 auto 1.5rem auto' }} />
+                                <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem', display: 'block', margin: '0 auto 1.5rem auto' }} />
                                 <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
                                     WINGMENTOR INSIGHT
                                 </div>
@@ -831,7 +831,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1057,7 +1057,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1111,7 +1111,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1167,7 +1167,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1218,7 +1218,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1272,7 +1272,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1326,7 +1326,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1539,7 +1539,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1607,7 +1607,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1675,7 +1675,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1755,7 +1755,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1946,7 +1946,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -1982,7 +1982,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -2033,7 +2033,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -2084,7 +2084,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 02 — PILOT RISK MANAGEMENT
                         </div>
@@ -2135,7 +2135,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -2246,7 +2246,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             margin: '2rem 0 3rem 0',
                             boxSizing: 'border-box' as const
                         }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                             <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                 RECAP: THE BROKEN BRIDGE
                             </div>
@@ -2266,7 +2266,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                         {/* Transition Header */}
                         <div style={{ textAlign: 'center', margin: '6rem 0 4rem 0', padding: '0 1rem' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                             <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                                 THE BRIDGING THE GAP APPROACH
                             </div>
@@ -2376,7 +2376,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             boxSizing: 'border-box',
                             marginBottom: '3rem'
                         }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                             <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                 WINGMENTOR INSIGHT
                             </div>
@@ -2431,7 +2431,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 width: '100%',
                                 boxSizing: 'border-box'
                             }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                 <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                     WINGMENTOR INSIGHT
                                 </div>
@@ -2476,7 +2476,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -2584,7 +2584,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                         width: '100%',
                                         boxSizing: 'border-box'
                                     }}>
-                                        <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                         <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                             INDUSTRY INSIGHT
                                         </div>
@@ -2762,10 +2762,10 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </div>
                         </section>
 
-                        {/* WingMentor Insight Card: Untying the Knot */}
+                        {/* PilotRecognition Insight Card: Untying the Knot */}
                         <section style={{ textAlign: 'center', maxWidth: '52rem', marginTop: '3rem' }}>
 
-                            {/* WingMentor Insight Card */}
+                            {/* PilotRecognition Insight Card */}
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', marginTop: '1rem', textAlign: 'left' }}>
                                 <div style={{
                                     backgroundColor: 'rgba(255, 255, 255, 0.7)',
@@ -2779,7 +2779,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         WINGMENTOR INSIGHT
                                     </div>
@@ -2884,7 +2884,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 width: '100%',
                                 boxSizing: 'border-box'
                             }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                 <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                     CONCLUSION
                                 </div>
@@ -2980,7 +2980,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ maxWidth: '56rem', margin: '0 auto', paddingTop: '3rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', animation: 'fadeIn 0.4s ease-in-out' }}>
                     {/* Centered logo + header block */}
                     <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                             Chapter 01 — Understanding the What's
                         </div>
@@ -3048,7 +3048,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             <div style={{ backgroundColor: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '24px', padding: '2.5rem 2rem', boxShadow: '0 8px 32px rgba(15,23,42,0.04)', border: '1px solid rgba(255,255,255,0.8)', marginTop: '2rem' }}>
                                 {/* Logo + header */}
                                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                                     <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
                                         WINGMENTOR INSIGHT
                                     </div>
@@ -3226,17 +3226,17 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         </div>
                     </div>
 
-                    {/* ── WingMentor Pilot Recognition ── */}
+                    {/* ── PilotRecognition Pilot Recognition ── */}
                     <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '2px solid #e2e8f0', marginBottom: '2rem' }}>
 
                         {/* Section header */}
                         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                                 Chapter 01 — Understanding the What's
                             </div>
                             <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-                                WingMentor Pilot Recognition
+                                PilotRecognition Pilot Recognition
                             </h2>
                             <p style={{ color: '#64748b', fontSize: '1.15rem', lineHeight: 1.7, maxWidth: '36rem', margin: '0 auto' }}>
                                 A collaborative database that doesn't just store profiles — it opens doors, builds relationships, and redefines how the aviation industry discovers its next generation of pilots.
@@ -3244,7 +3244,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         </div>
 
                         <div style={{ width: '100%', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.04)', backgroundColor: '#fff', marginBottom: '2.5rem' }}>
-                            <img src="/dadawdwa.png" alt="WingMentor Pilot Recognition" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                            <img src="/dadawdwa.png" alt="PilotRecognition Pilot Recognition" style={{ width: '100%', height: 'auto', display: 'block' }} />
                         </div>
 
                         {/* Intro paragraphs */}
@@ -3394,7 +3394,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                         {/* Section header — matches main page title style */}
                         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                                 Chapter 01 — Understanding the What's
                             </div>
@@ -3502,14 +3502,14 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 Mentorship Certification
                             </h3>
                             <p style={{ color: '#1e293b', fontSize: '1.1rem', lineHeight: 1.8, marginBottom: '1.5rem' }}>
-                                Following a series of engagements with an assigned WingMentor official, and upon reaching the <strong>20-hour milestone</strong>, candidates undergo a final <strong>Examined Mentorship Session</strong>. This session serves as a high-level assessment where your ability to synthesize and apply mentor knowledge is rigorously evaluated by an official mentor.
+                                Following a series of engagements with an assigned PilotRecognition official, and upon reaching the <strong>20-hour milestone</strong>, candidates undergo a final <strong>Examined Mentorship Session</strong>. This session serves as a high-level assessment where your ability to synthesize and apply mentor knowledge is rigorously evaluated by an official mentor.
                             </p>
                             <p style={{ color: '#1e293b', fontSize: '1.1rem', lineHeight: 1.8, margin: 0 }}>
                                 The objective is to verify that you have not only understood the core methodologies but are also equipped to <strong>mentor others independently</strong>. Successful completion marks your transition into a recognized mentor within the ecosystem, providing a critical validation point in your professional profile.
                             </p>
                         </div>
 
-                        {/* WingMentor Insight */}
+                        {/* PilotRecognition Insight */}
                         <div style={{ backgroundColor: '#f0f9ff', padding: '2.5rem', borderRadius: '24px', borderLeft: '4px solid #0284c7', marginBottom: '2rem' }}>
                             <div style={{ color: '#0284c7', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                                 WINGMENTOR INSIGHT
@@ -3572,7 +3572,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
                         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             THE DIFFERENCES
@@ -3581,7 +3581,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             The Differences
                         </h1>
                         <p style={{ color: '#475569', fontSize: '1.15rem', lineHeight: 1.7, maxWidth: '48rem', margin: '0 auto' }}>
-                            This brief is your primer on how WingMentor diverges from flight schools, instructor pipelines, traditional job boards, and pilot agencies. By understanding the system-level reality check, the operator fear equation, and our ecosystem differential, you will know exactly how we quantify readiness and why each phase matters before you advance.
+                            This brief is your primer on how PilotRecognition diverges from flight schools, instructor pipelines, traditional job boards, and pilot agencies. By understanding the system-level reality check, the operator fear equation, and our ecosystem differential, you will know exactly how we quantify readiness and why each phase matters before you advance.
                         </p>
                     </div>
 
@@ -3592,23 +3592,23 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             THE INSTRUCTOR LENS
                         </div>
                         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', fontWeight: 400, color: '#0f172a', marginBottom: '1rem' }}>
-                            Flight Instructor vs WingMentor
+                            Flight Instructor vs PilotRecognition
                         </h2>
                         <div style={{ width: '100%', maxWidth: '720px', margin: '2rem auto 0', borderRadius: '28px', overflow: 'hidden', boxShadow: '0 20px 45px rgba(15,23,42,0.12)', border: '1px solid rgba(15,23,42,0.08)' }}>
                             <img
                                 src={encodeURI('/instructor vs wing mentor -2.png')}
-                                alt="Comparison of flight instructor pathways versus WingMentor"
+                                alt="Comparison of flight instructor pathways versus PilotRecognition"
                                 style={{ width: '100%', height: 'auto', display: 'block' }}
                             />
                         </div>
                         <p style={{ color: '#475569', fontSize: '1.02rem', lineHeight: 1.8, maxWidth: '48rem', margin: '1.75rem auto' }}>
-                            The left panel captures the traditional classroom bottleneck—one instructor drowning under 30 raised hands, unable to deliver individualized support beyond rote Q&amp;A. The right panel shows the WingMentor scene: a focused, peer-to-peer debrief where a mentor drills into a single pilot’s struggle, translating it into actionable coaching and measurable growth.
+                            The left panel captures the traditional classroom bottleneck—one instructor drowning under 30 raised hands, unable to deliver individualized support beyond rote Q&amp;A. The right panel shows the PilotRecognition scene: a focused, peer-to-peer debrief where a mentor drills into a single pilot’s struggle, translating it into actionable coaching and measurable growth.
                         </p>
                         <p style={{ color: '#475569', fontSize: '1.03rem', lineHeight: 1.8, maxWidth: '48rem', margin: '0 auto 1rem' }}>
                             It is crucial to understand the distinction: we do not teach lectures or seminars, nor do we replace your flight school’s curriculum. Our mission is to support and consult based on the specific performance you demonstrate throughout your education and flight training journey.
                         </p>
                         <p style={{ color: '#475569', fontSize: '1.03rem', lineHeight: 1.8, maxWidth: '48rem', margin: '0 auto 1.5rem' }}>
-                            Whether you are a student pilot struggling with a maneuver, a flight instructor refining your briefing techniques, or a pilot returning after a decade and needing a refresher, WingMentor analyzes your performance gaps and delivers targeted consultation to bridge them.
+                            Whether you are a student pilot struggling with a maneuver, a flight instructor refining your briefing techniques, or a pilot returning after a decade and needing a refresher, PilotRecognition analyzes your performance gaps and delivers targeted consultation to bridge them.
                         </p>
                     </section>
 
@@ -3617,7 +3617,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             THE DIFFERENTIAL
                         </div>
                         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.3rem, 5vw, 3.4rem)', fontWeight: 400, color: '#0f172a', marginBottom: '1rem' }}>
-                            Flight School vs WingMentor Differences
+                            Flight School vs PilotRecognition Differences
                         </h2>
                     </section>
 
@@ -3643,7 +3643,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         }}>
                             <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                                    WingMentor System Insight
+                                    PilotRecognition System Insight
                                 </div>
                                 <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', margin: 0 }}>
                                     The System View: An Expectation Reset
@@ -3677,7 +3677,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             There is a massive psychological and operational disconnect at the entry point of commercial aviation. A newly graduated pilot asks, “I am licensed, I have passed every checkride, and I am highly capable—so why am I invisible to recruiters?” Meanwhile, operators stare at multi-million dollar assets and worry, “Can this graduate survive dynamic crew operations without the constant supervision of a flight instructor?” Flight schools produce stick-and-rudder proficiency; operators demand stress management, procedural discipline, and leadership under pressure.
                         </p>
                         <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.8, marginBottom: '1.75rem' }}>
-                            WingMentor’s response is to eliminate that fear with what traditional résumés cannot deliver: verifiable proof of operational maturity. We do not simply tell airlines you are ready—we actively quantify the intangibles so your true capability is undeniable.
+                            PilotRecognition’s response is to eliminate that fear with what traditional résumés cannot deliver: verifiable proof of operational maturity. We do not simply tell airlines you are ready—we actively quantify the intangibles so your true capability is undeniable.
                         </p>
                         <ul style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.75, margin: '0 auto 1.75rem', maxWidth: '46rem', textAlign: 'left', paddingLeft: '1.25rem' }}>
                             <li style={{ marginBottom: '0.85rem' }}><strong>Live Mentorship Hours:</strong> Demonstrate peer support, emotional intelligence, and leadership inside a crew-centric environment.</li>
@@ -3706,7 +3706,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             Platforms like PilotCareerCenter embody the legacy static noticeboard. Airlines post rigid lists of hours, ratings, and aircraft types while pilots toss generic résumés into the void. There is no feedback loop, so a rejected pilot is left guessing whether the failure came from ATS formatting, missing core EBT competencies, or simple timing.
                         </p>
                         <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '2rem' }}>
-                            WingMentor obliterates that one-way street by turning it into a two-way Diagnostic Bridge. We do not just list the gap—we measure it, explain it, and supply the exact tools to close it via a structured three-phase system.
+                            PilotRecognition obliterates that one-way street by turning it into a two-way Diagnostic Bridge. We do not just list the gap—we measure it, explain it, and supply the exact tools to close it via a structured three-phase system.
                         </p>
                         <div style={{ textAlign: 'left', maxWidth: '52rem', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                             <div>
@@ -3787,7 +3787,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             <div style={{ width: '1px', background: 'rgba(148,163,184,0.4)', alignSelf: 'stretch' }} />
                             <div style={{ flex: '1 1 260px', minWidth: '240px' }}>
                                 <div style={{ color: '#2563eb', fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                                    WingMentor Ecosystem
+                                    PilotRecognition Ecosystem
                                 </div>
                                 <ul style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, margin: 0, paddingLeft: '1.1rem' }}>
                                     <li style={{ marginBottom: '0.8rem' }}>Indoctrination + Assessment rebuilds operational mindset before applications</li>
@@ -3828,7 +3828,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ display: 'flex', flexDirection: 'column', animation: 'fadeIn 0.5s ease-in-out' }}>
                     {/* ── Page Header ── */}
                     <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
                         <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                             CHAPTER 01 — UNDERSTANDING THE WHAT'S
                         </div>
@@ -3995,7 +3995,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
                         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             CHAPTER 02 — THE WHY
@@ -4033,14 +4033,14 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             </h2>
                             <img
                                 src="/W1000 application.jpg"
-                                alt="W1000 WingMentor Application"
+                                alt="W1000 PilotRecognition Application"
                                 style={{ width: '100%', borderRadius: '16px', marginBottom: '1.75rem', display: 'block', objectFit: 'cover' }}
                             />
                             <p style={{ fontSize: '1rem', lineHeight: '1.7', marginBottom: '1.5rem', fontFamily: 'Georgia, serif', color: '#64748b', fontStyle: 'italic' }}>
                                 The W1000 application is currently accessible on <strong style={{ fontStyle: 'normal', color: '#334155' }}>iPad</strong> and <strong style={{ fontStyle: 'normal', color: '#334155' }}>desktop</strong>. The mobile version is still under development.
                             </p>
                             <p style={{ fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
-                                Upon enrolment in the Foundational Program, you will be granted access to the <strong>W1000 WingMentor Application</strong>. This platform is your primary resource for examination practice and knowledge access, including articles, PowerPoint slides, and textbook content covering <strong>PPL, CPL, and SPL</strong>.
+                                Upon enrolment in the Foundational Program, you will be granted access to the <strong>W1000 PilotRecognition Application</strong>. This platform is your primary resource for examination practice and knowledge access, including articles, PowerPoint slides, and textbook content covering <strong>PPL, CPL, and SPL</strong>.
                             </p>
                             <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#0f172a', marginTop: '3rem', marginBottom: '1.5rem' }}>
                                 Program Modules
@@ -4063,7 +4063,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 The Black Box
                             </h2>
                             <p style={{ fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
-                                The <strong>Black Box</strong> is WingMentor's official knowledge archive, providing exclusive access to curated PowerPoint slides and structured study material across a wide range of aviation topics. Content spans <strong>PPL, CPL, Instrument Rating (IR), and Multi-Engine (ME)</strong> knowledge areas, giving you a comprehensive reference library to support your examinations and ongoing development.
+                                The <strong>Black Box</strong> is PilotRecognition's official knowledge archive, providing exclusive access to curated PowerPoint slides and structured study material across a wide range of aviation topics. Content spans <strong>PPL, CPL, Instrument Rating (IR), and Multi-Engine (ME)</strong> knowledge areas, giving you a comprehensive reference library to support your examinations and ongoing development.
                             </p>
 
                             {/* Examination Structure Card Section */}
@@ -4080,7 +4080,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         EXAMINATION STRUCTURE
                                     </div>
@@ -4096,7 +4096,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                             For Philippines-based pilots, the examination is aligned with <strong>CAAP</strong> regulations. For USA-based pilots, examinations follow <strong>FAA</strong> standards. Note that while the Philippines framework is interrelated with FAA regulations, the <em>Air Law component differs</em> due to distinct national airspace regulations.
                                         </p>
                                         <p style={{ fontSize: '1.1rem', color: '#2563eb', fontFamily: 'Georgia, serif', lineHeight: '1.8', marginTop: '2rem', borderLeft: '3px solid #2563eb', paddingLeft: '1.25rem' }}>
-                                            <strong>Important:</strong> The official WingMentor examination is accessed directly through this <strong>portal</strong> — not through the Examination Terminal on the W1000 application. The W1000 is provided solely for <strong>study material and practice</strong>. When you are ready to sit your official examination, you will do so here.
+                                            <strong>Important:</strong> The official PilotRecognition examination is accessed directly through this <strong>portal</strong> — not through the Examination Terminal on the W1000 application. The W1000 is provided solely for <strong>study material and practice</strong>. When you are ready to sit your official examination, you will do so here.
                                         </p>
                                     </div>
                                 </div>
@@ -4116,7 +4116,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     width: '100%',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+                                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
                                     <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         UNLOCKED ACCESS &amp; BENEFITS
                                     </div>
@@ -4126,7 +4126,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                                     <div style={{ textAlign: 'left', maxWidth: '42rem', margin: '0 auto' }}>
                                         <p style={{ fontSize: '1.1rem', color: '#475569', fontFamily: 'Georgia, serif', lineHeight: '1.8', marginBottom: '3rem' }}>
-                                            Once you have completed and passed your official WingMentor examination, the following resources, environments, and community platforms are unlocked within your program access.
+                                            Once you have completed and passed your official PilotRecognition examination, the following resources, environments, and community platforms are unlocked within your program access.
                                         </p>
 
                                         <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.25rem' }}>
@@ -4150,7 +4150,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                         </p>
 
                                         <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.25rem' }}>
-                                            WingMentor Network Application
+                                            PilotRecognition Network Application
                                         </h3>
                                         <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1.25rem', fontFamily: 'Georgia, serif', color: '#475569' }}>
                                             Your primary platform for <strong>direct chat and real-time communication</strong> with mentors and fellow mentees.
@@ -4182,7 +4182,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
                         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             W1000 — PILOT OPERATING HANDBOOK
@@ -4193,7 +4193,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'left', color: '#334155', fontSize: '1.2rem', lineHeight: '1.8' }}>
                             <p style={{ marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
-                                The <strong>W1000 Application</strong> is your primary auxiliary tool for the WingMentor Foundation Program. It serves as your personal study terminal, containing all the technical curriculum, examination practice environments, and national standard modules required for your progression.
+                                The <strong>W1000 Application</strong> is your primary auxiliary tool for the PilotRecognition Foundation Program. It serves as your personal study terminal, containing all the technical curriculum, examination practice environments, and national standard modules required for your progression.
                             </p>
                         </div>
 
@@ -4408,7 +4408,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                                     Program Modules
                                                 </h3>
                                                 <p style={{ fontSize: '1rem', color: '#475569', fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
-                                                    Access the complete WingMentor curriculum in an interactive digital format. Track which subjects you've mastered and view your real-time reading progress across the foundation stages.
+                                                    Access the complete PilotRecognition curriculum in an interactive digital format. Track which subjects you've mastered and view your real-time reading progress across the foundation stages.
                                                 </p>
                                             </div>
                                             <div>
@@ -4468,7 +4468,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                             Secure Profile Management
                                         </h3>
                                         <p style={{ fontSize: '1.1rem', color: '#475569', fontFamily: 'Georgia, serif', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-                                            The W1000 implements a <strong>Secure Login System</strong> to ensure your pilot profile, progress data, and performance analytics are always protected and synchronized. This system maintains your digital identity across the WingMentor ecosystem.
+                                            The W1000 implements a <strong>Secure Login System</strong> to ensure your pilot profile, progress data, and performance analytics are always protected and synchronized. This system maintains your digital identity across the PilotRecognition ecosystem.
                                         </p>
 
                                         <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.25rem' }}>
@@ -4479,7 +4479,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                         </p>
 
                                         <p style={{ fontSize: '1.1rem', color: '#475569', fontFamily: 'Georgia, serif', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-                                            In the event of a breach of terms or unauthorized data access, accounts may be subject to <strong>Termination</strong> to protect the integrity of the WingMentor Foundation Program. We maintain strict compliance standards to ensure a fair and secure learning environment for all cadets.
+                                            In the event of a breach of terms or unauthorized data access, accounts may be subject to <strong>Termination</strong> to protect the integrity of the PilotRecognition Foundation Program. We maintain strict compliance standards to ensure a fair and secure learning environment for all cadets.
                                         </p>
                                     </div>
                                 </div>
@@ -4497,7 +4497,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
                         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             MODULE 01 MISSION
@@ -4519,7 +4519,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     muted={isVideoMuted}
                                     controls={false}
                                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                                    aria-label="WingMentor mission footage"
+                                    aria-label="PilotRecognition mission footage"
                                     onPlay={() => setIsVideoPlaying(true)}
                                     onPause={() => setIsVideoPlaying(false)}
                                     onEnded={() => {
@@ -4595,7 +4595,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                         {/* Video Description */}
                         <div style={{ maxWidth: '900px', margin: '2rem auto 3rem', textAlign: 'left', color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
                             <p style={{ marginBottom: '1.5rem', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#64748b' }}>
-                                This short film follows the operational arc of a modern aviator navigating the "Pilot Paradox" and the eventually successful transition into the WingMentor ecosystem.
+                                This short film follows the operational arc of a modern aviator navigating the "Pilot Paradox" and the eventually successful transition into the PilotRecognition ecosystem.
                             </p>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -4616,7 +4616,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                                 <div>
                                     <strong style={{ color: '#0f172a', fontSize: '1.1rem' }}>The Mission Accomplished:</strong>{' '}
-                                    <span style={{ color: '#475569' }}>The cycle closes as the recognized pilot transitions into a leadership role, having mentored over 50 peers. This illustrates the WingMentor mission in action: clearing the backlog by validating veteran instructors and ushering them toward the airline flight deck.</span>
+                                    <span style={{ color: '#475569' }}>The cycle closes as the recognized pilot transitions into a leadership role, having mentored over 50 peers. This illustrates the PilotRecognition mission in action: clearing the backlog by validating veteran instructors and ushering them toward the airline flight deck.</span>
                                 </div>
                             </div>
                         </div>
@@ -4638,7 +4638,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 The Foundational Knowledge That Every Pilot Should Have
                             </h2>
                             <p style={{ fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
-                                Leadership and mentorship are not just buzzwords; they are the bedrock of a professional aviator's career. Through WingMentor, you don't just receive guidance—you provide it. Gaining <strong>50 hours of guidance, support, and consultation</strong> by helping other pilots under your scale is a valuable accredited experience. This peer-to-peer mentorship is recognized as your <strong>Initial Pilot Recognition</strong>, proving that you have the emotional intelligence and leadership capacity to contribute to a crew environment. Every hour of mentorship, every assessment score, and every EBT competency you master is actively tracked and encrypted into your centralized Pilot Recognition Database—building a highly structured, ATS-friendly asset that works for you 24/7.
+                                Leadership and mentorship are not just buzzwords; they are the bedrock of a professional aviator's career. Through PilotRecognition, you don't just receive guidance—you provide it. Gaining <strong>50 hours of guidance, support, and consultation</strong> by helping other pilots under your scale is a valuable accredited experience. This peer-to-peer mentorship is recognized as your <strong>Initial Pilot Recognition</strong>, proving that you have the emotional intelligence and leadership capacity to contribute to a crew environment. Every hour of mentorship, every assessment score, and every EBT competency you master is actively tracked and encrypted into your centralized Pilot Recognition Database—building a highly structured, ATS-friendly asset that works for you 24/7.
                             </p>
                             <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.45rem', fontWeight: 500, color: '#0f172a', marginBottom: '0.75rem' }}>
                                 The Milestone Assessment: Airbus Evaluation
@@ -4688,7 +4688,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                         We bridge the communication gap by sharing direct <strong>Airline Expectations</strong>. We maintain active dialogue with the <strong>Heads of Cadet Programs at Etihad</strong> and various other international carriers. This direct line ensures you are being prepared for the exact requirements of the world's most prestigious airlines.
                                     </p>
                                     <p>
-                                        However, our focus extends far beyond the traditional airline cockpit. Through our <strong>WingMentor Pathways</strong>, we provide strategic, guided approaches to diverse sectors of the industry. This is not a static job board—Pathways utilizes our proprietary AI matchmaking engine, continuously comparing your Pilot Recognition Profile against live, evolving airline requirements. If a gap exists between your metrics and an operator’s standards, the system flags the precise <strong>Delta</strong> and directs you to the foundational modules required to close it. If your goal is the <strong>Private Jet Sector</strong>, we leverage our connections with operators, brokers, and manufacturers like <strong>Gulfstream</strong> to give you direct insight into how to break into corporate aviation.
+                                        However, our focus extends far beyond the traditional airline cockpit. Through our <strong>PilotRecognition Pathways</strong>, we provide strategic, guided approaches to diverse sectors of the industry. This is not a static job board—Pathways utilizes our proprietary AI matchmaking engine, continuously comparing your Pilot Recognition Profile against live, evolving airline requirements. If a gap exists between your metrics and an operator’s standards, the system flags the precise <strong>Delta</strong> and directs you to the foundational modules required to close it. If your goal is the <strong>Private Jet Sector</strong>, we leverage our connections with operators, brokers, and manufacturers like <strong>Gulfstream</strong> to give you direct insight into how to break into corporate aviation.
                                     </p>
                                     <p>
                                         We also pave the way for the emerging <strong>Air Taxi and UAM (Urban Air Mobility)</strong> industries. With deep insights into industry leaders like <strong>Archer and Joby</strong>, we provide the roadmap for transitioning into the next generation of flight, whether as a piloted air taxi or a remote drone operator. Our network also expands into <strong>Cargo, Air Rescue</strong>, and specialized operations, ensuring you have multiple career choices upon graduation rather than being limited to a single path.
@@ -4769,7 +4769,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 Your Growth is Our Success
                             </h2>
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: '0 auto', maxWidth: '42rem' }}>
-                                At WingMentor, we go far beyond standard guidance and community. We provide an actionable, data-driven ecosystem built on EBT standards, integrity, and safety. Our commitment is simple: the aviation industry's barriers are high, but by transforming your potential into verified, industry-recognized metrics, your ability to clear them is never in question.
+                                At PilotRecognition, we go far beyond standard guidance and community. We provide an actionable, data-driven ecosystem built on EBT standards, integrity, and safety. Our commitment is simple: the aviation industry's barriers are high, but by transforming your potential into verified, industry-recognized metrics, your ability to clear them is never in question.
                             </p>
                         </section>
 
@@ -4814,7 +4814,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
                         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             MODULE 01 SYLLABUS
@@ -4832,7 +4832,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             {
                                 stage: 1,
                                 title: 'Examination & Technical Rigor',
-                                description: 'Upon completion of Chapter 1, candidates undergo a formal transition assessment. This evaluates industry comprehension and technical retention through our integrated software, utilizing FAA and CAAP standards alongside proprietary internal metrics. This score constitutes your initial performance record within the WingMentor ecosystem.',
+                                description: 'Upon completion of Chapter 1, candidates undergo a formal transition assessment. This evaluates industry comprehension and technical retention through our integrated software, utilizing FAA and CAAP standards alongside proprietary internal metrics. This score constitutes your initial performance record within the PilotRecognition ecosystem.',
                                 objectives: [
                                     'Verify cross-regulatory technical knowledge and industry comprehension.',
                                     'Evaluate baseline retention via integrated FAA/CAAP standards.',
@@ -4865,7 +4865,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             {
                                 stage: 4,
                                 title: 'Pre-Mentorship Validation & Observation',
-                                description: 'Before beginning the 20-hour supervised phase, candidates must pass a validation interview based on the Mentorship Psychology modules. This is followed by 10 hours of active observation, where you will shadow an official WingMentor lead. This ensures you are operationally prepared to manage a peer-to-peer consultation environment.',
+                                description: 'Before beginning the 20-hour supervised phase, candidates must pass a validation interview based on the Mentorship Psychology modules. This is followed by 10 hours of active observation, where you will shadow an official PilotRecognition lead. This ensures you are operationally prepared to manage a peer-to-peer consultation environment.',
                                 objectives: [
                                     'Validate comprehension of human factors and mentorship theory.',
                                     'Assess practical readiness via specialized one-on-one professional interviews.',
@@ -4876,7 +4876,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             {
                                 stage: 5,
                                 title: 'Supervised Mentorship (20-Hour Milestone)',
-                                description: 'Candidates execute 20 hours of supervised mentorship under the guidance of a Senior WingMentor. Every session is logged with surgical precision—capturing hours, Pilot IDs, and a detailed Consultation Prescription. These logs must be objective and data-driven, reflecting your ability to solve complex training hurdles for your peers.',
+                                description: 'Candidates execute 20 hours of supervised mentorship under the guidance of a Senior PilotRecognition. Every session is logged with surgical precision—capturing hours, Pilot IDs, and a detailed Consultation Prescription. These logs must be objective and data-driven, reflecting your ability to solve complex training hurdles for your peers.',
                                 objectives: [
                                     'Execute 20 hours of strategically tracked, supervised peer mentorship.',
                                     'Maintain high-fidelity, objective logs and Pilot ID verifications.',
@@ -4998,7 +4998,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                 <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem', paddingTop: '1.5rem' }}>
                         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                             MODULE 01 START
@@ -5031,7 +5031,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 A Message From the Wingmentor Team
                             </h2>
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: '0 auto', maxWidth: '40rem' }}>
-                                The entire WingMentor operational team is here to support you. We are a collective of active pilots, instructors, and industry professionals dedicated to your success. We manage the logistics, verify the experience, and leverage advanced tracking applications to ensure this program’s standards are upheld with unwavering integrity. Consider us—and the platform we’ve built—your ground crew, ready to keep your flight path clear and your objectives met.
+                                The entire PilotRecognition operational team is here to support you. We are a collective of active pilots, instructors, and industry professionals dedicated to your success. We manage the logistics, verify the experience, and leverage advanced tracking applications to ensure this program’s standards are upheld with unwavering integrity. Consider us—and the platform we’ve built—your ground crew, ready to keep your flight path clear and your objectives met.
                             </p>
                         </section>
 
@@ -5073,14 +5073,14 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 Your Digital Footprint
                             </h2>
                             <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '44rem' }}>
-                                WingMentor is not an agency—it is a complete ecosystem designed to put you in control. As you progress through the Foundation Program, every assessment, evaluation, and milestone is tracked. This data culminates in your Pilot Recognition Profile—an ATLAS-compliant, verified portfolio. We do not just send your resume into the void. Our proprietary AI-driven Pathways system actively matches your verified profile with the exact, current requirements of our airline partners. You do the work; we ensure the industry sees it.
+                                PilotRecognition is not an agency—it is a complete ecosystem designed to put you in control. As you progress through the Foundation Program, every assessment, evaluation, and milestone is tracked. This data culminates in your Pilot Recognition Profile—an ATLAS-compliant, verified portfolio. We do not just send your resume into the void. Our proprietary AI-driven Pathways system actively matches your verified profile with the exact, current requirements of our airline partners. You do the work; we ensure the industry sees it.
                             </p>
                         </section>
 
                         {/* Quote Block */}
                         <section style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '24px', padding: '4rem 3rem', boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)', border: '1px solid rgba(255, 255, 255, 0.8)', textAlign: 'center', width: '100%', boxSizing: 'border-box', marginTop: '1rem' }}>
                             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                             </div>
                             <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                 OUR PHILOSOPHY
@@ -5089,7 +5089,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 The Experience Paradox
                             </h2>
                             <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '44rem', fontStyle: 'italic' }}>
-                                "We couldn't stand by and watch qualified pilots give up. The gap in the industry isn't a lack of talent; it's a lack of opportunity. WingMentor is our answer to the 'experience paradox'—providing a structured environment where pilots can prove their worth and keep their dreams alive. By transforming your raw potential into verified, actionable data, we are shifting the balance of power. We are building a system where airlines come looking for you."
+                                "We couldn't stand by and watch qualified pilots give up. The gap in the industry isn't a lack of talent; it's a lack of opportunity. PilotRecognition is our answer to the 'experience paradox'—providing a structured environment where pilots can prove their worth and keep their dreams alive. By transforming your raw potential into verified, actionable data, we are shifting the balance of power. We are building a system where airlines come looking for you."
                             </p>
                         </section>
 
@@ -5140,7 +5140,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             Initial Examination Access
                         </h1>
                         <p style={{ color: '#64748b', fontSize: '1.05rem', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7 }}>
-                            Stage 1 of your WingMentor Foundational Program begins here.
+                            Stage 1 of your PilotRecognition Foundational Program begins here.
                         </p>
                     </div>
 
@@ -5149,10 +5149,10 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             EXAMINATION PORTAL
                         </div>
                         <h2 style={{ fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', fontFamily: 'Georgia, serif', marginBottom: '1.5rem' }}>
-                            Access Your WingMentor Foundational Examination
+                            Access Your PilotRecognition Foundational Examination
                         </h2>
                         <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '2rem' }}>
-                            You can access your <strong>Initial Examination</strong> for the WingMentor Foundational Program directly through this portal. This is your official examination — the results are recorded in the Global Industry Registry as your first verified skills record. Ensure you have thoroughly studied the Chapter 1 material and completed your W1000 practice sessions before proceeding.
+                            You can access your <strong>Initial Examination</strong> for the PilotRecognition Foundational Program directly through this portal. This is your official examination — the results are recorded in the Global Industry Registry as your first verified skills record. Ensure you have thoroughly studied the Chapter 1 material and completed your W1000 practice sessions before proceeding.
                         </p>
                         <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '2.5rem' }}>
                             When you are ready, click the button below to begin. The examination will assess your academic bridge knowledge and industry comprehension against integrated <strong>FAA / CAAP</strong> standards.
@@ -5160,7 +5160,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                         {/* Callout */}
                         <div style={{ backgroundColor: '#eff6ff', borderLeft: '4px solid #2563eb', borderRadius: '8px', padding: '1rem 1.25rem', marginBottom: '2.5rem', fontSize: '0.95rem', color: '#1e40af', lineHeight: 1.6 }}>
-                            <strong>Important:</strong> This is your official WingMentor examination — not the W1000 practice terminal. Your score will be formally recorded and will serve as your first milestone within the program.
+                            <strong>Important:</strong> This is your official PilotRecognition examination — not the W1000 practice terminal. Your score will be formally recorded and will serve as your first milestone within the program.
                         </div>
 
                         {/* CTA Button */}
@@ -5393,7 +5393,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
             {/* Minimal Header */}
             <header style={{ backgroundColor: 'white', borderBottom: '1px solid #e2e8f0', padding: '0.25rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
                     <div>
                         <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Required Reading</div>
                         <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a' }}>Module 01: Industry Familiarization & Indoctrination</div>

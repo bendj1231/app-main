@@ -41,7 +41,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
             <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
                 <div style={{ textAlign: 'center', marginBottom: '5rem', paddingTop: '2rem' }}>
                     <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                        <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="WingMentor Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain' }} />
+                        <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="PilotRecognition Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain' }} />
                     </div>
                     <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                         PROGRAMS
@@ -163,7 +163,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 Initial Program Module
                             </h3>
                             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                A deep dive into the current status of the aviation industry and the pilot market. Understand the systemic gaps in training and employment that WingMentor addresses through its foundational indoctrination.
+                                A deep dive into the current status of the aviation industry and the pilot market. Understand the systemic gaps in training and employment that PilotRecognition addresses through its foundational indoctrination.
                             </p>
                             <ul style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.8, paddingLeft: '1.5rem', margin: 0 }}>
                                 <li>Current Industry Status and market analysis</li>
@@ -296,7 +296,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 Advanced Mentorship & Leadership Milestone
                             </h3>
                             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                Continue your mentorship to the 50-hour milestone to demonstrate sustained leadership and advanced instructional readiness within the WingMentor ecosystem.
+                                Continue your mentorship to the 50-hour milestone to demonstrate sustained leadership and advanced instructional readiness within the PilotRecognition ecosystem.
                             </p>
                             <ul style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.8, paddingLeft: '1.5rem', margin: 0 }}>
                                 <li>50-Hour Milestone</li>
@@ -331,7 +331,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 STAGE 10
                             </div>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
-                                WingMentor Certification & Recognition
+                                PilotRecognition Certification & Recognition
                             </h3>
                             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
                                 Official certification of all mentorship hours and industry recognition. Your profile is now verified for our global airline partners and the industry registry.
@@ -399,11 +399,11 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                     4. THE DIFFERENCE
                                 </div>
                                 <h3 style={{ fontSize: '1.25rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
-                                    Instructor vs WingMentor
+                                    Instructor vs PilotRecognition
                                 </h3>
-                                <img src="https://lh3.googleusercontent.com/d/1GyMG1004Ny93i4_ktGikIXgzy-FHiPBI" alt="Instructor vs WingMentor" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
+                                <img src="https://lh3.googleusercontent.com/d/1GyMG1004Ny93i4_ktGikIXgzy-FHiPBI" alt="Instructor vs PilotRecognition" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
                                 <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 }}>
-                                    Traditional instructors often struggle to support dozens of students simultaneously. WingMentors provide the one-on-one consultation and targeted problem-solving that large classrooms lack.
+                                    Traditional instructors often struggle to support dozens of students simultaneously. PilotRecognitions provide the one-on-one consultation and targeted problem-solving that large classrooms lack.
                                 </p>
                             </div>
                         </div>
@@ -412,7 +412,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                     {/* CTA Section */}
                     <section style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '24px', padding: '4rem 3rem', boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)', border: '1px solid rgba(255, 255, 255, 0.8)', textAlign: 'center', width: '100%', maxWidth: '56rem', boxSizing: 'border-box' }}>
                         <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="WingMentor Logo" style={{ maxWidth: '160px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="PilotRecognition Logo" style={{ maxWidth: '160px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                             YOUR JOURNEY BEGINS

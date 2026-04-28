@@ -58,7 +58,7 @@ export const OnboardingRecognition: React.FC<OnboardingRecognitionProps> = ({ on
             <div style={{ width: '100%', padding: '4rem 2rem', animation: 'fadeIn 0.5s ease-in-out', overflowX: 'hidden' }}>
                 <div className="max-w-4xl mx-auto w-full">
                     <div className="mb-8 flex justify-center">
-                        <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                        <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                     </div>
                     
                     <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4 text-center">

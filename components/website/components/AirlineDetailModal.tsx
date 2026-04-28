@@ -147,7 +147,7 @@ export const AirlineDetailModal: React.FC<AirlineDetailModalProps> = ({
             <section className="bg-gradient-to-br from-blue-50 to-slate-50 p-6 rounded-2xl">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-serif text-slate-900">Pilot Recognition Match</h2>
-                <span className="text-xs text-slate-500 bg-white px-3 py-1 rounded-full border">Pilot-Recognition Engine Powered By WingMentor</span>
+                <span className="text-xs text-slate-500 bg-white px-3 py-1 rounded-full border">Pilot-Recognition Engine Powered By PilotRecognition</span>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

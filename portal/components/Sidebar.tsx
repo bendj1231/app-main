@@ -32,7 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mainView, onLogout, onNavigate
                 {/* Sidebar Logo */}
                 <div className={styles.sidebarHeader}>
                     <div className={styles.sidebarLogo}>
-                        <img src="/logo.png" alt="WingMentor Logo" className={styles.logoImage} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" className={styles.logoImage} />
                     </div>
                     <div className={styles.sidebarLogoText}>
                         <span className={styles.logoText}>Pilot portal</span>

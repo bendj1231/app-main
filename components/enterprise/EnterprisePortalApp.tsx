@@ -1817,7 +1817,7 @@ function AdminPanel({ user }: { user: any }) {
                         <button onClick={() => rejectRequest(req)} disabled={actioning === req.id} className="flex items-center gap-1.5 bg-red-600/20 hover:bg-red-600/40 border border-red-500/30 text-red-400 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all">
                           <UserX className="w-3.5 h-3.5" /> Reject
                         </button>
-                        <a href={`mailto:${req.email}?subject=WingMentor Enterprise Access&body=Hi ${req.full_name},%0A%0AThank you for your interest in WingMentor Enterprise.`} className="flex items-center gap-1.5 bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all">
+                        <a href={`mailto:${req.email}?subject=PilotRecognition Enterprise Access&body=Hi ${req.full_name},%0A%0AThank you for your interest in PilotRecognition Enterprise.`} className="flex items-center gap-1.5 bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all">
                           <Bell className="w-3.5 h-3.5" /> Email
                         </a>
                       </div>

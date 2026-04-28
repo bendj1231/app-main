@@ -24,11 +24,11 @@ export const CoreValuesPage: React.FC<CoreValuesPageProps> = ({
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-6"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-                            The WingMentor DNA
+                            The PilotRecognition DNA
                         </p>
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
                             Core Values
@@ -70,7 +70,7 @@ export const CoreValuesPage: React.FC<CoreValuesPageProps> = ({
                             verified logbook entries and mentors building their leadership credentials.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            The WingMentor network extends beyond mentorship to include <strong>direct pathway connections</strong>
+                            The PilotRecognition network extends beyond mentorship to include <strong>direct pathway connections</strong>
                             with airlines, manufacturers, and training providers. When operators post opportunities on
                             our platform, they appear on Pilot Terminal with match indicators showing alignment with your
                             verified competencies. This intelligent matching system ensures that connections lead to
@@ -97,7 +97,7 @@ export const CoreValuesPage: React.FC<CoreValuesPageProps> = ({
                             exceptional pilots from the merely competent.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            A WingMentor pilot doesn't just fly the plane; they manage the operation with
+                            A PilotRecognition pilot doesn't just fly the plane; they manage the operation with
                             humility, resilience, and an unshakeable commitment to safety standards. Through
                             EBT CBTA guidance from Airbus Head of Training, we ensure that the attitude
                             we cultivate aligns with the exacting standards required by leading manufacturers and
@@ -108,7 +108,7 @@ export const CoreValuesPage: React.FC<CoreValuesPageProps> = ({
                             standards—specifically addresses attitude through competencies like <strong>decision making</strong>,
                             <strong>situational awareness</strong>, and <strong>crew resource management</strong>. These behavioral
                             markers are objectively assessed through our recognition-based profiling, giving operators
-                            confidence that a WingMentor pilot possesses the professional mindset required for safe,
+                            confidence that a PilotRecognition pilot possesses the professional mindset required for safe,
                             efficient operations in any environment.
                         </p>
                     </div>

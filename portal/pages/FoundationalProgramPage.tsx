@@ -230,7 +230,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 'Pilot Gap Market Analysis',
                 'Indoctrination Protocols'
             ],
-            description: 'A deep dive into the current status of the aviation industry and the pilot market. Understand the systemic gaps in training and employment that WingMentor addresses through its foundational indoctrination.',
+            description: 'A deep dive into the current status of the aviation industry and the pilot market. Understand the systemic gaps in training and employment that PilotRecognition addresses through its foundational indoctrination.',
             status: 'In Progress',
             badge: 'In Progress',
             badgeColor: '#ecfdf5',
@@ -315,7 +315,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 'Advanced Instruction Prep',
                 'Ecosystem Leadership'
             ],
-            description: 'Continue your mentorship to the 50-hour milestone to demonstrate sustained leadership and advanced instructional readiness within the WingMentor ecosystem.',
+            description: 'Continue your mentorship to the 50-hour milestone to demonstrate sustained leadership and advanced instructional readiness within the PilotRecognition ecosystem.',
             badge: '50h Milestone',
             badgeColor: '#f0f9ff',
             icon: 'Award',
@@ -355,7 +355,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
         {
             id: 'stage-10',
             number: '10',
-            title: 'WingMentor Certification & Recognition',
+            title: 'PilotRecognition Certification & Recognition',
             bullets: [
                 'Final Accreditation',
                 'Industry Endorsement',
@@ -410,8 +410,8 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
             bullets: []
         },
         {
-            title: "Instructor vs WingMentor",
-            description: "Traditional instructors often struggle to support dozens of students simultaneously. WingMentors provide the one-on-one consultation and targeted problem-solving that large classrooms lack. This accredited program builds the leadership skills essential for future flight instructors and airline-bound pilots, ensuring you are truly industry-ready.",
+            title: "Instructor vs PilotRecognition",
+            description: "Traditional instructors often struggle to support dozens of students simultaneously. PilotRecognitions provide the one-on-one consultation and targeted problem-solving that large classrooms lack. This accredited program builds the leadership skills essential for future flight instructors and airline-bound pilots, ensuring you are truly industry-ready.",
             image: "https://lh3.googleusercontent.com/d/1GyMG1004Ny93i4_ktGikIXgzy-FHiPBI"
         }
     ];
@@ -441,7 +441,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                     justifyContent: 'center',
                     zIndex: 50
                 }}>
-                    <img src="/logo.png" alt="WingMentor" style={{ maxWidth: '200px', marginBottom: '2rem' }} />
+                    <img src="/logo.png" alt="PilotRecognition" style={{ maxWidth: '200px', marginBottom: '2rem' }} />
                     <div style={{
                         width: '48px',
                         height: '48px',
@@ -495,7 +495,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                 </div>
 
                 <section id="foundational-details" style={{ textAlign: 'center', marginBottom: '2.5rem', filter: userHasFoundationalEnrollment ? 'blur(2px)' : 'none', transition: 'filter 0.3s ease' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '250px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '250px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                     <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                         WINGMENTOR PROGRAMS
                     </div>
@@ -503,7 +503,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                         Foundation Program
                     </h1>
                     <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.7, maxWidth: '640px', margin: '0 auto' }}>
-                        WingMentor Programs provide comprehensive pathways for aviation career advancement. The Foundational Program delivers essential industry familiarization, mentorship integration, and risk management strategies, while the upcoming Transition Program offers advanced career progression for experienced pilots seeking specialized aviation roles. Both programs combine simulator training, industry-aligned credentialing, and verified mentorship to prepare you for airline recruitment and industry recognition.
+                        PilotRecognition Programs provide comprehensive pathways for aviation career advancement. The Foundational Program delivers essential industry familiarization, mentorship integration, and risk management strategies, while the upcoming Transition Program offers advanced career progression for experienced pilots seeking specialized aviation roles. Both programs combine simulator training, industry-aligned credentialing, and verified mentorship to prepare you for airline recruitment and industry recognition.
                     </p>
                 </section>
 
@@ -534,7 +534,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                             loop
                             controls={true}
                             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                            aria-label="WingMentor mission footage"
+                            aria-label="PilotRecognition mission footage"
                         >
                             Your browser does not support the mission footage video.
                         </video>
@@ -565,7 +565,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                         </div>
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', listStyle: 'none', padding: 0, margin: '0 0 2rem 0' }}>
                             {[
-                                { title: 'Evidence-Based Orientation', text: 'The Foundational Program is your evidence-based orientation into WingMentor, blending a cinematic hero chapter with measurable milestones that feed recognition pathways.' },
+                                { title: 'Evidence-Based Orientation', text: 'The Foundational Program is your evidence-based orientation into PilotRecognition, blending a cinematic hero chapter with measurable milestones that feed recognition pathways.' },
                                 { title: 'Mentorship Integration', text: 'Pairs mentorship, simulator flight time, and Airbus-aligned credentialing into a transparent orientation so you enter the ecosystem confident, informed, and recognized.' },
                                 { title: 'Industry Recognition', text: 'Build the data-driven portfolio that airlines demand through structured simulator training modules and verified mentorship hours.' },
                                 { title: 'Career Preparation', text: 'Experience the introduction pilots deserve with comprehensive training that prepares you for airline recruitment and industry recognition.' }
@@ -583,7 +583,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
 
                 {/* New Header Section */}
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '300px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '300px', height: 'auto', objectFit: 'contain', marginBottom: '1rem', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                     <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.02em' }}>
                         Earn Experience
                     </h2>
@@ -745,7 +745,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                                         />
                                     </div>
                                     <label htmlFor="agreement" style={{ fontSize: '0.875rem', color: '#64748b', cursor: 'pointer', lineHeight: 1.5 }}>
-                                        I agree to the <span style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Terms and Conditions</span> and acknowledge that WingMentor is a Pilot Quality Assurance and Credibility Experience provider.
+                                        I agree to the <span style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Terms and Conditions</span> and acknowledge that PilotRecognition is a Pilot Quality Assurance and Credibility Experience provider.
                                     </label>
                                 </div>
                             </div>

@@ -16,7 +16,7 @@ export const PlatformPrivateCharterPage: React.FC<PlatformPrivateCharterPageProp
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -47,7 +47,7 @@ export const PlatformPrivateCharterPage: React.FC<PlatformPrivateCharterPageProp
                             Private charter and corporate aviation represents a distinct career path from traditional airlines. Here, you're not just a pilot—you're a trusted professional representing high-net-worth individuals, Fortune 500 executives, and heads of state. The stakes are different, the expectations are higher, and the rewards reflect that reality.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            WingMentor prepares pilots for this sector by teaching what owners, brokers, and chief pilots actually look for: <strong>discretion, consistency, and the service mindset</strong> that defines successful charter crews. It's not about having 5,000 hours—it's about demonstrating professionalism from day one.
+                            PilotRecognition prepares pilots for this sector by teaching what owners, brokers, and chief pilots actually look for: <strong>discretion, consistency, and the service mindset</strong> that defines successful charter crews. It's not about having 5,000 hours—it's about demonstrating professionalism from day one.
                         </p>
                     </div>
                     <div className="md:w-1/2">
@@ -76,7 +76,7 @@ export const PlatformPrivateCharterPage: React.FC<PlatformPrivateCharterPageProp
                         Both Sides of the Coin
                     </h2>
                     <p className="text-base text-slate-700 leading-relaxed mb-8 text-center max-w-3xl mx-auto">
-                        WingMentor has unique insight into the private charter world from <strong>both the operator and broker perspectives</strong>. We've spoken directly with operators managing Gulfstream fleets and maintain active relationships with charter brokers, giving us a complete picture of how this industry actually works.
+                        PilotRecognition has unique insight into the private charter world from <strong>both the operator and broker perspectives</strong>. We've spoken directly with operators managing Gulfstream fleets and maintain active relationships with charter brokers, giving us a complete picture of how this industry actually works.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -153,14 +153,14 @@ export const PlatformPrivateCharterPage: React.FC<PlatformPrivateCharterPageProp
                         </div>
                     </div>
 
-                    {/* WingMentor Connections */}
+                    {/* PilotRecognition Connections */}
                     <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
                         <div className="flex items-start gap-4">
                             <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
                                 <Award className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold mb-2">WingMentor's Direct Connections</h3>
+                                <h3 className="text-lg font-bold mb-2">PilotRecognition's Direct Connections</h3>
                                 <p className="text-sm text-blue-50 leading-relaxed mb-3">
                                     We maintain active relationships with charter brokers and have direct connections to operators they work with, including those managed by <strong>flyairlines</strong>. This dual perspective means we can prepare you for both sides of the business and connect you to the right opportunities.
                                 </p>
@@ -328,14 +328,14 @@ export const PlatformPrivateCharterPage: React.FC<PlatformPrivateCharterPageProp
                     </div>
                 </div>
 
-                {/* Section 4: WingMentor Preparation */}
+                {/* Section 4: PilotRecognition Preparation */}
                 <div className="bg-gradient-to-br from-slate-900 to-blue-900 rounded-3xl p-8 md:p-12 text-white">
                     <div className="max-w-4xl mx-auto">
                         <p className="text-xs font-bold text-blue-300 uppercase tracking-[0.3em] mb-2 text-center">
                             Your Preparation
                         </p>
                         <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-                            How WingMentor Gets You Charter-Ready
+                            How PilotRecognition Gets You Charter-Ready
                         </h2>
                         <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-8 text-center">
                             The Transition Program doesn't just teach you to fly—it teaches you to operate like a charter professional from day one. We focus on the soft skills and industry knowledge that separate good pilots from hired pilots.
@@ -390,7 +390,7 @@ export const PlatformPrivateCharterPage: React.FC<PlatformPrivateCharterPageProp
                         <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-8">
                             <h3 className="text-lg font-bold mb-3">Industry Connections</h3>
                             <p className="text-sm text-slate-200 leading-relaxed mb-4">
-                                WingMentor maintains relationships with chief pilots, charter brokers, and corporate flight department managers. Transition Program members receive:
+                                PilotRecognition maintains relationships with chief pilots, charter brokers, and corporate flight department managers. Transition Program members receive:
                             </p>
                             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-slate-200">
                                 <li className="flex items-start gap-2">
@@ -433,13 +433,13 @@ export const PlatformPrivateCharterPage: React.FC<PlatformPrivateCharterPageProp
                         Break Into Private Charter
                     </h2>
                     <p className="text-base text-slate-700 leading-relaxed mb-8">
-                        The private charter sector values professionalism and service excellence over raw hours. With the right preparation and connections, you can enter this rewarding career path earlier than you think. WingMentor's Transition Program provides both.
+                        The private charter sector values professionalism and service excellence over raw hours. With the right preparation and connections, you can enter this rewarding career path earlier than you think. PilotRecognition's Transition Program provides both.
                     </p>
 
                     <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
                         <h3 className="text-lg font-bold text-slate-900 mb-4">Ready to Elevate Your Career?</h3>
                         <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            Join the WingMentor Transition Program and gain the professional skills, industry knowledge, and connections needed to succeed in corporate and VIP aviation.
+                            Join the PilotRecognition Transition Program and gain the professional skills, industry knowledge, and connections needed to succeed in corporate and VIP aviation.
                         </p>
                         <button
                             onClick={() => onNavigate('contact-support')}

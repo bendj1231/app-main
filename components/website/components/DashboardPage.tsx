@@ -88,7 +88,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                 <div className="flex flex-col items-center text-center mb-16 pt-12">
                     <p className="text-blue-400 font-bold tracking-[0.4em] uppercase text-xs mb-4">Command Center</p>
                     <h1 className="text-5xl md:text-6xl font-serif text-white tracking-tighter mb-6">
-                        WingMentor Platform Overview
+                        PilotRecognition Platform Overview
                     </h1>
                     <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 backdrop-blur-md rounded-full border border-white/10">
                         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>

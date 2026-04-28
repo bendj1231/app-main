@@ -24,7 +24,7 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
@@ -37,7 +37,7 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                             Data-Driven Competency Development
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            The integration of Hinfact human factors analytics with Airbus and flagship carriers like Etihad marks a shift from subjective instruction to objective, data-driven competency development. By quantifying cognitive performance, this technology provides WingMentor pilots with the same high-level Evidence-Based Training (EBT) tools used at major global training centers.
+                            The integration of Hinfact human factors analytics with Airbus and flagship carriers like Etihad marks a shift from subjective instruction to objective, data-driven competency development. By quantifying cognitive performance, this technology provides PilotRecognition pilots with the same high-level Evidence-Based Training (EBT) tools used at major global training centers.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -93,14 +93,14 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
                 </div>
             </div>
 
-            {/* Section 2: Why WingMentor Pilots Need Hinfact Intelligence */}
+            {/* Section 2: Why PilotRecognition Pilots Need Hinfact Intelligence */}
             <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                 <RevealOnScroll>
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        WingMentor Advantage
+                        PilotRecognition Advantage
                     </p>
                     <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                        Why WingMentor Pilots Need Hinfact Intelligence
+                        Why PilotRecognition Pilots Need Hinfact Intelligence
                     </h2>
                 </RevealOnScroll>
             </div>

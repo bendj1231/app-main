@@ -224,7 +224,7 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
             width: '100%',
             boxSizing: 'border-box'
           }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
             
             <div style={{ color: '#16a34a', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               ENQUIRY SUBMITTED
@@ -484,7 +484,7 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
           width: '100%',
           boxSizing: 'border-box'
         }}>
-          <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+          <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
           
           <div style={{ color: '#3b82f6', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
             SUPPORT ENQUIRY

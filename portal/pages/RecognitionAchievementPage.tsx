@@ -365,7 +365,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
         {/* Centered Header with Logo */}
         <div className="dashboard-header" style={{ marginBottom: '2rem', textAlign: 'center', paddingTop: '1rem' }}>
           <div style={{ marginBottom: '1rem' }}>
-            <img src="/logo.png" alt="WingMentor" style={{ height: '48px', margin: '0 auto' }} />
+            <img src="/logo.png" alt="PilotRecognition" style={{ height: '48px', margin: '0 auto' }} />
           </div>
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em', color: '#2563eb', fontWeight: 700, fontSize: '0.75rem', marginBottom: '0.75rem', textTransform: 'uppercase' }}>
             Your Pilot Digital Footprint to Pathways
@@ -475,7 +475,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                   <div>
                     <div style={{ fontSize: '0.8rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Candidate</div>
                     <h2 style={{ margin: '0.35rem 0 0', fontSize: '1.75rem', color: '#0f172a' }}>{userProfile?.firstName || 'Benjamin'} {userProfile?.lastName || 'Bowler'}</h2>
-                    <p style={{ margin: '0.2rem 0 0', color: '#64748b', fontSize: '0.9rem' }}>WingMentor Recognition Portfolio</p>
+                    <p style={{ margin: '0.2rem 0 0', color: '#64748b', fontSize: '0.9rem' }}>PilotRecognition Recognition Portfolio</p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Share link</div>
@@ -836,11 +836,11 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
           </div>
         </section>
 
-        {/* WingMentor Directory Button */}
+        {/* PilotRecognition Directory Button */}
         {onNavigateToDirectory && (
           <section style={{ marginBottom: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-              <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>WingMentor Directory</h2>
+              <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>PilotRecognition Directory</h2>
               <span style={{ fontSize: '0.75rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Connect with Mentors & Mentees</span>
             </div>
             <div
@@ -880,7 +880,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
                 </div>
                 <div>
                   <div style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.25rem' }}>
-                    WingMentor Chat
+                    PilotRecognition Chat
                   </div>
                   <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
                     {mentorshipHours >= 20 ? 'Mentor' : `${mentorshipHours} / 20 hrs to Mentor`}

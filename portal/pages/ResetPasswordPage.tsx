@@ -190,7 +190,7 @@ export const ResetPasswordPage: React.FC = () => {
                             pointerEvents: 'none'
                         }} />
                         <div style={{ marginBottom: '2rem' }}>
-                            <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="WingMentor Logo" style={{ width: '240px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="PilotRecognition Logo" style={{ width: '240px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#e11d48', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                             LOADING
@@ -515,7 +515,7 @@ export const ResetPasswordPage: React.FC = () => {
                 }}>
                     <div style={{ marginBottom: '0.5rem', fontWeight: 600, color: '#475569' }}>Contact Us</div>
                     <div>Phone: <a href="tel:+1234567890" style={{ color: '#2563eb', textDecoration: 'none' }}>+1 234 567 890</a></div>
-                    <div>Email: <a href="mailto:wingmentorprogram@gmail.com" style={{ color: '#2563eb', textDecoration: 'none' }}>wingmentorprogram@gmail.com</a></div>
+                    <div>Email: <a href="mailto:pilotrecognition@gmail.com" style={{ color: '#2563eb', textDecoration: 'none' }}>pilotrecognition@gmail.com</a></div>
                 </div>
             </div>
         </div>

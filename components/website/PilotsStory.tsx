@@ -184,7 +184,7 @@ export const PilotsStory: React.FC<PilotsStoryProps> = ({ onAnimationComplete })
                             <div className="space-y-4 text-[#4a3b2a] font-['Playfair_Display',_serif] text-base md:text-lg leading-relaxed italic">
                                 <p>"The crucible of leadership. After completing 20 hours of supervised mentorship, you shall gain the experience and valuable skills to become an official mentor."</p>
                                 <p>In this phase, you transition from consumer to contributor. You will work under the direct supervision of a <strong>Senior Wing Mentor</strong>, learning the surgical precision of diagnostic guidance.</p>
-                                <p>This 20-hour milestone is your professional checkride. You will be evaluated on your ability to simplify complex aerodynamics, manage mentee frustration, and maintain the highest ethical standards of the program. Success here earns you your first major stamp in the WingMentor Passport.</p>
+                                <p>This 20-hour milestone is your professional checkride. You will be evaluated on your ability to simplify complex aerodynamics, manage mentee frustration, and maintain the highest ethical standards of the program. Success here earns you your first major stamp in the PilotRecognition Passport.</p>
                             </div>
                             <button onClick={() => setIsJuniorModalOpen(false)} className="mt-8 py-4 bg-[#3e2b1e] text-[#e3d0a6] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-black transition-colors">Return to Journey</button>
                         </div>

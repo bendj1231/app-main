@@ -82,7 +82,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNav
                         <div className={styles.infoPanelGradient1} />
                         <div className={styles.infoPanelGradient2} />
                         <div className={styles.loginLogo}>
-                            <img src="/logo.png" alt="WingMentor Logo" />
+                            <img src="/logo.png" alt="PilotRecognition Logo" />
                         </div>
 
                         <div className={styles.mentorNetworkLabel}>MENTOR NETWORK</div>
@@ -90,12 +90,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNav
                         <h2 className={styles.portalTitle}>Pilot Portal</h2>
 
                         <p className={styles.portalDescription}>
-                            Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies. Explore the pilot network search for type-rating intel, airline requirements, and aircraft references, track recognition and examination outcomes, and retrieve your ATLAS CV dossier from one secure hub.
+                            Access personalized program enrollment, pathway briefs, and PilotRecognition Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies. Explore the pilot network search for type-rating intel, airline requirements, and aircraft references, track recognition and examination outcomes, and retrieve your ATLAS CV dossier from one secure hub.
                         </p>
                         <button
                             type="button"
                             onClick={() => setShowPortalInfo(true)}
-                            aria-label="Learn more about WingMentor Program Portal"
+                            aria-label="Learn more about PilotRecognition Program Portal"
                             className={styles.learnMoreButton}
                         >
                             Learn more
@@ -107,7 +107,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNav
                     <div className={styles.loginFormPanel}>
                         <div className={styles.formHeader}>
                             <h2 className={styles.formTitle}>Connecting pilots to the aviation industry</h2>
-                            <p className={styles.formSubtitle}>Sign in with your WingMentor credentials.</p>
+                            <p className={styles.formSubtitle}>Sign in with your PilotRecognition credentials.</p>
                             {onChangeOptimization && (
                                 <button
                                     type="button"
@@ -248,17 +248,17 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate, onNav
                                 ×
                             </button>
                             <div className={styles.modalLogo}>
-                                <img src="/logo.png" alt="WingMentor Logo" />
+                                <img src="/logo.png" alt="PilotRecognition Logo" />
                             </div>
                             <div className={styles.modalLabel}>
                                 PROGRAM PORTAL
                             </div>
                             <h2 className={styles.modalTitle}>
-                                About WingMentor Program Portal
+                                About PilotRecognition Program Portal
                             </h2>
                             <div className={styles.modalContent}>
                                 <p className={styles.modalParagraph}>
-                                    The portal is the enrollment gateway for WingMentor pilots. It surfaces every available pathway within the WM ecosystem and tailors recommendations using your Recognition data and Pilot Portfolio profile.
+                                    The portal is the enrollment gateway for PilotRecognition pilots. It surfaces every available pathway within the WM ecosystem and tailors recommendations using your Recognition data and Pilot Portfolio profile.
                                 </p>
                                 <p className={styles.modalParagraph}>
                                     Your Pilot Portfolio consolidates flight experience, cognitive evaluations, and exam performance into ATS-formatted records that are securely shared with approved aviation industry bodies.

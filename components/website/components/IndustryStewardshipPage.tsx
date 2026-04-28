@@ -24,7 +24,7 @@ export const IndustryStewardshipPage: React.FC<IndustryStewardshipPageProps> = (
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-6"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -104,7 +104,7 @@ export const IndustryStewardshipPage: React.FC<IndustryStewardshipPageProps> = (
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
                             Our stewardship involves anticipating these shifts and updating our curriculum
-                            continuously, ensuring a WingMentor pilot is always ahead of the curve.
+                            continuously, ensuring a PilotRecognition pilot is always ahead of the curve.
                         </p>
                     </RevealOnScroll>
                 </div>

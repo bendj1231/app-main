@@ -203,7 +203,7 @@ export const GraphicsPresetSelector: React.FC<GraphicsPresetSelectorProps> = ({
             textAlign: 'center'
           }}
         >
-          <img src="/logo.png" alt="WingMentor Logo" style={{ width: '200px', maxWidth: '100%', marginBottom: '1rem' }} />
+          <img src="/logo.png" alt="PilotRecognition Logo" style={{ width: '200px', maxWidth: '100%', marginBottom: '1rem' }} />
           <div style={{ letterSpacing: '0.28em', fontSize: '0.78rem', color: '#cbd5e1', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
             SYSTEM DETECTION
           </div>
@@ -211,7 +211,7 @@ export const GraphicsPresetSelector: React.FC<GraphicsPresetSelectorProps> = ({
             Choose your graphics profile
           </h1>
           <p style={{ margin: '0 auto', color: '#cbd5e1', lineHeight: 1.6, fontSize: '0.9rem', maxWidth: '600px' }}>
-            Select a graphics mode to optimize WingMentor for your device before login
+            Select a graphics mode to optimize PilotRecognition for your device before login
           </p>
         </div>
 

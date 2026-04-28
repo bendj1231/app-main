@@ -151,7 +151,7 @@ export const W1000ModulePage: React.FC<W1000ModulePageProps> = ({ onBack, onLogo
                 </div>
 
                 <div className="p-6 bg-white border-t border-slate-100 text-center">
-                    <p className="text-[0.6rem] text-slate-400 font-bold tracking-[0.2em] uppercase">WingMentor Blackbox Integrated Systems</p>
+                    <p className="text-[0.6rem] text-slate-400 font-bold tracking-[0.2em] uppercase">PilotRecognition Blackbox Integrated Systems</p>
                 </div>
             </main>
         </div>

@@ -30,12 +30,12 @@ export const LoadingCard: React.FC = () => {
                     <div className={styles.infoPanelGradient1} />
                     <div className={styles.infoPanelGradient2} />
                     <div className={styles.logo}>
-                        <img src="/logo.png" alt="WingMentor Logo" />
+                        <img src="/logo.png" alt="PilotRecognition Logo" />
                     </div>
                     <div className={styles.pageLabel}>SYSTEM LOADING</div>
                     <h2 className={styles.panelTitle}>Loading Portal</h2>
                     <p className={styles.panelDescription}>
-                        <strong>Please wait while we prepare your WingMentor experience.</strong> We're loading your personalized dashboard and training materials.
+                        <strong>Please wait while we prepare your PilotRecognition experience.</strong> We're loading your personalized dashboard and training materials.
                     </p>
                 </div>
                 

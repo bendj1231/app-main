@@ -11,7 +11,7 @@ export const PilotGapModuleChapter0: React.FC<PilotGapModuleChapter0Props> = ({ 
             {/* Hub-Style Header */}
             <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
                 <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
                 </div>
                 <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                     MODULE 01
@@ -31,7 +31,7 @@ export const PilotGapModuleChapter0: React.FC<PilotGapModuleChapter0Props> = ({ 
                         Welcome Aboard, Future Aviator
                     </h2>
                     <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto 2.5rem' }}>
-                        You've chosen to step beyond the standard pilot career path. The WingMentor Foundational Program is your bridge from "low-timer" to recognized professional. This module will ground you in the realities of our industry, the paradox of the pilot shortage, and the precise framework WingMentor uses to turn your training hours into verifiable industry recognition.
+                        You've chosen to step beyond the standard pilot career path. The PilotRecognition Foundational Program is your bridge from "low-timer" to recognized professional. This module will ground you in the realities of our industry, the paradox of the pilot shortage, and the precise framework PilotRecognition uses to turn your training hours into verifiable industry recognition.
                     </p>
                 </section>
             </div>

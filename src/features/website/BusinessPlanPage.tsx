@@ -113,7 +113,7 @@ export const BusinessPlanPage = ({ onBack }: { onBack: () => void }) => (
                     </h2>
                     <div style={{ display: 'grid', gap: 24 }}>
                         {[
-                            { feature: "WingMentor Program Suite", need: "Lack of direction & guidance", benefit: "Insight prior to major investments ($30k+). Only $5,000 investment for complete industry roadmap." },
+                            { feature: "PilotRecognition Program Suite", need: "Lack of direction & guidance", benefit: "Insight prior to major investments ($30k+). Only $5,000 investment for complete industry roadmap." },
                             { feature: "24/7 Support & Mentorship", need: "Transitioning career anxiety", benefit: "A sense of direction. Saving money on wrong investments. Feeling recognized and supported." },
                             { feature: "Industry Direct Link", need: "No network or connections", benefit: "Guidance from Airbus/Etihad training specialists and private operator brokers." }
                         ].map((item, i) => (
@@ -170,7 +170,7 @@ export const BusinessPlanPage = ({ onBack }: { onBack: () => void }) => (
 
                 <div style={{ textAlign: 'center', padding: '60px 0' }}>
                     <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#64748b', marginBottom: 24 }}>Ready to bridge the gap?</h2>
-                    <button style={{ padding: '16px 48px', fontSize: '1.1rem', fontWeight: 700, background: '#1a1a1a', color: 'white', borderRadius: 100, border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }} onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com'}>
+                    <button style={{ padding: '16px 48px', fontSize: '1.1rem', fontWeight: 700, background: '#1a1a1a', color: 'white', borderRadius: 100, border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }} onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}>
                         Contact Founders
                     </button>
                 </div>

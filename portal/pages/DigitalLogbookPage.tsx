@@ -226,7 +226,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
           </div>
 
           <div style={{ marginBottom: '1rem', marginTop: '0.5rem' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '72px', width: 'auto' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '72px', width: 'auto' }} />
           </div>
           <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
             PILOT RECOGNITION PROFILE

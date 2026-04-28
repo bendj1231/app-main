@@ -193,7 +193,7 @@ export const PostEnrollmentSlideshow: React.FC<PostEnrollmentSlideshowProps> = (
                 <div style={{ padding: '2.5rem 2.5rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', overflow: 'auto' }}>
                     <div className="dashboard-header" style={{ marginBottom: '1.5rem' }}>
                         <div className="dashboard-logo" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '90px', height: 'auto' }} />
+                            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '90px', height: 'auto' }} />
                         </div>
 
                         <div className="dashboard-subtitle">

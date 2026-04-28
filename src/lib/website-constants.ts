@@ -23,7 +23,7 @@ export const IMAGES = {
     FORUM_BG: "/images/forum-bg.png",
     IPAD_APPS_IMG: "/images/ipad-apps-img.png",
     INSTRUCTION_VS_CONSULTANCY_IMG: "/images/instruction-vs-consultancy-img.png",
-    WINGMENTOR_PASSPORT_APP_IMG: "/images/wingmentor-passport-app-img.png",
+    PILOTRECOGNITION_PASSPORT_APP_IMG: "/images/pilotrecognition-passport-app-img.png",
     PILOT_GAP_FORUM_APP_IMG: "/images/pilot-gap-forum-app-img.png",
     BLACK_BOX_APP_IMG: "/images/black-box-app-img.png",
     INFO_WELCOME_IMG: "https://images.unsplash.com/photo-1510931211026-646e33ed32f6?q=80&w=2940&auto-format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",

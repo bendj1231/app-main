@@ -116,7 +116,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -413,7 +413,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                                         <div>
                                             <p className="text-[10px] text-red-200 uppercase tracking-[0.2em] mb-1">Pilot Recognition Profile</p>
                                             <h4 className="text-2xl font-bold text-white">Pete Mitchell</h4>
-                                            <p className="text-sm text-red-100">WingMentor Recognition Portfolio</p>
+                                            <p className="text-sm text-red-100">PilotRecognition Recognition Portfolio</p>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-[10px] text-red-200 uppercase tracking-[0.2em] mb-2">MATCH SCORE</p>
@@ -600,7 +600,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                         <div className="bg-red-600 px-6 py-4 border-b border-red-700 flex items-center justify-between">
                             <div>
                                 <h3 className="text-xl font-bold text-white">Pilot Recognition Profile - Detailed Data</h3>
-                                <p className="text-sm text-red-100">Pete Mitchell | WingMentor Recognition Portfolio</p>
+                                <p className="text-sm text-red-100">Pete Mitchell | PilotRecognition Recognition Portfolio</p>
                             </div>
                             <button
                                 onClick={() => setShowMockDataModal(false)}
@@ -777,7 +777,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                 </p>
 
                 <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-                    WingMentor bridges this gap by providing direct insight from training captains and recruitment specialists at
+                    PilotRecognition bridges this gap by providing direct insight from training captains and recruitment specialists at
                     global carriers. Our program prepares you for the modern assessment pipeline: from initial <strong>ATLAS CV screening</strong>
                     and psychometric testing, through competency-based interviews, to the final simulator evaluation. Understanding
                     these expectations before you apply is the difference between being "qualified on paper" and being "the right

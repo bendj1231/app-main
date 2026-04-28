@@ -22,7 +22,7 @@ export const PilotedDronesPage: React.FC<PilotedDronesPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -33,7 +33,7 @@ export const PilotedDronesPage: React.FC<PilotedDronesPageProps> = ({
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
                         The convergence of traditional aviation and unmanned systems is here. From piloted eVTOL operations to
-                        fully automated drone logistics, WingMentor provides the pathway for pilots to master the next generation of flight.
+                        fully automated drone logistics, PilotRecognition provides the pathway for pilots to master the next generation of flight.
                     </p>
                 </div>
             </div>
@@ -127,11 +127,11 @@ export const PilotedDronesPage: React.FC<PilotedDronesPageProps> = ({
                     Your Pathway to the Future
                 </h2>
                 <p className="text-base md:text-lg text-slate-700 leading-relaxed mb-3">
-                    WingMentor guides you through the certification maze. Whether you are adding a remote rating to your CPL or starting from scratch, we align you with approved training entities for Specific Category operations and eVTOL type ratings.
+                    PilotRecognition guides you through the certification maze. Whether you are adding a remote rating to your CPL or starting from scratch, we align you with approved training entities for Specific Category operations and eVTOL type ratings.
                 </p>
                 <div className="mt-8 p-6 bg-blue-50 rounded-2xl border border-blue-100">
                     <p className="text-base text-slate-700 leading-relaxed">
-                        <strong>Industry Update:</strong> WingMentor has spoken with <strong>MLG</strong> regarding unmanned systems. They have confirmed that Commercial Pilot License (CPL) holders are eligible to undergo training for autonomous drone operations. Please note that based on your existing qualifications and skills, this eligibility is currently <span className="font-semibold text-blue-900">limited to aerial drones</span>.
+                        <strong>Industry Update:</strong> PilotRecognition has spoken with <strong>MLG</strong> regarding unmanned systems. They have confirmed that Commercial Pilot License (CPL) holders are eligible to undergo training for autonomous drone operations. Please note that based on your existing qualifications and skills, this eligibility is currently <span className="font-semibold text-blue-900">limited to aerial drones</span>.
                     </p>
                 </div>
             </div>

@@ -121,7 +121,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                 justifyContent: 'center',
                 zIndex: 9999
             }}>
-                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '250px', marginBottom: '3rem' }} />
+                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '250px', marginBottom: '3rem' }} />
                 <div style={{
                     width: '60px',
                     height: '60px',
@@ -223,7 +223,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                         {/* Centered Page Header (Editorial Style) */}
                         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
                             <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '240px' }} />
+                                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
                             </div>
                             <div style={{
                                 color: '#2563eb',
@@ -278,7 +278,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
 
                                     <section>
                                         <h3 style={{ fontSize: '0.75rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
-                                            The WingMentor Difference
+                                            The PilotRecognition Difference
                                         </h3>
                                         <p style={{ color: '#475569', lineHeight: 1.7, fontSize: '1.05rem' }}>
                                             We do not teach initial concepts or replace your flight school's curriculum. Instead, we act as diagnostic consultants. By analyzing your specific performance gaps and grading sheets, we provide the targeted, 1-on-1 consultation that standard flight instruction simply cannot accommodate.
@@ -431,7 +431,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                                                 />
                                             </div>
                                             <label htmlFor="agreement" style={{ fontSize: '0.875rem', color: '#64748b', cursor: 'pointer', lineHeight: 1.5 }}>
-                                                I agree to the <span onClick={(e) => { e.preventDefault(); onShowTerms(); }} style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Terms and Conditions</span>, acknowledge that WingMentor is <strong>not</strong> a training program or flight school, but a <strong>Pilot Quality Assurance and Credibility Experience provider</strong>, and fully release WingMentor from any legal liability regarding the outcomes of this experience.
+                                                I agree to the <span onClick={(e) => { e.preventDefault(); onShowTerms(); }} style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Terms and Conditions</span>, acknowledge that PilotRecognition is <strong>not</strong> a training program or flight school, but a <strong>Pilot Quality Assurance and Credibility Experience provider</strong>, and fully release PilotRecognition from any legal liability regarding the outcomes of this experience.
                                             </label>
                                         </div>
 
@@ -523,11 +523,11 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', color: '#475569', fontSize: '1rem', lineHeight: 1.6 }}>
                                             <div>
                                                 <strong style={{ display: 'block', color: '#1e293b', marginBottom: '0.5rem' }}>1. Data Collection & Advocacy</strong>
-                                                To provide personalized mentorship and industry advocacy, WingMentor collects information provided during enrollment and subsequent training sessions. This data is used to give pilots "a voice" within the industry, ensuring your input reaches major aviation governing bodies.
+                                                To provide personalized mentorship and industry advocacy, PilotRecognition collects information provided during enrollment and subsequent training sessions. This data is used to give pilots "a voice" within the industry, ensuring your input reaches major aviation governing bodies.
                                             </div>
                                             <div>
                                                 <strong style={{ display: 'block', color: '#1e293b', marginBottom: '0.4rem' }}>2. Logbook & Performance Synthesis</strong>
-                                                Your mentorship hours, session metrics, and peer-verification statuses are stored in our secure architecture. This data is synthesized into the "WingMentor Portfolio," which serves as evidence of your leadership and technical CRM skills to potential employers.
+                                                Your mentorship hours, session metrics, and peer-verification statuses are stored in our secure architecture. This data is synthesized into the "PilotRecognition Portfolio," which serves as evidence of your leadership and technical CRM skills to potential employers.
                                             </div>
                                             <div>
                                                 <strong style={{ display: 'block', color: '#1e293b', marginBottom: '0.5rem' }}>3. Industry Sharing & Efficacy</strong>
@@ -535,7 +535,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                                             </div>
                                             <div>
                                                 <strong style={{ display: 'block', color: '#1e293b', marginBottom: '0.5rem' }}>4. Professional Transparency</strong>
-                                                WingMentor maintains a high standard of data integrity. Falsification of session data or logbook entries will result in immediate termination of the mentorship agreement and potentially impact industry-recognized certifications.
+                                                PilotRecognition maintains a high standard of data integrity. Falsification of session data or logbook entries will result in immediate termination of the mentorship agreement and potentially impact industry-recognized certifications.
                                             </div>
                                         </div>
                                     </section>

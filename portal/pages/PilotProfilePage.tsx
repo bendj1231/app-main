@@ -140,7 +140,7 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
       </div>
 
       <p style={{ fontSize: '1rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-        Share your verified WingMentor Network data directly with airline recruiters. Sync flight hours, competencies, and achievements instantly.
+        Share your verified PilotRecognition Network data directly with airline recruiters. Sync flight hours, competencies, and achievements instantly.
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
@@ -268,7 +268,7 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
           </div>
         </div>
         <div style={{ padding: '0.5rem 1rem', background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, color: 'white' }}>
-          ✓ Verified by WingMentor
+          ✓ Verified by PilotRecognition
         </div>
       </div>
       
@@ -986,7 +986,7 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
           </button>
 
           <div style={{ marginBottom: '1rem', marginTop: '0.5rem' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '72px', width: 'auto' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '72px', width: 'auto' }} />
           </div>
           <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
             Pilot Recognition Profile
@@ -1001,7 +1001,7 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
             <CategorySection title="Pilot Data" description="Identity, credentials, flight activity, and core hour summaries">
               {(() => {
                 const quickStatCards = [
-                  { title: 'Total Flight Hours', value: `${pilotData.flightLogbookHours.toFixed(1)} hr`, subtitle: 'Logged via WingMentor', accent: '#0ea5e9' },
+                  { title: 'Total Flight Hours', value: `${pilotData.flightLogbookHours.toFixed(1)} hr`, subtitle: 'Logged via PilotRecognition', accent: '#0ea5e9' },
                   { title: 'Mentor Hours', value: mentorHoursLabel, subtitle: 'Mentor engagement', accent: '#f97316' },
                   { title: 'Study Hours', value: `${pilotData.studyHours}`, subtitle: 'Focused study time', accent: '#2563eb' },
                   { title: 'Exam Hours', value: `${pilotData.examHours}`, subtitle: 'Assessment prep', accent: '#6366f1' }

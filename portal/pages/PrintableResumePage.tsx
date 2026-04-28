@@ -159,9 +159,9 @@ function filterActionVerbs(bullet: string): string {
 // ─── Default / Fallback Data ─────────────────────────────────────────────────
 
 const ORG_SYNONYMS: Record<string, string> = {
-  'WingMentor': 'Wingman Network',
-  'WingMentor Academy': 'Wingman Network Academy',
-  'WingMentor Foundational Program': 'Wingman Network Foundational Program',
+  'PilotRecognition': 'Wingman Network',
+  'PilotRecognition Academy': 'Wingman Network Academy',
+  'PilotRecognition Foundational Program': 'Wingman Network Foundational Program',
 };
 
 function normalizeOrg(input: string): string {
@@ -214,7 +214,7 @@ const DEFAULT_LICENSES = [
 ];
 
 const DEFAULT_ACHIEVEMENTS = [
-  'WingMentor Foundational Program – Verified',
+  'PilotRecognition Foundational Program – Verified',
   'Airbus Evidence-Based Training Certified',
   'Emirates ATPL Readiness Program – Enrolled',
 ];
@@ -255,7 +255,7 @@ function resolveExperience(raw?: PilotExperience[]): ExperienceDisplay[] {
 
 function resolveEducation(raw?: PilotEducation[]): EducationDisplay[] {
   if (!raw || raw.length === 0) {
-    return [{ id: 1, degree: 'Foundational Mentorship Program', institution: 'WingMentor Academy', year: '2024' }];
+    return [{ id: 1, degree: 'Foundational Mentorship Program', institution: 'PilotRecognition Academy', year: '2024' }];
   }
   return raw.map((e, i) => ({
     id: i + 1,
@@ -419,7 +419,7 @@ const PrintableResumePage: React.FC<PrintableResumePageProps> = ({ onBack, userP
             <span>2024 - Present</span>
           </div>
           <ul className="cv-bullets">
-            <li><strong>WingMentor Hours:</strong> {mentorship.hours} hr of dedicated peer mentorship and leadership training.</li>
+            <li><strong>PilotRecognition Hours:</strong> {mentorship.hours} hr of dedicated peer mentorship and leadership training.</li>
             <li><strong>Peer Observation:</strong> Completed {mentorship.observations} hours of structured consultation on {mentorship.cases} cases involving complex flight decision-making.</li>
           </ul>
         </section>

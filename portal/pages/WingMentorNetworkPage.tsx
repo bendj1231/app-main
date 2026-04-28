@@ -2,26 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Icons } from '../icons';
 import { JobMatchingCard } from '../components/JobMatchingCard';
 
-interface WingMentorNetworkPageProps {
+interface PilotRecognitionNetworkPageProps {
     onBack: () => void;
     onLogout: () => void;
     onViewChange?: (view: 'aviation-expectations') => void;
 }
 
-export const WingMentorNetworkPage: React.FC<WingMentorNetworkPageProps> = ({ onBack, onLogout, onViewChange }) => {
+export const PilotRecognitionNetworkPage: React.FC<PilotRecognitionNetworkPageProps> = ({ onBack, onLogout, onViewChange }) => {
     // Current User Data (simplifying for now, ideally fetched deeply if needed)
     const currentUser = auth.currentUser;
-    const [currentUserProfile, setCurrentUserProfile] = useState<WingMentorUser | null>(null);
+    const [currentUserProfile, setCurrentUserProfile] = useState<PilotRecognitionUser | null>(null);
 
     // Directory State
     const [searchQuery, setSearchQuery] = useState('');
     const [regionFilter, setRegionFilter] = useState('');
     const [schoolFilter, setSchoolFilter] = useState('');
-    const [directoryUsers, setDirectoryUsers] = useState<WingMentorUser[]>([]);
+    const [directoryUsers, setDirectoryUsers] = useState<PilotRecognitionUser[]>([]);
 
     // Chat State
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
-    const [activeChatUser, setActiveChatUser] = useState<WingMentorUser | null>(null);
+    const [activeChatUser, setActiveChatUser] = useState<PilotRecognitionUser | null>(null);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -199,7 +199,7 @@ export const WingMentorNetworkPage: React.FC<WingMentorNetworkPageProps> = ({ on
         }, 100);
     };
 
-    const handleStartChat = async (user: WingMentorUser) => {
+    const handleStartChat = async (user: PilotRecognitionUser) => {
         if (!currentUser) return;
 
         try {
@@ -252,14 +252,14 @@ export const WingMentorNetworkPage: React.FC<WingMentorNetworkPageProps> = ({ on
                             PHASE 2: COLLABORATION
                         </div>
                         <h1 className="font-serif text-[2.1rem] leading-tight text-slate-900 mb-2">
-                            WingMentor Network
+                            PilotRecognition Network
                         </h1>
                         <p className="text-[0.9rem] text-slate-500 leading-relaxed max-w-sm mt-3">
                             Coordinate simulator sessions, request debriefs, and message your peers. Reach 20 logged hours to unlock Official Mentor status.
                         </p>
                         <img
                             src="/Networking.jpg"
-                            alt="WingMentor Network"
+                            alt="PilotRecognition Network"
                             style={{
                                 width: '100%',
                                 maxWidth: '280px',

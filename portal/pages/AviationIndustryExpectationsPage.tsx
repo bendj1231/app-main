@@ -72,7 +72,7 @@ const pickTop = (values: string[], max: number) => values.slice(0, max);
 const buildOperatorDescription = (operator: OperatorSummary) => {
   const aircraftText = operator.aircraft.length ? `Aircraft seen in our database: ${pickTop(operator.aircraft, 6).join(', ')}.` : '';
   const locationText = operator.locations.length ? `Common bases/locations: ${pickTop(operator.locations, 5).join(', ')}.` : '';
-  return `${operator.company} appears in the WingMentor job database with ${operator.jobs.length} current or recent pilot opportunities. ${aircraftText} ${locationText}`.trim();
+  return `${operator.company} appears in the PilotRecognition job database with ${operator.jobs.length} current or recent pilot opportunities. ${aircraftText} ${locationText}`.trim();
 };
 
 const buildOperatorExpectations = (operator: OperatorSummary) => {
@@ -281,7 +281,7 @@ export const AviationIndustryExpectationsPage: React.FC<AviationIndustryExpectat
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <img
               src="/logo.png"
-              alt="WingMentor Logo"
+              alt="PilotRecognition Logo"
               style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }}
             />
             <div className="text-blue-600 tracking-widest text-xs font-bold uppercase mb-3">
@@ -880,7 +880,7 @@ export const AviationIndustryExpectationsPage: React.FC<AviationIndustryExpectat
                         <p style={{ fontSize: '0.875rem' }}>
                           {userId
                             ? 'Complete your pilot profile to generate personalized job matches'
-                            : 'Connect your WingMentor profile to unlock personalized matches'}
+                            : 'Connect your PilotRecognition profile to unlock personalized matches'}
                         </p>
                       </>
                     ) : (

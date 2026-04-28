@@ -29,7 +29,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate, onLogin,
                                 </div>
 
                                 <h1 className="text-5xl md:text-7xl font-serif text-slate-900 leading-tight mb-6">
-                                    WingMentor <br />
+                                    PilotRecognition <br />
                                     <span className="text-blue-600">Portal</span>
                                 </h1>
 
@@ -107,7 +107,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate, onLogin,
 
             <div className="bg-slate-900 py-12 border-t border-slate-800">
                 <div className="max-w-7xl mx-auto px-6 text-center">
-                    <p className="text-slate-500 text-sm">© 2026 WingMentor. EBT CBTA guidance provided under advisory relationship. All secure systems operational.</p>
+                    <p className="text-slate-500 text-sm">© 2026 PilotRecognition. EBT CBTA guidance provided under advisory relationship. All secure systems operational.</p>
                 </div>
             </div>
         </div>

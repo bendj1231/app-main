@@ -1,7 +1,7 @@
-# WingMentor Component Library Documentation
+# PilotRecognition Component Library Documentation
 
 ## Overview
-This document provides comprehensive documentation for all UI components in the WingMentor component library.
+This document provides comprehensive documentation for all UI components in the PilotRecognition component library.
 
 ## Installation
 Import components from `/src/components/ui/` directory.

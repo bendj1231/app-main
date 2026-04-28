@@ -96,14 +96,14 @@ const LogbookPage: React.FC<LogbookPageProps> = ({ onBack, userProfile }) => {
 
         <div className="dashboard-header" style={{ marginBottom: '2rem' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
           </div>
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em' }}>
             FLIGHT RECORDS
           </div>
           <h1 className="dashboard-title">Digital Logbook</h1>
           <p style={{ maxWidth: '40rem', margin: '0 auto', color: '#475569' }}>
-            Complete flight history with verified hours, routes, and aircraft details. All entries are synced with WingMentor's central registry.
+            Complete flight history with verified hours, routes, and aircraft details. All entries are synced with PilotRecognition's central registry.
           </p>
         </div>
 

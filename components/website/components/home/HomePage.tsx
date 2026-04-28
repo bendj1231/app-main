@@ -1670,7 +1670,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                             <h3 className="font-bold text-lg mb-4">Contact</h3>
                             <ul className="space-y-2 text-slate-400 text-sm">
                                 <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
-                                <li><a href="mailto:wmpilotgroup@gmail.com" className="hover:text-white cursor-pointer transition-colors">wmpilotgroup@gmail.com</a></li>
+                                <li><a href="mailto:pilotrecognition@gmail.com" className="hover:text-white cursor-pointer transition-colors">pilotrecognition@gmail.com</a></li>
                                 <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
                             </ul>
                         </div>

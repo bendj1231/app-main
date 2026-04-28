@@ -54,7 +54,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -64,7 +64,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                             Join the Network
                         </h1>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-                            WingMentor is more than a platform—it's a professional pilot network designed to
+                            PilotRecognition is more than a platform—it's a professional pilot network designed to
                             enhance your credibility, automate your compliance, and accelerate your pathway into the global flight deck.
                         </p>
                     </RevealOnScroll>
@@ -105,7 +105,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                             <div className="relative group p-[1px] bg-gradient-to-b from-slate-200 to-transparent rounded-[2rem]">
                                 <img
                                     src="https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g"
-                                    alt="WingMentor Programs"
+                                    alt="PilotRecognition Programs"
                                     className="w-full h-auto rounded-[2rem] shadow-2xl transition-all duration-700 group-hover:scale-[1.02]"
                                 />
                             </div>
@@ -259,7 +259,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                                     foundation: true,
                                     transition: true,
                                     pillar: "Leadership Skills",
-                                    detail: "Direct connection to the WingMentor Network"
+                                    detail: "Direct connection to the PilotRecognition Network"
                                 },
                                 {
                                     label: "Professional Forum Communication",
@@ -352,7 +352,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                     <RevealOnScroll>
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">Explore the programs available within our unified membership</h2>
                         <p className="text-lg text-slate-600 mb-10 font-sans">
-                            Whether you are building your foundation or transitioning to flagship carriers, WingMentor provides the specialized intelligence you need.
+                            Whether you are building your foundation or transitioning to flagship carriers, PilotRecognition provides the specialized intelligence you need.
                         </p>
                         <div className="flex flex-wrap justify-center gap-6">
                             <button

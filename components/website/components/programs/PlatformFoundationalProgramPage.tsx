@@ -15,7 +15,7 @@ export const PlatformFoundationalProgramPage: React.FC<PlatformFoundationalProgr
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="block mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -151,7 +151,7 @@ export const PlatformFoundationalProgramPage: React.FC<PlatformFoundationalProgr
                             The Foundational Program is supported and recognized by leading aviation organizations, giving your professional development industry-wide credibility.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            <strong>WingMentor was recognized at the first Aviation Career Fair at Etihad Museum</strong>, demonstrating our commitment to industry collaboration and pilot development.
+                            <strong>PilotRecognition was recognized at the first Aviation Career Fair at Etihad Museum</strong>, demonstrating our commitment to industry collaboration and pilot development.
                         </p>
                     </div>
                     <div className="md:pl-8">
@@ -193,7 +193,7 @@ export const PlatformFoundationalProgramPage: React.FC<PlatformFoundationalProgr
                             Don't just accumulate hours—build <strong>verifiable credibility, leadership skills, and industry recognition</strong> that will set you apart throughout your entire aviation career.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Join the WingMentor Foundational Program and gain the professional development that accelerates your path to Flight Instructor roles and airline careers.
+                            Join the PilotRecognition Foundational Program and gain the professional development that accelerates your path to Flight Instructor roles and airline careers.
                         </p>
                     </div>
                     <div className="order-1 md:order-2">

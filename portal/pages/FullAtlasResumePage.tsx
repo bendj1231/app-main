@@ -113,7 +113,7 @@ const FullAtlasResumePage: React.FC<FullAtlasResumePageProps> = ({ onBack, userP
     },
     {
       role: 'Foundational Program Enrollee',
-      organization: 'WingMentor',
+      organization: 'PilotRecognition',
       duration: '50 hours',
       details: 'AIRBUS EBT CBTA competency skills: consultation, problem solving, assessment, pilot development, industry familiarization, mentorship.'
     },
@@ -228,7 +228,7 @@ const FullAtlasResumePage: React.FC<FullAtlasResumePageProps> = ({ onBack, userP
             fontSize: '0.9rem',
             color: '#4a4a4a'
           }}>
-            <span>Nationality: {nationality}</span> | <span>Languages: {languages}</span> | <span>WingMentor Recognition Portfolio</span>
+            <span>Nationality: {nationality}</span> | <span>Languages: {languages}</span> | <span>PilotRecognition Recognition Portfolio</span>
           </div>
         </header>
 
@@ -249,7 +249,7 @@ const FullAtlasResumePage: React.FC<FullAtlasResumePageProps> = ({ onBack, userP
             Professional pilot with comprehensive training in both single and multi-engine aircraft. 
             Holds frozen ATPL license with valid Class 1 Medical Certificate. Demonstrated expertise 
             in instrument flight operations, crew resource management, and advanced flight planning. 
-            Committed to continuous professional development through the WingMentor Foundational Program 
+            Committed to continuous professional development through the PilotRecognition Foundational Program 
             and AIRBUS EBT CBTA competency-based training approach.
           </p>
         </section>
@@ -399,7 +399,7 @@ const FullAtlasResumePage: React.FC<FullAtlasResumePageProps> = ({ onBack, userP
             fontSize: '0.95rem'
           }}>
             <li style={{ marginBottom: '0.4rem' }}>
-              <strong>WingMentor Foundational Program</strong> - Verified Completion
+              <strong>PilotRecognition Foundational Program</strong> - Verified Completion
             </li>
             <li style={{ marginBottom: '0.4rem' }}>
               <strong>Airbus Evidence-Based Training (EBT)</strong> - Certified
@@ -429,7 +429,7 @@ const FullAtlasResumePage: React.FC<FullAtlasResumePageProps> = ({ onBack, userP
             <strong>ATLAS Resume Verification</strong>
           </p>
           <p style={{ margin: 0 }}>
-            This resume is verified through WingMentor's ATLAS system. 
+            This resume is verified through PilotRecognition's ATLAS system. 
             All flight hours and certifications are authenticated. 
             Generated on {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}.
           </p>

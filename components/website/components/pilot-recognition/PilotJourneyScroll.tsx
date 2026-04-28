@@ -78,7 +78,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
       setTypingField('email');
       
       // Type email
-      const email = "wingmentorprogram@gmail.com";
+      const email = "pilotrecognition@gmail.com";
       for (let i = 0; i <= email.length; i++) {
         setEmailText(email.slice(0, i));
         await new Promise(r => setTimeout(r, 40));
@@ -514,7 +514,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
               </p>
               <h3 className="text-white font-semibold text-base mb-3">Pilot Portal</h3>
               <p className="text-white/70 text-[9px] leading-relaxed max-w-[180px] mb-3">
-                Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies.
+                Access personalized program enrollment, pathway briefs, and PilotRecognition Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies.
               </p>
               <div className="px-4 py-1.5 bg-white/10 text-white text-[9px] rounded-full border border-white/20">
                 Learn more

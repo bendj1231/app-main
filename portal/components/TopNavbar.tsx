@@ -27,7 +27,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onNavigate }) => {
             }}
         >
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <img src="/logo.png" alt="WingMentor Logo" style={{ height: '40px', objectFit: 'contain' }} />
+                <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '40px', objectFit: 'contain' }} />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

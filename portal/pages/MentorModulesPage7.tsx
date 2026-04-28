@@ -9,7 +9,7 @@ export const MentorModulesPage7: React.FC<MentorModulesPage7Props> = ({ onBack }
     <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
       <div style={{ textAlign: 'center', marginBottom: '4rem', paddingTop: '2rem' }}>
         <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
+          <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
         </div>
         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
           MODULE 2 • CHAPTER 7
@@ -56,7 +56,7 @@ export const MentorModulesPage7: React.FC<MentorModulesPage7Props> = ({ onBack }
           border: '1px solid rgba(59,130,246,0.1)'
         }}>
           <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: '#1e40af', marginBottom: '1rem', textAlign: 'center' }}>
-            WingMentor Insight
+            PilotRecognition Insight
           </h3>
           <p style={{ color: '#374151', fontSize: '1.05rem', lineHeight: 1.7, marginBottom: '1.5rem', textAlign: 'center' }}>
             The pilots who become great mentors do not just accumulate knowledge—they integrate it into wisdom that can be applied fluidly in real situations.

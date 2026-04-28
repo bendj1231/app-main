@@ -1,5 +1,5 @@
 /**
- * WingMentor - Main Entry Point
+ * PilotRecognition - Main Entry Point
  * Stabilized and Recovered UI Foundation
  */
 
@@ -352,7 +352,7 @@ const App = () => {
     },
     'what-is-the-pilot-gap': {
       title: 'What is the Pilot Gap? | Aviation Industry Challenge | Pilot Recognition',
-      description: 'Understanding the pilot shortage gap in the aviation industry. Learn about the career transition challenge and how WingMentor helps bridge the gap.'
+      description: 'Understanding the pilot shortage gap in the aviation industry. Learn about the career transition challenge and how PilotRecognition helps bridge the gap.'
     },
     'programs': {
       title: 'Programs & Pathways | Pilot Programs & Development | Pilot Recognition',

@@ -10,7 +10,7 @@ const stages = [
     { number: '07', title: 'Accreditation & Prescription', description: 'Industry credentials & advanced placement' },
     { number: '08', title: 'Advanced Mentorship', description: '50-hour milestone & leadership demonstration' },
     { number: '09', title: 'AIRBUS Recognition Interview', description: 'Final evaluation & airline placement prep' },
-    { number: '10', title: 'WingMentor Certification', description: 'Final accreditation & global partner access' }
+    { number: '10', title: 'PilotRecognition Certification', description: 'Final accreditation & global partner access' }
 ];
 
 export const ProgramStages: React.FC = () => {

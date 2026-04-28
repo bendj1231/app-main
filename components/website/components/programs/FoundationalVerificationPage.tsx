@@ -20,7 +20,7 @@ interface LogEntry {
 export const FoundationalVerificationPage: React.FC<FoundationalVerificationPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
     // Identity
-    const [wingMentorId, setWingMentorId] = useState('');
+    const [wingMentorId, setPilotRecognitionId] = useState('');
     const [fullName, setFullName] = useState('');
     const [photo, setPhoto] = useState<File | null>(null);
 
@@ -103,7 +103,7 @@ export const FoundationalVerificationPage: React.FC<FoundationalVerificationPage
                     <div className="text-center mb-12 relative z-20">
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold uppercase text-blue-700 mb-4">
@@ -147,11 +147,11 @@ export const FoundationalVerificationPage: React.FC<FoundationalVerificationPage
                                     {/* Fields */}
                                     <div className="w-full md:w-2/3 space-y-4">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-slate-700 uppercase">WingMentor Account ID</label>
+                                            <label className="text-sm font-bold text-slate-700 uppercase">PilotRecognition Account ID</label>
                                             <input
                                                 type="text"
                                                 value={wingMentorId}
-                                                onChange={(e) => setWingMentorId(e.target.value)}
+                                                onChange={(e) => setPilotRecognitionId(e.target.value)}
                                                 placeholder="WM-XXXX-XXXX"
                                                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                                             />

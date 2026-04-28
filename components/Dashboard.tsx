@@ -211,11 +211,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, j
       title: "New IFR Simulator Added",
       date: "2 hours ago",
       category: "Desktop App Update",
-      summary: "Experience the new IFR training module on the WingMentor Desktop App. Learn the foundations of IFR maneuvers and master chart interpretation."
+      summary: "Experience the new IFR training module on the PilotRecognition Desktop App. Learn the foundations of IFR maneuvers and master chart interpretation."
     },
     {
       id: 2,
-      title: "WingMentor Community Webinar",
+      title: "PilotRecognition Community Webinar",
       date: "1 day ago",
       category: "Event",
       summary: "Join us this Friday for a deep dive into advanced meteorology with Captain Stevenson."
@@ -234,7 +234,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, j
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">WingMentor Program</h1>
+          <h1 className="text-3xl font-bold text-slate-800">PilotRecognition Program</h1>
           <p className="text-slate-600 text-lg mt-1 font-medium">Introducing apps for pilots made by pilots</p>
           <p className="text-slate-400 text-sm mt-2">Welcome back, {userRole} {userName}.</p>
         </div>
@@ -688,7 +688,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, userName, userRole, j
                </p>
                
                <span className="inline-flex items-center gap-2 bg-white text-purple-900 px-6 py-3 rounded-xl font-bold hover:bg-purple-50 transition-colors shadow-lg">
-                 Visit WingMentor Shop
+                 Visit PilotRecognition Shop
                  <ArrowRight size={18} />
                </span>
           </div>

@@ -23,7 +23,7 @@ const modules = [
     id: 'foundation-02',
     title: 'Progress & Examination Board',
     description:
-      'Track your journey through the Foundational Program. View completed modules, upcoming milestones, and your overall advancement in the WingMentor mentorship flow.',
+      'Track your journey through the Foundational Program. View completed modules, upcoming milestones, and your overall advancement in the PilotRecognition mentorship flow.',
     icon: 'TrendingUp',
   },
   {
@@ -73,7 +73,7 @@ export const EnrolledFoundationalPage: React.FC<EnrolledFoundationalPageProps> =
 
           {/* Header Section */}
           <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ display: 'block', maxWidth: '180px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ display: 'block', maxWidth: '180px', height: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               WINGMENTOR PROGRAMS
             </div>

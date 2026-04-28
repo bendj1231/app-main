@@ -24,6 +24,6 @@ export interface ProgramLogEntry {
   description: string;
   duration: string;
   signature: string;
-  isWingMentor: boolean;
+  isPilotRecognition: boolean;
   status: 'Verified' | 'Pending' | 'Rejected';
 }

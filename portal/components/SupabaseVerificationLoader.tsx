@@ -75,12 +75,12 @@ export const SupabaseVerificationLoader: React.FC<SupabaseVerificationLoaderProp
           <div className={styles.infoPanelGradient1} />
           <div className={styles.infoPanelGradient2} />
           <div className={styles.logo}>
-            <img src="/logo.png" alt="WingMentor Logo" />
+            <img src="/logo.png" alt="PilotRecognition Logo" />
           </div>
           <div className={styles.pageLabel}>BRIDGING THE GAP</div>
           <h2 className={styles.panelTitle}>Loading Portal</h2>
           <p className={styles.panelDescription}>
-            <strong>Please wait while we prepare your WingMentor experience.</strong> We're loading your personalized dashboard and training materials.
+            <strong>Please wait while we prepare your PilotRecognition experience.</strong> We're loading your personalized dashboard and training materials.
           </p>
         </div>
         
@@ -116,7 +116,7 @@ export const SupabaseVerificationLoader: React.FC<SupabaseVerificationLoaderProp
 
             <div className={styles.additionalInfo}>
               <p>Powered by Supabase Database</p>
-              <p>WingMentor Foundation Program</p>
+              <p>PilotRecognition Foundation Program</p>
             </div>
 
             {status === 'error' && (

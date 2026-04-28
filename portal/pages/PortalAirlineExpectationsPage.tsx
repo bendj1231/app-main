@@ -2097,7 +2097,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
           <Globe className="w-10 h-10 text-sky-400 mx-auto mb-4" />
           <h3 className="text-2xl font-serif text-black mb-2">Check Your Airline Match Score</h3>
           <p className="text-slate-600 text-sm max-w-xl mx-auto mb-6">
-            Your WingMentor PilotRecognition profile is automatically matched against each airline's verified requirements. Build your profile to unlock personalised match scores.
+            Your PilotRecognition PilotRecognition profile is automatically matched against each airline's verified requirements. Build your profile to unlock personalised match scores.
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <div className="flex items-center gap-2 bg-white/90 backdrop-blur px-5 py-2.5 rounded-full border border-slate-200">

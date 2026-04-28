@@ -1,7 +1,7 @@
 # Responsive Design & Mobile Optimization Documentation
 
 ## Overview
-This document outlines the responsive design improvements and mobile optimizations implemented for the WingMentor application.
+This document outlines the responsive design improvements and mobile optimizations implemented for the PilotRecognition application.
 
 ## Mobile-First Approach
 The application follows a mobile-first design philosophy, ensuring optimal user experience on small screens before progressively enhancing for larger devices.

@@ -258,7 +258,7 @@ export const PilotsStory: React.FC<PilotsStoryProps> = ({ onAnimationComplete })
                                     In this phase, you transition from consumer to contributor. You will work under the direct supervision of a <strong>Senior Wing Mentor</strong>, learning the surgical precision of diagnostic guidance.
                                 </p>
                                 <p>
-                                    This 20-hour milestone is your professional checkride. You will be evaluated on your ability to simplify complex aerodynamics, manage mentee frustration, and maintain the highest ethical standards of the program. Success here earns you your first major stamp in the WingMentor Passport.
+                                    This 20-hour milestone is your professional checkride. You will be evaluated on your ability to simplify complex aerodynamics, manage mentee frustration, and maintain the highest ethical standards of the program. Success here earns you your first major stamp in the PilotRecognition Passport.
                                 </p>
                             </div>
 

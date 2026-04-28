@@ -49,7 +49,7 @@ Additional Information:
     `.trim();
 
     const { data, error } = await resend.emails.send({
-      from: 'WingMentor Enterprise <contact@pilotrecognition.com>',
+      from: 'PilotRecognition Enterprise <contact@pilotrecognition.com>',
       to: ['benjamintigerbowler@gmail.com'],
       subject: `Enterprise Access Request - ${body.company}`,
       text: emailBody,

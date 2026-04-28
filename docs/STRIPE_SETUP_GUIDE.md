@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides instructions for setting up the Stripe subscription billing system for the WingMentor application.
+This document provides instructions for setting up the Stripe subscription billing system for the PilotRecognition application.
 
 ## Prerequisites
 
@@ -19,14 +19,14 @@ This document provides instructions for setting up the Stripe subscription billi
 3. Create two products:
 
 **Semi-Annual Plan:**
-- Name: "WingMentor Semi-Annual"
+- Name: "PilotRecognition Semi-Annual"
 - Description: "6 months of premium access"
 - Price: $50 USD
 - Interval: Every 6 months
 - Copy the Price ID (e.g., `price_xxx`)
 
 **Annual Plan:**
-- Name: "WingMentor Annual"
+- Name: "PilotRecognition Annual"
 - Description: "12 months of premium access"
 - Price: $100 USD
 - Interval: Every year

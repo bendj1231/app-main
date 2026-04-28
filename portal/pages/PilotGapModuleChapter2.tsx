@@ -12,7 +12,7 @@ export const PilotGapModuleChapter2: React.FC<PilotGapModuleChapter2Props> = ({ 
             {/* ── Section Header ── */}
             <div style={{ textAlign: 'center', paddingBottom: '2rem', paddingTop: '1.5rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
                 <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', margin: '0 auto' }} />
                 </div>
                 <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                     CHAPTER 04
@@ -21,7 +21,7 @@ export const PilotGapModuleChapter2: React.FC<PilotGapModuleChapter2Props> = ({ 
                     The "Solution"
                 </h2>
                 <p style={{ color: '#64748b', fontSize: '1.05rem', maxWidth: '42rem', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
-                    The WingMentor approach to bridging the recognition gap—a structured, industry-endorsed framework to transform low-time pilots into verified, placement-ready professionals.
+                    The PilotRecognition approach to bridging the recognition gap—a structured, industry-endorsed framework to transform low-time pilots into verified, placement-ready professionals.
                 </p>
                 <div style={{ height: '1px', width: '100%', background: 'linear-gradient(to right, transparent, #e2e8f0, transparent)', maxWidth: '56rem', margin: '0 auto' }} />
             </div>

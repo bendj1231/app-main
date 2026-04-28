@@ -19,7 +19,7 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -29,7 +29,7 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                         Air Taxi Pathways
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                        Direct access to the future of urban aviation. WingMentor is in active partnership with industry leaders Archer, MLG, and Joby to prepare pilots for the eVTOL revolution.
+                        Direct access to the future of urban aviation. PilotRecognition is in active partnership with industry leaders Archer, MLG, and Joby to prepare pilots for the eVTOL revolution.
                     </p>
                 </div>
             </div>
@@ -50,7 +50,7 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                             The air taxi sector is no longer science fiction—it's operational reality. Companies like <strong>Archer Aviation</strong>, <strong>MLG</strong>, and <strong>Joby Aviation</strong> are launching commercial eVTOL (electric Vertical Take-Off and Landing) services in major cities worldwide. These aircraft represent a fundamental shift in how we think about urban transportation and pilot careers.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            WingMentor has established direct communication channels with these industry pioneers to understand their pilot requirements, operational standards, and hiring timelines. This insider knowledge allows us to prepare our Transition Program members with the exact competencies these operators demand.
+                            PilotRecognition has established direct communication channels with these industry pioneers to understand their pilot requirements, operational standards, and hiring timelines. This insider knowledge allows us to prepare our Transition Program members with the exact competencies these operators demand.
                         </p>
                     </div>
                     <div className="md:w-1/2">
@@ -198,17 +198,17 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                     </div>
                 </div>
 
-                {/* Section 4: WingMentor Transition Program Access */}
+                {/* Section 4: PilotRecognition Transition Program Access */}
                 <div className="bg-gradient-to-br from-blue-900 to-slate-900 rounded-3xl p-8 md:p-12 text-white">
                     <div className="max-w-4xl mx-auto">
                         <p className="text-xs font-bold text-blue-300 uppercase tracking-[0.3em] mb-2 text-center">
                             Exclusive Access
                         </p>
                         <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-                            Your Pathway Through WingMentor
+                            Your Pathway Through PilotRecognition
                         </h2>
                         <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-8 text-center">
-                            Members participating in the <strong>WingMentor Transition Program</strong> receive exclusive pathway access to air taxi opportunities. We don't just teach you what these operators want—we connect you directly to their recruitment pipelines.
+                            Members participating in the <strong>PilotRecognition Transition Program</strong> receive exclusive pathway access to air taxi opportunities. We don't just teach you what these operators want—we connect you directly to their recruitment pipelines.
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -278,13 +278,13 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                         Your Journey to Air Taxi Operations
                     </h2>
                     <p className="text-base text-slate-700 leading-relaxed mb-8">
-                        The air taxi industry is hiring now, and demand is accelerating. WingMentor's Transition Program is designed to get you from where you are today to interview-ready in months, not years.
+                        The air taxi industry is hiring now, and demand is accelerating. PilotRecognition's Transition Program is designed to get you from where you are today to interview-ready in months, not years.
                     </p>
 
                     <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
                         <h3 className="text-lg font-bold text-slate-900 mb-4">Ready to Take Off?</h3>
                         <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            Join the WingMentor Transition Program today and gain exclusive access to the air taxi pathway. Our direct partnerships with Archer, MLG, and Joby mean you'll be first in line when positions open.
+                            Join the PilotRecognition Transition Program today and gain exclusive access to the air taxi pathway. Our direct partnerships with Archer, MLG, and Joby mean you'll be first in line when positions open.
                         </p>
                         <button
                             onClick={() => onNavigate('contact-support')}

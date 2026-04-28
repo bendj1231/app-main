@@ -16,7 +16,7 @@ export const ApplicationsSystemsDirectoryPage: React.FC<ApplicationsSystemsPageP
 }) => {
     const digitalEcosystem = [
         {
-            title: "WingMentor W1000 Suite",
+            title: "PilotRecognition W1000 Suite",
             desc: "Our flagship ecosystem featuring the Examination Terminal, Black Box, and IFR Simulator tools.",
             target: "w1000-suite",
             icon: AppWindow,
@@ -41,7 +41,7 @@ export const ApplicationsSystemsDirectoryPage: React.FC<ApplicationsSystemsPageP
         },
         {
             title: "Pilot Handbook",
-            desc: "The definitive Operating Handbook and knowledge base for WingMentor program standards.",
+            desc: "The definitive Operating Handbook and knowledge base for PilotRecognition program standards.",
             target: "handbook",
             icon: Book,
             color: "text-slate-600",
@@ -105,7 +105,7 @@ export const ApplicationsSystemsDirectoryPage: React.FC<ApplicationsSystemsPageP
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-6"
                         />
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
@@ -115,7 +115,7 @@ export const ApplicationsSystemsDirectoryPage: React.FC<ApplicationsSystemsPageP
                             Applications & Systems
                         </h1>
                         <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
-                            The technological infrastructure of WingMentor. From AI-driven recruitment tools
+                            The technological infrastructure of PilotRecognition. From AI-driven recruitment tools
                             to EBT-integrated flight deck software and our secure global talent registry.
                         </p>
                     </RevealOnScroll>

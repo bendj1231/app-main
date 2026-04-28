@@ -274,7 +274,7 @@ export const PilotPortfolioPage: React.FC<PilotPortfolioPageProps> = ({ onBack, 
                     EBT CBTA Competency Development
                   </h3>
                   <div style={{ color: '#475569', lineHeight: 1.6 }}>
-                    Your competency development is tracked across the 9 core EBT CBTA competencies as you progress through the WingMentor program. This includes:
+                    Your competency development is tracked across the 9 core EBT CBTA competencies as you progress through the PilotRecognition program. This includes:
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
                     <div style={{ padding: '1rem', background: '#f9fafb', borderRadius: '8px' }}>
@@ -793,7 +793,7 @@ export const PilotPortfolioPage: React.FC<PilotPortfolioPageProps> = ({ onBack, 
                     Career Progression Tracking
                   </h3>
                   <div style={{ color: '#475569', lineHeight: 1.6 }}>
-                    Your career progression is tracked including job applications, interviews, recognition achievements, and advancement opportunities within the WingMentor network.
+                    Your career progression is tracked including job applications, interviews, recognition achievements, and advancement opportunities within the PilotRecognition network.
                   </div>
                   {portfolio.career_progression && Object.keys(portfolio.career_progression).length > 0 ? (
                     <div style={{ marginTop: '1rem' }}>

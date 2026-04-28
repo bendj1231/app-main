@@ -398,7 +398,7 @@ const PathwayDetailPage: React.FC<PathwayDetailPageProps> = ({ pathwayId, onBack
                       }`}
                     >
                       {school.id === 'wingmentor-intro' ? (
-                        // WingMentor Intro Card - Glassy UI without image
+                        // PilotRecognition Intro Card - Glassy UI without image
                         <div className="h-80 bg-white/10 backdrop-blur-xl border border-white/20 flex flex-col items-center justify-center p-8">
                           <h3 className="text-2xl font-semibold mb-4 text-white text-center">{school.name}</h3>
                           <p className="text-slate-300 mb-6 text-center text-lg">{school.description}</p>

@@ -19,7 +19,7 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -73,7 +73,7 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
                         Cargo Hauling Pathways
                     </h2>
                     <p className="text-base md:text-lg text-slate-700 leading-relaxed mb-8 max-w-3xl">
-                        WingMentor provides direct entry pathways to leading cargo carriers through our partner programs. Access the Pilot Portal to explore all available pathways.
+                        PilotRecognition provides direct entry pathways to leading cargo carriers through our partner programs. Access the Pilot Portal to explore all available pathways.
                     </p>
                 </div>
 
@@ -245,13 +245,13 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
                     </div>
                 </div>
 
-                {/* Section 5: WingMentor Preparation */}
+                {/* Section 5: PilotRecognition Preparation */}
                 <div className="bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/70 w-full max-w-2xl mx-auto">
                     <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2 text-center">
                         Your Preparation
                     </p>
                     <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-slate-900">
-                        How WingMentor Gets You Cargo-Ready
+                        How PilotRecognition Gets You Cargo-Ready
                     </h2>
                     <p className="text-base md:text-lg text-slate-700 leading-relaxed mb-6 text-center">
                         Our Pilot Recognition Profile is based on actual performance examination, flight logged data, recognition programs, and experience data. PilotRecog-AI will match you with job expectations and tell you exactly what you're really missing when preparing for their expectations.
@@ -305,7 +305,7 @@ export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = (
                     <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
                         <h3 className="text-lg font-bold text-slate-900 mb-4">Ready to Launch Your Cargo Career?</h3>
                         <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            Join the WingMentor Transition Program and gain the specialized training, industry knowledge, and connections needed to succeed in air cargo operations.
+                            Join the PilotRecognition Transition Program and gain the specialized training, industry knowledge, and connections needed to succeed in air cargo operations.
                         </p>
                         <button
                             onClick={() => onNavigate('contact-support')}

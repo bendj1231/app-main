@@ -38,7 +38,7 @@ export const Sidebar = ({ activePage, onNavigate, isOpen, onClose }: { activePag
         <>
             <div className={`mobile-overlay ${isOpen ? 'sidebar-open' : ''}`} onClick={onClose} />
             <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
-                <img src={LOGO_URL} alt="WingMentor" className="sidebar-logo fade-in-up" />
+                <img src={LOGO_URL} alt="PilotRecognition" className="sidebar-logo fade-in-up" />
 
                 <div className="nav-links fade-in-up" style={{ animationDelay: '0.1s', overflowY: 'auto', paddingRight: 4 }}>
 
@@ -83,7 +83,7 @@ export const Sidebar = ({ activePage, onNavigate, isOpen, onClose }: { activePag
                         <LogOut size={18} />
                         <span>Sign Out</span>
                     </div>
-                    <p style={{ fontSize: '0.7rem', color: '#ccc', textAlign: 'center', marginTop: 16 }}>v2.4.0 • WingMentor Inc.</p>
+                    <p style={{ fontSize: '0.7rem', color: '#ccc', textAlign: 'center', marginTop: 16 }}>v2.4.0 • PilotRecognition Inc.</p>
                 </div>
             </aside>
         </>

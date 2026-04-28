@@ -19,7 +19,7 @@ export const CadetProgramsPathwaysPage: React.FC<CadetProgramsPathwaysPageProps>
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-emerald-700 mb-4">
@@ -29,7 +29,7 @@ export const CadetProgramsPathwaysPage: React.FC<CadetProgramsPathwaysPageProps>
                         Cadet Programs
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                        Structured training pathways from zero to airline-ready. WingMentor connects aspiring pilots with world-class cadet programs offered by leading airlines and training organizations worldwide.
+                        Structured training pathways from zero to airline-ready. PilotRecognition connects aspiring pilots with world-class cadet programs offered by leading airlines and training organizations worldwide.
                     </p>
                 </div>
             </div>
@@ -50,7 +50,7 @@ export const CadetProgramsPathwaysPage: React.FC<CadetProgramsPathwaysPageProps>
                             Cadet programs provide a structured pathway from ab initio training to airline employment. These comprehensive programs combine ground school, flight training, and airline-specific preparation to produce well-rounded, employment-ready pilots.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            WingMentor partners with leading airlines and training academies to offer our members access to premier cadet programs. We guide you through the selection process, help you prepare for assessments, and ensure you're positioned for success in these competitive programs.
+                            PilotRecognition partners with leading airlines and training academies to offer our members access to premier cadet programs. We guide you through the selection process, help you prepare for assessments, and ensure you're positioned for success in these competitive programs.
                         </p>
                     </div>
                     <div className="md:w-1/2">
@@ -198,17 +198,17 @@ export const CadetProgramsPathwaysPage: React.FC<CadetProgramsPathwaysPageProps>
                     </div>
                 </div>
 
-                {/* Section 4: WingMentor Foundation Program Access */}
+                {/* Section 4: PilotRecognition Foundation Program Access */}
                 <div className="bg-gradient-to-br from-emerald-900 to-slate-900 rounded-3xl p-8 md:p-12 text-white">
                     <div className="max-w-4xl mx-auto">
                         <p className="text-xs font-bold text-emerald-300 uppercase tracking-[0.3em] mb-2 text-center">
                             Start Here
                         </p>
                         <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-                            Your Pathway Through WingMentor
+                            Your Pathway Through PilotRecognition
                         </h2>
                         <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-8 text-center">
-                            The <strong>WingMentor Foundation Program</strong> provides the ideal preparation for cadet program selection. We build the core competencies, knowledge, and confidence that cadet programs seek in successful candidates.
+                            The <strong>PilotRecognition Foundation Program</strong> provides the ideal preparation for cadet program selection. We build the core competencies, knowledge, and confidence that cadet programs seek in successful candidates.
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -278,13 +278,13 @@ export const CadetProgramsPathwaysPage: React.FC<CadetProgramsPathwaysPageProps>
                         Your Journey to the Flight Deck
                     </h2>
                     <p className="text-base text-slate-700 leading-relaxed mb-8">
-                        Cadet programs offer the most direct pathway to airline employment. WingMentor's Foundation Program prepares you for selection success and positions you for the best opportunities available.
+                        Cadet programs offer the most direct pathway to airline employment. PilotRecognition's Foundation Program prepares you for selection success and positions you for the best opportunities available.
                     </p>
 
                     <div className="bg-emerald-50 rounded-2xl p-8 border border-emerald-100">
                         <h3 className="text-lg font-bold text-slate-900 mb-4">Ready to Begin Your Journey?</h3>
                         <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            Join the WingMentor Foundation Program today and gain access to premier cadet program opportunities. Our network of partner airlines and training academies means you'll be positioned for success from day one.
+                            Join the PilotRecognition Foundation Program today and gain access to premier cadet program opportunities. Our network of partner airlines and training academies means you'll be positioned for success from day one.
                         </p>
                         <button
                             onClick={() => onNavigate('contact-support')}

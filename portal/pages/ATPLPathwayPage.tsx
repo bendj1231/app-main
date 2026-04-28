@@ -27,7 +27,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <img
               src="/logo.png"
-              alt="WingMentor Logo"
+              alt="PilotRecognition Logo"
               style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }}
             />
             <div className="tracking-widest text-xs font-bold uppercase mb-3" style={{ color: isDarkMode ? '#60a5fa' : undefined }}>
@@ -71,7 +71,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
                       ATPL Theory Excellence
                     </h3>
                     <p className="horizontal-card-desc" style={{ maxWidth: '100%', marginBottom: '1.5rem', color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '1rem', lineHeight: 1.6 }}>
-                      WingMentor's ATPL Pathway provides comprehensive theoretical training through our prestigious network of Approved Training Organizations (ATOs) in the United Arab Emirates, offering internationally recognized certification with full visa and administrative support.
+                      PilotRecognition's ATPL Pathway provides comprehensive theoretical training through our prestigious network of Approved Training Organizations (ATOs) in the United Arab Emirates, offering internationally recognized certification with full visa and administrative support.
                     </p>
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                       <span style={{ fontSize: '0.875rem', padding: '0.25rem 0.75rem', background: isDarkMode ? 'rgba(245, 158, 11, 0.2)' : '#fef3c7', borderRadius: '12px', color: isDarkMode ? '#fbbf24' : '#92400e', fontWeight: 500, border: isDarkMode ? '1px solid rgba(245, 158, 11, 0.3)' : undefined }}>
@@ -208,7 +208,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
                       textAlign: 'center'
                     }}>
                       <p style={{ fontSize: '0.875rem', color: isDarkMode ? '#fde68a' : '#78350f', margin: 0, fontStyle: 'italic' }}>
-                        WingMentor manages all arrangements with flight schools, ensuring seamless transition to UAE aviation training environment
+                        PilotRecognition manages all arrangements with flight schools, ensuring seamless transition to UAE aviation training environment
                       </p>
                     </div>
                   </div>
@@ -281,7 +281,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
                         Example: Philippines to UAE ATPL Pathway
                       </h4>
                       <p style={{ fontSize: '0.875rem', color: isDarkMode ? '#bfdbfe' : '#1e3a8a', lineHeight: 1.6, margin: '0 0 1rem 0' }}>
-                        As a CAAP license holder, undergoing the ATPL pathway in the UAE through WingMentor provides exceptional value and career advancement opportunities.
+                        As a CAAP license holder, undergoing the ATPL pathway in the UAE through PilotRecognition provides exceptional value and career advancement opportunities.
                       </p>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
                         <div>
@@ -437,7 +437,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
                   Take the next step in your aviation career with our internationally recognized ATPL pathway. Contact us to learn more about enrollment, requirements, and start dates.
                 </p>
                 <button
-                  onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com?subject=ATPL Pathway Inquiry&body=I am interested in learning more about the ATPL pathway through WingMentor in the UAE.'}
+                  onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com?subject=ATPL Pathway Inquiry&body=I am interested in learning more about the ATPL pathway through PilotRecognition in the UAE.'}
                   style={{
                     padding: '1rem 2.5rem',
                     background: '#2563eb',
@@ -481,7 +481,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
           textAlign: 'center'
         }}>
           <p style={{ color: isDarkMode ? '#94a3b8' : '#64748b', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-            Transform your aviation career with internationally recognized ATPL certification through WingMentor.
+            Transform your aviation career with internationally recognized ATPL certification through PilotRecognition.
           </p>
           <button
             className="help-btn"
@@ -500,7 +500,7 @@ export const ATPLPathwayPage: React.FC<ATPLPathwayPageProps> = ({ onBack, isDark
               transition: 'all 0.2s ease',
               boxShadow: isDarkMode ? '0 8px 18px rgba(2, 6, 23, 0.25)' : '0 1px 2px rgba(0,0,0,0.05)'
             }}
-            onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com'}
+            onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
           >
             ✉️ Contact Support
           </button>

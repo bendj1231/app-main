@@ -30,7 +30,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                 <div className="space-y-8 text-slate-700">
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Acceptance of Terms</h2>
-                        <p>By accessing and using the WingMentor platform, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform.</p>
+                        <p>By accessing and using the PilotRecognition platform, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform.</p>
                     </section>
 
                     <section>
@@ -83,12 +83,12 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Intellectual Property</h2>
-                        <p>All content, features, and functionality of the WingMentor platform are owned by WM Pilot Group and are protected by international copyright, trademark, and other intellectual property laws.</p>
+                        <p>All content, features, and functionality of the PilotRecognition platform are owned by WM Pilot Group and are protected by international copyright, trademark, and other intellectual property laws.</p>
                     </section>
 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Limitation of Liability</h2>
-                        <p>WingMentor shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform.</p>
+                        <p>PilotRecognition shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform.</p>
                     </section>
 
                     <section>

@@ -207,7 +207,7 @@ const MentorModulesPage: React.FC<MentorModulesPageProps> = ({ onBack, onComplet
                 <div style={{ textAlign: 'center' }}>
                     <img
                         src="/logo.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         style={{ maxWidth: '120px', height: 'auto', marginBottom: '1rem' }}
                     />
                     <div style={{ fontSize: '0.8rem', color: '#3b82f6', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.1em' }}>

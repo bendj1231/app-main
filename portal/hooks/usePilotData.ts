@@ -154,7 +154,7 @@ const DEFAULT_PILOT: PilotProfile = {
   education: [
     {
       degree: 'Foundational Mentorship Program',
-      institution: 'WingMentor Academy',
+      institution: 'PilotRecognition Academy',
       year: '2024',
     },
   ],

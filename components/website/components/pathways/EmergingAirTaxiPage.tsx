@@ -22,7 +22,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -78,7 +78,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({
                             Targeting the Gap with Archer & Industry Leaders
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            WingMentor has engaged directly with industry leaders like <strong>Archer</strong> and <strong>MLG</strong> at the <strong>Aviation Career Fair at the Etihad Museum</strong> regarding their pilot recruitment strategy. They have stated a clear interest in a specific profile: pilots with <strong>below 1,000 hours</strong> who possess "decent experience" and high-quality training standards.
+                            PilotRecognition has engaged directly with industry leaders like <strong>Archer</strong> and <strong>MLG</strong> at the <strong>Aviation Career Fair at the Etihad Museum</strong> regarding their pilot recruitment strategy. They have stated a clear interest in a specific profile: pilots with <strong>below 1,000 hours</strong> who possess "decent experience" and high-quality training standards.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
                             This pathway is designed to bridge that exact gap. It helps you position your existing CPL/IR skills to meet this specific demand, turning your supposedly "low time" into the exact sweet spot for the next generation of flight operations.

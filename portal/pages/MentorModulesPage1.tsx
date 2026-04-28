@@ -9,7 +9,7 @@ export const MentorModulesPage1: React.FC<MentorModulesPage1Props> = ({ onBack }
     <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out' }}>
       <div style={{ textAlign: 'center', marginBottom: '4rem', paddingTop: '2rem' }}>
         <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
+          <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
         </div>
         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
           MODULE 2 • CHAPTER 1
@@ -90,7 +90,7 @@ export const MentorModulesPage1: React.FC<MentorModulesPage1Props> = ({ onBack }
           border: '1px solid rgba(59,130,246,0.1)'
         }}>
           <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: '#1e40af', marginBottom: '1rem', textAlign: 'center' }}>
-            The WingMentor Way
+            The PilotRecognition Way
           </h3>
           <p style={{ color: '#374151', fontSize: '1.05rem', lineHeight: 1.7, marginBottom: '1.5rem', textAlign: 'center' }}>
             You are not being trained to recreate a checklist; you are being trained to architect experiences. That is the hard truth. Mentors earn respect by helping pilots see the patterns beneath the problem, not by telling them what to do next.

@@ -77,7 +77,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
         setIsLoading(false);
       } else {
         console.log("MFA not enabled, proceeding to login");
-        addToast('success', 'Login Successful', 'Welcome back to WingMentor!');
+        addToast('success', 'Login Successful', 'Welcome back to PilotRecognition!');
         onLogin(wmUser);
         setIsLoading(false);
       }
@@ -101,7 +101,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
 
   const handleMFAVerified = () => {
     setShowMFAVerify(false);
-    addToast('success', 'Login Successful', 'Welcome back to WingMentor!');
+    addToast('success', 'Login Successful', 'Welcome back to PilotRecognition!');
     onLogin(mfaPendingUser);
     setMfaPendingUser('');
   };
@@ -189,10 +189,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
             <div className="absolute -left-10 -bottom-10 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl"></div>
           </div>
           <div className="relative z-10 flex flex-col items-center">
-            <img src={logoUrl} alt="WingMentor" className="h-40 w-auto mb-8 object-contain" />
-            <h2 className="text-3xl font-bold mb-4">WingMentor Program Portal</h2>
+            <img src={logoUrl} alt="PilotRecognition" className="h-40 w-auto mb-8 object-contain" />
+            <h2 className="text-3xl font-bold mb-4">PilotRecognition Program Portal</h2>
             <p className="text-slate-300 leading-relaxed text-lg">
-              Sign in to gain access to the Pilot apps & tools, program logbooks & progress tracking, WingMentor's Communications Network & groupchats.
+              Sign in to gain access to the Pilot apps & tools, program logbooks & progress tracking, PilotRecognition's Communications Network & groupchats.
             </p>
           </div>
           <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center z-10">
@@ -211,10 +211,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
 
           <form onSubmit={handleLogin} className="space-y-8">
             <div className="grid grid-cols-1 gap-8">
-              {/* WingMentor Login */}
+              {/* PilotRecognition Login */}
               <div className="space-y-4">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">
-                  WingMentor Account
+                  PilotRecognition Account
                 </h3>
                 <div className="space-y-3">
                   <div className="relative">
@@ -278,7 +278,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
           </div>
         </div>
       </div>
-      <p className="mt-8 text-slate-400 text-xs">© {new Date().getFullYear()} WingMentor Inc. EBT CBTA guidance provided under advisory relationship. Authorized Personnel Only.</p>
+      <p className="mt-8 text-slate-400 text-xs">© {new Date().getFullYear()} PilotRecognition Inc. EBT CBTA guidance provided under advisory relationship. Authorized Personnel Only.</p>
     </div>
   );
 };

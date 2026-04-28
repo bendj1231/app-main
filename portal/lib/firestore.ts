@@ -159,7 +159,7 @@ export const getUserLogs = async (uid: string) => {
 
 // --- WINGMENTOR NETWORK (CHAT & DIRECTORY) ---
 
-export interface WingMentorUser {
+export interface PilotRecognitionUser {
     id: string;
     firstName: string;
     role: 'Mentor' | 'Mentee';
@@ -182,7 +182,7 @@ export const searchUsers = async (
     regionFilter: string,
     flightSchoolFilter: string,
     searchQuery: string
-): Promise<WingMentorUser[]> => {
+): Promise<PilotRecognitionUser[]> => {
     if (!db) {
         console.error('Firestore not initialized');
         return [];
@@ -225,7 +225,7 @@ export const searchUsers = async (
                 totalHours: data.totalHours || 0,
                 region: data.region,
                 flightSchool: data.flightSchool
-            } as WingMentorUser;
+            } as PilotRecognitionUser;
         })
         .filter(user =>
             !searchQuery || user.firstName.toLowerCase().includes(queryLower)
@@ -235,7 +235,7 @@ export const searchUsers = async (
 /**
  * Fetch a single user's profile from Firestore
  */
-export const getUserProfile = async (uid: string): Promise<WingMentorUser | null> => {
+export const getUserProfile = async (uid: string): Promise<PilotRecognitionUser | null> => {
     if (!db) {
         console.error('Firestore not initialized');
         return null;
@@ -260,7 +260,7 @@ export const getUserProfile = async (uid: string): Promise<WingMentorUser | null
             totalHours: data.totalHours || 0,
             region: data.region,
             flightSchool: data.flightSchool
-        } as WingMentorUser;
+        } as PilotRecognitionUser;
     }
 
     return null;

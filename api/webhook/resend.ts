@@ -15,7 +15,7 @@ const emailRouting: Record<string, string | string[]> = {
 
 // Display name mapping for forwarded emails
 const displayNameMapping: Record<string, string> = {
-  'contact@pilotrecognition.com': 'WingMentor Team',
+  'contact@pilotrecognition.com': 'PilotRecognition Team',
 };
 
 export default async function handler(req: Request) {

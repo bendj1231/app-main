@@ -198,11 +198,11 @@ const EnterpriseAccessPage = () => {
                     <h2 className="text-2xl font-bold text-white mb-3">Request Received</h2>
                     <p className="text-slate-400 mb-2">Thank you, <strong className="text-white">{formData.name}</strong>.</p>
                     <p className="text-slate-400 text-sm mb-6">
-                        Your enterprise access request for <strong className="text-white">{formData.company}</strong> has been submitted and saved to our system. The WingMentor team will review your request and contact you at <strong className="text-white">{formData.email}</strong> within 1–2 business days to set up your account and grant appropriate access.
+                        Your enterprise access request for <strong className="text-white">{formData.company}</strong> has been submitted and saved to our system. The PilotRecognition team will review your request and contact you at <strong className="text-white">{formData.email}</strong> within 1–2 business days to set up your account and grant appropriate access.
                     </p>
                     <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-4 text-left mb-6 space-y-2 text-sm">
                         <p className="text-slate-500 font-medium uppercase text-xs tracking-wider mb-2">What happens next</p>
-                        <p className="text-slate-300">✓ WingMentor team reviews your request</p>
+                        <p className="text-slate-300">✓ PilotRecognition team reviews your request</p>
                         <p className="text-slate-300">✓ We create your enterprise account</p>
                         <p className="text-slate-300">✓ You receive login credentials via email</p>
                         <p className="text-slate-300">✓ Access granted to your specific airline/org portal</p>
@@ -949,7 +949,7 @@ const EnterpriseAccessPage = () => {
                                     onChange={handleChange}
                                     rows={4}
                                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-                                    placeholder="Describe your business and how you'd like to partner with WingMentor. Mention any specific pathways, programs, or services you're interested in accessing."
+                                    placeholder="Describe your business and how you'd like to partner with PilotRecognition. Mention any specific pathways, programs, or services you're interested in accessing."
                                 />
                             </div>
                         </div>

@@ -94,7 +94,7 @@ const storeCustomEmailTemplate = async (email: string, displayName: string) => {
 
   <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; position: relative; z-index: 2;">
     <div style="background-color: rgba(255, 255, 255, 0.85); border-radius: 16px; padding: 3rem 2.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); backdrop-filter: blur(18px); border: 1px solid rgba(255, 255, 255, 0.3); width: 100%; font-family: sans-serif;">
-      <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="WingMentor Logo" style="height: 110px; width: auto; object-fit: contain; margin-bottom: 1.5rem;" />
+      <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="PilotRecognition Logo" style="height: 110px; width: auto; object-fit: contain; margin-bottom: 1.5rem;" />
       
       <div style="color: #2563eb; font-size: 0.875rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.75rem;">
         ENROLLMENT CONFIRMATION
@@ -173,7 +173,7 @@ const storeEmailNotification = async (email: string, displayName: string, method
         .insert({
           user_id: profileData.id,
           title: 'Enrollment Confirmation Sent',
-          message: `Your enrollment confirmation for the WingMentor Foundational Program has been sent to ${email}`,
+          message: `Your enrollment confirmation for the PilotRecognition Foundational Program has been sent to ${email}`,
           type: 'system',
           priority: 'high',
           metadata: {
@@ -181,7 +181,7 @@ const storeEmailNotification = async (email: string, displayName: string, method
             displayName: displayName,
             program: 'Foundational',
             enrollmentDate: new Date().toISOString(),
-            emailSubject: '✅ Enrollment Confirmed - WingMentor Foundational Program',
+            emailSubject: '✅ Enrollment Confirmed - PilotRecognition Foundational Program',
             method: method
           }
         });

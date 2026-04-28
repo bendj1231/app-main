@@ -110,7 +110,7 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
   ];
 
   const achievements = [
-    'WingMentor Foundational Program – Verified',
+    'PilotRecognition Foundational Program – Verified',
     'Airbus Evidence-Based Training Certified',
     'Emirates ATPL Readiness Program – Enrolled'
   ];
@@ -141,12 +141,12 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
 
         <div className="dashboard-header" style={{ marginBottom: '2rem' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
           </div>
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em' }}>ATLAS RESUME DIRECTORY</div>
           <h1 className="dashboard-title">Atlas-formatted Resume</h1>
           <p style={{ maxWidth: '42rem', margin: '0 auto', color: '#475569' }}>
-            A digital resume designed for airline recruiters, presenting your verified WingMentor recognitions, hour breakdown, and mentorship credentials.
+            A digital resume designed for airline recruiters, presenting your verified PilotRecognition recognitions, hour breakdown, and mentorship credentials.
           </p>
         </div>
 
@@ -162,7 +162,7 @@ const AtlasResumePage: React.FC<AtlasResumePageProps> = ({ onBack, userProfile, 
               <div>
                 <div style={{ fontSize: '0.8rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Candidate</div>
                 <h2 style={{ margin: '0.35rem 0 0', fontSize: '1.75rem', color: '#0f172a' }}>{fullName}</h2>
-                <p style={{ margin: '0.2rem 0 0', color: '#64748b', fontSize: '0.9rem' }}>WingMentor Recognition Portfolio</p>
+                <p style={{ margin: '0.2rem 0 0', color: '#64748b', fontSize: '0.9rem' }}>PilotRecognition Recognition Portfolio</p>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Share link</div>

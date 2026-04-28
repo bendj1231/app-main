@@ -89,7 +89,7 @@ Additional Information:
         'Authorization': `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: 'WingMentor Enterprise <enterprise@pilotrecognition.com>',
+        from: 'PilotRecognition Enterprise <enterprise@pilotrecognition.com>',
         to: ['benjamintigerbowler@gmail.com', 'karlbrianabibas@gmail.com'],
         subject: `Enterprise Access Request - ${formData.company}`,
         text: emailBody,

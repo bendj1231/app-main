@@ -49,7 +49,7 @@ export const TRACK_CONFIGS: Record<UserTrack, TrackConfig> = {
     theme: {
       primaryColor: '#2563eb',
       secondaryColor: '#1e40af',
-      bannerMessage: 'Welcome to WingMentor - Full Access'
+      bannerMessage: 'Welcome to PilotRecognition - Full Access'
     }
   },
   
@@ -118,7 +118,7 @@ export const TRACK_CONFIGS: Record<UserTrack, TrackConfig> = {
     theme: {
       primaryColor: '#10b981',
       secondaryColor: '#059669',
-      bannerMessage: 'Welcome to WingMentor - Getting Started'
+      bannerMessage: 'Welcome to PilotRecognition - Getting Started'
     }
   }
 };

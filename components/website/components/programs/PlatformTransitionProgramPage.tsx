@@ -16,7 +16,7 @@ export const PlatformTransitionProgramPage: React.FC<PlatformTransitionProgramPa
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -112,7 +112,7 @@ export const PlatformTransitionProgramPage: React.FC<PlatformTransitionProgramPa
                     </div>
                     <div className="md:w-1/2">
                         <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100">
-                            {/* Airbus × WingMentor Recognition */}
+                            {/* Airbus × PilotRecognition Recognition */}
                             <div className="flex flex-col items-center mb-6 pb-6 border-b border-slate-200">
                                 <div className="flex items-center gap-3 mb-3">
                                     <img
@@ -123,7 +123,7 @@ export const PlatformTransitionProgramPage: React.FC<PlatformTransitionProgramPa
                                     <span className="text-2xl font-light text-slate-400">×</span>
                                     <img
                                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                                        alt="WingMentor"
+                                        alt="PilotRecognition"
                                         className="h-10 w-auto object-contain"
                                     />
                                 </div>

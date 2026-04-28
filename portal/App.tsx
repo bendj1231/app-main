@@ -7,7 +7,7 @@ import { onAuthStateChange, type AuthState, SUPER_ADMIN_EMAIL, signOut, supabase
 import { PilotProfilePage } from './pages/PilotProfilePage';
 import { PilotPortfolioPage } from './pages/PilotPortfolioPage';
 import FoundationalProgramPage from './pages/FoundationalProgramPage';
-import { WingMentorHome, type MainView } from './pages/WingMentorHome';
+import { PilotRecognitionHome, type MainView } from './pages/PilotRecognitionHome';
 import { RecognitionAchievementPage } from './pages/RecognitionAchievementPage';
 import { LoginPage } from './pages/LoginPage';
 import { GraphicsPresetSelector, type DetectionResult, type GraphicsPreset } from './components/GraphicsPresetSelector';
@@ -758,7 +758,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       {currentView === 'reset-password' ? (
         <ResetPasswordPage />
       ) : currentView === 'hub' ? (
-        <WingMentorHome
+        <PilotRecognitionHome
           onLogout={handleLogout}
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
@@ -807,7 +807,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           onLogout={handleLogout}
         />
       ) : currentView === 'programs' ? (
-        <WingMentorHome
+        <PilotRecognitionHome
           onLogout={handleLogout}
           userProfile={authState.userProfile}
           onStartFoundationalEnrollment={() => setCurrentView('foundational-onboarding')}
@@ -904,7 +904,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
                 </button>
               </div>
               <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '240px' }} />
+                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
               </div>
               <div className="dashboard-subtitle">DYNAMIC ASSET LOADING</div>
               <h1 className="dashboard-title">Remote Applications</h1>

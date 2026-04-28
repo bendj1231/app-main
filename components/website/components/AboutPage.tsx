@@ -32,7 +32,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 },
                 {
                     title: "Mentorship & Road to 50hrs Certification",
-                    description: "After your initial examination is complete, you will receive mentor modules to observe, learn, and view masterclasses on how to mentor fellow aviators. Mentorship is an effort-based approach—mentors who have completed 20 hours of observation and passed their practical examination become missionaries who provide guidance and support to fellow members and pilots within the community. For your mentorship to be logged, your mentee must create an account through pilotrecognition.com, enabling you to access their profile and log their mentor ID. The mentee will receive a mentored hours count and a verified logbook of mentored hours. If you have received mentored hours, you will be required to complete only 40 hours of mentorship. We also provide checkride practice where you will be tested on your knowledge—great for checkride preparation. The <strong>EBT CBTA Airbus Application</strong> focuses on evidence-based training for decision making, testing your ability to handle emergency situations and visual awareness with eye tracking to verify instrument scanning. VFR simulation is available for PPL students who want to master the basics of traffic patterns, radio communication, visual landing scenarios, and more. The program handbook includes all 3 modules, and the pilot gap forum provides access to the foundation program community where you can communicate with fellow mentees and mentors. WingMentor chat is accessible through the portal and the W1000 application."
+                    description: "After your initial examination is complete, you will receive mentor modules to observe, learn, and view masterclasses on how to mentor fellow aviators. Mentorship is an effort-based approach—mentors who have completed 20 hours of observation and passed their practical examination become missionaries who provide guidance and support to fellow members and pilots within the community. For your mentorship to be logged, your mentee must create an account through pilotrecognition.com, enabling you to access their profile and log their mentor ID. The mentee will receive a mentored hours count and a verified logbook of mentored hours. If you have received mentored hours, you will be required to complete only 40 hours of mentorship. We also provide checkride practice where you will be tested on your knowledge—great for checkride preparation. The <strong>EBT CBTA Airbus Application</strong> focuses on evidence-based training for decision making, testing your ability to handle emergency situations and visual awareness with eye tracking to verify instrument scanning. VFR simulation is available for PPL students who want to master the basics of traffic patterns, radio communication, visual landing scenarios, and more. The program handbook includes all 3 modules, and the pilot gap forum provides access to the foundation program community where you can communicate with fellow mentees and mentors. PilotRecognition chat is accessible through the portal and the W1000 application."
                 },
                 {
                     title: "Airbus Interview - EBT Aligned Evaluation",
@@ -45,15 +45,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             content: [
                 {
                     title: "The Recruitment Efficiency Problem",
-                    description: "Operators invest significant resources in recruitment and training. Traditional application processes provide limited visibility into candidate <strong>professional readiness</strong>. Hours and type ratings indicate technical qualifications but not behavioral competence. This information gap leads to higher training failure rates and increased recruitment costs. WingMentor addresses this by providing verified PilotRecognition profiles that demonstrate actual professional capabilities through <strong>EBT CBTA aligned assessments</strong> and <strong>50 hours of verifiable mentorship</strong>."
+                    description: "Operators invest significant resources in recruitment and training. Traditional application processes provide limited visibility into candidate <strong>professional readiness</strong>. Hours and type ratings indicate technical qualifications but not behavioral competence. This information gap leads to higher training failure rates and increased recruitment costs. PilotRecognition addresses this by providing verified PilotRecognition profiles that demonstrate actual professional capabilities through <strong>EBT CBTA aligned assessments</strong> and <strong>50 hours of verifiable mentorship</strong>."
                 },
                 {
                     title: "The Data Limitation",
-                    description: "Current recruitment data sources focus on technical metrics: flight hours, aircraft types, license ratings. These metrics do not indicate whether candidates possess the <strong>EBT awareness</strong>, <strong>CRM competence</strong>, and behavioral alignment required for specific operations. Operators lack objective data on professional readiness before investment in assessment and training. WingMentor's PilotRecognition platform provides <strong>ATS-compatible ATLAS Aviation CV formatting</strong> and <strong>Blockchain verifiable certifications</strong>, giving operators access to verified competency data before recruitment decisions."
+                    description: "Current recruitment data sources focus on technical metrics: flight hours, aircraft types, license ratings. These metrics do not indicate whether candidates possess the <strong>EBT awareness</strong>, <strong>CRM competence</strong>, and behavioral alignment required for specific operations. Operators lack objective data on professional readiness before investment in assessment and training. PilotRecognition's PilotRecognition platform provides <strong>ATS-compatible ATLAS Aviation CV formatting</strong> and <strong>Blockchain verifiable certifications</strong>, giving operators access to verified competency data before recruitment decisions."
                 },
                 {
                     title: "Verified Pilot Recognition Database",
-                    description: "WingMentor provides verified data on pilot professional competencies through our PilotRecognition platform. Our database includes <strong>EBT CBTA AIRBUS 9 core competencies</strong>, CRM awareness, briefing protocols, and behavioral assessments. Operators can filter candidates by verified competencies, <strong>recognition scores</strong>, and <strong>pathway recommended matches</strong>, reducing uncertainty in recruitment decisions and improving training success rates. Our platform is supported by <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> and Head of Training, ensuring alignment with industry standards."
+                    description: "PilotRecognition provides verified data on pilot professional competencies through our PilotRecognition platform. Our database includes <strong>EBT CBTA AIRBUS 9 core competencies</strong>, CRM awareness, briefing protocols, and behavioral assessments. Operators can filter candidates by verified competencies, <strong>recognition scores</strong>, and <strong>pathway recommended matches</strong>, reducing uncertainty in recruitment decisions and improving training success rates. Our platform is supported by <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> and Head of Training, ensuring alignment with industry standards."
                 },
                 {
                     title: "Comprehensive Pilot Profiles",
@@ -61,15 +61,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 },
                 {
                     title: "Direct Pathways & Industry Connections",
-                    description: "WingMentor connects operators directly to pilots through our pathway matching system. Operators can access candidates who have completed the <strong>Foundational Program</strong> with 50 hours of verifiable mentorship and are ready for the <strong>EBT CBTA aligned Transition Program</strong>. Our network includes direct relations with airline expectations, enabling operators to review requirements and access pathways such as <strong>cadet programmes</strong>, cargo pathways, licensure & type rating pathways, and specialized pathways. Future integration of <strong>HINFACT EBT CBTA Software</strong> will provide even more sophisticated competency assessment tools."
+                    description: "PilotRecognition connects operators directly to pilots through our pathway matching system. Operators can access candidates who have completed the <strong>Foundational Program</strong> with 50 hours of verifiable mentorship and are ready for the <strong>EBT CBTA aligned Transition Program</strong>. Our network includes direct relations with airline expectations, enabling operators to review requirements and access pathways such as <strong>cadet programmes</strong>, cargo pathways, licensure & type rating pathways, and specialized pathways. Future integration of <strong>HINFACT EBT CBTA Software</strong> will provide even more sophisticated competency assessment tools."
                 },
                 {
                     title: "Industry-Aligned Standards",
-                    description: "WingMentor programs are aligned with <strong>AIRBUS 9 core competencies</strong> and supported by industry leaders. Our Foundational Program addresses the <strong>Pilot Gap in Recognition, Experience, and (PRM) Pilot Risk Management</strong> through comprehensive training and assessment. Operators can trust that candidates from WingMentor have been evaluated against the same standards used by major airlines and manufacturers, including <strong>Airbus</strong> and <strong>Etihad</strong>. This alignment ensures that verified competencies translate directly to operational readiness."
+                    description: "PilotRecognition programs are aligned with <strong>AIRBUS 9 core competencies</strong> and supported by industry leaders. Our Foundational Program addresses the <strong>Pilot Gap in Recognition, Experience, and (PRM) Pilot Risk Management</strong> through comprehensive training and assessment. Operators can trust that candidates from PilotRecognition have been evaluated against the same standards used by major airlines and manufacturers, including <strong>Airbus</strong> and <strong>Etihad</strong>. This alignment ensures that verified competencies translate directly to operational readiness."
                 },
                 {
                     title: "Platform Access & Direct Engagement",
-                    description: "Operators can access the WingMentor platform to post details about their jobs, airline expectations, or manufacturer type rating expectations. With more than <strong>5000+ pilots</strong> on our platform, your manufacturer proper and type rating details will be seen and read by qualified pilots—especially if you are a type rating center. This is a <strong>direct and up-to-date approach</strong> rather than relying on facebook.com or random job board listings. Pilots can seek answers towards your expectations and requirements, and access detailed lists of your aircraft fleet. Contact <strong>enterprise@pilotrecognition.com</strong> for platform access to post your available jobs and engage directly with pilots seeking opportunities."
+                    description: "Operators can access the PilotRecognition platform to post details about their jobs, airline expectations, or manufacturer type rating expectations. With more than <strong>5000+ pilots</strong> on our platform, your manufacturer proper and type rating details will be seen and read by qualified pilots—especially if you are a type rating center. This is a <strong>direct and up-to-date approach</strong> rather than relying on facebook.com or random job board listings. Pilots can seek answers towards your expectations and requirements, and access detailed lists of your aircraft fleet. Contact <strong>enterprise@pilotrecognition.com</strong> for platform access to post your available jobs and engage directly with pilots seeking opportunities."
                 }
             ]
         },
@@ -78,11 +78,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             content: [
                 {
                     title: "Objective Assessment",
-                    description: "WingMentor provides <strong>data-driven assessment</strong> of pilot readiness. We evaluate specific competencies that operators assess, provide measurable feedback on gaps, and offer targeted development pathways. Our approach is based on operator standards and industry requirements, not motivational messaging."
+                    description: "PilotRecognition provides <strong>data-driven assessment</strong> of pilot readiness. We evaluate specific competencies that operators assess, provide measurable feedback on gaps, and offer targeted development pathways. Our approach is based on operator standards and industry requirements, not motivational messaging."
                 },
                 {
                     title: "Direct Communication",
-                    description: "Program inquiries: <strong>wingmentorprogram@gmail.com</strong>. Leadership contact: <strong>wmpilotgroup@gmail.com</strong>. We provide direct access to program staff for questions about program structure, assessment criteria, and industry alignment."
+                    description: "Program inquiries: <strong>pilotrecognition@gmail.com</strong>. Leadership contact: <strong>pilotrecognition@gmail.com</strong>. We provide direct access to program staff for questions about program structure, assessment criteria, and industry alignment."
                 },
                 {
                     title: "Career Trajectory Analysis",
@@ -173,7 +173,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         },
         {
             title: "Enterprise Integration",
-            description: "Operators who access the WingMentor PilotRecognition platform will have their <strong>enterprise inputs</strong> and job postings also visible on Pilot Terminal. This seamless integration means that when airlines, manufacturers, and training providers post opportunities on pilotrecognition.com, these listings automatically appear on Pilot Terminal. Pilots can discover and apply to opportunities directly from their network feed, creating a streamlined recruitment process that connects qualified candidates with industry opportunities in real-time."
+            description: "Operators who access the PilotRecognition PilotRecognition platform will have their <strong>enterprise inputs</strong> and job postings also visible on Pilot Terminal. This seamless integration means that when airlines, manufacturers, and training providers post opportunities on pilotrecognition.com, these listings automatically appear on Pilot Terminal. Pilots can discover and apply to opportunities directly from their network feed, creating a streamlined recruitment process that connects qualified candidates with industry opportunities in real-time."
         },
         {
             title: "Data Scraping & Portal Integration",
@@ -181,7 +181,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         },
         {
             title: "Backend Social Network & AI API",
-            description: "Pilot Terminal essentially acts as a <strong>backend social network</strong> and <strong>AI API access</strong> information hub. The database is requested most of the time from what Pilot Terminal has gathered, making it the central repository for aviation data and intelligence. This architecture ensures that all platforms and applications within the WingMentor ecosystem can access consistent, real-time data through standardized API endpoints, enabling seamless integration and data flow across the entire system."
+            description: "Pilot Terminal essentially acts as a <strong>backend social network</strong> and <strong>AI API access</strong> information hub. The database is requested most of the time from what Pilot Terminal has gathered, making it the central repository for aviation data and intelligence. This architecture ensures that all platforms and applications within the PilotRecognition ecosystem can access consistent, real-time data through standardized API endpoints, enabling seamless integration and data flow across the entire system."
         },
         {
             title: "AI Agents & Real-Time Intelligence",
@@ -222,7 +222,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-xl font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -235,7 +235,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         Programs | Pilot Recognition | Pathways
                     </span>
                     <div className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed pt-8">
-                        <p dangerouslySetInnerHTML={{ __html: sanitizeHtml("We are the Aviation Industry's First <strong>PilotRecognition-based Platform</strong> operated by WM Pilot Group. WingMentor bridges the lack of <strong>PilotRecognition</strong> in your aviation career through recognition-based profiling and provides <strong>Accredited Experience programs</strong> aligned with <strong>EBT CBTA AIRBUS 9 core competencies</strong>, with Assurance & support from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> and Head of Training. Our PilotRecognition platform is kept current with the aviation industry use of <strong>ATS (Applicant Tracking System)</strong> globally known as <strong>ATLAS Aviation CV</strong> formatting, along with future integration of <strong>HINFACT EBT CBTA Software</strong> within our future Transition Program. The Foundational Program includes <strong>50 hours of verifiable logged effort-based Mentorship</strong> along with Aviation Industry Familiarization addressing the current <strong>Pilot Shortage</strong> otherwise known as the <strong>Pilot Gap in Recognition, Experience, and (PRM) Pilot Risk Management</strong>. The Foundation Program follows the 9 core competencies and acts as a foundational prerequisite towards our EBT CBTA aligned flagship Transition Program. The PilotRecognition Profile is an Evaluation of your Flight hours, Experiences, and <strong>Blockchain verifiable certifications</strong> data collected from <strong>programs</strong> such as Mentorship logbook and aviation Interests that objectively demonstrate your professional capabilities. Your profile is actively being recognized along with <strong>scores</strong> and <strong>pathway recommended matches</strong> towards <strong>pathways</strong> aligned with your verified competencies, connecting you directly to opportunities that match your professional readiness. Transform your aviation career with your <strong>industry-accredited PilotRecognition Profile</strong>, connecting you to the industry like never before through <strong>AI-powered career matching</strong> and direct pathways to up-to-date <strong>Airline Operators Requirements</strong> & Discover <strong>Airline Expectations</strong> to align with your PilotRecognition profile.") }}></p>
+                        <p dangerouslySetInnerHTML={{ __html: sanitizeHtml("We are the Aviation Industry's First <strong>PilotRecognition-based Platform</strong> operated by WM Pilot Group. PilotRecognition bridges the lack of <strong>PilotRecognition</strong> in your aviation career through recognition-based profiling and provides <strong>Accredited Experience programs</strong> aligned with <strong>EBT CBTA AIRBUS 9 core competencies</strong>, with Assurance & support from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> and Head of Training. Our PilotRecognition platform is kept current with the aviation industry use of <strong>ATS (Applicant Tracking System)</strong> globally known as <strong>ATLAS Aviation CV</strong> formatting, along with future integration of <strong>HINFACT EBT CBTA Software</strong> within our future Transition Program. The Foundational Program includes <strong>50 hours of verifiable logged effort-based Mentorship</strong> along with Aviation Industry Familiarization addressing the current <strong>Pilot Shortage</strong> otherwise known as the <strong>Pilot Gap in Recognition, Experience, and (PRM) Pilot Risk Management</strong>. The Foundation Program follows the 9 core competencies and acts as a foundational prerequisite towards our EBT CBTA aligned flagship Transition Program. The PilotRecognition Profile is an Evaluation of your Flight hours, Experiences, and <strong>Blockchain verifiable certifications</strong> data collected from <strong>programs</strong> such as Mentorship logbook and aviation Interests that objectively demonstrate your professional capabilities. Your profile is actively being recognized along with <strong>scores</strong> and <strong>pathway recommended matches</strong> towards <strong>pathways</strong> aligned with your verified competencies, connecting you directly to opportunities that match your professional readiness. Transform your aviation career with your <strong>industry-accredited PilotRecognition Profile</strong>, connecting you to the industry like never before through <strong>AI-powered career matching</strong> and direct pathways to up-to-date <strong>Airline Operators Requirements</strong> & Discover <strong>Airline Expectations</strong> to align with your PilotRecognition profile.") }}></p>
                     </div>
                 </div>
             </div>
@@ -244,7 +244,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <div className="mb-16">
                 <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        WingMentor Programs
+                        PilotRecognition Programs
                     </p>
                     <h2 style={{
                         margin: '0.5rem 0 0',
@@ -426,7 +426,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-4 gap-8 mb-8">
                         <div>
-                            <h3 className="font-bold text-lg mb-4">WingMentor</h3>
+                            <h3 className="font-bold text-lg mb-4">PilotRecognition</h3>
                             <p className="text-slate-400 text-sm">The Aviation Industry's First Pilot Recognition-Based Platform</p>
                         </div>
                         <div>
@@ -443,8 +443,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         <div>
                             <h3 className="font-bold text-lg mb-4">Contact</h3>
                             <ul className="space-y-2 text-slate-400 text-sm">
-                                <li><a href="mailto:wingmentorprogram@gmail.com" className="hover:text-white cursor-pointer transition-colors">wingmentorprogram@gmail.com</a></li>
-                                <li><a href="mailto:wmpilotgroup@gmail.com" className="hover:text-white cursor-pointer transition-colors">wmpilotgroup@gmail.com</a></li>
+                                <li><a href="mailto:pilotrecognition@gmail.com" className="hover:text-white cursor-pointer transition-colors">pilotrecognition@gmail.com</a></li>
+                                <li><a href="mailto:pilotrecognition@gmail.com" className="hover:text-white cursor-pointer transition-colors">pilotrecognition@gmail.com</a></li>
                                 <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
                             </ul>
                         </div>
@@ -458,7 +458,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         </div>
                     </div>
                     <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
-                        <p>&copy; 2024 WingMentor - WM Pilot Group. All rights reserved.</p>
+                        <p>&copy; 2024 PilotRecognition - WM Pilot Group. All rights reserved.</p>
                     </div>
                 </div>
             </div>
@@ -470,13 +470,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <div>
                         <h3 className="text-xl font-bold text-slate-900 mb-2">EBT CBTA Advisory Relationship</h3>
                         <p className="text-slate-700 leading-relaxed mb-3">
-                            WingMentor programs are developed with EBT CBTA guidance from Airbus Head of Training.
+                            PilotRecognition programs are developed with EBT CBTA guidance from Airbus Head of Training.
                             Our curriculum aligns with Evidence-Based Training and Competency-Based Training and Assessment frameworks.
                         </p>
                         <div className="bg-white rounded-lg p-4 border border-blue-100">
                             <p className="text-sm text-slate-600 mb-1"><strong>Relationship Type:</strong> Advisory Consultation</p>
                             <p className="text-sm text-slate-600 mb-1"><strong>Effective Date:</strong> January 2024</p>
-                            <p className="text-sm text-slate-600"><strong>Verification Contact:</strong> wingmentorprogram@gmail.com</p>
+                            <p className="text-sm text-slate-600"><strong>Verification Contact:</strong> pilotrecognition@gmail.com</p>
                         </div>
                     </div>
                 </div>

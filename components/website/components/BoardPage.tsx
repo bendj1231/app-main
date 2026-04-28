@@ -41,7 +41,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
         { title: "Strategic Audit", value: "Annual review of board goals against industry flight shortages and shifts." },
         { title: "Partner Selection", value: "Board-level vetting of flagship carriers and manufacturing partners." },
         { title: "Policy Formation", value: "Creating the governance frameworks for pilot data security and ethics." },
-        { title: "Industry Impact", value: "Measuring the success rate of WingMentor members in the global market." }
+        { title: "Industry Impact", value: "Measuring the success rate of PilotRecognition members in the global market." }
     ];
 
     return (
@@ -54,7 +54,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
@@ -67,7 +67,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                             Strategic Direction | Industry Alignment | Global Expansion
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            WingMentor is guided by a diverse board of airline captains, technology pioneers,
+                            PilotRecognition is guided by a diverse board of airline captains, technology pioneers,
                             and regulatory experts committed to solving the global pilot shortage. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our board governance aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
@@ -129,7 +129,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                             </p>
                             <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
                                 Through direct consultation with Flagship Carriers and ICAO delegates, our board ensures
-                                that every WingMentor program is legally recognized, ethically sound, and industry-aligned.
+                                that every PilotRecognition program is legally recognized, ethically sound, and industry-aligned.
                                 We are the voice of the pilot inside the boardroom.
                             </p>
                             <div className="space-y-4">

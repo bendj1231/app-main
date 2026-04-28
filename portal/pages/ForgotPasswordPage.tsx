@@ -108,12 +108,12 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ onBack }
                     <div className={styles.infoPanelGradient1} />
                     <div className={styles.infoPanelGradient2} />
                     <div className={styles.logo}>
-                        <img src="/logo.png" alt="WingMentor Logo" />
+                        <img src="/logo.png" alt="PilotRecognition Logo" />
                     </div>
                     <div className={styles.pageLabel}>PASSWORD RESET</div>
                     <h2 className={styles.panelTitle}>Account Recovery</h2>
                     <p className={styles.panelDescription}>
-                        <strong>Regain access to your WingMentor account.</strong> Enter your email address and we'll send you a secure link to reset your password.
+                        <strong>Regain access to your PilotRecognition account.</strong> Enter your email address and we'll send you a secure link to reset your password.
                     </p>
                 </div>
                 
@@ -133,7 +133,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ onBack }
                     <div className={styles.contactSection}>
                         <div>Contact Us</div>
                         <div>Phone: <a href="tel:+1234567890">+1 234 567 890</a></div>
-                        <div>Email: <a href="mailto:wingmentorprogram@gmail.com">wingmentorprogram@gmail.com</a></div>
+                        <div>Email: <a href="mailto:pilotrecognition@gmail.com">pilotrecognition@gmail.com</a></div>
                     </div>
                 </div>
             </div>

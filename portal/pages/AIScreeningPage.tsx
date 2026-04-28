@@ -27,7 +27,7 @@ export const AIScreeningPage: React.FC<AIScreeningPageProps> = ({ onBack, onLogo
                     </button>
                     <h1 className="font-serif text-[2.1rem] leading-tight text-slate-900 mb-2">Examination<br />Board Interview</h1>
                     <p className="text-[0.9rem] text-slate-500 leading-relaxed max-w-sm mt-3">
-                        Meet 1-on-1 with a WingMentor director. Your session will be analyzed by our AI evaluation engine to provide an objective, data-driven scorecard on your professional soft skills.
+                        Meet 1-on-1 with a PilotRecognition director. Your session will be analyzed by our AI evaluation engine to provide an objective, data-driven scorecard on your professional soft skills.
                     </p>
                 </div>
 

@@ -46,7 +46,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
           </div>
 
           <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '240px' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
           </div>
 
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em', color: '#2563eb', fontWeight: 700 }}>
@@ -99,7 +99,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
                       Private Aviation Excellence
                     </h3>
                     <p className="horizontal-card-desc" style={{ maxWidth: '100%', marginBottom: '1.5rem', color: '#64748b', fontSize: '1rem', lineHeight: 1.6 }}>
-                      WingMentor's Private Sector Pathway provides specialized training for pilots seeking careers in the private jet sector, with direct feedback from Gulfstream and private charter companies on ideal pilot profiles and requirements.
+                      PilotRecognition's Private Sector Pathway provides specialized training for pilots seeking careers in the private jet sector, with direct feedback from Gulfstream and private charter companies on ideal pilot profiles and requirements.
                     </p>
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                       <span style={{ fontSize: '0.875rem', padding: '0.25rem 0.75rem', background: '#e0e7ff', borderRadius: '12px', color: '#3730a3', fontWeight: 500 }}>
@@ -620,7 +620,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
                   Take the first step toward a prestigious career in private aviation with our guided pathway. Contact us to learn about enrollment and career opportunities.
                 </p>
                 <button
-                  onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com?subject=Private Sector Pathway Inquiry&body=I am interested in learning more about the Private Sector pathway through WingMentor.'}
+                  onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com?subject=Private Sector Pathway Inquiry&body=I am interested in learning more about the Private Sector pathway through PilotRecognition.'}
                   style={{
                     padding: '1rem 2.5rem',
                     background: '#2563eb',
@@ -664,7 +664,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
           textAlign: 'center'
         }}>
           <p style={{ color: '#64748b', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-            Transform your aviation career with specialized private jet sector training through WingMentor.
+            Transform your aviation career with specialized private jet sector training through PilotRecognition.
           </p>
           <button
             className="help-btn"
@@ -683,7 +683,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
               transition: 'all 0.2s ease',
               boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
             }}
-            onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com'}
+            onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
           >
             ✉️ Contact Support
           </button>

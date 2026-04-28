@@ -901,7 +901,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro',
       title: 'Pathways to Partnered Cadet Programs',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1150,7 +1150,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-private',
       title: 'Pathways to Type Rating Pathways',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1282,7 +1282,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-cargo',
       title: 'Pathways to Partnered Cadet Programs',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1310,7 +1310,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-cargopath',
       title: 'Pathways to Partnered Cadet Programs',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1364,7 +1364,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-privatesector',
       title: 'Pathways to Partnered Cadet Programs',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1496,7 +1496,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-airtaxi',
       title: 'Pathways to Urban Air Mobility Careers',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1615,7 +1615,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-specialized',
       title: 'Pathways to Specialized Aviation Careers',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -2840,13 +2840,13 @@ const DiscoveryCards: React.FC<{
                   }}
                 >
                 {index === 0 ? (
-                  // WingMentor Intro Card - White background with special styling (450px)
+                  // PilotRecognition Intro Card - White background with special styling (450px)
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-8 bg-white">
-                    {/* WingMentor Logo */}
+                    {/* PilotRecognition Logo */}
                     <div className="mb-5 flex items-center justify-center">
                       <img 
                         src="/logo.png" 
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="w-20 h-20 object-contain"
                       />
                     </div>
@@ -2875,10 +2875,10 @@ const DiscoveryCards: React.FC<{
                       Direct entry pathways for foundation program completion
                     </p>
                     
-                    {/* WingMentor Branding */}
+                    {/* PilotRecognition Branding */}
                     <div className="mt-8 flex items-center gap-2">
                       <span style={{ color: '#64748b', fontSize: '0.875rem' }}>Powered by</span>
-                      <span style={{ fontFamily: 'Georgia, serif', color: '#0f172a', fontWeight: 600 }}>WingMentor</span>
+                      <span style={{ fontFamily: 'Georgia, serif', color: '#0f172a', fontWeight: 600 }}>PilotRecognition</span>
                     </div>
                   </div>
                 ) : (
@@ -3033,7 +3033,7 @@ const DiscoveryCards: React.FC<{
               </div>
             ))}
             
-            {/* End Card - Duplicate of WingMentor Intro Card for proper centering */}
+            {/* End Card - Duplicate of PilotRecognition Intro Card for proper centering */}
             <div
               className="flex-shrink-0 rounded-2xl overflow-hidden cursor-pointer group relative"
               style={{
@@ -3044,11 +3044,11 @@ const DiscoveryCards: React.FC<{
               }}
             >
               <div className="absolute inset-0 flex flex-col items-center justify-center p-8 bg-white">
-                {/* WingMentor Logo */}
+                {/* PilotRecognition Logo */}
                 <div className="mb-5 flex items-center justify-center">
                   <img 
                     src="/logo.png" 
-                    alt="WingMentor Logo"
+                    alt="PilotRecognition Logo"
                     className="w-20 h-20 object-contain"
                   />
                 </div>
@@ -3077,10 +3077,10 @@ const DiscoveryCards: React.FC<{
                   Direct entry pathways for foundation program completion
                 </p>
                 
-                {/* WingMentor Branding */}
+                {/* PilotRecognition Branding */}
                 <div className="mt-8 flex items-center gap-2">
                   <span style={{ color: '#64748b', fontSize: '0.875rem' }}>Powered by</span>
-                  <span style={{ fontFamily: 'Georgia, serif', color: '#0f172a', fontWeight: 600 }}>WingMentor</span>
+                  <span style={{ fontFamily: 'Georgia, serif', color: '#0f172a', fontWeight: 600 }}>PilotRecognition</span>
                 </div>
               </div>
             </div>
@@ -3286,10 +3286,10 @@ const DiscoveryCards: React.FC<{
           {/* Description Text - Dynamic based on active card with blur fade */}
           <div id="pathway-description" className="text-center mb-6 max-w-5xl mx-auto relative scroll-mt-8">
             {displayIndex === 0 ? (
-              // WingMentor Intro Card description
+              // PilotRecognition Intro Card description
               <>
                 <p className="text-lg md:text-xl leading-relaxed mb-4" style={{ color: isDarkMode ? '#cbd5e1' : '#475569' }}>
-                  Welcome to WingMentor's partnered pathway programs. As a foundation program graduate, you have exclusive access 
+                  Welcome to PilotRecognition's partnered pathway programs. As a foundation program graduate, you have exclusive access 
                   to direct entry opportunities with leading airlines and training organizations worldwide. These partnerships 
                   provide streamlined career progression, from cadet programs to first officer positions, with recognized 
                   credentials and industry support.
@@ -4286,7 +4286,7 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
           {/* Center: Logo */}
           <img 
             src="/logo.png" 
-            alt="WingMentor" 
+            alt="PilotRecognition" 
             style={{ 
               height: '36px', 
               width: 'auto',

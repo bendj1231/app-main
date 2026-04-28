@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Stripe subscription billing system has been integrated into the WingMentor application. This document outlines the integration points and user journey.
+The Stripe subscription billing system has been integrated into the PilotRecognition application. This document outlines the integration points and user journey.
 
 ## Integration Points
 
@@ -33,7 +33,7 @@ Added a menu item in the settings page:
 - Displays UpgradeCTA for free-tier users at bottom of sidebar
 - Requires `userId` prop to function correctly
 
-#### WingMentorHome (`WingMentorHome.tsx`)
+#### PilotRecognitionHome (`PilotRecognitionHome.tsx`)
 - Added `subscription` to `MainView` type
 - Route handler: `case 'subscription'` renders `SubscriptionDashboard`
 - Passes `userProfile?.id` to Sidebar for upgrade CTAs

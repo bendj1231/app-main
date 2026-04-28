@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Atlas Résumé Builder is a premium feature that creates industry-standard aviation resumes with certification, analytics, and direct airline sharing capabilities. It's designed to differentiate WingMentor from regular resume builders by providing aviation-specific formatting, verification, and airline integration.
+The Atlas Résumé Builder is a premium feature that creates industry-standard aviation resumes with certification, analytics, and direct airline sharing capabilities. It's designed to differentiate PilotRecognition from regular resume builders by providing aviation-specific formatting, verification, and airline integration.
 
 ## Features
 
@@ -174,7 +174,7 @@ Live preview of resume with template rendering.
 ### Portal Sidebar
 Added "Atlas Resume" menu item to portal sidebar navigation.
 
-### WingMentorHome
+### PilotRecognitionHome
 - Added `atlas-resume` to MainView type
 - Route handler renders AtlasResumeBuilder component
 - Navigation via `setMainView('atlas-resume')`

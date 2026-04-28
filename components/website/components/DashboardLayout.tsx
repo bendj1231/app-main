@@ -26,7 +26,7 @@ const sidebarItems = [
   { id: 'programs', label: 'Programs', desc: 'Foundational and Transition mentorship programs', image: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?q=80&w=400&auto=format&fit=crop' },
   { id: 'pathways', label: 'Pathways', desc: 'Structured career roadmaps and training tracks', image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=400&auto=format&fit=crop' },
   { id: 'recognition', label: 'Pilot Recognition', desc: 'Awards, flight hours, and certifications', image: 'https://images.unsplash.com/photo-1542206395-9feb3edaa68d?q=80&w=400&auto=format&fit=crop' },
-  { id: 'network', label: 'WingMentor Network', desc: 'Recognition hub, knowledge bank, and aviation community', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop' },
+  { id: 'network', label: 'PilotRecognition Network', desc: 'Recognition hub, knowledge bank, and aviation community', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop' },
   { id: 'news', label: 'News & Updates', desc: 'Latest announcements and industry insights', image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=400&auto=format&fit=crop' },
 ];
 
@@ -39,7 +39,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onNavigate, on
       <aside className="w-56 md:w-60 bg-white border-r border-slate-200 flex flex-col fixed h-full overflow-y-auto">
         {/* Logo Section */}
         <div className="p-4 md:p-6 border-b border-slate-100">
-          <img src={IMAGES.LOGO} alt="WingMentor" className="w-12 md:w-16 h-auto mb-2" />
+          <img src={IMAGES.LOGO} alt="PilotRecognition" className="w-12 md:w-16 h-auto mb-2" />
           <p className="text-[8px] md:text-[10px] font-bold tracking-[0.2em] uppercase text-blue-600">
             Connecting pilots to the industry
           </p>
@@ -165,7 +165,7 @@ const DashboardContent: React.FC<{ onNavigate: (page: string) => void }> = ({ on
 
       {/* Header */}
       <div className="text-center mb-10">
-        <img src={IMAGES.LOGO} alt="WingMentor" className="w-20 h-auto mx-auto mb-4" />
+        <img src={IMAGES.LOGO} alt="PilotRecognition" className="w-20 h-auto mx-auto mb-4" />
         <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-blue-600 mb-2">
           Connecting pilots to the industry
         </p>
@@ -181,7 +181,7 @@ const DashboardContent: React.FC<{ onNavigate: (page: string) => void }> = ({ on
         <h2 className="text-xl font-serif text-slate-900 mb-1">Programs</h2>
         <p className="text-xs text-slate-500 mb-6">
           Track your training progress and program enrollment<br />
-          across all WingMentor programs
+          across all PilotRecognition programs
         </p>
 
         <div className="grid grid-cols-3 gap-4">

@@ -135,7 +135,7 @@ const LicensureTypeRatingPage: React.FC<LicensureTypeRatingPageProps> = ({ onBac
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <img
               src="/logo.png"
-              alt="WingMentor Logo"
+              alt="PilotRecognition Logo"
               style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }}
             />
             <div className="tracking-widest text-xs font-bold uppercase mb-3" style={{ color: isDarkMode ? '#60a5fa' : undefined }}>

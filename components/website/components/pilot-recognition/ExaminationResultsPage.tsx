@@ -104,13 +104,13 @@ const ExaminationResultsPage: React.FC<ExaminationResultsPageProps> = ({ onBack,
 
         <div className="dashboard-header" style={{ marginBottom: '2rem' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
           </div>
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em' }}>VERIFIED EXAMINATION RESULTS</div>
           <h1 className="dashboard-title" style={{ marginBottom: '0.5rem' }}>Examination Directory</h1>
           <p style={{ maxWidth: '40rem', margin: '0 auto', color: '#475569' }}>
             Centralized record of your proctored examinations, knowledge recency checks, and mentorship assessments. These
-            scores are visible to WingMentor recruiters and airline partners.
+            scores are visible to PilotRecognition recruiters and airline partners.
           </p>
         </div>
 

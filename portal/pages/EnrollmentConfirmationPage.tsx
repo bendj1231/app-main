@@ -141,7 +141,7 @@ export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProp
                 textAlign: 'center'
             }}>
                 <div className="dashboard-logo" style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '2rem' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '80px', height: 'auto' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '80px', height: 'auto' }} />
                 </div>
 
                 <h1 style={{

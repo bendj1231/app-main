@@ -148,7 +148,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         try {
             await login(email, password);
 
-            addToast('success', 'Login Successful', 'Welcome back to WingMentor!');
+            addToast('success', 'Login Successful', 'Welcome back to PilotRecognition!');
             onNavigate('home');
             onClose();
         } catch (err: any) {
@@ -197,7 +197,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                         <div className="mt-8 mb-6 flex justify-center">
                             <img
                                 src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                                alt="WingMentor Logo"
+                                alt="PilotRecognition Logo"
                                 className="w-48 h-auto object-contain"
                             />
                         </div>
@@ -217,7 +217,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
                         {/* Description */}
                         <p className="text-white/70 text-sm leading-relaxed mb-6 text-center max-w-sm">
-                            Access personalized program enrollment, pathway briefs, and WingMentor Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies. Explore the pilot network search for type-rating intel, airline requirements, and aircraft references.
+                            Access personalized program enrollment, pathway briefs, and PilotRecognition Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies. Explore the pilot network search for type-rating intel, airline requirements, and aircraft references.
                         </p>
 
                         {/* Learn More Button */}
@@ -242,11 +242,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                 Connecting pilots to the aviation industry
                             </h2>
                             <p id="login-modal-description" className="text-slate-500 text-sm md:text-base">
-                                Sign in with your WingMentor credentials.
+                                Sign in with your PilotRecognition credentials.
                             </p>
                         </div>
 
-                        {/* WingMentor Account Label */}
+                        {/* PilotRecognition Account Label */}
                         <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">
                             WINGMENTOR ACCOUNT
                         </p>

@@ -61,7 +61,7 @@ serve(async (req) => {
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.5);">
           <tr>
             <td style="padding: 40px 40px 30px 40px; text-align: center;">
-              <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="WingMentor Logo" style="height: 90px; width: auto; object-fit: contain; display: block; margin: 0 auto 30px auto;" />
+              <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="PilotRecognition Logo" style="height: 90px; width: auto; object-fit: contain; display: block; margin: 0 auto 30px auto;" />
               
               <div style="color: #2563eb; font-size: 14px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 20px;">
                 ENROLLMENT CONFIRMATION
@@ -114,7 +114,7 @@ serve(async (req) => {
         body: JSON.stringify({
           from: 'noreply@pilotrecognition.com',
           to: email,
-          subject: 'Enrollment Confirmation - WingMentor Foundation Program',
+          subject: 'Enrollment Confirmation - PilotRecognition Foundation Program',
           html: emailHtml
         })
       })
@@ -162,7 +162,7 @@ async function storeNotification(supabase: any, email: string, displayName: stri
       .insert({
         user_id: null,
         title: 'Enrollment Confirmation Sent',
-        message: `Your enrollment confirmation for the WingMentor Foundational Program has been sent to ${email}`,
+        message: `Your enrollment confirmation for the PilotRecognition Foundational Program has been sent to ${email}`,
         type: 'system',
         priority: 'high',
         metadata: {
@@ -170,7 +170,7 @@ async function storeNotification(supabase: any, email: string, displayName: stri
           displayName: displayName,
           program: program,
           enrollmentDate: new Date().toISOString(),
-          emailSubject: '✅ Enrollment Confirmed - WingMentor Foundational Program',
+          emailSubject: '✅ Enrollment Confirmed - PilotRecognition Foundational Program',
           method: method
         }
       })

@@ -18,7 +18,7 @@ export const ContactSupportPage: React.FC<ContactSupportPageProps> = ({ onBack, 
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -49,14 +49,14 @@ export const ContactSupportPage: React.FC<ContactSupportPageProps> = ({ onBack, 
                             <div className="space-y-6">
                                 <div>
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">In regards to the Program</p>
-                                    <a href="mailto:wingmentorprogram@gmail.com" className="text-xl font-medium text-blue-600 hover:text-blue-800 transition-colors break-words">
-                                        wingmentorprogram@gmail.com
+                                    <a href="mailto:pilotrecognition@gmail.com" className="text-xl font-medium text-blue-600 hover:text-blue-800 transition-colors break-words">
+                                        pilotrecognition@gmail.com
                                     </a>
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Wingmentor Founders & Team</p>
-                                    <a href="mailto:wmpilotgroup@gmail.com" className="text-xl font-medium text-blue-600 hover:text-blue-800 transition-colors break-words">
-                                        wmpilotgroup@gmail.com
+                                    <a href="mailto:pilotrecognition@gmail.com" className="text-xl font-medium text-blue-600 hover:text-blue-800 transition-colors break-words">
+                                        pilotrecognition@gmail.com
                                     </a>
                                 </div>
                             </div>

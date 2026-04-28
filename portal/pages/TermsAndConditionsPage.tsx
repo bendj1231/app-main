@@ -57,7 +57,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         Official Terms of Service
                     </div>
                     <h1 style={{ fontSize: '3.5rem', fontWeight: 800, color: '#0f172a', marginBottom: '2rem', lineHeight: 1.1 }}>
-                        WingMentor Experience <br /> Agreement
+                        PilotRecognition Experience <br /> Agreement
                     </h1>
                     <p style={{ fontSize: '1.125rem', color: '#64748b', maxWidth: '600px', margin: '0 auto' }}>
                         Please read this document carefully. By checking the agreement box during enrollment, you are entering into a legally binding contract.
@@ -77,7 +77,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                WingMentor (hereinafter referred to as "The Experience", "The Platform", or "The Provider") is explicitly defined as a <strong>Pilot Quality Assurance (PQA)</strong> and <strong>Credibility Experience provider</strong>. It is not, and shall not be construed as, a flight training center, flight school, or academic institution under any jurisdiction including but not limited to FAA Part 141, Part 142, or EASA equivalent regulations.
+                                PilotRecognition (hereinafter referred to as "The Experience", "The Platform", or "The Provider") is explicitly defined as a <strong>Pilot Quality Assurance (PQA)</strong> and <strong>Credibility Experience provider</strong>. It is not, and shall not be construed as, a flight training center, flight school, or academic institution under any jurisdiction including but not limited to FAA Part 141, Part 142, or EASA equivalent regulations.
                             </p>
                             <p>
                                 The Experience is designed to provide high-level mentorship, peer-to-peer consultation, and exposure to industry-standard Evidence-Based Training (EBT) and Competency-Based Training and Assessment (CBTA) workflows. By participating, you acknowledge that you are not receiving formal instruction for the issuance of certificates, ratings, or licenses.
@@ -96,7 +96,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                All Pilot Quality Assurance (PQA) metrics generated within The Experience are proprietary to WingMentor and are derived from standardized assessment rubrics. These rubrics are designed to measure "Core Competencies" as recognized by the international aviation community.
+                                All Pilot Quality Assurance (PQA) metrics generated within The Experience are proprietary to PilotRecognition and are derived from standardized assessment rubrics. These rubrics are designed to measure "Core Competencies" as recognized by the international aviation community.
                             </p>
                             <p>
                                 Mentees agree that their performance data, including grading sheets, simulator performance logs, and mentor evaluations, will be aggregated into a central database for the purpose of industry advocacy and profile synthesis.
@@ -115,10 +115,10 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                Success in the aviation industry relies on verifiable credibility. WingMentor provides the infrastructure for Mentees to build a <strong>Data-Driven Portfolio</strong>. This portfolio is intended for presentation to potential employers, Approved Training Organizations (ATOs), and insurance underwriters.
+                                Success in the aviation industry relies on verifiable credibility. PilotRecognition provides the infrastructure for Mentees to build a <strong>Data-Driven Portfolio</strong>. This portfolio is intended for presentation to potential employers, Approved Training Organizations (ATOs), and insurance underwriters.
                             </p>
                             <p>
-                                The Mentee grants WingMentor an irrevocable, global license to synthesize their participation data into these portfolios. WingMentor reserves the right to authenticate all claims made within the portfolio through its proprietary peer-verification and mentor-audit systems.
+                                The Mentee grants PilotRecognition an irrevocable, global license to synthesize their participation data into these portfolios. PilotRecognition reserves the right to authenticate all claims made within the portfolio through its proprietary peer-verification and mentor-audit systems.
                             </p>
                         </div>
                     </section>
@@ -134,7 +134,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                                 The Experience utilizes specialized software applications, training modules, and technical documentation provided by third-party aerospace manufacturers, including but not limited to <strong>Airbus</strong>.
                             </p>
                             <p>
-                                <strong>WingMentor explicitly disclaims any and all legal liability</strong> arising from the use of these third-party materials. This includes, but is not limited to:
+                                <strong>PilotRecognition explicitly disclaims any and all legal liability</strong> arising from the use of these third-party materials. This includes, but is not limited to:
                             </p>
                             <ul style={{ paddingLeft: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                 <li>Inaccuracies in technical manuals or performance data.</li>
@@ -143,7 +143,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                                 <li>Discrepancies between experimental modules and current operational fleet standards.</li>
                             </ul>
                             <p>
-                                By agreeing to these terms, you acknowledge that your interaction with these third-party tools is governed by their respective End User License Agreements (EULAs), for which WingMentor is not a party.
+                                By agreeing to these terms, you acknowledge that your interaction with these third-party tools is governed by their respective End User License Agreements (EULAs), for which PilotRecognition is not a party.
                             </p>
                         </div>
                     </section>
@@ -156,10 +156,10 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                The aviation industry faces a "Pilot Gap" where new graduates lack the leadership and CRM depth required for the modern multi-crew flight deck. WingMentor addresses this through high-level consultation.
+                                The aviation industry faces a "Pilot Gap" where new graduates lack the leadership and CRM depth required for the modern multi-crew flight deck. PilotRecognition addresses this through high-level consultation.
                             </p>
                             <p>
-                                However, completion of the WingMentor Foundational Program or any associated specific mentorship certificate <strong>does not guarantee</strong> employment, placement, or successful passing of any airline's official selection process. WingMentor acts as an advocate and a preparer, not a placement agency.
+                                However, completion of the PilotRecognition Foundational Program or any associated specific mentorship certificate <strong>does not guarantee</strong> employment, placement, or successful passing of any airline's official selection process. PilotRecognition acts as an advocate and a preparer, not a placement agency.
                             </p>
                         </div>
                     </section>
@@ -172,7 +172,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                All materials provided within The Experience, including mentorship guides, scenario designs, EBT grading logic, and proprietary software interfaces, are the exclusive intellectual property of WingMentor or its licensors.
+                                All materials provided within The Experience, including mentorship guides, scenario designs, EBT grading logic, and proprietary software interfaces, are the exclusive intellectual property of PilotRecognition or its licensors.
                             </p>
                             <p>
                                 Mentees are granted a limited, non-transferable license to use these materials solely for their personal professional development during the duration of their enrollment. Any redistribution, replication, or unauthorized public performance of these materials is strictly prohibited and will result in immediate legal action.
@@ -204,7 +204,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                <strong>To the maximum extent permitted by applicable law</strong>, WingMentor, its founders, mentors, and partners shall not be held liable for any incidental, indirect, or consequential damages resulting from your participation in The Experience.
+                                <strong>To the maximum extent permitted by applicable law</strong>, PilotRecognition, its founders, mentors, and partners shall not be held liable for any incidental, indirect, or consequential damages resulting from your participation in The Experience.
                             </p>
                             <p>
                                 This includes, but is not limited to, loss of potential earnings, failure to pass official flight tests, or emotional distress associated with professional career trajectories. Our total liability for any claim arising out of these terms shall not exceed the total amount of service fees paid by the Mentee for the current term of enrollment.
@@ -220,7 +220,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                WingMentor acts as an advocate for the pilot community. By participating, you contribute to a global data set that allows WingMentor to present the needs and performance metrics of modern pilots to airlines and manufacturers.
+                                PilotRecognition acts as an advocate for the pilot community. By participating, you contribute to a global data set that allows PilotRecognition to present the needs and performance metrics of modern pilots to airlines and manufacturers.
                             </p>
                             <p>
                                 You agree that anonymized, aggregated data from your participation may be used in official industry presentations, research papers, and career fair panels to improve the global standard of pilot entry-level competency.
@@ -236,7 +236,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                This Agreement shall be governed by and construed in accordance with the laws of the jurisdiction in which WingMentor is officially registered. Any disputes arising from this agreement that cannot be resolved through internal mediation shall be settled in the competent courts of that jurisdiction.
+                                This Agreement shall be governed by and construed in accordance with the laws of the jurisdiction in which PilotRecognition is officially registered. Any disputes arising from this agreement that cannot be resolved through internal mediation shall be settled in the competent courts of that jurisdiction.
                             </p>
                         </div>
                     </section>
@@ -249,7 +249,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                WingMentor reserves the right to terminate or suspend access to The Platform at its sole discretion, without prior notice, for conduct that WingMentor believes violates these terms or is harmful to other participants, WingMentor's industry reputation, or the safety principles of the aviation community.
+                                PilotRecognition reserves the right to terminate or suspend access to The Platform at its sole discretion, without prior notice, for conduct that PilotRecognition believes violates these terms or is harmful to other participants, PilotRecognition's industry reputation, or the safety principles of the aviation community.
                             </p>
                         </div>
                     </section>
@@ -262,7 +262,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                As WingMentor evolves alongside industry standards and manufacturing partnerships, these terms may be updated. Mentees will be notified of significant changes via the portal. Continued use of The Platform constitutes acceptance of the revised terms.
+                                As PilotRecognition evolves alongside industry standards and manufacturing partnerships, these terms may be updated. Mentees will be notified of significant changes via the portal. Continued use of The Platform constitutes acceptance of the revised terms.
                             </p>
                         </div>
                     </section>
@@ -275,7 +275,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                This Agreement constitutes the entire understanding between the Mentee and WingMentor regarding "The Experience" and supersedes all prior agreements, representations, or understandings, whether oral or written.
+                                This Agreement constitutes the entire understanding between the Mentee and PilotRecognition regarding "The Experience" and supersedes all prior agreements, representations, or understandings, whether oral or written.
                             </p>
                         </div>
                     </section>
@@ -290,7 +290,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                The generation of Pilot Metrics is the cornerstone of the Pilot Quality Assurance (PQA) mandate. WingMentor utilizes a multi-layered data ingestion process to ensure accuracy and professional relevance.
+                                The generation of Pilot Metrics is the cornerstone of the Pilot Quality Assurance (PQA) mandate. PilotRecognition utilizes a multi-layered data ingestion process to ensure accuracy and professional relevance.
                             </p>
                             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1e293b' }}>14.1 Metric Categorization</h3>
                             <p>
@@ -298,7 +298,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                             </p>
                             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1e293b' }}>14.2 Data Storage and Security</h3>
                             <p>
-                                WingMentor employs industry-standard encryption protocols for the storage of all participant data. While we strive for maximum security, the nature of digital platforms involves inherent risks. Participants acknowledge that WingMentor cannot guarantee absolute immunity from cyber-threats or unauthorized data breaches.
+                                PilotRecognition employs industry-standard encryption protocols for the storage of all participant data. While we strive for maximum security, the nature of digital platforms involves inherent risks. Participants acknowledge that PilotRecognition cannot guarantee absolute immunity from cyber-threats or unauthorized data breaches.
                             </p>
                             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1e293b' }}>14.3 Industry Benchmarking</h3>
                             <p>
@@ -323,7 +323,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                             </p>
                             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1e293b' }}>15.2 Intellectual Property Restrictions</h3>
                             <p>
-                                Any screenshots, recordings, or telemetry data captured from manufacturer-specific modules are strictly confidential. Sharing such materials on public forums, social media, or with competitors constitutes a major breach of this agreement and may lead to prosecution for intellectual property theft by both WingMentor and the respective manufacturer.
+                                Any screenshots, recordings, or telemetry data captured from manufacturer-specific modules are strictly confidential. Sharing such materials on public forums, social media, or with competitors constitutes a major breach of this agreement and may lead to prosecution for intellectual property theft by both PilotRecognition and the respective manufacturer.
                             </p>
                         </div>
                     </section>
@@ -340,11 +340,11 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                             </p>
                             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1e293b' }}>16.1 Publicity Rights</h3>
                             <p>
-                                By participating, you grant WingMentor the non-exclusive right to use your general feedback, graduation status, and peer-mentorship highlights in promotional materials, including social media posts, website testimonials, and industry press releases.
+                                By participating, you grant PilotRecognition the non-exclusive right to use your general feedback, graduation status, and peer-mentorship highlights in promotional materials, including social media posts, website testimonials, and industry press releases.
                             </p>
                             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1e293b' }}>16.2 Misrepresentation Penalty</h3>
                             <p>
-                                Any Mentee who publicly misrepresents the WingMentor Experience as a "Flight School" or "Authorized Training Center" (claims that could damage WingMentor's regulatory standing) will have their account immediately terminated and any issued certificates revoked.
+                                Any Mentee who publicly misrepresents the PilotRecognition Experience as a "Flight School" or "Authorized Training Center" (claims that could damage PilotRecognition's regulatory standing) will have their account immediately terminated and any issued certificates revoked.
                             </p>
                         </div>
                     </section>
@@ -357,10 +357,10 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                In the event of a dispute between the Mentee and WingMentor, the parties agree to first seek resolution through formal internal mediation conducted by a mutually agreed-upon aviation professional.
+                                In the event of a dispute between the Mentee and PilotRecognition, the parties agree to first seek resolution through formal internal mediation conducted by a mutually agreed-upon aviation professional.
                             </p>
                             <p>
-                                If mediation fails, the dispute shall be settled by binding arbitration in accordance with the International Chamber of Commerce (ICC) rules. The place of arbitration shall be the jurisdiction of WingMentor's registration. Both parties agree that any legal proceedings will be conducted on an individual basis and not as a class action or representative action.
+                                If mediation fails, the dispute shall be settled by binding arbitration in accordance with the International Chamber of Commerce (ICC) rules. The place of arbitration shall be the jurisdiction of PilotRecognition's registration. Both parties agree that any legal proceedings will be conducted on an individual basis and not as a class action or representative action.
                             </p>
                         </div>
                     </section>
@@ -394,7 +394,7 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                         </h2>
                         <div style={{ color: '#475569', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <p>
-                                WingMentor shall not be liable for any failure to perform its obligations under this Agreement if such failure results from circumstances beyond its reasonable control, including but not limited to: global health crises, cyber-attacks on infrastructure, acts of God, war, civil unrest, or major regulatory changes in the aviation industry that impact the feasibility of The Platform's current model.
+                                PilotRecognition shall not be liable for any failure to perform its obligations under this Agreement if such failure results from circumstances beyond its reasonable control, including but not limited to: global health crises, cyber-attacks on infrastructure, acts of God, war, civil unrest, or major regulatory changes in the aviation industry that impact the feasibility of The Platform's current model.
                             </p>
                         </div>
                     </section>
@@ -418,9 +418,9 @@ export const TermsAndConditionsPage: React.FC<TermsAndConditionsPageProps> = ({ 
                                 backgroundColor: '#fcfdfe'
                             }}>
                                 <p style={{ fontSize: '0.9rem', color: '#94a3b8', fontStyle: 'italic' }}>
-                                    End of WingMentor Experience Agreement <br />
+                                    End of PilotRecognition Experience Agreement <br />
                                     Document ID: WM-LGL-2026-001 <br />
-                                    All Rights Reserved © 2026 WingMentor
+                                    All Rights Reserved © 2026 PilotRecognition
                                 </p>
                             </div>
                         </div>

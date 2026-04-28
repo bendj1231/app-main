@@ -13,7 +13,7 @@ export const FoundationalProgramApplicationPage: React.FC<FoundationalProgramApp
     const mainFeatures = [
         {
             title: "Join the Global Registry",
-            desc: "Secure your place in the WingMentor global talent registry, accessible by airlines and private jet brokers.",
+            desc: "Secure your place in the PilotRecognition global talent registry, accessible by airlines and private jet brokers.",
             icon: Users,
             bullets: ["Visibility", "Professional ID", "Global Reach"]
         },
@@ -40,7 +40,7 @@ export const FoundationalProgramApplicationPage: React.FC<FoundationalProgramApp
     const applicationProcess = [
         { title: "Registration", value: "Submit your initial pilot profile and flight credentials for verification.", icon: UserPlus },
         { title: "Verification", value: "Our AI systems audit your records against GCAA/EASA/FAA standards.", icon: Search },
-        { title: "Accreditation", value: "Receive your 'Verified Pilot' status and digital WingMentor badge.", icon: Award },
+        { title: "Accreditation", value: "Receive your 'Verified Pilot' status and digital PilotRecognition badge.", icon: Award },
         { title: "Activation", value: "Your profile goes live in the global database for industry visibility.", icon: CheckCircle2 }
     ];
 
@@ -54,7 +54,7 @@ export const FoundationalProgramApplicationPage: React.FC<FoundationalProgramApp
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">

@@ -24,7 +24,7 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-6"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -37,7 +37,7 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             Compliance | Ethics | Transparency
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                            Our governance framework is the backbone of trust within the WingMentor ecosystem.
+                            Our governance framework is the backbone of trust within the PilotRecognition ecosystem.
                             We are committed to regulatory compliance, data ethics, and absolute transparency
                             in all our partnerships.
                         </p>
@@ -62,7 +62,7 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             that facilitates seamless career progression across international jurisdictions.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            This ensures that your WingMentor profile is a recognized asset, whether you are
+                            This ensures that your PilotRecognition profile is a recognized asset, whether you are
                             applying to a carrier in the UAE, Europe, or beyond. The <strong>ATS-compatible ATLAS Aviation CV</strong>
                             formatting integrated into our platform ensures your credentials are presented in the standardized
                             format preferred by major airlines and recruitment systems worldwide.

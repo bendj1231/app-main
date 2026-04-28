@@ -23,7 +23,7 @@ export const DigitalLogbookDirectoryPage: React.FC<DigitalLogbookDirectoryPagePr
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
@@ -159,7 +159,7 @@ export const DigitalLogbookDirectoryPage: React.FC<DigitalLogbookDirectoryPagePr
                     <RevealOnScroll>
                         <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6">Ready to Track Your Career?</h2>
                         <p className="text-lg text-slate-600 mb-10 font-sans max-w-2xl mx-auto">
-                            Join WingMentor to access comprehensive digital logbook tracking and showcase your verified experience to airlines worldwide.
+                            Join PilotRecognition to access comprehensive digital logbook tracking and showcase your verified experience to airlines worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>

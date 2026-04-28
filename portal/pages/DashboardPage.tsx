@@ -31,7 +31,7 @@ interface DashboardPageProps {
   onViewModule01?: () => void;
   onViewModule02?: () => void;
   onViewModule03?: () => void;
-  onViewWingMentorConnect?: () => void;
+  onViewPilotRecognitionConnect?: () => void;
   onViewEBTCBTAInterview?: () => void;
   isDarkMode?: boolean;
   userProfile?: {
@@ -219,7 +219,7 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
       </div>
 
       <p style={{ fontSize: '1rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-        Share your verified WingMentor Network data directly with airline recruiters. Sync flight hours, competencies, and achievements instantly.
+        Share your verified PilotRecognition Network data directly with airline recruiters. Sync flight hours, competencies, and achievements instantly.
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
@@ -347,7 +347,7 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
           </div>
         </div>
         <div style={{ padding: '0.5rem 1rem', background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, color: 'white' }}>
-          ✓ Verified by WingMentor
+          ✓ Verified by PilotRecognition
         </div>
       </div>
       
@@ -796,7 +796,7 @@ import { JobMatchingSection } from '../components/JobMatchCard';
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({ 
   onBack, onViewLogbook, onViewDigitalLogbook, onViewMentorLogbook, onViewAtlas, 
-  onViewRecognition, onViewPrograms, onViewPathways, onViewExamination, onViewExaminationPortal, onViewFoundationalProgram, onViewFoundationalPlatform, onViewFoundationalEnrollment, onViewLicensureExperience, onViewJobDatabase, onViewProgramProgress, onViewModule01, onViewModule02, onViewModule03, onViewWingMentorConnect, onViewEBTCBTAInterview, userProfile, isDarkMode = false 
+  onViewRecognition, onViewPrograms, onViewPathways, onViewExamination, onViewExaminationPortal, onViewFoundationalProgram, onViewFoundationalPlatform, onViewFoundationalEnrollment, onViewLicensureExperience, onViewJobDatabase, onViewProgramProgress, onViewModule01, onViewModule02, onViewModule03, onViewPilotRecognitionConnect, onViewEBTCBTAInterview, userProfile, isDarkMode = false 
 }) => {
   const [competencyScores] = useState({
     knowledge: 86,
@@ -876,7 +876,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     module2: { 
       completed: false, 
       name: 'Psychology of Mentorship & Practical Application', 
-      description: 'Advanced mentorship techniques and practical application of the WingMentor methodology. Build actionable strategies for career advancement.',
+      description: 'Advanced mentorship techniques and practical application of the PilotRecognition methodology. Build actionable strategies for career advancement.',
       duration: '60 min',
       current: true 
     },
@@ -1271,7 +1271,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Logo */}
               <img
                 src="/logo.png"
-                alt="WingMentor"
+                alt="PilotRecognition"
                 style={{
                   width: '150px',
                   height: 'auto'
@@ -1438,7 +1438,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </button>
 
           <div style={{ marginBottom: '0.25rem', marginTop: '0.5rem' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
           </div>
 
           <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.25rem' }}>
@@ -1480,7 +1480,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   Programs
                 </h2>
                 <p style={{ margin: '0', color: isDarkMode ? '#94a3b8' : '#64748b', lineHeight: 1.6, fontSize: '0.95rem', maxWidth: '500px' }}>
-                  Track your training progress and program enrollment across all WingMentor programs
+                  Track your training progress and program enrollment across all PilotRecognition programs
                 </p>
               </div>
               
@@ -1893,7 +1893,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                 </div>
 
-                {/* WingMentor Network Card - Glassy Grey Style */}
+                {/* PilotRecognition Network Card - Glassy Grey Style */}
                 <div style={{
                   background: isDarkMode 
                     ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
@@ -1913,7 +1913,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
                     <div>
-                      <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>WingMentor Network</h3>
+                      <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>PilotRecognition Network</h3>
                       <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Connect with fellow pilots and mentors in your aviation journey</p>
                     </div>
                     
@@ -1932,7 +1932,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
                       <button
-                        onClick={() => onViewWingMentorConnect?.()}
+                        onClick={() => onViewPilotRecognitionConnect?.()}
                         style={{
                           padding: '0.75rem 1.5rem',
                           borderRadius: '12px',
@@ -2185,7 +2185,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Section Header - Centered with Logo */}
               <div style={{ textAlign: 'center', marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ marginBottom: '1.5rem' }}>
-                  <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                  <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                 </div>
                 
                 <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem' }}>
@@ -2270,7 +2270,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div>
                       <div style={{ fontSize: '0.8rem', letterSpacing: '0.25em', color: isDarkMode ? '#64748b' : '#94a3b8', textTransform: 'uppercase' }}>Candidate</div>
                       <h2 style={{ margin: '0.35rem 0 0', fontSize: '1.75rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{userProfile?.firstName && userProfile?.lastName ? `${userProfile.firstName} ${userProfile.lastName}` : 'Benjamin Bowler'}</h2>
-                      <p style={{ margin: '0.2rem 0 0', color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}>WingMentor Recognition Portfolio</p>
+                      <p style={{ margin: '0.2rem 0 0', color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}>PilotRecognition Recognition Portfolio</p>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: isDarkMode ? '#64748b' : '#94a3b8', textTransform: 'uppercase' }}>Share link</div>
@@ -2663,7 +2663,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Section Header with Logo - Styled like Dashboard */}
               <div style={{ textAlign: 'center', marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ marginBottom: '2rem', marginTop: '0.5rem' }}>
-                  <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                  <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
                 </div>
                 
                 <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
@@ -2782,7 +2782,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       }}>
                         <img 
                           src="/logo.png" 
-                          alt="WingMentor Logo" 
+                          alt="PilotRecognition Logo" 
                           style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain' }}
                         />
                         <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>
@@ -3102,14 +3102,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(226,232,240,0.8)',
               textAlign: 'center'
             }}>
-              {/* WingMentor Logo */}
+              {/* PilotRecognition Logo */}
               <div style={{ marginBottom: '1.5rem' }}>
-                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
               </div>
 
               {/* Contact Support Button */}
               <button
-                onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com'}
+                onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
                 style={{
                   padding: '0.75rem 2rem',
                   borderRadius: '12px',
@@ -3155,7 +3155,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               }}>
                 {/* Email */}
                 <a
-                  href="mailto:wingmentorprogram@gmail.com"
+                  href="mailto:pilotrecognition@gmail.com"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -3177,7 +3177,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
-                  wingmentorprogram@gmail.com
+                  pilotrecognition@gmail.com
                 </a>
 
                 {/* Phone */}
@@ -3231,7 +3231,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
-                  WingMentor Support
+                  PilotRecognition Support
                 </a>
               </div>
 
@@ -3242,7 +3242,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 fontSize: '0.75rem',
                 letterSpacing: '0.05em'
               }}>
-                © 2024 WingMentor Network. All rights reserved.
+                © 2024 PilotRecognition Network. All rights reserved.
               </p>
             </div>
 

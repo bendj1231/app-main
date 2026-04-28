@@ -51,14 +51,14 @@ export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNaviga
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
                             The Digital Ecosystem | Command & Control
                         </p>
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
-                            W1000 WingMentor Suite
+                            W1000 PilotRecognition Suite
                         </h1>
                         <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
                             Digital Ecosystem | Career Intelligence | Unified Platform

@@ -24,7 +24,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-6"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
@@ -84,7 +84,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             and <strong>AI-powered pathway matching</strong> replace uncertainty in aviation careers.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            We envision a future where WingMentor's recognition system, powered by <strong>50+ AI agents</strong>
+                            We envision a future where PilotRecognition's recognition system, powered by <strong>50+ AI agents</strong>
                             providing real-time industry intelligence, becomes the universal benchmark for pilot recruitment.
                             Our <strong>Pilot Terminal</strong> social network and <strong>PilotRecogAI</strong> will connect
                             <strong>5000+ pilots</strong> directly with operators, manufacturers, and training providers worldwide.
@@ -148,7 +148,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                     <div className="text-center mb-16">
                         <RevealOnScroll>
                             <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                The DNA of WingMentor
+                                The DNA of PilotRecognition
                             </p>
                             <h2 className="text-3xl md:text-5xl font-serif text-slate-900">
                                 Our Core Values

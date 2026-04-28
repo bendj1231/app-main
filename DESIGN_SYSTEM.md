@@ -1,7 +1,7 @@
-# WingMentor Design System
+# PilotRecognition Design System
 
 ## Overview
-The WingMentor Design System provides a comprehensive set of guidelines, components, and tokens to ensure consistency across the application.
+The PilotRecognition Design System provides a comprehensive set of guidelines, components, and tokens to ensure consistency across the application.
 
 ## Color Palette
 

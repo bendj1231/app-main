@@ -303,7 +303,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
                                     Take the first step toward becoming an eVTOL pilot with our specialized Air Taxi Pathway program.
                                 </p>
                                 <button
-                                    onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com?subject=Air Taxi Pathway Inquiry&body=I am interested in learning more about the Emerging Air Taxi pathway through WingMentor.'}
+                                    onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com?subject=Air Taxi Pathway Inquiry&body=I am interested in learning more about the Emerging Air Taxi pathway through PilotRecognition.'}
                                     style={{
                                         padding: '1rem 2.5rem',
                                         background: '#2563eb',
@@ -347,7 +347,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
                     textAlign: 'center'
                 }}>
                     <p style={{ color: '#64748b', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-                        Transform your aviation career with cutting-edge eVTOL training through WingMentor's Air Taxi Pathway.
+                        Transform your aviation career with cutting-edge eVTOL training through PilotRecognition's Air Taxi Pathway.
                     </p>
                     <button
                         className="help-btn"
@@ -366,7 +366,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
                             transition: 'all 0.2s ease',
                             boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                         }}
-                        onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com'}
+                        onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
                     >
                         ✉️ Contact Support
                     </button>

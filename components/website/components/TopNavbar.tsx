@@ -416,7 +416,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'About',
             target: 'about',
             subItems: [
-                { category: 'The Organization', name: 'About WingMentor', target: 'about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
+                { category: 'The Organization', name: 'About PilotRecognition', target: 'about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
                 { name: 'Mission & Vision', target: 'mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
                 { name: 'Core Values', target: 'core-values', bullets: ['Connection', 'Attitude', 'Respect'] },
                 { category: 'Compliance', name: 'Accreditation & Recognition', target: 'accreditation', bullets: ['Global Standards', 'EASA & GCAA Alignment', 'Verified Training'] },
@@ -478,7 +478,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'Applications',
             target: 'applications_systems',
             subItems: [
-                { category: 'The Digital Ecosystem', name: 'WingMentor W1000 Suite', target: 'w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
+                { category: 'The Digital Ecosystem', name: 'PilotRecognition W1000 Suite', target: 'w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
                 { name: 'Hinfact AIRBUS integrated applications', target: 'hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
                 { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
                 { name: 'Pilot Recognition Systems', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },

@@ -36,7 +36,7 @@ export const RecognitionScoreCard: React.FC<RecognitionScoreCardProps> = ({
       onShare(platform);
     } else {
       // Default share behavior
-      const text = `I've achieved a ${getScoreTier(score)} tier with ${score} points on the WingMentor Pilot Recognition System! 🛩️`;
+      const text = `I've achieved a ${getScoreTier(score)} tier with ${score} points on the PilotRecognition Pilot Recognition System! 🛩️`;
       const url = window.location.href;
       
       if (platform === 'linkedin') {

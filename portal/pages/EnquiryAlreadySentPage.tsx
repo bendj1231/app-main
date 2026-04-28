@@ -40,7 +40,7 @@ export const EnquiryAlreadySentPage: React.FC<EnquiryAlreadySentPageProps> = ({
           width: '100%',
           boxSizing: 'border-box'
         }}>
-          <img src="/logo.png" alt="WingMentor Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+          <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
           
           <div style={{ color: '#dc2626', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
             SUBMISSION COOLDOWN

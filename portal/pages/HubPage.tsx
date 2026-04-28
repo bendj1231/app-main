@@ -77,7 +77,7 @@ const PilotPortfolioCard: React.FC<{ onClick: () => void; userProfile?: UserProf
             VERIFIED IDENTITY
         </div>
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '36px', width: 'auto', marginBottom: '0.5rem' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '36px', width: 'auto', marginBottom: '0.5rem' }} />
             <p style={{ margin: 0, letterSpacing: '0.3em', fontSize: '0.7rem', fontWeight: 600, color: '#2563eb' }}>PILOT RECOGNITION PROFILE</p>
             <h3 style={{ margin: '0.4rem 0 0', fontSize: '1.75rem', color: '#0f172a' }}>Pilot Portfolio</h3>
             <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>Unified tracking, credentials, and assessments</p>
@@ -146,7 +146,7 @@ export const HubPage: React.FC<HubPageProps> = ({ onSelectCategory, onLogout, us
                 </button>
                 <div className="dashboard-header">
                     <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" />
+                        <img src="/logo.png" alt="PilotRecognition Logo" />
                     </div>
                     <div className="dashboard-subtitle">CONNECTING PILOTS TO THE INDUSTRY</div>
                     <h1 className="dashboard-title">Wingmentor Network</h1>
@@ -256,7 +256,7 @@ export const HubPage: React.FC<HubPageProps> = ({ onSelectCategory, onLogout, us
                                         <div className="horizontal-card-content" style={{ padding: '2rem 0', textAlign: 'left', flex: 1, maxWidth: '100%' }}>
                                             <h3 className="horizontal-card-title" style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Mentor Management</h3>
                                             <p className="horizontal-card-desc" style={{ maxWidth: '100%', marginBottom: 0, color: '#64748b', fontSize: '1rem', lineHeight: 1.6 }}>
-                                                Manage users, control app access, and oversee the entire WingMentor platform. Super Admin panel.
+                                                Manage users, control app access, and oversee the entire PilotRecognition platform. Super Admin panel.
                                             </p>
                                         </div>
                                     </div>

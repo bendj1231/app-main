@@ -55,7 +55,7 @@ const syllabusStages = [
   {
     stage: 5,
     title: 'Supervised Mentorship (20-Hour Milestone)',
-    description: 'Candidates execute 20 hours of supervised mentorship under the guidance of a Senior WingMentor. Every session is logged with surgical precision.',
+    description: 'Candidates execute 20 hours of supervised mentorship under the guidance of a Senior PilotRecognition. Every session is logged with surgical precision.',
     objectives: [
       'Execute 20 hours of strategically tracked, supervised peer mentorship.',
       'Maintain high-fidelity, objective logs and Pilot ID verifications.',
@@ -124,7 +124,7 @@ export const ProgramSyllabusPage: React.FC<ProgramSyllabusPageProps> = ({
           >
             {/* Header Section */}
             <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
+              <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain', marginBottom: '1rem' }} />
               <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                 WINGMENTOR PROGRAMS
               </div>

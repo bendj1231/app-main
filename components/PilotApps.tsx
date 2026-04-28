@@ -5,7 +5,7 @@ const PilotApps: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn max-w-4xl mx-auto py-8">
       <div className="text-center space-y-4 mb-12">
-        <h2 className="text-3xl font-bold text-slate-800">WingMentor Apps</h2>
+        <h2 className="text-3xl font-bold text-slate-800">PilotRecognition Apps</h2>
         <p className="text-slate-500 text-lg max-w-2xl mx-auto">
           Choose your platform to access flight tools, logs, and resources.
         </p>

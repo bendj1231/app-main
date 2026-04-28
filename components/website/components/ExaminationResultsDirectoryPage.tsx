@@ -24,7 +24,7 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
                     <RevealOnScroll>
                         <img
                             src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4 font-sans">
@@ -37,7 +37,7 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
                             Verified Assessments | Competency Tracking | Industry Standards
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            Comprehensive record of pilot assessments, knowledge recency checks, and competency evaluations. Verified results are visible to WingMentor recruiters and airline partners. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT/CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            Comprehensive record of pilot assessments, knowledge recency checks, and competency evaluations. Verified results are visible to PilotRecognition recruiters and airline partners. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT/CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -181,7 +181,7 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
                         Ready to Track Your Progress?
                     </h2>
                     <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-                        Join WingMentor to access comprehensive examination tracking and showcase your verified results to airlines.
+                        Join PilotRecognition to access comprehensive examination tracking and showcase your verified results to airlines.
                     </p>
                 </div>
             </div>

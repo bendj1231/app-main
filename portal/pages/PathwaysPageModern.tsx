@@ -741,7 +741,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro',
       title: 'Pathways to Partnered Cadet Programs',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -990,7 +990,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-private',
       title: 'Pathways to Type Rating Pathways',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1044,7 +1044,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-privatesector',
       title: 'Pathways to Private Sector',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1085,7 +1085,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-cargo',
       title: 'Pathways to Cargo Operations',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1165,7 +1165,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-type-rating',
       title: 'Pathways to Type Rating',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -1245,7 +1245,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
     {
       id: 'wingmentor-intro-evtol',
       title: 'Pathways to AirTaxi & Drones',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
       type: 'Introduction',
@@ -2309,7 +2309,7 @@ const ProfileSummary: React.FC<{ profile: RecognitionProfile; isDarkMode?: boole
             <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
             Your Recognition Profile
           </h2>
-          <p className={`${textColorLight} text-xs mt-1`}>Based on WingMentor formula</p>
+          <p className={`${textColorLight} text-xs mt-1`}>Based on PilotRecognition formula</p>
         </div>
       </div>
 
@@ -2669,7 +2669,7 @@ const ThreeStagePathwayFilter: React.FC<{
           id: selectedSubPathway.id,
           name: selectedSubPathway.name,
           aircraftType: selectedSubPathway.id,
-          airline: 'WingMentor',
+          airline: 'PilotRecognition',
           description: selectedSubPathway.description || 'Training pathway for pilot certification',
           locations: selectedSubPathway.description ? [selectedSubPathway.description.substring(0, 50)] : ['Global'],
           matchProbability: 95,
@@ -2729,7 +2729,7 @@ const ThreeStagePathwayFilter: React.FC<{
           id: sp.id,
           name: branded.airline || sp.name,
           aircraftType: sp.id,
-          airline: branded.airline || 'WingMentor',
+          airline: branded.airline || 'PilotRecognition',
           description: branded.description || sp.description || 'Training pathway for pilot certification',
           locations: ['USA', 'Global'],
           matchProbability: 80 + (index * 3),
@@ -2811,7 +2811,7 @@ const ThreeStagePathwayFilter: React.FC<{
           id: sp.id,
           name: branded.airline || sp.name,
           aircraftType: sp.id,
-          airline: branded.airline || 'WingMentor',
+          airline: branded.airline || 'PilotRecognition',
           description: branded.description || sp.description || 'Training pathway for pilot certification',
           locations: ['USA', 'Global'],
           matchProbability: 80 + (index * 3),
@@ -2886,7 +2886,7 @@ const ThreeStagePathwayFilter: React.FC<{
           id: sp.id,
           name: branded.airline || sp.name,
           aircraftType: sp.id,
-          airline: branded.airline || 'WingMentor',
+          airline: branded.airline || 'PilotRecognition',
           description: branded.description || sp.description || 'Training pathway for pilot certification',
           locations: ['USA', 'Global'],
           matchProbability: 80 + (index * 3),
@@ -2960,7 +2960,7 @@ const ThreeStagePathwayFilter: React.FC<{
           id: sp.id,
           name: branded.airline || sp.name,
           aircraftType: sp.id,
-          airline: branded.airline || 'WingMentor',
+          airline: branded.airline || 'PilotRecognition',
           description: branded.description || sp.description || 'Training pathway for pilot certification',
           locations: ['USA', 'Global'],
           matchProbability: 85 + (index * 2),
@@ -3151,7 +3151,7 @@ const ThreeStagePathwayFilter: React.FC<{
           id: sp.id,
           name: branded.airline || sp.name,
           aircraftType: sp.id,
-          airline: branded.airline || 'WingMentor',
+          airline: branded.airline || 'PilotRecognition',
           description: branded.description || sp.description || 'Airline-sponsored cadet training program',
           locations: ['USA', 'Global'],
           matchProbability: 90 + (index * 1),
@@ -3204,7 +3204,7 @@ const ThreeStagePathwayFilter: React.FC<{
           id: sp.id,
           name: branded.airline || sp.name,
           aircraftType: sp.id,
-          airline: branded.airline || 'WingMentor',
+          airline: branded.airline || 'PilotRecognition',
           description: branded.description || sp.description || 'Drone or UAV pilot training program',
           locations: ['USA', 'Global'],
           matchProbability: 85 + (index * 2),
@@ -3245,7 +3245,7 @@ const ThreeStagePathwayFilter: React.FC<{
           id: sp.id,
           name: branded.airline || sp.name,
           aircraftType: sp.id,
-          airline: branded.airline || 'WingMentor',
+          airline: branded.airline || 'PilotRecognition',
           description: branded.description || sp.description || 'Private sector aviation career',
           locations: ['USA', 'Global'],
           matchProbability: 90 + (index * 1),
@@ -3263,7 +3263,7 @@ const ThreeStagePathwayFilter: React.FC<{
     const pathwaySpecificCards = pathwayCards.filter(card => card.pathwayId === pathwayId);
     
     if (pathwaySpecificCards.length > 0) {
-      // Ensure WingMentor card is first if it exists
+      // Ensure PilotRecognition card is first if it exists
       const wingMentorCard = pathwaySpecificCards.find(card => card.aircraftType === '__wingmentor__');
       const otherCards = pathwaySpecificCards.filter(card => card.aircraftType !== '__wingmentor__');
       
@@ -3279,7 +3279,7 @@ const ThreeStagePathwayFilter: React.FC<{
         id: sp.id,
         name: sp.name,
         aircraftType: sp.id,
-        airline: 'WingMentor',
+        airline: 'PilotRecognition',
         description: sp.description || 'Training pathway for pilot certification',
         locations: sp.description ? [sp.description.substring(0, 50)] : ['Global'],
         matchProbability: 85 + (index % 10),
@@ -3305,12 +3305,12 @@ const ThreeStagePathwayFilter: React.FC<{
             const cards = getFilteredPathwayCards(pathway.id, selectedSubPathway);
             console.log('[DEBUG] Rendering pathway:', pathway.name, 'Cards count:', cards.length);
             
-            // Add WingMentor introduction card at the start
+            // Add PilotRecognition introduction card at the start
             const wingMentorIntroCard = {
               id: `wingmentor-${pathway.id}`,
               name: `${pathway.name}`,
               aircraftType: '__wingmentor__',
-              airline: 'WingMentor',
+              airline: 'PilotRecognition',
               description: pathway.name.toLowerCase().includes('student pilot') 
                 ? 'Select a pathway below to explore training options. Scroll left or right and click or touch on any pathway card to view detailed information about pilot training programs under Student Pilots.'
                 : (pathway.description || `Explore ${pathway.name} opportunities and training options`),
@@ -3323,11 +3323,11 @@ const ThreeStagePathwayFilter: React.FC<{
               category: 'cadet-programme' as const,
             };
             
-            const cardsWithWingMentor = cards.length > 0 ? [wingMentorIntroCard, ...cards] : [wingMentorIntroCard];
+            const cardsWithPilotRecognition = cards.length > 0 ? [wingMentorIntroCard, ...cards] : [wingMentorIntroCard];
             
             // Create triple loop for infinite scroll effect
-            const loopedCards = [...cardsWithWingMentor, ...cardsWithWingMentor, ...cardsWithWingMentor];
-            console.log('[DEBUG] Looped cards count with WingMentor:', loopedCards.length);
+            const loopedCards = [...cardsWithPilotRecognition, ...cardsWithPilotRecognition, ...cardsWithPilotRecognition];
+            console.log('[DEBUG] Looped cards count with PilotRecognition:', loopedCards.length);
             return (
             <div key={pathway.id} className="w-full">
               {/* Pathway header on top left - Georgia serif font with description */}
@@ -3401,8 +3401,8 @@ const ThreeStagePathwayFilter: React.FC<{
                 >
                   {loopedCards.map((card, idx) => {
                     const cardAirlineLogo = getAirlineLogo(card.airline);
-                    const isWingMentorCard = card.aircraftType === '__wingmentor__';
-                    const cardAircraftImage = isWingMentorCard
+                    const isPilotRecognitionCard = card.aircraftType === '__wingmentor__';
+                    const cardAircraftImage = isPilotRecognitionCard
                       ? '/logo.png'
                       : (card.image && !card.image.startsWith('wingmentor') ? card.image : getAircraftImage(card.aircraftType));
                     const isSelected = selectedCard?.id === card.id;
@@ -3434,18 +3434,18 @@ const ThreeStagePathwayFilter: React.FC<{
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-transparent' : ''}`}
                       style={{ width: '600px' }}
                     >
-                      <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
-                        {isWingMentorCard ? (
+                      <div className={`relative h-[300px] overflow-hidden rounded-xl ${isPilotRecognitionCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
+                        {isPilotRecognitionCard ? (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-                            <img src="/logo.png" alt="WingMentor" className="h-20 w-auto object-contain mb-4" />
+                            <img src="/logo.png" alt="PilotRecognition" className="h-20 w-auto object-contain mb-4" />
                             <p className="text-slate-400 text-sm text-center px-8">{card.description}</p>
                           </div>
                         ) : (
                           <img src={cardAircraftImage} alt={card.aircraftType} className="w-full h-full object-cover" loading="lazy" />
                         )}
-                        {!isWingMentorCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
+                        {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
                         <div className="absolute top-3 right-3 flex gap-2 items-start">
-                          {!isWingMentorCard && (
+                          {!isPilotRecognitionCard && (
                             <>
                               <button className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors">
                                 {card.matchProbability}% Match
@@ -3466,7 +3466,7 @@ const ThreeStagePathwayFilter: React.FC<{
                           </div>
                           <p className="text-white/80 text-sm">{card.airline} · {card.locations?.join(' | ') || 'Global'}</p>
                           <p className="text-white/40 text-xs mt-1">ID: {card.id}</p>
-                          {!isWingMentorCard && card.requirements?.totalHours && (
+                          {!isPilotRecognitionCard && card.requirements?.totalHours && (
                             <div className="mt-2 text-white/60 text-xs">{card.requirements.totalHours} hours required</div>
                           )}
                         </div>
@@ -3504,7 +3504,7 @@ const ThreeStagePathwayFilter: React.FC<{
               )}
               
               {/* Selected Card Context Header - Under the selected card */}
-              {selectedCard && cardsWithWingMentor.some(c => c.id === selectedCard.id) && (
+              {selectedCard && cardsWithPilotRecognition.some(c => c.id === selectedCard.id) && (
                 <div className="mt-6 relative">
                   {/* Ghost Cards Background */}
                   <div className="absolute inset-0 -left-[50vw] w-[200vw] overflow-hidden opacity-20 pointer-events-none">
@@ -3562,8 +3562,8 @@ const ThreeStagePathwayFilter: React.FC<{
                         
                         return ghostCardsToShow.map((card, idx) => {
                           if (!card) return null;
-                          const isWingMentorCard = card.aircraftType === '__wingmentor__';
-                          const cardAircraftImage = isWingMentorCard
+                          const isPilotRecognitionCard = card.aircraftType === '__wingmentor__';
+                          const cardAircraftImage = isPilotRecognitionCard
                             ? '/logo.png'
                             : (card.image && !card.image.startsWith('wingmentor') ? card.image : getAircraftImage(card.aircraftType));
                           return (
@@ -3597,9 +3597,9 @@ const ThreeStagePathwayFilter: React.FC<{
                       {/* Left Arrow */}
                       <button
                         onClick={() => {
-                          const currentIndex = cardsWithWingMentor.findIndex(c => c.id === selectedCard.id);
+                          const currentIndex = cardsWithPilotRecognition.findIndex(c => c.id === selectedCard.id);
                           if (currentIndex > 0) {
-                            const nextCard = cardsWithWingMentor[currentIndex - 1];
+                            const nextCard = cardsWithPilotRecognition[currentIndex - 1];
                             setSelectedCard(nextCard);
                             
                             // Scroll to the card in carousel
@@ -3656,9 +3656,9 @@ const ThreeStagePathwayFilter: React.FC<{
                       {/* Right Arrow */}
                       <button
                         onClick={() => {
-                          const currentIndex = cardsWithWingMentor.findIndex(c => c.id === selectedCard.id);
-                          if (currentIndex < cardsWithWingMentor.length - 1) {
-                            const nextCard = cardsWithWingMentor[currentIndex + 1];
+                          const currentIndex = cardsWithPilotRecognition.findIndex(c => c.id === selectedCard.id);
+                          if (currentIndex < cardsWithPilotRecognition.length - 1) {
+                            const nextCard = cardsWithPilotRecognition[currentIndex + 1];
                             setSelectedCard(nextCard);
                             
                             // Scroll to the card in carousel
@@ -3695,7 +3695,7 @@ const ThreeStagePathwayFilter: React.FC<{
                 <div className="max-w-3xl mx-auto text-center">
                   <div className="mt-2">
                     <span className="text-xs font-medium text-white/60">
-                      There are {getPhilippianFlightSchoolCount()} CAAP-approved flight schools available for {selectedCard?.name || cardsWithWingMentor[1]?.name || pathway.name}
+                      There are {getPhilippianFlightSchoolCount()} CAAP-approved flight schools available for {selectedCard?.name || cardsWithPilotRecognition[1]?.name || pathway.name}
                     </span>
                   </div>
                   {pathway.description && (
@@ -4468,7 +4468,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     id: 'recommended-pathways-intro',
     name: 'Recommended Pathways',
     category: 'all',
-    airline: 'WingMentor',
+    airline: 'PilotRecognition',
     description: 'Explore personalized career pathways matched to your profile and goals',
     image: 'wingmentor-white',
     matchProbability: 100,
@@ -4827,7 +4827,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         <div>
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-xs font-semibold text-slate-700 uppercase tracking-wide">R-Formula Breakdown</span>
-                            <span className="text-xs text-slate-400">WingMentor Formula</span>
+                            <span className="text-xs text-slate-400">PilotRecognition Formula</span>
                           </div>
                           <div className="flex items-center gap-3 mb-3">
                             <RadarChart scores={intelligence.fullScore.breakdown} size={100} isDarkMode={false} animate={false} />
@@ -5103,8 +5103,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               ) : (
                 loopedPathways.map((pathway, idx) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);
-                  const isWingMentorCard = pathway.aircraftType === '__wingmentor__';
-                  const cardAircraftImage = isWingMentorCard
+                  const isPilotRecognitionCard = pathway.aircraftType === '__wingmentor__';
+                  const cardAircraftImage = isPilotRecognitionCard
                     ? '/logo.png'
                     : (pathway.image && !pathway.image.startsWith('wingmentor') ? pathway.image : getAircraftImage(pathway.aircraftType));
                   const isSelected = selectedCarouselPathway?.id === pathway.id;
@@ -5117,8 +5117,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         setSelectedCarouselPathway(pathway);
                       }}
                     >
-                      <div className={`relative h-[300px] overflow-hidden rounded-xl ${isWingMentorCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
-                        {isWingMentorCard ? (
+                      <div className={`relative h-[300px] overflow-hidden rounded-xl ${isPilotRecognitionCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
+                        {isPilotRecognitionCard ? (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
                             <p className="text-slate-400 text-sm text-center px-8">{pathway.description}</p>
                           </div>
@@ -5126,9 +5126,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                           <img src={cardAircraftImage} alt={pathway.aircraftType} className="w-full h-full object-cover" loading="lazy"
                             onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme']; }} />
                         )}
-                        {!isWingMentorCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
+                        {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
                         <div className="absolute top-3 right-3 flex gap-2 items-start">
-                          {!isWingMentorCard && (() => {
+                          {!isPilotRecognitionCard && (() => {
                             const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
                               String(j.company || '').toLowerCase() === String(pathway.airline || '').toLowerCase() ||
                               String(j.title || '').toLowerCase() === String(pathway.name || '').toLowerCase()
@@ -5155,8 +5155,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                               </div>
                             );
                           })()}
-                          {!isWingMentorCard && <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 77}%</span>}
-                          {!isWingMentorCard && pathway.hiringStatus === 'actively_hiring' && (
+                          {!isPilotRecognitionCard && <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 77}%</span>}
+                          {!isPilotRecognitionCard && pathway.hiringStatus === 'actively_hiring' && (
                             <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/80 text-white text-xs font-semibold">
                               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                               Hiring
@@ -5168,7 +5168,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                             <h4 className="text-lg font-serif font-normal text-white">{pathway.name}</h4>
                           </div>
                           <p className="text-white/80 text-sm">{pathway.airline} · {pathway.locations.join(' | ')}</p>
-                          {!isWingMentorCard && mode === 'jobs' && (() => {
+                          {!isPilotRecognitionCard && mode === 'jobs' && (() => {
                             const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
                               String(j.title || '').toLowerCase() === String(pathway.name || '').toLowerCase() ||
                               String(j.company || '').toLowerCase() === String(pathway.airline || '').toLowerCase()

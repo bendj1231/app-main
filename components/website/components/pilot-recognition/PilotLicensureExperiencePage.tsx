@@ -666,7 +666,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </button>
           
           <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ height: '120px', width: 'auto' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '120px', width: 'auto' }} />
           </div>
           <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
             Pilot Recognition Profile

@@ -316,7 +316,7 @@ export const MentorshipLogbookAnimation: React.FC = () => {
                             'Log consultations and prescriptions',
                             'Double-verification system',
                             'Progress toward 50-hour certification',
-                            'WingMentor verification badges'
+                            'PilotRecognition verification badges'
                         ].map((feature, i) => (
                             <div key={i} style={{
                                 display: 'flex',

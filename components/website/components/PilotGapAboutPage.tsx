@@ -30,7 +30,7 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="WingMentor Logo"
+                        alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-[#DAA520] mb-4 font-serif">
@@ -84,13 +84,13 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                 <RevealOnScroll delay={200}>
                     <div>
                         <p className="text-xs font-bold tracking-[0.3em] uppercase text-[#DAA520] mb-2 font-serif">
-                            The WingMentor Solution
+                            The PilotRecognition Solution
                         </p>
                         <h2 className="text-[2.5rem] font-serif text-slate-900 leading-tight mb-6">
                             Bridging the Gap Through Verified Experience
                         </h2>
                         <p className="max-w-4xl text-base text-slate-700 leading-relaxed mb-6">
-                            WingMentor doesn't just acknowledge the gap; we bridge it through structured programs that turn "empty hours" into "verifiable operational experience." Our Foundational Program provides access to professional-grade applications, structured mentorship, and a verified database that aligns with industry standards set by <strong>Airbus Head of Training</strong> and <strong>Etihad Cadet Program</strong>.
+                            PilotRecognition doesn't just acknowledge the gap; we bridge it through structured programs that turn "empty hours" into "verifiable operational experience." Our Foundational Program provides access to professional-grade applications, structured mentorship, and a verified database that aligns with industry standards set by <strong>Airbus Head of Training</strong> and <strong>Etihad Cadet Program</strong>.
                         </p>
                         <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
                             Through our EBT CBTA-aligned assessment framework and 50 hours of verifiable mentorship, pilots can demonstrate the specific competencies that airlines demand. This approach transforms the career gap from a barrier into a structured development pathway, ensuring that pilots are not just accumulating hours but building the professional recognition that leads to airline opportunities.
@@ -110,7 +110,7 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                             Our programs are directly aligned with the competencies and standards that major airlines assess in their recruitment processes. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our assessment framework evaluates the same core competencies that airlines prioritize: cognitive and behavioral markers, decision-making under pressure, and operational awareness.
                         </p>
                         <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
-                            The <strong>Etihad Cadet Program</strong> partnership provides insights into the competency expectations of one of the world's premier cadet programs, ensuring that our pilots are prepared for the exacting standards of major carriers. This industry alignment means that verified competencies through WingMentor translate directly to airline readiness and competitive advantage in recruitment.
+                            The <strong>Etihad Cadet Program</strong> partnership provides insights into the competency expectations of one of the world's premier cadet programs, ensuring that our pilots are prepared for the exacting standards of major carriers. This industry alignment means that verified competencies through PilotRecognition translate directly to airline readiness and competitive advantage in recruitment.
                         </p>
                     </div>
                 </RevealOnScroll>
@@ -127,7 +127,7 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                             Start Your Bridge Program
                         </h2>
                         <p className="max-w-2xl mx-auto text-base text-slate-700 leading-relaxed mb-8">
-                            Join the WingMentor Foundational Program to begin bridging the pilot gap through structured mentorship, verified experience, and industry-aligned assessment. Our programs provide the pathway from license to airline readiness.
+                            Join the PilotRecognition Foundational Program to begin bridging the pilot gap through structured mentorship, verified experience, and industry-aligned assessment. Our programs provide the pathway from license to airline readiness.
                         </p>
                         <div className="flex flex-col md:flex-row gap-4 justify-center">
                             <button

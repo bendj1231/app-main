@@ -45,7 +45,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ error, onRetry, on
         <header style={{ textAlign: 'center' }}>
           <img
             src="/logo.png"
-            alt="WingMentor Logo"
+            alt="PilotRecognition Logo"
             style={{
               width: '100px',
               margin: '0 auto 1rem',

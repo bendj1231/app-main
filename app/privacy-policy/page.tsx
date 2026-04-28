@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                 <div className="space-y-8 text-slate-700">
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Information We Collect</h2>
-                        <p className="mb-4">WingMentor collects information you provide directly to us, including:</p>
+                        <p className="mb-4">PilotRecognition collects information you provide directly to us, including:</p>
                         <ul className="list-disc pl-6 space-y-2">
                             <li>Account information (name, email address, password)</li>
                             <li>Professional information (flight hours, certifications, licenses)</li>

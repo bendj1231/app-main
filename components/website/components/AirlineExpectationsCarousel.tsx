@@ -1285,7 +1285,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
         <div className="px-8 mb-4 flex justify-end">
           <div className="bg-slate-100 px-4 py-2 rounded-lg border border-slate-200">
             <p className="text-xs text-slate-600">
-              Pilot-Recognition Engine Powered By WingMentor
+              Pilot-Recognition Engine Powered By PilotRecognition
             </p>
           </div>
         </div>
@@ -1359,7 +1359,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
                               })()}
                               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-52 bg-slate-900 text-white text-[10px] p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
                                 <p className="font-semibold mb-1">R-Formula Match Score</p>
-                                <p>Calculated using WingMentor's 5-factor formula: Programs × Experience × Behavioral × Language × Skills</p>
+                                <p>Calculated using PilotRecognition's 5-factor formula: Programs × Experience × Behavioral × Language × Skills</p>
                                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900"></div>
                               </div>
                             </div>

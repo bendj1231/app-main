@@ -40,7 +40,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                     <RevealOnScroll>
                         <img
                             src={IMAGES.LOGO}
-                            alt="WingMentor Logo"
+                            alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-6"
                         />
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
@@ -53,7 +53,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                             Industry Alignment | Global Standards | Professional Excellence
                         </span>
                         <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed font-sans">
-                            WingMentor is the aviation industry's first Competency Assurance Network. We are connecting all pilots,
+                            PilotRecognition is the aviation industry's first Competency Assurance Network. We are connecting all pilots,
                             whether you are a low-timer searching for pathways or a seasoned captain seeking new opportunities.
                         </p>
                     </RevealOnScroll>
@@ -79,7 +79,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                     <div className="md:w-1/2">
                         <RevealOnScroll>
                             <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                                On <strong>January 21st</strong>, WingMentor marked a historic milestone by attending the first-ever aviation career fair hosted at the prestigious <strong>Etihad Museum</strong> in the UAE. This event brought together leading aviation bodies, airlines, and training providers, creating a unique platform for direct engagement between aspiring pilots and industry leaders.
+                                On <strong>January 21st</strong>, PilotRecognition marked a historic milestone by attending the first-ever aviation career fair hosted at the prestigious <strong>Etihad Museum</strong> in the UAE. This event brought together leading aviation bodies, airlines, and training providers, creating a unique platform for direct engagement between aspiring pilots and industry leaders.
                             </p>
                             <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
                                 Representing the next generation of flight training excellence, we stood alongside industry pioneers to bridge the gap between education and employment. This event was not just a career fair; it was a verification of our mission to ensure that every pilot graduating into the market is recognized, assured, and supported by the world's leading aviation bodies. Our presence at the Etihad Museum demonstrated our commitment to <strong>EBT CBTA-aligned assessment</strong> and competency-based recognition.
@@ -122,7 +122,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                 <div className="max-w-4xl mx-auto">
                     <RevealOnScroll>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            WingMentor is not a training organization; we are the essential bridge connecting pilots and the aviation industry, linking the world's leading airline bodies with elite talent. Our proprietary pilot database is rigorously vetted and screened to ensure that every pilot within our network is seen, recognized, and fully understands the critical expectations of the modern airline industry. Through our <strong>PilotRecognition platform</strong>, we provide <strong>ATS-compatible ATLAS Aviation CV formatting</strong> that presents pilot credentials in the standardized format preferred by major airlines worldwide.
+                            PilotRecognition is not a training organization; we are the essential bridge connecting pilots and the aviation industry, linking the world's leading airline bodies with elite talent. Our proprietary pilot database is rigorously vetted and screened to ensure that every pilot within our network is seen, recognized, and fully understands the critical expectations of the modern airline industry. Through our <strong>PilotRecognition platform</strong>, we provide <strong>ATS-compatible ATLAS Aviation CV formatting</strong> that presents pilot credentials in the standardized format preferred by major airlines worldwide.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
                             By serving as a unifying standard, we bridge the gap between individual skill and institutional requirements, creating a universally recognized benchmark of competency. Our programs are aligned with <strong>AIRBUS 9 core competencies</strong> and supported by industry leaders, ensuring that verified competencies translate directly to operational readiness. Our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> provides assurance that our recognition framework meets the exacting standards required by leading manufacturers and operators.
@@ -153,7 +153,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                     <RevealOnScroll>
                         <div className="space-y-6 mb-12">
                             <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans text-center">
-                                WingMentor is not a training organization; we are the essential "go-between" for pilots and the aviation industry, connecting the world's leading bodies with elite talent. Our platform provides <strong>AI-powered pathway matching</strong> that analyzes pilot profiles against operator requirements, ensuring that connections lead to meaningful career opportunities.
+                                PilotRecognition is not a training organization; we are the essential "go-between" for pilots and the aviation industry, connecting the world's leading bodies with elite talent. Our platform provides <strong>AI-powered pathway matching</strong> that analyzes pilot profiles against operator requirements, ensuring that connections lead to meaningful career opportunities.
                             </p>
                             <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans text-center">
                                 Our proprietary pilot database is rigorously vetted and screened to ensure that every pilot within our network is seen, recognized, and fully understands the critical expectations of the modern airline industry. By serving as a unifying standard, we bridge the gap between individual skill and institutional requirements, creating a universally recognized benchmark of competency through our <strong>blockchain-verifiable certifications</strong> and <strong>EBT-aligned assessments</strong>.
@@ -232,7 +232,7 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
                                 <h3 className="text-lg font-bold text-slate-900 mb-2">FUTURE READY</h3>
                                 <p className="text-sm font-bold text-blue-700 mb-4">Vision 2030</p>
                                 <p className="text-sm text-slate-600 leading-relaxed">
-                                    Aviation is changing. From sustainable fuels to single-pilot operations and urban air mobility, we are preparing our pilots for the flight deck of tomorrow. Our stewardship involves anticipating these shifts and updating our competency frameworks continuously. Through our partnership with <strong>Archer Aviation</strong> and other eVTOL leaders, we ensure a WingMentor pilot is always ahead of the curve, ready for emerging pathways in electric aviation, autonomous systems, and sustainable operations.
+                                    Aviation is changing. From sustainable fuels to single-pilot operations and urban air mobility, we are preparing our pilots for the flight deck of tomorrow. Our stewardship involves anticipating these shifts and updating our competency frameworks continuously. Through our partnership with <strong>Archer Aviation</strong> and other eVTOL leaders, we ensure a PilotRecognition pilot is always ahead of the curve, ready for emerging pathways in electric aviation, autonomous systems, and sustainable operations.
                                 </p>
                             </div>
                         </div>

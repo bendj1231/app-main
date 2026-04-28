@@ -12,7 +12,7 @@ export const PilotGapModuleChapter1: React.FC<PilotGapModuleChapter1Props> = ({ 
             {/* ── Page Header ── */}
             <div style={{ textAlign: 'center', paddingBottom: '3.5rem', paddingTop: '4rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
                 <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain' }} />
                 </div>
                 <div style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: '1rem' }}>
                     CHAPTER 01

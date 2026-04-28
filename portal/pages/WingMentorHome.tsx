@@ -16,7 +16,7 @@ import { EnrollmentSuccessPage } from './EnrollmentSuccessPage';
 import { ATPLPathwayPage } from './ATPLPathwayPage';
 import { PrivateSectorPathwayPage } from './PrivateSectorPathwayPage';
 import { PathwaysPage } from './PathwaysPage';
-import { WingMentorNetworkPage } from './WingMentorNetworkPage';
+import { PilotRecognitionNetworkPage } from './PilotRecognitionNetworkPage';
 import LogbookPage from './LogbookPage';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { TermsAndConditionsPage } from './TermsAndConditionsPage';
@@ -222,7 +222,7 @@ const jobApplicationListings = [
   { title: 'ICAO Direct Entry Captains — Airbus A320 - Japan', url: 'https://pilotcareercenter.com/ASIA', company: 'Peach', aircraft: 'Airbus A320', location: 'Japan', role: 'Captain' }
 ];
 
-interface WingMentorHomeProps {
+interface PilotRecognitionHomeProps {
   onLogout: () => void;
   userProfile: UserProfile | null;
   onStartFoundationalEnrollment: () => void;
@@ -291,7 +291,7 @@ const pathwayUpdates = [
     title: 'Emirates ATPL Applications Open',
     summary: 'New cadet program cohort starting Q2 2024 with enhanced training curriculum.',
     date: 'March 15, 2026',
-    source: 'WingMentor Admissions',
+    source: 'PilotRecognition Admissions',
     platform: 'Program Update'
   },
   {
@@ -310,7 +310,7 @@ const pathwayUpdates = [
   }
 ];
 
-export const WingMentorHome: React.FC<WingMentorHomeProps> = ({ 
+export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({ 
   onLogout, 
   userProfile, 
   onStartFoundationalEnrollment,
@@ -457,10 +457,10 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
     const newsItems = [
       {
         id: 1,
-        title: "WingMentor Partners with Airbus on EBT/CBTA Alignment",
+        title: "PilotRecognition Partners with Airbus on EBT/CBTA Alignment",
         date: "March 19, 2026",
         category: "Partnership",
-        excerpt: "Airbus collaborates with WingMentor to embed EBT and CBTA standards across the Foundation and Transition Programs, reinforcing pilot readiness.",
+        excerpt: "Airbus collaborates with PilotRecognition to embed EBT and CBTA standards across the Foundation and Transition Programs, reinforcing pilot readiness.",
         image: "https://www.groupcaliber.com/wp-content/uploads/2023/11/Airbus-Logo.webp"
       },
       {
@@ -468,15 +468,15 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         title: "W1000 Application Launches for Foundation Program",
         date: "March 18, 2026",
         category: "Product Release",
-        excerpt: "WingMentor debuts the W1000 application with integrated examinations and progress-tracking systems tailored for Foundation Program pilots.",
+        excerpt: "PilotRecognition debuts the W1000 application with integrated examinations and progress-tracking systems tailored for Foundation Program pilots.",
         image: "/w1000.png"
       },
       {
         id: 3,
-        title: "WingMentor Featured at Promising Future Aviation Career Fair",
+        title: "PilotRecognition Featured at Promising Future Aviation Career Fair",
         date: "January 21, 2026",
         category: "Recognition",
-        excerpt: "WingMentor joins Etihad and regional partners at the Promising Future Aviation Career Fair inside Dubai's Etihad Museum, spotlighting Foundation and Transition Program pathways.",
+        excerpt: "PilotRecognition joins Etihad and regional partners at the Promising Future Aviation Career Fair inside Dubai's Etihad Museum, spotlighting Foundation and Transition Program pathways.",
         image: "https://media.assettype.com/gulfnews%2F2026-01-21%2F7zv1p4ib%2FSTAFFBUS_260121_Aviation_Career_Fair_VSAKLANI_131768990559515.jpg?w=1200&ar=40%3A21&auto=format%2Ccompress&ogImage=true&mode=crop&enlarge=true&overlay=false&overlay_position=bottom&overlay_width=100"
       }
     ];
@@ -484,17 +484,17 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
     const airlineFeedback = [
       {
         airline: "AirAsia",
-        feedback: "WingMentor's recognition system has transformed our recruitment process. We now have access to verified, well-trained pilots.",
+        feedback: "PilotRecognition's recognition system has transformed our recruitment process. We now have access to verified, well-trained pilots.",
         logo: "/airline-airasia.jpg"
       },
       {
         airline: "Emirates",
-        feedback: "The quality of pilots from WingMentor programs exceeds our expectations. Excellent training standards.",
+        feedback: "The quality of pilots from PilotRecognition programs exceeds our expectations. Excellent training standards.",
         logo: "/airline-emirates.jpg"
       },
       {
         airline: "Singapore Airlines",
-        feedback: "WingMentor graduates demonstrate superior CRM skills and technical proficiency.",
+        feedback: "PilotRecognition graduates demonstrate superior CRM skills and technical proficiency.",
         logo: "/airline-singapore.jpg"
       }
     ];
@@ -580,7 +580,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
             {/* News Detail Header */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
-              <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+              <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
                 <span style={{
                   fontSize: '0.75rem',
@@ -631,8 +631,8 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                   flexWrap: 'wrap'
                 }}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                    <img src="/logo.png" alt="WingMentor" style={{ width: '180px', maxWidth: '40vw', height: 'auto', objectFit: 'contain' }} />
-                    <span style={{ fontSize: '0.85rem', color: '#475569', letterSpacing: '0.2em', textTransform: 'uppercase' }}>WingMentor</span>
+                    <img src="/logo.png" alt="PilotRecognition" style={{ width: '180px', maxWidth: '40vw', height: 'auto', objectFit: 'contain' }} />
+                    <span style={{ fontSize: '0.85rem', color: '#475569', letterSpacing: '0.2em', textTransform: 'uppercase' }}>PilotRecognition</span>
                   </div>
                   <div style={{ width: '1px', height: '80px', background: 'rgba(148,163,184,0.5)' }} />
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
@@ -797,10 +797,10 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                     COLLABORATION ASSURANCE
                   </div>
                   <h4 style={{ fontFamily: 'Georgia, serif', fontSize: '1.6rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', textAlign: 'center' }}>
-                    Airbus Validates the WingMentor Application Pipeline
+                    Airbus Validates the PilotRecognition Application Pipeline
                   </h4>
                   <p>
-                    Airbus has affirmed WingMentor's application pipeline following a technical review of our Foundation and Transition Program data models. Their compliance team confirmed that our EBT/CBTA workflows provide an auditable trail of NOTECHS scoring, competency deltas, and remediation plans—giving operators confidence that WingMentor pilots arrive with measurable behaviors, not just logged hours.
+                    Airbus has affirmed PilotRecognition's application pipeline following a technical review of our Foundation and Transition Program data models. Their compliance team confirmed that our EBT/CBTA workflows provide an auditable trail of NOTECHS scoring, competency deltas, and remediation plans—giving operators confidence that PilotRecognition pilots arrive with measurable behaviors, not just logged hours.
                   </p>
                   <div style={{ color: '#2563eb', fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', margin: '2.5rem 0 0.75rem 0' }}>
                     PILOT READINESS MANDATE
@@ -809,7 +809,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                     Aligning Cadets with EBT/CBTA & the Nine Core Competencies
                   </h4>
                   <p>
-                    This collaboration doubles as an assurance to implement the next wave of industry changes pilots are expected to master. Airbus encouraged WingMentor to continue familiarizing cadets with EBT/CBTA methodologies and the nine ICAO core competencies so that every graduate speaks the same technical language airlines are moving toward.
+                    This collaboration doubles as an assurance to implement the next wave of industry changes pilots are expected to master. Airbus encouraged PilotRecognition to continue familiarizing cadets with EBT/CBTA methodologies and the nine ICAO core competencies so that every graduate speaks the same technical language airlines are moving toward.
                   </p>
 
                   <div style={{ 
@@ -820,12 +820,12 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                     margin: '1.5rem 0'
                   }}>
                     <p style={{ margin: 0, fontSize: '0.95rem', color: '#475569', fontWeight: 500 }}>
-                      <strong>Application Assurance:</strong> Every WingMentor submission now includes Airbus-aligned evidence packs—structured competency reports, mentorship prescriptions, and W1000 examination dashboards—so talent partners can validate proficiency in minutes.
+                      <strong>Application Assurance:</strong> Every PilotRecognition submission now includes Airbus-aligned evidence packs—structured competency reports, mentorship prescriptions, and W1000 examination dashboards—so talent partners can validate proficiency in minutes.
                     </p>
                   </div>
 
                   <p>
-                    Airbus leaders also hosted a dedicated 15-minute interview with our mentorship faculty to understand how we escalate candidates into the Pilot Recognition Database. That conversation covered how WingMentor surfaces priority applicants, how quickly remediation plans are executed, and how Airbus recruitment teams can subscribe to live application alerts.
+                    Airbus leaders also hosted a dedicated 15-minute interview with our mentorship faculty to understand how we escalate candidates into the Pilot Recognition Database. That conversation covered how PilotRecognition surfaces priority applicants, how quickly remediation plans are executed, and how Airbus recruitment teams can subscribe to live application alerts.
                   </p>
 
                   <div style={{ 
@@ -836,12 +836,12 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                     margin: '1.5rem 0'
                   }}>
                     <p style={{ margin: 0, fontSize: '0.95rem', color: '#1e3a8a', fontWeight: 500 }}>
-                      <strong>Want the briefing?</strong> We are offering the same overview to airline partners and training organizations that want a closer look at the WingMentor application stack—<a href="/inquiry" style={{ color: '#1d4ed8', fontWeight: 600 }}>submit an inquiry here</a> to receive the full collaboration summary.
+                      <strong>Want the briefing?</strong> We are offering the same overview to airline partners and training organizations that want a closer look at the PilotRecognition application stack—<a href="/inquiry" style={{ color: '#1d4ed8', fontWeight: 600 }}>submit an inquiry here</a> to receive the full collaboration summary.
                     </p>
                   </div>
 
                   <p>
-                    If you have additional questions or would like a deeper integration session, please <a href="/inquiry" style={{ color: '#2563eb', fontWeight: 600 }}>contact the WingMentor team here</a> and the team will schedule a slot.
+                    If you have additional questions or would like a deeper integration session, please <a href="/inquiry" style={{ color: '#2563eb', fontWeight: 600 }}>contact the PilotRecognition team here</a> and the team will schedule a slot.
                   </p>
                 </>
               )}
@@ -850,7 +850,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
               {selectedNewsItem.title === 'W1000 Application Launches for Foundation Program' && (
                 <>
                   <p>
-                    WingMentor officially released the W1000 application for all Foundation Program pilots, providing a unified platform for examinations, competency tracking, and mentor touchpoints.
+                    PilotRecognition officially released the W1000 application for all Foundation Program pilots, providing a unified platform for examinations, competency tracking, and mentor touchpoints.
                   </p>
                   <div style={{ 
                     padding: '1.5rem', 
@@ -994,7 +994,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                     Industry experts anticipate that this trend will continue to shape the landscape of commercial aviation, creating new opportunities and challenges for stakeholders across the ecosystem.
                   </p>
                   <p>
-                    The implications for pilot training, recruitment, and career development are substantial, with organizations like WingMentor positioned to play a crucial role in meeting the evolving demands of the industry.
+                    The implications for pilot training, recruitment, and career development are substantial, with organizations like PilotRecognition positioned to play a crucial role in meeting the evolving demands of the industry.
                   </p>
                 </>
               )}
@@ -1225,7 +1225,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           <section style={{ marginBottom: '4rem' }}>
             {/* Section header — matches main page title style */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
-              <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+              <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                 Industry Intelligence
               </div>
@@ -1369,7 +1369,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           <section style={{ marginBottom: '4rem', zoom: 0.9 }}>
             {/* Section header — matches main page title style */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem' }}>
-              <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
+              <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', marginBottom: '2rem' }} />
               <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
                 Latest Announcements
               </div>
@@ -1377,7 +1377,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                 Program News & Updates
               </h2>
               <p style={{ color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '1.15rem', lineHeight: 1.7, maxWidth: '36rem', margin: '0 auto' }}>
-                Stay informed about the latest developments, partnerships, and success stories from WingMentor's aviation training ecosystem.
+                Stay informed about the latest developments, partnerships, and success stories from PilotRecognition's aviation training ecosystem.
               </p>
             </div>
 
@@ -1722,7 +1722,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
         {/* Programs Header */}
         <div style={{ padding: '2rem 3rem 1.5rem 3rem', textAlign: 'center', maxWidth: '1200px', margin: '0 auto' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
           </div>
           <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.25rem' }}>
             CONNECTING PILOTS TO THE INDUSTRY
@@ -2096,7 +2096,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
               WebkitBackdropFilter: 'blur(24px)'
             }}>
               <div className="dashboard-logo" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-                <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px' }} />
+                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px' }} />
               </div>
               <div className="dashboard-subtitle" style={{ color: isDarkMode ? '#60a5fa' : '#2563eb' }}>CONNECTING PILOTS TO THE INDUSTRY</div>
               <h1 className="dashboard-title" style={{ marginBottom: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Pathways</h1>
@@ -2106,7 +2106,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
               <div style={{ maxWidth: '720px', margin: '0 auto 2rem', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 20px 45px rgba(15,23,42,0.12)', border: '1px solid rgba(226,232,240,0.8)' }}>
                 <img
                   src="/wingmentor terminal.png"
-                  alt="WingMentor Terminal"
+                  alt="PilotRecognition Terminal"
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
               </div>
@@ -2814,7 +2814,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                   border: isDarkMode ? '1px solid rgba(71, 85, 105, 0.5)' : '1px solid rgba(255, 255, 255, 0.8)',
                   textAlign: 'center'
                 }}>
-                  <img src="/logo.png" alt="WingMentor Logo" style={{ height: '90px', width: 'auto', marginBottom: '1rem' }} />
+                  <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '90px', width: 'auto', marginBottom: '1rem' }} />
                   <div style={{ color: isDarkMode ? '#60a5fa' : '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                     Personalized Pathway Inquiry
                   </div>
@@ -2822,7 +2822,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                     Tailored Aviation Career Tracks
                   </h2>
                   <p style={{ color: isDarkMode ? '#94a3b8' : '#475569', fontSize: '1rem', lineHeight: 1.6, margin: '0 auto 2rem', maxWidth: '36rem' }}>
-                    Is there a particular pathway you're interested in through your pilot journey? WingMentor creates specialized tracks for corporate pilotage, air rescue operations, crop dusting, and other individualized careers that align with your long-term aviation goals.
+                    Is there a particular pathway you're interested in through your pilot journey? PilotRecognition creates specialized tracks for corporate pilotage, air rescue operations, crop dusting, and other individualized careers that align with your long-term aviation goals.
                   </p>
                   <div style={{ textAlign: 'left', maxWidth: '34rem', margin: '0 auto 2rem' }}>
                     {[{
@@ -2849,7 +2849,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                   </div>
                   <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                     <button
-                      onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com?subject=Personalized Pathway & Internship Inquiry&body=I am interested in learning more about personalized aviation pathways for my pilot career and internship opportunities with WingMentor.'}
+                      onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com?subject=Personalized Pathway & Internship Inquiry&body=I am interested in learning more about personalized aviation pathways for my pilot career and internship opportunities with PilotRecognition.'}
                       style={{
                         padding: '0.85rem 1.75rem',
                         borderRadius: '12px',
@@ -2866,7 +2866,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                     </button>
                   </div>
                   <p style={{ fontSize: '0.85rem', color: isDarkMode ? '#94a3b8' : '#94a3b8', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
-                    Contact us for personalized pathway guidance and internship opportunities with WingMentor
+                    Contact us for personalized pathway guidance and internship opportunities with PilotRecognition
                   </p>
                 </div>
               </div>
@@ -2894,7 +2894,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       }}>
         <div className="dashboard-header" style={{ marginBottom: '3rem', padding: '2rem 2rem 0 2rem' }}>
           <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="WingMentor Logo" />
+            <img src="/logo.png" alt="PilotRecognition Logo" />
           </div>
           <div className="dashboard-subtitle">CONNECTING PILOTS TO THE INDUSTRY</div>
           <h1 className="dashboard-title">Wingmentor Network</h1>
@@ -3006,7 +3006,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           {/* News & Updates Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.5rem' }}>
             
-            {/* WingMentor Updates */}
+            {/* PilotRecognition Updates */}
             <div style={{
               background: isDarkMode ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' : 'white',
               borderRadius: '16px',
@@ -3039,7 +3039,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                   color: isDarkMode ? '#f8fafc' : '#1e293b', 
                   margin: 0
                 }}>
-                  WingMentor Updates
+                  PilotRecognition Updates
                 </h3>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -3310,7 +3310,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
     );
   };
 
-  const WingMentorNetworkView = ({ onBack, onViewChange }: { onBack: () => void; onViewChange?: (view: string, initialChapter?: number) => void }) => {
+  const PilotRecognitionNetworkView = ({ onBack, onViewChange }: { onBack: () => void; onViewChange?: (view: string, initialChapter?: number) => void }) => {
     return (
     <div
       className="dashboard-container animate-fade-in"
@@ -3371,7 +3371,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           </div>
 
           <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '240px' }} />
+            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
           </div>
 
           <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em', color: isDarkMode ? '#60a5fa' : '#2563eb', fontWeight: 700 }}>
@@ -3418,7 +3418,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                   <div style={{ fontSize: '1.5rem', color: isDarkMode ? '#60a5fa' : '#0f172a', fontWeight: 'bold' }}>•</div>
                   <div className="horizontal-card-content" style={{ padding: '1rem 0', textAlign: 'left', flex: 1, maxWidth: '100%' }}>
                     <h3 className="horizontal-card-title" style={{ fontSize: '1.5rem', marginBottom: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      WingMentor Search Engine
+                      PilotRecognition Search Engine
                     </h3>
                     <div style={{ marginBottom: '1.5rem' }}>
                       <input
@@ -3516,7 +3516,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
                       Job Application Database Directory
                     </h3>
                     <p style={{ fontSize: '0.95rem', color: isDarkMode ? '#cbd5e1' : '#475569', lineHeight: 1.7, marginBottom: '1.25rem' }}>
-                      Track every WingMentor application in one industry-grade ledger. Airlines, operators, and recruitment partners receive structured dossiers with NOTECHS deltas, remediation steps, and status updates synchronized with the Pilot Recognition database.
+                      Track every PilotRecognition application in one industry-grade ledger. Airlines, operators, and recruitment partners receive structured dossiers with NOTECHS deltas, remediation steps, and status updates synchronized with the Pilot Recognition database.
                     </p>
                     <div style={{ marginTop: '1.5rem' }}>
                       <a
@@ -3538,7 +3538,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
 
             <div style={{ textAlign: 'center', padding: '1rem', background: isDarkMode ? 'rgba(15, 23, 42, 0.92)' : 'rgba(248, 250, 252, 0.8)', borderRadius: '12px', border: isDarkMode ? '1px solid rgba(71,85,105,0.75)' : '1px solid #e2e8f0', marginBottom: '2rem' }}>
               <div style={{ fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#94a3b8', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                🔄 WingMentor Database Sync • Real-time Updates • Community Powered
+                🔄 PilotRecognition Database Sync • Real-time Updates • Community Powered
               </div>
             </div>
           </div>
@@ -3552,7 +3552,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           textAlign: 'center'
         }}>
           <p style={{ color: isDarkMode ? '#94a3b8' : '#64748b', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-            Connect with the WingMentor Network for comprehensive aviation resources and community support.
+            Connect with the PilotRecognition Network for comprehensive aviation resources and community support.
           </p>
           <button
             className="help-btn"
@@ -3571,7 +3571,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
               transition: 'all 0.2s ease',
               boxShadow: isDarkMode ? '0 8px 20px rgba(2,6,23,0.32)' : '0 1px 2px rgba(0,0,0,0.05)'
             }}
-            onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com'}
+            onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
           >
             ✉️ Contact Support
           </button>
@@ -3673,7 +3673,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
             onViewModule01={() => setFullScreenView('pilot-gap-module')}
             onViewModule02={() => setFullScreenView('pilot-gap-module-2')}
             onViewModule03={() => setFullScreenView('module-3')}
-            onViewWingMentorConnect={() => setMainView('wingmentor-network')}
+            onViewPilotRecognitionConnect={() => setMainView('wingmentor-network')}
             onViewEBTCBTAInterview={() => setMainView('interview-evaluation')}
             userProfile={userProfile ?? undefined} 
           />
@@ -3689,7 +3689,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
       case 'atlas-resume':
         return <AtlasResumeBuilder onBack={() => setMainView('pilot-portfolio')} />;
       case 'wingmentor-network':
-        return <WingMentorNetworkPage onBack={() => setMainView('dashboard')} onLogout={onLogout} />;
+        return <PilotRecognitionNetworkPage onBack={() => setMainView('dashboard')} onLogout={onLogout} />;
       case 'aviation-expectations':
         return (
           <AviationIndustryExpectationsPage
@@ -3846,7 +3846,7 @@ export const WingMentorHome: React.FC<WingMentorHomeProps> = ({
           />
         );
       case 'enrollment-confirmation':
-        console.log('🔍 WingMentorHome: Loading enrollment confirmation with user:', {
+        console.log('🔍 PilotRecognitionHome: Loading enrollment confirmation with user:', {
             userProfile: !!userProfile,
             userEmail: userProfile?.email,
             userId: userProfile?.id

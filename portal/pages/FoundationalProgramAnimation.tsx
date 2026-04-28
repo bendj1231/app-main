@@ -129,7 +129,7 @@ export const FoundationalProgramAnimation: React.FC = () => {
                     }}>
                         <img 
                             src="/logo.png" 
-                            alt="WingMentor Logo" 
+                            alt="PilotRecognition Logo" 
                             style={{ 
                                 maxWidth: '320px', 
                                 height: 'auto', 
@@ -199,10 +199,10 @@ export const FoundationalProgramAnimation: React.FC = () => {
                         margin: '0 auto',
                         maxWidth: '700px'
                     }}>
-                        You've chosen to step beyond the standard pilot career path. The WingMentor Foundational Program 
+                        You've chosen to step beyond the standard pilot career path. The PilotRecognition Foundational Program 
                         is your bridge from "low-timer" to recognized professional. This module will ground you in 
                         the realities of our industry, the paradox of the pilot shortage, and the precise framework 
-                        WingMentor uses to turn your training hours into verifiable industry recognition.
+                        PilotRecognition uses to turn your training hours into verifiable industry recognition.
                     </p>
                 </section>
 
@@ -351,7 +351,7 @@ export const FoundationalProgramAnimation: React.FC = () => {
                         margin: '0 auto 2rem'
                     }}>
                         Your journey from licensed pilot to recognized professional starts here. 
-                        Join the WingMentor Foundational Program and bridge the gap to your aviation career.
+                        Join the PilotRecognition Foundational Program and bridge the gap to your aviation career.
                     </p>
                     <div style={{
                         padding: '1rem 2rem',

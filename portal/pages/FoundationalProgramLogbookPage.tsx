@@ -247,7 +247,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
 
   const getVerificationStatus = (session: MentorshipSession) => {
     if (session.wingmentorVerified) {
-      return { label: 'Verified by WingMentor', icon: '✓✓', color: '#22c55e', bgColor: '#dcfce7' };
+      return { label: 'Verified by PilotRecognition', icon: '✓✓', color: '#22c55e', bgColor: '#dcfce7' };
     }
     if (session.mentorLogged && session.menteeLogged) {
       return { label: 'Double Verified', icon: '✓✓', color: '#22c55e', bgColor: '#dcfce7' };
@@ -296,7 +296,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <img 
               src="/logo.png" 
-              alt="WingMentor Logo" 
+              alt="PilotRecognition Logo" 
               style={{ maxWidth: '280px', height: 'auto', objectFit: 'contain', marginBottom: '1rem' }} 
             />
             <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
@@ -611,7 +611,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
                 </button>
                 <img 
                   src="/logo.png" 
-                  alt="WingMentor Logo" 
+                  alt="PilotRecognition Logo" 
                   style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', marginBottom: '1rem' }} 
                 />
                 <div style={{ color: '#2563eb', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
@@ -805,7 +805,7 @@ const FoundationalProgramLogbookPage: React.FC<FoundationalProgramLogbookPagePro
                 fontSize: '0.75rem',
                 fontWeight: 600
               }}>✓✓ Verified</span>
-              <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Both mentor & mentee logged or WingMentor verified</span>
+              <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Both mentor & mentee logged or PilotRecognition verified</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ 

@@ -142,7 +142,7 @@ const DEFAULT_DATA: UserData = {
     linkedin: 'linkedin.com/in/bbowler',
   },
   summary:
-    'Dedicated and safety-conscious aviation professional currently enrolled in the WingMentor Foundational Program. Proven track record in Crew Resource Management and Evidence-Based Training methodologies. Committed to achieving the Airline Transport Pilot License and contributing to airline operational excellence through competency-based assessment frameworks.',
+    'Dedicated and safety-conscious aviation professional currently enrolled in the PilotRecognition Foundational Program. Proven track record in Crew Resource Management and Evidence-Based Training methodologies. Committed to achieving the Airline Transport Pilot License and contributing to airline operational excellence through competency-based assessment frameworks.',
   coreCompetencies: [
     'Aviation Training & EBT',
     'Crew Resource Management',
@@ -158,7 +158,7 @@ const DEFAULT_DATA: UserData = {
     {
       id: 1,
       jobTitle: 'Student Pilot – Foundational Program',
-      company: 'WingMentor',
+      company: 'PilotRecognition',
       location: 'Remote',
       dates: 'Jan 2024 – Present',
       bullets: [
@@ -173,7 +173,7 @@ const DEFAULT_DATA: UserData = {
     {
       id: 1,
       degree: 'Foundational Mentorship Program',
-      institution: 'WingMentor Academy',
+      institution: 'PilotRecognition Academy',
       year: '2024',
     },
   ],
@@ -356,7 +356,7 @@ const AtlasCVGenerator: React.FC<AtlasCVGeneratorProps> = ({ onBack, userProfile
           certEntries.push({
             id: base.education.length + certEntries.length + 1,
             degree: achievement.title || 'Certification',
-            institution: achievement.issuing_organization || 'WingMentor',
+            institution: achievement.issuing_organization || 'PilotRecognition',
             year: new Date(achievement.achievement_date).getFullYear().toString(),
           });
         });

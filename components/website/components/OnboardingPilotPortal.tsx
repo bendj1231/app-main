@@ -39,7 +39,7 @@ const features = [
     },
     {
         id: 5,
-        title: 'WingMentor Support',
+        title: 'PilotRecognition Support',
         description: 'Contact us for any issues or assistance',
         image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop',
         details: 'Our dedicated support team is available 24/7 to assist with any questions or technical issues. Get help with account management, program enrollment, or career guidance.'
@@ -72,7 +72,7 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
             <div style={{ width: '100%', padding: '4rem 2rem', animation: 'fadeIn 0.5s ease-in-out', overflowX: 'hidden' }}>
                 <div className="max-w-4xl mx-auto w-full">
                     <div className="mb-8 flex justify-center items-center">
-                        <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
+                        <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                     </div>
                     
                     <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4 text-center">

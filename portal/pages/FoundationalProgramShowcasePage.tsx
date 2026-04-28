@@ -34,7 +34,7 @@ const modules: Module[] = [
         number: '01',
         title: 'Initial Program Module',
         bullets: ['Industry Status', 'Pilot Gap Analysis', 'Indoctrination Protocols'],
-        description: 'Begin with a transparent look at the hiring gap, risk factors, and why Airbus partners expect WingMentor cadets to follow this sequence.',
+        description: 'Begin with a transparent look at the hiring gap, risk factors, and why Airbus partners expect PilotRecognition cadets to follow this sequence.',
         status: 'In Progress',
         badge: 'In Progress',
         badgeColor: '#ecfdf5',
@@ -54,7 +54,7 @@ const modules: Module[] = [
         number: '03',
         title: 'Global Industry Registry',
         bullets: ['Centralized Record', 'Recruitment Transparency', 'Recognition Metrics'],
-        description: 'Every milestone feeds the WingMentor registry so recruiters see real evidence, not anecdotes.',
+        description: 'Every milestone feeds the PilotRecognition registry so recruiters see real evidence, not anecdotes.',
         icon: 'Book'
     },
     {
@@ -79,7 +79,7 @@ const modules: Module[] = [
         number: '06',
         title: 'Supervised Mentorship',
         bullets: ['20-Hour Goal', 'Objective Logging', 'Consultation Delivery'],
-        description: 'Execute 20 hours with strict logging that feeds the WingMentor analytics layer.',
+        description: 'Execute 20 hours with strict logging that feeds the PilotRecognition analytics layer.',
         badge: '20h Milestone',
         badgeColor: '#fff7ed',
         icon: 'Award',
@@ -110,7 +110,7 @@ const modules: Module[] = [
         number: '09',
         title: 'AIRBUS Recognition Interview',
         bullets: ['Industry Evaluation', 'Recognition Panel', 'Placement Prep'],
-        description: 'Final audit with Airbus-aligned reviewers validating your WingMentor data trail.',
+        description: 'Final audit with Airbus-aligned reviewers validating your PilotRecognition data trail.',
         status: 'Examination',
         badge: 'Final Evaluation',
         badgeColor: '#f0f9ff',
@@ -119,9 +119,9 @@ const modules: Module[] = [
     {
         id: 'stage-10',
         number: '10',
-        title: 'WingMentor Certification & Recognition',
+        title: 'PilotRecognition Certification & Recognition',
         bullets: ['Final Accreditation', 'Industry Endorsement', 'Registry Verification'],
-        description: 'Publish your record to the WingMentor registry for partner visibility and placements.',
+        description: 'Publish your record to the PilotRecognition registry for partner visibility and placements.',
         badge: 'Certified',
         badgeColor: '#e0f2fe',
         icon: 'CheckCircle'
@@ -246,7 +246,7 @@ const FoundationalProgramShowcasePage: React.FC<FoundationalProgramShowcasePageP
                 </div>
 
                 <section style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '240px', height: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px', height: 'auto', objectFit: 'contain', marginBottom: '1.5rem' }} />
                     <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.85rem' }}>
                         Foundational Program
                     </div>
@@ -372,7 +372,7 @@ const FoundationalProgramShowcasePage: React.FC<FoundationalProgramShowcasePageP
                             Orientation Overview
                         </div>
                         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '2.2rem', fontWeight: 400, color: '#0f172a', marginBottom: '0.75rem' }}>
-                            How WingMentor Bridges the Pilot Gap
+                            How PilotRecognition Bridges the Pilot Gap
                         </h2>
                         <p style={{ color: '#64748b', fontSize: '1rem', lineHeight: 1.7, maxWidth: '38rem', margin: '0 auto' }}>
                             A transparent roadmap outlining why the Foundational Program exists, how it operates, and what recognition pilots gain along the way.

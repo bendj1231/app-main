@@ -15,8 +15,8 @@ export interface FlightSchool {
 export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
   {
     id: 'wingmentor-intro',
-    name: 'WingMentor',
-    description: 'Welcome to WingMentor Flight Schools. Navigate through our carousel to discover CAAP-approved Philippine flight schools. Click on any card to learn more about their programs.',
+    name: 'PilotRecognition',
+    description: 'Welcome to PilotRecognition Flight Schools. Navigate through our carousel to discover CAAP-approved Philippine flight schools. Click on any card to learn more about their programs.',
     location: 'Philippines',
     rating: 5.0,
     price: 'N/A',

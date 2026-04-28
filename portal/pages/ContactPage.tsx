@@ -85,7 +85,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                     </div>
 
                     <div className="dashboard-logo" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                        <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '240px' }} />
+                        <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '240px' }} />
                     </div>
 
                     <div className="dashboard-subtitle" style={{ letterSpacing: '0.3em', color: '#2563eb', fontWeight: 700 }}>
@@ -110,7 +110,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                         lineHeight: '1.625',
                         textAlign: 'center'
                     }}>
-                        Reach out to the WingMentor team for any inquiries about program direction, management, or general support. We're here to help you succeed.
+                        Reach out to the PilotRecognition team for any inquiries about program direction, management, or general support. We're here to help you succeed.
                     </p>
                 </header>
 
@@ -193,13 +193,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                                         <div className="horizontal-card-content" style={{ padding: '2rem 0', textAlign: 'left', flex: 1, maxWidth: '100%' }}>
                                             <h3 className="horizontal-card-title" style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email Support</h3>
                                             <div style={{ fontSize: '1.125rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem', wordBreak: 'break-word' }}>
-                                                wingmentorprogram@gmail.com
+                                                pilotrecognition@gmail.com
                                             </div>
                                             <p className="horizontal-card-desc" style={{ maxWidth: '100%', marginBottom: '1rem', color: '#64748b', fontSize: '1rem', lineHeight: 1.6 }}>
-                                                Email the WingMentor team for detailed inquiries
+                                                Email the PilotRecognition team for detailed inquiries
                                             </p>
                                             <button
-                                                onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com'}
+                                                onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
                                                 style={{
                                                     background: '#2563eb',
                                                     color: 'white',
@@ -332,7 +332,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                     textAlign: 'center'
                 }}>
                     <p style={{ color: '#64748b', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-                        Need assistance? The WingMentor Support Network is active 24/7.
+                        Need assistance? The PilotRecognition Support Network is active 24/7.
                     </p>
                     <button
                         className="help-btn"
@@ -351,7 +351,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                             transition: 'all 0.2s ease',
                             boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                         }}
-                        onClick={() => window.location.href = 'mailto:wingmentorprogram@gmail.com'}
+                        onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
                     >
                         ✉️ Contact Support
                     </button>

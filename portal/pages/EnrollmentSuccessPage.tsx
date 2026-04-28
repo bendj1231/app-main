@@ -25,7 +25,7 @@ export const EnrollmentSuccessPage: React.FC<EnrollmentSuccessPageProps> = ({ on
                 textAlign: 'center'
             }}>
                 <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                    <img src="/logo.png" alt="WingMentor Logo" style={{ maxWidth: '200px', height: 'auto' }} />
+                    <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto' }} />
                 </div>
 
                 <h1 style={{
@@ -44,7 +44,7 @@ export const EnrollmentSuccessPage: React.FC<EnrollmentSuccessPageProps> = ({ on
                     lineHeight: 1.6,
                     marginBottom: '2rem'
                 }}>
-                    Congratulations! You have successfully enrolled in the Foundational Program. Welcome to WingMentor.
+                    Congratulations! You have successfully enrolled in the Foundational Program. Welcome to PilotRecognition.
                 </p>
 
                 <button

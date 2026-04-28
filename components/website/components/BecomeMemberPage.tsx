@@ -178,7 +178,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         <div className="inline-block relative">
                             <img
                                 src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                                alt="WingMentor Logo"
+                                alt="PilotRecognition Logo"
                                 className="mx-auto w-64 h-auto object-contain mb-8 drop-shadow-sm"
                             />
                         </div>
@@ -196,7 +196,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <p className="text-sm font-medium text-slate-700 text-center leading-relaxed">
                                         The information provided below will be scanned and formed into a default <span className="font-bold text-blue-900">ATLAS CV format</span> which you will be able to edit throughout your program & pathways.
                                         <span className="block mt-1 text-xs text-slate-500 italic">
-                                            Note: Your detailed information will be read and seen by various airlines, aircraft manufacturers, Air Taxi Operators and various Pathways which WingMentor provides.
+                                            Note: Your detailed information will be read and seen by various airlines, aircraft manufacturers, Air Taxi Operators and various Pathways which PilotRecognition provides.
                                         </span>
                                     </p>
                                 </div>
@@ -213,7 +213,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
 
                                 <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
-                                    {userAlreadyExisted ? 'Welcome Back!' : 'Welcome to WingMentor'}
+                                    {userAlreadyExisted ? 'Welcome Back!' : 'Welcome to PilotRecognition'}
                                 </h2>
 
                                 <p className="text-lg text-slate-600 mb-6">
@@ -720,7 +720,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100/50 flex items-start gap-3">
                                                 <HelpCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                                                 <p className="text-sm leading-relaxed text-amber-900/80 font-medium">
-                                                    Accurate ratings selection ensures you are assigned to the correct syllabus within the WingMentor ecosystem.
+                                                    Accurate ratings selection ensures you are assigned to the correct syllabus within the PilotRecognition ecosystem.
                                                 </p>
                                             </div>
                                         </div>
