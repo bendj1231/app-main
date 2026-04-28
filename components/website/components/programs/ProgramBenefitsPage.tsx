@@ -19,7 +19,7 @@ export const ProgramBenefitsPage: React.FC<ProgramBenefitsPageProps> = ({
         {
             icon: <Award className="w-8 h-8" />,
             title: 'Accredited Recognition',
-            description: 'Get officially recognized by industry leaders including AIRBUS and Etihad Aviation Training, boosting your credibility with airlines worldwide.'
+            description: 'Get officially recognized by industry leaders, boosting your credibility with airlines worldwide.'
         },
         {
             icon: <Shield className="w-8 h-8" />,
