@@ -44,7 +44,7 @@ const ACTION_ICONS = [
         title: 'Pilot Gap Forum',
         description: 'Discuss industry challenges with peers and mentors in our secure intelligence hub.',
         target: 'gap',
-        image: 'https://lh3.googleusercontent.com/d/1InHXB-jhAZ3UNDXcvHbENwbB5ApY8eOp'
+        image: '/images/landing-3.png'
     },
     {
         icon: 'fa-box-open',
