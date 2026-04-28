@@ -14,11 +14,11 @@ export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, on
     const partnershipTiles = [
         {
             title: "AIRBUS HEAD OF TRAINING",
-            desc: "Supported by Airbus Head of Training in EBT CBTA, ensuring alignment with the highest international standards in evidence-based training and competency-based training and assessment. Our partnership provides direct access to <strong>AIRBUS 9 core competencies</strong> framework, ensuring that verified competencies translate directly to operational readiness for leading manufacturers worldwide.",
+            desc: "EBT CBTA guidance from Airbus Head of Training ensures alignment with the highest international standards in evidence-based training and competency-based training and assessment. Our advisory relationship provides access to <strong>AIRBUS 9 core competencies</strong> framework, ensuring that verified competencies translate directly to operational readiness for leading manufacturers worldwide.",
         },
         {
             title: "ETIHAD CADET PROGRAM",
-            desc: "Strategic partnership with Etihad Cadet Program and Head of Training, providing direct access to flagship carrier expectations and training standards. This collaboration ensures our pilots are prepared for the exacting requirements of major carriers, with pathway matching that aligns verified competencies with <strong>cadet program opportunities</strong> and direct airline recruitment channels.",
+            desc: "Advisory relationship with Etihad Cadet Program and Head of Training, providing guidance on flagship carrier expectations and training standards. This collaboration ensures our pilots are prepared for the exacting requirements of major carriers, with pathway matching that aligns verified competencies with <strong>cadet program opportunities</strong> and airline recruitment channels.",
         },
         {
             title: "VERIFIED COMPETENCY DATABASE",

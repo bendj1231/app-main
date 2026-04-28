@@ -473,13 +473,13 @@ export const HomePage: React.FC<HomePageProps> = ({
             title: "EBT CBTA familiarization",
             category: 'program',
             subtitle: "airline expectations",
-            description: "Master the core competencies of Evidence-Based Training (EBT) and Competency-Based Training & Assessment (CBTA). Our program integrates industry-leading software solutions, including Airbus-recommended HINFACT, to simulate real-world airline evaluation environments.",
+            description: "Master the core competencies of Evidence-Based Training (EBT) and Competency-Based Training & Assessment (CBTA). Our program integrates industry-leading software solutions, including HINFACT (industry-standard EBT CBTA tool), to simulate real-world airline evaluation environments.",
             isDarkCard: true
         },
         {
             image: "/images/foundational-program.png",
             title: "Foundational Program",
-            subtitle: "Leadership skills, verifiable experience, and industry-recognized accreditation supported by AIRBUS, Etihad & Archer.",
+            subtitle: "Leadership skills, verifiable experience, and industry-recognized accreditation developed with EBT CBTA guidance from Airbus specialist.",
             category: 'program',
             description: "Designed for recent graduates and ongoing pilots seeking a competitive edge. Our verified leadership and mentorship training prepares you to be Flight Instructor and mentor ready. Gain credibility, verifiable experience, and critical insights into the Transition Program, ensuring you are fully prepared for the next stage of your professional aviation career.",
             regions: [

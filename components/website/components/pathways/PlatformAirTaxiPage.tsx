@@ -26,7 +26,7 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                         Air Taxi Pathways
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                        Direct access to the future of urban aviation. PilotRecognition is in active partnership with industry leaders Archer, MLG, and Joby to prepare pilots for the eVTOL revolution.
+                        Guidance from the future of urban aviation. PilotRecognition has advisory relationships with industry leaders Archer, MLG, and Joby to prepare pilots for the eVTOL revolution.
                     </p>
                 </div>
             </div>
