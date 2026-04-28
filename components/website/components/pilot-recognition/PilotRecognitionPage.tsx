@@ -57,7 +57,7 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                                 The Solution & Challenges
                             </p>
                             <p>
-                                This reality prompted the establishment of <strong>PilotRecognition.com</strong>. Following strategic discussions with <strong>AIRBUS</strong>, <strong>Etihad</strong>, and <strong>Archer</strong>, the industry faces undeniable challenges: recent graduates are unable to secure employment due to the <strong>1500-hour requirement</strong>, flight instructors who have reached these hours remain employed at the same flight school for over <strong>10 years</strong>, and airline pilots operating <strong>international long-haul flights</strong> seek career advancement opportunities while constrained by time limitations.
+                                This reality prompted the establishment of <strong>PilotRecognition.com was established to address these challenges and bridge the gap between the industry and the pilot profession.</strong>  recent graduates are unable to secure employment due to the <strong>1500-hour requirement</strong>, flight instructors who have reached these hours remain employed at the same flight school for over <strong>10 years</strong>, and airline pilots operating <strong>international long-haul flights</strong> seek career advancement opportunities while constrained by time limitations.
                             </p>
                         </div>
 
@@ -141,16 +141,16 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                         First Step Towards Pilot Recognition
                     </h2>
                     <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                        The <strong>Foundation Program</strong> is your first step towards building a credible and recognized pilot profile. This recognition-based program is designed to establish a solid foundation of aviation knowledge, competency, and industry standards that global manufacturers and operators recognize as credible experience. The program is <strong>EBT CBTA Aligned with AIRBUS</strong>, ensuring that your recognition meets the highest international standards in evidence-based training and competency-based training and assessment.
+                        The <strong>Foundation Program</strong> is your first step towards building a credible and recognized pilot profile. This recognition-based program is designed to establish a solid foundation of aviation knowledge, competency, and industry standards that global manufacturers and operators recognize as credible experience. The program is aligned with EBT CBTA international standards, ensuring that your recognition meets the highest international standards in evidence-based training and competency-based training and assessment.
                     </p>
                     <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                        Through strategic partnerships with industry leaders including <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>, <strong>MLG</strong>, <strong>Cebu Pacific</strong>, and <strong>WCC Pilot Academy</strong>, the Foundation Program provides a recognition framework that aligns with the highest industry standards. Upon completion, your profile reflects this achievement, demonstrating to airlines and operators that you have undergone rigorous assessment and verification.
+                        Through strategic partnerships with industry leaders, the Foundation Program provides a recognition framework that aligns with the highest industry standards. Upon completion, your profile reflects this achievement, demonstrating to airlines and operators that you have undergone rigorous assessment and verification.
                     </p>
                     <p className="text-lg text-slate-700 leading-relaxed mb-4">
                         This program significantly impacts your <strong>Pilot Recognition Score</strong> by adding verified recognition credentials, competency assessments, and industry-recognized certifications to your profile. As you progress through the program, your profile evolves, building a comprehensive <strong>pilot portfolio</strong> that showcases your skills, knowledge, and readiness for career opportunities.
                     </p>
                     <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                        The Foundation Program consists of <strong>5 core stages</strong>: <strong>The Context</strong> (Module 1 with 5 chapters addressing industry issues), <strong>W1000 Access</strong> (examination practice and core material), <strong>Examination</strong> (baseline assessment), <strong>Mentorship</strong> (road to 50hrs certification), and <strong>AIRBUS Interview</strong> (EBT-aligned evaluation with certificate of achievement). Each stage is designed to progressively build your recognition credentials.
+                        The Foundation Program consists of <strong>5 core stages</strong>: <strong>The Context</strong> (Module 1 with 5 chapters addressing industry issues), <strong>W1000 Access</strong> (examination practice and core material), <strong>Examination</strong> (baseline assessment), <strong>Mentorship</strong> (road to 50hrs certification), and <strong>Final Evaluation</strong> (evaluation with certificate of achievement). Each stage is designed to progressively build your recognition credentials.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4 mt-4">
                         <div className="flex items-center gap-2">
