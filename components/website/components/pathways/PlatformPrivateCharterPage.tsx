@@ -54,7 +54,7 @@ export const PlatformPrivateCharterPage: React.FC<PlatformPrivateCharterPageProp
                         <div className="relative w-full mx-auto">
                             <div className="aspect-video bg-slate-100 rounded-3xl overflow-hidden shadow-lg relative group">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1zefsTeyIZBEeCjhgHhbgjtk5x8rvZEwU"
+                                    src="/images/private-charter.png"
                                     alt="Private Charter Aircraft"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />

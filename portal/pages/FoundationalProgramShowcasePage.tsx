@@ -169,7 +169,7 @@ const overviewCards = [
         tag: '3 · Mentorship',
         title: 'Mentorship & Road to 50hrs Certification',
         description: 'After your initial examination is complete, you will receive mentor modules to observe, learn, and view masterclasses on how to mentor fellow aviators. Mentorship is an effort-based approach—mentors who have completed 20 hours of observation and passed their practical examination become missionaries who provide guidance and support to fellow members and pilots within the community. For your mentorship to be logged, your mentee must create an account through pilotrecognition.com, enabling you to access their profile and log their mentor ID.',
-        image: 'https://lh3.googleusercontent.com/d/1GyMG1004Ny93i4_ktGikIXgzy-FHiPBI'
+        image: '/images/foundational-showcase-3.png'
     },
     {
         tag: '4 · Airbus Interview',
