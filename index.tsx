@@ -244,9 +244,9 @@ const OAuthCallback = () => {
 
 
 const LOGO_URL = "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png";
-const ACCREDITATION_URL = "https://lh3.googleusercontent.com/d/12pf5A8zfaAmnN0TFPrL6_OV8Em7lX_p9";
-const ACCREDITATION_2_URL = "https://lh3.googleusercontent.com/d/1EbPJSQbhBiEnBtP6lSPrYIkLxANUDJBl";
-const ACCREDITATION_3_URL = "https://lh3.googleusercontent.com/d/1kpzjxNltR6BrX8IEitGbathVAZe8HVF-";
+const ACCREDITATION_URL = "/images/accreditation.png";
+const ACCREDITATION_2_URL = "/images/accreditation-2.png";
+const ACCREDITATION_3_URL = "/images/accreditation-3.png";
 const ACCREDITATION_4_URL = "/images/accreditation-4.png";
 const ACCREDITATION_5_URL = "/images/accreditation-5.png";
 const GOOGLE_FORM_URL = "/contact";

@@ -73,7 +73,7 @@ export const PathwaysPage: React.FC<PathwaysPageProps> = ({
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g"
+                        src="/images/pathways-image.png"
                         alt="Pathways"
                         className="w-full h-full object-cover"
                     />
