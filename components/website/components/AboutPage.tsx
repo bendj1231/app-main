@@ -470,7 +470,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <div>
                         <h3 className="text-xl font-bold text-slate-900 mb-2">EBT CBTA Framework Alignment</h3>
                         <p className="text-slate-700 leading-relaxed mb-3">
-                            PilotRecognition programs align with Evidence-Based Training and Competency-Based Training and Assessment frameworks, which are international standards in pilot training. Our curriculum incorporates the <strong>9 core competencies</strong> framework used by modern airlines worldwide.
+                            PilotRecognition programs align with Evidence-Based Training and Competency-Based Training and Assessment frameworks, which are international standards in pilot training aligned with Airbus. Our curriculum incorporates the <strong>9 core competencies</strong> framework used by modern airlines worldwide.
                         </p>
                         <div className="bg-white rounded-lg p-4 border border-blue-100">
                             <p className="text-sm text-slate-600 mb-1"><strong>Framework:</strong> EBT CBTA (International Standard)</p>

@@ -107,7 +107,7 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                             Standards That Matter to Airlines
                         </h2>
                         <p className="max-w-4xl text-base text-slate-700 leading-relaxed mb-6">
-                            Our programs are directly aligned with the competencies and standards that major airlines assess in their recruitment processes. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our assessment framework evaluates the same core competencies that airlines prioritize: cognitive and behavioral markers, decision-making under pressure, and operational awareness.
+                            Our programs are directly aligned with the competencies and standards that major airlines assess in their recruitment processes. Our assessment framework evaluates the same core competencies that airlines prioritize: cognitive and behavioral markers, decision-making under pressure, and operational awareness.
                         </p>
                         <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
                             Industry alignment means that verified competencies through PilotRecognition translate directly to airline readiness and competitive advantage in recruitment.
