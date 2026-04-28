@@ -168,7 +168,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             },
                             {
                                 title: "Industry Aligned",
-                                desc: "Supported by Airbus Head of Training in EBT CBTA (Agreement Ref: EBT-2024-WM-001) and Etihad Cadet Program, our programs align with the highest international standards. We foster a community built on verified excellence and ethical leadership."
+                                desc: "EBT CBTA guidance from Airbus Head of Training and Etihad Cadet Program consultation ensures our programs align with the highest international standards. We foster a community built on verified excellence and ethical leadership."
                             }
                         ].map((item, idx) => (
                             <RevealOnScroll key={idx}>

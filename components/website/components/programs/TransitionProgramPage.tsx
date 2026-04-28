@@ -78,7 +78,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                             <li className="flex items-start gap-3">
                                 <CheckCircle2 className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
                                 <div>
-                                    <span className="font-bold text-slate-900 block">Airbus-Recommended HINFACT</span>
+                                    <span className="font-bold text-slate-900 block">HINFACT (Industry-Standard EBT CBTA Tool)</span>
                                     <span className="text-slate-600 text-sm">Train with the exact competency-based assessment tools used by major carriers to evaluate their own crews.</span>
                                 </div>
                             </li>

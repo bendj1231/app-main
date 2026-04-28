@@ -25,7 +25,7 @@ export const PlatformFoundationalProgramPage: React.FC<PlatformFoundationalProgr
                         Foundational Program
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                        Leadership skills, verifiable experience, and industry-recognized accreditation supported by AIRBUS, Etihad & Archer (EBT CBTA Partnership Ref: EBT-2024-WM-001).
+                        Leadership skills, verifiable experience, and industry-recognized accreditation developed with EBT CBTA guidance from Airbus specialist.
                     </p>
 
                     <button

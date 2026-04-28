@@ -115,7 +115,7 @@ export const BusinessPlanPage = ({ onBack }: { onBack: () => void }) => (
                         {[
                             { feature: "WingMentor Program Suite", need: "Lack of direction & guidance", benefit: "Insight prior to major investments ($30k+). Only $5,000 investment for complete industry roadmap." },
                             { feature: "24/7 Support & Mentorship", need: "Transitioning career anxiety", benefit: "A sense of direction. Saving money on wrong investments. Feeling recognized and supported." },
-                            { feature: "Industry Direct Link", need: "No network or connections", benefit: "Direct access to Airbus/Etihad training heads and private operator brokers." }
+                            { feature: "Industry Direct Link", need: "No network or connections", benefit: "Guidance from Airbus/Etihad training specialists and private operator brokers." }
                         ].map((item, i) => (
                             <div key={i} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 24, padding: 24, background: 'white', borderRadius: 16, border: '1px solid #e2e8f0' }}>
                                 <div>

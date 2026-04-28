@@ -468,13 +468,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 <div className="flex items-start gap-4">
                     <Shield className="w-8 h-8 text-blue-600 mt-1 flex-shrink-0" />
                     <div>
-                        <h3 className="text-xl font-bold text-slate-900 mb-2">Official EBT CBTA Partnership</h3>
+                        <h3 className="text-xl font-bold text-slate-900 mb-2">EBT CBTA Advisory Relationship</h3>
                         <p className="text-slate-700 leading-relaxed mb-3">
-                            WingMentor is an <strong>Authorized EBT CBTA Partner</strong> with Airbus Head of Training.
-                            Our programs align with Evidence-Based Training and Competency-Based Training and Assessment frameworks.
+                            WingMentor programs are developed with EBT CBTA guidance from Airbus Head of Training.
+                            Our curriculum aligns with Evidence-Based Training and Competency-Based Training and Assessment frameworks.
                         </p>
                         <div className="bg-white rounded-lg p-4 border border-blue-100">
-                            <p className="text-sm text-slate-600 mb-1"><strong>Partnership Reference:</strong> EBT-2024-WM-001</p>
+                            <p className="text-sm text-slate-600 mb-1"><strong>Relationship Type:</strong> Advisory Consultation</p>
                             <p className="text-sm text-slate-600 mb-1"><strong>Effective Date:</strong> January 2024</p>
                             <p className="text-sm text-slate-600"><strong>Verification Contact:</strong> wingmentorprogram@gmail.com</p>
                         </div>
