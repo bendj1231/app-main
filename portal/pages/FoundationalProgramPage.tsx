@@ -399,20 +399,20 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
             title: "Wingmentorship Approach",
             description: "We create a database of vetting screened pilots based not just on flight hours, but on industry recognition through EBT & CBTA applications provided by Airbus, Foundational Program leadership skills, and our pilot recognition logging system. Our mentorship program builds credible and accredited experience for pilots to gain prior to their interview with an ATO or any aviation body.",
             tag: "2. The Goal",
-            image: "https://lh3.googleusercontent.com/d/1hHcJHmG0pTPDuvgiv79l88VpPz_lOXi1",
+            image: "/images/foundational-page-1.png",
             bullets: []
         },
         {
             title: "Pilot Recognition & Advocacy",
             description: "Your efforts and input won't go to waste. Your data is recognized by airlines, manufacturers, and industry insiders to give pilots what they really want: the chance to be seen. Gain guidance and a clear pathway while meeting the verified expectations of global aviation governing bodies.",
             tag: "3. Recognition",
-            image: "https://lh3.googleusercontent.com/d/1MfE9fiot6b9kCpgwQfc4aUY6e317nrUj",
+            image: "/images/foundational-page-2.png",
             bullets: []
         },
         {
             title: "Instructor vs PilotRecognition",
             description: "Traditional instructors often struggle to support dozens of students simultaneously. PilotRecognitions provide the one-on-one consultation and targeted problem-solving that large classrooms lack. This accredited program builds the leadership skills essential for future flight instructors and airline-bound pilots, ensuring you are truly industry-ready.",
-            image: "https://lh3.googleusercontent.com/d/1GyMG1004Ny93i4_ktGikIXgzy-FHiPBI"
+            image: "/images/foundational-page-3.png"
         }
     ];
 
