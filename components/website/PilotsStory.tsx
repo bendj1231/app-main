@@ -29,7 +29,7 @@ export const PilotsStory: React.FC<PilotsStoryProps> = ({ onAnimationComplete })
     const [isAutoScrolling, setIsAutoScrolling] = useState(false);
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
-    const PLANE_ICON = "https://lh3.googleusercontent.com/d/1q78Cwx2mA6g-imdVfDPfFX1WkxN7pn7j";
+    const PLANE_ICON = "/images/plane-icon.svg";
 
     useEffect(() => {
         let isUserScrolling = false;

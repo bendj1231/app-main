@@ -28,7 +28,7 @@ export const Carousel = ({ onCardClick }: { onCardClick: (id: string) => void })
                 { title: "Accredited Mentorship", desc: "Gain verified experience mentoring peers aligned with Airbus and Etihad standards." },
                 { title: "The Career Bridge", desc: "Builds your Refined Database Profile and unlocks a 50% discount on Transition." }
             ],
-            image: "https://lh3.googleusercontent.com/d/1wPEIiMRj4fW34_NIQKRnzCf8KNhdD1TC",
+            image: "/images/carousel-accredited-mentorship.png",
             color: "text-purple-400",
             btnColor: "bg-purple-500 hover:bg-purple-600 shadow-purple-500/25",
             icon: Users

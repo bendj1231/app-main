@@ -247,9 +247,9 @@ const LOGO_URL = "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/
 const ACCREDITATION_URL = "https://lh3.googleusercontent.com/d/12pf5A8zfaAmnN0TFPrL6_OV8Em7lX_p9";
 const ACCREDITATION_2_URL = "https://lh3.googleusercontent.com/d/1EbPJSQbhBiEnBtP6lSPrYIkLxANUDJBl";
 const ACCREDITATION_3_URL = "https://lh3.googleusercontent.com/d/1kpzjxNltR6BrX8IEitGbathVAZe8HVF-";
-const ACCREDITATION_4_URL = "https://lh3.googleusercontent.com/d/1mO2UeKmfgb2Z3ZMqcEeBze5w119HZgUb";
-const ACCREDITATION_5_URL = "https://lh3.googleusercontent.com/d/1sbabopQiNZkWXsGcePTH1MjzY2HzJate";
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSejj0W4rddiU2Ijs0NQEnvdBZdT45fCxzcp8JR15PTOiLC-OA/viewform?usp=sf_link";
+const ACCREDITATION_4_URL = "/images/accreditation-4.png";
+const ACCREDITATION_5_URL = "/images/accreditation-5.png";
+const GOOGLE_FORM_URL = "/contact";
 const AVIATION_WEATHER_LINK = "https://aviationweather.gov/metar";
 
 // Custom Icons and Styles extracted to @/src/components/ui/
