@@ -508,7 +508,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1XcRDW3p9C965siBjl5HsTXDHaQZJ-Ona",
+            image: "/images/homepage-3.png",
             title: "Emerging Air Taxi Sector",
             subtitle: "For pilots under 1,000 hours stuck in the gap.",
             category: 'pathways',
