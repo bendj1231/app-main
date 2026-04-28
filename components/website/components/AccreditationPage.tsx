@@ -13,16 +13,12 @@ interface AccreditationPageProps {
 export const AccreditationPage: React.FC<AccreditationPageProps> = ({ onBack, onNavigate, onLogin }) => {
     const partnershipTiles = [
         {
-            title: "AIRBUS HEAD OF TRAINING",
-            desc: "EBT CBTA guidance from Airbus Head of Training ensures alignment with the highest international standards in evidence-based training and competency-based training and assessment. Our advisory relationship provides access to <strong>AIRBUS 9 core competencies</strong> framework, ensuring that verified competencies translate directly to operational readiness for leading manufacturers worldwide.",
-        },
-        {
-            title: "ETIHAD CADET PROGRAM",
-            desc: "Advisory relationship with Etihad Cadet Program and Head of Training, providing guidance on flagship carrier expectations and training standards. This collaboration ensures our pilots are prepared for the exacting requirements of major carriers, with pathway matching that aligns verified competencies with <strong>cadet program opportunities</strong> and airline recruitment channels.",
+            title: "EBT CBTA FRAMEWORK",
+            desc: "Our programs align with Evidence-Based Training and Competency-Based Training and Assessment frameworks, which are international standards in pilot training. The <strong>9 core competencies</strong> framework provides a comprehensive structure for evaluating pilot readiness across technical and non-technical domains, ensuring alignment with modern airline requirements.",
         },
         {
             title: "VERIFIED COMPETENCY DATABASE",
-            desc: "Access to verified data on pilot professional competencies through our PilotRecognition platform, including <strong>EBT CBTA AIRBUS 9 core competencies</strong> and behavioral assessments. Our <strong>blockchain-verifiable certifications</strong> provide operators with confidence in pilot credentials, while our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> ensures standardized presentation across global recruitment systems.",
+            desc: "Access to verified data on pilot professional competencies through our PilotRecognition platform, including <strong>EBT CBTA 9 core competencies</strong> and behavioral assessments. Our <strong>blockchain-verifiable certifications</strong> provide operators with confidence in pilot credentials, while our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> ensures standardized presentation across global recruitment systems.",
         },
         {
             title: "DIRECT INDUSTRY CONNECTIONS",

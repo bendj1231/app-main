@@ -479,7 +479,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         {
             image: "/images/foundational-program.png",
             title: "Foundational Program",
-            subtitle: "Leadership skills, verifiable experience, and industry-recognized accreditation developed with EBT CBTA guidance from Airbus specialist.",
+            subtitle: "Leadership skills, verifiable experience, and industry-recognized accreditation.",
             category: 'program',
             description: "Designed for recent graduates and ongoing pilots seeking a competitive edge. Our verified leadership and mentorship training prepares you to be Flight Instructor and mentor ready. Gain credibility, verifiable experience, and critical insights into the Transition Program, ensuring you are fully prepared for the next stage of your professional aviation career.",
             regions: [

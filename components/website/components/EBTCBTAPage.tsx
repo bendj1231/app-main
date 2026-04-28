@@ -19,7 +19,7 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
         },
         {
             title: "CBTA Framework",
-            desc: "Assessment of 9 core competencies including decision-making, situational awareness, and workload management. Our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates cognitive and behavioral markers that modern airlines demand. The <strong>AIRBUS 9 core competencies</strong> framework provides a comprehensive structure for evaluating pilot readiness across technical and non-technical domains.",
+            desc: "Assessment of 9 core competencies including decision-making, situational awareness, and workload management. Our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates cognitive and behavioral markers that modern airlines demand. The <strong>9 core competencies</strong> framework provides a comprehensive structure for evaluating pilot readiness across technical and non-technical domains.",
             bullets: ["Competency Based", "Holistic Grading", "Behavioral Markers"]
         },
         {
@@ -29,7 +29,7 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
         },
         {
             title: "Etihad Standards",
-            desc: "Insights into the competency expectations of one of the world's premier cadet programs. Through our strategic partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we provide direct access to flagship carrier expectations and program standards. This collaboration ensures our pilots are prepared for the exacting requirements of major carriers, with pathway matching that aligns verified competencies with cadet program opportunities.",
+            desc: "Insights into the competency expectations of modern cadet programs. Our curriculum prepares pilots for the exacting requirements of major carriers, with pathway matching that aligns verified competencies with cadet program opportunities and airline recruitment channels.",
             bullets: ["Carrier Specific", "High Performance", "Recruitment Edge"]
         }
     ];

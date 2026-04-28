@@ -99,7 +99,7 @@ export const CoreValuesPage: React.FC<CoreValuesPageProps> = ({
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             A PilotRecognition pilot doesn't just fly the plane; they manage the operation with
                             humility, resilience, and an unshakeable commitment to safety standards. Through
-                            EBT CBTA guidance from Airbus Head of Training, we ensure that the attitude
+                            EBT CBTA alignment with international standards, we ensure that the attitude
                             we cultivate aligns with the exacting standards required by leading manufacturers and
                             operators worldwide.
                         </p>
