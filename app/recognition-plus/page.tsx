@@ -292,9 +292,9 @@ export default function RecognitionPlusPage() {
         {/* Strategic Partnerships & Growth Section */}
         <div className="max-w-6xl mx-auto">
           <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-12 border-2 border-blue-200">
-            <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">Strategic Partnerships & Investor Readiness</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">Growth & Investor Readiness</h2>
             <p className="text-slate-700 text-center max-w-4xl mx-auto mb-12">
-              PilotRecognition is building strategic partnerships across the aviation ecosystem to create a comprehensive platform that benefits pilots, flight schools, airlines, and investors alike. Our growth strategy focuses on three key pillars that drive value for all stakeholders.
+              PilotRecognition is building relationships across the aviation ecosystem to create a comprehensive platform that benefits pilots, flight schools, airlines, and investors alike. Our growth strategy focuses on three key pillars that drive value for all stakeholders.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

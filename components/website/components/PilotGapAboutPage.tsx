@@ -40,7 +40,7 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                         What is the Pilot Gap?
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                        The "Pilot Gap" refers to the treacherous period in an aviator's career between obtaining initial commercial licenses (around 250 hours) and achieving the experience levels required for major airline employment (often 1500+ hours). Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required to bridge this critical career transition.
+                        The "Pilot Gap" refers to the treacherous period in an aviator's career between obtaining initial commercial licenses (around 250 hours) and achieving the experience levels required for major airline employment (often 1500+ hours). Our programs align with EBT CBTA international standards, ensuring that our programs align with the exacting standards required to bridge this critical career transition.
                     </p>
                 </div>
             </div>
@@ -90,7 +90,7 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                             Bridging the Gap Through Verified Experience
                         </h2>
                         <p className="max-w-4xl text-base text-slate-700 leading-relaxed mb-6">
-                            PilotRecognition doesn't just acknowledge the gap; we bridge it through structured programs that turn "empty hours" into "verifiable operational experience." Our Foundational Program provides access to professional-grade applications, structured mentorship, and a verified database that aligns with industry standards set by <strong>Airbus Head of Training</strong> and <strong>Etihad Cadet Program</strong>.
+                            PilotRecognition doesn't just acknowledge the gap; we bridge it through structured programs that turn "empty hours" into "verifiable operational experience." Our Foundational Program provides access to professional-grade applications, structured mentorship, and a verified database that aligns with industry EBT CBTA standards.
                         </p>
                         <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
                             Through our EBT CBTA-aligned assessment framework and 50 hours of verifiable mentorship, pilots can demonstrate the specific competencies that airlines demand. This approach transforms the career gap from a barrier into a structured development pathway, ensuring that pilots are not just accumulating hours but building the professional recognition that leads to airline opportunities.
@@ -110,7 +110,7 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                             Our programs are directly aligned with the competencies and standards that major airlines assess in their recruitment processes. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our assessment framework evaluates the same core competencies that airlines prioritize: cognitive and behavioral markers, decision-making under pressure, and operational awareness.
                         </p>
                         <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
-                            The <strong>Etihad Cadet Program</strong> partnership provides insights into the competency expectations of one of the world's premier cadet programs, ensuring that our pilots are prepared for the exacting standards of major carriers. This industry alignment means that verified competencies through PilotRecognition translate directly to airline readiness and competitive advantage in recruitment.
+                            Industry alignment means that verified competencies through PilotRecognition translate directly to airline readiness and competitive advantage in recruitment.
                         </p>
                     </div>
                 </RevealOnScroll>
