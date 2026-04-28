@@ -127,7 +127,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
             icon: "fa-terminal",
             color: "bg-black",
             borderColor: "border-zinc-700",
-            img: "https://lh3.googleusercontent.com/d/11j7ZHv874EBZZ6O36etvuHC6rRWWm8kF",
+            img: "/images/landing-approach-1.png",
             target: 'examination'
         },
         {
@@ -141,7 +141,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
             icon: "fa-box-open",
             color: "bg-gradient-to-br from-red-950 to-black",
             borderColor: "border-red-900",
-            img: "https://lh3.googleusercontent.com/d/1yLM_bGVPN8Sa__fqR95C0EeA1CUsTAA7",
+            img: "/images/landing-approach-2.png",
             target: 'blackbox'
         },
         {
