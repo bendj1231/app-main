@@ -461,7 +461,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
     const allSlides: Slide[] = [
         {
-            image: "https://lh3.googleusercontent.com/d/1wPEIiMRj4fW34_NIQKRnzCf8KNhdD1TC",
+            image: "/images/homepage-1.png",
             title: "Transition Program",
             category: 'program',
             subtitle: "Shifting students and graduates from flight school to an airline environment mindset through EBT & CBT familiarization.",
