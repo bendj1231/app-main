@@ -599,7 +599,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1rZLzWxCpouDAIoNRFxeli5GDa3lhGyr2",
+            image: "/images/homepage-11.png",
             title: "Pilot Gap Forum",
             category: 'network',
             subtitle: "Bridging the Experience Gap",
