@@ -87,7 +87,7 @@ const applications: CardItem[] = [
     description: 'Access your learning dashboard, track progress, and manage your pilot training journey.',
     icon: 'Monitor',
     linkText: 'Download Module',
-    image: 'https://www.flightdeckfriend.com/wp-content/uploads/2019/02/Captain-Paperwork-Medium.jpg',
+    image: '/images/Captain-Paperwork-Medium.jpg',
     badge: 'Dynamic'
   }
 ];

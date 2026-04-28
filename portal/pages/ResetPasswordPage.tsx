@@ -190,7 +190,7 @@ export const ResetPasswordPage: React.FC = () => {
                             pointerEvents: 'none'
                         }} />
                         <div style={{ marginBottom: '2rem' }}>
-                            <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="PilotRecognition Logo" style={{ width: '240px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="/images/reset-password-logo.png" alt="PilotRecognition Logo" style={{ width: '240px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#e11d48', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                             LOADING
