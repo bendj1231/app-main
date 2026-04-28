@@ -1,4 +1,5 @@
 import React from 'react';
+import { sanitizeJsonLd } from '@/src/lib/sanitize-html';
 
 interface NavigationItem {
   name: string;
@@ -27,7 +28,7 @@ export const NavigationSchema: React.FC<NavigationSchemaProps> = ({ items, siteN
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: sanitizeJsonLd(schema) }}
     />
   );
 };

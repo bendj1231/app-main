@@ -167,7 +167,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             {/* FAQ Schema for SEO */}
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                dangerouslySetInnerHTML={{ __html: sanitizeJsonLd(faqSchema) }}
             />
             
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
@@ -212,7 +212,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
                             {group.questions.map((faq, idx) => (
                                 <div key={idx} className="space-y-2">
                                     <h3 className="text-lg font-bold text-slate-900">{faq.q}</h3>
-                                    <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.a }}></p>
+                                    <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(faq.a) }}></p>
                                 </div>
                             ))}
                         </div>

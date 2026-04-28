@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Shield, Mail, Users } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
+import { sanitizeHtml } from '@/src/lib/sanitize-html';
 
 interface AboutPageProps {
     onBack: () => void;
@@ -234,7 +235,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         Programs | Pilot Recognition | Pathways
                     </span>
                     <div className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed pt-8">
-                        <p dangerouslySetInnerHTML={{ __html: "We are the Aviation Industry's First <strong>PilotRecognition-based Platform</strong> operated by WM Pilot Group. WingMentor bridges the lack of <strong>PilotRecognition</strong> in your aviation career through recognition-based profiling and provides <strong>Accredited Experience programs</strong> aligned with <strong>EBT CBTA AIRBUS 9 core competencies</strong>, with Assurance & support from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> and Head of Training. Our PilotRecognition platform is kept current with the aviation industry use of <strong>ATS (Applicant Tracking System)</strong> globally known as <strong>ATLAS Aviation CV</strong> formatting, along with future integration of <strong>HINFACT EBT CBTA Software</strong> within our future Transition Program. The Foundational Program includes <strong>50 hours of verifiable logged effort-based Mentorship</strong> along with Aviation Industry Familiarization addressing the current <strong>Pilot Shortage</strong> otherwise known as the <strong>Pilot Gap in Recognition, Experience, and (PRM) Pilot Risk Management</strong>. The Foundation Program follows the 9 core competencies and acts as a foundational prerequisite towards our EBT CBTA aligned flagship Transition Program. The PilotRecognition Profile is an Evaluation of your Flight hours, Experiences, and <strong>Blockchain verifiable certifications</strong> data collected from <strong>programs</strong> such as Mentorship logbook and aviation Interests that objectively demonstrate your professional capabilities. Your profile is actively being recognized along with <strong>scores</strong> and <strong>pathway recommended matches</strong> towards <strong>pathways</strong> aligned with your verified competencies, connecting you directly to opportunities that match your professional readiness. Transform your aviation career with your <strong>industry-accredited PilotRecognition Profile</strong>, connecting you to the industry like never before through <strong>AI-powered career matching</strong> and direct pathways to up-to-date <strong>Airline Operators Requirements</strong> & Discover <strong>Airline Expectations</strong> to align with your PilotRecognition profile." }}></p>
+                        <p dangerouslySetInnerHTML={{ __html: sanitizeHtml("We are the Aviation Industry's First <strong>PilotRecognition-based Platform</strong> operated by WM Pilot Group. WingMentor bridges the lack of <strong>PilotRecognition</strong> in your aviation career through recognition-based profiling and provides <strong>Accredited Experience programs</strong> aligned with <strong>EBT CBTA AIRBUS 9 core competencies</strong>, with Assurance & support from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> and Head of Training. Our PilotRecognition platform is kept current with the aviation industry use of <strong>ATS (Applicant Tracking System)</strong> globally known as <strong>ATLAS Aviation CV</strong> formatting, along with future integration of <strong>HINFACT EBT CBTA Software</strong> within our future Transition Program. The Foundational Program includes <strong>50 hours of verifiable logged effort-based Mentorship</strong> along with Aviation Industry Familiarization addressing the current <strong>Pilot Shortage</strong> otherwise known as the <strong>Pilot Gap in Recognition, Experience, and (PRM) Pilot Risk Management</strong>. The Foundation Program follows the 9 core competencies and acts as a foundational prerequisite towards our EBT CBTA aligned flagship Transition Program. The PilotRecognition Profile is an Evaluation of your Flight hours, Experiences, and <strong>Blockchain verifiable certifications</strong> data collected from <strong>programs</strong> such as Mentorship logbook and aviation Interests that objectively demonstrate your professional capabilities. Your profile is actively being recognized along with <strong>scores</strong> and <strong>pathway recommended matches</strong> towards <strong>pathways</strong> aligned with your verified competencies, connecting you directly to opportunities that match your professional readiness. Transform your aviation career with your <strong>industry-accredited PilotRecognition Profile</strong>, connecting you to the industry like never before through <strong>AI-powered career matching</strong> and direct pathways to up-to-date <strong>Airline Operators Requirements</strong> & Discover <strong>Airline Expectations</strong> to align with your PilotRecognition profile.") }}></p>
                     </div>
                 </div>
             </div>
@@ -275,7 +276,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             {section.content.map((item, idx) => (
                                 <div key={idx} className="space-y-2">
                                     <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-                                    <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                                    <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.description) }}></p>
                                 </div>
                             ))}
                         </div>
@@ -329,7 +330,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         {pilotRecognitionContent.map((item, idx) => (
                             <div key={idx} className="space-y-2">
                                 <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-                                <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                                <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.description) }}></p>
                             </div>
                         ))}
                     </div>
@@ -371,7 +372,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         {pathwaysContent.map((item, idx) => (
                             <div key={idx} className="space-y-2">
                                 <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-                                <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                                <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.description) }}></p>
                             </div>
                         ))}
                     </div>
@@ -413,7 +414,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         {pilotTerminalContent.map((item, idx) => (
                             <div key={idx} className="space-y-2">
                                 <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-                                <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                                <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.description) }}></p>
                             </div>
                         ))}
                     </div>

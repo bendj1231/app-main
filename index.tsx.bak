@@ -159,7 +159,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!loading && !currentUser) {
       // Redirect to home if not authenticated
-      safeRedirect('/');
+      window.location.href = '/';
     }
   }, [currentUser, loading]);
 
@@ -190,13 +190,13 @@ const OAuthCallback = () => {
 
       // If we have query parameters (Google OAuth), redirect to /auth/callback
       if (searchParams) {
-        safeRedirect(`/auth/callback${searchParams}${hash}`);
+        window.location.href = `/auth/callback${searchParams}${hash}`;
       } else if (hash) {
         // If we have hash parameters, redirect to /auth/callback with hash
-        safeRedirect(`/auth/callback${hash}`);
+        window.location.href = `/auth/callback${hash}`;
       } else {
         // No parameters, redirect to home
-        safeRedirect('/');
+        window.location.href = '/';
       }
     };
 
@@ -565,7 +565,7 @@ const App = () => {
   const navigateTo = (page: any, data?: any) => {
     // Special handling for Next.js App Router pages
     if (page === 'recognition-plus' || page === 'pilot-recognition') {
-      safeRedirect('/recognition-plus');
+      window.location.href = '/recognition-plus';
       return;
     }
 
@@ -1510,63 +1510,63 @@ root.render(
               </Suspense>
             </ProtectedRoute>
           } />
-          <Route path="/type-rating-search" element={<TypeRatingSearchPage onNavigate={(page) => safeRedirect(`${page}`)} onBack={() => safeRedirect('/pathways-modern')} />} />
+          <Route path="/type-rating-search" element={<TypeRatingSearchPage onNavigate={(page) => window.location.href = `/${page}`} onBack={() => window.location.href = '/pathways-modern'} />} />
           <Route path="/type-rating-centers" element={<TypeRatingCentersPage />} />
           <Route path="/manufacturer/:id/expectations" element={<ManufacturerExpectationsPage />} />
-          <Route path="/airline-expectations" element={<AirlineExpectationsPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/discover-pathways" element={<PathwaysPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => safeRedirect('/about')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/programs" element={<ProgramsPathwaysPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/benefits" element={<ProgramBenefitsPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/news-updates" element={<NewsUpdatesPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/transition-program" element={<TransitionProgramPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/airbus-aligned-ebt-cbta-programs" element={<EBTCBTAPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/become-member" element={<BecomeMemberPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
+          <Route path="/airline-expectations" element={<AirlineExpectationsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/discover-pathways" element={<PathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/programs" element={<ProgramsPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/benefits" element={<ProgramBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/news-updates" element={<NewsUpdatesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/transition-program" element={<TransitionProgramPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/airbus-aligned-ebt-cbta-programs" element={<EBTCBTAPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/become-member" element={<BecomeMemberPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Pathways Pages */}
-          <Route path="/emirates-atpl" element={<EmiratesAtplPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/emerging-air-taxi" element={<EmergingAirTaxiPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/piloted-drones" element={<PilotedDronesPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/air-taxi-pathways" element={<AirTaxiPathwaysPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/cadet-pathways" element={<CadetProgramsPathwaysPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/private-charter-pathways" element={<PrivateCharterPathwaysPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/cargo-transportation" element={<CargoTransportationPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
+          <Route path="/emirates-atpl" element={<EmiratesAtplPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/emerging-air-taxi" element={<EmergingAirTaxiPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/piloted-drones" element={<PilotedDronesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/air-taxi-pathways" element={<AirTaxiPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/cadet-pathways" element={<CadetProgramsPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/private-charter-pathways" element={<PrivateCharterPathwaysPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/cargo-transportation" element={<CargoTransportationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Pilot Recognition Pages */}
-          <Route path="/pilot-recognition-profile" element={<PilotRecognitionProfilePage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} />} />
-          <Route path="/recognition-career-matches" element={<RecognitionCareerMatchesPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/atlas-cv" element={<ATLASCVPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
+          <Route path="/pilot-recognition-profile" element={<PilotRecognitionProfilePage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} />} />
+          <Route path="/recognition-career-matches" element={<RecognitionCareerMatchesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/atlas-cv" element={<ATLASCVPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Program Application Pages */}
-          <Route path="/foundational-application" element={<FoundationalProgramApplicationPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/transition-application" element={<TransitionProgramApplicationPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
+          <Route path="/foundational-application" element={<FoundationalProgramApplicationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/transition-application" element={<TransitionProgramApplicationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* About/Company Pages */}
-          <Route path="/about" element={<AboutPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/faq" element={<FAQPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/board" element={<BoardPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/governance" element={<GovernancePage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/committees" element={<CommitteesPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/mission-vision" element={<MissionVisionPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/core-values" element={<CoreValuesPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
+          <Route path="/about" element={<AboutPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/faq" element={<FAQPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/board" element={<BoardPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/governance" element={<GovernancePage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/committees" element={<CommitteesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/mission-vision" element={<MissionVisionPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/core-values" element={<CoreValuesPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Directory Pages */}
-          <Route path="/insights" element={<AviationInsightsDirectoryPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/applications-systems" element={<ApplicationsSystemsDirectoryPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/membership" element={<MembershipDirectoryPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/hinfact" element={<HinfactPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/w1000-suite" element={<W1000SuitePage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/membership-benefits" element={<MembershipBenefitsPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
+          <Route path="/insights" element={<AviationInsightsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/applications-systems" element={<ApplicationsSystemsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/membership" element={<MembershipDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/hinfact" element={<HinfactPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/w1000-suite" element={<W1000SuitePage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/membership-benefits" element={<MembershipBenefitsPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           {/* Other Pages */}
           <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
           <Route path="/enterprise/login" element={<EnterpriseLoginPage />} />
           <Route path="/enterprise/dashboard" element={<EnterprisePortalApp />} />
           <Route path="/enterprise/*" element={<EnterprisePortalApp />} />
-          <Route path="/accreditation" element={<AccreditationPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/contact-support" element={<ContactSupportPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/download" element={<DownloadPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/examination-results" element={<ExaminationResultsDirectoryPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/examination-results-directory" element={<ExaminationResultsDirectoryPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/digital-logbook-directory" element={<DigitalLogbookDirectoryPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/pilot-gap-about" element={<PilotGapAboutPage onBack={() => safeRedirect('/about')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
-          <Route path="/settings" element={<SettingsDirectoryPage onBack={() => safeRedirect('/')} onNavigate={(page) => safeRedirect(`${page}`)} onLogin={() => {}} />} />
+          <Route path="/accreditation" element={<AccreditationPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/contact-support" element={<ContactSupportPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/download" element={<DownloadPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/examination-results" element={<ExaminationResultsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/examination-results-directory" element={<ExaminationResultsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/digital-logbook-directory" element={<DigitalLogbookDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/pilot-gap-about" element={<PilotGapAboutPage onBack={() => window.location.href='/about'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
+          <Route path="/settings" element={<SettingsDirectoryPage onBack={() => window.location.href='/'} onNavigate={(page) => window.location.href=`/${page}`} onLogin={() => {}} />} />
           <Route path="/*" element={
             <>
               <App />

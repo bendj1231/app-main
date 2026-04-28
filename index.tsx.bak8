@@ -159,7 +159,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!loading && !currentUser) {
       // Redirect to home if not authenticated
-      safeRedirect('/');
+      window.location.href = '/';
     }
   }, [currentUser, loading]);
 
@@ -190,13 +190,13 @@ const OAuthCallback = () => {
 
       // If we have query parameters (Google OAuth), redirect to /auth/callback
       if (searchParams) {
-        safeRedirect(`/auth/callback${searchParams}${hash}`);
+        window.location.href = `/auth/callback${searchParams}${hash}`;
       } else if (hash) {
         // If we have hash parameters, redirect to /auth/callback with hash
-        safeRedirect(`/auth/callback${hash}`);
+        window.location.href = `/auth/callback${hash}`;
       } else {
         // No parameters, redirect to home
-        safeRedirect('/');
+        window.location.href = '/';
       }
     };
 
@@ -565,7 +565,7 @@ const App = () => {
   const navigateTo = (page: any, data?: any) => {
     // Special handling for Next.js App Router pages
     if (page === 'recognition-plus' || page === 'pilot-recognition') {
-      safeRedirect('/recognition-plus');
+      window.location.href = '/recognition-plus';
       return;
     }
 

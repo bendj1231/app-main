@@ -617,7 +617,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                     >
                                                                         <div className="flex items-center gap-1.5">
                                                                             {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
-                                                                            <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-400' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
+                                                                            <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-400' : ''}`} dangerouslySetInnerHTML={{ __html: subItem.name }}>
                                                                             </span>
                                                                         </div>
 
@@ -666,7 +666,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                             >
                                                                 <div className="flex items-center gap-1.5">
                                                                     {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
-                                                                    <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-400' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
+                                                                    <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-400' : ''}`} dangerouslySetInnerHTML={{ __html: subItem.name }}>
                                                                     </span>
                                                                 </div>
 

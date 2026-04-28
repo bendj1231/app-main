@@ -159,7 +159,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!loading && !currentUser) {
       // Redirect to home if not authenticated
-      safeRedirect('/');
+      window.location.href = '/';
     }
   }, [currentUser, loading]);
 
@@ -190,13 +190,13 @@ const OAuthCallback = () => {
 
       // If we have query parameters (Google OAuth), redirect to /auth/callback
       if (searchParams) {
-        safeRedirect(`/auth/callback${searchParams}${hash}`);
+        safeRedirect(`/auth/callback${searchParams}${hash}`;
       } else if (hash) {
         // If we have hash parameters, redirect to /auth/callback with hash
-        safeRedirect(`/auth/callback${hash}`);
+        safeRedirect(`/auth/callback${hash}`;
       } else {
         // No parameters, redirect to home
-        safeRedirect('/');
+        window.location.href = '/';
       }
     };
 

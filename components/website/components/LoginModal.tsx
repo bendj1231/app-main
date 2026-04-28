@@ -36,13 +36,50 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     const modalRef = useRef<HTMLDivElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
 
-    // Handle ESC key to close modal
+    // Handle ESC key to close modal and focus management
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape' && isOpen) {
                 onClose();
             }
         };
+
+        // Focus trap and initial focus
+        if (isOpen) {
+            // Focus email input when modal opens
+            setTimeout(() => {
+                emailInputRef.current?.focus();
+            }, 100);
+
+            // Trap focus within modal
+            const trapFocus = (e: KeyboardEvent) => {
+                if (e.key !== 'Tab') return;
+                
+                const focusableElements = modalRef.current?.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                ) as NodeListOf<HTMLElement>;
+                
+                if (!focusableElements?.length) return;
+                
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                        lastElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastElement) {
+                        firstElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            };
+
+            document.addEventListener('keydown', trapFocus);
+            return () => document.removeEventListener('keydown', trapFocus);
+        }
 
         document.addEventListener('keydown', handleEscape);
         return () => document.removeEventListener('keydown', handleEscape);
@@ -147,8 +184,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 {/* Glassy X Button - Top Right */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-50 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all duration-300 hover:scale-110"
-                    aria-label="Close modal"
+                    className="absolute top-4 right-4 z-20 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 backdrop-blur-sm"
+                    aria-label="Close login modal"
                 >
                     <X className="w-6 h-6" />
                 </button>
@@ -231,14 +268,17 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                     </svg>
                                 </div>
                                 <input
+                                    id="email"
                                     ref={emailInputRef}
                                     type="email"
-                                    placeholder="Email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Enter your email"
                                     className="w-full pl-12 pr-4 py-4 min-h-[52px] bg-slate-100 border border-slate-300 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
-                                    required
                                     aria-label="Email address"
+                                    aria-required="true"
+                                    autoComplete="email"
+                                    required
                                     aria-invalid={!!error}
                                     aria-describedby={error ? 'login-error' : undefined}
                                 />

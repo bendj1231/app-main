@@ -1,4 +1,5 @@
 import React from 'react';
+import { sanitizeJsonLd } from '@/src/lib/sanitize-html';
 
 interface BreadcrumbItem {
   name: string;
@@ -24,7 +25,7 @@ export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ items }) => 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: sanitizeJsonLd(schema) }}
     />
   );
 };
