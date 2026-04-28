@@ -163,7 +163,7 @@ const overviewCards = [
         tag: '2 · Examination',
         title: 'Examination',
         description: 'Your first examination evaluates how well you know the industry and the chapters you have read. The initial pilot licensure examination uses integrated Gleims software for FAA/CAAP examinations. This examination will provide your first score, identifying areas where you are struggling and highlighting weaknesses based on recurrency through monthly examinations to stay current before mentorship. This will also create the first imprint on your pilot recognition profile—you may check the examination results as well as your profile score.',
-        image: 'https://lh3.googleusercontent.com/d/1MfE9fiot6b9kCpgwQfc4aUY6e317nrUj'
+        image: '/images/foundational-showcase-2.png'
     },
     {
         tag: '3 · Mentorship',
