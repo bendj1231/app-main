@@ -155,7 +155,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
             icon: "fa-passport",
             color: "bg-gradient-to-br from-blue-950 to-black",
             borderColor: "border-blue-900",
-            img: "https://lh3.googleusercontent.com/d/12yV8_AmHGkJedZ7c86VZoUwzcSbZt3fV",
+            img: "/images/landing-page-1.png",
             target: 'hub'
         },
         {
