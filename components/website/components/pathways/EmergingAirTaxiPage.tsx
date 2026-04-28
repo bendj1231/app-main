@@ -60,7 +60,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({
                     <div className="order-1 md:order-2">
                         <div className="relative w-full max-w-md mx-auto">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1XcRDW3p9C965siBjl5HsTXDHaQZJ-Ona"
+                                src="/images/emerging-air-taxi-1.png"
                                 alt="Emerging Air Taxi Sector"
                                 className="w-full rounded-3xl shadow-lg object-cover"
                             />
@@ -87,7 +87,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({
                     <div className="order-1 md:order-2">
                         <div className="relative w-full max-w-md mx-auto">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1aTWWTtFwIMCrrU9HnCtWdUPTGhvWk6Yi"
+                                src="/images/emerging-air-taxi-2.png"
                                 alt="Air Taxi Pilot Pathways"
                                 className="w-full rounded-3xl shadow-lg object-cover"
                             />

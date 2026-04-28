@@ -15,7 +15,7 @@ export const PlatformEmiratesAtplPage: React.FC<PlatformEmiratesAtplPageProps> =
             <div className="pt-10 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
-                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
+                        src="/images/emirates-atpl.png"
                         alt="PilotRecognition Logo"
                         className="mx-auto w-64 h-auto object-contain mb-2"
                     />
