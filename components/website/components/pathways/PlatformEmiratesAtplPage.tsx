@@ -57,7 +57,7 @@ export const PlatformEmiratesAtplPage: React.FC<PlatformEmiratesAtplPageProps> =
                     <div className="order-1 md:order-2">
                         <div className="relative w-full max-w-md mx-auto">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1Ars9ou0JcoloGv-W18gvJ1G0eWrdFNAu"
+                                src="/images/emirates-atpl.png"
                                 alt="Emirates ATPL Pathway"
                                 className="w-full rounded-3xl shadow-lg object-cover"
                             />
