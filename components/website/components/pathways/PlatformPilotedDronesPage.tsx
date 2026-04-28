@@ -60,7 +60,7 @@ export const PlatformPilotedDronesPage: React.FC<PlatformPilotedDronesPageProps>
                         <div className="relative w-full mx-auto">
                             <div className="aspect-video bg-slate-100 rounded-3xl overflow-hidden shadow-lg relative group">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/11rzk2pXR99JuKEjhanfvAn58cgVETtId"
+                                    src="/images/drones-image.png"
                                     alt="Unmanned Drone"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
