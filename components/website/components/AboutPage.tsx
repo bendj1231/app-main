@@ -57,7 +57,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 },
                 {
                     title: "Comprehensive Pilot Profiles",
-                    description: "Our pilots maintain logbooks compliant with regulatory requirements based on their governing civil aviation authority. Operators can access formattable, readable flight logs and historical data about pilot experience. For pilots who have completed the Foundational Program, operators can view their <strong>video interview</strong>—a valuable addition to database access where the observer can assess the pilot's communication skills, professional demeanor, and presentation style alongside their <strong>EBT score</strong>. This combination of video interview with EBT scoring provides operators with a comprehensive view of candidate presentation and professional capabilities before making recruitment decisions."
+                    description: "Our pilots maintain logbooks compliant with regulatory requirements based on their governing civil aviation authority. Operators can access formattable, readable flight logs and historical data about pilot experience. For pilots who have completed the Foundational Program, operators can view their <strong>video interview</strong>—a valuable addition to database access where the observer can assess the pilot's communication skills, professional demeanor, and presentation style alongside their Airbus EBT score. This combination of video interview with EBT scoring provides operators with a comprehensive view of candidate presentation and professional capabilities before making recruitment decisions."
                 },
                 {
                     title: "Direct Pathways & Industry Connections",
