@@ -375,7 +375,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 <h3 style={{ fontSize: '1.25rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
                                     Wingmentorship Approach
                                 </h3>
-                                <img src="https://lh3.googleusercontent.com/d/1hHcJHmG0pTPDuvgiv79l88VpPz_lOXi1" alt="Wingmentorship Approach" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
+                                <img src="/images/programs-page-1.png" alt="Wingmentorship Approach" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
                                 <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 }}>
                                     We create a database of vetting screened pilots based not just on flight hours, but on industry recognition through EBT & CBTA applications provided by Airbus, Foundational Program leadership skills, and our pilot recognition logging system.
                                 </p>
@@ -388,7 +388,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 <h3 style={{ fontSize: '1.25rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
                                     Pilot Recognition & Advocacy
                                 </h3>
-                                <img src="https://lh3.googleusercontent.com/d/1MfE9fiot6b9kCpgwQfc4aUY6e317nrUj" alt="Pilot Recognition & Advocacy" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
+                                <img src="/images/programs-page-2.png" alt="Pilot Recognition & Advocacy" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
                                 <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 }}>
                                     Your efforts and input won't go to waste. Your data is recognized by airlines, manufacturers, and industry insiders to give pilots what they really want: the chance to be seen.
                                 </p>
@@ -401,7 +401,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 <h3 style={{ fontSize: '1.25rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
                                     Instructor vs PilotRecognition
                                 </h3>
-                                <img src="https://lh3.googleusercontent.com/d/1GyMG1004Ny93i4_ktGikIXgzy-FHiPBI" alt="Instructor vs PilotRecognition" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
+                                <img src="/images/programs-page-3.png" alt="Instructor vs PilotRecognition" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
                                 <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 }}>
                                     Traditional instructors often struggle to support dozens of students simultaneously. PilotRecognitions provide the one-on-one consultation and targeted problem-solving that large classrooms lack.
                                 </p>
