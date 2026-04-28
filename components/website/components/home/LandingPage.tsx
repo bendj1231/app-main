@@ -169,7 +169,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
             icon: "fa-comments",
             color: "bg-gradient-to-br from-emerald-950 to-black",
             borderColor: "border-emerald-900",
-            img: "https://lh3.googleusercontent.com/d/1InHXB-jhAZ3UNDXcvHbENwbB5ApY8eOp",
+            img: "/images/landing-page-2.png",
             target: 'gap'
         },
         {
@@ -197,7 +197,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
             icon: "fa-book",
             color: "bg-gradient-to-br from-amber-950 to-black",
             borderColor: "border-amber-900",
-            img: "https://lh3.googleusercontent.com/d/1GbUopHNGyXMhzi5sW1Ybo5gZMh2_YSKN",
+            img: "/images/landing-page-3.png",
             target: 'handbook'
         }
     ];
@@ -480,7 +480,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
 
                         {/* Specifically requested airplane icon, facing towards the right (direction of travel) */}
                         <img
-                            src="https://lh3.googleusercontent.com/d/1XGp7XKF4Pzsq9KoO-QHsMUaPDdUo_B-6"
+                            src="/images/landing-page-4.png"
                             alt="Airplane Icon"
                             className="absolute -bottom-[22px] md:-bottom-[26px] w-12 h-12 md:w-16 md:h-16 object-contain pointer-events-none z-[60]"
                             style={{
@@ -587,7 +587,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                         {/* Laptop Image */}
                         <div className="relative transform transition-transform duration-700 hover:scale-[1.02] z-10 w-full md:w-2/3">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1_R5nqlbDHHvGt69R11eXYBI4xkFueMqE"
+                                src="/images/landing-page-5.png"
                                 alt="PilotRecognition Laptop Interface"
                                 className="w-full h-auto object-contain drop-shadow-2xl rounded-lg"
                             />
