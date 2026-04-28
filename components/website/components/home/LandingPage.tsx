@@ -764,7 +764,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                         <div className={`w-full rounded-xl overflow-hidden shadow-2xl border relative group max-w-4xl mx-auto ${isDarkMode ? 'border-zinc-700/50' : 'border-zinc-300'}`}>
                             <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
                             <img
-                                src="https://lh3.googleusercontent.com/d/143EeRX8BneoJRBh32bD4UgpHLUByBCbc"
+                                src="/images/landing-page-6.png"
                                 alt="PilotRecognition Session Analysis"
                                 className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
                             />
@@ -893,7 +893,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                             {/* Image Side */}
                             <div className="w-full md:w-5/12 h-64 md:h-auto relative">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/143EeRX8BneoJRBh32bD4UgpHLUByBCbc"
+                                    src="/images/landing-page-6.png"
                                     alt="Mentor Handshake"
                                     className="absolute inset-0 w-full h-full object-cover"
                                 />
