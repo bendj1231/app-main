@@ -568,7 +568,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1Ars9ou0JcoloGv-W18gvJ1G0eWrdFNAu",
+            image: "/images/homepage-2.png",
             title: "Pilot Database Recognition System",
             category: 'systems_automation',
             subtitle: "Verifiable Excellence & Industry Standards",
@@ -583,7 +583,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/11JxfuQ_5Tu3GZP4wab734qPnd1sDxCnv",
+            image: "/images/homepage-9.png",
             title: "Examination Terminal",
             category: 'application',
             subtitle: "Pilot Applications — Access our suite of professional aviation applications, including standardized examination environments and operational tools.",
@@ -591,7 +591,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             titleColor: "text-yellow-500"
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1klsusO1TwuXnDWrke-HzadozUrF9ri4u",
+            image: "/images/homepage-10.png",
             title: "PilotRecognition W1000",
             category: 'application',
             subtitle: "The Professional Standard in glass cockpit familiarity.",
@@ -1381,7 +1381,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                             corePoint: "Insider Knowledge",
                                             title: "Investment Intelligence",
                                             description: "Don't fly blind. Understand Airline & Manufacturer expectations (EBT/CBTA) before you invest $30k in a Type Rating. We provide the recommendations and \"reality checks\" you need to ensure your next step is a hired step.",
-                                            image: "https://lh3.googleusercontent.com/d/1USf_f9ZXG1Aflandx6_EMwR1JMhNBi8l",
+                                            image: "/images/homepage-13.png",
                                             delay: 500
                                         }
                                     ].map((benefit, index) => (
