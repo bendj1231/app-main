@@ -104,7 +104,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                         <RevealOnScroll delay={200}>
                             <div className="relative group p-[1px] bg-gradient-to-b from-slate-200 to-transparent rounded-[2rem]">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g"
+                                    src="/images/membership-benefit-1.png"
                                     alt="PilotRecognition Programs"
                                     className="w-full h-auto rounded-[2rem] shadow-2xl transition-all duration-700 group-hover:scale-[1.02]"
                                 />
@@ -203,7 +203,7 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                             <RevealOnScroll delay={200}>
                                 <div className="aspect-[4/5] bg-slate-900 rounded-[3rem] overflow-hidden shadow-2xl border border-white/10 relative group">
                                     <img
-                                        src="https://lh3.googleusercontent.com/d/1waom5qY_plA5lA_gWvhlQOx0A8_YcPpg"
+                                        src="/images/membership-benefit-2.png"
                                         alt="ATLAS System Overview"
                                         className="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105"
                                     />
