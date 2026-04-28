@@ -463,19 +463,18 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 </div>
             </div>
 
-            {/* Partnership Disclosure */}
+            {/* EBT CBTA Alignment Disclosure */}
             <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8 mb-12 mx-6 max-w-6xl ml-auto mr-auto">
                 <div className="flex items-start gap-4">
                     <Shield className="w-8 h-8 text-blue-600 mt-1 flex-shrink-0" />
                     <div>
-                        <h3 className="text-xl font-bold text-slate-900 mb-2">EBT CBTA Advisory Relationship</h3>
+                        <h3 className="text-xl font-bold text-slate-900 mb-2">EBT CBTA Framework Alignment</h3>
                         <p className="text-slate-700 leading-relaxed mb-3">
-                            PilotRecognition programs are developed with EBT CBTA guidance from Airbus Head of Training.
-                            Our curriculum aligns with Evidence-Based Training and Competency-Based Training and Assessment frameworks.
+                            PilotRecognition programs align with Evidence-Based Training and Competency-Based Training and Assessment frameworks, which are international standards in pilot training. Our curriculum incorporates the <strong>9 core competencies</strong> framework used by modern airlines worldwide.
                         </p>
                         <div className="bg-white rounded-lg p-4 border border-blue-100">
-                            <p className="text-sm text-slate-600 mb-1"><strong>Relationship Type:</strong> Advisory Consultation</p>
-                            <p className="text-sm text-slate-600 mb-1"><strong>Effective Date:</strong> January 2024</p>
+                            <p className="text-sm text-slate-600 mb-1"><strong>Framework:</strong> EBT CBTA (International Standard)</p>
+                            <p className="text-sm text-slate-600 mb-1"><strong>Core Competencies:</strong> 9 Competency Areas</p>
                             <p className="text-sm text-slate-600"><strong>Verification Contact:</strong> pilotrecognition@gmail.com</p>
                         </div>
                     </div>

@@ -76,7 +76,7 @@ export const HinfactPage: React.FC<HinfactPageProps> = ({
 
                 <div className="text-left">
                     <RevealOnScroll>
-                        <h3 className="text-xl font-bold text-slate-900 mb-3 font-serif">Etihad Cadet Program Synergy</h3>
+                        <h3 className="text-xl font-bold text-slate-900 mb-3 font-serif">Cadet Program Synergy</h3>
                         <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans">
                             The technology is designed to meet the exacting standards of the Etihad Cadet Pilot Programme, which utilizes the latest aircraft models and technologies to prepare the next generation of pilots for modern aviation.
                         </p>

@@ -18,7 +18,7 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
         },
         {
             title: "Curriculum Review",
-            desc: "Ensuring our programs, from ATPL to Transition, match the latest GCAA and EASA syllabus updates. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that curriculum development aligns with flagship carrier expectations. Our <strong>AI-powered pathway matching</strong> system identifies curriculum gaps and recommends targeted development pathways for pilot advancement.",
+            desc: "Ensuring our programs, from ATPL to Transition, match the latest GCAA and EASA syllabus updates. Our curriculum development aligns with flagship carrier expectations. Our <strong>AI-powered pathway matching</strong> system identifies curriculum gaps and recommends targeted development pathways for pilot advancement.",
             bullets: ["Syllabus Mapping", "EBT Integration", "Partner Feedback"]
         },
         {

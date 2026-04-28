@@ -107,7 +107,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate, onLogin,
 
             <div className="bg-slate-900 py-12 border-t border-slate-800">
                 <div className="max-w-7xl mx-auto px-6 text-center">
-                    <p className="text-slate-500 text-sm">© 2026 PilotRecognition. EBT CBTA guidance provided under advisory relationship. All secure systems operational.</p>
+                    <p className="text-slate-500 text-sm"> 2026 PilotRecognition. EBT CBTA framework alignment with international standards. All secure systems operational.</p>
                 </div>
             </div>
         </div>

@@ -278,7 +278,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
           </div>
         </div>
       </div>
-      <p className="mt-8 text-slate-400 text-xs">© {new Date().getFullYear()} PilotRecognition Inc. EBT CBTA guidance provided under advisory relationship. Authorized Personnel Only.</p>
+      <p className="mt-8 text-slate-400 text-xs"> {new Date().getFullYear()} PilotRecognition. EBT CBTA framework alignment with international standards. Authorized Personnel Only.</p>
     </div>
   );
 };
