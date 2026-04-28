@@ -157,7 +157,7 @@ const overviewCards = [
         tag: '1.5 · W1000 Access',
         title: 'Application Access',
         description: 'Prior to your examination, you will receive access to the W1000 application—a state-of-the-art software for pilot development featuring examination practice, core material for PPL, CPL, IR, and ME, examination reviewers, PowerPoint slides, video content, POH handbooks, an IFR Jeppesen Charts database, and IFR simulators. The Apps serve as a practical examination terminal for exam preparation—not the official examination. The Black Box contains PowerPoint presentations, core material, and the Simulator Room, which offers IFR simulation for practicing VOR homing, ILS landing approaches, G1000 system practice, and flight plan navigation.',
-        image: 'https://lh3.googleusercontent.com/d/1hHcJHmG0pTPDuvgiv79l88VpPz_lOXi1'
+        image: '/images/foundational-showcase-1.png'
     },
     {
         tag: '2 · Examination',
@@ -175,7 +175,7 @@ const overviewCards = [
         tag: '4 · Airbus Interview',
         title: 'EBT Aligned Evaluation',
         description: 'An AIRBUS interview based on an EBT-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathways and compare your recognition credentials within our network consisting of jobs from pilotcareercenter.com, betterjobs.com and many more, along with direct relations with airlines expectations to review their requirements and access various pathways such as cadet programmes, cargo pathways, licensure & type rating pathways, specialized pathways and more!',
-        image: 'https://lh3.googleusercontent.com/d/1hHcJHmG0pTPDuvgiv79l88VpPz_lOXi1'
+        image: '/images/foundational-showcase-4.png'
     }
 ];
 
