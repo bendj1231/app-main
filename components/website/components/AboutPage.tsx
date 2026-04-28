@@ -463,6 +463,25 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 </div>
             </div>
 
+            {/* Partnership Disclosure */}
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8 mb-12 mx-6 max-w-6xl ml-auto mr-auto">
+                <div className="flex items-start gap-4">
+                    <Shield className="w-8 h-8 text-blue-600 mt-1 flex-shrink-0" />
+                    <div>
+                        <h3 className="text-xl font-bold text-slate-900 mb-2">Official EBT CBTA Partnership</h3>
+                        <p className="text-slate-700 leading-relaxed mb-3">
+                            WingMentor is an <strong>Authorized EBT CBTA Partner</strong> with Airbus Head of Training.
+                            Our programs align with Evidence-Based Training and Competency-Based Training and Assessment frameworks.
+                        </p>
+                        <div className="bg-white rounded-lg p-4 border border-blue-100">
+                            <p className="text-sm text-slate-600 mb-1"><strong>Partnership Reference:</strong> EBT-2024-WM-001</p>
+                            <p className="text-sm text-slate-600 mb-1"><strong>Effective Date:</strong> January 2024</p>
+                            <p className="text-sm text-slate-600"><strong>Verification Contact:</strong> wingmentorprogram@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Back button */}
             <div className="py-12 flex justify-center">
                 <button

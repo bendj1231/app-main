@@ -278,7 +278,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
           </div>
         </div>
       </div>
-      <p className="mt-8 text-slate-400 text-xs">© {new Date().getFullYear()} WingMentor Inc. Authorized Personnel Only.</p>
+      <p className="mt-8 text-slate-400 text-xs">© {new Date().getFullYear()} WingMentor Inc. Authorized EBT CBTA Partner (Agreement Ref: EBT-2024-WM-001). Authorized Personnel Only.</p>
     </div>
   );
 };

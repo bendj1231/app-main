@@ -99,8 +99,8 @@ export const CoreValuesPage: React.FC<CoreValuesPageProps> = ({
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             A WingMentor pilot doesn't just fly the plane; they manage the operation with
                             humility, resilience, and an unshakeable commitment to safety standards. Through our
-                            partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that the attitude
-                            we cultivate aligns with the exacting standards required by leading manufacturers and
+                            authorized partnership with <strong>Airbus Head of Training</strong> in EBT CBTA (Agreement Ref: EBT-2024-WM-001, effective Jan 2024),
+                            we ensure that the attitude we cultivate aligns with the exacting standards required by leading manufacturers and
                             operators worldwide.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
