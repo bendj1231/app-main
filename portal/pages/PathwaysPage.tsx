@@ -1517,7 +1517,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['1,500 hrs', 'CPL or ATPL', 'Helicopter Experience Preferred', 'FAA Medical Class 1'],
       tags: ['eVTOL Pioneer', 'S4 Aircraft', 'Urban Air Mobility'],
       postedAt: 'Pre-Launch Hiring',
-      image: 'https://lh3.googleusercontent.com/d/1XcRDW3p9C965siBjl5HsTXDHaQZJ-Ona'
+      image: '/images/pathway-joby.png'
     },
     {
       id: 'disc-airtaxi-2',
@@ -1530,7 +1530,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['1,200 hrs', 'Fixed-Wing or Rotary', 'Part 135 Experience'],
       tags: ['Midnight Aircraft', 'United Partnership', 'Sustainable Aviation'],
       postedAt: 'Early Recruitment',
-      image: 'https://lh3.googleusercontent.com/d/1aTWWTtFwIMCrrU9HnCtWdUPTGhvWk6Yi'
+      image: '/images/pathway-archer.png'
     },
     {
       id: 'disc-airtaxi-3',
