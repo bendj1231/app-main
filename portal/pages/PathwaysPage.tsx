@@ -1649,7 +1649,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['2,000+ hrs TT', 'Mountain Flying', 'Short Field Operations', 'Supply Chain Experience'],
       tags: ['Remote Supply', 'Logistics', 'Critical Deliveries'],
       postedAt: 'Active Recruitment',
-      image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBmoTZNJ3Vkw7R5QsW-LZ_AefufQZfgIDuPyto6HrUkw61UBlHSTvL8P7FalasLwrBEAjDYe9-jyYqHFGsmRZ_iYg0_gRz4Ke8yrDw0yO3NHzIzT_2QS1zGAlvHOdbJrgVYz-Tc4N85Fw/s1600/SusiAir.jpg'
+      image: '/images/pathway-susiair.png'
     },
     {
       id: 'disc-spec-tours',
