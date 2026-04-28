@@ -516,7 +516,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           speed={1.0}
         />
       </div>
-      <div className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-0" />
+      {/* Glassy blur overlay */}
+      <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-xl z-0" />
 
       {/* Header Nav */}
       <div className="sticky top-0 z-30 bg-white border-b border-slate-200 backdrop-blur-sm">

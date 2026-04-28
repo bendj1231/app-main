@@ -115,41 +115,33 @@ const viewSets: ViewSet[] = [
 const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = false) => ({
     home: [
         {
-            id: 'member',
-            images: [],
-            image: '',
-            loggedInImages: ['/images/accessportal.png'],
-            loggedInImage: '/images/accessportal.png',
-            title: 'Discover Pathways',
-            loggedInTitle: 'Access Portal',
-            subtitle: 'AI-powered pathway matching for your aviation career',
-            loggedInSubtitle: 'Enter your member dashboard and resources',
-            icon: Play,
-            badge: null,
-            accentColor: 'from-blue-500/80 to-cyan-400/80',
-            hasAnimation: true,
-            hasAnimationWhenLoggedIn: false,
-            isCarouselWhenLoggedIn: false,
+            id: 'foundation-program-enroll',
+            image: '/pr2.png',
+            title: 'Foundation Program Enroll',
+            subtitle: '50+ hours mentorship. Start your journey today!',
+            icon: Map,
+            badge: 'Now Open',
+            accentColor: 'from-emerald-500/80 to-teal-400/80',
         },
         {
-            id: 'discover',
-            images: ['/pr2.png', '/images/airline-operations.png', 'https://www.shutterstock.com/editorial/image-editorial/M3T6A6y2NfDdA9x1NjE2MTU=/airbus-aircrafts-displayed-mock-up-center-aircraft-manufacturer-440nw-10161051k.jpg'],
+            id: 'card-2',
+            images: ['/pr2.png', '/images/airline-operations.png', 'https://www.shutterstock.com/editorial/image-editorial/M3T6A6y2NjE2MTU=/airbus-aircrafts-displayed-mock-up-center-aircraft-manufacturer-440nw-10161051k.jpg'],
             image: '/pr2.png',
             loggedInImages: ['/pr2.png'],
             loggedInImage: '/pr2.png',
             enrolledImage: '/pr2.png',
             enrolledImages: ['/pr2.png'],
-            title: 'Foundation Program Enroll',
-            loggedInTitle: 'Foundation Program Enroll',
-            enrolledTitle: 'Foundation Program Access',
-            dynamicTitles: ['Featured: Foundation Program', 'Airline Expectations', 'Type Rating Search', 'AI Job Matching', 'Career Pathways'],
-            dynamicSubtitles: ['50+ hours mentorship. Start your journey today!', 'Match your profile to airline standards', 'Find your perfect aircraft type rating', 'AI matches you with your dream airline job', 'From student to captain - your complete pathway'],
-            subtitle: 'Align your Recognition Profile with an Airline Expectation',
-            loggedInSubtitle: 'Align your Recognition Profile with an Airline Expectation',
-            enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
-            icon: Map,
-            badge: 'Now Open',
-            accentColor: 'from-emerald-500/80 to-teal-400/80',
+            title: 'Discover Pathways',
+            loggedInTitle: 'Discover Pathways',
+            enrolledTitle: 'Discover Pathways',
+            dynamicTitles: ['Discover Pathways', 'Discover Expectations', 'Discover Type Ratings'],
+            dynamicSubtitles: ['Explore your aviation career options', 'Match your profile to airline standards', 'Find your perfect aircraft type rating'],
+            subtitle: 'Discover additional pathways and opportunities',
+            loggedInSubtitle: 'Discover additional pathways and opportunities',
+            enrolledSubtitle: 'Discover additional pathways and opportunities',
+            icon: null,
+            badge: null,
+            accentColor: 'from-purple-500/80 to-pink-400/80',
             isCarousel: true,
             isCarouselWhenLoggedIn: true,
             isCarouselWhenEnrolled: true,
@@ -158,13 +150,13 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             enrollNow: false,
         },
         {
-            id: 'pathways',
-            image: '/images/airline-operations.png',
-            title: 'Pathways',
-            subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
-            icon: ShoppingBag,
+            id: 'programs',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
+            title: 'Programs',
+            subtitle: 'Structured training pathways from flight school to airline-ready professional',
+            icon: GraduationCap,
             badge: null,
-            accentColor: 'from-rose-500/80 to-pink-400/80',
+            accentColor: 'from-amber-500/80 to-orange-400/80',
         },
         {
             id: 'pilot-recognition',
@@ -176,13 +168,13 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             accentColor: 'from-violet-500/80 to-purple-400/80',
         },
         {
-            id: 'programs',
-            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-            title: 'Programs',
-            subtitle: 'Structured training pathways from flight school to airline-ready professional',
-            icon: GraduationCap,
+            id: 'pathways',
+            image: '/images/airline-operations.png',
+            title: 'Pathways',
+            subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
+            icon: ShoppingBag,
             badge: null,
-            accentColor: 'from-amber-500/80 to-orange-400/80',
+            accentColor: 'from-rose-500/80 to-pink-400/80',
         },
     ],
     programs: [
@@ -800,6 +792,8 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
             // Navigation mapping for all view cards
             const navMap: Record<string, string> = {
                 'member': isLoggedIn ? 'portal' : 'become-member',
+                'card-2': 'become-member',
+                'foundation-program-enroll': 'become-member',
                 'discover': 'pathways-modern',
                 'pilot-pathways': 'pathways-modern',
                 'type-rating-search': 'type-rating-search',
@@ -1225,7 +1219,7 @@ interface GridCardProps {
     isHovered: boolean;
     onHover: () => void;
     onLeave: () => void;
-    onClick: () => void;
+    onClick: (carouselIndex?: number) => void;
     onNavigate: (page: string) => void;
     className?: string;
     isLoggedIn?: boolean;
@@ -1265,13 +1259,13 @@ const GridCard: React.FC<GridCardProps> = ({
             ? card.loggedInSubtitle
             : card.subtitle;
 
-    // Get current dynamic title for discover card
-    const currentDynamicTitle = card.id === 'discover'
+    // Get current dynamic title for discover card and card-2
+    const currentDynamicTitle = (card.id === 'card-2')
         ? card.dynamicTitles ? card.dynamicTitles[currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex] : null
         : null;
 
-    // Get current dynamic subtitle for discover card
-    const currentDynamicSubtitle = card.id === 'discover'
+    // Get current dynamic subtitle for discover card and card-2
+    const currentDynamicSubtitle = (card.id === 'card-2')
         ? card.dynamicSubtitles ? card.dynamicSubtitles[currentImageIndex === 1 ? animationSceneIndex + 1 : currentImageIndex] : null
         : null;
 
@@ -1341,6 +1335,19 @@ const GridCard: React.FC<GridCardProps> = ({
     useEffect(() => {
         setAnimationSceneIndex(0);
     }, [currentImageIndex]);
+
+    // Debug log for discover card carousel
+    useEffect(() => {
+        if (card.id === 'discover') {
+            console.log('Discover card debug:', {
+                hasArrows: card.hasArrows,
+                images: card.images,
+                imagesLength: card.images?.length,
+                currentImageIndex,
+                isLoggedIn
+            });
+        }
+    }, [card.id, card.hasArrows, card.images, currentImageIndex, isLoggedIn]);
     
     // Cleanup pause timeout on unmount
     useEffect(() => {
@@ -1389,6 +1396,7 @@ const GridCard: React.FC<GridCardProps> = ({
     
     // Handle card click - for discover card, navigate based on state
     const handleCardClick = (e: React.MouseEvent) => {
+        console.log("GridCard handleCardClick - card.id:", card.id, "currentImageIndex:", currentImageIndex, "isLoggedIn:", isLoggedIn);
         if (card.id === 'discover') {
             e.preventDefault();
             e.stopPropagation();
@@ -1401,9 +1409,11 @@ const GridCard: React.FC<GridCardProps> = ({
             const pageMap: Record<number, string> = {
                 0: 'become-member',         // Foundation Program Enroll
                 1: 'airline-expectations',  // Expectations
-                2: 'pilot-recognition',    // Digital Logbook
+                2: 'type-rating-search',    // Type Rating Search
             };
-            onNavigate(pageMap[currentImageIndex] || 'airline-expectations');
+            const targetPage = pageMap[currentImageIndex] || 'airline-expectations';
+            console.log("Navigating to:", targetPage, "for currentImageIndex:", currentImageIndex);
+            onNavigate(targetPage);
         } else {
             onClick();
         }
@@ -1573,7 +1583,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             </div>
                         </div>
                     ) : shouldUseCarousel && carouselImages ? (
-                        // Carousel - Pure Billboard Style (No Controls)
+                        // Carousel - Pure Billboard Style (No Controls) - Hidden for top row cards
                         <div className="relative w-full h-full">
                             {carouselImages.map((img, idx) => {
                                 const isAnimationIndex = card.animationIndices?.includes(idx);
@@ -1610,20 +1620,22 @@ const GridCard: React.FC<GridCardProps> = ({
                             <div className="absolute inset-0 bg-gradient-to-t from-[#05070d] via-[#111827]/25 to-transparent pointer-events-none" />
                         </div>
                     ) : displayImage || currentImage ? (
-                        // Single image
-                        <img
-                            src={currentImage || displayImage}
-                            alt={card.title}
-                            style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : card.id === 'type-rating-search' ? 'top 20% center' : 'center' }}
-                            className={`w-full h-full object-cover ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
-                            onError={(e) => {
-                                console.error('Image load error:', card.id, currentImage || displayImage, e);
-                                console.error('Card:', card);
-                            }}
-                            onLoad={() => {
-                                console.log('Image loaded successfully:', card.id, currentImage || displayImage);
-                            }}
-                        />
+                        // Single image - Hidden for top row cards
+                        !(card.id === 'discover' || card.id === 'pathways') && (
+                            <img
+                                src={currentImage || displayImage}
+                                alt={card.title}
+                                style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : card.id === 'type-rating-search' ? 'top 20% center' : 'center' }}
+                                className={`w-full h-full object-cover ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
+                                onError={(e) => {
+                                    console.error('Image load error:', card.id, currentImage || displayImage, e);
+                                    console.error('Card:', card);
+                                }}
+                                onLoad={() => {
+                                    console.log('Image loaded successfully:', card.id, currentImage || displayImage);
+                                }}
+                            />
+                        )
                     ) : null}
                     {/* MSFS Style Image to Content Transition - skip for carousel cards */}
                     {!shouldUseCarousel && !shouldUseLoggedInCarousel && !shouldUseEnrolledCarousel && (
@@ -1650,32 +1662,49 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 )}
 
+                {/* Card ID Label - Top Left */}
+                {(card.id === 'foundation-program-enroll' || card.id === 'card-2') && (
+                    <div className="absolute top-4 left-4 px-2 py-1 bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono uppercase tracking-wider">
+                        ID: {card.id}
+                    </div>
+                )}
+
 
                 {/* MSFS Style Content Area - Bottom section with blue accents (for large cards) */}
                 {isLargeCard && (
                     <div className={`absolute bottom-0 left-0 right-0 p-3 md:p-4 z-20 transition-colors duration-300 ${isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'} ${card.id === 'w1000-suite' ? 'pb-12' : ''}`}>
-                        {!(card.id === 'discover' && currentImageIndex === 0) && (
-                            <div className="flex flex-col">
-                                {/* Title row with double chevrons - MSFS style */}
-                                <div className="flex items-center gap-1.5 mb-1">
-                                    <span className={`text-xs md:text-sm font-bold ${isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
-                                    <h3 className={`text-white text-xs md:text-sm font-bold uppercase tracking-wider ${card.id === 'credentials' ? 'text-black' : ''}`}>
-                                        {finalDisplayTitle}
-                                    </h3>
-                                </div>
-                                {/* Blue accent underline - MSFS style progress bar look */}
-                                <div className={`w-full max-w-[120px] h-1 mb-2 ${isMsfsSelected ? 'bg-gradient-to-r from-white to-transparent' : 'bg-gradient-to-r from-[#00b4d8] to-transparent'}`} />
-                                {/* Description - MSFS style smaller gray text */}
-                                <p className={`text-[10px] md:text-xs leading-tight line-clamp-2 ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
-                                    {finalDisplaySubtitle}
-                                </p>
+                        <div className="flex flex-col">
+                            {/* Title row with double chevrons - MSFS style */}
+                            <div className="flex items-center gap-1.5 mb-1">
+                                <span className={`text-xs md:text-sm font-bold ${isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
+                                <h3 className={`text-white text-xs md:text-sm font-bold uppercase tracking-wider ${card.id === 'credentials' ? 'text-black' : ''}`}>
+                                    {finalDisplayTitle}
+                                </h3>
                             </div>
-                        )}
+                            {/* Blue accent underline - MSFS style progress bar look */}
+                            <div className={`w-full max-w-[120px] h-1 mb-2 ${isMsfsSelected ? 'bg-gradient-to-r from-white to-transparent' : 'bg-gradient-to-r from-[#00b4d8] to-transparent'}`} />
+                            {/* Description - MSFS style smaller gray text */}
+                            <p className={`text-[10px] md:text-xs leading-tight line-clamp-2 ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
+                                {finalDisplaySubtitle}
+                            </p>
+                            {/* Red Glassy Enroll Button - for Foundation Program Enroll card */}
+                            {card.id === 'foundation-program-enroll' && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onNavigate('become-member');
+                                    }}
+                                    className="absolute bottom-4 right-4 px-2 py-0.5 bg-red-600/70 backdrop-blur-md border border-red-400/50 text-white text-[8px] md:text-[9px] font-bold uppercase tracking-wider rounded hover:bg-red-600/90 hover:border-red-400 transition-all shadow-lg shadow-red-500/20 z-30"
+                                >
+                                    Enroll Now
+                                </button>
+                            )}
+                        </div>
                     </div>
                 )}
 
                 {/* Glassy Arrows for carousel cards */}
-                {card.hasArrows && card.images && card.images.length > 1 && !(card.id === 'discover' && isLoggedIn) && (
+                {card.hasArrows && card.images && card.images.length > 1 && (
                     <>
                         {/* Left Arrow */}
                         <button
@@ -1732,6 +1761,28 @@ const GridCard: React.FC<GridCardProps> = ({
                     absolute inset-0 transition-all duration-300 pointer-events-none
                     ${isMsfsSelected ? 'shadow-[inset_0_0_0_1px_rgba(0,180,216,0.5)]' : ''}
                 `} />
+
+                {/* Carousel Indicator Bar - Segmented Bar (At Bottom of Card) */}
+                {card.hasArrows && card.images && card.images.length > 1 && (
+                    <div className="absolute bottom-0 left-0 right-0 z-30 flex gap-1 px-3 py-2">
+                        {card.images.map((_, index) => (
+                            <div
+                                key={index}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCurrentImageIndex(index);
+                                }}
+                                className={`
+                                    h-1 flex-1 cursor-pointer transition-all duration-300
+                                    ${index === currentImageIndex
+                                        ? 'bg-white/40'
+                                        : 'bg-[#0078d4]/30'
+                                    }
+                                `}
+                            />
+                        ))}
+                    </div>
+                )}
                 </div>
             )}
         </div>

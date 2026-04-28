@@ -55,6 +55,7 @@ import ExaminationResultsDirectoryPage from '@/components/website/components/Exa
 import { DigitalLogbookDirectoryPage } from '@/components/website/components/DigitalLogbookDirectoryPage';
 import { EBTCBTAPage } from '@/components/website/components/EBTCBTAPage';
 import { AirlineExpectationsPage } from '@/components/website/components/AirlineExpectationsPage';
+import TypeRatingSearchPage from '@/pages/TypeRatingSearchPage';
 import { PilotGapAboutPage } from '@/components/website/components/PilotGapAboutPage';
 import { DownloadPage } from '@/components/website/components/DownloadPage';
 import { SettingsDirectoryPage } from '@/components/website/components/SettingsDirectoryPage';
@@ -183,6 +184,7 @@ export const AppRoutes = () => {
       <Route path="/what-is-the-pilot-gap" element={<PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />} />
       <Route path="/pilot-gap-about" element={<PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />} />
       <Route path="/airline-expectations" element={<AirlineExpectationsPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/type-rating-search" element={<TypeRatingSearchPage onNavigate={handleNavigate} onBack={() => handleBack()} />} />
       <Route path="/download" element={<DownloadPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/settings" element={<SettingsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/subscription" element={<SubscriptionPage onBack={() => handleBack('/settings')} />} />

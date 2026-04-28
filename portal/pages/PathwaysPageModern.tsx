@@ -3375,7 +3375,7 @@ const ThreeStagePathwayFilter: React.FC<{
                 </div>
 
                 <div
-                  className="pathway-sub-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4 px-4 sm:px-6 lg:px-8 xl-px-12"
+                  className="pathway-sub-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4"
                   style={{
                     WebkitOverflowScrolling: 'touch',
                     cursor: 'grab',
@@ -3465,6 +3465,7 @@ const ThreeStagePathwayFilter: React.FC<{
                           <img src={cardAircraftImage} alt={card.aircraftType} className="w-full h-full object-cover" loading="lazy" />
                         )}
                         {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
+                        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
                         <div className="absolute top-3 right-3 flex gap-2 items-start">
                           {!isPilotRecognitionCard && (
                             <>
@@ -4694,8 +4695,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   };
 
   // Theme colors
-  const bgGradient = isDarkMode 
-    ? 'bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950'
+  const bgGradient = isDarkMode
+    ? 'bg-gradient-to-br from-black via-[#050a14] to-[#0d1f3c]'
     : 'bg-gradient-to-br from-slate-100 via-white to-slate-200';
   const headerBg = isDarkMode ? 'bg-slate-950/80' : 'bg-white/80';
   const borderColor = isDarkMode ? 'border-slate-800/50' : 'border-slate-200/50';
@@ -4706,21 +4707,24 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   return (
     <>
-    <div className={`min-h-screen ${bgGradient} relative`}>
+    <div className={`min-h-screen ${bgGradient} relative`} style={{ zoom: '90%' }}>
       {/* MeshGradient Background */}
       <div className="fixed inset-0 z-0">
         <MeshGradient
           className="w-full h-full"
-          colors={["#0f172a", "#1e3a5f", "#334155", "#1e293b"]}
-          speed={0.8}
+          colors={["#000000", "#050a14", "#0d1f3c", "#1e3a5f"]}
+          speed={0.3}
         />
       </div>
+
+      {/* Frosted glass blur overlay */}
+      <div className="fixed inset-0 z-0 bg-white/5 backdrop-blur-md"></div>
 
       {/* Content wrapper with higher z-index to sit above shader */}
       <div className="relative z-10">
         {/* Header with main title */}
         <header className="bg-white border-b border-slate-200 backdrop-blur-sm sticky top-0 z-30">
-        <div className="mx-auto pr-6 py-4 w-full max-w-[1800px]">
+        <div className="mx-auto pr-6 py-3 w-full max-w-[1800px]">
           {/* Main title row */}
           <div className="flex items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-4">
@@ -5076,11 +5080,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         )}
 
         {/* Edge-to-edge Carousel Section - Recommended Pathways */}
-        <div className="w-full mb-6 relative w-screen left-1/2 -translate-x-1/2">
-          <div className="mb-4 pr-4 pl-8 w-full">
-            <div className="text-left">
+        <div className="w-full mb-6">
+          <div className="mb-12 w-full max-w-7xl mx-auto px-4">
+            <div className="text-center">
               <h2
-                className="text-3xl md:text-4xl font-normal text-white text-left"
+                className="text-3xl md:text-4xl font-normal text-white"
                 style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
               >
                 Recommended Pathways
@@ -5095,7 +5099,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
 
           {/* Match Filter - Below Header */}
-          <div className="mb-4 pl-4">
+          <div className="mb-4 w-full max-w-7xl mx-auto px-4 flex justify-center">
             <div className="flex items-center gap-2">
               <span className={`text-base ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match Filter:</span>
               <div className="flex gap-2">
@@ -5163,7 +5167,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 WebkitOverflowScrolling: 'touch',
                 cursor: 'grab',
                 paddingLeft: '0px',
-                paddingRight: 'calc(50vw - 300px)',
+                paddingRight: '0px',
                 scrollSnapType: 'x mandatory',
                 scrollBehavior: 'smooth',
               }}
@@ -5240,6 +5244,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                             onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme']; }} />
                         )}
                         {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
+                        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
                         <div className="absolute top-3 right-3 flex gap-2 items-start">
                           {!isPilotRecognitionCard && (() => {
                             const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
@@ -5414,6 +5419,28 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             isDarkMode={isDarkMode}
           />
         )}
+
+        {/* Footer */}
+        <footer className={`py-8 px-6 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} mt-12`}>
+          <div className="mx-auto max-w-[1800px]">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                © 2026 WingMentor. All rights reserved.
+              </div>
+              <div className="flex gap-6">
+                <a href="#" className={`text-sm ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors`}>
+                  Privacy Policy
+                </a>
+                <a href="#" className={`text-sm ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors`}>
+                  Terms of Service
+                </a>
+                <a href="#" className={`text-sm ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors`}>
+                  Contact
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </main>
 
       {/* Match Result Modal */}
