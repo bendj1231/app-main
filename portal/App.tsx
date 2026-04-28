@@ -40,7 +40,7 @@ const programs: CardItem[] = [
     description: 'Sign up to begin your 50-hour verified mentorship track. Refine your CRM and procedural skills through high-fidelity simulator scenarios. Status: Registration Open.',
     icon: 'Book',
     linkText: 'Access Program',
-    image: 'https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g',
+    image: '/images/portal-app-1.png',
     onClickAction: undefined // Will be attached dynamically inside App component
   },
   {
@@ -49,7 +49,7 @@ const programs: CardItem[] = [
     description: 'Bridge the gap to the flight deck. Complete advanced multi-crew simulator scenarios to finalize your industry-ready portfolio. Status: Pending Foundational Verification.',
     icon: 'Book',
     linkText: 'Access Program',
-    image: 'https://lh3.googleusercontent.com/d/1wPEIiMRj4fW34_NIQKRnzCf8KNhdD1TC'
+    image: '/images/portal-app-2.png'
   }
 ];
 
