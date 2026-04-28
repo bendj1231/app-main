@@ -179,7 +179,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                         </h3>
                                     </td>
                                     <td style={{ padding: '1.5rem', verticalAlign: 'top', color: '#475569', fontSize: '0.95rem', lineHeight: 1.7 }}>
-                                        An <strong>AIRBUS interview</strong> based on an <strong>EBT-aligned evaluation</strong> of your <strong>pilot development</strong> and <strong>initial pilot recognition portfolio</strong>, along with a <strong>certificate of achievement</strong>. Once received initial pilot recognition, you may access pathways and compare your recognition credentials within our network consisting of jobs from pilotcareercenter.com, betterjobs.com and many more, along with direct relations with airlines expectations to review their requirements and access various pathways such as cadet programmes, cargo pathways, licensure & type rating pathways, specialized pathways and more!
+                                        An evaluation based on an EBT-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathways and compare your recognition credentials within our network consisting of jobs from pilotcareercenter.com, betterjobs.com and many more, along with direct relations with airlines expectations to review their requirements and access various pathways such as cadet programmes, cargo pathways, licensure & type rating pathways, specialized pathways and more!
                                     </td>
                                 </tr>
                             </tbody>

@@ -111,7 +111,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         },
         {
             title: "First Step Towards PilotRecognition",
-            description: "The <strong>Foundation Program</strong> is your first step towards building a credible and recognized pilot profile. This recognition-based program is designed to establish a solid foundation of aviation knowledge, competency, and industry standards that global manufacturers and operators recognize as credible experience. The program is <strong>EBT CBTA Aligned with AIRBUS</strong>, ensuring that your recognition meets the highest international standards in evidence-based training and competency-based training and assessment. Through strategic partnerships with industry leaders including <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>, <strong>MLG</strong>, <strong>Cebu Pacific</strong>, and <strong>WCC Pilot Academy</strong>, the Foundation Program provides a recognition framework that aligns with the highest industry standards."
+            description: "The Foundation Program is your first step towards building a credible and recognized pilot profile. This recognition-based program is designed to establish a solid foundation of aviation knowledge, competency, and industry standards that global manufacturers and operators recognize as credible experience. The program aligns with EBT CBTA international standards, ensuring that your recognition meets the highest international standards in evidence-based training and competency-based training and assessment. Through alignment with international training standards, the Foundation Program provides a recognition framework that aligns with the highest industry standards."
         }
     ];
 
