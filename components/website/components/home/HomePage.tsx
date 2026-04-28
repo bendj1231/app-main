@@ -517,7 +517,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1aTWWTtFwIMCrrU9HnCtWdUPTGhvWk6Yi",
+            image: "/images/homepage-4.png",
             title: "Air Taxi Pilot Pathways",
             subtitle: "From CPL/IR to eVTOL flight deck.",
             category: 'pathways',
@@ -526,7 +526,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/18tXsX2e_uYI5i8EBJEgZYhAUhVhDkOGn",
+            image: "/images/homepage-5.png",
             title: "Private Charter Pathways",
             subtitle: "Corporate and VIP flight departments.",
             category: 'pathways',
@@ -535,7 +535,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/11rzk2pXR99JuKEjhanfvAn58cgVETtId",
+            image: "/images/homepage-6.png",
             title: "Unmanned Drones Pathways",
             subtitle: "From manned cockpit to remote operations.",
             category: 'pathways',
@@ -552,7 +552,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1F9fPZsg-cn8bGyJkhUmGm0lRt9JL0oha",
+            image: "/images/homepage-7.png",
             title: "Private Sector Insight",
             category: 'network',
             subtitle: "Executive Intelligence & Corporate Trends",
