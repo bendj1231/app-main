@@ -455,7 +455,7 @@ const dummyCards = [
     },
     {
         id: 'programs',
-        image: 'https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g',
+        image: '/images/pathway-grid.png',
         title: 'Programs',
         subtitle: 'Structured training pathways from flight school to airline-ready professional',
         icon: GraduationCap,
