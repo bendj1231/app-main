@@ -492,7 +492,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             isDarkCard: true
         },
         {
-            image: "https://lh3.googleusercontent.com/d/1Ars9ou0JcoloGv-W18gvJ1G0eWrdFNAu",
+            image: "/images/homepage-2.png",
             title: "Emirates ATPL Pilot Pathways",
             subtitle: "For pilots seeking an Emirates‑standard ATPL and GCAA license.",
             category: 'pathways',
