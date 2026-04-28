@@ -863,7 +863,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                     Airlines aren't just hiring pilots; they're hiring future captains and brand ambassadors. Major carriers invest heavily in their corporate identity, and they expect their flight deck crew to embody these values. Our assessment preparation goes beyond technical skills to ensure you demonstrate the <strong>professional persona</strong>, <strong>leadership qualities</strong>, and <strong>cultural alignment</strong> that recruiters at top-tier airlines effectively mandate.
                 </p>
                 <p className="text-slate-600 text-lg leading-relaxed">
-                    Through our partnership with <strong>Etihad Cadet Program</strong> and <strong>Airbus Head of Training</strong>, we provide direct insight into the cultural expectations of leading carriers. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.
+                    Through alignment with Airbus EBT CBTA standards, we provide direct insight into the cultural expectations of leading carriers. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.
                 </p>
             </div>
 

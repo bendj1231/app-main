@@ -67,7 +67,7 @@ export const TransitionProgramApplicationPage: React.FC<TransitionProgramApplica
                             Airline Readiness | Advanced ATLAS Profiling | Broker Links
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            Accelerate your evolution from flight training to the professional flight deck. Our transition program provides the legalization of recognition for advanced pilots. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates the CRM and multi-crew competencies that modern airlines require.
+                            Accelerate your evolution from flight training to the professional flight deck. Our transition program provides the legalization of recognition for advanced pilots. Through alignment with Airbus EBT CBTA standards, we ensure that our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates the CRM and multi-crew competencies that modern airlines require.
                         </p>
                     </RevealOnScroll>
                 </div>

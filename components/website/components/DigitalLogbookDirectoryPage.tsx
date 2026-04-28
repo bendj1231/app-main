@@ -58,7 +58,7 @@ export const DigitalLogbookDirectoryPage: React.FC<DigitalLogbookDirectoryPagePr
                 <div className="text-center">
                     <RevealOnScroll>
                         <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
-                            Your digital career vault. A centralized logbook and competency tracker that verifies your experience for industry recruiters. The Black Box transforms raw hours into data-driven competency markers through automated analysis and industry-standard formatting. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>recruiter-ready data</strong> aligns with manufacturer standards for pilot assessment.
+                            Your digital career vault. A centralized logbook and competency tracker that verifies your experience for industry recruiters. The Black Box transforms raw hours into data-driven competency markers through automated analysis and industry-standard formatting. Through alignment with Airbus EBT CBTA standards, we ensure that our <strong>recruiter-ready data</strong> aligns with manufacturer standards for pilot assessment.
                         </p>
 
                         <div className="flex flex-col gap-4 max-w-2xl mx-auto">
@@ -132,7 +132,7 @@ export const DigitalLogbookDirectoryPage: React.FC<DigitalLogbookDirectoryPagePr
                 <div className="max-w-4xl mx-auto text-center">
                     <RevealOnScroll>
                         <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
-                            Full access to the Digital Logbook, including advanced analytics and recruiter-ready data export, is reserved for verified members. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            Full access to the Digital Logbook, including advanced analytics and recruiter-ready data export, is reserved for verified members. Through alignment with Airbus EBT CBTA standards, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">

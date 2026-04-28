@@ -53,7 +53,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 },
                 {
                     title: "Verified Pilot Recognition Database",
-                    description: "PilotRecognition provides verified data on pilot professional competencies through our PilotRecognition platform. Our database includes <strong>EBT CBTA AIRBUS 9 core competencies</strong>, CRM awareness, briefing protocols, and behavioral assessments. Operators can filter candidates by verified competencies, <strong>recognition scores</strong>, and <strong>pathway recommended matches</strong>, reducing uncertainty in recruitment decisions and improving training success rates. Our platform is supported by <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> and Head of Training, ensuring alignment with industry standards."
+                    description: "PilotRecognition provides verified data on pilot professional competencies through our PilotRecognition platform. Our database includes <strong>Airbus EBT CBTA 9 core competencies</strong>, CRM awareness, briefing protocols, and behavioral assessments. Operators can filter candidates by verified competencies, <strong>recognition scores</strong>, and <strong>pathway recommended matches</strong>, reducing uncertainty in recruitment decisions and improving training success rates. Our platform aligns with Airbus EBT CBTA standards, ensuring alignment with industry standards."
                 },
                 {
                     title: "Comprehensive Pilot Profiles",
