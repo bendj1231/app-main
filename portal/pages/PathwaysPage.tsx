@@ -1608,7 +1608,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       requirements: ['UAS Certification', 'Remote Pilot License', 'Autonomous Systems Experience'],
       tags: ['Pilotless Operations', 'Remote Command', 'Next-Gen Aviation'],
       postedAt: 'Now Hiring',
-      image: 'https://lh3.googleusercontent.com/d/11rzk2pXR99JuKEjhanfvAn58cgVETtId'
+      image: '/images/pathway-mlg.png'
     }
   ],
   specialized: [
