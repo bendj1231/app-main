@@ -299,7 +299,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                         >
                             <div className="aspect-video bg-slate-100 overflow-hidden">
                                 <img
-                                    src="https://lh3.googleusercontent.com/d/1Ars9ou0JcoloGv-W18gvJ1G0eWrdFNAu"
+                                    src="/images/transition-program.png"
                                     alt="Emirates ATPL"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />

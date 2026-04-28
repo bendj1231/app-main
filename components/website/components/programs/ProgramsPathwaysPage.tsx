@@ -142,7 +142,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
                 {/* Background Image - Foundational Program */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g"
+                        src="/images/programs-pathways.png"
                         alt="Foundational Program"
                         className="w-full h-full object-cover"
                     />

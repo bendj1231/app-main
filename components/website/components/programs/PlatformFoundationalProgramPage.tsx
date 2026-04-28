@@ -59,7 +59,7 @@ export const PlatformFoundationalProgramPage: React.FC<PlatformFoundationalProgr
                     <div className="order-1 md:order-2">
                         <div className="relative w-full max-w-md mx-auto">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1K2CccSObEUsvy6unD8iqWjSjn-Zcw08g"
+                                src="/images/platform-foundational.png"
                                 alt="Foundational Program"
                                 className="w-full rounded-3xl shadow-lg object-cover"
                             />

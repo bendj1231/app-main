@@ -80,7 +80,7 @@ export const PilotGapInfoPage: React.FC<PilotGapInfoPageProps> = ({
                     <div className="md:w-1/2">
                         <div className="relative w-full max-w-md mx-auto">
                             <img
-                                src="https://lh3.googleusercontent.com/d/1Ars9ou0JcoloGv-W18gvJ1G0eWrdFNAu"
+                                src="/images/pilot-gap-info.png"
                                 alt="PilotRecognition Strategic Bridge"
                                 className="w-full rounded-3xl shadow-lg object-cover"
                             />
