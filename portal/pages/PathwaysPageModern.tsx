@@ -43,6 +43,7 @@ import LicensureTypeRatingPage from './LicensureTypeRatingPage';
 import CommercialPilotPathwayPage from './CommercialPilotPathwayPage';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
+import { LoginModal } from '../../components/website/components/LoginModal';
 import { getPhilippianFlightSchoolCount, Region, DUMMY_FLIGHT_SCHOOLS } from '../../data/flight-schools';
 import { DUMMY_MILITARY_PATHWAYS } from '../../data/military-pathways';
 import {
@@ -1244,7 +1245,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
   'airtaxi-drones': [
     {
       id: 'wingmentor-intro-evtol',
-      title: 'Pathways to AirTaxi & Drones',
+      title: 'Learn More',
       company: 'PilotRecognition',
       matchPercentage: 100,
       location: 'Global',
@@ -2476,7 +2477,12 @@ const CategorySelection: React.FC<{
         console.error('Error fetching general categories:', error);
         setError(error.message);
       } else {
-        setGeneralCategories(data || []);
+        // Override category names for specific categories
+        const overriddenCategories = (data || []).map(cat => ({
+          ...cat,
+          name: cat.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
+        }));
+        setGeneralCategories(overriddenCategories);
       }
       setLoading(false);
     };
@@ -2486,11 +2492,6 @@ const CategorySelection: React.FC<{
 
   return (
     <div className="space-y-4">
-      {/* Debug info */}
-      <div className={`text-xs p-2 rounded ${isDarkMode ? 'bg-slate-800/50 text-slate-400' : 'bg-slate-200 text-slate-600'}`}>
-        Categories: {generalCategories.length} | Loading: {loading ? 'Yes' : 'No'} | Error: {error || 'None'}
-      </div>
-
       {/* General Categories */}
       <div>
         <div className="flex items-center gap-2 mb-2">
@@ -2516,15 +2517,12 @@ const CategorySelection: React.FC<{
               <button
                 key={category.id}
                 onClick={() => {
-                  console.log('Category clicked:', category.id, category.name);
                   onCategorySelect(category.id === selectedCategoryId ? null : category.id);
                 }}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
                   selectedCategoryId === category.id
                     ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                    : isDarkMode
-                      ? 'bg-slate-800/50 text-white hover:bg-slate-700/50'
-                      : 'bg-slate-200/50 text-slate-900 hover:bg-slate-300/50'
+                    : 'bg-white text-black hover:bg-slate-100 border border-slate-200'
                 }`}
               >
                 {category.name}
@@ -2546,7 +2544,8 @@ const ThreeStagePathwayFilter: React.FC<{
   pathwayCards?: PathwayData[];
   selectedGeneralCategory?: string | null;
   onNavigateToPathway?: (pathwayId: string) => void;
-}> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory, onNavigateToPathway }) => {
+  onNavigate?: (page: string) => void;
+}> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory, onNavigateToPathway, onNavigate }) => {
   const [pathways, setPathways] = useState<Pathway[]>([]);
   const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
 
@@ -2579,12 +2578,18 @@ const ThreeStagePathwayFilter: React.FC<{
           setLoading(false);
           return;
         }
+
+        // Override pathway names for specific pathways
+        const overriddenPathways = (pathwaysData || []).map(pathway => ({
+          ...pathway,
+          name: pathway.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : pathway.name
+        }));
         
-        setPathways(pathwaysData || []);
+        setPathways(overriddenPathways);
         
         // Fetch all sub-pathways for these pathways
-        if (pathwaysData && pathwaysData.length > 0) {
-          const pathwayIds = pathwaysData.map(p => p.id);
+        if (overriddenPathways && overriddenPathways.length > 0) {
+          const pathwayIds = overriddenPathways.map(p => p.id);
           const { data: subPathwaysData, error: subPathwaysError } = await supabase
             .from('career_hierarchy_sub_pathways')
             .select('*')
@@ -2595,8 +2600,12 @@ const ThreeStagePathwayFilter: React.FC<{
           if (subPathwaysError) {
             console.error('Error fetching sub-pathways:', subPathwaysError);
           } else {
-            console.log('[DEBUG] Fetched sub-pathways:', subPathwaysData?.length || 0, 'for pathways:', pathwayIds.length);
-            setSubPathways(subPathwaysData || []);
+            // Override sub-pathway names for specific sub-pathways
+            const overriddenSubPathways = (subPathwaysData || []).map(sp => ({
+              ...sp,
+              name: sp.name === 'Drone pilot certification and UAV training programs' ? 'Learn More about Drones & Airtaxi Pathways' : sp.name
+            }));
+            setSubPathways(overriddenSubPathways);
           }
         } else {
           setSubPathways([]);
@@ -2625,7 +2634,12 @@ const ThreeStagePathwayFilter: React.FC<{
           .order('display_order');
         
         if (data && !error) {
-          setSubPathways(data);
+          // Override sub-pathway names for specific sub-pathways
+          const overriddenSubPathways = data.map(sp => ({
+            ...sp,
+            name: sp.name === 'Drone pilot certification and UAV training programs' ? 'Learn More about Drones & Airtaxi Pathways' : sp.name
+          }));
+          setSubPathways(overriddenSubPathways);
         }
         setLoading(false);
       };
@@ -2658,12 +2672,10 @@ const ThreeStagePathwayFilter: React.FC<{
 
   // Filter pathway cards based on selected pathway and sub-pathway
   const getFilteredPathwayCards = (pathwayId: string, subPathwayId?: string | null) => {
-    console.log('[DEBUG] getFilteredPathwayCards called:', { pathwayId, subPathwayId });
     
     // If a specific sub-pathway is selected, only return that card
     if (subPathwayId) {
       const selectedSubPathway = subPathways.find(sp => sp.id === subPathwayId);
-      console.log('[DEBUG] Selected sub-pathway:', selectedSubPathway);
       if (selectedSubPathway) {
         return [{
           id: selectedSubPathway.id,
@@ -2686,14 +2698,10 @@ const ThreeStagePathwayFilter: React.FC<{
     const subPathwaysForPathway = subPathways.filter(sp => sp.pathway_id === pathwayId);
     const pathwayName = pathways.find(p => p.id === pathwayId)?.name || '';
     
-    console.log('[DEBUG] Pathway info:', { pathwayId, pathwayName, subPathwaysCount: subPathwaysForPathway.length, allSubPathways: subPathways.length });
-    console.log('[DEBUG] Sub-pathways for this pathway:', subPathwaysForPathway.map(sp => ({ id: sp.id, name: sp.name })));
     
     // STUDENT PILOT PATHWAY - Always create custom branded cards from sub-pathways
-    console.log('[DEBUG] Checking Student Pilot condition:', { isStudentPilot: pathwayName.toLowerCase().includes('student pilot'), hasSubPathways: subPathwaysForPathway.length > 0 });
     
     if (pathwayName.toLowerCase().includes('student pilot') && subPathwaysForPathway.length > 0) {
-      console.log('[DEBUG] Creating Student Pilot cards for', subPathwaysForPathway.length, 'sub-pathways');
       return subPathwaysForPathway.map((sp, index) => {
         // Custom branded cards for each Student Pilot sub-pathway (using actual UUIDs from database)
         const studentPilotCards: Record<string, any> = {
@@ -2745,7 +2753,6 @@ const ThreeStagePathwayFilter: React.FC<{
     
     // PRIVATE PILOT PATHWAY - Custom branded cards for specific sub-pathways
     if (pathwayName.toLowerCase().includes('private pilot') && subPathwaysForPathway.length > 0) {
-      console.log('[DEBUG] Creating Private Pilot cards for', subPathwaysForPathway.length, 'sub-pathways');
       return subPathwaysForPathway.map((sp, index) => {
         // Custom branded cards for Private Pilot sub-pathways
         const privatePilotCards: Record<string, any> = {
@@ -2827,7 +2834,6 @@ const ThreeStagePathwayFilter: React.FC<{
     
     // COMMERCIAL PILOT PATHWAY - Custom branded cards for specific sub-pathways
     if (pathwayName.toLowerCase().includes('commercial pilot') && subPathwaysForPathway.length > 0) {
-      console.log('[DEBUG] Creating Commercial Pilot cards for', subPathwaysForPathway.length, 'sub-pathways');
       
       // Add static Cadet Programmes card
       const cadetProgrammesCard = {
@@ -2905,7 +2911,6 @@ const ThreeStagePathwayFilter: React.FC<{
     
     // LICENSURE & TYPE RATING CENTERS PATHWAY - Custom branded cards for specific sub-pathways
     if (pathwayName.toLowerCase().includes('licensure') || pathwayName.toLowerCase().includes('type rating')) {
-      console.log('[DEBUG] Creating Licensure & Type Rating Centers cards for', subPathwaysForPathway.length, 'sub-pathways');
       
       return subPathwaysForPathway.map((sp, index) => {
         // Custom branded cards for Licensure & Type Rating Centers sub-pathways
@@ -2976,7 +2981,6 @@ const ThreeStagePathwayFilter: React.FC<{
 
     // CADET PATHWAYS PATHWAY - Custom branded cards for specific sub-pathways
     if (pathwayName.toLowerCase().includes('cadet')) {
-      console.log('[DEBUG] Creating Cadet Pathways cards for', subPathwaysForPathway.length, 'sub-pathways');
       
       return subPathwaysForPathway.map((sp, index) => {
         // Custom branded cards for Cadet Pathways sub-pathways
@@ -3167,7 +3171,6 @@ const ThreeStagePathwayFilter: React.FC<{
 
     // DRONES & PILOTLESS DRONES PATHWAY - Custom branded cards for specific sub-pathways
     if (pathwayName.toLowerCase().includes('drone') || pathwayName.toLowerCase().includes('pilotless')) {
-      console.log('[DEBUG] Creating Drones & Pilotless Drones cards for', subPathwaysForPathway.length, 'sub-pathways');
       
       return subPathwaysForPathway.map((sp, index) => {
         // Custom branded cards for Drones & Pilotless Drones sub-pathways
@@ -3220,7 +3223,6 @@ const ThreeStagePathwayFilter: React.FC<{
 
     // PRIVATE SECTOR PATHWAYS - Custom branded cards for specific sub-pathways
     if (pathwayName.toLowerCase().includes('private sector')) {
-      console.log('[DEBUG] Creating Private Sector Pathways cards for', subPathwaysForPathway.length, 'sub-pathways');
       
       return subPathwaysForPathway.map((sp, index) => {
         // Custom branded cards for Private Sector Pathways sub-pathways
@@ -3292,7 +3294,6 @@ const ThreeStagePathwayFilter: React.FC<{
     }
     
     // Fallback: return EMPTY array instead of all cards to avoid showing wrong cards
-    console.log('[DEBUG] No cards generated, returning empty array');
     return [];
   };
 
@@ -3303,22 +3304,21 @@ const ThreeStagePathwayFilter: React.FC<{
         <div className="space-y-8 w-screen relative left-1/2 -translate-x-1/2">
           {pathways.map((pathway) => {
             const cards = getFilteredPathwayCards(pathway.id, selectedSubPathway);
-            console.log('[DEBUG] Rendering pathway:', pathway.name, 'Cards count:', cards.length);
             
             // Add PilotRecognition introduction card at the start
             const wingMentorIntroCard = {
               id: `wingmentor-${pathway.id}`,
-              name: `${pathway.name}`,
+              name: (pathway.id === '05da1618-8398-4199-8993-90fd7353ac39' || pathway.id === '751b23de-4c0c-4fa1-8080-944ad7ea41b0' || pathway.id === 'aaa44819-37ec-40e7-a6cf-6d1990040d65' || pathway.id === '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1' || pathway.id === '83806ec2-6376-4b65-bcd8-4fc25391cc71' || pathway.id === 'c39c880b-dce1-4c6a-88b6-c5bf19eb07d0' || pathway.id === '7c3f09b6-5a24-48d6-89d8-f74c662f324e') ? `Learn More about ${pathway.name}` : `${pathway.name}`,
               aircraftType: '__wingmentor__',
               airline: 'PilotRecognition',
               description: pathway.name.toLowerCase().includes('student pilot') 
-                ? 'Select a pathway below to explore training options. Scroll left or right and click or touch on any pathway card to view detailed information about pilot training programs under Student Pilots.'
+                ? 'Explore student pilot training options'
                 : (pathway.description || `Explore ${pathway.name} opportunities and training options`),
               locations: ['Global'],
               matchProbability: 100,
               hiringStatus: 'actively_hiring' as const,
               requirements: { totalHours: 0, typeRatings: [] },
-              image: '/images/accessportal.png',
+              image: (pathway.id === '05da1618-8398-4199-8993-90fd7353ac39' || pathway.id === '751b23de-4c0c-4fa1-8080-944ad7ea41b0' || pathway.id === 'aaa44819-37ec-40e7-a6cf-6d1990040d65' || pathway.id === '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1' || pathway.id === '83806ec2-6376-4b65-bcd8-4fc25391cc71' || pathway.id === 'c39c880b-dce1-4c6a-88b6-c5bf19eb07d0' || pathway.id === '7c3f09b6-5a24-48d6-89d8-f74c662f324e') ? '' : '/images/accessportal.png',
               pathwayId: pathway.id,
               category: 'cadet-programme' as const,
             };
@@ -3327,7 +3327,6 @@ const ThreeStagePathwayFilter: React.FC<{
             
             // Create triple loop for infinite scroll effect
             const loopedCards = [...cardsWithPilotRecognition, ...cardsWithPilotRecognition, ...cardsWithPilotRecognition];
-            console.log('[DEBUG] Looped cards count with PilotRecognition:', loopedCards.length);
             return (
             <div key={pathway.id} className="w-full">
               {/* Pathway header on top left - Georgia serif font with description */}
@@ -3437,8 +3436,30 @@ const ThreeStagePathwayFilter: React.FC<{
                       <div className={`relative h-[300px] overflow-hidden rounded-xl ${isPilotRecognitionCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
                         {isPilotRecognitionCard ? (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-                            <img src="/logo.png" alt="PilotRecognition" className="h-20 w-auto object-contain mb-4" />
+                            {card.image ? (
+                              <img src="/logo.png" alt="PilotRecognition" className="h-20 w-auto object-contain mb-4" />
+                            ) : (
+                              <div className="mb-4">
+                                <span className="text-white text-2xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Discover</span>
+                                <span className="text-red-500 text-xl ml-2" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>{pathway.name}</span>
+                              </div>
+                            )}
                             <p className="text-slate-400 text-sm text-center px-8">{card.description}</p>
+                            {(card.id === 'wingmentor-05da1618-8398-4199-8993-90fd7353ac39' || card.id === 'wingmentor-751b23de-4c0c-4fa1-8080-944ad7ea41b0' || card.id === 'wingmentor-aaa44819-37ec-40e7-a6cf-6d1990040d65' || card.id === 'wingmentor-7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1' || card.id === 'wingmentor-83806ec2-6376-4b65-bcd8-4fc25391cc71' || card.id === 'wingmentor-c39c880b-dce1-4c6a-88b6-c5bf19eb07d0' || card.id === 'wingmentor-7c3f09b6-5a24-48d6-89d8-f74c662f324e' || card.id === 'recommended-pathways-intro') && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if ((card.id === 'wingmentor-05da1618-8398-4199-8993-90fd7353ac39' || card.id === 'wingmentor-intro-evtol') && onNavigate) {
+                                    onNavigate('air-taxi-pathways');
+                                  } else if (card.id === 'wingmentor-aaa44819-37ec-40e7-a6cf-6d1990040d65' && onNavigate) {
+                                    onNavigate('licensure-type-rating-pathways');
+                                  }
+                                }}
+                                className="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white rounded-lg text-sm font-semibold transition-all shadow-lg"
+                              >
+                                Learn More
+                              </button>
+                            )}
                           </div>
                         ) : (
                           <img src={cardAircraftImage} alt={card.aircraftType} className="w-full h-full object-cover" loading="lazy" />
@@ -3483,14 +3504,12 @@ const ThreeStagePathwayFilter: React.FC<{
                   <div className="max-w-3xl mx-auto text-center">
                     <button
                       onClick={() => {
-                        console.log('[DEBUG] Discover pathway button clicked');
-                        console.log('[DEBUG] selectedCard:', selectedCard);
-                        console.log('[DEBUG] onNavigateToPathway exists:', !!onNavigateToPathway);
-                        if (selectedCard && onNavigateToPathway) {
-                          console.log('[DEBUG] Calling onNavigateToPathway with ID:', selectedCard.id);
-                          onNavigateToPathway(selectedCard.id);
-                        } else {
-                          console.log('[DEBUG] Cannot call onNavigateToPathway - selectedCard:', !!selectedCard, 'onNavigateToPathway:', !!onNavigateToPathway);
+                        if (selectedCard) {
+                          if ((selectedCard.id === 'wingmentor-05da1618-8398-4199-8993-90fd7353ac39' || selectedCard.id === 'wingmentor-intro-evtol') && onNavigate) {
+                            onNavigate('air-taxi-pathways');
+                          } else if (onNavigateToPathway) {
+                            onNavigateToPathway(selectedCard.id);
+                          }
                         }
                       }}
                       className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md cursor-pointer hover:scale-105 transition-transform ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/30 border border-white/20'}`}
@@ -4097,10 +4116,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [showSpecialPathwaysPage, setShowSpecialPathwaysPage] = useState(false);
   const [showLicensureTypeRatingPage, setShowLicensureTypeRatingPage] = useState(false);
   const [showCommercialPilotPathwayPage, setShowCommercialPilotPathwayPage] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   // Debug: Log when showSpecialPathwaysPage changes
   useEffect(() => {
-    console.log('[DEBUG] showSpecialPathwaysPage changed to:', showSpecialPathwaysPage);
     if (showSpecialPathwaysPage) {
       window.scrollTo(0, 0);
     }
@@ -4108,7 +4127,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Debug: Log when showLicensureTypeRatingPage changes
   useEffect(() => {
-    console.log('[DEBUG] showLicensureTypeRatingPage changed to:', showLicensureTypeRatingPage);
     if (showLicensureTypeRatingPage) {
       window.scrollTo(0, 0);
     }
@@ -4116,7 +4134,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Debug: Log when showCommercialPilotPathwayPage changes
   useEffect(() => {
-    console.log('[DEBUG] showCommercialPilotPathwayPage changed to:', showCommercialPilotPathwayPage);
     if (showCommercialPilotPathwayPage) {
       window.scrollTo(0, 0);
     }
@@ -4183,7 +4200,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         return;
       }
 
-      console.log('Pathway posted successfully:', data);
     } catch (error) {
       console.error('Error posting pathway:', error);
     }
@@ -4192,7 +4208,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Wrapper function for Post Pathway button (without pathway data)
   const handlePostPathwayClick = () => {
     // TODO: Add a modal or form to collect pathway data
-    console.log('Post pathway clicked - add modal to collect pathway data');
   };
 
   // Pathways Intelligence — Firebase R-formula powered data
@@ -4211,7 +4226,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     'privateSector': 'Private Sector',
     'cargo': 'Cargo',
     'type-rating': 'Type Rating Pathways',
-    'airtaxi-drones': 'AirTaxi & Drones'
+    'airtaxi-drones': 'Drones & Airtaxi Pathways'
   };
 
   // Scroll detection
@@ -4387,10 +4402,28 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     // Use hierarchy selection for filtering if available, otherwise use activeCategory
     let matchesCategory = true;
     
-    if (Object.keys(hierarchySelection).length > 0) {
-      // If a hierarchy selection is made, show all pathways for now
-      // TODO: Implement mapping between hierarchy and pathway data
-      matchesCategory = true;
+    if (Object.keys(hierarchySelection).length > 0 && hierarchySelection.generalCategory) {
+      // If a hierarchy selection is made, filter pathways by the selected general category
+      // Map general category to pathway category
+      const categoryMapping: Record<string, string[]> = {
+        // Pilot Training & Certification
+        'da486dd1-8832-4ec3-843b-1cbd3c9b8718': ['cadet-programme', 'private', 'type-rating'],
+        // Career Progression
+        '9c6dc768-ecac-408f-b62c-d3f72ae8e509': ['airline-pathways'],
+        // Commercial Operations
+        '0cc029df-b6f9-4f6d-b4e3-c7bd3d89cbe8': ['cargo', 'privateSector'],
+        // Specialized Operations
+        '9865e475-1b3a-4d16-8a2f-cdd443dd7975': ['privateSector'],
+        // Humanitarian & Aid
+        '37c42b2b-1f4c-4f64-b1a1-dd1f84623023': ['cargo', 'privateSector'],
+        // Remote & Bush Operations
+        'c5f16476-44c0-4c3e-88db-85813efb96a0': ['privateSector'],
+        // Emerging Technologies
+        'd5855477-a76d-42be-abae-e18fce201ac8': ['airtaxi-drones'],
+      };
+      
+      const allowedCategories = categoryMapping[hierarchySelection.generalCategory] || [];
+      matchesCategory = allowedCategories.includes(pathway.category);
     } else {
       // Fall back to original category filtering
       matchesCategory = activeCategory === 'all' || pathway.category === activeCategory;
@@ -4470,7 +4503,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     category: 'all',
     airline: 'PilotRecognition',
     description: 'Explore personalized career pathways matched to your profile and goals',
-    image: 'wingmentor-white',
+    image: '',
     matchProbability: 100,
     aircraftType: '__wingmentor__',
     requirements: {
@@ -4530,9 +4563,30 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Set initial selected pathway
   useEffect(() => {
     if (pathwaysWithIntro.length > 0 && !selectedCarouselPathway) {
-      setSelectedCarouselPathway(pathwaysWithIntro[0]);
+      // Skip intro card (index 0) and select first non-intro card
+      const firstNonIntroCard = pathwaysWithIntro.find(card => 
+        card.aircraftType !== '__wingmentor__' && card.id !== 'recommended-pathways-intro'
+      );
+      if (firstNonIntroCard) {
+        setSelectedCarouselPathway(firstNonIntroCard);
+      }
     }
   }, [pathwaysWithIntro, selectedCarouselPathway]);
+
+  // Reset selection to skip intro cards when filtered pathways change
+  useEffect(() => {
+    if (pathwaysWithIntro.length > 0) {
+      const currentIsIntro = selectedCarouselPathway?.aircraftType === '__wingmentor__' || selectedCarouselPathway?.id === 'recommended-pathways-intro';
+      if (currentIsIntro) {
+        const firstNonIntroCard = pathwaysWithIntro.find(card => 
+          card.aircraftType !== '__wingmentor__' && card.id !== 'recommended-pathways-intro'
+        );
+        if (firstNonIntroCard) {
+          setSelectedCarouselPathway(firstNonIntroCard);
+        }
+      }
+    }
+  }, [pathwaysWithIntro]);
 
   // Infinite scroll disabled - no scroll reset for recommended pathways
 
@@ -4551,6 +4605,64 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Auto-scroll disabled - manual control only
 
+  // Auto-select centered card on scroll
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    let scrollTimeout: NodeJS.Timeout;
+
+    const handleScroll = () => {
+      // Debounce scroll event
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const carouselRect = carousel.getBoundingClientRect();
+        const viewportCenter = carouselRect.left + carouselRect.width / 2;
+        
+        // Find which card is closest to center
+        let closestIndex = 0;
+        let closestDistance = Infinity;
+        
+        const cards = carousel.children;
+        const cardElements: HTMLElement[] = [];
+        
+        // Collect only actual card elements
+        for (let i = 0; i < cards.length; i++) {
+          const card = cards[i] as HTMLElement;
+          if (card.classList.contains('flex-shrink-0')) {
+            cardElements.push(card);
+          }
+        }
+        
+        for (let i = 0; i < cardElements.length; i++) {
+          const card = cardElements[i];
+          const cardRect = card.getBoundingClientRect();
+          const cardCenter = cardRect.left + cardRect.width / 2;
+          const distance = Math.abs(viewportCenter - cardCenter);
+          
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = i;
+          }
+        }
+        
+        // Skip first card (intro card) and only select if index > 0
+        if (closestIndex > 0 && closestIndex < pathwaysWithIntro.length) {
+          const centeredCard = pathwaysWithIntro[closestIndex];
+          if (centeredCard && centeredCard.id !== selectedCarouselPathway?.id) {
+            setSelectedCarouselPathway(centeredCard);
+          }
+        }
+      }, 100); // 100ms debounce
+    };
+
+    carousel.addEventListener('scroll', handleScroll);
+    return () => {
+      clearTimeout(scrollTimeout);
+      carousel.removeEventListener('scroll', handleScroll);
+    };
+  }, [pathwaysWithIntro, selectedCarouselPathway?.id]);
+
   const handleCalculateMatch = (pathwayId: string) => {
     const pathway = allPathways.find(p => p.id === pathwayId);
     if (pathway) {
@@ -4559,29 +4671,25 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   };
 
   const handleNavigateToPathway = (pathwayId: string) => {
-    console.log('[DEBUG] handleNavigateToPathway called with ID:', pathwayId);
-    console.log('[DEBUG] showMilitaryPathwaysPage state:', showMilitaryPathwaysPage);
-    console.log('[DEBUG] Checking if pathwayId matches Military ID:', pathwayId === '81753376-b823-4909-b82f-664acab13dae');
-    console.log('[DEBUG] onNavigateToPathway exists:', !!onNavigateToPathway);
+
+    // Check if this is the air-taxi pathway wingmentor card
+    if ((pathwayId === 'wingmentor-05da1618-8398-4199-8993-90fd7353ac39' || pathwayId === 'wingmentor-intro-evtol') && onNavigate) {
+      onNavigate('air-taxi-pathways');
+      return;
+    }
 
     // Check if this is the Military pathway
     if (pathwayId === '81753376-b823-4909-b82f-664acab13dae') {
-      console.log('[DEBUG] MATCH! Setting showMilitaryPathwaysPage to true');
       setShowMilitaryPathwaysPage(true);
     } else if (pathwayId === '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1' || pathwayId === 'cadet-programmes-commercial' || pathwayId === '39ec2271-baa1-441e-878f-958440c8678d' || pathwayId === 'c739dab5-33e5-4315-80d9-6e960f49387f') {
-      console.log('[DEBUG] MATCH! Setting showCommercialPilotPathwayPage to true');
       setShowCommercialPilotPathwayPage(true);
     } else if (pathwayId === 'd36018dd-a116-4925-83ca-6acb414f4020' || pathwayId === 'de8a9cfd-34bd-47f2-bd5a-9afd6c96e1c5' || pathwayId === 'c43cf6ac-c644-4b38-9c51-84d784051037' || pathwayId === '7911f9f9-c2da-4732-b9da-8108ffefc416' || pathwayId === 'adfdacf6-211b-45b5-b62c-3b4af9757c58') {
-      console.log('[DEBUG] MATCH! Setting showSpecialPathwaysPage to true');
       setShowSpecialPathwaysPage(true);
     } else if (pathwayId === 'aaa44819-37ec-40e7-a6cf-6d1990040d65' || pathwayId === 'a02f4e29-e165-415f-a3b3-669edbd7deb1' || pathwayId === 'cc996aa7-a075-4be7-beef-f917dd1f41db' || pathwayId === '54655935-92de-4aad-b82b-703152ffce25' || pathwayId === 'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8' || pathwayId === '4d4b6568-3759-432e-9193-e0dba88425aa' || pathwayId === '078eea1a-271f-4392-a802-9a2ea4c36da0' || pathwayId === 'e94ba893-fa83-47b1-90f9-98905dc6685a' || pathwayId === '2acbf9f0-27cc-4094-9943-420572483c1e') {
-      console.log('[DEBUG] MATCH! Setting showLicensureTypeRatingPage to true');
       setShowLicensureTypeRatingPage(true);
     } else if (onNavigateToPathway) {
-      console.log('[DEBUG] Calling onNavigateToPathway');
       onNavigateToPathway(pathwayId);
     } else {
-      console.log('[DEBUG] No match and no onNavigateToPathway handler');
     }
   };
 
@@ -4597,6 +4705,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const buttonText = isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900';
 
   return (
+    <>
     <div className={`min-h-screen ${bgGradient} relative`}>
       {/* MeshGradient Background */}
       <div className="fixed inset-0 z-0">
@@ -4609,10 +4718,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
       {/* Content wrapper with higher z-index to sit above shader */}
       <div className="relative z-10">
-        {/* Header with Search Bar */}
+        {/* Header with main title */}
         <header className="bg-white border-b border-slate-200 backdrop-blur-sm sticky top-0 z-30">
         <div className="mx-auto pr-6 py-4 w-full max-w-[1800px]">
-          <div className="flex items-center justify-between gap-4">
+          {/* Main title row */}
+          <div className="flex items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
                 {/* Back Button */}
@@ -4697,10 +4807,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               ) : (
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => onNavigate && onNavigate('login')}
+                    onClick={() => setIsLoginModalOpen(true)}
                     className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.1em] transition-all"
                   >
-                    Sign In
+                    Login
                   </button>
                   <button
                     onClick={() => onNavigate && onNavigate('become-member')}
@@ -4945,33 +5055,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               : <><span style={{ color: '#ffffff' }}>Pilot Recognition</span> <span style={{ color: '#dc2626' }}>Pathways</span></>
             }
           </h1>
-          <p className="text-white max-w-2xl mx-auto">
-            Discover and track your journey to airline careers. Our Recognition Formula calculates your real probability of success.
-          </p>
         </div>
 
-        {/* Search & Filter */}
-        <div className="mb-8 space-y-4 text-center">
-          {/* Region Filter */}
-          <div className="flex justify-center flex-wrap gap-2">
-            {(['All', 'Asia', 'Europe', 'Americas', 'Oceania', 'Africa', 'Middle East'] as Region[]).map((region) => (
-              <button
-                key={region}
-                onClick={() => setRegionFilter(region)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  regionFilter === region
-                    ? 'bg-blue-600 text-white shadow-lg'
-                    : isDarkMode
-                    ? 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50'
-                    : 'bg-white/70 border border-slate-300/50 text-slate-600 hover:bg-slate-200/50'
-                }`}
-              >
-                {region === 'All' ? 'All Regions' : region}
-              </button>
-            ))}
-          </div>
-          <div className="flex justify-center">
-            <SearchBar onSearch={setSearchQuery} isDarkMode={isDarkMode} />
+        {/* Search Bar - above categories */}
+        <div className="mb-6 flex justify-center">
+          <div className="w-full max-w-2xl">
+            <SearchBar onSearch={setSearchQuery} isDarkMode={false} />
           </div>
         </div>
 
@@ -5075,6 +5164,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 cursor: 'grab',
                 paddingLeft: '0px',
                 paddingRight: 'calc(50vw - 300px)',
+                scrollSnapType: 'x mandatory',
+                scrollBehavior: 'smooth',
               }}
               onMouseDown={(e) => {
                 const el = carouselRef.current;
@@ -5090,6 +5181,15 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   el.style.cursor = 'grab';
                   window.removeEventListener('mousemove', onMove);
                   window.removeEventListener('mouseup', onUp);
+                  
+                  // Snap to nearest card
+                  const cardWidth = 616; // 600px card + 16px gap
+                  const scrollPosition = el.scrollLeft;
+                  const nearestIndex = Math.round(scrollPosition / cardWidth);
+                  el.scrollTo({
+                    left: nearestIndex * cardWidth,
+                    behavior: 'smooth'
+                  });
                 };
                 window.addEventListener('mousemove', onMove);
                 window.addEventListener('mouseup', onUp);
@@ -5112,7 +5212,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     <div
                       key={`${pathway.id}-${idx}`}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-100'}`}
-                      style={{ width: '600px' }}
+                      style={{ width: '600px', scrollSnapAlign: 'center' }}
                       onClick={() => {
                         setSelectedCarouselPathway(pathway);
                       }}
@@ -5120,7 +5220,20 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       <div className={`relative h-[300px] overflow-hidden rounded-xl ${isPilotRecognitionCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
                         {isPilotRecognitionCard ? (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
+                            {pathway.image ? (
+                              <img src="/logo.png" alt="PilotRecognition" className="h-20 w-auto object-contain mb-4" />
+                            ) : (
+                              <div className="mb-4">
+                                <span className="text-white text-3xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Discover</span>
+                                <span className="text-red-500 text-3xl ml-2" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>{pathway.name}</span>
+                              </div>
+                            )}
                             <p className="text-slate-400 text-sm text-center px-8">{pathway.description}</p>
+                            {pathway.id === 'recommended-pathways-intro' && (
+                              <button className="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white rounded-lg text-sm font-semibold transition-all shadow-lg">
+                                Learn More
+                              </button>
+                            )}
                           </div>
                         ) : (
                           <img src={cardAircraftImage} alt={pathway.aircraftType} className="w-full h-full object-cover" loading="lazy"
@@ -5227,6 +5340,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             pathwayCards={allPathways}
             selectedGeneralCategory={hierarchySelection.generalCategory || null}
             onNavigateToPathway={handleNavigateToPathway}
+            onNavigate={onNavigate}
           />
         )}
 
@@ -5325,7 +5439,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       {/* Special Pathways Page */}
       {showSpecialPathwaysPage && (
         <>
-          {console.log('[DEBUG] Rendering SpecialPathwaysPage, showSpecialPathwaysPage:', showSpecialPathwaysPage)}
           <div className="absolute inset-0 z-[200] bg-white overflow-auto">
             <SpecialPathwaysPage
               pathwayId="d36018dd-a116-4925-83ca-6acb414f4020"
@@ -5339,7 +5452,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       {/* Licensure & Type Rating Page */}
       {showLicensureTypeRatingPage && (
         <>
-          {console.log('[DEBUG] Rendering LicensureTypeRatingPage, showLicensureTypeRatingPage:', showLicensureTypeRatingPage)}
           <div className="absolute inset-0 z-[200] bg-slate-900 overflow-auto">
             <LicensureTypeRatingPage
               pathwayId="aaa44819-37ec-40e7-a6cf-6d1990040d65"
@@ -5352,7 +5464,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       {/* Commercial Pilot Pathway Page */}
       {showCommercialPilotPathwayPage && (
         <>
-          {console.log('[DEBUG] Rendering CommercialPilotPathwayPage, showCommercialPilotPathwayPage:', showCommercialPilotPathwayPage)}
           <div className="absolute inset-0 z-[200] bg-slate-900 overflow-auto">
             <CommercialPilotPathwayPage
               pathwayId="7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1"
@@ -5363,6 +5474,17 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       )}
       </div>
     </div>
+    <LoginModal
+      isOpen={isLoginModalOpen}
+      onClose={() => setIsLoginModalOpen(false)}
+      onNavigate={(page) => {
+        setIsLoginModalOpen(false);
+        if (onNavigate) {
+          onNavigate(page);
+        }
+      }}
+    />
+    </>
   );
 };
 

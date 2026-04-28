@@ -67,13 +67,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     // Log signupSuccess state changes
     useEffect(() => {
-        console.log('📋 signupSuccess state changed:', signupSuccess);
     }, [signupSuccess]);
 
     // Pre-fill email with current user's email if logged in via OAuth
     useEffect(() => {
         if (currentUser?.email && !email) {
-            console.log('Pre-filling email with OAuth email:', currentUser.email);
             setEmail(currentUser.email);
         }
     }, [currentUser, email]);
@@ -313,7 +311,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     // Construct the categorization string "Name , License, Hours"
                                     const pilotCategory = `${fullName} , ${highestRating}, ${currentFlightHours}hrs`;
 
-                                    console.log('🔵 About to call signup function with email:', email);
                                     await signup(email, password, {
                                         pilotId,
                                         pilotCategory, // New field for easy identification
@@ -354,7 +351,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         jobExperiences
                                     });
                                     clearTimeout(timeoutId);
-                                    console.log('✅ Signup successful, setting signupSuccess to true');
                                     setSignupSuccess(true);
                                     setUserAlreadyExisted(false);
                                     // Navigate to confirmation page

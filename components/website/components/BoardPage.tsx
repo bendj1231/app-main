@@ -20,7 +20,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
         {
             name: "Airlines Advisory",
             role: "Flagship Alignment",
-            desc: "Active captains and training heads from major carriers ensure our programs meet real-world entry standards. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that syllabus development aligns with flagship carrier expectations. Our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of pilot readiness for airline recruitment.",
+            desc: "Active captains and training heads from major carriers ensure our programs meet real-world entry standards. Through guidance from <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that syllabus development aligns with flagship carrier expectations. Our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of pilot readiness for airline recruitment.",
             bullets: ["Etihad/Emirates Standards", "EBT Integration", "Hiring Analytics"]
         },
         {
@@ -68,7 +68,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
                             PilotRecognition is guided by a diverse board of airline captains, technology pioneers,
-                            and regulatory experts committed to solving the global pilot shortage. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our board governance aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            and regulatory experts committed to solving the global pilot shortage. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our board governance aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>

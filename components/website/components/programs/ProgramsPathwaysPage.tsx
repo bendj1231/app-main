@@ -18,7 +18,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     const corePrograms = [
         {
             title: "Foundational Program",
-            desc: "The literal foundation of our pilot organization. Bridging the gap from 'I have a license' to 'I am a professional'. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, our <strong>50 hours of verifiable mentorship</strong> provides the <strong>EBT CBTA-aligned assessment framework</strong> that modern airlines demand. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match airline requirements.",
+            desc: "The literal foundation of our pilot organization. Bridging the gap from 'I have a license' to 'I am a professional'. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, our <strong>50 hours of verifiable mentorship</strong> provides the <strong>EBT CBTA-aligned assessment framework</strong> that modern airlines demand. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match airline requirements.",
             target: "become-member",
             icon: GraduationCap,
             color: "text-blue-600",
@@ -42,7 +42,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "News & Updates",
-            desc: "Stay informed about the latest developments, partnerships, and achievements in our pilot recognition-based programs. Get updates on AIRBUS partnership expansion, Etihad Aviation Training integration, and AI-powered pathway matching.",
+            desc: "Stay informed about the latest developments, advisory relationships, and achievements in our pilot recognition-based programs. Get updates on AIRBUS advisory guidance, Etihad Aviation Training integration, and AI-powered pathway matching.",
             target: "news-updates",
             icon: FileText,
             color: "text-green-600",
@@ -53,7 +53,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     const pathways = [
         {
             title: "Air Taxi & eVTOL",
-            desc: "Preparing pilots for the emerging eVTOL and Urban Air Mobility (UAM) sectors. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that pathway development aligns with manufacturer standards for urban air mobility. Our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates the competencies required for advanced air mobility operations.",
+            desc: "Preparing pilots for the emerging eVTOL and Urban Air Mobility (UAM) sectors. Through guidance from <strong>Airbus Head of Training</strong>, we ensure that pathway development aligns with manufacturer standards for urban air mobility. Our <strong>EBT CBTA-aligned assessment framework</strong> specifically evaluates the competencies required for advanced air mobility operations.",
             target: "emerging-air-taxi",
             icon: Zap,
             color: "text-purple-600",
@@ -69,7 +69,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Seaplane & Float Ops",
-            desc: "Specialized training for island transfers and amphibious flight deck handling. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that program development aligns with manufacturer standards for specialized operations. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match operator requirements.",
+            desc: "Specialized training for island transfers and amphibious flight deck handling. Through advisory input from <strong>Airbus Head of Training</strong>, we ensure that program development aligns with manufacturer standards for specialized operations. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match operator requirements.",
             target: "about_programs",
             icon: Navigation,
             color: "text-cyan-600",
@@ -77,7 +77,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Unmanned Systems",
-            desc: "Focusing on large-scale BVLOS operations and heavy-lift unmanned logistics. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
+            desc: "Focusing on large-scale BVLOS operations and heavy-lift unmanned logistics. Through guidance from <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
             target: "piloted-drones",
             icon: Cpu,
             color: "text-slate-600",
@@ -85,7 +85,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "Cargo Transportation",
-            desc: "Supply chain resilience and heavy logistics for the global feeder network. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that pathway development aligns with flagship carrier expectations. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match cargo operator requirements.",
+            desc: "Supply chain resilience and heavy logistics for the global feeder network. Through advisory input from <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that pathway development aligns with flagship carrier expectations. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match cargo operator requirements.",
             target: "about_programs",
             icon: Layers,
             color: "text-zinc-600",
@@ -96,7 +96,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
     const systems = [
         {
             title: "Pilot Recognition",
-            desc: "The industry's first Competency Assurance Network. Your skills, verified and recognized. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of pilot readiness across technical and non-technical domains. Our <strong>blockchain-verifiable certifications</strong> provide pilots with cutting-edge tools for career advancement.",
+            desc: "The industry's first Competency Assurance Network. Your skills, verified and recognized. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of pilot readiness across technical and non-technical domains. Our <strong>blockchain-verifiable certifications</strong> provide pilots with cutting-edge tools for career advancement.",
             target: "pilot-recognition",
             icon: Award,
             color: "text-indigo-600",
@@ -112,7 +112,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "ATLAS CV Systems",
-            desc: "Modernizing pilot profiles to meet manufacturer and recruiter data-driven standards. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> and <strong>AI-powered pathway matching</strong> system provide pilots with cutting-edge tools for career advancement.",
+            desc: "Modernizing pilot profiles to meet manufacturer and recruiter data-driven standards. Through advisory input from <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> and <strong>AI-powered pathway matching</strong> system provide pilots with cutting-edge tools for career advancement.",
             target: "atlas-cv",
             icon: FileText,
             color: "text-sky-600",
@@ -120,7 +120,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
         },
         {
             title: "EBT & CBTA Programs",
-            desc: "Evidence-Based Training familiarization using integrated Airbus and Hinfact analytics. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match airline requirements.",
+            desc: "Evidence-Based Training familiarization using integrated Airbus and Hinfact analytics. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide. Our <strong>AI-powered pathway matching</strong> system identifies opportunities where your demonstrated competencies match airline requirements.",
             target: "ebt-cbta",
             icon: LayoutGrid,
             color: "text-rose-600",
@@ -167,7 +167,7 @@ export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-white/90 leading-relaxed font-sans mt-6">
                             A comprehensive ecosystem designed to bridge the pilot gap. Explore our core foundational programs,
-                            specialized career pathways, and industry-leading recognition systems. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide.
+                            specialized career pathways, and industry-leading recognition systems. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>

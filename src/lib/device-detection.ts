@@ -52,11 +52,23 @@ export function shouldReduceMotion(): boolean {
 
 /**
  * Checks if the device has a GPU (basic check)
+ * Properly cleans up the canvas context to avoid WebGL context limit issues
  */
 export function hasGPU(): boolean {
   const canvas = document.createElement('canvas');
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-  return !!gl;
+  const hasWebGL = !!gl;
+  
+  // Clean up the context and canvas to avoid WebGL context limit
+  if (gl) {
+    const loseContext = (gl as any).getExtension('WEBGL_lose_context');
+    if (loseContext) {
+      loseContext.loseContext();
+    }
+  }
+  canvas.remove();
+  
+  return hasWebGL;
 }
 
 /**

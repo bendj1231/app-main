@@ -36,7 +36,7 @@ export const DigitalLogbookDirectoryPage: React.FC<DigitalLogbookDirectoryPagePr
                             Verified Experience | Career Timeline | ATS-Ready Data
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            Your centralized digital career vault. A comprehensive logbook and competency tracker that verifies your experience for industry recruiters. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> transforms raw hours into data-driven competency markers that align with the exacting standards required by leading manufacturers and operators worldwide.
+                            Your centralized digital career vault. A comprehensive logbook and competency tracker that verifies your experience for industry recruiters. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> transforms raw hours into data-driven competency markers that align with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -95,7 +95,7 @@ export const DigitalLogbookDirectoryPage: React.FC<DigitalLogbookDirectoryPagePr
                 <div className="text-center">
                     <RevealOnScroll>
                         <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
-                            The Digital Logbook supports multiple regulatory frameworks including ANAC (Brazil), CASA (Australia), FAA (United States), QCAA (Qatar), and EASA standards. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations across all regulatory jurisdictions.
+                            The Digital Logbook supports multiple regulatory frameworks including ANAC (Brazil), CASA (Australia), FAA (United States), QCAA (Qatar), and EASA standards. Through guidance from <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations across all regulatory jurisdictions.
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

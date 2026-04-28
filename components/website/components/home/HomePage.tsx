@@ -7,8 +7,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 import { PilotJourneyScroll } from '../pilot-recognition/PilotJourneyScroll';
 import { IMAGES } from '../../../../src/lib/website-constants';
-import { SmokeShader } from '../../../ui/smoke-shader';
-import { SkyCloudShader } from '../../../ui/sky-cloud-shader';
+import { MeshGradient } from '@paper-design/shaders-react';
 import { PathwayGrid } from './PathwayGrid';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier } from '@/src/lib/device-detection';
@@ -740,9 +739,26 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
             )}
 
-            {/* Smoke Shader Section with Glassy Card */}
-            <div className={`relative w-full h-screen ${enableShader ? '' : 'bg-blue-950'}`}>
-                {enableShader ? <SmokeShader /> : null}
+            {/* MeshGradient Background - Same as TypeRatingSearchPage */}
+            <div className="relative w-full h-screen">
+                <div className="fixed inset-0 z-0">
+                    <MeshGradient
+                        className="w-full h-full"
+                        colors={[
+                            "#dbeafe",
+                            "#94a3b8",
+                            "#64748b",
+                            "#475569",
+                            "#334155",
+                            "#1e3a5f",
+                            "#1e3a8a",
+                            "#0f172a"
+                        ]}
+                        speed={0.22}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
+                    <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+                </div>
                 
                 {/* Flight Simulator Style Grid */}
                 {deviceTier === 'low' ? (
@@ -1465,9 +1481,25 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {/* Join The Network Section - Simplified */}
                 <div className="relative py-8 md:py-12 px-4 md:px-6 bg-slate-900 overflow-hidden" id="join-network-section">
                     
-                    {/* Sky Cloud Shader Background - Based on Godot Sky Shader */}
+                    {/* MeshGradient Background - Rich sky/cloud palette with glassy blur */}
                     <div className="absolute inset-0 z-0 h-full w-full">
-                        <SkyCloudShader />
+                        <MeshGradient
+                            className="w-full h-full"
+                            colors={[
+                                "#f1f5f9",   // Soft white
+                                "#e2e8f0",   // Light bluish grey
+                                "#94a3b8",   // Medium grey
+                                "#64748b",   // Slate
+                                "#475569",   // Dark grey
+                                "#334155",   // Darker slate
+                                "#1e40af",   // Deep blue
+                                "#1e3a8a",   // Navy
+                                "#0f172a"    // Near black
+                            ]}
+                            speed={0.25}
+                        />
+                        {/* Glassy blur overlay - bathroom glass effect */}
+                        <div className="absolute inset-0 backdrop-blur-[2px] bg-white/5" />
                     </div>
 
                     <div className="max-w-7xl mx-auto relative z-10">

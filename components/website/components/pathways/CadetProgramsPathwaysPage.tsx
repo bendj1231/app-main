@@ -167,7 +167,7 @@ export const CadetProgramsPathwaysPage: React.FC<CadetProgramsPathwaysPageProps>
                             What Cadet Programs Seek
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Cadet programs are competitive and selective. Through our partnerships and experience, we've identified the key attributes successful cadet candidates demonstrate during selection.
+                            Cadet programs are competitive and selective. Through our industry experience and research, we've identified the key attributes successful cadet candidates demonstrate during selection.
                         </p>
                         <ul className="mt-2 space-y-2 text-base text-slate-700 list-disc list-inside md:list-outside md:pl-5 text-left">
                             <li><strong>Academic Excellence:</strong> Strong educational background and aptitude for technical subjects</li>

@@ -37,7 +37,7 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                             Global Recognition | ATS Optimization | Competency-Based
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            The globally recognized, AI-optimized format that presents your experience, competencies, and qualifications in the standardized structure preferred by international airlines. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            The globally recognized, AI-optimized format that presents your experience, competencies, and qualifications in the standardized structure preferred by international airlines. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -149,7 +149,7 @@ export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({
                     <div className="max-w-4xl mx-auto text-center">
                         <RevealOnScroll>
                             <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
-                                Detailed documentation standards, builder access, and full competency breakdowns are reserved for verified members. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                                Detailed documentation standards, builder access, and full competency breakdowns are reserved for verified members. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">

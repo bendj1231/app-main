@@ -16,7 +16,7 @@ import { EnrollmentSuccessPage } from './EnrollmentSuccessPage';
 import { ATPLPathwayPage } from './ATPLPathwayPage';
 import { PrivateSectorPathwayPage } from './PrivateSectorPathwayPage';
 import { PathwaysPage } from './PathwaysPage';
-import { PilotRecognitionNetworkPage } from './PilotRecognitionNetworkPage';
+import { PilotRecognitionNetworkPage } from './WingMentorNetworkPage';
 import LogbookPage from './LogbookPage';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { TermsAndConditionsPage } from './TermsAndConditionsPage';
@@ -790,7 +790,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
                 </>
               )}
               
-              {/* Airbus Partnership Content */}
+              {/* Airbus Advisory Content */}
               {selectedNewsItem.title.includes('Airbus') && (
                 <>
                   <div style={{ color: '#2563eb', fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem', textAlign: 'center' }}>

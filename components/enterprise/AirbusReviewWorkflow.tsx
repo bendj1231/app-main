@@ -89,9 +89,9 @@ export function AirbusReviewWorkflow({
           <div className="flex items-start gap-3">
             <Info className="w-5 h-5 text-violet-400 mt-0.5 shrink-0" />
             <div>
-              <h4 className="text-white font-semibold text-sm mb-1">Future Partnership</h4>
+              <h4 className="text-white font-semibold text-sm mb-1">Future Advisory Relationship</h4>
               <p className="text-slate-400 text-xs">
-                This workflow is a placeholder for the upcoming Airbus partnership. 
+                This workflow is a placeholder for the upcoming Airbus advisory relationship. 
                 Selected high-performing pilot assessments may be submitted for Airbus review 
                 to validate competency standards and identify candidates for Airbus-aligned programs.
               </p>

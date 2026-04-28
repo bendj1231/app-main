@@ -291,7 +291,7 @@ export const FoundationalProgramAnimation: React.FC = () => {
                         {[
                             {
                                 title: 'Industry Recognition',
-                                desc: 'Gain credentials trusted by airlines and operators worldwide through our AIRBUS, Etihad & Archer partnerships.'
+                                desc: 'Gain credentials trusted by airlines and operators worldwide through our AIRBUS, Etihad & Archer advisory relationships.'
                             },
                             {
                                 title: 'Verifiable Experience',

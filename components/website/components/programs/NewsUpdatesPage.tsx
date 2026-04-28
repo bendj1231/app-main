@@ -18,10 +18,10 @@ export const NewsUpdatesPage: React.FC<NewsUpdatesPageProps> = ({
     const updates = [
         {
             date: 'April 2025',
-            title: 'AIRBUS Partnership Expansion',
-            category: 'Partnership',
+            title: 'AIRBUS Advisory Guidance Expansion',
+            category: 'Advisory',
             icon: <Award className="w-6 h-6" />,
-            description: 'Expanded partnership with Airbus Head of Training to include EBT CBTA framework integration across all foundational programs, ensuring alignment with manufacturer standards.'
+            description: 'Expanded advisory relationship with Airbus Head of Training to include EBT CBTA framework guidance across all foundational programs, ensuring alignment with manufacturer standards.'
         },
         {
             date: 'March 2025',

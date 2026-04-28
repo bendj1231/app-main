@@ -64,7 +64,7 @@ export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNaviga
                             Digital Ecosystem | Career Intelligence | Unified Platform
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            A high-connectivity ecosystem designed to bridge the gap between initial license and the professional cockpit. Your centralized hub for training verification, digital compliance, and career advancement. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>AI-powered pathway matching</strong> system aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            The W1000 Suite represents a paradigm shift in pilot development—combining advanced assessment tools, digital career tracking, and AI-powered pathway matching into one integrated ecosystem. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>AI-powered pathway matching</strong> system provides pilots with cutting-edge tools for career advancement.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -90,7 +90,7 @@ export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNaviga
                             Examination Terminal
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
-                            A rigorous, airline-standard assessment environment designed to test theoretical knowledge and practical decision-making. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>custom exam mockups</strong> align directly with GCAA/EASA and internal airline recruitment benchmarks.
+                            A rigorous, airline-standard assessment environment designed to test theoretical knowledge and practical decision-making. Through advisory input from <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>custom exam mockups</strong> align directly with GCAA/EASA and internal airline recruitment benchmarks.
                         </p>
                         <ul className="space-y-4">
                             {[
@@ -114,7 +114,7 @@ export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNaviga
                             The Black Box
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-8 font-sans">
-                            Your digital career vault. A centralized logbook and competency tracker that verifies your experience for industry recruiters. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> transforms raw hours into data-driven competency markers.
+                            Your digital career vault. A centralized logbook and competency tracker that verifies your experience for industry recruiters. Through guidance from <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that our <strong>ATS-compatible ATLAS Aviation CV formatting</strong> transforms raw hours into data-driven competency markers.
                         </p>
                         <div className="flex flex-col gap-4">
                             <div className="p-5 bg-slate-50 border border-slate-100 rounded-2xl">
@@ -147,7 +147,7 @@ export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNaviga
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="p-12 bg-white border border-slate-200 rounded-[3rem] hover:shadow-2xl transition-all group">
                             <h3 className="text-2xl font-serif text-slate-900 mb-4">IFR Simulator</h3>
-                            <p className="text-slate-600 mb-8 leading-relaxed font-sans">High-fidelity procedural training focusing on instrument flight rules and multi-engine coordination for advanced fleet transitions. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>procedural mastery</strong> aligns with manufacturer standards for specialized operations.</p>
+                            <p className="text-slate-600 mb-8 leading-relaxed font-sans">High-fidelity procedural training focusing on instrument flight rules and multi-engine coordination for advanced fleet transitions. Through advisory input from <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our <strong>procedural mastery</strong> aligns with manufacturer standards for specialized operations.</p>
                             <div className="flex gap-4">
                                 <div className="px-4 py-2 bg-slate-50 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest">Mastery</div>
                                 <div className="px-4 py-2 bg-slate-50 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest">Procedures</div>
@@ -155,7 +155,7 @@ export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNaviga
                         </div>
                         <div className="p-12 bg-white border border-slate-200 rounded-[3rem] hover:shadow-2xl transition-all group">
                             <h3 className="text-2xl font-serif text-slate-900 mb-4">Program Handbook</h3>
-                            <p className="text-slate-600 mb-8 leading-relaxed font-sans">The definitive guide to your aviation journey. Structured roadmaps, technical data, and professional standards for the modern pilot. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations.</p>
+                            <p className="text-slate-600 mb-8 leading-relaxed font-sans">The definitive guide to your aviation journey. Structured roadmaps, technical data, and professional standards for the modern pilot. Through guidance from <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations.</p>
                             <div className="flex gap-4">
                                 <div className="px-4 py-2 bg-slate-50 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest">Roadmaps</div>
                                 <div className="px-4 py-2 bg-slate-50 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest">Standards</div>
@@ -186,7 +186,7 @@ export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNaviga
                                 "Making the connection between pilot & Industry Expectations, demands & Pilot Recognition easier like never before."
                             </p>
                             <p className="text-base text-slate-400 leading-relaxed font-sans mb-10 text-center max-w-3xl mx-auto">
-                                Beyond technical tools, the W1000 Suite provides direct access to the Pilot Masterclass—a mentorship journey led by industry veterans. Learn the 'hidden' protocols of airline interviews, corporate networking, and professional stewardship. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>AI-powered pathway matching</strong> system provides pilots with cutting-edge tools for career advancement.
+                                Beyond technical tools, the W1000 Suite provides direct access to the Pilot Masterclass—a mentorship journey led by industry veterans. Learn the 'hidden' protocols of airline interviews, corporate networking, and professional stewardship. Through advisory input from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>AI-powered pathway matching</strong> system provides pilots with cutting-edge tools for career advancement.
                             </p>
                             <div className="flex flex-col gap-6 max-w-2xl mx-auto">
                                 {[

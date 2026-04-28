@@ -400,17 +400,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const navItems: NavItem[] = [
         {
             name: 'Home',
-            target: 'home',
-            subItems: [
-                { category: 'Navigation', name: 'Home Navigation', target: 'home', bullets: ['Main Landing', 'Quick Access', 'Site Overview'] },
-                { category: 'Platform', name: 'The Pilot Portal', target: 'home', bullets: ['Login Access', 'Dashboard', 'Member Area'] },
-                { name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
-                { name: 'Carousel Cards', target: 'home', bullets: ['Program Highlights', 'Feature Showcase', 'Dynamic Content'] },
-                { name: 'Pilot Recognition', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
-                { name: 'ATS Pilot Data Formatting Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { category: 'About', name: 'About Us', target: 'about', bullets: ['Brief Overview', 'Mission', 'Our Values'] },
-                { name: 'Become a Member', target: 'become-member', bullets: ['Join Network', 'Create Account', 'Start Journey'] }
-            ]
+            target: 'home'
         },
         {
             name: 'About',
@@ -441,27 +431,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         },
         {
             name: 'Pathways',
-            target: 'about_programs',
-            subItems: [
-                { category: 'Career Pathways', name: 'Air Taxi & eVTOL', target: 'air-taxi-pathways', bullets: ['Sub‑1000 Hour Pilots', 'New Sector Entry', 'Next‑Gen Rosters'] },
-                { category: 'Career Pathways', name: 'Emirates ATPL', target: 'emirates-atpl', bullets: ['GCAA ATPL Theory', 'Global Recognition', 'Fujairah Aviation Academy'] },
-                { category: 'Specialized Operations', name: 'Cargo Transportation', target: 'cargo-transportation', bullets: ['Feeder Operations', 'Heavy Logistics', 'Global Supply Chain'] },
-                { category: 'Career Pathways', name: 'Private Sector Pathway', target: 'private-charter-pathways', bullets: ['Corporate Flight Depts', 'VIP Service Standards', 'Global Mission Profile'] },
-                { category: 'Licensure & Type Rating Pathways', name: 'CFI Pathway', target: 'about_programs', bullets: ['Teaching Excellence', 'Building Experience', 'School Operations'] },
-                { category: 'Specialized Operations', name: 'Seaplane/Float Ops', target: 'about_programs', bullets: ['Island Transfers', 'Amphibious Skills', 'Specialized Handling'] },
-                { category: 'Specialized Operations', name: 'Aerial Tours & Skydive', target: 'about_programs', bullets: ['Sightseeing Ops', 'Jump Pilot Standards', 'Safety Protocols'] },
-                { category: 'Specialized Operations', name: 'Land Survey & Ag', target: 'about_programs', bullets: ['Precision Agriculture', 'Aerial Mapping', 'Utility Missions'] },
-                { category: 'Career Pathways', name: 'Piloted & Automated<br />Drones', target: 'piloted-drones', bullets: ['BVLOS Operations', 'Data Intelligence', 'Remote Fleet Mgmt'] },
-                { category: 'Licensure & Type Rating Pathways', name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Flagship Carrier Culture', 'Entry Requirements', 'Fleet Planning'] },
-                                { category: 'Career Pathways', name: 'UAM & Air Taxis', target: 'air-taxi-pathways', bullets: ['Urban Air Mobility', 'Infrastructure Layout', 'Battery Technology'] },
-                                { category: 'Specialized Operations', name: 'Float & Amphibious Ops', target: 'insights', bullets: ['Water Runways', 'Corrosion Management', 'Tidal Navigation'] },
-                { category: 'Licensure & Type Rating Pathways', name: 'CFI Pathway', target: 'insights', bullets: ['Student Psychology', 'Marketing Your School', 'Regulatory Compliance'] },
-                { category: 'Licensure & Type Rating Pathways', name: 'CPL & Type Ratings', target: 'about_programs', bullets: ['License Upgrades', 'Type Rating Courses', 'Multi-Engine'] },
-{ category: 'Licensure & Type Rating Pathways', name: 'Aerial Work<br />(UPRT)', target: 'insights', bullets: ['Aerial Firefighting', 'Search & Rescue', 'External Load Ops'] },
-                { category: 'Licensure & Type Rating Pathways', name: 'Aircraft Mgmt &<br />Ownership', target: 'insights', bullets: ['Registration Options', 'Maintenance Costs', 'Hangarage Strategy'] },
-                { category: 'Specialized Operations', name: 'Agricultural Crop<br />Dusting', target: 'insights', bullets: ['Hyperspectral Imaging', 'Crop Yield Analysis', 'Autonomy in Ag'] },
-                { category: 'Licensure & Type Rating Pathways', name: 'Type Rating Search', target: 'type-rating-search', bullets: ['3D Aircraft Models', 'Cockpit Views', 'Aircraft Categories'] }
-            ]
+            target: 'pathways-modern'
         },
         {
             name: 'Pilot Recognition',
@@ -475,24 +445,18 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         {
-            name: 'Applications',
-            target: 'applications_systems',
-            subItems: [
-                { category: 'The Digital Ecosystem', name: 'PilotRecognition W1000 Suite', target: 'w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
-                { name: 'Hinfact AIRBUS integrated applications', target: 'hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
-                { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Systems', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
-                { category: 'Program Access', name: 'Foundation Program application', target: 'foundational-application', bullets: ['Join Global Registry', 'Start Mentorship', 'Build Profile'] },
-                { name: 'Transition Program Application', target: 'transition-application', bullets: ['Optimize Career', 'Advanced Training', 'Direct Broker Entry'] },
-            ]
-        },
-        {
             name: 'Membership',
             target: 'membership',
             subItems: [
                 { category: 'The Network', name: 'Benefits of Membership', target: 'membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
                 { category: 'Premium Tier', name: 'Recognition Plus', target: 'recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
-                { name: 'Become a Member', target: 'become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] }
+                { name: 'Become a Member', target: 'become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] },
+                { category: 'The Digital Ecosystem', name: 'PilotRecognition W1000 Suite', target: 'w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
+                { name: 'Hinfact AIRBUS integrated applications', target: 'hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
+                { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { name: 'Pilot Recognition Systems', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { category: 'Program Access', name: 'Foundation Program application', target: 'foundational-application', bullets: ['Join Global Registry', 'Start Mentorship', 'Build Profile'] },
+                { name: 'Transition Program Application', target: 'transition-application', bullets: ['Optimize Career', 'Advanced Training', 'Direct Broker Entry'] }
             ]
         },
         { name: 'Contact', target: 'contact-support' },
@@ -523,6 +487,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     { name: 'About', url: '/about' },
                     { name: 'Programs', url: '/programs' },
                     { name: 'Pathways', url: '/discover-pathways' },
+                    { name: 'New Pathways', url: '/pathways-modern' },
                     { name: 'Pilot Recognition', url: '/recognition-plus' },
                     { name: 'Applications', url: '/pilot-recognition' },
                     { name: 'Membership', url: '/become-member' },
@@ -751,16 +716,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         )}
                                     </button>
                                 </div>
-
-                                {/* Pathways Button */}
-                                <button
-                                    onClick={() => onNavigate('pathways-modern-light')}
-                                    className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-amber-500/20 flex items-center gap-1.5 whitespace-nowrap"
-                                    title="View Pathways"
-                                >
-                                    <span>☀</span>
-                                    Pathways
-                                </button>
                             </>
                         )}
 
@@ -1197,15 +1152,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest mt-4 shadow-xl`}
                                     >
                                         {currentUser ? 'Access Portal' : 'Login'}
-                                    </button>
-
-                                    {/* Mobile: Pathways Button */}
-                                    <button
-                                        onClick={() => { onNavigate('pathways-modern-light'); setIsMenuOpen(false); }}
-                                        className="w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white transition-all shadow-lg flex items-center justify-center gap-2"
-                                    >
-                                        <span>☀</span>
-                                        Pathways
                                     </button>
 
                                     {currentUser && (

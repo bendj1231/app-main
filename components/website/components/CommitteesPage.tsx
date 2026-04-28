@@ -13,7 +13,7 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
     const committeeGroups = [
         {
             title: "Safety Board",
-            desc: "Expert-led reviews of operational safety protocols and the integration of <strong>Hinfact human factors analytics</strong>. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that safety oversight aligns with the exacting standards required by leading manufacturers. Our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of safety competencies across all operational domains.",
+            desc: "Expert-led reviews of operational safety protocols and the integration of <strong>Hinfact human factors analytics</strong>. Through advisory input from <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that safety oversight aligns with the exacting standards required by leading manufacturers. Our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of safety competencies across all operational domains.",
             bullets: ["Incident Analysis", "Human Factors", "Safety Culture"]
         },
         {
@@ -28,7 +28,7 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
         },
         {
             title: "Technology Committee",
-            desc: "Focusing on the advancement of the W1000 suite, <strong>ATLAS AI</strong>, and our Pilot Recognition scoring algorithms. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
+            desc: "Focusing on the advancement of the W1000 suite, <strong>ATLAS AI</strong>, and our Pilot Recognition scoring algorithms. Through guidance from <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
             bullets: ["AI Development", "Data Security", "UI/UX Stewardship"]
         }
     ];
@@ -64,7 +64,7 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
                             Our committees bring together the industry's brightest minds to ensure safety,
-                            curriculum excellence, and genuine pilot advocacy across the WingMentor ecosystem. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our committee oversight aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            curriculum excellence, and genuine pilot advocacy across the WingMentor ecosystem. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our committee oversight aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>

@@ -60,7 +60,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             and <strong>50 hours of verifiable mentorship</strong>.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Through strategic partnerships with <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>,
+                            Through advisory relationships with <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>,
                             and industry leaders, we deliver accredited experience programs that align with global aviation standards,
                             ensuring pilots gain the recognition they deserve and operators find candidates they can trust.
                         </p>

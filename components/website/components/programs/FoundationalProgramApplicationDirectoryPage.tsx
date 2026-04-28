@@ -67,7 +67,7 @@ export const FoundationalProgramApplicationPage: React.FC<FoundationalProgramApp
                             Global Registry | Verified Stewardship | Pathways Access
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            Step into the professional ecosystem. From verified logbook audits to global airline visibility, start your journey into legalized pilot recognition. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>50 hours of verifiable mentorship</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            Step into the professional ecosystem. From verified logbook audits to global airline visibility, start your journey into legalized pilot recognition. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>50 hours of verifiable mentorship</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -127,7 +127,7 @@ export const FoundationalProgramApplicationPage: React.FC<FoundationalProgramApp
                                 "Making the connection between pilot & Industry Expectations easier like never before."
                             </p>
                             <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans text-center max-w-3xl mx-auto">
-                                Our foundational program is recognized by ATLAS, AIRBUS, and Etihad Museum for its contribution to pilot career stewardship. We provide the legalization of professional recognition for all pilots. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                                Our application process is designed to verify your competencies and prepare you for airline recruitment. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                             </p>
                             <div className="space-y-4 max-w-md mx-auto">
                                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">

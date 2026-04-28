@@ -59,29 +59,22 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         const wingmentorCard = recommendedPathways.find(p => p.id === 'wingmentor-intro');
         const otherPathways = recommendedPathways.filter(p => p.id !== 'wingmentor-intro');
         
-        console.log('[FILTER] Selected category:', selectedScoreCategory);
-        console.log('[FILTER] Total pathways before filter:', otherPathways.length);
-        console.log('[FILTER] Pathway match percentages:', otherPathways.map(p => ({ id: p.id, title: p.title, match: p.matchPercentage })));
         
         const filteredOthers = otherPathways.filter(pathway => {
             if (selectedScoreCategory === 'all') return true;
             if (selectedScoreCategory === 'low') return pathway.matchPercentage < 50;
             if (selectedScoreCategory === 'middle') {
                 const matches = pathway.matchPercentage >= 50 && pathway.matchPercentage <= 69;
-                console.log('[FILTER MIDDLE]', pathway.title, 'match:', pathway.matchPercentage, 'matches:', matches);
                 return matches;
             }
             if (selectedScoreCategory === 'high') {
                 const matches = pathway.matchPercentage >= 70;
-                console.log('[FILTER HIGH]', pathway.title, 'match:', pathway.matchPercentage, 'matches:', matches);
                 return matches;
             }
             return true;
         });
         
-        console.log('[FILTER] Pathways after filter:', filteredOthers.length);
         if (selectedScoreCategory === 'middle' || selectedScoreCategory === 'high') {
-            console.log('[FILTER] Matched pathways:', filteredOthers.map(p => ({ title: p.title, match: p.matchPercentage })));
         }
         
         // Sort by match percentage (highest to lowest)
@@ -103,10 +96,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     // Debug carousel ref
     useEffect(() => {
         if (carouselRef.current) {
-            console.log('Carousel ref attached:', carouselRef.current);
-            console.log('Scroll width:', carouselRef.current.scrollWidth);
-            console.log('Client width:', carouselRef.current.clientWidth);
-            console.log('Can scroll:', carouselRef.current.scrollWidth > carouselRef.current.clientWidth);
         }
     }, [recommendedPathways]);
 
@@ -404,7 +393,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             if (updateError) throw updateError;
 
             setProfileImageUrl(publicUrl);
-            console.log('✅ Profile image uploaded successfully:', publicUrl);
         } catch (err) {
             console.error('❌ Error uploading image:', err);
             alert('Failed to upload image. Please try again.');
@@ -414,10 +402,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     };
 
     const handleDeleteAccount = async () => {
-        console.log('[DELETE ACCOUNT] Starting delete account process');
-        console.log('[DELETE ACCOUNT] Profile data:', profileData);
-        console.log('[DELETE ACCOUNT] User ID:', profileData?.user_id);
-        console.log('[DELETE ACCOUNT] Confirmation text:', deleteConfirmationText);
 
         if (!profileData?.user_id) {
             console.error('[DELETE ACCOUNT] No user ID found');
@@ -429,34 +413,23 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             return;
         }
 
-        console.log('[DELETE ACCOUNT] Confirmation validated, proceeding with deletion');
         setDeletingAccount(true);
-        console.log('[DELETE ACCOUNT] Set deletingAccount to true');
 
         try {
-            console.log('[DELETE ACCOUNT] Fetching authenticated user');
             const { data: { user }, error: userError } = await supabase.auth.getUser();
-            console.log('[DELETE ACCOUNT] User data:', user);
-            console.log('[DELETE ACCOUNT] User error:', userError);
             
             if (!user) {
                 console.error('[DELETE ACCOUNT] No authenticated user found');
                 throw new Error('Not authenticated');
             }
 
-            console.log('[DELETE ACCOUNT] Fetching session');
             const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-            console.log('[DELETE ACCOUNT] Session data:', session ? 'Session exists' : 'No session');
-            console.log('[DELETE ACCOUNT] Session error:', sessionError);
             
             if (!session) {
                 console.error('[DELETE ACCOUNT] No session found');
                 throw new Error('No session');
             }
 
-            console.log('[DELETE ACCOUNT] Calling delete-account Edge Function');
-            console.log('[DELETE ACCOUNT] User ID to delete:', profileData.user_id);
-            console.log('[DELETE ACCOUNT] Access token (first 20 chars):', session.access_token?.substring(0, 20) + '...');
 
             const response = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/delete-account', {
                 method: 'DELETE',
@@ -467,8 +440,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 body: JSON.stringify({ userId: profileData.user_id }),
             });
 
-            console.log('[DELETE ACCOUNT] Edge Function response status:', response.status);
-            console.log('[DELETE ACCOUNT] Edge Function response ok:', response.ok);
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -476,14 +447,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 throw new Error(errorData.error || 'Failed to delete account');
             }
 
-            console.log('[DELETE ACCOUNT] Account deletion successful, signing out');
             // Sign out after successful deletion
             await supabase.auth.signOut();
-            console.log('[DELETE ACCOUNT] Sign out complete');
             setDeleteConfirmationText('');
-            console.log('[DELETE ACCOUNT] Confirmation text cleared');
             // Force navigation to home after sign out
-            console.log('[DELETE ACCOUNT] Redirecting to home page');
             window.location.href = '/';
         } catch (err) {
             console.error('[DELETE ACCOUNT] Error during deletion:', err);
@@ -492,24 +459,19 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             console.error('[DELETE ACCOUNT] Error stack:', err.stack);
             alert('Failed to delete account. Please try again.');
         } finally {
-            console.log('[DELETE ACCOUNT] Cleanup: setting deletingAccount to false');
             setDeletingAccount(false);
-            console.log('[DELETE ACCOUNT] Cleanup: closing dialog');
             setShowDeleteDialog(false);
         }
     };
 
     const fetchProfileData = async () => {
-        console.log('=== START fetchProfileData ===');
         try {
             // Fetch user's profile data directly from Supabase
-            console.log('[1] Fetching profile data from Supabase');
             
             const { data: { user }, error: userError } = await supabase.auth.getUser();
             
             if (userError) {
                 console.error('[ERROR] Supabase auth error:', userError);
-                console.log('[WARN] Setting default profile data due to auth error');
                 setProfileData({
                     user_id: '',
                     total_hours: 0,
@@ -529,7 +491,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             
             if (!user) {
                 console.error('[ERROR] No user found in Supabase auth');
-                console.log('[WARN] Setting default profile data due to missing user');
                 setProfileData({
                     user_id: '',
                     total_hours: 0,
@@ -547,8 +508,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 return;
             }
             
-            console.log('[2] User authenticated:', user.id);
-            console.log('[2a] User email:', user.email);
             
             // Fetch profile data from pilot_recognition_matches table
             const { data: profileData, error: profileError } = await supabase
@@ -564,9 +523,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 .eq('id', user.id)
                 .maybeSingle();
             
-            console.log('[3] Profile data from pilot_recognition_matches:', profileData);
-            console.log('[3a] Profile image from profiles table:', profileImage);
-            console.log('[3b] Image error:', imageError);
             
             if (profileError) {
                 console.error('[ERROR] Profile fetch error:', profileError);
@@ -617,26 +573,20 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 } : {})
             };
             
-            console.log('[3] Profile data received:', finalProfileData);
-            console.log('[3a] Profile image data:', profileImage);
             
             setProfileData(finalProfileData);
             // Use profile image from profiles table first, then fall back to pilot_recognition_matches
             const imageUrl = profileImage?.profile_image_url || finalProfileData.profile_image_url || '';
             setProfileImageUrl(imageUrl);
-            console.log('[4] Profile data set in state, image URL:', imageUrl);
             
             // Call Supabase Edge Function to calculate pathway matches
             const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
             const edgeFunctionUrl = `${supabaseUrl}/functions/v1/calculate-pathway-matches`;
             
-            console.log('[5] Calling Edge Function with profile data:', finalProfileData);
-            console.log('[6] Edge Function URL:', edgeFunctionUrl);
             
             const { data: { session } } = await supabase.auth.getSession();
             const accessToken = session?.access_token;
             
-            console.log('[7] Access token:', accessToken?.substring(0, 20) + '...');
             
             const edgeFunctionResponse = await fetch(edgeFunctionUrl, {
                 method: 'POST',
@@ -647,8 +597,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 body: JSON.stringify({ profileData: finalProfileData }),
             });
             
-            console.log('[8] Edge Function response received');
-            console.log('[9] Edge Function response status:', edgeFunctionResponse.status);
             
             if (!edgeFunctionResponse.ok) {
                 const errorText = await edgeFunctionResponse.text();
@@ -657,11 +605,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             }
             
             const pathwaysData = await edgeFunctionResponse.json();
-            console.log('[10] Edge Function response data:', pathwaysData);
             
             if (pathwaysData.pathways) {
                 setRecommendedPathways(pathwaysData.pathways);
-                console.log('[11] Pathways set in state, count:', pathwaysData.pathways.length);
             } else {
                 console.error('[ERROR] No pathways in response:', pathwaysData);
             }
@@ -672,7 +618,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     totalRecognition: pathwaysData.recognitionProfile.recognition_score || pathwaysData.recognitionProfile.overall_recognition_score || 0,
                     breakdown: pathwaysData.recognitionProfile.breakdown
                 });
-                console.log('[RECOGNITION SCORE] Score extracted from Edge Function:', pathwaysData.recognitionProfile.recognition_score || pathwaysData.recognitionProfile.overall_recognition_score);
             }
         } catch (error) {
             console.error('[ERROR] Error in fetchProfileData:', error);
@@ -682,9 +627,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             // Fallback to empty pathways if Edge Function fails
             setRecommendedPathways([]);
         } finally {
-            console.log('[12] Setting loading to false');
             setLoading(false);
-            console.log('=== END fetchProfileData ===');
         }
     };
 
@@ -780,7 +723,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             src="/logo.png" 
                             alt="WingMentor Logo" 
                             style={{ height: '120px', width: 'auto' }}
-                            onLoad={() => console.log('[IMAGE] Logo loaded: /logo.png')}
                             onError={(e) => console.error('[IMAGE] Logo error: /logo.png', e)}
                         />
                     </div>
@@ -863,7 +805,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                         src={profileImageUrl} 
                                                         alt="Profile" 
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                        onLoad={() => console.log('[IMAGE] Profile image loaded:', profileImageUrl)}
                                                         onError={(e) => console.error('[IMAGE] Profile image error:', profileImageUrl, e)}
                                                     />
                                                     <div style={{
@@ -1503,7 +1444,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     Explore career pathways matched to your profile
                                 </p>
                                 <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.875rem' }}>
-                                    Discover cadet programs, airline partnerships, and career progression opportunities tailored to your experience level
+                                    Discover cadet programs, airline relationships, and career progression opportunities tailored to your experience level
                                 </p>
                             </div>
                         </div>
@@ -1717,7 +1658,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                             src={pathway.image}
                                                             alt={pathway.title}
                                                             style={{ width: '120px', height: '120px', objectFit: 'contain', margin: 'auto' }}
-                                                            onLoad={() => console.log('[IMAGE] WingMentor image loaded:', pathway.image)}
                                                             onError={(e) => console.error('[IMAGE] WingMentor image error:', pathway.image, e)}
                                                         />
                                                     ) : (
@@ -1727,7 +1667,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                             style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                                                             onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
                                                             onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                                            onLoad={() => console.log('[IMAGE] Pathway image loaded:', pathway.image, 'Pathway:', pathway.title)}
                                                             onError={(e) => console.error('[IMAGE] Pathway image error:', pathway.image, 'Pathway:', pathway.title, 'Error:', e)}
                                                         />
                                                     )}

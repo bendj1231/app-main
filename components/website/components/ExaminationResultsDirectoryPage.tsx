@@ -37,7 +37,7 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
                             Verified Assessments | Competency Tracking | Industry Standards
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            Comprehensive record of pilot assessments, knowledge recency checks, and competency evaluations. Verified results are visible to PilotRecognition recruiters and airline partners. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT/CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            Comprehensive record of pilot assessments, knowledge recency checks, and competency evaluations. Verified results are visible to PilotRecognition recruiters and airline partners. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT/CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -110,7 +110,7 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
                 <div className="text-center">
                     <RevealOnScroll>
                         <p className="text-base text-slate-700 leading-relaxed mb-6 font-sans">
-                            The examination system follows a rigorous process to ensure accuracy, fairness, and industry alignment. Through our partnership with <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations.
+                            The examination system follows a rigorous process to ensure accuracy, fairness, and industry alignment. Through guidance from <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that program development aligns with flagship carrier expectations.
                         </p>
 
                         <div className="grid grid-cols-1 gap-3 max-w-2xl mx-auto">
@@ -153,7 +153,7 @@ const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageP
                 <div className="max-w-4xl mx-auto text-center">
                     <RevealOnScroll>
                         <p className="text-slate-600 text-base max-w-md mb-8 leading-relaxed">
-                            Detailed examination records, score breakdowns, and competency assessments are reserved for verified members. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT/CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            Detailed examination records, score breakdowns, and competency assessments are reserved for verified members. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our <strong>EBT/CBTA-aligned assessment framework</strong> aligns with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -7,13 +7,18 @@ import { onAuthStateChange, type AuthState, SUPER_ADMIN_EMAIL, signOut, supabase
 import { PilotProfilePage } from './pages/PilotProfilePage';
 import { PilotPortfolioPage } from './pages/PilotPortfolioPage';
 import FoundationalProgramPage from './pages/FoundationalProgramPage';
-import { PilotRecognitionHome, type MainView } from './pages/PilotRecognitionHome';
+import { PilotRecognitionHome, type MainView } from './pages/WingMentorHome';
 import { RecognitionAchievementPage } from './pages/RecognitionAchievementPage';
 import { LoginPage } from './pages/LoginPage';
 import { GraphicsPresetSelector, type DetectionResult, type GraphicsPreset } from './components/GraphicsPresetSelector';
 import { LoadingScreen } from './components/LoadingScreen';
 import { PathwaysPageModern } from './pages/PathwaysPageModern';
 import PathwayDetailPage from './pages/PathwayDetailPage';
+import { PlatformAirTaxiPage } from '@/components/website/components/pathways/PlatformAirTaxiPage';
+import SpecializedPathwaysIndex from './pages/SpecializedPathwaysIndex';
+import SpecializedOperationsIndex from './pages/SpecializedOperationsIndex';
+import CareerPathwaysIndex from './pages/CareerPathwaysIndex';
+import { PortalAirlineExpectationsPage } from './pages/PortalAirlineExpectationsPage';
 
 // Remote segment disabled for integration
 // // Declare the remote module for TypeScript
@@ -275,6 +280,10 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'programs'
     | 'pathways-modern'
     | 'pathway-detail'
+    | 'air-taxi-pathways'
+    | 'licensure-type-rating-pathways'
+    | 'specialized-operations'
+    | 'career-pathways'
     | 'privatesector'
     | 'mentorship'
     | 'module-01'
@@ -284,12 +293,13 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'remote-segment'
     | 'job-database'
     | 'become-member'
-    | 'examination-portal';
+    | 'examination-portal'
+    | 'portal-airline-expectations';
 
   const VIEW_WHITELIST: ViewName[] = [
     'hub','programs','pathways-modern','foundational','privatesector',
     'foundational-onboarding','enrollment-confirmation','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
-    'reset-password','module-01','pilot-profile','pilot-portfolio','recognition','job-database','become-member','examination-portal','pathway-detail'
+    'reset-password','module-01','pilot-profile','pilot-portfolio','recognition','job-database','become-member','examination-portal','pathway-detail','air-taxi-pathways','licensure-type-rating-pathways','specialized-operations','career-pathways','portal-airline-expectations'
   ];
 
   const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'foundational' : 'hub');
@@ -823,8 +833,12 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           isDarkMode={isDarkMode}
           onNavigate={(page) => handleViewChange(page as ViewName)}
           onNavigateToPathway={(pathwayId) => {
-            setSelectedPathwayId(pathwayId);
-            setCurrentView('pathway-detail');
+            if ((pathwayId === 'wingmentor-05da1618-8398-4199-8993-90fd7353ac39' || pathwayId === 'wingmentor-intro-evtol') && onNavigateToMainApp) {
+              onNavigateToMainApp('air-taxi-pathways');
+            } else {
+              setSelectedPathwayId(pathwayId);
+              setCurrentView('pathway-detail');
+            }
           }}
           onNavigateToMainApp={onNavigateToMainApp}
         />
@@ -832,6 +846,28 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <PathwayDetailPage
           pathwayId={selectedPathwayId || ''}
           onBack={() => setCurrentView('pathways-modern')}
+        />
+      ) : currentView === 'air-taxi-pathways' ? (
+        <PlatformAirTaxiPage onNavigate={handleNavigateToMainApp} />
+      ) : currentView === 'licensure-type-rating-pathways' ? (
+        <SpecializedPathwaysIndex
+          onBack={() => setCurrentView('pathways-modern')}
+          onNavigate={(page) => handleViewChange(page as ViewName)}
+        />
+      ) : currentView === 'specialized-operations' ? (
+        <SpecializedOperationsIndex
+          onBack={() => setCurrentView('pathways-modern')}
+          onNavigate={(page) => handleViewChange(page as ViewName)}
+        />
+      ) : currentView === 'career-pathways' ? (
+        <CareerPathwaysIndex
+          onBack={() => setCurrentView('pathways-modern')}
+          onNavigate={(page) => handleViewChange(page as ViewName)}
+        />
+      ) : currentView === 'portal-airline-expectations' ? (
+        <PortalAirlineExpectationsPage
+          onBack={() => setCurrentView('pathways-modern')}
+          onNavigate={(page) => handleViewChange(page as ViewName)}
         />
       ) : currentView === 'privatesector' ? (
         <PrivateSectorPage onBack={() => setCurrentView('programs')} onLogout={handleLogout} />

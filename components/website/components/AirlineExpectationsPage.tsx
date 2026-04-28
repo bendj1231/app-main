@@ -132,7 +132,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                             Understanding what airlines really look for in pilot candidates—beyond the 1,500-hour requirement.
                             We bridge the gap between "having the hours" and "being the right candidate." Through our <strong>AI-powered pathway matching</strong> system,
                             we analyze your verified PilotRecognition profile against airline requirements to identify optimal career opportunities.
-                            Our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> ensures that the expectations we provide
+                            Our guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> ensures that the expectations we provide
                             align with the exacting standards required by leading manufacturers and operators.
                         </p>
                     </RevealOnScroll>
@@ -182,7 +182,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                             <div className="max-w-2xl mx-auto text-slate-400 text-sm leading-relaxed">
                                 <p className="mb-4">
                                     Browse through our comprehensive database of airline requirements, including minimum qualifications,
-                                    preferred credentials, training pathways, and career progression opportunities. Our partnership with
+                                    preferred credentials, training pathways, and career progression opportunities. Our advisory relationship with
                                     <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> ensures that
                                     the expectations we provide align with the exacting standards required by leading airlines.
                                 </p>
@@ -772,7 +772,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                     Modern airlines—especially major carriers like Emirates, Qatar Airways, and Etihad—now employ sophisticated
                     screening processes that evaluate candidates through <strong>Evidence-Based Training (EBT)</strong> and <strong>Competency-Based Training
                     & Assessment (CBTA)</strong> frameworks. These systems assess not just your flight hours, but your demonstrated competency
-                    across nine core performance areas. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that
+                    across nine core performance areas. Through advisory input from <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that
                     our assessment framework aligns with the exacting standards required by leading manufacturers worldwide.
                 </p>
 

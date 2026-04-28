@@ -855,6 +855,8 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         <div 
             className="absolute inset-0 z-50 flex flex-col items-center justify-start pt-20 md:pt-24 lg:pt-28 px-4 md:px-8 lg:px-12 pointer-events-auto"
         >
+            <div className="absolute inset-0 -z-10 pointer-events-none bg-gradient-to-b from-slate-900/55 via-slate-900/70 to-black/85" />
+
             <div
                 ref={gridInteractionRef}
                 className="relative w-full max-w-[1000px] xl:max-w-[1100px]"
@@ -967,21 +969,28 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             initial="hidden"
                             animate={isVisible ? "visible" : "hidden"}
                         >
-                            {/* Layout 1: Home - Gateway: Member & Discover featured, 3 categories below */}
+                            {/* Layout 1: Home - Two top cards, three bottom cards */}
                             {currentViewKey === 'home' && (
                                 <>
-                                    {/* Top row: Member & Discover */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-2.5 mb-4 md:mb-4">
+                                    <div className="md:hidden grid grid-cols-1 gap-2 mb-4">
+                                        {currentCards.slice(0, 5).map((card, idx) => (
+                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[220px]' : 'h-[170px]'}>
+                                                <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 2} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                        ))}
+                                    </div>
+
+                                    <div className="hidden md:grid md:grid-cols-2 gap-2 md:gap-2.5 mb-2.5">
                                         {currentCards.slice(0, 2).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[260px] md:h-[280px] lg:h-[300px] xl:h-[320px]">
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[220px] lg:h-[240px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
                                     </div>
-                                    {/* Bottom row: Programs, Recognition, Pathways */}
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-2.5 mb-4 md:mb-6">
-                                        {currentCards.slice(2).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[160px] md:h-[140px] lg:h-[150px] xl:h-[160px]">
+
+                                    <div className="hidden md:grid md:grid-cols-3 gap-2 md:gap-2.5 mb-4 md:mb-6">
+                                        {currentCards.slice(2, 5).map((card) => (
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[150px] lg:h-[165px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -1018,10 +1027,10 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-6 h-[180px] md:h-[220px]">
                                         <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                     </motion.div>
-                                    {/* Alternative pathways as equal options */}
-                                    <div className="md:col-span-6 grid grid-cols-2 md:grid-cols-4 gap-2">
+                                    {/* Alternative pathways as equal options - Larger MSFS style */}
+                                    <div className="md:col-span-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
                                         {currentCards.slice(1).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[140px] md:h-[160px]">
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[180px] md:h-[200px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -1375,6 +1384,8 @@ const GridCard: React.FC<GridCardProps> = ({
                     : shouldUseCarousel && card.images
                         ? card.images[currentImageIndex]
                         : card.image;
+
+    const isMsfsSelected = isHovered;
     
     // Handle card click - for discover card, navigate based on state
     const handleCardClick = (e: React.MouseEvent) => {
@@ -1405,8 +1416,8 @@ const GridCard: React.FC<GridCardProps> = ({
     return (
         <div
             className={`relative group cursor-pointer ${className}`}
-            onMouseEnter={enableAnimations ? onHover : undefined}
-            onMouseLeave={enableAnimations ? onLeave : undefined}
+            onMouseEnter={onHover}
+            onMouseLeave={onLeave}
             onClick={handleCardClick}
         >
             {/* Directory Card - Simple text with arrow */}
@@ -1446,17 +1457,15 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 </div>
             ) : (
-                /* Main Card Container - Enhanced Floating Glass UI */
+                /* Main Card Container - MSFS Style Dark Card with Blue Accent */
                 <div className={`
-                    relative w-full h-full rounded-lg overflow-hidden
-                    bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
-                    border border-white/20 shadow-2xl shadow-black/50
-                    before:content-[''] before:absolute before:inset-0 before:rounded-lg
-                    before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
-                    before:transition-opacity before:duration-300
-                    ${enableAnimations ? 'transition-all duration-500 ease-out' : ''}
-                    ${enableAnimations && isHovered ? 'scale-[1.03] shadow-black/70 before:opacity-100 border-white/30' : 'scale-100'}
+                    relative w-full h-full rounded-none overflow-hidden
+                    bg-black/85 border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]
+                    ${enableAnimations ? 'transition-transform duration-300 ease-out' : ''}
+                    ${enableAnimations && isHovered ? 'scale-[1.01] brightness-110' : 'scale-100'}
                 `}>
+                    {/* Selected Card Highlight Strip (MSFS style) */}
+                    <div className={`absolute bottom-0 left-0 right-0 h-[3px] z-30 transition-opacity duration-300 ${isMsfsSelected ? 'opacity-100 bg-[#00b4d8]' : 'opacity-0 bg-transparent'}`} />
                     {/* Background Image / Video / Carousel / Animation */}
                     <div className="absolute inset-0">
                     {card.videoUrl ? (
@@ -1516,9 +1525,9 @@ const GridCard: React.FC<GridCardProps> = ({
                                     </button>
                                 </>
                             )}
-                            {/* Overlay for glassy effect - only when there's content */}
+                            {/* MSFS Style Gradient Overlay - Bottom fade to dark */}
                             {!(card.isCarousel && carouselImages) && (card.videoUrl || card.image || card.hasAnimation) && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) && (
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#05070d] via-[#111827]/35 to-transparent pointer-events-none" />
                             )}
                         </div>
                     ) : card.hasAnimation && !shouldUseLoggedInCarousel && !(isLoggedIn && card.hasAnimationWhenLoggedIn === false) && enableAnimations ? (
@@ -1597,8 +1606,8 @@ const GridCard: React.FC<GridCardProps> = ({
                                     </div>
                                 );
                             })}
-                            {/* Subtle Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                            {/* MSFS Style Gradient Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#05070d] via-[#111827]/25 to-transparent pointer-events-none" />
                         </div>
                     ) : displayImage || currentImage ? (
                         // Single image
@@ -1616,256 +1625,51 @@ const GridCard: React.FC<GridCardProps> = ({
                             }}
                         />
                     ) : null}
-                    {/* Gradient Overlay - skip for carousel cards */}
+                    {/* MSFS Style Image to Content Transition - skip for carousel cards */}
                     {!shouldUseCarousel && !shouldUseLoggedInCarousel && !shouldUseEnrolledCarousel && (
                         <div className={`
-                            absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent
+                            absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#05070d] to-transparent
                             transition-opacity duration-300
-                            ${isHovered ? 'opacity-40' : 'opacity-30'}
+                            ${isHovered ? 'opacity-100' : 'opacity-90'}
                         `} />
                     )}
                 </div>
 
-                {/* Badge */}
+                {/* MSFS Style Badge - Amber/Orange NEW badge */}
                 {card.id === 'discover' ? (
-                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-md border border-white/30 text-white text-xs font-bold rounded-lg shadow-lg">
-                        {currentImageIndex === 0 ? 'Now Open' : currentImageIndex === 1 ? 'Discover Requirements' : ''}
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-[#ff9f1c] text-black text-xs font-bold uppercase tracking-wider">
+                        {currentImageIndex === 0 ? 'NOW OPEN' : currentImageIndex === 1 ? 'DISCOVER' : ''}
+                    </div>
+                ) : (card.id === 'pathways' || card.id === 'pilot-recognition' || card.id === 'programs') ? (
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-[#ff9f1c] text-black text-xs font-bold uppercase tracking-wider">
+                        NEW
                     </div>
                 ) : (isEnrolledInFoundation ? card.enrolledBadge : card.badge) && (
-                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-md border border-white/30 text-white text-xs font-bold rounded-lg shadow-lg">
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-[#00b4d8] text-white text-xs font-bold uppercase tracking-wider">
                         {isEnrolledInFoundation ? card.enrolledBadge : card.badge}
                     </div>
                 )}
 
-                {/* Glassy button for discover card - changes based on carousel slide */}
-                {card.id === 'discover' && isLargeCard && (
-                    <div className="absolute bottom-4 right-4 z-30 flex gap-2">
-                        {currentImageIndex === 0 ? (
-                            <>
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onNavigate('foundational-program');
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    Learn More
-                                </button>
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
-                                    }}
-                                    className="px-4 py-1.5 bg-red-500/30 backdrop-blur-md border border-red-400/50 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-500/50 transition-all duration-300 shadow-lg"
-                                >
-                                    Enroll
-                                </button>
-                            </>
-                        ) : (
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    onNavigate('pathways-modern');
-                                }}
-                                className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                            >
-                                Discover
-                            </button>
-                        )}
-                    </div>
-                )}
 
-                {/* Text Overlay - Directly on Image (for large cards) */}
+                {/* MSFS Style Content Area - Bottom section with blue accents (for large cards) */}
                 {isLargeCard && (
-                    <div className={`absolute bottom-0 left-0 right-0 h-1/2 p-4 md:p-6 flex flex-col justify-end z-20 ${card.id === 'discover' && isLoggedIn && currentImageIndex === 1 ? '' : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'} ${card.id === 'w1000-suite' ? 'pb-16' : ''}`}>
+                    <div className={`absolute bottom-0 left-0 right-0 p-3 md:p-4 z-20 transition-colors duration-300 ${isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'} ${card.id === 'w1000-suite' ? 'pb-12' : ''}`}>
                         {!(card.id === 'discover' && currentImageIndex === 0) && (
-                            <div className="flex items-center gap-3 mb-4">
-                                <h3 className={`font-normal text-2xl md:text-3xl lg:text-4xl tracking-wide ${card.id === 'credentials' ? 'text-black' : 'text-white'}`} style={{ fontFamily: 'Georgia, serif' }}>
-                                    {finalDisplayTitle}
-                                </h3>
-                            {/* Glassy Become a Member button for member/pathways card */}
-                            {card.id === 'member' && (
-                                <div className="absolute bottom-4 right-4 z-40">
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            if (isLoggedIn) {
-                                                onNavigate('portal');
-                                            } else {
-                                                onNavigate('become-member');
-                                            }
-                                        }}
-                                        className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                    >
-                                        {isLoggedIn ? 'Access Portal' : 'Become a Member'}
-                                    </button>
+                            <div className="flex flex-col">
+                                {/* Title row with double chevrons - MSFS style */}
+                                <div className="flex items-center gap-1.5 mb-1">
+                                    <span className={`text-xs md:text-sm font-bold ${isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
+                                    <h3 className={`text-white text-xs md:text-sm font-bold uppercase tracking-wider ${card.id === 'credentials' ? 'text-black' : ''}`}>
+                                        {finalDisplayTitle}
+                                    </h3>
                                 </div>
-                            )}
-                            {/* Glassy Enroll Now button for foundation card */}
-                            {card.enrollNow && (
-                                <div className="absolute bottom-4 right-4 z-40 flex gap-2">
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            // Navigate to foundation program about page
-                                            onNavigate('foundational-program');
-                                        }}
-                                        className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                    >
-                                        Learn More
-                                    </button>
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            // Navigate to enrollment page with directToEnrollment parameter
-                                            onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
-                                        }}
-                                        className="px-4 py-1.5 bg-red-500 border border-red-500 rounded-full text-white text-xs md:text-sm font-medium hover:bg-red-600 transition-all duration-300 shadow-lg"
-                                    >
-                                        Enroll Now!
-                                    </button>
-                                </div>
-                            )}
-                            {/* Glassy button for programs card */}
-                            {card.id === 'programs' && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onNavigate('programs');
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    Explore
-                                </button>
-                            )}
-                            {/* Glassy button for pilot-recognition card */}
-                            {card.id === 'pilot-recognition' && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onNavigate('pilot-recognition');
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    Learn More
-                                </button>
-                            )}
-                            {/* Glassy button for credentials (Pilot-Recognition Profile) card */}
-                            {card.id === 'credentials' && (
-                                <div className="absolute bottom-4 right-4 z-40">
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            onNavigate('pilot-recognition');
-                                        }}
-                                        className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-black text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                    >
-                                        Learn More
-                                    </button>
-                                </div>
-                            )}
-                            {/* Glassy button for pathways card */}
-                            {card.id === 'pathways' && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onNavigate('pathways');
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    View
-                                </button>
-                            )}
-                            {/* Glassy buttons for Discover Pathways Platform (pilot-pathways) card */}
-                            {card.id === 'pilot-pathways' && (
-                                <div className="absolute bottom-4 right-4 z-40 flex gap-2">
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            onNavigate('pathways-modern');
-                                        }}
-                                        className="px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                    >
-                                        Type Ratings
-                                    </button>
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            onNavigate('airline-expectations');
-                                        }}
-                                        className="px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                    >
-                                        Expectations
-                                    </button>
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            onNavigate('pathways-modern');
-                                        }}
-                                        className="px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                    >
-                                        Matched Jobs
-                                    </button>
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            onNavigate('pathways');
-                                        }}
-                                        className="px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                    >
-                                        Pathways
-                                    </button>
-                                </div>
-                            )}
-                            {/* Glassy button for w1000-suite card */}
-                            {card.id === 'w1000-suite' && (
-                                <div className="absolute bottom-4 right-4 z-40">
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            onNavigate(isLoggedIn ? 'portal?directToEnrollment=true' : 'become-member');
-                                        }}
-                                        className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                    >
-                                        {isLoggedIn ? 'Enroll for Access' : 'Enroll Foundation Program for Access'}
-                                    </button>
-                                </div>
-                            )}
-                            {/* Glassy button for pathway-specific cards */}
-                            {['cargo', 'charter', 'cadet', 'air-taxi'].includes(card.id) && (
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        onClick();
-                                    }}
-                                    className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs md:text-sm font-medium hover:bg-white/30 transition-all duration-300 shadow-lg"
-                                >
-                                    {isLoggedIn ? 'Access' : 'Learn More'}
-                                </button>
-                            )}
-                        </div>
-                        )}
-                        {/* Hide subtitle for discover card when logged out and hovered, or when showing Foundation Program Enroll */}
-                        {!(card.id === 'discover' && !isLoggedIn && isHovered) && !(card.id === 'discover' && currentImageIndex === 0) && (
-                            <p className="text-white/90 text-xs md:text-sm truncate mb-4">
-                                {finalDisplaySubtitle.length > 60 ? finalDisplaySubtitle.slice(0, 57) + '...' : finalDisplaySubtitle}
-                            </p>
+                                {/* Blue accent underline - MSFS style progress bar look */}
+                                <div className={`w-full max-w-[120px] h-1 mb-2 ${isMsfsSelected ? 'bg-gradient-to-r from-white to-transparent' : 'bg-gradient-to-r from-[#00b4d8] to-transparent'}`} />
+                                {/* Description - MSFS style smaller gray text */}
+                                <p className={`text-[10px] md:text-xs leading-tight line-clamp-2 ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
+                                    {finalDisplaySubtitle}
+                                </p>
+                            </div>
                         )}
                     </div>
                 )}
@@ -1896,56 +1700,42 @@ const GridCard: React.FC<GridCardProps> = ({
                     </>
                 )}
 
-                {/* Airy Glassy Strip - Bottom (for small cards only) */}
+                {/* MSFS Style Bottom Bar - Small Cards */}
                 {!isLargeCard && (
                     <div className="absolute bottom-0 left-0 right-0">
                         <div className={`
-                            relative bg-slate-400/20 backdrop-blur-xl border-t border-white/25
-                            px-4 py-2 md:px-5 md:py-2.5 transition-all duration-300
-                            ${isHovered ? 'bg-slate-300/25 border-white/35' : ''}
+                            relative
+                            px-3 py-2 md:px-4 md:py-2 transition-all duration-300
+                            ${isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'}
                         `}>
+                            {/* Blue accent line at top */}
+                            <div className={`absolute top-0 left-0 w-10 h-[2px] ${isMsfsSelected ? 'bg-white' : 'bg-[#00b4d8]'}`} />
                             <div className="flex items-center gap-2">
                                 <div className="flex-1 min-w-0">
-                                    <h3 className="font-medium text-white text-sm md:text-base truncate tracking-wide">
-                                        {displayTitle}
-                                    </h3>
-                                    <p className="text-white/80 text-[10px] md:text-xs truncate hidden md:block">
+                                    <div className="flex items-center gap-1 mb-0.5">
+                                        <span className={`text-[10px] md:text-xs font-bold ${isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
+                                        <h3 className="font-bold text-white text-xs md:text-sm truncate uppercase tracking-wider">
+                                            {displayTitle}
+                                        </h3>
+                                    </div>
+                                    <p className={`text-[10px] truncate hidden md:block ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
                                         {finalDisplaySubtitle.length > 45 ? finalDisplaySubtitle.slice(0, 42) + '...' : finalDisplaySubtitle}
                                     </p>
                                 </div>
-                                {/* Glassy button for home view bottom row cards only */}
-                                {currentViewKey === 'home' && ['programs', 'pilot-recognition', 'pathways'].includes(card.id) && (
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            onClick();
-                                        }}
-                                        className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs font-medium hover:bg-white/30 transition-all duration-300 shadow-lg flex-shrink-0"
-                                    >
-                                        {isLoggedIn ? 'Access' : 'Learn More'}
-                                    </button>
-                                )}
                             </div>
-                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                         </div>
                     </div>
                 )}
 
-                {/* Hover Border Effect */}
+                {/* Subtle hover glow effect */}
                 <div className={`
-                    absolute inset-0 rounded-xl border-2 transition-all duration-300
-                    ${isHovered ? 'border-white/40' : 'border-transparent'}
-                    pointer-events-none
+                    absolute inset-0 transition-all duration-300 pointer-events-none
+                    ${isMsfsSelected ? 'shadow-[inset_0_0_0_1px_rgba(0,180,216,0.5)]' : ''}
                 `} />
-
-                {/* Corner Accents */}
-                <div className="absolute top-0 left-0 w-8 h-px bg-gradient-to-r from-white/40 to-transparent" />
-                <div className="absolute top-0 left-0 w-px h-8 bg-gradient-to-b from-white/40 to-transparent" />
-                <div className="absolute top-0 right-0 w-8 h-px bg-gradient-to-l from-white/40 to-transparent" />
-                <div className="absolute top-0 right-0 w-px h-8 bg-gradient-to-b from-white/40 to-transparent" />
                 </div>
             )}
         </div>
     );
 };
+
+export default PathwayGrid;

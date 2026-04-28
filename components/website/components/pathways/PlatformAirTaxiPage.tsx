@@ -13,7 +13,16 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
 
             {/* Header Section */}
             <div className="pt-10 pb-12 px-6">
-                <div className="max-w-6xl mx-auto text-center relative z-20">
+                <div className="max-w-6xl mx-auto relative z-20">
+                    {/* Back Button */}
+                    <button
+                        onClick={() => onNavigate('pathways-modern')}
+                        className="absolute top-0 left-0 flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors group"
+                    >
+                        <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                        <span className="text-sm font-medium">Back to Pathways</span>
+                    </button>
+                    <div className="text-center">
                     <img
                         src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
                         alt="PilotRecognition Logo"
@@ -28,6 +37,7 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
                         Guidance from the future of urban aviation. PilotRecognition has advisory relationships with industry leaders Archer, MLG, and Joby to prepare pilots for the eVTOL revolution.
                     </p>
+                </div>
                 </div>
             </div>
 
@@ -281,7 +291,7 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                     <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
                         <h3 className="text-lg font-bold text-slate-900 mb-4">Ready to Take Off?</h3>
                         <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            Join the PilotRecognition Transition Program today and gain exclusive access to the air taxi pathway. Our direct partnerships with Archer, MLG, and Joby mean you'll be first in line when positions open.
+                            Join the PilotRecognition Transition Program today and gain exclusive access to the air taxi pathway. Our advisory relationships with Archer, MLG, and Joby provide insights into emerging opportunities in the eVTOL sector.
                         </p>
                         <button
                             onClick={() => onNavigate('contact-support')}

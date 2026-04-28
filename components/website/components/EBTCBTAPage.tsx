@@ -14,7 +14,7 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
     const coreElements = [
         {
             title: "Evidence-Based Training",
-            desc: "Evaluation based on real-world data and operational risks rather than repetitive mechanical maneuvers. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our programs align with the exacting standards required by leading manufacturers worldwide. Our <strong>data-driven approach</strong> focuses on identifying and mitigating operational risks through targeted program interventions.",
+            desc: "Evaluation based on real-world data and operational risks rather than repetitive mechanical maneuvers. Through advisory input from <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our programs align with the exacting standards required by leading manufacturers worldwide. Our <strong>data-driven approach</strong> focuses on identifying and mitigating operational risks through targeted program interventions.",
             bullets: ["Data-Driven Programs", "Risk Mitigation", "Operational Context"]
         },
         {
@@ -24,7 +24,7 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
         },
         {
             title: "Airbus Integration",
-            desc: "Direct alignment with the program methodologies used by the Head of EBT/CBTA at Airbus. Our partnership ensures that pilots who complete our programs are prepared for the exacting standards of A320/A350 operations and manufacturer-specific procedures. This alignment provides a competitive advantage for pilots seeking careers with Airbus operators worldwide.",
+            desc: "Direct alignment with the program methodologies used by the Head of EBT/CBTA at Airbus. Our advisory relationship ensures that pilots who complete our programs are prepared for the exacting standards of A320/A350 operations and manufacturer-specific procedures. This alignment provides a competitive advantage for pilots seeking careers with Airbus operators worldwide.",
             bullets: ["A320/A350 SOPs", "Manufacturer Standards", "Global Best Practice"]
         },
         {
@@ -71,7 +71,7 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
                             The new standard for airline pilot evaluation. We provide the bridge from pattern flying
-                            to the competency-based performance required by flagship carriers. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide.
+                            to the competency-based performance required by flagship carriers. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide.
                         </p>
                     </RevealOnScroll>
                 </div>
