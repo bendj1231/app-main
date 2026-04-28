@@ -620,7 +620,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
                   Take the first step toward a prestigious career in private aviation with our guided pathway. Contact us to learn about enrollment and career opportunities.
                 </p>
                 <button
-                  onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com?subject=Private Sector Pathway Inquiry&body=I am interested in learning more about the Private Sector pathway through PilotRecognition.'}
+                  onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com?subject=Private Sector Pathway Inquiry&body=I am interested in learning more about the Private Sector pathway through PilotRecognition.'}
                   style={{
                     padding: '1rem 2.5rem',
                     background: '#2563eb',
@@ -683,7 +683,7 @@ export const PrivateSectorPathwayPage: React.FC<PrivateSectorPathwayPageProps> =
               transition: 'all 0.2s ease',
               boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
             }}
-            onClick={() => window.location.href = 'mailto:pilotrecognition@gmail.com'}
+            onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
           >
             ✉️ Contact Support
           </button>

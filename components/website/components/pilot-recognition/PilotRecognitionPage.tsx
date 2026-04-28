@@ -57,7 +57,7 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
                                 The Solution & Challenges
                             </p>
                             <p>
-                                This reality prompted the establishment of <strong>PilotRecognition.com was established to address these challenges and bridge the gap between the industry and the pilot profession.</strong>  recent graduates are unable to secure employment due to the <strong>1500-hour requirement</strong>, flight instructors who have reached these hours remain employed at the same flight school for over <strong>10 years</strong>, and airline pilots operating <strong>international long-haul flights</strong> seek career advancement opportunities while constrained by time limitations.
+                                This reality prompted the establishment of <strong>PilotRecognition.com</strong>. The industry faces undeniable challenges: recent graduates are unable to secure employment due to the <strong>1500-hour requirement</strong>, flight instructors who have reached these hours remain employed at the same flight school for over <strong>10 years</strong>, and airline pilots operating <strong>international long-haul flights</strong> seek career advancement opportunities while constrained by time limitations.
                             </p>
                         </div>
 

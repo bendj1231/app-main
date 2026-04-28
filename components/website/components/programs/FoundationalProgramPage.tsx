@@ -172,7 +172,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                     </td>
                                     <td style={{ padding: '1.5rem', verticalAlign: 'top' }}>
                                         <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                                            AIRBUS INTERVIEW
+                                            FINAL EVALUATION
                                         </div>
                                         <h3 style={{ fontSize: '1.1rem', fontWeight: 400, color: '#0f172a', margin: '0 0 0.5rem 0', fontFamily: 'Georgia, serif' }}>
                                             EBT Aligned Evaluation

@@ -133,7 +133,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ onBack }
                     <div className={styles.contactSection}>
                         <div>Contact Us</div>
                         <div>Phone: <a href="tel:+1234567890">+1 234 567 890</a></div>
-                        <div>Email: <a href="mailto:pilotrecognition@gmail.com">pilotrecognition@gmail.com</a></div>
+                        <div>Email: <a href="mailto:contact@pilotrecognition.com">contact@pilotrecognition.com</a></div>
                     </div>
                 </div>
             </div>

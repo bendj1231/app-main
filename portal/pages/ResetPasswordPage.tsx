@@ -515,7 +515,7 @@ export const ResetPasswordPage: React.FC = () => {
                 }}>
                     <div style={{ marginBottom: '0.5rem', fontWeight: 600, color: '#475569' }}>Contact Us</div>
                     <div>Phone: <a href="tel:+1234567890" style={{ color: '#2563eb', textDecoration: 'none' }}>+1 234 567 890</a></div>
-                    <div>Email: <a href="mailto:pilotrecognition@gmail.com" style={{ color: '#2563eb', textDecoration: 'none' }}>pilotrecognition@gmail.com</a></div>
+                    <div>Email: <a href="mailto:contact@pilotrecognition.com" style={{ color: '#2563eb', textDecoration: 'none' }}>contact@pilotrecognition.com</a></div>
                 </div>
             </div>
         </div>

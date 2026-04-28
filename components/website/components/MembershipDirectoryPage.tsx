@@ -225,7 +225,7 @@ export const MembershipDirectoryPage: React.FC<MembershipDirectoryPageProps> = (
                                     </td>
                                     <td className="p-5 text-slate-700 border-r border-slate-200">
                                         <ul className="text-xs space-y-1.5">
-                                            <li>• Airbus interview access</li>
+                                            <li>• Final evaluation access</li>
                                             <li>• Priority placement</li>
                                             <li>• Direct recruitment</li>
                                             <li>• Early notification</li>
@@ -449,7 +449,7 @@ export const MembershipDirectoryPage: React.FC<MembershipDirectoryPageProps> = (
                                     </td>
                                     <td className="p-6 text-slate-700 font-semibold text-red-600">
                                         <ul className="text-sm space-y-2">
-                                            <li>• Airbus interview access</li>
+                                            <li>• Final evaluation access</li>
                                             <li>• Priority placement</li>
                                             <li>• Direct recruitment</li>
                                             <li>• Early notification</li>
