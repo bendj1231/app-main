@@ -30,14 +30,14 @@ const ACTION_ICONS = [
         title: 'Operating Handbook',
         description: 'Access the official Program Operating Handbook. Detailed protocols and program guidelines.',
         target: 'handbook',
-        image: 'https://lh3.googleusercontent.com/d/1GbUopHNGyXMhzi5sW1Ybo5gZMh2_YSKN'
+        image: '/images/landing-1.png'
     },
     {
         icon: 'fa-terminal',
         title: 'Examination Terminal',
         description: 'Prepare for checkrides and knowledge tests with our interactive preparation hub.',
         target: 'examination',
-        image: 'https://lh3.googleusercontent.com/d/11j7ZHv874EBZZ6O36etvuHC6rRWWm8kF'
+        image: '/images/landing-2.png'
     },
     {
         icon: 'fa-exclamation-triangle',
