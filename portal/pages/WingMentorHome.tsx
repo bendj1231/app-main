@@ -1935,7 +1935,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
               pointerEvents: 'none'
             }}>
               <img
-                src="https://lh3.googleusercontent.com/d/1wPEIiMRj4fW34_NIQKRnzCf8KNhdD1TC"
+                src="/images/mentor-home.png"
                 alt="Transition Program"
                 style={{
                   width: '100%',

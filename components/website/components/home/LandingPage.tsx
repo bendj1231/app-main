@@ -51,7 +51,7 @@ const ACTION_ICONS = [
         title: 'The Black Box',
         description: 'Unlock deeply guarded information and resources from our comprehensive knowledge vault.',
         target: 'blackbox',
-        image: 'https://lh3.googleusercontent.com/d/1yLM_bGVPN8Sa__fqR95C0EeA1CUsTAA7'
+        image: '/images/landing-4.png'
     },
 ];
 
