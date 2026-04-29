@@ -34,9 +34,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             Mission & Vision
                         </h1>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                            As the aviation industry's first <strong>PilotRecognition-based platform</strong>, operated by WM Pilot Group,
-                            we bridge the <strong>Pilot Gap in Recognition, Experience, and Pilot Risk Management</strong> through
-                            recognition-based profiling and accredited experience programs aligned with <strong>EBT CBTA AIRBUS 9 core competencies</strong>.
+                            Pilots invest $50,000 and 4 years in training. The industry lacks a standardized way to recognize professional capabilities beyond flight hours and type ratings. This creates a gap between training investment and career opportunity. PilotRecognition provides the recognition framework the industry lacks.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -53,16 +51,79 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             Bridge the Pilot Gap Through Recognition
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            To address the aviation industry's most significant challenge—professional <strong>Recognition</strong>.
-                            Pilots invest <strong>$50,000 USD</strong> in training and <strong>4 years</strong> in education,
-                            yet face outdated job platforms and informal searches. We provide a verified PilotRecognition platform
-                            that demonstrates actual professional capabilities through <strong>EBT CBTA aligned assessments</strong>
-                            and <strong>50 hours of verifiable mentorship</strong>.
+                            Pilots invest <strong>$50,000 USD</strong> and <strong>4 years</strong> in training. The industry has no way to recognize professional capabilities beyond flight hours and type ratings. This is the recognition gap. We provide a verified platform that demonstrates actual professional capabilities through <strong>EBT CBTA aligned assessments</strong> and <strong>50 hours of verifiable mentorship</strong>.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Through advisory relationships with <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>,
-                            and industry leaders, we deliver accredited experience programs that align with global aviation standards,
-                            ensuring pilots gain the recognition they deserve and operators find candidates they can trust.
+                            Built through advisory relationships with <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>, and industry leaders. Our programs align with global aviation standards. Pilots gain the recognition they deserve. Operators find candidates they can trust.
+                        </p>
+                    </RevealOnScroll>
+                </div>
+            </div>
+
+            {/* Four-Floor Tower Narrative */}
+            <div className="py-16 px-6 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                The Problem We Solve
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                The Clogged Pipeline
+                            </h2>
+                            <p className="text-slate-600 max-w-2xl mx-auto">
+                                The aviation career pipeline is broken at every level
+                            </p>
+                        </RevealOnScroll>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {[
+                            {
+                                floor: "0",
+                                title: "Graduates",
+                                desc: "200 hours, promised airline jobs that never materialize. Line to instructor positions backed up 2-3 years. Batch of 2015 still waiting. $50,000 investment sits unused."
+                            },
+                            {
+                                floor: "1",
+                                title: "Flight Instructors",
+                                desc: "5,000-6,000 hours, 15 years experience. Stuck because nobody's leaving Floor 2. Want recognition for what they've built. Some try to jump ahead, realize requirements differ, get sent back."
+                            },
+                            {
+                                floor: "2",
+                                title: "The Recognition Gap",
+                                desc: "This is the collapse point. Everyone fighting for recognition, pathways, expectations. Industry lacks communication. Pilots don't know what's required. They fly blind. This is where we provide the framework."
+                            },
+                            {
+                                floor: "3",
+                                title: "Airline Pilots",
+                                desc: "12+ years, bored, want change but trapped by seniority sacrifice. Captain goes back to First Officer. Recognition score becomes portable—capabilities travel, not airline seniority."
+                            }
+                        ].map((item, idx) => (
+                            <RevealOnScroll key={idx}>
+                                <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className={`w-12 h-12 ${item.floor === '2' ? 'bg-orange-100 text-orange-700' : item.floor === '3' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'} rounded-full flex items-center justify-center font-bold text-xl`}>
+                                            {item.floor}
+                                        </div>
+                                        <h3 className="text-xl font-bold text-slate-900">{item.title}</h3>
+                                    </div>
+                                    <p className="text-slate-700 leading-relaxed text-sm">
+                                        {item.desc}
+                                    </p>
+                                </div>
+                            </RevealOnScroll>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Context Banner */}
+            <div className="py-8 px-6 bg-blue-900 text-white">
+                <div className="max-w-6xl mx-auto text-center">
+                    <RevealOnScroll>
+                        <p className="text-lg font-medium">
+                            Module 1 teaches you the industry reality. Your examination creates your baseline recognition score. Mentorship builds recognized experience. Every hour logged contributes to your recognition profile. Pathway matching connects you to opportunities.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -121,8 +182,8 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                                 desc: "Recognition-based flight logbooks where every hour contributes to your score, with live tracking and intelligent pathway matching based on verified competencies"
                             },
                             {
-                                title: "Pathway Matching",
-                                desc: "AI-powered career guidance connecting pilots to cadet programs, type ratings, business aviation, eVTOL, and specialized operations with predictive analytics"
+                                title: "Pathway Cards",
+                                desc: "Not job listings—pathway cards showing requirements and what you're missing. Pulling system: pilots submit interest, airlines pull from database with live real-time profiles, not static CVs"
                             },
                             {
                                 title: "Pilot Terminal",
@@ -139,6 +200,17 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             </RevealOnScroll>
                         ))}
                     </div>
+                </div>
+            </div>
+
+            {/* Context Banner */}
+            <div className="py-8 px-6 bg-slate-900 text-white">
+                <div className="max-w-6xl mx-auto text-center">
+                    <RevealOnScroll>
+                        <p className="text-lg font-medium">
+                            Your recognition score is your currency. Pathways are where you spend it. We bridge the gap between training investment and career opportunity.
+                        </p>
+                    </RevealOnScroll>
                 </div>
             </div>
 

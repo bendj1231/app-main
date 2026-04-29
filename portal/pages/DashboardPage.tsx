@@ -511,7 +511,7 @@ const CompetencyCompass: React.FC<{
                 Overall Verified Score
               </div>
               <div style={{ fontSize: '0.875rem', color: '#cbd5e1', marginTop: '0.25rem' }}>
-                Visible to recruiters and airlines
+                Your currency for pathway access
               </div>
             </div>
             <div style={{

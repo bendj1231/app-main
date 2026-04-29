@@ -5061,6 +5061,17 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </h1>
         </div>
 
+        {/* Context Banner - Pulling System */}
+        <div className="mb-6 w-full">
+          <div className="w-full max-w-7xl mx-auto px-4">
+            <div className="bg-blue-900/30 backdrop-blur border border-blue-500/30 rounded-xl p-4 text-center">
+              <p className="text-white text-sm font-medium">
+                Pathway Cards — Not Job Listings. Submit your interest. Airlines pull from your live real-time profile.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Search Bar - above categories */}
         <div className="mb-6 flex justify-center">
           <div className="w-full max-w-2xl">

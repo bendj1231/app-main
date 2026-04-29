@@ -38,7 +38,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                         Foundational Program
                     </h1>
                     <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '44rem' }}>
-                        Structured training pathways from flight school to airline-ready professional. Explore our core foundational training and specialized career tracks.
+                        Pilots invest $50,000 and 4 years in training. The industry lacks a standardized way to recognize professional capabilities. The Foundational Program provides the recognition framework you need to connect your investment to career opportunity.
                     </p>
                 </div>
 
@@ -72,6 +72,15 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                     — Benjamin Tiger Bowler & Karl Vogt, Founders
                                 </p>
                             </div>
+                        </div>
+                    </section>
+
+                    {/* Context Banner */}
+                    <section style={{ width: '100%', maxWidth: '56rem' }}>
+                        <div style={{ backgroundColor: '#0f172a', padding: '2rem', borderRadius: '16px', textAlign: 'center' }}>
+                            <p style={{ color: '#ffffff', fontSize: '1rem', lineHeight: 1.6, margin: 0 }}>
+                                Module 1 teaches you the industry reality. Your examination creates your baseline recognition score. Mentorship builds recognized experience. Every hour logged contributes to your recognition profile.
+                            </p>
                         </div>
                     </section>
 
@@ -179,11 +188,20 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                         </h3>
                                     </td>
                                     <td style={{ padding: '1.5rem', verticalAlign: 'top', color: '#475569', fontSize: '0.95rem', lineHeight: 1.7 }}>
-                                        An evaluation based on an Airbus EBT-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathways and compare your recognition credentials within our network consisting of jobs from pilotcareercenter.com, betterjobs.com and many more, along with direct relations with airlines expectations to review their requirements and access various pathways such as cadet programmes, cargo pathways, licensure & type rating pathways, specialized pathways and more!
+                                        An evaluation based on an Airbus EBT-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathway cards—not job listings. Pathway cards show requirements and what you're missing. Compare your recognition credentials within our network, access cadet programmes, cargo pathways, licensure & type rating pathways, and specialized pathways aligned with your verified competencies.
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                    </section>
+
+                    {/* Context Banner */}
+                    <section style={{ width: '100%', maxWidth: '56rem' }}>
+                        <div style={{ backgroundColor: '#2563eb', padding: '2rem', borderRadius: '16px', textAlign: 'center' }}>
+                            <p style={{ color: '#ffffff', fontSize: '1rem', lineHeight: 1.6, margin: 0 }}>
+                                Your recognition score is your currency. Pathways are where you spend it. We bridge the gap between training investment and career opportunity.
+                            </p>
+                        </div>
                     </section>
 
                     {/* Pilot Recognition Profile Section */}
