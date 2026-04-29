@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Shield, Award, CheckCircle2, HelpCircle, Mail, ChevronRight } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
+import { sanitizeJsonLd, sanitizeHtml } from '@/src/lib/sanitize-html';
 
 interface FAQPageProps {
     onBack: () => void;
@@ -11,52 +12,48 @@ interface FAQPageProps {
 export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin }) => {
     const faqs = [
         {
-            category: "About Pilotrecognition.com",
+            category: "Platform Overview",
             questions: [
                 {
-                    q: "What is pilotrecognition?",
-                    a: "<strong>Pilotrecognition.com</strong> is a Recognition platform operated by <strong>WM Pilot Group</strong>, designed to serve the greater future of pilot Recognition. We provide industry-accredited Recognition profiles with support, assurance & Recognition from <strong>Airbus Head of training of EBT CBTA</strong> and <strong>Etihad head of Cadet Program & Head of Training</strong>, using our <strong>ATLAS Aviation CV Recognition System</strong> to benchmark your flight experience against flagship carrier standards. Our platform transforms your profile to leadership-aligned standards, giving you the Recognition the industry doesn't provide until now."
+                    q: "What is PilotRecognition?",
+                    a: "A competency framework and career platform for pilots. We assess behavioral markers alongside flight hours, match you with verified pathways, and give operators access to your live profile. You build a recognition score based on verified mentorship hours, EBT CBTA-aligned competency assessment, and professional development."
                 },
                 {
-                    q: "How does pilotrecognition work?",
-                    a: "Pilotrecognition uses our proprietary <strong>ATLAS Aviation CV Recognition System</strong> to benchmark your flight experience against flagship carrier standards (Etihad, Emirates, etc.). Our <strong>Pilot-Terminal Recognition AI</strong> analyzes your profile, matches you with suitable career pathways, and connects you with industry opportunities through our network of airlines and operators. Airlines access pilot profiles through our <strong>Pilot-Terminal Database API</strong>, enabling direct recruitment based on Recognition scores."
+                    q: "Is PilotRecognition free?",
+                    a: "Basic access is free. Programs cost money: <strong>Foundation Program ($49)</strong> includes 50 hours verified mentorship and competency assessment. <strong>Transition Program ($299)</strong> is the advanced stage with EBT CBTA video assessment. <strong>Recognition Plus ($99/year)</strong> unlocks unlimited pathway views and priority matching. Our revenue comes from airline/operator subscriptions—not from charging pilots for basic access."
                 },
                 {
-                    q: "Is PilotRecognition free to use?",
-                    a: "Yes, PilotRecognition is 100% free to use for pilots. All features including AI-powered career matching, ATLAS CV optimization, pathway analysis, mentorship, and recruiter connections are available at no cost. We use our Pilot Terminal Network with free API access to provide all services. Our revenue model is based on API access for airlines who pay to access our pilot database, not from pilots."
+                    q: "How does it work?",
+                    a: "Create your profile. Complete verified mentorship hours. Your competencies are assessed through our EBT CBTA-aligned framework. Operators post pathways with competency requirements. You see match indicators against your verified profile. When you meet requirements, operators pull your data. Your recognition score is your currency for pathway access."
                 },
                 {
-                    q: "What are the benefits of using PilotRecognition?",
-                    a: "Benefits include free AI-powered career matching, ATLAS CV optimization, pathway analysis, access to exclusive job opportunities, professional Recognition profile building, real-time market intelligence, credibility verification through our ATLAS system, and industry Recognition from major airlines. Pilots who build Recognition profiles gain a competitive edge with top-scoring profiles and EBT CBTA aligned standards."
+                    q: "What's the difference from a job board?",
+                    a: "Job boards are push-based: you apply, you wait, you compete. PilotRecognition is a pulling system: operators see verified competency data and pull candidates who match requirements. Your profile is live and updates as you log hours. Pathways show you exactly what competencies you're missing—not just open positions."
                 },
                 {
-                    q: "How do certificate endorsements work?",
-                    a: "Certificate endorsements require a processing fee, with rates varying around $20-25 as a one-time payment for blockchain certification. Each certificate receives a unique blockchain ID for verification and authenticity, making your credentials tamper-proof and easily verifiable by employers worldwide. The fee includes the Airbus interview evaluation and EBT CBTA aligned program recognition. Airlines can verify certificates through our Supabase API."
-                },
-                {
-                    q: "What makes pilotrecognition different from other aviation platforms?",
-                    a: "Pilotrecognition is <strong>run by pilots for pilots</strong>, not by corporations. We have direct communication with <strong>Airbus</strong> and <strong>Etihad</strong>, integrate <strong>Airbus HINFACT EBT CBTA</strong> applications, and provide Recognition that the industry doesn't currently offer. Our platform transforms your profile to leadership-aligned standards with <strong>AI-powered matching</strong> and <strong>blockchain-verified credentials</strong>."
+                    q: "Why join now?",
+                    a: "Early adopters build recognition scores before the platform is saturated. Foundation Program graduates are prioritized for Transition Program access and operator matching. As more operators join, higher recognition scores unlock better pathways. The pilots who start now have a head start on the pilots who wait."
                 }
             ]
         },
         {
-            category: "Program Structure",
+            category: "Programs & Pricing",
             questions: [
                 {
-                    q: "What is the Foundational Program?",
-                    a: "The <strong>Foundational Program</strong> is designed for pilots (from 4th year to 1st year) to align themselves with industry standards before advancing to the <strong>Transition Program</strong>. It's required for pilot development and provides the foundational knowledge needed for the more rigorous Transition Program. Pilots who complete the <strong>Foundation Program</strong> are <strong>prioritized</strong> for the Transition Program."
+                    q: "What is the Foundation Program?",
+                    a: "<strong>$49.</strong> 50 hours of verified mentorship. EBT CBTA-aligned competency assessment. Industry-aligned CV formatting. Foundation graduates get <strong>50% off the Transition Program</strong> ($149 instead of $299). This builds your baseline recognition score that determines pathway access."
                 },
                 {
                     q: "What is the Transition Program?",
-                    a: "The <strong>Transition Program</strong> is the advanced stage featuring access to <strong>HINFACT EBT CBTA applications</strong> and direct industry integration. It's more rigorous and includes <strong>examination scores</strong> and evaluation. Without foundational knowledge from the Foundation Program, the Transition Program may be challenging and could lead to <strong>rejection</strong> based on examination scores."
+                    a: "<strong>$299</strong> ($149 for Foundation graduates). Includes EBT CBTA video assessment after mentorship completion, detailed competency scoring across 9 markers, and direct pathway eligibility. Without Foundation completion, the assessment is rigorous and you may not pass if baseline competencies aren't met. Foundation graduates are prioritized."
                 },
                 {
-                    q: "Can I skip the Foundation Program and go directly to Transition?",
-                    a: "While technically possible, we highly recommend completing the <strong>Foundation Program</strong> first. Without foundational knowledge, the Transition Program will be rigorous and you may be <strong>rejected</strong> based on examination scores and evaluation. <strong>Foundation Program graduates</strong> are prioritized for Transition Program acceptance."
+                    q: "What is Recognition Plus?",
+                    a: "<strong>$99/year.</strong> Unlocks unlimited pathway views, full profile comparison against airline requirements, and priority matching in operator searches. Free tier is limited to basic profile creation and restricted pathway views. Program participants receive the same priority matching as paid members—effort-based recognition, not pay-to-win."
                 },
                 {
-                    q: "When will HINFACT integration be available?",
-                    a: "<strong>HINFACT EBT CBTA integration</strong> will be available in the later stages of our platform development. We have direct confirmation to contact <strong>HINFACT</strong> to access their application. Currently, we focus on the <strong>Foundation Program</strong> to align pilots with industry standards before introducing HINFACT applications in the Transition Program."
+                    q: "Can I skip the Foundation Program?",
+                    a: "You can attempt the Transition Program directly, but the assessment is rigorous. Without the baseline competencies and mentorship hours from Foundation, you may not pass. Foundation graduates are automatically prioritized for Transition acceptance and pathway matching."
                 }
             ]
         },
@@ -64,86 +61,53 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             category: "Mentorship",
             questions: [
                 {
-                    q: "How does the mentorship system work?",
-                    a: "Mentorship can be done <strong>in-person or virtually</strong>, similar to a missionary approach where experienced pilots help others from 4th year to 1st year. You log mentorship sessions digitally through the <strong>mentorship logbook</strong> in the app, providing <strong>video proof</strong> or dated entries with a <strong>2-step verification process</strong> where both parties must verify and accept the session."
+                    q: "How does mentorship work?",
+                    a: "Free, effort-based, in-person or virtual. You log sessions through the Pilot Terminal app. Each session requires 2-step verification: both mentor and mentee must confirm. Verified sessions count toward your recognition score and Foundation Program completion."
                 },
                 {
                     q: "How is mentorship verified?",
-                    a: "Mentorship uses a <strong>2-step verification process</strong>. When you log a mentorship session, the other user gets flagged to verify and accept. We use <strong>manual checking</strong> and <strong>AI automated systems</strong> to screen and process entries. We email both parties to verify based on logged hours, and if there's <strong>suspicious activity</strong>, we verify with both sides."
+                    a: "Both parties verify each session through the app. We cross-check for suspicious patterns: same-day bulk entries, mismatched locations, impossible travel times. Flagged entries trigger manual review. Refused verifications don't count. There's no gaming the system."
                 },
                 {
-                    q: "Is mentorship free?",
-                    a: "Yes, mentorship is <strong>free and effort-based</strong>. It's part of the <strong>Foundation Program</strong> to help pilots gain Recognition and industry-aligned experience. The goal is to provide pilots with meaningful mentorship opportunities that build their <strong>Recognition profile</strong> and <strong>leadership skills</strong>."
-                },
-                {
-                    q: "What if someone refuses to verify my mentorship session?",
-                    a: "If someone refuses to verify a mentorship session, it won't be counted toward your <strong>Recognition profile</strong>. Our verification system ensures authenticity, and suspicious activity triggers <strong>email verification</strong> to both parties. This maintains the integrity of the <strong>mentorship logbook system</strong>."
+                    q: "What if my mentor won't verify?",
+                    a: "The session doesn't count. Choose mentors active on the platform who understand the verification requirement. We track mentor verification rates. Low-rate mentors are deprioritized in matching. Build relationships with reliable mentors—network quality affects your recognition score."
                 }
             ]
         },
         {
-            category: "Recognition & Evaluation",
+            category: "Recognition & Assessment",
             questions: [
                 {
-                    q: "What is a Recognition profile?",
-                    a: "A <strong>Recognition profile</strong> is your industry-aligned pilot profile that benchmarks your flight experience against flagship carrier standards using our <strong>ATLAS system</strong>. It includes your <strong>FAA examination scores</strong>, <strong>mentorship hours</strong>, <strong>leadership development scores</strong>, and <strong>EBT CBTA scenario performance</strong>. It's designed to give you the Recognition the industry doesn't currently provide."
+                    q: "What is a recognition score?",
+                    a: "A composite metric based on: verified mentorship hours, EBT CBTA competency assessment results, program completion status, and professional development markers. It determines pathway access and operator visibility. Higher scores unlock more opportunities. Not about popularity—about demonstrated capability."
                 },
                 {
-                    q: "How is the Recognition score calculated?",
-                    a: "Recognition scores are calculated through a <strong>collaborative evaluation</strong> of your Recognition profile, <strong>human intervention</strong> for processing certifications, <strong>AI tracking progression</strong>, and pilot evaluation based on current <strong>FAA examination scores</strong>, mentorship practical, <strong>leadership development skills</strong>, and <strong>EBT CBTA scenario performance</strong>."
+                    q: "What is EBT CBTA assessment?",
+                    a: "Evidence-Based Training and Competency-Based Training Assessment. We measure 9 core competencies: decision making, communication, leadership, situational awareness, workload management, procedures, flight path management, knowledge, and automation management. These are the same behavioral markers airlines use. We score them, not just log your hours."
                 },
                 {
-                    q: "What are EBT CBTA scenarios?",
-                    a: "<strong>EBT CBTA</strong> (Evidence-Based Training Competency-Based Training and Assessment) scenarios are industry-standard training situations that test how well you handle various aviation situations. Our platform includes these scenarios in the evaluation process to align pilots with <strong>Airbus</strong> and major airline standards."
-                },
-                {
-                    q: "How do airlines access my Recognition profile?",
-                    a: "Airlines access pilot Recognition profiles through our <strong>Supabase API</strong>. We provide airlines with backend access to our <strong>pilot database</strong>, allowing them to query profiles, update job board listings, and set their airline expectations. The <strong>blockchain certificate ID</strong> can be verified through this API system."
+                    q: "How do airlines access my profile?",
+                    a: "Verified operators subscribe to our platform and search by competency requirements. They see your recognition score, verified hours, and assessment results—not your personal contact info until you authorize contact. You control visibility. Matching is based on competency alignment, not keyword search."
                 }
             ]
         },
         {
-            category: "Technical & Security",
+            category: "Data & Security",
             questions: [
                 {
-                    q: "What is the blockchain certificate system?",
-                    a: "Each certificate endorsement receives a <strong>unique blockchain ID</strong> for verification and authenticity. This <strong>tamper-proof system</strong> ensures your credentials are easily verifiable by employers worldwide. Airlines can verify certificates through our <strong>Supabase API</strong> by reading your Recognition profile."
+                    q: "Is my data secure?",
+                    a: "Yes. All data is encrypted and stored securely. Airlines are vetted before receiving platform access. You see which operators have viewed your profile. Rate limiting prevents abuse. We comply with standard data protection practices. Your profile data belongs to you and can be exported at any time."
                 },
                 {
-                    q: "How do you protect pilot data?",
-                    a: "We use <strong>Supabase</strong> for secure data storage with proper <strong>authentication</strong> and <strong>authorization</strong>. Airlines must be <strong>vetted</strong> before receiving API access to pilot profiles. We have security measures to prevent <strong>unauthorized API access</strong> and <strong>rate-limiting</strong> to prevent abuse. You can see which airlines have accessed your profile."
+                    q: "Can I export my data?",
+                    a: "Yes. Your recognition profile, mentorship logbook, and assessment results can be exported in standard formats for your own records. You own your data. We don't lock you in."
                 },
                 {
-                    q: "Can I export my data from the platform?",
-                    a: "Yes, you can export your <strong>Recognition profile</strong> and <strong>mentorship logbook</strong> data. We believe in <strong>data ownership</strong> - your pilot data belongs to you. We provide options to export your data for your own records or to use elsewhere."
-                },
-                {
-                    q: "What happens to my data if the platform shuts down?",
-                    a: "We have <strong>backup strategies</strong> for Supabase data. In the unlikely event of platform shutdown, we would provide notice and options for pilots to export their data. Your <strong>blockchain certificates</strong> remain on the blockchain independently of our platform."
+                    q: "What happens to my data if you shut down?",
+                    a: "We maintain regular backups. In the unlikely event of shutdown, we provide notice and export options. Your data belongs to you, not us."
                 }
             ]
         },
-        {
-            category: "Business Model",
-            questions: [
-                {
-                    q: "How does pilotrecognition make money if it's free for pilots?",
-                    a: "Our revenue model is based on <strong>API access for airlines</strong>. Airlines pay to access our large database of <strong>pilot Recognition profiles</strong> through our <strong>Supabase API</strong>. The more pilots who build Recognition profiles, the more valuable our <strong>database</strong> becomes to airlines. We may introduce small charges later as we reach mass users, but core features remain <strong>free for pilots</strong>."
-                },
-                {
-                    q: "Why should I join now if the best features aren't ready yet?",
-                    a: "Pilots who complete the <strong>Foundation Program</strong> are <strong>prioritized</strong> for the Transition Program when <strong>HINFACT integration</strong> launches. Without foundational knowledge, the Transition Program will be rigorous and you may face rejection. Building your <strong>Recognition profile</strong> now positions you ahead of other pilots when advanced features become available."
-                },
-                {
-                    q: "What is the value proposition for airlines?",
-                    a: "Airlines gain access to a large, free database of <strong>pilot Recognition profiles</strong> with industry-aligned scores, <strong>EBT CBTA standards</strong>, and <strong>blockchain-verified credentials</strong>. They can query pilots by <strong>Recognition score</strong>, qualifications, and <strong>leadership alignment</strong>, streamlining their recruitment process compared to traditional methods."
-                },
-                {
-                    q: "How do you plan to attract airlines to your platform?",
-                    a: "We contact airlines, manufacturers, flight schools, and type rating centers to advertise our platform and demonstrate why pilots should choose our pathway over competitors. We provide airlines with <strong>backend API access</strong> to update job board listings and their airline expectations, creating a <strong>direct recruitment channel</strong>."
-                }
-            ]
-        }
     ];
 
     // Generate FAQ schema for SEO
@@ -175,26 +139,15 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             {/* Header Section */}
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
-                    <img
-                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="PilotRecognition Logo"
-                        className="mx-auto w-64 h-auto object-contain mb-2"
-                    />
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-                        About Pilotrecognition.com
+                        Straight Answers
                     </p>
-                    <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
+                    <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-6">
                         Frequently Asked Questions
                     </h1>
-                    <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-700 mb-6">
-                        Recognition-Based Support
+                    <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
+                        How it works. What it costs. What you actually get. No corporate fluff.
                     </p>
-                    <div className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed pt-8">
-                        <p>
-                            Detailed answers to common questions about eligibility, program timelines,
-                            pricing, and our global recognition standards.
-                        </p>
-                    </div>
                 </div>
             </div>
 

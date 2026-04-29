@@ -22,132 +22,104 @@ export const CoreValuesPage: React.FC<CoreValuesPageProps> = ({
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="PilotRecognition Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-6"
-                        />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-                            The PilotRecognition DNA
+                            What We Expect From Every Pilot
                         </p>
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
                             Core Values
                         </h1>
-                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+                        <span className="text-3xl md:text-4xl mt-1 leading-none block mb-6" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
                             Connection | Attitude | Respect
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                            Our values are not just words on a wall; they are the behavioral markers we expect
-                            from every pilot in our network. Connection, Attitude, and Respect define who we are
-                            and how we fly.
+                            These aren't slogans. They're behavioral markers we verify through assessment and expect in every interaction.
                         </p>
                     </RevealOnScroll>
                 </div>
             </div>
 
             {/* Value 1: Connection */}
-            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
-                <RevealOnScroll>
-                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        The Power of Network
-                    </p>
-                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                        Connection
-                    </h2>
-                    <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Aviation is a small world, but it can feel vast and lonely when you are starting out.
-                            We believe that meaningful connection is the antidote to career stagnation. Through our
-                            <strong>Pilot Terminal</strong> social network, pilots can connect with mentors, instructors,
-                            and aviation professionals worldwide, creating a robust support system that spans the entire
-                            aviation ecosystem.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            By connecting low-timers with captains, and captains with operators, we create a
-                            circular economy of mentorship where wisdom is passed down and opportunity is passed up.
-                            Our <strong>50 hours of verifiable logged effort-based mentorship</strong> in the Foundational Program
-                            ensures that connections translate into tangible professional growth, with mentees receiving
-                            verified logbook entries and mentors building their leadership credentials.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed">
-                            The PilotRecognition network extends beyond mentorship to include <strong>direct pathway connections</strong>
-                            with airlines, manufacturers, and training providers. When operators post opportunities on
-                            our platform, they appear on Pilot Terminal with match indicators showing alignment with your
-                            verified competencies. This intelligent matching system ensures that connections lead to
-                            meaningful career opportunities, not just social interactions.
-                        </p>
+            <div className="py-16 px-6 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                Deliverable
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                Connection
+                            </h2>
+                        </RevealOnScroll>
                     </div>
-                </RevealOnScroll>
+                    <div className="max-w-4xl mx-auto">
+                        <RevealOnScroll>
+                            <div className="bg-white p-8 rounded-2xl border border-slate-200 space-y-4">
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    Pilots connect with mentors who've been where they're going. 50 hours of verified mentorship is mandatory in the Foundational Program. Mentees receive verified logbook entries. Mentors build leadership credentials. Both get documented proof of the exchange.
+                                </p>
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    Through Pilot Terminal, operators post pathways with competency requirements. Pilots see match indicators against their verified profile. Connections lead to actual opportunities, not social interactions. Your network becomes your pathway access.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </div>
             </div>
 
             {/* Value 2: Attitude */}
-            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
-                <RevealOnScroll>
-                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        The Professional Mindset
-                    </p>
-                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                        Attitude
-                    </h2>
-                    <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Skills can be developed, but attitude is chosen. We champion the pilots who show up early,
-                            prepare thoroughly, and own their mistakes. Our <strong>EBT CBTA-aligned assessment framework</strong>
-                            evaluates not just technical proficiency, but the behavioral competencies that distinguish
-                            exceptional pilots from the merely competent.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            A PilotRecognition pilot doesn't just fly the plane; they manage the operation with
-                            humility, resilience, and an unshakeable commitment to safety standards. Through
-                            EBT CBTA alignment with international standards, we ensure that the attitude
-                            we cultivate aligns with the exacting standards required by leading manufacturers and
-                            operators worldwide.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed">
-                            Our Foundational Program's <strong>9 core competencies</strong> framework—aligned with AIRBUS
-                            standards—specifically addresses attitude through competencies like <strong>decision making</strong>,
-                            <strong>situational awareness</strong>, and <strong>crew resource management</strong>. These behavioral
-                            markers are objectively assessed through our recognition-based profiling, giving operators
-                            confidence that a PilotRecognition pilot possesses the professional mindset required for safe,
-                            efficient operations in any environment.
-                        </p>
+            <div className="py-16 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                Behavioral Marker
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                Attitude
+                            </h2>
+                        </RevealOnScroll>
                     </div>
-                </RevealOnScroll>
+                    <div className="max-w-4xl mx-auto">
+                        <RevealOnScroll>
+                            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100 space-y-4">
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    Skills can be developed, but attitude is chosen. Our EBT CBTA assessment framework measures behavioral markers: decision making, communication, leadership, workload management, and situational awareness. These are scored, not subjective. Operators see objective behavioral data alongside technical hours.
+                                </p>
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    The 9 core competencies in our Foundational Program specifically assess attitude markers. Pilots who demonstrate humility, resilience, and ownership of mistakes score higher. These scores determine pathway access and matching priority. Attitude isn't a feeling—it's a measurable competency that affects your recognition score.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </div>
             </div>
 
             {/* Value 3: Respect */}
-            <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
-                <RevealOnScroll>
-                    <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        Mutual & Self Respect
-                    </p>
-                    <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                        Respect
-                    </h2>
-                    <div style={{ maxWidth: '4xl', margin: '0 auto', paddingTop: '1.5rem' }}>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Respect for the uniform, respect for the regulations, and respect for our peers.
-                            In a multi-crew environment, respect is the foundation of effective communication.
-                            Our platform enforces this principle through <strong>verified competency documentation</strong> that
-                            ensures all pilots in our network have demonstrated the professional standards expected
-                            in commercial aviation operations.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            We foster a culture where every voice is heard, from the cadet to the captain,
-                            creating a safer and more inclusive cockpit for everyone. Our <strong>CRM (Crew Resource Management)</strong>
-                            competency assessments specifically evaluate a pilot's ability to communicate respectfully,
-                            listen actively, and contribute constructively to crew decisions—skills that are essential
-                            for safe multi-crew operations.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed">
-                            This culture of respect extends to our <strong>pathway matching system</strong>, which treats all pilots
-                            objectively based on their verified competencies and recognition scores, regardless of background
-                            or connections. When operators access our platform, they see pilots evaluated on merit—through
-                            <strong>blockchain-verifiable certifications</strong> and <strong>EBT-aligned assessments</strong>—ensuring fair
-                            and equitable access to career opportunities based on demonstrated professional capability.
-                        </p>
+            <div className="py-16 px-6 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                Verified Standard
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                Respect
+                            </h2>
+                        </RevealOnScroll>
                     </div>
-                </RevealOnScroll>
+                    <div className="max-w-4xl mx-auto">
+                        <RevealOnScroll>
+                            <div className="bg-white p-8 rounded-2xl border border-slate-200 space-y-4">
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    Every pilot in our network has verified credentials, documented hours, and assessed competencies. No self-reported claims. No unverified resumes. We enforce professional standards through verified documentation before any pilot appears in pathway matching or operator searches.
+                                </p>
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    CRM competency assessments measure respectful communication, active listening, and constructive contribution to crew decisions. These are scored behavioral markers, not subjective impressions. The pathway matching system treats all pilots objectively based on verified competencies and recognition scores. Fair access to opportunities based on demonstrated capability—not background, connections, or unverified claims.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </div>
             </div>
 
             {/* Back button */}

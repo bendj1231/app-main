@@ -125,7 +125,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'card-2',
-            images: ['/pr2.png', '/images/airline-operations.png', 'https://www.shutterstock.com/editorial/image-editorial/M3T6A6y2NjE2MTU=/airbus-aircrafts-displayed-mock-up-center-aircraft-manufacturer-440nw-10161051k.jpg'],
+            images: ['/pr2.png', '/images/airline-operations.png'],
             image: '/pr2.png',
             loggedInImages: ['/pr2.png'],
             loggedInImage: '/pr2.png',
@@ -403,7 +403,7 @@ const dummyCards = [
     },
     {
         id: 'discover',
-        images: ['/pr2.png', '/images/airline-operations.png', 'https://www.shutterstock.com/editorial/image-editorial/M3T6A6y2NfDdA9x1NjE2MTU=/airbus-aircrafts-displayed-mock-up-center-aircraft-manufacturer-440nw-10161051k.jpg'],
+        images: ['/pr2.png', '/images/airline-operations.png'],
         image: '/pr2.png',
         loggedInImages: ['/pr2.png'],
         loggedInImage: '/pr2.png',

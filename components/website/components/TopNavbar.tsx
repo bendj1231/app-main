@@ -406,16 +406,17 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'About',
             target: 'about',
             subItems: [
-                { category: 'The Organization', name: 'About PilotRecognition', target: 'about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
+                { category: 'For Pilots', name: 'About PilotRecognition', target: 'about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
                 { name: 'Mission & Vision', target: 'mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
                 { name: 'Core Values', target: 'core-values', bullets: ['Connection', 'Attitude', 'Respect'] },
-                { category: 'Compliance', name: 'Accreditation & Recognition', target: 'accreditation', bullets: ['Global Standards', 'EASA & GCAA Alignment', 'Verified Training'] },
+                { name: 'What is the Pilot Gap?', target: 'pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
+                { name: 'Frequently Asked Questions', target: 'faq', bullets: ['Eligibility', 'Program Timeline', 'Pricing Details'] },
+                { category: 'For Industry', name: 'For Airlines & Operators', target: 'about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
                 { name: 'Industry Stewardship', target: 'industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
-                { name: 'Governance', target: 'governance', bullets: ['Regulatory Compliance', 'Data Ethics', 'Partner Transparency'] },
                 { category: 'Governance', name: 'Our Board', target: 'board', bullets: ['Executive Leadership', 'Airlines Advisory', 'Tech Innovators'] },
                 { name: 'Committees', target: 'committees', bullets: ['Safety Board', 'Curriculum Review', 'Pilot Advocacy'] },
-                { name: 'What is the Pilot Gap?', target: 'pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
-                { name: 'Frequently Asked Questions', target: 'faq', bullets: ['Eligibility', 'Program Timeline', 'Pricing Details'] }
+                { name: 'Governance', target: 'governance', bullets: ['Regulatory Compliance', 'Data Ethics', 'Partner Transparency'] },
+                { category: 'Compliance', name: 'Accreditation & Recognition', target: 'accreditation', bullets: ['Global Standards', 'EASA & GCAA Alignment', 'Verified Training'] }
             ]
         },
         {

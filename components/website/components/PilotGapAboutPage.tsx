@@ -28,119 +28,140 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
             {/* Header Section */}
             <div className="pt-32 pb-16 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
-                    <img
-                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="PilotRecognition Logo"
-                        className="mx-auto w-64 h-auto object-contain mb-2"
-                    />
-                    <p className="text-sm font-bold tracking-[0.3em] uppercase text-[#DAA520] mb-4 font-serif">
-                        Understanding the Industry
+                    <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
+                        The Problem We Solve
                     </p>
-                    <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
+                    <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-6">
                         What is the Pilot Gap?
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                        The "Pilot Gap" refers to the treacherous period in an aviator's career between obtaining initial commercial licenses (around 250 hours) and achieving the experience levels required for major airline employment (often 1500+ hours). Our programs align with Airbus EBT CBTA standards, ensuring that our programs align with the exacting standards required to bridge this critical career transition.
+                        Pilots earn commercial licenses at 250 hours. Airlines require 1,500+ hours for employment. That gap is where careers stall. Training is complete, but the experience airlines demand isn't accessible. Pilots are stuck, operators can't find verified candidates, and the industry loses trained talent.
                     </p>
                 </div>
             </div>
 
-            {/* Full-width Section Header */}
-            <div className="w-full bg-slate-50 py-16 px-6">
+            {/* The Career Challenge */}
+            <div className="py-16 px-6 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
-                    <RevealOnScroll>
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-[#DAA520] mb-2 font-serif">
-                            The Career Challenge
-                        </p>
-                        <h2 className="text-[2.5rem] font-serif text-slate-900 leading-tight mb-6">
-                            Where 85% of Pilots Exit the Profession
-                        </h2>
-                        <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
-                            After investing significant time and capital into flight training, many pilots find themselves in a "no-man's land." They are too experienced for basic training but lack the specific multi-crew, high-performance, or operational hours that airlines demand. This gap represents the most significant point of attrition in the aviation career pipeline, where talent is lost due to lack of structured pathways and verified experience opportunities.
-                        </p>
-                    </RevealOnScroll>
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                The Career Challenge
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                Where Pilots Get Stuck
+                            </h2>
+                        </RevealOnScroll>
+                    </div>
+                    <div className="max-w-4xl mx-auto">
+                        <RevealOnScroll>
+                            <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    Pilots complete training with 250 hours and $50,000 invested. They're qualified to fly commercially but lack the multi-crew, high-performance, or operational experience airlines require. No structured pathway exists to bridge that gap. Instructors wait years for advancement. Graduates take non-aviation jobs. The industry trains pilots it can't employ.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
                 </div>
             </div>
 
-            {/* Content Section */}
-            <div className="py-16 px-6 max-w-6xl mx-auto space-y-16">
-                <RevealOnScroll delay={100}>
-                    <div>
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-[#DAA520] mb-2 font-serif">
-                            The Financial Impact
-                        </p>
-                        <h2 className="text-[2.5rem] font-serif text-slate-900 leading-tight mb-6">
-                            Investment Without Return
-                        </h2>
-                        <p className="max-w-4xl text-base text-slate-700 leading-relaxed mb-6">
-                            Pilots invest approximately $50,000 USD in training and dedicate 4 years to university education, yet many find themselves unable to secure airline positions. This represents not just a personal financial loss but a significant industry waste of trained talent. The gap between license acquisition and airline readiness creates a barrier that eliminates many qualified candidates before they can demonstrate their potential.
-                        </p>
-                        <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
-                            Traditional pathways provide limited visibility into professional development needs. Hours accumulation without structured mentorship and verified competency assessment often fails to meet airline expectations. Our approach addresses this by providing <strong>verified professional recognition</strong> that demonstrates actual operational readiness.
-                        </p>
+            {/* The Financial Impact */}
+            <div className="py-16 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                The Financial Impact
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                Investment Without Return
+                            </h2>
+                        </RevealOnScroll>
                     </div>
-                </RevealOnScroll>
-
-                <RevealOnScroll delay={200}>
-                    <div>
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-[#DAA520] mb-2 font-serif">
-                            The PilotRecognition Solution
-                        </p>
-                        <h2 className="text-[2.5rem] font-serif text-slate-900 leading-tight mb-6">
-                            Bridging the Gap Through Verified Experience
-                        </h2>
-                        <p className="max-w-4xl text-base text-slate-700 leading-relaxed mb-6">
-                            PilotRecognition doesn't just acknowledge the gap; we bridge it through structured programs that turn "empty hours" into "verifiable operational experience." Our Foundational Program provides access to professional-grade applications, structured mentorship, and a verified database that aligns with Airbus EBT CBTA standards.
-                        </p>
-                        <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
-                            Through our EBT CBTA-aligned assessment framework and 50 hours of verifiable mentorship, pilots can demonstrate the specific competencies that airlines demand. This approach transforms the career gap from a barrier into a structured development pathway, ensuring that pilots are not just accumulating hours but building the professional recognition that leads to airline opportunities.
-                        </p>
+                    <div className="max-w-4xl mx-auto">
+                        <RevealOnScroll>
+                            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100">
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    $50,000 in training. 4 years of education. Then a gap with no clear path forward. Pilots accumulate flight hours without structured mentorship or verified competency assessment. Hours alone don't indicate readiness. Airlines can't verify capability from a logbook. The result: trained pilots leave the profession, and operators waste resources on candidates who aren't ready.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
                     </div>
-                </RevealOnScroll>
-
-                <RevealOnScroll delay={300}>
-                    <div>
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-[#DAA520] mb-2 font-serif">
-                            Industry Alignment
-                        </p>
-                        <h2 className="text-[2.5rem] font-serif text-slate-900 leading-tight mb-6">
-                            Standards That Matter to Airlines
-                        </h2>
-                        <p className="max-w-4xl text-base text-slate-700 leading-relaxed mb-6">
-                            Our programs are directly aligned with the competencies and standards that major airlines assess in their recruitment processes. Our assessment framework evaluates the same core competencies that airlines prioritize: cognitive and behavioral markers, decision-making under pressure, and operational awareness.
-                        </p>
-                        <p className="max-w-4xl text-base text-slate-700 leading-relaxed">
-                            Industry alignment means that verified competencies through PilotRecognition translate directly to airline readiness and competitive advantage in recruitment.
-                        </p>
-                    </div>
-                </RevealOnScroll>
+                </div>
             </div>
 
-            {/* Member Access Gateway */}
-            <div className="w-full bg-slate-50 py-16 px-6 mt-16">
+            {/* The Solution */}
+            <div className="py-16 px-6 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                The Solution
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                Verified Competency, Not Just Hours
+                            </h2>
+                        </RevealOnScroll>
+                    </div>
+                    <div className="max-w-4xl mx-auto">
+                        <RevealOnScroll>
+                            <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    PilotRecognition bridges the gap with structured programs that turn unverified hours into demonstrated competency. The Foundation Program provides 50 hours of verified mentorship, EBT CBTA-aligned assessment, and a live profile that operators can pull. Pilots don't just log hours—they build verified professional recognition that translates directly to pathway access and operator visibility.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </div>
+            </div>
+
+            {/* Industry Alignment */}
+            <div className="py-16 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <RevealOnScroll>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
+                                Industry Alignment
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+                                What Airlines Actually Assess
+                            </h2>
+                        </RevealOnScroll>
+                    </div>
+                    <div className="max-w-4xl mx-auto">
+                        <RevealOnScroll>
+                            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100">
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    Airlines assess 9 core competencies: decision making, communication, leadership, situational awareness, workload management, procedures, flight path management, knowledge, and automation management. Our assessment framework measures these same markers. Pilots demonstrate the competencies operators prioritize. Operators see objective behavioral data, not just flight hours. Verified competencies become the basis for pathway matching and hiring decisions.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </div>
+            </div>
+
+            {/* Start Your Program */}
+            <div className="py-16 px-6 bg-blue-900 text-white">
                 <div className="max-w-4xl mx-auto text-center">
                     <RevealOnScroll>
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-[#DAA520] mb-2 font-serif">
-                            Member Access Gateway
-                        </p>
-                        <h2 className="text-[2.5rem] font-serif text-slate-900 leading-tight mb-6">
-                            Start Your Bridge Program
+                        <h2 className="text-3xl md:text-4xl font-serif mb-4">
+                            Start Your Foundation Program
                         </h2>
-                        <p className="max-w-2xl mx-auto text-base text-slate-700 leading-relaxed mb-8">
-                            Join the PilotRecognition Foundational Program to begin bridging the pilot gap through structured mentorship, verified experience, and industry-aligned assessment. Our programs provide the pathway from license to airline readiness.
+                        <p className="max-w-2xl mx-auto text-base text-blue-200 leading-relaxed mb-8">
+                            $49. 50 hours of verified mentorship. EBT CBTA-aligned assessment. A live profile that operators pull. That's how you bridge the gap.
                         </p>
-                        <div className="flex flex-col md:flex-row gap-4 justify-center">
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <button
                                 onClick={() => onNavigate('become-member')}
-                                className="bg-[#050A30] hover:bg-[#070D3D] text-white py-4 px-8 rounded-xl font-bold uppercase tracking-widest transition-all shadow-lg hover:shadow-blue-900/30 hover:scale-[1.02] active:scale-95 border border-white/10"
+                                className="px-8 py-4 bg-white text-blue-900 font-bold rounded-xl hover:bg-blue-50 transition-all shadow-xl"
                             >
-                                Become a Member
+                                Enroll Now — $49
                             </button>
                             <button
-                                onClick={() => onLogin()}
-                                className="bg-white hover:bg-slate-50 text-slate-900 py-4 px-8 rounded-xl font-bold uppercase tracking-widest transition-all shadow-lg hover:shadow-slate-200 hover:scale-[1.02] active:scale-95 border border-slate-200"
+                                onClick={() => onNavigate('about')}
+                                className="px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white/10 transition-all"
                             >
-                                Login to Access
+                                Learn More About Programs
                             </button>
                         </div>
                     </RevealOnScroll>

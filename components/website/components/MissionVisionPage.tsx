@@ -22,11 +22,6 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="PilotRecognition Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-6"
-                        />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                             Our Purpose & Direction
                         </p>
@@ -34,7 +29,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             Mission & Vision
                         </h1>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                            Pilots invest $50,000 and 4 years in training. The industry lacks a standardized way to recognize professional capabilities beyond flight hours and type ratings. This creates a gap between training investment and career opportunity. PilotRecognition provides the recognition framework the industry lacks.
+                            We provide verified competency assessment through EBT CBTA aligned programs. Pilots demonstrate capabilities through 50 hours of mentorship and behavioral assessment. Operators pull candidates based on verified competencies, not just hours. Recognition becomes the currency pilots spend on pathway access.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -51,28 +46,33 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             Bridge the Pilot Gap Through Recognition
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Pilots invest <strong>$50,000 USD</strong> and <strong>4 years</strong> in training. The industry has no way to recognize professional capabilities beyond flight hours and type ratings. This is the recognition gap. We provide a verified platform that demonstrates actual professional capabilities through <strong>EBT CBTA aligned assessments</strong> and <strong>50 hours of verifiable mentorship</strong>.
+                            We deliver verified competency assessment through <strong>EBT CBTA aligned programs</strong>
+                            and 50 hours of evidence-based mentorship. Pilots demonstrate actual capabilities—not just credentials.
+                            Recognition becomes portable professional value that travels across operators and career paths.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Built through advisory relationships with <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>, and industry leaders. Our programs align with global aviation standards. Pilots gain the recognition they deserve. Operators find candidates they can trust.
+                            Advisory partnerships with <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>,
+                            and industry leaders ensure our programs align with global standards.
+                            Pilots get verified recognition. Operators pull candidates they can trust.
+                            The industry gets the framework it needs.
                         </p>
                     </RevealOnScroll>
                 </div>
             </div>
 
-            {/* Four-Floor Tower Narrative */}
+            {/* Strategic Pillars */}
             <div className="py-16 px-6 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
                         <RevealOnScroll>
                             <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                                The Problem We Solve
+                                Our Strategic Approach
                             </p>
                             <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
-                                The Clogged Pipeline
+                                Four Pillars of Recognition
                             </h2>
                             <p className="text-slate-600 max-w-2xl mx-auto">
-                                The aviation career pipeline is broken at every level
+                                How we transform training investment into career opportunity
                             </p>
                         </RevealOnScroll>
                     </div>
@@ -80,31 +80,27 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {[
                             {
-                                floor: "0",
-                                title: "Graduates",
-                                desc: "200 hours, promised airline jobs that never materialize. Line to instructor positions backed up 2-3 years. Batch of 2015 still waiting. $50,000 investment sits unused."
+                                title: "Recognition as Currency",
+                                desc: "The aviation industry lacks a standardized way to measure professional capability. Hours and type ratings indicate technical qualification, not readiness. We're changing that. Recognition becomes the currency pilots spend on pathway access and operators use to pull candidates."
                             },
                             {
-                                floor: "1",
-                                title: "Flight Instructors",
-                                desc: "5,000-6,000 hours, 15 years experience. Stuck because nobody's leaving Floor 2. Want recognition for what they've built. Some try to jump ahead, realize requirements differ, get sent back."
+                                title: "Competency-Based Assessment",
+                                desc: "We measure what matters: the 9 EBT CBTA core competencies that airlines actually assess. Not just flight hours—situational awareness, decision making, communication, leadership, workload management, procedures, flight path management, knowledge, automation management."
                             },
                             {
-                                floor: "2",
-                                title: "The Recognition Gap",
-                                desc: "This is the collapse point. Everyone fighting for recognition, pathways, expectations. Industry lacks communication. Pilots don't know what's required. They fly blind. This is where we provide the framework."
+                                title: "Verified Experience",
+                                desc: "50 hours of mentorship. EBT video assessment. ATLAS Aviation CV formatting. Every credential verified. Every achievement documented. Operators trust what they see because it's verified. Recognition becomes portable professional value."
                             },
                             {
-                                floor: "3",
-                                title: "Airline Pilots",
-                                desc: "12+ years, bored, want change but trapped by seniority sacrifice. Captain goes back to First Officer. Recognition score becomes portable—capabilities travel, not airline seniority."
+                                title: "Real-Time Intelligence",
+                                desc: "50+ AI agents continuously monitor industry changes. Updated requirements. New pathways. Regulatory shifts. Pilots access current data. Operators pull from live profiles. The system stays current as the industry evolves."
                             }
                         ].map((item, idx) => (
                             <RevealOnScroll key={idx}>
                                 <div className="bg-white p-8 rounded-2xl border border-slate-200">
                                     <div className="flex items-center gap-3 mb-4">
-                                        <div className={`w-12 h-12 ${item.floor === '2' ? 'bg-orange-100 text-orange-700' : item.floor === '3' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'} rounded-full flex items-center justify-center font-bold text-xl`}>
-                                            {item.floor}
+                                        <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center">
+                                            <span className="font-bold text-xl">0{idx + 1}</span>
                                         </div>
                                         <h3 className="text-xl font-bold text-slate-900">{item.title}</h3>
                                     </div>
@@ -123,7 +119,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center">
                     <RevealOnScroll>
                         <p className="text-lg font-medium">
-                            Module 1 teaches you the industry reality. Your examination creates your baseline recognition score. Mentorship builds recognized experience. Every hour logged contributes to your recognition profile. Pathway matching connects you to opportunities.
+                            Your recognition score is your currency. Pathways are where you spend it. We bridge the gap between training investment and career opportunity.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -140,15 +136,13 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             The Global Standard for Pilot Recognition
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            To become the definitive authority in pilot verification, creating a global ecosystem where
-                            <strong>ATS-compatible ATLAS Aviation CV formatting</strong>, <strong>blockchain verifiable certifications</strong>,
-                            and <strong>AI-powered pathway matching</strong> replace uncertainty in aviation careers.
+                            By 2027, our recognition system will be the standard for 10+ airlines. <strong>ATS-compatible ATLAS Aviation CV formatting</strong>,
+                            <strong>blockchain verifiable certifications</strong>, and <strong>AI-powered pathway matching</strong> will replace uncertainty in aviation careers.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            We envision a future where PilotRecognition's recognition system, powered by <strong>50+ AI agents</strong>
-                            providing real-time industry intelligence, becomes the universal benchmark for pilot recruitment.
-                            Our <strong>Pilot Terminal</strong> social network and <strong>PilotRecogAI</strong> will connect
-                            <strong>5000+ pilots</strong> directly with operators, manufacturers, and training providers worldwide.
+                            Our <strong>50+ AI agents</strong> track requirements for 50+ operators in real-time.
+                            <strong>Pilot Terminal</strong> connects <strong>5000+ pilots</strong> directly with operators and training providers.
+                            <strong>PilotRecogAI</strong> provides live pathway matching based on verified competencies.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -249,44 +243,6 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                                     <p className="text-slate-600 leading-relaxed text-sm">
                                         {item.desc}
                                     </p>
-                                </div>
-                            </RevealOnScroll>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Industry Partners Section */}
-            <div className="py-20 px-6 bg-slate-900 text-white">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
-                        <RevealOnScroll>
-                            <p className="text-xs font-bold text-blue-400 uppercase tracking-[0.3em] mb-2">
-                                Strategic Alliances
-                            </p>
-                            <h2 className="text-3xl md:text-5xl font-serif mb-4">
-                                Industry-Aligned Standards
-                            </h2>
-                            <p className="text-slate-300 max-w-2xl mx-auto">
-                                Our programs are developed in collaboration with global aviation leaders to ensure alignment with the highest industry standards
-                            </p>
-                        </RevealOnScroll>
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                        {[
-                            "AIRBUS",
-                            "Etihad",
-                            "Archer",
-                            "MLG",
-                            "Cebu Pacific",
-                            "WCC Pilot Academy",
-                            "CAE Philippines",
-                            "Envoy Air"
-                        ].map((partner, idx) => (
-                            <RevealOnScroll key={idx}>
-                                <div className="bg-slate-800 p-6 rounded-2xl hover:bg-slate-700 transition-all">
-                                    <p className="font-bold text-lg">{partner}</p>
                                 </div>
                             </RevealOnScroll>
                         ))}
