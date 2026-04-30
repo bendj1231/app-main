@@ -29,7 +29,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             Mission & Vision
                         </h1>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                            We provide verified competency assessment through EBT CBTA aligned programs. Pilots demonstrate capabilities through 50 hours of mentorship and behavioral assessment. Operators pull candidates based on verified competencies, not just hours. Recognition becomes the currency pilots spend on pathway access.
+                            We provide verified competency assessment through EBT CBTA aligned programs. Pilots demonstrate capabilities through 50 hours of mentorship and behavioral assessment. When operators join the platform, they can pull verified profiles based on competency scores, not just hours. Recognition improves your matching priority with operators. We are actively recruiting operator partners.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -51,10 +51,10 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             Recognition becomes portable professional value that travels across operators and career paths.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Advisory partnerships with <strong>AIRBUS</strong>, <strong>Etihad</strong>, <strong>Archer</strong>,
-                            and industry leaders ensure our programs align with global standards.
-                            Pilots get verified recognition. Operators pull candidates they can trust.
-                            The industry gets the framework it needs.
+                            Our programs are aligned with EBT CBTA international standards used by airlines worldwide.
+                            Pilots get verified recognition based on demonstrated competencies.
+                            When operators join, they can pull verified candidate profiles they can trust.
+                            The industry gets a framework focused on competency over credentials alone.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -81,7 +81,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                         {[
                             {
                                 title: "Recognition as Currency",
-                                desc: "The aviation industry lacks a standardized way to measure professional capability. Hours and type ratings indicate technical qualification, not readiness. We're changing that. Recognition becomes the currency pilots spend on pathway access and operators use to pull candidates."
+                                desc: "The aviation industry lacks a standardized way to measure professional capability. Hours and type ratings indicate technical qualification, not readiness. We're changing that. Recognition improves your matching priority with operators. Pathways are available to all users."
                             },
                             {
                                 title: "Competency-Based Assessment",
@@ -89,11 +89,11 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             },
                             {
                                 title: "Verified Experience",
-                                desc: "50 hours of mentorship. EBT video assessment. ATLAS Aviation CV formatting. Every credential verified. Every achievement documented. Operators trust what they see because it's verified. Recognition becomes portable professional value."
+                                desc: "50 hours of mentorship. EBT CBTA video assessment. ATLAS Aviation CV formatting. Every credential verified. Every achievement documented. When operators join, they can trust what they see because it's verified. Recognition becomes portable professional value."
                             },
                             {
                                 title: "Real-Time Intelligence",
-                                desc: "50+ AI agents continuously monitor industry changes. Updated requirements. New pathways. Regulatory shifts. Pilots access current data. Operators pull from live profiles. The system stays current as the industry evolves."
+                                desc: "Our platform tracks industry changes through community-submitted updates and operator-reported requirements. Pilots access current pathway data. When operators join, they can pull from verified profiles. The system stays current as the community and operator network grows."
                             }
                         ].map((item, idx) => (
                             <RevealOnScroll key={idx}>
@@ -119,7 +119,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center">
                     <RevealOnScroll>
                         <p className="text-lg font-medium">
-                            Your recognition score is your currency. Pathways are where you spend it. We bridge the gap between training investment and career opportunity.
+                            Your recognition score improves your matching priority with operators. Pathways are available to all users. We bridge the gap between training investment and career opportunity.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -136,13 +136,13 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             The Global Standard for Pilot Recognition
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            By 2027, our recognition system will be the standard for 10+ airlines. <strong>ATS-compatible ATLAS Aviation CV formatting</strong>,
-                            <strong>blockchain verifiable certifications</strong>, and <strong>AI-powered pathway matching</strong> will replace uncertainty in aviation careers.
+                            We aim to become the global standard for pilot recognition by 2027. <strong>ATS-compatible ATLAS Aviation CV formatting</strong>,
+                            verified competency certifications, and intelligent pathway matching replace uncertainty in aviation careers.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Our <strong>50+ AI agents</strong> track requirements for 50+ operators in real-time.
-                            <strong>Pilot Terminal</strong> connects <strong>5000+ pilots</strong> directly with operators and training providers.
-                            <strong>PilotRecogAI</strong> provides live pathway matching based on verified competencies.
+                            Our platform tracks requirements as operators publish changes and our community reports updates.
+                            <strong>Pilot Terminal</strong> connects pilots with industry resources and training providers.
+                            Intelligent pathway matching based on verified competencies helps pilots find the right opportunities.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -173,15 +173,15 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             },
                             {
                                 title: "PilotRecognition Profile",
-                                desc: "Recognition-based flight logbooks where every hour contributes to your score, with live tracking and intelligent pathway matching based on verified competencies"
+                                desc: "Recognition-based flight logbooks where every hour contributes to your score, with verified tracking and intelligent pathway matching based on competencies"
                             },
                             {
                                 title: "Pathway Cards",
-                                desc: "Not job listings—pathway cards showing requirements and what you're missing. Pulling system: pilots submit interest, airlines pull from database with live real-time profiles, not static CVs"
+                                desc: "Not job listings—pathway cards showing requirements and what you're missing. Pilots submit interest; when operators join, they can pull from verified profiles, not static CVs"
                             },
                             {
                                 title: "Pilot Terminal",
-                                desc: "Professional network platform with 50+ AI agents providing real-time industry intelligence, job discovery, and direct connections with operators worldwide"
+                                desc: "Professional network platform providing industry intelligence, job discovery, and direct connections with operators worldwide. We are actively building the operator network."
                             }
                         ].map((item, idx) => (
                             <RevealOnScroll key={idx}>
@@ -202,7 +202,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center">
                     <RevealOnScroll>
                         <p className="text-lg font-medium">
-                            Your recognition score is your currency. Pathways are where you spend it. We bridge the gap between training investment and career opportunity.
+                            Your recognition score improves your matching priority with operators. Pathways are available to all users. We bridge the gap between training investment and career opportunity.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -226,15 +226,15 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                         {[
                             {
                                 title: "Verification",
-                                desc: "We believe in the power of verifiable truth. Every credential, flight hour, and achievement is cryptographically verified through blockchain technology to build trust in the aviation industry."
+                                desc: "We believe in the power of verifiable truth. Every credential, flight hour, and achievement is verified through our two-step confirmation process to build trust in the aviation industry."
                             },
                             {
                                 title: "Competency-Based",
-                                desc: "Beyond flight hours—we measure capability. Our EBT CBTA aligned framework maps skills against AIRBUS 9 core competencies to recognize true professional readiness and behavioral competence."
+                                desc: "Beyond flight hours—we measure capability. Our EBT CBTA aligned framework maps skills against the 9 core competencies used in aviation training worldwide to recognize true professional readiness and behavioral competence."
                             },
                             {
                                 title: "Industry Aligned",
-                                desc: "EBT CBTA guidance from Airbus Head of Training and Etihad Cadet Program consultation ensures our programs align with the highest international standards. We foster a community built on verified excellence and ethical leadership."
+                                desc: "Our programs are aligned with EBT CBTA international standards used by airlines worldwide. We foster a community built on verified excellence and ethical leadership."
                             }
                         ].map((item, idx) => (
                             <RevealOnScroll key={idx}>

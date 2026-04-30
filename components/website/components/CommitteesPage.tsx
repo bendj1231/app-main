@@ -10,34 +10,34 @@ interface CommitteesPageProps {
 }
 
 export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNavigate, onLogin }) => {
-    const committeeGroups = [
+    const buildAreas = [
         {
-            title: "Safety Board",
-            desc: "Expert-led reviews of operational safety protocols and the integration of <strong>Hinfact human factors analytics</strong>. Through advisory input from <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that safety oversight aligns with the exacting standards required by leading manufacturers. Our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of safety competencies across all operational domains.",
-            bullets: ["Incident Analysis", "Human Factors", "Safety Culture"]
+            title: "Safety & Competency",
+            desc: "Our programs integrate EBT CBTA safety competencies into every module. We review curriculum against the 9 core competency areas—situational awareness, decision making, communication, leadership, workload management, procedures, flight path management, knowledge, and automation management—to ensure pilots develop the skills that matter on the flight deck.",
+            bullets: ["Competency Mapping", "Risk Assessment", "Safety Culture"]
         },
         {
-            title: "Curriculum Review",
-            desc: "Ensuring our programs, from ATPL to Transition, match the latest GCAA and EASA syllabus updates. Our curriculum development aligns with flagship carrier expectations. Our <strong>AI-powered pathway matching</strong> system identifies curriculum gaps and recommends targeted development pathways for pilot advancement.",
-            bullets: ["Syllabus Mapping", "EBT Integration", "Partner Feedback"]
+            title: "Curriculum Development",
+            desc: "We build our Foundation and Transition programs by aligning with EBT CBTA international standards used in aviation training worldwide. Curriculum is reviewed against regulatory frameworks and updated as standards evolve. We identify gaps between pilot preparation and pathway requirements, then build targeted content to close them.",
+            bullets: ["Standard Alignment", "Gap Analysis", "Content Review"]
         },
         {
-            title: "Pilot Advocacy",
-            desc: "Serving as the voice for experienced and new pilots, ensuring the industry hears their needs and challenges. We foster a culture of respect where every voice is heard, from the cadet to the captain. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.",
-            bullets: ["Career Support", "Mental Health", "Industry Feedback"]
+            title: "Pilot Feedback",
+            desc: "Pilots using the platform provide direct feedback on program content, pathway accuracy, and usability. We track completion rates, competency score distributions, and support requests to identify what works and what needs improvement. Every program iteration is driven by actual pilot experience, not assumptions.",
+            bullets: ["User Feedback", "Completion Tracking", "Iterative Improvement"]
         },
         {
-            title: "Technology Committee",
-            desc: "Focusing on the advancement of the W1000 suite, <strong>ATLAS AI</strong>, and our Pilot Recognition scoring algorithms. Through guidance from <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
-            bullets: ["AI Development", "Data Security", "UI/UX Stewardship"]
+            title: "Technology & Security",
+            desc: "The platform is built with pilot data ownership as a priority. Profiles, verification workflows, and pathway matching systems are designed to keep pilots in control of their information. Two-step verification for mentorship hours, secure examination recording, and transparent data practices are core to how we build—not afterthoughts.",
+            bullets: ["Data Security", "Verification Systems", "Platform Development"]
         }
     ];
 
-    const pipelineSteps = [
-        { title: "Member Selection", value: "Identifying top industry experts to lead each specialized committee." },
-        { title: "Monthly Review", value: "Regular board-level meetings to review committee findings and impact." },
-        { title: "Strategy Updates", value: "Translating committee insights into platform and program improvements." },
-        { title: "Industry Reporting", value: "Publishing anonymized findings to improve global aviation standards." }
+    const processSteps = [
+        { title: "Identify Need", value: "Pilots report gaps in pathway data, program content, or platform features. We track support requests and user behavior to find what is missing." },
+        { title: "Review & Design", value: "Curriculum is mapped against EBT CBTA standards. Technology changes are scoped for security and usability. Safety considerations are built in from the start." },
+        { title: "Build & Test", value: "Programs are piloted with early users. Platform features are tested for data integrity and verification accuracy. Feedback is collected before full release." },
+        { title: "Measure & Iterate", value: "Completion rates, competency score trends, and pilot feedback determine what gets improved next. We ship updates based on measurable impact, not assumptions." }
     ];
 
     return (
@@ -48,43 +48,36 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="WingMentor Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-2"
-                        />
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
-                            Specialized Expertise
+                            Our Process
                         </p>
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
-                            Committees
+                            How We Build
                         </h1>
-                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
-                            Safety Board | Curriculum Review | Pilot Advocacy
-                        </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            Our committees bring together the industry's brightest minds to ensure safety,
-                            curriculum excellence, and genuine pilot advocacy across the WingMentor ecosystem. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our committee oversight aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            We build programs and platform features by aligning with industry standards, listening to pilot feedback,
+                            and iterating based on measurable outcomes. No committees. No fictional partnerships.
+                            Just a team focused on building tools that actually help pilots prove what they can do.
                         </p>
                     </RevealOnScroll>
                 </div>
             </div>
 
-            {/* Committee Features Grid */}
+            {/* Build Areas Grid */}
             <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                 <RevealOnScroll>
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        Specialized Oversight
+                        What We Focus On
                     </p>
                     <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                        Committee Structure
+                        Build Areas
                     </h2>
                 </RevealOnScroll>
             </div>
 
             <div className="py-12 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {committeeGroups.map((item, idx) => (
+                    {buildAreas.map((item, idx) => (
                         <div key={idx} className="p-10 bg-white border border-slate-200 rounded-[2.5rem] hover:shadow-2xl transition-all group flex flex-col items-start">
                             <h3 className="text-2xl font-serif text-slate-900 mb-4">{item.title}</h3>
                             <p className="text-slate-600 mb-8 leading-relaxed text-sm font-sans">{item.desc}</p>
@@ -105,10 +98,10 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
             <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                 <RevealOnScroll>
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#60A5FA', fontWeight: 600 }}>
-                        Expert Driven
+                        How We Work
                     </p>
                     <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: 'white' }}>
-                        The Collective Voice of Excellence
+                        Built on Feedback, Not Fiction
                     </h2>
                 </RevealOnScroll>
             </div>
@@ -118,19 +111,20 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
                     <div>
                         <RevealOnScroll>
                             <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
-                                "Innovation without safety is a hazard. Advocacy without expertise is a whisper. We combine them all."
+                                "We don't build what sounds impressive. We build what pilots actually need, then improve it based on what they tell us."
                             </p>
                             <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
-                                Our committees operate independently to provide unbiased oversight of WingMentor
-                                operations. This ensures that our technology remains safe, our curriculum
-                                competitive, and our advocacy genuinely helpful to the global pilot community.
+                                Our development process is straightforward: identify real pilot problems, align solutions
+                                with EBT CBTA and regulatory standards, build and test with early users, then iterate
+                                based on measurable outcomes. No fictional committees. No unverified partnerships.
+                                Just a team focused on delivering verified competency tools that pilots can trust.
                             </p>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                    <span className="text-slate-300 text-sm font-sans">10+ Tier-1 Airline Captain Consultants</span>
+                                    <span className="text-slate-300 text-sm font-sans">Pilot Feedback Drives Every Decision</span>
                                 </div>
                                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                    <span className="text-slate-300 text-sm font-sans">Direct Liaison with Airbus Human Factors Dept.</span>
+                                    <span className="text-slate-300 text-sm font-sans">EBT CBTA Standards, Not Marketing Claims</span>
                                 </div>
                             </div>
                         </RevealOnScroll>
@@ -142,17 +136,17 @@ export const CommitteesPage: React.FC<CommitteesPageProps> = ({ onBack, onNaviga
             <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                 <RevealOnScroll>
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        Impact Process
+                        Our Process
                     </p>
                     <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                        Committee Impact Pipeline
+                        How We Build & Improve
                     </h2>
                 </RevealOnScroll>
             </div>
 
             <div className="py-12 px-6 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {pipelineSteps.map((item, idx) => (
+                    {processSteps.map((item, idx) => (
                         <div key={idx} className="p-10 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-xl transition-all group relative">
                             <div className="absolute top-6 right-8 font-serif text-4xl text-slate-200 group-hover:text-blue-50 transition-colors">0{idx + 1}</div>
                             <h3 className="text-lg font-bold mb-3 font-sans text-slate-800 uppercase tracking-widest">{item.title}</h3>

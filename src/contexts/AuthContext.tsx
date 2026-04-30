@@ -658,19 +658,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     async function logout() {
         console.log('🔴 Logout function called');
-        
-        // Log logout activity before clearing state
+
+        // Log logout activity (don't let this block logout)
         if (currentUser) {
-            await logLogout(currentUser.id);
+            try {
+                await logLogout(currentUser.id);
+            } catch (error) {
+                console.error("Failed to log logout activity:", error);
+            }
         }
-        
+
         setExplicitLogoutInStorage(true); // Set flag to prevent re-authentication
         setCsrfToken(null); // Clear CSRF token
         setCurrentUser(null); // Clear current user
         setUserProfile(null); // Clear user profile
+
         try {
             console.log('🔴 Calling Supabase signOut...');
-            // Use Supabase client directly for logout
             const { error } = await supabase.auth.signOut();
             if (error) {
                 console.error("Supabase signOut error:", error);
@@ -679,7 +683,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log('✅ Logout completed');
         } catch (error) {
             console.error("❌ Logout error:", error);
-            // Even if there's an error, local state is already cleared
+            // If Supabase API fails, clear session storage directly
+            // Remove all Supabase auth tokens from storage
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith('sb-') || key.includes('auth') || key.includes('token'))) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            sessionStorage.clear();
+            console.log('✅ Cleared auth storage manually');
         }
     }
 

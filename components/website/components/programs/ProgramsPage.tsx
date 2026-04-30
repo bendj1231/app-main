@@ -151,7 +151,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                             Understanding Your Journey
                         </h2>
                         <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: '0 auto', maxWidth: '42rem', marginBottom: '3rem' }}>
-                            The Foundational Program consists of 10 comprehensive stages designed to build your skills progressively. Each stage builds upon the previous, leading to industry recognition and career placement.
+                            The Foundational Program consists of 10 comprehensive stages designed to build your skills progressively. Each stage builds upon the previous, leading to verified competency assessment and a recognized foundation for pathway exploration.
                         </p>
 
                         {/* Stage 1 */}
@@ -198,10 +198,10 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 STAGE 03
                             </div>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
-                                Global Industry Registry
+                                Your PilotRecognition Profile
                             </h3>
                             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                All examination outcomes are safely archived within the Global Industry Registry. This serves as your verifiable professional record, ensuring transparency and credibility for airline recruitment partners.
+                                All examination outcomes are recorded in your PilotRecognition profile. This serves as your verifiable professional record, ensuring transparency and credibility as you build your competency credentials.
                             </p>
                             <ul style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.8, paddingLeft: '1.5rem', margin: 0 }}>
                                 <li>Centralized Professional Record</li>
@@ -274,16 +274,16 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 STAGE 07
                             </div>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
-                                Accreditation & Professional Prescription
+                                Competency Review & Transition Prep
                             </h3>
                             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                Upon meeting criteria, your experience is accredited against industry standards recognized by major partners, authorizing you for advanced placement within the ecosystem.
+                                Review of verified competencies and preparation for the Transition Program. Your experience is evaluated against EBT CBTA standards to identify readiness for advanced training.
                             </p>
                             <ul style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.8, paddingLeft: '1.5rem', margin: 0 }}>
                                 <li>Mentorship Evaluation</li>
-                                <li>Industry Credentials</li>
-                                <li>Advanced Ecosystem Placement</li>
-                                <li>Partner accreditation</li>
+                                <li>Competency Review</li>
+                                <li>Transition Readiness</li>
+                                <li>Standard Alignment</li>
                             </ul>
                         </div>
 
@@ -312,16 +312,16 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 STAGE 09
                             </div>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
-                                AIRBUS Recognition Interview
+                                Final Competency Evaluation
                             </h3>
                             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                The final culmination of the program: the AIRBUS Recognition Interview. This rigorous assessment verifies your readiness for direct airline placement and official industry recognition.
+                                The final culmination of the program: an EBT CBTA-aligned evaluation of your pilot development and recognition portfolio. This assessment verifies your readiness with a certificate of achievement upon completion.
                             </p>
                             <ul style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.8, paddingLeft: '1.5rem', margin: 0 }}>
-                                <li>Industry Evaluation</li>
-                                <li>AIRBUS Recognition</li>
-                                <li>Airline Placement Prep</li>
-                                <li>Final competency assessment</li>
+                                <li>EBT CBTA Evaluation</li>
+                                <li>Competency Assessment</li>
+                                <li>Certificate of Achievement</li>
+                                <li>Final readiness review</li>
                             </ul>
                         </div>
 
@@ -331,16 +331,16 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 STAGE 10
                             </div>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 400, color: '#0f172a', marginBottom: '1rem', fontFamily: 'Georgia, serif' }}>
-                                PilotRecognition Certification & Recognition
+                                PilotRecognition Certification
                             </h3>
                             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                Official certification of all mentorship hours and industry recognition. Your profile is now verified for our global airline partners and the industry registry.
+                                Foundation Program completion verified on your profile. Your mentorship hours, examination results, and competency scores are recorded as a verifiable record of your professional development.
                             </p>
                             <ul style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.8, paddingLeft: '1.5rem', margin: 0 }}>
-                                <li>Final Accreditation</li>
-                                <li>Industry Endorsement</li>
-                                <li>Registry Verification</li>
-                                <li>Global airline partner access</li>
+                                <li>Program Completion</li>
+                                <li>Verified Profile</li>
+                                <li>Competency Record</li>
+                                <li>Pathway Access</li>
                             </ul>
                         </div>
                     </section>
@@ -377,7 +377,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                                 </h3>
                                 <img src="/images/programs-page-1.png" alt="Wingmentorship Approach" style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }} />
                                 <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 }}>
-                                    We create a database of vetting screened pilots based not just on flight hours, but on industry recognition through EBT & CBTA applications provided by Airbus, Foundational Program leadership skills, and our pilot recognition logging system.
+                                    We create a database of vetted pilots based not just on flight hours, but on verified competencies through EBT CBTA-aligned assessments, Foundation Program leadership skills, and our pilot recognition logging system.
                                 </p>
                             </div>
 

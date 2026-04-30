@@ -32,7 +32,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { addToast } = useToast();
-    const { login } = useAuth();
+    const { login, currentUser } = useAuth();
     const modalRef = useRef<HTMLDivElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
 
@@ -148,7 +148,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         try {
             await login(email, password);
 
-            addToast('success', 'Login Successful', 'Welcome back to PilotRecognition!');
+            const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot';
+            addToast('success', `Welcome back, ${userName}!`);
+
             onNavigate('home');
             onClose();
         } catch (err: any) {

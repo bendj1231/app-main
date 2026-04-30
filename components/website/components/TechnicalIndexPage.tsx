@@ -40,24 +40,24 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                 },
                 {
                     title: "Competency Evaluation",
-                    description: "An evaluation based on an Airbus EBT-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathway cards—not job listings. Pathway cards show requirements and what you're missing. Compare your recognition credentials within our network, access cadet programmes, cargo pathways, licensure & type rating pathways, and specialized pathways aligned with your verified competencies. Completing the Foundation Program gives you 50% discount on the Transition Program."
+                    description: "An evaluation based on an EBT CBTA-aligned assessment of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathway cards—not job listings. Pathway cards show requirements and what you're missing. Compare your recognition credentials within our network, access cadet programmes, cargo pathways, licensure & type rating pathways, and specialized pathways aligned with your verified competencies. Completing the Foundation Program unlocks the Transition Program at graduate pricing ($99, a $50 discount from $149)."
                 }
             ]
         },
         {
-            category: "Transition Program - Industry Readiness ($299, $149 with Foundation discount)",
+            category: "Transition Program - Industry Readiness ($149, $99 for Foundation graduates)",
             content: [
                 {
                     title: "Program Overview",
-                    description: "The Transition Program provides industry readiness with full EBT CBTA assessment for pilots transitioning from graduate flight school to airline environment. Includes 9 core competencies full implementation, Airbus HINFACT applications, ATLAS Aviation CV formatting, EBT video assessment with behavioral markers and cognitive indicators evaluation, internship, and competency verification. Foundation graduates receive 50% discount ($149 effective price)."
+                    description: "The Transition Program provides industry readiness with full EBT CBTA assessment for pilots transitioning from graduate flight school to airline environment. Includes 9 core competencies full implementation, EBT CBTA competency video assessment, ATLAS Aviation CV formatting, EBT video assessment with behavioral markers and cognitive indicators evaluation, internship, and competency verification. Foundation graduates unlock at graduate pricing ($99, a $50 discount from $149)."
                 },
                 {
                     title: "EBT CBTA Full Assessment",
                     description: "Full implementation of the 9 core competencies: Situational Awareness, Decision Making, Communication, Leadership & Teamwork, Workload Management, Application of Procedures, Flight Path Management, Knowledge, and Automation Management. This comprehensive assessment demonstrates your competency readiness for airline operations."
                 },
                 {
-                    title: "Airbus HINFACT Integration",
-                    description: "Integration with Airbus HINFACT EBT CBTA Software, the official EBT CBTA assessment tool used by airlines worldwide. This provides formal competency assessment aligned with industry standards and enhances your credibility with operators."
+                    title: "EBT CBTA Video Assessment",
+                    description: "Full EBT CBTA competency video assessment aligned with industry standards. This provides formal competency assessment that enhances your credibility with operators."
                 },
                 {
                     title: "ATLAS Aviation CV Formatting",
@@ -65,7 +65,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                 },
                 {
                     title: "EBT Video Assessment",
-                    description: "Recorded interview after 50-hour mentorship with behavioral markers and cognitive indicators evaluation. Airlines can view your interview to assess communication skills, professional demeanor, and presentation style alongside your competency score. Plan to approach Airbus for verification/certification."
+                    description: "Recorded interview after 50-hour mentorship with behavioral markers and cognitive indicators evaluation. Operators can view your interview to assess communication skills, professional demeanor, and presentation style alongside your competency score."
                 },
                 {
                     title: "Internship & Competency Verification",
@@ -86,7 +86,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                 },
                 {
                     title: "Verified Competency Database",
-                    description: "PilotRecognition provides verified data on pilot professional competencies through our PilotRecognition platform. Our database includes <strong>Airbus EBT CBTA 9 core competencies</strong> with behavioral markers and cognitive indicators, CRM awareness, briefing protocols, and competency assessments. Operators can filter candidates by verified competencies and <strong>competency scores</strong>, reducing uncertainty in recruitment decisions and improving training success rates."
+                    description: "PilotRecognition provides verified data on pilot professional competencies through our PilotRecognition platform. Our database includes <strong>EBT CBTA 9 core competencies</strong> with behavioral markers and cognitive indicators, CRM awareness, briefing protocols, and competency assessments. Operators can filter candidates by verified competencies and <strong>competency scores</strong>, reducing uncertainty in recruitment decisions and improving training success rates."
                 },
                 {
                     title: "Comprehensive Pilot Profiles",
@@ -94,11 +94,11 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                 },
                 {
                     title: "Direct Pathways & Industry Connections",
-                    description: "PilotRecognition connects operators directly to pilots through competency-based pathway cards—not job listings. Operators can pull from our database of pilots who have completed the <strong>Transition Program</strong> with 50 hours of evidence-based mentorship and EBT video assessment. Pathway cards show requirements and what pilots are missing. Integration with <strong>HINFACT EBT CBTA Software</strong> provides sophisticated competency assessment tools."
+                    description: "PilotRecognition connects operators directly to pilots through competency-based pathway cards—not job listings. Operators can pull from our database of pilots who have completed the <strong>Transition Program</strong> with 50 hours of evidence-based mentorship and EBT video assessment. Pathway cards show requirements and what pilots are missing. Our EBT CBTA-aligned assessment provides sophisticated competency evaluation tools."
                 },
                 {
                     title: "Industry-Aligned Standards",
-                    description: "PilotRecognition programs are aligned with <strong>AIRBUS 9 core competencies</strong> and supported by industry leaders. Our Foundation Program addresses the <strong>Pilot Gap in Recognition, Experience, and (PRM) Pilot Risk Management</strong> through comprehensive competency-based training and assessment. Our Transition Program provides full EBT CBTA assessment with HINFACT integration. Operators can trust that candidates from PilotRecognition have been evaluated against the same standards used by major airlines and manufacturers. This alignment ensures that verified competencies translate directly to operational readiness."
+                    description: "PilotRecognition programs are aligned with <strong>EBT CBTA 9 core competencies</strong> used in aviation training worldwide. Our Foundation Program addresses the <strong>Pilot Gap in Recognition, Experience, and (PRM) Pilot Risk Management</strong> through comprehensive competency-based training and assessment. Our Transition Program provides full EBT CBTA assessment with video evaluation. Operators can trust that candidates from PilotRecognition have been evaluated against industry-recognized competency standards. This alignment ensures that verified competencies translate directly to operational readiness."
                 },
                 {
                     title: "Platform Access & Direct Engagement",
@@ -452,10 +452,10 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                     <div>
                         <h3 className="text-xl font-bold text-slate-900 mb-2">EBT CBTA Framework Alignment</h3>
                         <p className="text-slate-700 leading-relaxed mb-3">
-                            PilotRecognition programs align with Evidence-Based Training and Competency-Based Training and Assessment frameworks, which are international standards in pilot training aligned with Airbus. Our curriculum incorporates the <strong>9 core competencies</strong> framework used by modern airlines worldwide.
+                            PilotRecognition programs align with Evidence-Based Training and Competency-Based Training and Assessment frameworks, which are international standards in pilot training worldwide. Our curriculum incorporates the <strong>9 core competencies</strong> framework used by modern airlines.
                         </p>
                         <div className="bg-white rounded-lg p-4 border border-blue-100">
-                            <p className="text-sm text-slate-600 mb-1"><strong>Framework:</strong> EBT CBTA (Airbus-aligned International Standard)</p>
+                            <p className="text-sm text-slate-600 mb-1"><strong>Framework:</strong> EBT CBTA (International Standard)</p>
                             <p className="text-sm text-slate-600 mb-1"><strong>Core Competencies:</strong> 9 Competency Areas</p>
                             <p className="text-sm text-slate-600"><strong>Verification Contact:</strong> contact@pilotrecognition.com</p>
                         </div>

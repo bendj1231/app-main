@@ -22,21 +22,16 @@ export const IndustryStewardshipPage: React.FC<IndustryStewardshipPageProps> = (
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="PilotRecognition Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-6"
-                        />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-                            Guardians of the Profession
+                            Our Commitment
                         </p>
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
-                            Industry Stewardship
+                            Building Tools for Pilots
                         </h1>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                            We view our role as more than a service provider. We are custodians of the pilot
-                            profession, dedicated to raising safety standards, advocating for aircrew, and
-                            preparing the next generation for a sustainable future.
+                            We build competency-based tools and programs aligned with EBT CBTA standards.
+                            Our goal is to give pilots verified data about their own capabilities, transparent
+                            pathway requirements, and a platform that speaks in facts—not promises.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -47,19 +42,21 @@ export const IndustryStewardshipPage: React.FC<IndustryStewardshipPageProps> = (
                 <div className="text-center">
                     <RevealOnScroll>
                         <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">
-                            Eleveating Standards
+                            Raising Standards
                         </p>
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
                             EBT & Safety Alignment
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            The era of "box-ticking" training is over. We champion Evidence-Based Training (EBT)
-                            and Competency-Based Training & Assessment (CBTA) as the only way forward for global aviation safety.
+                            Our programs align with Evidence-Based Training (EBT) and Competency-Based
+                            Training & Assessment (CBTA), the international standards that airlines worldwide
+                            are adopting. We did not create the standard—we adopted it because it measures
+                            what actually matters on the flight deck.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            By integrating these methodologies into our Foundational Program, we ensure that
-                            even low-time pilots are developing the resilience and decision-making skills
-                            required by modern flight decks.
+                            By integrating these methodologies into our Foundation Program, we help low-time
+                            pilots develop resilience and decision-making skills that the industry already
+                            recognizes as essential.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -70,19 +67,20 @@ export const IndustryStewardshipPage: React.FC<IndustryStewardshipPageProps> = (
                 <div className="text-center">
                     <RevealOnScroll>
                         <p className="text-xs font-bold text-indigo-700 uppercase tracking-[0.3em] mb-2">
-                            The Voice of the Pilot
+                            Transparency
                         </p>
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
                             Pilot Advocacy
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            In a profit-driven industry, the voice of the pilot can be drowned out. We serve as
-                            an independent advocate, representing the interests of our members to regulators,
-                            airlines, and flight schools.
+                            In a profit-driven industry, accurate information is the pilot's best defense.
+                            We build transparent pathway data and verification systems that give pilots
+                            real facts about requirements, competency gaps, and what it takes to qualify.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            We push for fair hiring practices, transparent career pathways, and mental health
-                            support, ensuring that the human element remains at the center of aviation.
+                            No false promises. No inflated requirements. Just verified competency assessment,
+                            verified mentorship hours, and pathway cards that show you exactly what you are
+                            missing—not what someone wants you to believe.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -96,15 +94,17 @@ export const IndustryStewardshipPage: React.FC<IndustryStewardshipPageProps> = (
                             Future Ready
                         </p>
                         <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6">
-                            Vision 2030
+                            Adapting With the Industry
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Aviation is changing. From sustainable fuels to single-pilot operations and urban
-                            air mobility, we are preparing our pilots for the flight deck of tomorrow.
+                            Aviation is changing. From sustainable fuels to evolving flight deck technology
+                            and urban air mobility, the competencies pilots need will shift. Our curriculum
+                            updates as the industry changes—not before it, not after it.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Our stewardship involves anticipating these shifts and updating our curriculum
-                            continuously, ensuring a PilotRecognition pilot is always ahead of the curve.
+                            We monitor regulatory shifts, operator requirements, and emerging pathways
+                            through community-submitted updates and operator partnerships. When the industry
+                            changes, our competency framework and pathway data change with it.
                         </p>
                     </RevealOnScroll>
                 </div>

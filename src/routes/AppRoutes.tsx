@@ -7,7 +7,6 @@ import { HomePage } from '@/components/website/components/home/HomePage';
 import { AboutPage } from '@/components/website/components/AboutPage';
 import { TechnicalIndexPage } from '@/components/website/components/TechnicalIndexPage';
 import { AboutIndustryPage } from '@/components/website/components/AboutIndustryPage';
-import { AccreditationPage } from '@/components/website/components/AccreditationPage';
 import { FAQPage } from '@/components/website/components/FAQPage';
 import { BoardPage } from '@/components/website/components/BoardPage';
 import { GovernancePage } from '@/components/website/components/GovernancePage';
@@ -113,7 +112,6 @@ export const AppRoutes = () => {
       <Route path="/about" element={<AboutPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/about-industry" element={<AboutIndustryPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/technical-index" element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
-      <Route path="/accreditation" element={<AccreditationPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/faq" element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/board" element={<BoardPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/governance" element={<GovernancePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
@@ -204,7 +202,7 @@ export const AppRoutes = () => {
       <Route path="/career-pathways" element={<CareerPathwaysIndex onBack={() => handleBack('/pathways-modern')} onNavigate={handleNavigate} />} />
       </Routes>
 
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} onNavigate={handleNavigate} />
     </>
   );
 };

@@ -37,13 +37,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
                     <div className="max-w-3xl mx-auto text-base text-slate-700 leading-relaxed text-left space-y-6">
                         <p>
-                            PilotRecognition is an aviation competency platform operated by WM Pilot Group. The system provides competency-based profiling and accredited experience programs aligned with EBT CBTA international standards. Profiles are maintained in ATLAS Aviation CV format, with planned Airbus HINFACT EBT CBTA Software integration within the Transition Program.
+                            PilotRecognition is an aviation competency platform operated by WM Pilot Group. The system provides competency-based profiling and experience programs aligned with EBT CBTA standards. Profiles are maintained in ATLAS Aviation CV format, with competency assessment integrated within the Transition Program.
                         </p>
                         <p>
-                            Pathways are structured career routes — cadet programs, type ratings, license progression, business aviation, eVTOL, and specialized operations. Each pathway lists operator requirements and identifies competency gaps against the pilot's profile. The platform does not operate as a job board. Pilots indicate interest in a pathway; operators pull candidate profiles from the database based on verified competency scores, flight hours, and EBT assessment data. The profile functions as a live record: hours, certifications, mentorship completion, and examination results update automatically. The competency score determines pathway access and matching priority.
+                            Pathways are structured career routes — cadet programs, type ratings, license progression, business aviation, eVTOL, and specialized operations. Each pathway lists operator requirements and identifies competency gaps against the pilot's profile. The platform does not operate as a job board. Pathways are available to all users; free tier sees 3 per month, Plus tier sees unlimited. Pilots indicate interest in a pathway; when operators join, they can pull verified profiles based on competency scores, flight hours, and EBT assessment data. The profile updates as you log hours, certifications, and mentorship completion. Examination results are verified and recorded. The competency score improves your matching priority with operators.
                         </p>
                         <p>
-                            Two programs provide the competencies and credentials required for pathway access. The Foundation Program establishes baseline competency across the nine EBT CBTA core areas through structured coursework, examination, and 50 hours of evidence-based mentorship. Foundation graduates receive a 50% discount on the Transition Program, which is currently under development and will advance to full EBT CBTA assessment, ATLAS Aviation CV formatting, EBT video evaluation, and internship placement with pathway providers. Program completion generates verified competency data that feeds directly into the pilot profile and informs pathway matching.
+                            Two programs build the verified competencies that improve your matching priority with operators. The Foundation Program establishes baseline competency across the nine EBT CBTA core areas through structured coursework, examination, and 50 hours of evidence-based mentorship. Foundation graduates unlock the Transition Program at graduate pricing ($99, a $50 discount from $149). The Transition Program is currently under development and will advance to full EBT CBTA assessment, ATLAS Aviation CV formatting, EBT video evaluation, and internship placement with pathway providers. Program completion generates verified competency data that feeds directly into the pilot profile and improves operator matching.
                         </p>
 
                         <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
@@ -54,14 +54,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                     <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
                                         <li>Competency development across 9 EBT CBTA core areas</li>
                                         <li>50 hours evidence-based mentorship</li>
-                                        <li>10% scholarship allocation</li>
+                                        <li>Scholarship seats for verified low-income applicants</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <p className="font-semibold text-slate-900 mb-1">Transition Program — $299 <span className="text-slate-500 font-normal">($149 for Foundation graduates)</span> <span className="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded ml-2 align-middle">Under Development</span></p>
+                                    <p className="font-semibold text-slate-900 mb-1">Transition Program — $149 <span className="text-slate-500 font-normal">($99 for Foundation graduates)</span> <span className="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded ml-2 align-middle">Under Development</span></p>
                                     <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
                                         <li>Full EBT CBTA assessment</li>
-                                        <li>Airbus HINFACT applications</li>
+                                        <li>EBT CBTA competency video assessment</li>
                                         <li>ATLAS Aviation CV formatting</li>
                                         <li>EBT video assessment</li>
                                         <li>Internship placement with pathway providers</li>
@@ -105,7 +105,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         </div>
 
                         <p className="text-sm text-slate-500">
-                            Profiles are matched to operator requirements through competency scoring. The competency score determines pathway access eligibility.
+                            Profiles are matched to operator requirements through competency scoring. Higher competency scores improve your matching priority. Pathways are available to all users regardless of program enrollment.
                         </p>
                     </div>
                 </div>
@@ -137,8 +137,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             <div className="text-slate-700 space-y-1">
                                 <p>200 hours. $50,000 spent. Promised airline jobs never materialize.</p>
                                 <p>Instructor queue: 2–3 years. Batch of 2015 still waiting.</p>
-                                <p>Loss of potential. Then became a baggage handler.</p>
-                                <p>Investment unused. Competencies unrecognized.</p>
+                                <p>Work outside aviation to cover costs. Flight training investment unused.</p>
+                                <p>Competencies unrecognized.</p>
                             </div>
                         </div>
 
@@ -150,9 +150,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <h3 className="text-xl font-bold text-slate-900">Floor 1: Flight Instructors</h3>
                             </div>
                             <div className="text-slate-700 space-y-1">
-                                <p>5,000 hours. 15 years instructing. No advancement pathway.</p>
-                                <p>Trained pilots who advanced. Cannot advance without verified competency assessment.</p>
-                                <p>Competencies built. No system to recognize them.</p>
+                                <p>5,000 hours. 15 years instructing. No formal system recognizes instructional expertise as a pathway to advancement.</p>
+                                <p>Trained pilots who advanced. Competencies built. No system to recognize them.</p>
                             </div>
                         </div>
 
@@ -178,10 +177,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <h3 className="text-xl font-bold text-slate-900">Floor 3: Airline Pilots</h3>
                             </div>
                             <div className="text-slate-700 space-y-1">
-                                <p>12+ years. Captain at $250K. Bored. Trapped.</p>
-                                <p>Change airlines? Reset to First Officer at $95K.</p>
-                                <p>$155,000 gone. Seniority sacrificed.</p>
-                                <p>Competency score is portable. Competencies travel. Seniority doesn't.</p>
+                                <p>12+ years. Captain experience. Bored. Trapped.</p>
+                                <p>Change airlines? Reset to First Officer. Seniority sacrificed.</p>
+                                <p>Your flight hours transfer. Your type ratings transfer. But your seniority stays with the airline.</p>
+                                <p>Your competencies are documented. Proof of what you can do, not just hours logged.</p>
                             </div>
                         </div>
                     </div>
@@ -192,7 +191,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <div className="py-8 px-6 bg-blue-900 text-white">
                 <div className="max-w-6xl mx-auto text-center">
                     <p className="text-lg font-medium">
-                        PilotRecognition gathers real-time data from manufacturers, airlines, ATOs, and governing bodies. Type rating demands, regulatory changes, and conversion requirements — updated continuously. Stop applying blind. Apply with current information.
+                        Operator requirements are verified by our pilot community and operator-submitted data. Real pilots check every posting. Requirements are updated as operators publish changes and our community reports updates. Stop applying blind. Apply with verified information.
                     </p>
                 </div>
             </div>
@@ -218,9 +217,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <h3 className="text-xl font-bold text-slate-900">Foundation Program</h3>
                             </div>
                             <div className="text-slate-700 space-y-1">
-                                <p>Foundation Program ($49). 10% scholarship seats reserved.</p>
+                                <p>Foundation Program ($49). Scholarship seats for verified low-income applicants.</p>
                                 <p>Build baseline competency. Get verified. Access pathway cards.</p>
-                                <p>Stop being a baggage handler. Become a recognized pilot.</p>
+                                <p>Build verified competency. Access pathways that match your skills.</p>
                             </div>
                         </div>
 
@@ -234,7 +233,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             <div className="text-slate-700 space-y-1">
                                 <p>EBT-aligned evaluation. Behavioral markers and cognitive indicators.</p>
                                 <p>15 years of experience gets recognized. Not just hours.</p>
-                                <p>Advance to airlines. Not stuck instructing forever.</p>
+                                <p>Document your instructional expertise. Airlines value structured training experience.</p>
                             </div>
                         </div>
 
@@ -246,8 +245,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <h3 className="text-xl font-bold text-slate-900">Real-Time Industry Data</h3>
                             </div>
                             <div className="text-slate-700 space-y-1">
-                                <p>Data from manufacturers, airlines, ATOs, and governing bodies.</p>
-                                <p>A330 requirements updated continuously. No more stale information.</p>
+                                <p>Operator requirements verified by our pilot community and operator-submitted data.</p>
+                                <p>Requirements updated as operators publish changes. No more stale information.</p>
                                 <p>Apply to the right requirements. Get feedback on why you match or don't.</p>
                             </div>
                         </div>
@@ -259,16 +258,16 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <h3 className="text-xl font-bold text-slate-900">Portable Competency Score</h3>
                             </div>
                             <div className="text-slate-700 space-y-1">
-                                <p>Competency score is portable. Change airlines without resetting rank or seniority.</p>
-                                <p>Captain stays Captain. Position and compensation preserved.</p>
-                                <p>Competencies travel. Seniority doesn't.</p>
+                                <p>Your documented competencies travel with you.</p>
+                                <p>New employers see verified proof of what you can do.</p>
+                                <p>Your competencies are portable. Your seniority stays with the airline. But you have proof.</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="text-center mt-12">
                         <button
-                            onClick={() => onNavigate('about')}
+                            onClick={() => onNavigate('foundation-program')}
                             className="inline-flex items-center gap-3 px-8 py-4 bg-blue-700 text-white font-bold rounded-xl hover:bg-blue-800 transition-all shadow-xl"
                         >
                             Start at Floor 0. Build Your Solution.
@@ -331,19 +330,19 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             </div>
                             <div className="text-4xl font-bold text-slate-900 mb-2">03</div>
                             <h3 className="text-lg font-bold text-slate-900 mb-2">Access Pathways & Get Hired</h3>
-                            <p className="text-slate-600">Operators pull your verified competency profile. Match with airlines, cargo, and specialized pathways.</p>
+                            <p className="text-slate-600">When operators join, they pull verified profiles based on competency alignment. Match with airlines, cargo, and specialized pathways as the operator network grows.</p>
                         </div>
                     </div>
 
                     <div className="text-center mt-12 space-y-4">
                         <button
-                            onClick={() => onNavigate('about')}
+                            onClick={() => onNavigate('foundation-program')}
                             className="inline-flex items-center gap-3 px-8 py-4 bg-blue-700 text-white font-bold rounded-xl hover:bg-blue-800 transition-all shadow-xl"
                         >
                             Become a Member
                         </button>
                         <div className="flex items-center justify-center gap-4 text-sm text-slate-600">
-                            <button onClick={() => onNavigate('about')} className="hover:text-blue-700 transition-colors">Enroll in Foundation Program</button>
+                            <button onClick={() => onNavigate('foundation-program')} className="hover:text-blue-700 transition-colors">Enroll in Foundation Program</button>
                             <span>•</span>
                             <button onClick={() => onNavigate('recognition-career-matches')} className="hover:text-blue-700 transition-colors">Discover Pathways</button>
                         </div>
@@ -357,7 +356,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <div className="grid md:grid-cols-4 gap-8 mb-8">
                         <div>
                             <h3 className="font-bold text-lg mb-4">PilotRecognition</h3>
-                            <p className="text-slate-400 text-sm">The Aviation Industry's First Pilot Recognition-Based Platform</p>
+                            <p className="text-slate-400 text-sm">A pilot recognition platform built on verified competency data</p>
                         </div>
                         <div>
                             <h3 className="font-bold text-lg mb-4">Platform</h3>
@@ -366,14 +365,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <li><a onClick={() => onNavigate('recognition-score-info')} className="hover:text-white cursor-pointer transition-colors">Recognition Score</a></li>
                                 <li><a onClick={() => onNavigate('recognition-career-matches')} className="hover:text-white cursor-pointer transition-colors">Pathways</a></li>
                                 <li><a href="https://pilotterminal.com" target="_blank" rel="noopener noreferrer" className="hover:text-white cursor-pointer transition-colors">Pilot Terminal</a></li>
-                                <li><a onClick={() => onNavigate('about')} className="hover:text-white cursor-pointer transition-colors">Foundation Program</a></li>
+                                <li><a onClick={() => onNavigate('foundation-program')} className="hover:text-white cursor-pointer transition-colors">Foundation Program</a></li>
                                 <li><a onClick={() => onNavigate('pilot-gap-about')} className="hover:text-white cursor-pointer transition-colors">What is the Pilot Gap?</a></li>
                             </ul>
                         </div>
                         <div>
                             <h3 className="font-bold text-lg mb-4">Contact</h3>
                             <ul className="space-y-2 text-slate-400 text-sm">
-                                <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
                                 <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
                                 <li><a href="mailto:enterprise@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">enterprise@pilotrecognition.com</a></li>
                             </ul>

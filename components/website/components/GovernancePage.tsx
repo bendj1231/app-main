@@ -22,11 +22,6 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="PilotRecognition Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-6"
-                        />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                             Integrity & Compliance
                         </p>
@@ -37,9 +32,9 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             Compliance | Ethics | Transparency
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700">
-                            Our governance framework is the backbone of trust within the PilotRecognition ecosystem.
-                            We are committed to regulatory compliance, data ethics, and absolute transparency
-                            in all our partnerships.
+                            Our governance framework is built on honest representation of what we deliver. We are committed
+                            to regulatory compliance, data ethics, and transparency in all our operations and future
+                            partnerships.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -68,10 +63,10 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             format preferred by major airlines and recruitment systems worldwide.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Our alignment with <strong>AIRBUS 9 core competencies</strong> and <strong>EBT CBTA</strong> principles
-                            provides assurance that your documented competencies meet the exacting standards required by
-                            leading manufacturers and operators. This regulatory alignment extends to our Foundational Program,
-                            which serves as a foundational prerequisite for our EBT CBTA-aligned flagship Transition Program.
+                            Our alignment with <strong>EBT CBTA 9 core competencies</strong> used in aviation training worldwide
+                            provides assurance that your documented competencies meet industry-recognized standards.
+                            This regulatory alignment extends to our Foundation Program,
+                            which serves as the prerequisite for our EBT CBTA-aligned Transition Program.
                         </p>
                     </div>
                 </RevealOnScroll>
@@ -91,10 +86,9 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             Data Security
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Your flight records and career data are sensitive assets. We employ <strong>bank-grade encryption</strong>
+                            Your flight records and career data are sensitive assets. We employ industry-standard encryption
                             and strict access controls to ensure your information is only seen by the recruiters you authorize.
-                            Our platform utilizes <strong>AES-256 encryption</strong> for data at rest and TLS 1.3 for data in transit,
-                            ensuring your personal information remains protected throughout its lifecycle.
+                            Our platform ensures your personal information remains protected throughout its lifecycle.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             We never sell your data to third parties. Our business model is built on your career
@@ -103,10 +97,10 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             our success is directly tied to your professional advancement and career achievements.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Your <strong>PilotRecognition Profile</strong> operates on a <strong>blockchain-verifiable certification</strong>
-                            system, giving you control over who accesses your credentials. You can revoke access at any time,
-                            and our transparent audit logs allow you to track exactly which operators have viewed your profile.
-                            This puts you in complete control of your professional data throughout your aviation career journey.
+                            Your <strong>PilotRecognition Profile</strong> uses a <strong>two-step verification process</strong>
+                            for mentorship hours and verified examination results, giving you confidence in the data
+                            that operators see. You control what information is visible on your profile.
+                            This puts you in control of your professional data throughout your aviation career journey.
                         </p>
                     </div>
                 </RevealOnScroll>
@@ -126,9 +120,9 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             Transparency
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            We maintain clear, published agreements with all our airline and ATO partners. Key
-                            terms regarding <strong>hiring pathways</strong>, <strong>discount structures</strong>, and <strong>data usage</strong> are open for
-                            review. Our partnership agreements are designed to eliminate ambiguity and ensure that
+                            We are actively seeking partnerships with airlines and ATOs. When partnerships are established,
+                            terms regarding <strong>hiring pathways</strong>, <strong>program structures</strong>, and <strong>data usage</strong> will be
+                            published and transparent. Our agreements are designed to eliminate ambiguity and ensure that
                             pilots understand exactly what they're getting when they enroll in a pathway or program.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
@@ -139,13 +133,11 @@ export const GovernancePage: React.FC<GovernancePageProps> = ({
                             operator requirements.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Our pathway matching system operates on <strong>AI-powered algorithms</strong> that analyze your
-                            flight hours, certifications, competencies, and career goals to identify the most suitable
-                            opportunities. When operators post opportunities through our platform, they agree to our
-                            transparent terms, ensuring fair and equitable access for all qualified pilots. This commitment
-                            to transparency extends to our <strong>enterprise integration</strong> with operators, where job
-                            postings and pathway details are publicly visible on Pilot Terminal, creating an open marketplace
-                            for aviation career opportunities.
+                            Our pathway matching system uses <strong>competency-based filtering</strong> that compares your
+                            flight hours, certifications, competencies, and career goals against pathway requirements
+                            to identify the most suitable opportunities. We are actively recruiting operator partners
+                            to join the platform. When operators post opportunities, pathway details will be publicly
+                            visible on Pilot Terminal, creating a transparent resource for aviation career opportunities.
                         </p>
                     </div>
                 </RevealOnScroll>

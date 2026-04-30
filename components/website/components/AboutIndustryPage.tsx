@@ -37,7 +37,7 @@ export const AboutIndustryPage: React.FC<AboutIndustryPageProps> = ({
                                 PilotRecognition provides operators with verified competency data on pilot candidates—not just hours and type ratings. Our EBT CBTA aligned assessment framework maps candidates against the 9 core competencies airlines actually evaluate: situational awareness, decision making, communication, leadership, workload management, procedures, flight path management, knowledge, and automation management.
                             </p>
                             <p>
-                                The pulling system replaces push applications. Pilots indicate interest in your pathway; you pull candidates from the database based on verified competency scores, mentorship completion, and EBT assessment data. Every profile is a live record that updates automatically—hours, certifications, mentorship progress, and examination results feed directly into the competency score you use to filter candidates.
+                                The pulling system replaces push applications. Pilots indicate interest in your pathway; when operators join the platform, they can pull candidates from the database based on verified competency scores, mentorship completion, and EBT assessment data. Every profile updates automatically as pilots log hours, certifications, mentorship progress, and examination results—feeding directly into the competency score operators use to filter candidates.
                             </p>
                         </div>
                     </RevealOnScroll>
@@ -114,7 +114,7 @@ export const AboutIndustryPage: React.FC<AboutIndustryPageProps> = ({
                                 Pull Verified Candidates
                             </h2>
                             <p className="text-slate-600 max-w-2xl mx-auto">
-                                Live profiles. Verified competencies. Automated matching. You pull the right candidates—no more sorting through unqualified applications.
+                                Verified competencies. Dynamic profiles that update as pilots progress. Competency-based filtering. When operators join, they pull the right candidates—no more sorting through unqualified applications.
                             </p>
                         </RevealOnScroll>
                     </div>
@@ -123,8 +123,8 @@ export const AboutIndustryPage: React.FC<AboutIndustryPageProps> = ({
                         {[
                             {
                                 icon: <Database className="w-8 h-8 text-blue-700" />,
-                                title: "Live Real-Time Profiles",
-                                desc: "Pilot profiles update automatically. Hours, certifications, mentorship completion, examination results—all verified and current. No more outdated CVs or self-reported data."
+                                title: "Dynamic Verified Profiles",
+                                desc: "Pilot profiles update as pilots log hours, certifications, mentorship completion, and examination results—all verified and current. No more outdated CVs or self-reported data."
                             },
                             {
                                 icon: <CheckCircle className="w-8 h-8 text-blue-700" />,
@@ -134,7 +134,7 @@ export const AboutIndustryPage: React.FC<AboutIndustryPageProps> = ({
                             {
                                 icon: <Users className="w-8 h-8 text-blue-700" />,
                                 title: "Pulling System",
-                                desc: "Pilots indicate interest in your pathway. You pull candidates from the database based on competency scores, verified hours, and assessment data. No more push applications clogging your inbox."
+                                desc: "Pilots indicate interest in your pathway. Operators pull candidates from the database based on competency scores, verified hours, and assessment data. No more push applications clogging your inbox."
                             },
                             {
                                 icon: <Briefcase className="w-8 h-8 text-blue-700" />,
@@ -283,9 +283,9 @@ export const AboutIndustryPage: React.FC<AboutIndustryPageProps> = ({
 
                     <div className="grid md:grid-cols-3 gap-8 text-center">
                         {[
-                            { value: "$15K–$50K", label: "Training failure cost per candidate", desc: "Competency filtering reduces failures by identifying ready candidates before training investment." },
-                            { value: "2,000→12", label: "Applications to positions ratio", desc: "Pulling system delivers pre-qualified candidates. No more sorting through unverified applications." },
-                            { value: "3x", label: "Faster candidate screening", desc: "Competency scores replace manual resume review. See matched candidates in minutes, not weeks." }
+                            { value: "$15K–$50K", label: "Industry training failure cost per candidate", desc: "Based on industry estimates for type rating and line training failures. Competency filtering identifies ready candidates before training investment." },
+                            { value: "2,000→12", label: "Typical applications to positions ratio", desc: "Industry data shows overwhelming application volumes. The pulling system delivers pre-qualified candidates based on verified competencies." },
+                            { value: "3x", label: "Projected screening efficiency", desc: "Competency scores replace manual resume review. Projected to reduce screening time from weeks to minutes once operator volume is established." }
                         ].map((item, idx) => (
                             <RevealOnScroll key={idx}>
                                 <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100">
@@ -324,7 +324,7 @@ export const AboutIndustryPage: React.FC<AboutIndustryPageProps> = ({
                             </div>
                             <div className="text-4xl font-bold text-slate-900 mb-2">02</div>
                             <h3 className="text-lg font-bold text-slate-900 mb-2">Pull Verified Profiles</h3>
-                            <p className="text-slate-600">Access live profiles with verified competencies, EBT scores, mentorship completion, and current certifications.</p>
+                            <p className="text-slate-600">Access verified profiles with competencies, EBT scores, mentorship completion, and current certifications that update automatically.</p>
                         </div>
                         <div className="text-center">
                             <div className="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">

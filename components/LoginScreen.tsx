@@ -14,7 +14,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
   const [wmUser, setWmUser] = useState('');
   const [wmPass, setWmPass] = useState('');
 
-  const { login, resetPassword, mfaEnabled, mfaCheckStatus } = useAuth();
+  const { login, resetPassword, mfaEnabled, mfaCheckStatus, currentUser } = useAuth();
   const { addToast } = useToast();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +77,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
         setIsLoading(false);
       } else {
         console.log("MFA not enabled, proceeding to login");
-        addToast('success', 'Login Successful', 'Welcome back to PilotRecognition!');
+        const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot';
+        addToast('success', `Welcome back, ${userName}!`);
         onLogin(wmUser);
         setIsLoading(false);
       }
@@ -101,7 +102,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
 
   const handleMFAVerified = () => {
     setShowMFAVerify(false);
-    addToast('success', 'Login Successful', 'Welcome back to PilotRecognition!');
+    const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot';
+    addToast('success', `Welcome back, ${userName}!`);
     onLogin(mfaPendingUser);
     setMfaPendingUser('');
   };

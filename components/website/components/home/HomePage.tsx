@@ -634,7 +634,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Save and restore scroll position on visibility change
+    // Save scroll position on visibility change (restoration disabled for development)
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (document.hidden) {
@@ -644,27 +644,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                 sessionStorage.setItem('scrollPosition', currentScroll.toString());
                 sessionStorage.setItem('scrollPositionTimestamp', Date.now().toString());
                 console.log('💾 Saved scroll position:', currentScroll);
-            } else {
-                // Restore scroll position when tab becomes visible
-                const savedScroll = sessionStorage.getItem('scrollPosition');
-                const savedTimestamp = sessionStorage.getItem('scrollPositionTimestamp');
-                const scrollPos = savedScroll ? parseInt(savedScroll, 10) : scrollPositionRef.current;
-                
-                console.log('🔄 Tab visible, restoring scroll position:', scrollPos, 'saved:', savedScroll, 'timestamp:', savedTimestamp);
-                console.log('📊 Current scroll position before restore:', window.scrollY);
-                
-                // Immediately restore scroll position without intermediate reset
-                const restoreScroll = (delay: number) => {
-                    window.scrollTo({
-                        top: scrollPos,
-                        behavior: 'instant'
-                    });
-                };
-                
-                // Single restore after a short delay
-                setTimeout(() => restoreScroll(100), 100);
-                setTimeout(() => restoreScroll(1200), 1200);
             }
+            // Note: Scroll restoration disabled to prevent unwanted scrolling when switching IDE tabs
         };
 
         document.addEventListener('visibilitychange', handleVisibilityChange);

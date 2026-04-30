@@ -1,7 +1,6 @@
 // Direct imports (lazy loading temporarily disabled due to import resolution issues)
 export { HomePage } from '@/components/website/components/home/HomePage';
 export { AboutPage } from '@/components/website/components/AboutPage';
-export { AccreditationPage } from '@/components/website/components/AccreditationPage';
 export { FAQPage } from '@/components/website/components/FAQPage';
 export { BoardPage } from '@/components/website/components/BoardPage';
 export { GovernancePage } from '@/components/website/components/GovernancePage';

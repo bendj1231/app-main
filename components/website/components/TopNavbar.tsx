@@ -61,6 +61,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState<boolean>(false);
     const [uploading, setUploading] = useState(false);
     const [profileLoading, setProfileLoading] = useState(false);
+    const [logoutLoading, setLogoutLoading] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
@@ -122,17 +123,17 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
     const handleLogout = async () => {
         // Prevent multiple simultaneous logout calls
-        if (profileLoading) return;
-        
+        if (logoutLoading) return;
+
         try {
-            setProfileLoading(true);
+            setLogoutLoading(true);
             await logout();
             onNavigate('home'); // Redirect to home after logout
             setIsMenuOpen(false);
         } catch (error) {
             console.error("❌ Failed to log out", error);
         } finally {
-            setProfileLoading(false);
+            setLogoutLoading(false);
         }
     };
 
@@ -416,7 +417,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Governance', name: 'Our Board', target: 'board', bullets: ['Executive Leadership', 'Airlines Advisory', 'Tech Innovators'] },
                 { name: 'Committees', target: 'committees', bullets: ['Safety Board', 'Curriculum Review', 'Pilot Advocacy'] },
                 { name: 'Governance', target: 'governance', bullets: ['Regulatory Compliance', 'Data Ethics', 'Partner Transparency'] },
-                { category: 'Compliance', name: 'Accreditation & Recognition', target: 'accreditation', bullets: ['Global Standards', 'EASA & GCAA Alignment', 'Verified Training'] }
             ]
         },
         {

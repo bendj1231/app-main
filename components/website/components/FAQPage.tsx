@@ -16,19 +16,19 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             questions: [
                 {
                     q: "What is PilotRecognition?",
-                    a: "A competency framework and career platform for pilots. We assess behavioral markers alongside flight hours, match you with verified pathways, and give operators access to your live profile. You build a recognition score based on verified mentorship hours, EBT CBTA-aligned competency assessment, and professional development."
+                    a: "A competency framework and career platform for pilots. We assess behavioral markers alongside flight hours, match you with verified pathways, and give operators access to your verified profile. You build a recognition score based on verified mentorship hours, EBT CBTA-aligned competency assessment, and professional development."
                 },
                 {
                     q: "Is PilotRecognition free?",
-                    a: "Basic access is free. Programs cost money: <strong>Foundation Program ($49)</strong> includes 50 hours verified mentorship and competency assessment. <strong>Transition Program ($299)</strong> is the advanced stage with EBT CBTA video assessment. <strong>Recognition Plus ($99/year)</strong> unlocks unlimited pathway views and priority matching. Our revenue comes from airline/operator subscriptions—not from charging pilots for basic access."
+                    a: "Creating a profile, logging flight hours, and viewing 3 pathways per month are free. Programs cost money: <strong>Foundation Program ($49)</strong> includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. <strong>Transition Program ($149)</strong> is the advanced stage with EBT CBTA video assessment. Foundation graduates unlock it at $99. <strong>Recognition Plus ($99/year)</strong> unlocks unlimited pathway views and priority matching. Revenue comes from pilot programs and operator subscriptions."
                 },
                 {
                     q: "How does it work?",
-                    a: "Create your profile. Complete verified mentorship hours. Your competencies are assessed through our EBT CBTA-aligned framework. Operators post pathways with competency requirements. You see match indicators against your verified profile. When you meet requirements, operators pull your data. Your recognition score is your currency for pathway access."
+                    a: "Create your profile. Complete verified mentorship hours. Your competencies are assessed through our EBT CBTA-aligned framework. You see match indicators against pathway requirements posted on the platform. When operators join, they can pull verified profiles that match their requirements. Your recognition score determines your pathway access and visibility. We are actively recruiting operator partners."
                 },
                 {
                     q: "What's the difference from a job board?",
-                    a: "Job boards are push-based: you apply, you wait, you compete. PilotRecognition is a pulling system: operators see verified competency data and pull candidates who match requirements. Your profile is live and updates as you log hours. Pathways show you exactly what competencies you're missing—not just open positions."
+                    a: "Job boards are push-based: you apply, you wait, you compete. PilotRecognition is a pulling system: when operators join, they see verified competency data and pull candidates who match requirements. Your profile updates as you log hours and complete assessments. Pathways show you exactly what competencies you're missing—not just open positions."
                 },
                 {
                     q: "Why join now?",
@@ -41,15 +41,15 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             questions: [
                 {
                     q: "What is the Foundation Program?",
-                    a: "<strong>$49.</strong> 50 hours of verified mentorship. EBT CBTA-aligned competency assessment. Industry-aligned CV formatting. Foundation graduates get <strong>50% off the Transition Program</strong> ($149 instead of $299). This builds your baseline recognition score that determines pathway access."
+                    a: "<strong>$49.</strong> Includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. EBT CBTA-aligned competency assessment. Foundation graduates unlock the Transition Program at graduate pricing ($99, a $50 discount from $149). This builds your baseline recognition score that determines pathway access."
                 },
                 {
                     q: "What is the Transition Program?",
-                    a: "<strong>$299</strong> ($149 for Foundation graduates). Includes EBT CBTA video assessment after mentorship completion, detailed competency scoring across 9 markers, and direct pathway eligibility. Without Foundation completion, the assessment is rigorous and you may not pass if baseline competencies aren't met. Foundation graduates are prioritized."
+                    a: "<strong>$149</strong> ($99 for Foundation graduates). Includes EBT CBTA video assessment after mentorship completion, detailed competency scoring across 9 markers, and direct pathway eligibility. Without Foundation completion, the assessment is rigorous and you may not pass if baseline competencies aren't met. Foundation graduates are prioritized."
                 },
                 {
                     q: "What is Recognition Plus?",
-                    a: "<strong>$99/year.</strong> Unlocks unlimited pathway views, full profile comparison against airline requirements, and priority matching in operator searches. Free tier is limited to basic profile creation and restricted pathway views. Program participants receive the same priority matching as paid members—effort-based recognition, not pay-to-win."
+                    a: "<strong>$99/year.</strong> Unlocks unlimited pathway views, full profile comparison against airline requirements, and priority matching when operators search the platform. Free tier is limited to basic profile creation and restricted pathway views. Program participants receive the same priority matching as paid members—effort-based recognition, not pay-to-win."
                 },
                 {
                     q: "Can I skip the Foundation Program?",
@@ -79,15 +79,15 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             questions: [
                 {
                     q: "What is a recognition score?",
-                    a: "A composite metric based on: verified mentorship hours, EBT CBTA competency assessment results, program completion status, and professional development markers. It determines pathway access and operator visibility. Higher scores unlock more opportunities. Not about popularity—about demonstrated capability."
+                    a: "A composite metric based on: verified mentorship hours, EBT CBTA competency assessment results, program completion status, and professional development markers. It determines pathway access and improves visibility to operators. Higher scores improve your matching priority. Not about popularity—about demonstrated capability."
                 },
                 {
                     q: "What is EBT CBTA assessment?",
-                    a: "Evidence-Based Training and Competency-Based Training Assessment. We measure 9 core competencies: decision making, communication, leadership, situational awareness, workload management, procedures, flight path management, knowledge, and automation management. These are the same behavioral markers airlines use. We score them, not just log your hours."
+                    a: "Evidence-Based Training and Competency-Based Training Assessment. We measure 9 core competencies: decision making, communication, leadership, situational awareness, workload management, procedures, flight path management, knowledge, and automation management. These are the behavioral markers used in EBT CBTA training frameworks. We score them, not just log your hours."
                 },
                 {
                     q: "How do airlines access my profile?",
-                    a: "Verified operators subscribe to our platform and search by competency requirements. They see your recognition score, verified hours, and assessment results—not your personal contact info until you authorize contact. You control visibility. Matching is based on competency alignment, not keyword search."
+                    a: "When verified operators subscribe to our platform, they search by competency requirements. They see your recognition score, verified hours, and assessment results—not your personal contact info until you authorize contact. You control visibility. Matching is based on competency alignment, not keyword search. We are actively recruiting operator partners."
                 }
             ]
         },

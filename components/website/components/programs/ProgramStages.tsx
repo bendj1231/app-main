@@ -3,14 +3,14 @@ import React from 'react';
 const stages = [
     { number: '01', title: 'Initial Program Module', description: 'Industry analysis & indoctrination protocols' },
     { number: '02', title: 'Initial Examination Module', description: 'Baseline retention assessment & skills record' },
-    { number: '03', title: 'Global Industry Registry', description: 'Centralized professional record & transparency' },
+    { number: '03', title: 'Your PilotRecognition Profile', description: 'Centralized professional record & transparency' },
     { number: '04', title: 'Mentorship Module', description: 'Mentorship fundamentals & peer observation' },
     { number: '05', title: 'Pre-Mentorship Examination', description: 'Mentorship prep exam & 10hr observation' },
     { number: '06', title: 'Supervised Mentorship', description: '20-hour mentorship with objective logging' },
-    { number: '07', title: 'Accreditation & Prescription', description: 'Industry credentials & advanced placement' },
+    { number: '07', title: 'Competency Review & Transition Prep', description: 'Review of verified competencies & preparation for next stage' },
     { number: '08', title: 'Advanced Mentorship', description: '50-hour milestone & leadership demonstration' },
-    { number: '09', title: 'AIRBUS Recognition Interview', description: 'Final evaluation & airline placement prep' },
-    { number: '10', title: 'PilotRecognition Certification', description: 'Final accreditation & global partner access' }
+    { number: '09', title: 'Final Competency Evaluation', description: 'EBT CBTA-aligned evaluation & certificate of achievement' },
+    { number: '10', title: 'PilotRecognition Certification', description: 'Foundation Program completion verified on your profile' }
 ];
 
 export const ProgramStages: React.FC = () => {

@@ -14,34 +14,34 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
         {
             name: "Executive Leadership",
             role: "Strategic Direction",
-            desc: "The executive board oversees the platform's global expansion and alignment with ICAO standards. Through our partnership with <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that strategic direction aligns with the exacting standards required by leading manufacturers worldwide. Our <strong>AI-powered pathway matching</strong> system provides data-driven insights for global expansion decisions.",
-            bullets: ["Global Expansion", "Regulatory Liaison", "Financial Oversight"]
+            desc: "The executive team oversees platform development, program alignment with EBT CBTA international standards, and long-term roadmap planning. We review curriculum against industry competency frameworks and ensure our verification systems maintain integrity. We are actively seeking advisory input from airline training professionals to strengthen program alignment.",
+            bullets: ["Program Governance", "Curriculum Oversight", "Financial Oversight"]
         },
         {
-            name: "Airlines Advisory",
-            role: "Flagship Alignment",
-            desc: "Active captains and training heads from major carriers ensure our programs meet real-world entry standards. Through guidance from <strong>Etihad Cadet Program</strong> and Head of Training, we ensure that syllabus development aligns with flagship carrier expectations. Our <strong>EBT CBTA-aligned assessment framework</strong> provides objective evaluation of pilot readiness for airline recruitment.",
-            bullets: ["Etihad/Emirates Standards", "EBT Integration", "Hiring Analytics"]
+            name: "Industry Advisory",
+            role: "Program Alignment",
+            desc: "We seek input from active captains, training captains, and aviation professionals to ensure our programs reflect real-world competency requirements. Our assessment framework is aligned with EBT CBTA standards used in aviation training worldwide—not tied to any single carrier. We welcome feedback from training professionals to refine syllabus development.",
+            bullets: ["EBT CBTA Standards", "Competency Framework", "Industry Feedback"]
         },
         {
-            name: "Tech Innovators",
-            role: "Digital Ecosystem",
-            desc: "Visionaries in AI and data extraction who lead the development of our <strong>ATLAS AI</strong> and Pilot Recognition systems. Through our partnership with <strong>Airbus Head of Training</strong>, we ensure that technology development aligns with industry standards for competency assessment. Our <strong>blockchain-verifiable certifications</strong> and <strong>ATS-compatible ATLAS Aviation CV formatting</strong> provide pilots with cutting-edge tools for career advancement.",
-            bullets: ["AI Data Extraction", "Blockchain Verification", "Mobile First"]
+            name: "Technology & Operations",
+            role: "Platform Development",
+            desc: "The tech team builds and maintains the PilotRecognition platform, including profile systems, pathway matching, verification workflows, and ATLAS Aviation CV formatting. We prioritize data security, two-step verification for mentorship hours, and systems that give pilots control over their own data.",
+            bullets: ["Platform Development", "Data Security", "Verification Systems"]
         },
         {
-            name: "Operations Board",
-            role: "Program Delivery",
-            desc: "Managing the logistics of our Fujairah-based programs and global network of partner flight schools. We foster a culture of respect where every voice is heard, from the cadet to the captain. Our <strong>pathway matching system</strong> treats all pilots objectively based on verified competencies and recognition scores, ensuring fair and equitable access to career opportunities based on demonstrated professional capability rather than connections.",
-            bullets: ["School Audits", "Candidate Vetting", "Resource Allocation"]
+            name: "Program Delivery",
+            role: "Operations",
+            desc: "The operations team manages program logistics, mentor verification, examination administration, and pilot support. Every mentorship hour is verified through our two-step confirmation process. Every examination result is recorded and auditable. We treat all pilots objectively based on verified competencies and recognition scores.",
+            bullets: ["Mentor Verification", "Examination Integrity", "Pilot Support"]
         }
     ];
 
     const pipelineSteps = [
-        { title: "Strategic Audit", value: "Annual review of board goals against industry flight shortages and shifts." },
-        { title: "Partner Selection", value: "Board-level vetting of flagship carriers and manufacturing partners." },
-        { title: "Policy Formation", value: "Creating the governance frameworks for pilot data security and ethics." },
-        { title: "Industry Impact", value: "Measuring the success rate of PilotRecognition members in the global market." }
+        { title: "Program Review", value: "Annual review of curriculum against EBT CBTA standards and industry competency requirements." },
+        { title: "Advisory Input", value: "Seeking feedback from aviation training professionals and active pilots on program relevance and gaps." },
+        { title: "Policy Formation", value: "Creating governance frameworks for pilot data security, verification integrity, and ethical standards." },
+        { title: "Impact Tracking", value: "Tracking program completion rates, competency score distributions, and pilot pathway engagement." }
     ];
 
     return (
@@ -52,23 +52,16 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="PilotRecognition Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-2"
-                        />
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
-                            Executive Leadership
+                            Our Organization
                         </p>
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
-                            Our Board
+                            Leadership & Governance
                         </h1>
-                        <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
-                            Strategic Direction | Industry Alignment | Global Expansion
-                        </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
-                            PilotRecognition is guided by a diverse board of airline captains, technology pioneers,
-                            and regulatory experts committed to solving the global pilot shortage. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our board governance aligns with the exacting standards required by leading manufacturers and operators worldwide.
+                            PilotRecognition is built by a team of aviation professionals, educators, and technology
+                            specialists committed to transparent competency assessment. Our governance focuses on
+                            program integrity, data security, and honest representation of what we deliver.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -78,10 +71,10 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
             <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                 <RevealOnScroll>
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#2563eb', fontWeight: 600 }}>
-                        Board Structure
+                        Team Structure
                     </p>
                     <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                        Leadership Excellence
+                        How We Operate
                     </h2>
                 </RevealOnScroll>
             </div>
@@ -108,14 +101,14 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                 </div>
             </div>
 
-            {/* Cinematic Section (Dark) */}
+            {/* Stewardship Section */}
             <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '2rem', marginBottom: '4rem', textAlign: 'center' }}>
                 <RevealOnScroll>
                     <p style={{ margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#60A5FA', fontWeight: 600 }}>
-                        Global Stewardship
+                        Our Commitment
                     </p>
                     <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: 'white' }}>
-                        Leading the Next Era of Aviation
+                        Governance Principles
                     </h2>
                 </RevealOnScroll>
             </div>
@@ -125,19 +118,20 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                     <div>
                         <RevealOnScroll>
                             <p className="text-lg text-slate-400 mb-8 leading-relaxed font-sans italic">
-                                "Our board doesn't just manage a platform; we manage a promise to the next generation of aviators."
+                                "We don't claim authority we haven't earned. We build tools, verify data, and let pilots prove what they can do."
                             </p>
                             <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
-                                Through direct consultation with Flagship Carriers and ICAO delegates, our board ensures
-                                that every PilotRecognition program is legally recognized, ethically sound, and industry-aligned.
-                                We are the voice of the pilot inside the boardroom.
+                                Our governance is straightforward: honest representation of what we deliver, transparent
+                                pricing with no hidden fees, verified data that pilots own and control, and continuous
+                                improvement based on pilot feedback and industry standards—not fictional partnerships
+                                or inflated claims.
                             </p>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                    <span className="text-slate-300 text-sm font-sans">Strategic 2030 Vision Alignment</span>
+                                    <span className="text-slate-300 text-sm font-sans">Honest Program Claims</span>
                                 </div>
                                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                                    <span className="text-slate-300 text-sm font-sans">Industry-Wide Advocacy Network</span>
+                                    <span className="text-slate-300 text-sm font-sans">Pilot Data Ownership</span>
                                 </div>
                             </div>
                         </RevealOnScroll>
@@ -152,7 +146,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ onBack, onNavigate, onLogi
                         Governance Process
                     </p>
                     <h2 style={{ margin: '0.5rem 0 0', fontSize: '2.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif' }}>
-                        Board Governance Pipeline
+                        How We Review & Improve
                     </h2>
                 </RevealOnScroll>
             </div>

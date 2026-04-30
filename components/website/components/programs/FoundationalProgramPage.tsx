@@ -1,7 +1,6 @@
-import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
-import { MentorshipLogbookAnimation } from './MentorshipLogbookAnimation';
 import { ProgramStages } from './ProgramStages';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 
@@ -16,6 +15,86 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
     onNavigate,
     onLogin
 }) => {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [autoPlay, setAutoPlay] = useState(true);
+
+    const carouselSlides = [
+        {
+            src: '/images/pilot-gap.png',
+            alt: 'The Pilot Gap Challenge',
+            caption: 'The Pilot Gap — where most pilots exit the profession',
+            header: 'The Pilot Shortage Paradox',
+            breakdown: 'Airlines claim they need pilots, yet thousands of qualified low-timers never get a response. The disconnect between training and industry requirements creates a bottleneck that stalls careers before they begin.',
+            moduleRef: 'Chapter 01 — Understanding the What\'s',
+            moduleExcerpt: 'Before we can solve the recognition gap, we must first understand the terminology and landscape. This chapter breaks down the fundamental concepts every pilot must grasp to navigate today\'s aviation industry successfully.'
+        },
+        {
+            src: '/the-pilot-gap.png',
+            alt: 'Four Floor Tower',
+            caption: 'The four-floor tower — collapsing at every level',
+            header: 'The Collapsing Pipeline',
+            breakdown: 'From fresh graduates stuck at 200 hours, to instructors with 15 years of experience, to seasoned captains trapped by seniority — every floor of this tower is failing. The system was not built for pilot recognition.',
+            moduleRef: 'Module 01 — Industry Familiarization & Indoctrination',
+            moduleExcerpt: 'Ground yourself in the realities of our industry, the paradox of the pilot shortage, and the precise framework PilotRecognition uses to turn your training hours into verifiable industry recognition.'
+        },
+        {
+            src: '/unclogging-pipes-pilot-gap.png',
+            alt: 'Unclogging the Pipeline',
+            caption: 'Unclogging the pipeline — why pilots get stuck and how recognition helps',
+            header: 'Why Pilots Get Stuck',
+            breakdown: 'The pipeline is clogged because there is no standard for recognizing pilot competency beyond flight hours. Without a verified profile, airlines cannot identify who is truly ready — and pilots have no visibility into what they are missing.',
+            moduleRef: 'Chapter 04 — The Solution',
+            moduleExcerpt: 'Our solution combines verified training milestones, industry recognition protocols, and mentorship frameworks to create a clear pathway from low-time pilot to aviation professional.'
+        },
+        {
+            src: '/candidates-pilot-gap.png',
+            alt: 'Candidate Pool',
+            caption: 'Why flight hours alone are no longer enough',
+            header: 'Flight Hours Are No Longer Enough',
+            breakdown: 'The industry has shifted from hour-counting to competency-based assessment. Airlines now look for evidence of leadership, decision-making under pressure, and structured mentorship — none of which appear on a logbook.',
+            moduleRef: 'Chapter 01 — Understanding the What\'s',
+            moduleExcerpt: 'We explore the low-timer paradox, the myth of the pilot shortage, and what "Pilot Recognition" actually means in an industry that still operates on outdated signals.'
+        },
+        {
+            src: '/financial-drain-pilot-gap.jpg',
+            alt: 'Financial Investment',
+            caption: 'The $50,000 training investment and its real return',
+            header: 'The $50,000 Training Trap',
+            breakdown: 'Pilots invest $50,000+ in training with the promise of an airline job that never materializes. Years later, they are still instructing, still waiting, still invisible to the industry they trained to serve.',
+            moduleRef: 'Module 01 — Welcome Aboard',
+            moduleExcerpt: 'You\'ve chosen to step beyond the standard pilot career path. The PilotRecognition Foundational Program is your bridge from "low-timer" to recognized professional.'
+        }
+    ];
+
+    const nextSlide = useCallback(() => {
+        setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
+    }, [carouselSlides.length]);
+
+    const prevSlide = useCallback(() => {
+        setCurrentSlide((prev) => (prev - 1 + carouselSlides.length) % carouselSlides.length);
+    }, [carouselSlides.length]);
+
+    useEffect(() => {
+        if (!autoPlay) return;
+        const timer = setInterval(nextSlide, 5000);
+        return () => clearInterval(timer);
+    }, [nextSlide, autoPlay]);
+
+    const handlePrev = () => {
+        setAutoPlay(false);
+        prevSlide();
+    };
+
+    const handleNext = () => {
+        setAutoPlay(false);
+        nextSlide();
+    };
+
+    const handleDot = (index: number) => {
+        setAutoPlay(false);
+        setCurrentSlide(index);
+    };
+
     return (
         <>
             <BreadcrumbSchema items={[
@@ -28,9 +107,6 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
 
             <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out', paddingBottom: '4rem' }}>
                 <div style={{ textAlign: 'center', marginBottom: '5rem', paddingTop: '2rem' }}>
-                    <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                        <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="PilotRecognition Logo" style={{ maxWidth: '320px', height: 'auto', objectFit: 'contain' }} />
-                    </div>
                     <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                         FOUNDATION PROGRAM
                     </div>
@@ -53,13 +129,13 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                 Building Future Aviation Leaders
                             </h2>
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '48rem', marginBottom: '2rem' }}>
-                                The Foundation Program is aimed toward building your <strong>leadership skills through mentorship</strong>, aligned with <strong>AIRBUS EBT & CBTA core competencies</strong>. We are working directly with the Head of Training at Airbus, specialized in EBT/CBTA, to align future pilots to be EBT-prepared.
+                                The Foundation Program is aimed toward building your <strong>leadership skills through mentorship</strong>, aligned with <strong>EBT CBTA core competencies</strong> used in aviation training worldwide. We review our curriculum against international competency standards to prepare pilots for industry expectations.
                             </p>
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '48rem', marginBottom: '2rem' }}>
-                                Flight school teaches you how to get your license—but don't expect to be teaching the same topics as an instructor. Expect <strong>pilot development</strong>. This program is <strong>free</strong> because we are building it first to gain recognition. The collaborative effort of experience will get seen by the industry.
+                                Flight school teaches you how to get your license—but don't expect to be teaching the same topics as an instructor. Expect <strong>pilot development</strong>. This program is <strong>$49</strong> and includes 50 hours of verified mentorship, competency assessment, and pathway access. We are actively building the pilot community and operator network.
                             </p>
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '48rem', marginBottom: '2rem' }}>
-                                When PilotRecognition Pilot Recognition approaches airlines, we will speak for the <strong>thousands of pilots under this program</strong> to gain recognition and meet the expectations from airlines. No more wondering and blindly finding a job on Facebook or a website with a job board with job requirements that hasn't been updated for years.
+                                As the community grows, your verified competency profile and recognition score help demonstrate your readiness to operators. No more wondering and blindly finding a job on Facebook or a website with a job board with job requirements that hasn't been updated for years.
                             </p>
                             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '48rem', marginBottom: '2rem' }}>
                                 <strong>Say no more.</strong>
@@ -86,9 +162,6 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
 
                     {/* Overview Cards with Images */}
                     <section style={{ textAlign: 'center', width: '100%', maxWidth: '56rem' }}>
-                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', objectFit: 'contain' }} />
-                        </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                             PROGRAM OVERVIEW
                         </div>
@@ -124,7 +197,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                         </h3>
                                     </td>
                                     <td style={{ padding: '1.5rem', verticalAlign: 'top', color: '#475569', fontSize: '0.95rem', lineHeight: 1.7 }}>
-                                        Understand the pilot gap through <strong>Module 1</strong>, which contains <strong>5 chapters</strong> addressing the issues facing the current industry. The content is based on <strong>collaborative research</strong> and <strong>independent journalism</strong> within the aviation industry. You will learn about <strong>AIRBUS EBT CBTA core principles</strong> and how they align with the industry, understand <strong>pilot risk management</strong>, access a database of <strong>investment case studies of type ratings</strong>, and learn about <strong>pilot decision making (ADM)</strong>.
+                                        Understand the pilot gap through <strong>Module 1</strong>, which contains <strong>5 chapters</strong> addressing the issues facing the current industry. The content is based on <strong>collaborative research</strong> and <strong>independent journalism</strong> within the aviation industry. You will learn about <strong>EBT CBTA core principles</strong> and how they align with the industry, understand <strong>pilot risk management</strong>, access a database of <strong>investment case studies of type ratings</strong>, and learn about <strong>pilot decision making (ADM)</strong>.
                                     </td>
                                 </tr>
                                 <tr style={{ borderBottom: '1px solid rgba(37, 99, 235, 0.05)' }}>
@@ -172,7 +245,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                         </h3>
                                     </td>
                                     <td style={{ padding: '1.5rem', verticalAlign: 'top', color: '#475569', fontSize: '0.95rem', lineHeight: 1.7 }}>
-                                        After your initial examination is complete, you will receive <strong>mentor modules</strong> to observe, learn, and view <strong>masterclasses</strong> on how to mentor fellow aviators. Mentorship is an <strong>effort-based approach</strong>—mentors who have completed <strong>20 hours of observation</strong> and passed their <strong>practical examination</strong> become <strong>missionaries</strong> who provide guidance and support to fellow members and pilots within the community. For your mentorship to be logged, your <strong>mentee</strong> (the person you are mentoring) must create an account through <strong>pilotrecognition.com</strong>, enabling you to access their profile and log their <strong>mentor ID</strong>. The mentee will receive a <strong>mentored hours count</strong> and a <strong>verified logbook of mentored hours</strong>. If you have received mentored hours, you will be required to complete only <strong>40 hours of mentorship</strong>. We also provide <strong>checkride practice</strong> where you will be tested on your knowledge—great for checkride preparation. The <strong>EBT CBTA Application</strong> focuses on evidence-based training for decision making, testing your ability to handle emergency situations and visual awareness with eye tracking to verify instrument scanning. <strong>VFR simulation</strong> is available for PPL students who want to master the basics of traffic patterns, radio communication, visual landing scenarios, and more. The <strong>program handbook</strong> includes all 3 modules, and the <strong>pilot gap forum</strong> provides access to the foundation program community where you can communicate with fellow mentees and mentors. <strong>PilotRecognition chat</strong> is accessible through the portal and the W1000 application, allowing you to converse with fellow members.
+                                        After your initial examination is complete, you will receive <strong>mentor modules</strong> to observe, learn, and view <strong>masterclasses</strong> on how to mentor fellow aviators. Mentorship is an <strong>effort-based approach</strong>—mentors who have completed <strong>20 hours of observation</strong> and passed their <strong>practical examination</strong> provide guidance and support to fellow members. The <strong>EBT CBTA-oriented mentorship cores</strong> focus on evidence-based training for decision making, competency development, and handling emergency situations. For your mentorship to be logged, your <strong>mentee</strong> (the person you are mentoring) must create an account through <strong>pilotrecognition.com</strong>, enabling you to access their profile and log their <strong>mentor ID</strong>. The mentee will receive a <strong>mentored hours count</strong> and a <strong>verified logbook of mentored hours</strong>. If you have received mentored hours, you will be required to complete only <strong>40 hours of mentorship</strong>. We also provide <strong>checkride practice</strong> where you will be tested on your knowledge—great for checkride preparation. The <strong>program handbook</strong> includes all 3 modules, and the <strong>pilot gap forum</strong> provides access to the foundation program community where you can communicate with fellow mentees and mentors. <strong>PilotRecognition chat</strong> is accessible through the portal and the W1000 application, allowing you to converse with fellow members.
                                     </td>
                                 </tr>
                                 <tr>
@@ -188,7 +261,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                         </h3>
                                     </td>
                                     <td style={{ padding: '1.5rem', verticalAlign: 'top', color: '#475569', fontSize: '0.95rem', lineHeight: 1.7 }}>
-                                        An evaluation based on an Airbus EBT-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Once received initial pilot recognition, you may access pathway cards—not job listings. Pathway cards show requirements and what you're missing. Compare your recognition credentials within our network, access cadet programmes, cargo pathways, licensure & type rating pathways, and specialized pathways aligned with your verified competencies.
+                                        An EBT CBTA-aligned evaluation of your pilot development and initial pilot recognition portfolio, along with a certificate of achievement. Upon completion, you may access pathway cards—not job listings. Pathway cards show requirements and what you're missing. Compare your recognition credentials within our platform, access cadet programmes, cargo pathways, licensure & type rating pathways, and specialized pathways aligned with your verified competencies.
                                     </td>
                                 </tr>
                             </tbody>
@@ -199,7 +272,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                     <section style={{ width: '100%', maxWidth: '56rem' }}>
                         <div style={{ backgroundColor: '#2563eb', padding: '2rem', borderRadius: '16px', textAlign: 'center' }}>
                             <p style={{ color: '#ffffff', fontSize: '1rem', lineHeight: 1.6, margin: 0 }}>
-                                Your recognition score is your currency. Pathways are where you spend it. We bridge the gap between training investment and career opportunity.
+                                Your recognition score improves your pathway matching priority. Pathways are available to all users. We bridge the gap between training investment and career opportunity.
                             </p>
                         </div>
                     </section>
@@ -223,13 +296,13 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                         Building Your Profile
                                     </h3>
                                     <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                        Through the 10-stage program, every examination, mentorship session, and milestone is recorded in your Global Industry Registry profile. This creates a comprehensive, verifiable record of your professional development.
+                                        Through the program, every examination, mentorship session, and milestone is recorded in your PilotRecognition profile. This creates a comprehensive, verifiable record of your professional development.
                                     </p>
                                     <ul style={{ color: '#475569', fontSize: '0.9rem', lineHeight: 1.8, paddingLeft: '1.5rem', margin: 0 }}>
                                         <li>Digital timestamps on all achievements</li>
                                         <li>Verified mentorship hours logged</li>
                                         <li>Examination outcomes archived</li>
-                                        <li>Industry partner endorsements</li>
+                                        <li>Competency score tracking</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -237,11 +310,11 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                         Unlocking Pathways
                                     </h3>
                                     <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                        Your pilot recognition profile becomes the key that opens doors to multiple career pathways. Airlines, operators, and industry partners use this verified profile to identify qualified candidates.
+                                        Your pilot recognition profile shows your verified competencies and helps you identify career pathways that match your qualifications. As operators join the platform, your verified profile improves your matching priority.
                                     </p>
                                     <ul style={{ color: '#475569', fontSize: '0.9rem', lineHeight: 1.8, paddingLeft: '1.5rem', margin: 0 }}>
-                                        <li>Direct airline recruitment access</li>
-                                        <li>Charter and corporate aviation opportunities</li>
+                                        <li>Pathway requirements and gap analysis</li>
+                                        <li>Charter and corporate aviation pathways</li>
                                         <li>Cargo operations pathways</li>
                                         <li>Advanced training program eligibility</li>
                                     </ul>
@@ -250,15 +323,183 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                         </div>
                     </section>
 
-                    {/* Mentorship Logbook Animation Section */}
+                    {/* Pilot Gap Module Showcase Carousel */}
                     <section style={{ width: '100%', maxWidth: '56rem' }}>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                            MENTORSHIP TRACKING
+                            EXPLORE THE PILOT GAP
                         </div>
-                        <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '1.5rem', fontFamily: 'Georgia, serif' }}>
-                            Track Your Progress
+                        <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: '#0f172a', marginBottom: '0.5rem', fontFamily: 'Georgia, serif' }}>
+                            What You&apos;ll Learn in Module 1
                         </h2>
-                        <MentorshipLogbookAnimation />
+                        <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: '0 auto', maxWidth: '42rem', marginBottom: '2rem' }}>
+                            Five chapters on the realities facing pilots today — from the investment trap to career pathways.
+                        </p>
+
+                        {/* Image Carousel — Cross-fade */}
+                        <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(15, 23, 42, 0.08)', height: '560px' }}>
+                            {carouselSlides.map((slide, index) => (
+                                <div
+                                    key={index}
+                                    style={{
+                                        position: 'absolute',
+                                        inset: 0,
+                                        opacity: currentSlide === index ? 1 : 0,
+                                        transition: 'opacity 0.6s ease-in-out',
+                                        zIndex: currentSlide === index ? 1 : 0,
+                                        backgroundColor: '#0f172a',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        flexDirection: 'column'
+                                    }}
+                                >
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        background: 'linear-gradient(to bottom, rgba(15,23,42,0.9) 0%, rgba(15,23,42,0.4) 60%, transparent 100%)',
+                                        padding: '1.25rem 1.5rem 3rem',
+                                        zIndex: 2,
+                                        textAlign: 'center'
+                                    }}>
+                                        <p style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 600, margin: 0, textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
+                                            {slide.caption}
+                                        </p>
+                                    </div>
+                                    <img
+                                        src={slide.src}
+                                        alt={slide.alt}
+                                        style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                                        loading="lazy"
+                                    />
+                                </div>
+                            ))}
+
+                            {/* Navigation Arrows */}
+                            <button
+                                onClick={handlePrev}
+                                style={{
+                                    position: 'absolute',
+                                    left: '1rem',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255,255,255,0.9)',
+                                    border: 'none',
+                                    borderRadius: '50%',
+                                    width: '44px',
+                                    height: '44px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+                                    transition: 'all 0.2s ease',
+                                    zIndex: 10
+                                }}
+                                onMouseEnter={(e) => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.transform = 'translateY(-50%) scale(1.05)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.9)'; e.currentTarget.style.transform = 'translateY(-50%) scale(1)'; }}
+                                aria-label="Previous slide"
+                            >
+                                <ChevronLeft style={{ width: '22px', height: '22px', color: '#0f172a' }} />
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                style={{
+                                    position: 'absolute',
+                                    right: '1rem',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255,255,255,0.9)',
+                                    border: 'none',
+                                    borderRadius: '50%',
+                                    width: '44px',
+                                    height: '44px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+                                    transition: 'all 0.2s ease',
+                                    zIndex: 10
+                                }}
+                                onMouseEnter={(e) => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.transform = 'translateY(-50%) scale(1.05)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.9)'; e.currentTarget.style.transform = 'translateY(-50%) scale(1)'; }}
+                                aria-label="Next slide"
+                            >
+                                <ChevronRight style={{ width: '22px', height: '22px', color: '#0f172a' }} />
+                            </button>
+
+                            {/* Dot Indicators */}
+                            <div style={{
+                                position: 'absolute',
+                                bottom: '1rem',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                display: 'flex',
+                                gap: '0.5rem',
+                                background: 'rgba(15,23,42,0.4)',
+                                padding: '0.4rem 0.75rem',
+                                borderRadius: '9999px',
+                                zIndex: 10
+                            }}>
+                                {carouselSlides.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleDot(index)}
+                                        style={{
+                                            width: index === currentSlide ? '24px' : '8px',
+                                            height: '8px',
+                                            borderRadius: '9999px',
+                                            border: 'none',
+                                            cursor: 'pointer',
+                                            background: index === currentSlide ? '#2563eb' : 'rgba(255,255,255,0.6)',
+                                            transition: 'all 0.3s ease'
+                                        }}
+                                        aria-label={`Go to slide ${index + 1}`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Context Panel — Floating text below, cross-fades with image */}
+                        <div style={{ position: 'relative', marginTop: '1.5rem', minHeight: '260px' }}>
+                            {carouselSlides.map((slide, index) => (
+                                <div
+                                    key={index}
+                                    style={{
+                                        position: index === 0 ? 'relative' : 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        opacity: currentSlide === index ? 1 : 0,
+                                        transition: 'opacity 0.6s ease-in-out',
+                                        zIndex: currentSlide === index ? 1 : 0,
+                                        pointerEvents: currentSlide === index ? 'auto' : 'none'
+                                    }}
+                                >
+                                    <div style={{ backgroundColor: '#ffffff', padding: '2rem 2.5rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)' }}>
+                                        <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                                            PILOT GAP MODULE — {slide.moduleRef}
+                                        </div>
+                                        <h3 style={{ fontSize: '1.3rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.75rem', fontFamily: 'Georgia, serif', lineHeight: 1.3 }}>
+                                            {slide.header}
+                                        </h3>
+                                        <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1.25rem' }}>
+                                            {slide.breakdown}
+                                        </p>
+                                        <div style={{ backgroundColor: '#f8fafc', borderRadius: '12px', padding: '1.25rem 1.5rem', borderLeft: '3px solid #2563eb' }}>
+                                            <p style={{ color: '#64748b', fontSize: '0.875rem', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>
+                                                &ldquo;{slide.moduleExcerpt}&rdquo;
+                                            </p>
+                                        </div>
+                                        <p style={{ color: '#94a3b8', fontSize: '0.8rem', marginTop: '1rem', marginBottom: 0 }}>
+                                            You will learn more about the causes and effects of this crisis in the industry — and what is currently happening to pilots like you.
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </section>
 
                     {/* Program Stages */}
@@ -266,9 +507,6 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
 
                     {/* CTA Section */}
                     <section style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '24px', padding: '4rem 3rem', boxShadow: '0 8px 32px rgba(15, 23, 42, 0.04)', border: '1px solid rgba(255, 255, 255, 0.8)', textAlign: 'center', width: '100%', maxWidth: '56rem', boxSizing: 'border-box' }}>
-                        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                            <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" alt="PilotRecognition Logo" style={{ maxWidth: '160px', height: 'auto', objectFit: 'contain' }} />
-                        </div>
                         <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                             YOUR JOURNEY BEGINS
                         </div>
@@ -276,7 +514,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                             Ready to Start Your Journey?
                         </h2>
                         <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: '0 auto', maxWidth: '42rem', marginBottom: '2rem' }}>
-                            Join our global network of verified pilots and gain access to the industry's most specialized mentorship and tools.
+                            Join our pilot community and gain access to verified mentorship, competency assessment, and pathway tools.
                         </p>
                         <button
                             onClick={() => onNavigate('become-member')}

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -55,7 +56,10 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast, clearToasts }}>
       {children}
-      <ToastContainer toasts={toasts} onRemove={removeToast} />
+      {typeof document !== 'undefined' && createPortal(
+        <ToastContainer toasts={toasts} onRemove={removeToast} />,
+        document.body
+      )}
     </ToastContext.Provider>
   );
 };
@@ -67,7 +71,7 @@ interface ToastContainerProps {
 
 const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove }) => {
   return (
-    <div className="fixed top-4 right-4 z-[10000] flex flex-col gap-2 pointer-events-none">
+    <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[999999] flex flex-col gap-2 pointer-events-none">
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onRemove={onRemove} />
