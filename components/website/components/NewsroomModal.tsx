@@ -28,6 +28,8 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
 }) => {
     const [activeNewsIndex, setActiveNewsIndex] = useState(0);
     const modalRef = useRef<HTMLDivElement>(null);
+    const lastInteractionRef = useRef<number>(Date.now());
+    const autoCycleRef = useRef<NodeJS.Timeout | null>(null);
 
     const activeNewsItem = newsroomHighlights[activeNewsIndex];
 
@@ -36,8 +38,38 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
         if (isOpen) {
             const randomIndex = Math.floor(Math.random() * newsroomHighlights.length);
             setActiveNewsIndex(randomIndex);
+            lastInteractionRef.current = Date.now();
         }
-    }, [isOpen]);
+    }, [isOpen, newsroomHighlights.length]);
+
+    // Auto-cycle every 6 seconds if no mouse/keyboard activity
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const startAutoCycle = () => {
+            if (autoCycleRef.current) clearInterval(autoCycleRef.current);
+            autoCycleRef.current = setInterval(() => {
+                const idleTime = Date.now() - lastInteractionRef.current;
+                if (idleTime >= 6000) {
+                    setActiveNewsIndex(prev => (prev + 1) % newsroomHighlights.length);
+                }
+            }, 6000);
+        };
+
+        startAutoCycle();
+
+        const resetTimer = () => {
+            lastInteractionRef.current = Date.now();
+        };
+
+        const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'];
+        events.forEach(evt => document.addEventListener(evt, resetTimer, { passive: true }));
+
+        return () => {
+            if (autoCycleRef.current) clearInterval(autoCycleRef.current);
+            events.forEach(evt => document.removeEventListener(evt, resetTimer));
+        };
+    }, [isOpen, newsroomHighlights.length]);
 
     // Handle ESC key to close modal
     useEffect(() => {

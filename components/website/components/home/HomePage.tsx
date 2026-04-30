@@ -771,8 +771,8 @@ export const HomePage: React.FC<HomePageProps> = ({
             <TopNavbar
                 onNavigate={onNavigate}
                 onLogin={onLogin}
-                isLight={isOverWhite || isNewsroomModalOpen}
-                isDark={!isOverWhite && !isNewsroomModalOpen}
+                isLight={isOverWhite}
+                isDark={!isOverWhite}
                 onLoginModalOpen={onLoginModalOpen}
                 pathwayGridRef={pathwayGridRef}
                 currentPage="home"

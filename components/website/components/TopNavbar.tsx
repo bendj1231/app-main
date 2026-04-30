@@ -500,12 +500,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 siteUrl="https://pilotrecognition.com"
             />
             <nav
-                className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isLight
+                className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${isLight
                     ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
                     : isDark
                         ? '!bg-transparent backdrop-filter-none py-3 shadow-none'
                         : scrolled
-                            ? 'bg-gradient-to-b from-black/95 via-black/60 to-transparent backdrop-blur-sm py-3 shadow-2xl'
+                            ? passedPathwayGrid
+                                ? 'bg-gradient-to-b from-black/95 via-black/60 to-transparent backdrop-blur-sm py-3'
+                                : 'bg-white border-b border-slate-200 py-3'
                             : 'bg-transparent py-6'
                     }`}>
                 <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
@@ -513,13 +515,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     <div className="flex items-center gap-4 group cursor-pointer" onClick={() => onNavigate('home')}>
                         <div className="flex flex-col items-center transition-all duration-300 group-hover:scale-110">
                             <span
-                                className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) ? 'text-black' : 'text-white'
+                                className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'
                                     } text-2xl tracking-tight leading-none`}
                                 style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
                             >
-                                <span className="text-black">pilot</span>
+                                <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilot</span>
                                 <span className="text-red-600">recognition</span>
-                                <span className="text-black">.com</span>
+                                <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>.com</span>
                             </span>
                         </div>
                     </div>
@@ -535,11 +537,11 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             >
                                 <button
                                     onClick={() => onNavigate(item.target)}
-                                    className={`text-[0.6rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${item.target === 'home' && !forceScrolled
-                                        ? isLight || (isDark && scrolled)
+                                    className={`text-[0.7rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${item.target === 'home' && !forceScrolled
+                                        ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
                                             ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
                                             : 'text-blue-400 border-b-2 border-blue-400 pb-1 font-black'
-                                        : isLight || (isDark && scrolled)
+                                        : isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
                                             ? 'text-slate-900'
                                             : 'text-white/80'
                                         }`}
@@ -728,7 +730,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <div className="relative" ref={notificationDropdownRef}>
                                     <button 
                                         onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
-                                        className={`w-8 h-8 flex items-center justify-center transition-all relative ${isLight || (isDark && scrolled) ? 'text-slate-900 hover:text-slate-700' : 'text-white hover:text-white/80'}`}
+                                        className={`w-8 h-8 flex items-center justify-center transition-all relative ${isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-slate-900 hover:text-slate-700' : 'text-white hover:text-white/80'}`}
                                     >
                                         <Bell className="w-5 h-5" />
                                         {notificationCount > 0 && (
