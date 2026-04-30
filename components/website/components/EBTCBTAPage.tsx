@@ -14,8 +14,8 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
     const coreElements = [
         {
             title: "Evidence-Based Training",
-            desc: "Evaluation based on real-world data and operational risks rather than repetitive mechanical maneuvers. Through advisory input from <strong>Airbus Head of Training</strong> in EBT CBTA, we ensure that our programs align with the exacting standards required by leading manufacturers worldwide. Our <strong>data-driven approach</strong> focuses on identifying and mitigating operational risks through targeted program interventions.",
-            bullets: ["Data-Driven Programs", "Risk Mitigation", "Operational Context"]
+            desc: "Evaluation based on real-world data and operational risks rather than repetitive mechanical maneuvers. We focus on identifying and mitigating operational risks through targeted program interventions based on publicly available industry frameworks.",
+            bullets: ["Risk Mitigation", "Operational Context", "Industry-Aligned Frameworks"]
         },
         {
             title: "CBTA Framework",
@@ -23,14 +23,14 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
             bullets: ["Competency Based", "Holistic Grading", "Behavioral Markers"]
         },
         {
-            title: "Airbus Integration",
-            desc: "Direct alignment with the program methodologies used by the Head of EBT/CBTA at Airbus. Our advisory relationship ensures that pilots who complete our programs are prepared for the exacting standards of A320/A350 operations and manufacturer-specific procedures. This alignment provides a competitive advantage for pilots seeking careers with Airbus operators worldwide.",
-            bullets: ["A320/A350 SOPs", "Manufacturer Standards", "Global Best Practice"]
+            title: "Airline Operator Alignment",
+            desc: "Frameworks built to align with manufacturer methodologies and the standards used by major operators worldwide. Prepare for the operational expectations of modern airline environments based on publicly documented procedures and industry standards.",
+            bullets: ["Operator Standards", "Manufacturer Methodologies", "Global Best Practice"]
         },
         {
-            title: "Etihad Standards",
-            desc: "Insights into the competency expectations of modern cadet programs. Our curriculum prepares pilots for the exacting requirements of major carriers, with pathway matching that aligns verified competencies with cadet program opportunities and airline recruitment channels.",
-            bullets: ["Carrier Specific", "High Performance", "Recruitment Edge"]
+            title: "Cadet Program Readiness",
+            desc: "Understanding the competency expectations of modern cadet programs based on publicly available assessment criteria. Our curriculum prepares pilots for the requirements of major carriers, with pathway matching that aligns verified competencies with documented program expectations.",
+            bullets: ["Cadet Program Criteria", "Carrier Expectations", "Recruitment Preparation"]
         }
     ];
 
@@ -55,11 +55,6 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
             <div className="pt-32 pb-20 px-6 bg-slate-50/50">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="PilotRecognition Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-2"
-                        />
                         <p className="text-sm font-bold tracking-[0.4em] uppercase text-blue-700 mb-6 font-sans">
                             Modern Pilot Training Standards
                         </p>
@@ -71,7 +66,7 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
                         </span>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans mt-6">
                             The new standard for airline pilot evaluation. We provide the bridge from pattern flying
-                            to the competency-based performance required by flagship carriers. Through guidance from <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong>, we ensure that our programs align with the exacting standards required by leading manufacturers and operators worldwide.
+                            to the competency-based performance required by modern carriers. Our programs are built using publicly available EBT/CBTA frameworks and industry-standard competency criteria.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -130,7 +125,7 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
                                 </p>
                                 <p className="text-base text-slate-400 leading-relaxed mb-8 font-sans">
                                     Traditional flight training focused on stick-and-rudder maneuvers. Modern airlines assess
-                                    how you manage the flight deck. Through our collaboration with <strong>Airbus Head of Training</strong> and <strong>Etihad Cadet Program</strong>,
+                                    how you manage the flight deck. Using publicly documented EBT/CBTA frameworks and industry competency standards,
                                     we prepare you for the mindset shift required for airline success.
                                 </p>
                                 <div className="p-8 bg-white/5 border border-white/10 rounded-3xl">
@@ -138,7 +133,7 @@ export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, on
                                         Insight Advantage
                                     </h4>
                                     <p className="text-sm text-slate-400 leading-relaxed font-sans">
-                                        Know what the Head of Cadet Training at Etihad actually evaluates during a sim check—before you ever apply.
+                                        Understand what modern cadet programs and airline assessments evaluate—before you ever apply.
                                     </p>
                                 </div>
                             </RevealOnScroll>

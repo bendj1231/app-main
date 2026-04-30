@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Plane, MapPin, DollarSign, Clock, Globe, Star, Cpu, Users, Brain, Shield, Target, GraduationCap, CheckCircle2, Search, Briefcase, Zap, TrendingUp, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plane, MapPin, DollarSign, Clock, Globe, Star, Cpu, Users, Brain, Shield, Target, GraduationCap, CheckCircle2, Search, Briefcase, Zap, TrendingUp, ArrowLeft, Database, Calendar, Bell } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { PilotAptitudeTest } from '../../components/PilotAptitudeTest';
 import { MeshGradient } from '@paper-design/shaders-react';
+import { QuickStats } from '../components/QuickStats';
 
 type Region = 'All' | 'Asia' | 'Europe' | 'Americas' | 'Oceania' | 'Africa' | 'Middle East';
 
-interface Airline {
+export interface Airline {
   id: string;
   name: string;
   location: string;
@@ -36,6 +37,15 @@ interface Airline {
     bullets: string[];
     icon?: any;
     color?: string;
+  }>;
+  questionBank?: Array<{
+    pillar: string;
+    questions: Array<{
+      q: string;
+      type: 'situational' | 'behavioral' | 'technical' | 'cognitive';
+      alignment: string;
+      modelAnswer: string;
+    }>;
   }>;
   futureFleetPlans?: {
     newAircraft: string[];
@@ -145,11 +155,48 @@ const AIRLINES: Airline[] = [
     { aircraft: 'Airbus A350', endOfService: 'Ongoing' },
     { aircraft: 'Airbus A380', endOfService: 'Phasing out (fleet reduction ongoing)' },
     { aircraft: 'Airbus A320', endOfService: 'Phasing out' }
-  ], futureDemand: 'Fleet modernization with new aircraft deliveries planned (Source: Airbus Orders & Deliveries data)', region: 'Middle East', expectations: [
-    { title: '5-Star Service Standards', desc: 'Qatar Airways expects pilots to maintain the highest service standards. Excellence in passenger interaction and cultural sensitivity is essential.', bullets: ['Premium Service', 'Cultural Awareness', 'Communication Skills'] },
-    { title: 'Technical Excellence', desc: 'Strict adherence to SOPs and automation management. Qatar operates modern Airbus and Boeing fleets requiring advanced technical proficiency.', bullets: ['SOP Compliance', 'Automation Mastery', 'Type Rating'] },
-    { title: 'Team Leadership', desc: 'CRM and crew resource management are critical. Pilots must demonstrate leadership in multi-cultural crew environments.', bullets: ['CRM Excellence', 'Leadership', 'Teamwork'] },
-    { title: 'Adaptability', desc: 'Global operations require flexibility with varying time zones, regulations, and cultural contexts across 160+ destinations.', bullets: ['Flexibility', 'Global Operations', 'Regulatory Knowledge'] }
+  ], futureDemand: 'Fleet modernization with new aircraft deliveries planned (Source: Airbus Orders & Deliveries data)', region: 'Middle East', questionBank: [
+    {
+      pillar: '5-Star Service Standards',
+      questions: [
+        { q: "Describe a situation where you had to manage a passenger complaint while maintaining operational safety priorities.", type: 'situational', alignment: 'EBT: Situational Judgment - Passenger Interaction', modelAnswer: "Step 1: Acknowledge the passenger's concern without dismissing. Step 2: Assess if the issue impacts safety—if yes, prioritize. Step 3: Delegate to cabin crew with clear CRM communication. Step 4: Document and brief post-flight. Qatar expects pilots to balance hospitality with operational authority." },
+        { q: "How do you balance cultural sensitivity with assertive decision-making when operating in a multi-cultural crew environment?", type: 'behavioral', alignment: 'CBTA: Cultural Competency', modelAnswer: "Assertive communication in aviation is universal—use standard phraseology and SOPs to depersonalize decisions. Cultural sensitivity means listening actively before deciding, then communicating clearly using CRM tools like DESC (Describe, Express, Specify, Consequences). Qatar crews represent 160+ nationalities." },
+        { q: "A first-class passenger is dissatisfied with service during a long-haul flight. How do you communicate this to cabin crew without disrupting CRM protocols?", type: 'situational', alignment: 'EBT: CRM & Communication', modelAnswer: "Use the brief/debrief model: during cruise, inform the Purser via interphone (not in front of passengers) using neutral language. Focus on facts, not emotions. Return to flight deck. Post-flight, document in the journey log. Never let passenger service override sterile cockpit rules." },
+        { q: "What does 'excellence in passenger interaction' mean to you at 35,000 feet when faced with an in-flight medical emergency?", type: 'behavioral', alignment: 'CBTA: Service Under Pressure', modelAnswer: "Excellence means compartmentalization: CRM maintains flight path while cabin crew handles the emergency. The pilot's role is decision-making—divert or continue, communicate with MedLink, and manage fuel/time trade-offs. Passenger interaction is delegated. Situational awareness is non-negotiable." }
+      ]
+    },
+    {
+      pillar: 'Technical Excellence',
+      questions: [
+        { q: "You encounter an unexpected ECAM warning during critical phase of flight. Walk me through your decision-making process using SOP hierarchy.", type: 'technical', alignment: 'EBT: System Knowledge & SOP Adherence', modelAnswer: "Aviate: maintain flight path using raw data if necessary. Navigate: assess terrain/traffic. Communicate: ATC + cabin crew if needed. Memory items if applicable (take-off, landing). Then ECAM: cancel audio, read, do— Pilot Flying maintains aircraft while Pilot Monitoring executes. After landing, log and report." },
+        { q: "How do you manage automation degradation from FMS failure while maintaining precision in RVSM airspace?", type: 'technical', alignment: 'CBTA: Automation Management', modelAnswer: "Immediate: maintain altitude using altimeter cross-check. Select heading/altitude modes on FCU. Raw data navigation using VOR/DME if available. Request ATC assistance—vectors or non-RVSM flight level. Document the failure post-flight. Qatar requires proficiency in raw data recovery drills." },
+        { q: "Describe your approach to transition between Airbus and Boeing SOPs if required for fleet expansion.", type: 'technical', alignment: 'EBT: Type Rating Flexibility', modelAnswer: "Understand philosophy differences: Boeing pilot-in-command authority vs Airbus envelope protection. Study the FCOM differences document. Complete CBT modules before classroom. Request line training with a TRI/TRE. Respect the differences—don't bring old habits. Qatar expects dual-fleet flexibility." },
+        { q: "You notice a subtle deviation in engine parameters that does not trigger a warning. What is your assessment protocol?", type: 'situational', alignment: 'CBTA: Procedural Awareness', modelAnswer: "Monitor for trend—take a snapshot via camera or memory. Cross-reference with QRH normal procedures section. If outside parameters but no ECAM: consider maintenance deferred item (MEL) review, fuel planning adjustment, and inform ATC if performance is affected. Log it. Qatar values proactive technical vigilance." }
+      ]
+    },
+    {
+      pillar: 'Team Leadership',
+      questions: [
+        { q: "Your First Officer disagrees with your go/no-go decision in marginal weather. How do you resolve this while maintaining authority gradient?", type: 'situational', alignment: 'EBT: CRM - Authority & Assertiveness', modelAnswer: "Listen: 'Tell me your concerns.' Evaluate against objective criteria—METAR, TAF, company limits. If still safe: 'I appreciate your input, my decision is to go. Here's why.' If uncertain: 'Let's get more info—request latest observation.' Never let ego override data. Debrief post-flight to build trust." },
+        { q: "Describe a time you had to lead a crew through a high-workload phase while managing fatigue across multiple time zones.", type: 'behavioral', alignment: 'CBTA: Leadership Under Fatigue', modelAnswer: "Prioritize tasks: aviate-navigate-communicate. Use sterile cockpit below 10,000 feet. Assign specific duties—'You handle comms, I handle navigation.' Take controlled rest if approved on long sectors. Post-flight: report fatigue via company system, suggest rostering feedback. Lead by example on sleep hygiene." },
+        { q: "How do you build trust with a new crew member from a different cultural background on a long-haul pairing?", type: 'behavioral', alignment: 'EBT: Crew Cohesion', modelAnswer: "Pre-flight: brief expectations using TEM model. During flight: standardize communication—no ambiguity. Post-flight: debrief openly. Ask about their previous airline's CRM culture. Share your own. Trust builds through predictability and consistency, not familiarity. Cultural curiosity accelerates crew cohesion." },
+        { q: "A cabin crew member reports safety concerns that conflict with operational targets. How do you handle this?", type: 'situational', alignment: 'CBTA: Safety-First Decision Making', modelAnswer: "Safety always wins. Hear the concern fully—don't dismiss because of hierarchy. Assess against SOP and regulatory minimums. If valid: delay or return. If unclear: consult dispatch and maintenance. Report through confidential reporting channel. Never pressure crew to compromise safety for on-time performance. Qatar's safety culture depends on this." }
+      ]
+    },
+    {
+      pillar: 'Adaptability',
+      questions: [
+        { q: "You are rostered for a route you have never flown before with a 12-hour layover in an unfamiliar regulatory environment. How do you prepare?", type: 'situational', alignment: 'EBT: Preparation & Planning', modelAnswer: "Pre-flight: study the route using OFP, NOTAMs, and alternate analysis. Review the destination's AIP for local procedures. Crew rest: arrive early, adapt sleep schedule. On ground: brief with local handlers, understand customs/immigration. Qatar expects 160+ destination readiness—preparation is the standard." },
+        { q: "Describe how you adapt your communication style when operating with ATC in regions with limited English proficiency.", type: 'behavioral', alignment: 'CBTA: Communication Flexibility', modelAnswer: "Slow down. Use ICAO standard phraseology only—no colloquialisms. Confirm readbacks. Write down clearances. If unsure: 'Say again' or request confirmation. In extremis: use simpler English. Qatar operates globally—patience and clarity reduce RTF errors. Expectation management is key." },
+        { q: "Your schedule changes mid-duty period due to operational disruption across 160+ destination network. What is your response?", type: 'situational', alignment: 'EBT: Operational Resilience', modelAnswer: "Accept: operational control has authority. Assess: duty time limits, rest requirements, FDP legality. Communicate: confirm new roster via company app, adjust sleep plan. Execute: brief new route, check alternate weather. Adaptability is not passive acceptance—it is structured response under uncertainty." },
+        { q: "How do you maintain performance consistency across varying sleep schedules, regulatory frameworks, and cultural contexts?", type: 'behavioral', alignment: 'CBTA: Self-Management', modelAnswer: "Systems: consistent pre-sleep routine, blackout, white noise. Nutrition: avoid heavy meals before night sectors. Exercise: hotel gym or bodyweight circuits. Mental: mindfulness or brief meditation pre-flight. Regulatory: study destination requirements before arrival. Cultural: respect local norms—dress, punctuality, interaction style. Consistency comes from discipline, not circumstance." }
+      ]
+    }
+  ], expectations: [
+    { title: '5-Star Service Standards', desc: 'Qatar Airways expects pilots to maintain the highest service standards. Excellence in passenger interaction and cultural sensitivity is essential.', bullets: ['Premium Service', 'Cultural Awareness', 'Communication Skills'], icon: Star, color: 'from-amber-500 to-orange-500' },
+    { title: 'Technical Excellence', desc: 'Strict adherence to SOPs and automation management. Qatar operates modern Airbus and Boeing fleets requiring advanced technical proficiency.', bullets: ['SOP Compliance', 'Automation Mastery', 'Type Rating'], icon: Cpu, color: 'from-blue-500 to-cyan-500' },
+    { title: 'Team Leadership', desc: 'CRM and crew resource management are critical. Pilots must demonstrate leadership in multi-cultural crew environments.', bullets: ['CRM Excellence', 'Leadership', 'Teamwork'], icon: Users, color: 'from-emerald-500 to-teal-500' },
+    { title: 'Adaptability', desc: 'Global operations require flexibility with varying time zones, regulations, and cultural contexts across 160+ destinations.', bullets: ['Flexibility', 'Global Operations', 'Regulatory Knowledge'], icon: Globe, color: 'from-violet-500 to-purple-500' }
   ], futureFleetPlans: {
     newAircraft: ['Boeing 787-9', 'Airbus A350-1000', 'Boeing 777-9'],
     retiringAircraft: ['Airbus A380 (progressive phase-out)'],
@@ -242,10 +289,10 @@ const AIRLINES: Airline[] = [
     }
   } },
   { id: 'emirates', name: 'Emirates', location: 'UAE', salaryRange: '$130,000 - $280,000/year', flightHours: '4,000+ hrs TT', tags: ['5-Star Airline', 'Global Network', 'Tax-Free'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png', cardImage: 'https://download.logo.wine/logo/Emirates_(airline)/Emirates_(airline)-Logo.wine.png', description: 'Emirates operates one of the largest Airbus A380 and Boeing 777 fleets, offering unmatched global connectivity. The airline provides exceptional training facilities and career advancement opportunities.', fleet: 'Airbus A380, Boeing 777', region: 'Middle East', expectations: [
-    { title: 'Wide-Body Proficiency', desc: 'Emirates operates exclusively wide-body aircraft. Pilots must demonstrate expertise in long-haul operations and large aircraft management.', bullets: ['A380 Operations', '777 Expertise', 'Long-Haul Experience'] },
-    { title: 'Global Operations', desc: 'Flying to 150+ destinations across 6 continents requires adaptability to diverse regulations, cultures, and time zones.', bullets: ['International Routes', 'Cultural Flexibility', 'Regulatory Knowledge'] },
-    { title: 'Premium Service', desc: 'As a 5-star airline, Emirates expects pilots to maintain high service standards in premium cabin operations.', bullets: ['First Class Service', 'Business Class', 'Premium Economy'] },
-    { title: 'Training Excellence', desc: 'Emirates provides world-class training. Pilots are expected to be quick learners and continuously improve skills.', bullets: ['Advanced Training', 'Skill Development', 'Type Rating Mastery'] }
+    { title: 'Wide-Body Proficiency', desc: 'Emirates operates exclusively wide-body aircraft. Pilots must demonstrate expertise in long-haul operations and large aircraft management.', bullets: ['A380 Operations', '777 Expertise', 'Long-Haul Experience'], icon: Cpu, color: 'from-blue-500 to-cyan-500' },
+    { title: 'Global Operations', desc: 'Flying to 150+ destinations across 6 continents requires adaptability to diverse regulations, cultures, and time zones.', bullets: ['International Routes', 'Cultural Flexibility', 'Regulatory Knowledge'], icon: Globe, color: 'from-violet-500 to-purple-500' },
+    { title: 'Premium Service', desc: 'As a 5-star airline, Emirates expects pilots to maintain high service standards in premium cabin operations.', bullets: ['First Class Service', 'Business Class', 'Premium Economy'], icon: Star, color: 'from-amber-500 to-orange-500' },
+    { title: 'Training Excellence', desc: 'Emirates provides world-class training. Pilots are expected to be quick learners and continuously improve skills.', bullets: ['Advanced Training', 'Skill Development', 'Type Rating Mastery'], icon: Brain, color: 'from-emerald-500 to-teal-500' }
   ], futureFleetPlans: {
     newAircraft: ['Boeing 777-9', 'Boeing 787-9', 'Airbus A350'],
     retiringAircraft: ['Airbus A380 (phasing out 2025-2030)'],
@@ -269,10 +316,10 @@ const AIRLINES: Airline[] = [
   { id: 'omanair', name: 'Oman Air', location: 'Oman', salaryRange: '$65,000 - $120,000/year', flightHours: '2,000+ hrs TT', tags: ['Muscat Hub', 'Oneworld', 'Growing Fleet'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776687736/airline-expectations/oman-air.webp', cardImage: 'https://download.logo.wine/logo/Oman_Air/Oman_Air-Logo.wine.png', description: 'Oman Air is the national carrier of Oman. Operating from Muscat with a growing Boeing 787 Dreamliner fleet, offering pilots opportunities in the dynamic Middle East market.', fleet: 'Boeing 787 Dreamliner, 737', region: 'Middle East' },
   // Asia
   { id: 'singapore', name: 'Singapore Airlines', location: 'Singapore', salaryRange: '$120,000 - $180,000/year', flightHours: '3,000+ hrs TT', tags: ['Premium Carrier', 'Asian Hub', 'Great Benefits'], image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/singapore-airlines.jpg', cardImage: 'https://static.vecteezy.com/system/resources/previews/055/210/889/non_2x/singapore-airlines-logo-free-download-singapore-airlines-logo-free-png.png', description: 'Singapore Airlines maintains one of the highest service standards globally, offering comprehensive benefits and a strategic Asian hub location.', fleet: 'Airbus A350, A380 (phasing out), Boeing 777, 787', region: 'Asia', expectations: [
-    { title: 'Singapore Girl Service', desc: 'World-renowned service standards. Pilots must exemplify the Singapore Girl tradition of excellence in passenger service.', bullets: ['Service Excellence', 'Hospitality', 'Professionalism'] },
-    { title: 'Asian Network Expertise', desc: 'Strategic Singapore hub requires knowledge of Asian routes, weather patterns, and regional regulations.', bullets: ['Asian Routes', 'Regional Knowledge', 'Hub Operations'] },
-    { title: 'Technical Precision', desc: 'SIA operates modern Airbus and Boeing fleets with strict adherence to technical procedures and automation management.', bullets: ['Fleet Mastery', 'SOP Compliance', 'Automation Skills'] },
-    { title: 'Cultural Sensitivity', desc: 'Operating across diverse Asian cultures requires exceptional cultural awareness and communication abilities.', bullets: ['Cultural Awareness', 'Communication', 'Adaptability'] }
+    { title: 'Singapore Girl Service', desc: 'World-renowned service standards. Pilots must exemplify the Singapore Girl tradition of excellence in passenger service.', bullets: ['Service Excellence', 'Hospitality', 'Professionalism'], icon: Star, color: 'from-amber-500 to-orange-500' },
+    { title: 'Asian Network Expertise', desc: 'Strategic Singapore hub requires knowledge of Asian routes, weather patterns, and regional regulations.', bullets: ['Asian Routes', 'Regional Knowledge', 'Hub Operations'], icon: Globe, color: 'from-blue-500 to-cyan-500' },
+    { title: 'Technical Precision', desc: 'SIA operates modern Airbus and Boeing fleets with strict adherence to technical procedures and automation management.', bullets: ['Fleet Mastery', 'SOP Compliance', 'Automation Skills'], icon: Cpu, color: 'from-emerald-500 to-teal-500' },
+    { title: 'Cultural Sensitivity', desc: 'Operating across diverse Asian cultures requires exceptional cultural awareness and communication abilities.', bullets: ['Cultural Awareness', 'Communication', 'Adaptability'], icon: Users, color: 'from-violet-500 to-purple-500' }
   ], futureFleetPlans: {
     newAircraft: ['Boeing 777-9', 'Airbus A350-1000'],
     retiringAircraft: ['Boeing 777-200ER', 'Airbus A330-300', 'Airbus A380 (progressive phase-out)'],
@@ -463,6 +510,22 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
   const scroll = (dir: 'left' | 'right') => {
     carouselRef.current?.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' });
+  };
+
+  // Normalize fleet string: ensure consistent manufacturer prefixes
+  const normalizeFleet = (fleetStr: string): string[] => {
+    return fleetStr.split(',').map(ac => {
+      let a = ac.trim();
+      // Add "Boeing" prefix to bare numeric models
+      if (/^(7[3-9][0-9])/i.test(a)) a = 'Boeing ' + a;
+      // Add "Airbus" prefix to bare A-models
+      if (/^A(3[0-9]{2}|220)/i.test(a)) a = 'Airbus ' + a;
+      // Normalize B-prefix to Boeing
+      a = a.replace(/^B(7[3-9][0-9])/i, 'Boeing $1');
+      // Normalize A-prefix (standalone) to Airbus
+      a = a.replace(/^A(3[0-9]{2})/i, 'Airbus A$1');
+      return a;
+    });
   };
 
   const bg = isDarkMode ? 'bg-slate-950' : 'bg-slate-50';
@@ -743,9 +806,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
               <div className="max-w-2xl mx-auto text-slate-400 text-sm leading-relaxed">
                 <p className="mb-4">
                   Browse through our comprehensive database of airline requirements, including minimum qualifications,
-                  preferred credentials, training pathways, and career progression opportunities. Our partnership with
-                  <strong>Airbus Head of Training</strong> in EBT CBTA and <strong>Etihad Cadet Program</strong> ensures that
-                  the expectations we provide align with the exacting standards required by leading airlines.
+                  preferred credentials, training pathways, and career progression opportunities. Our programs are built using publicly available EBT/CBTA frameworks and industry-standard competency criteria to help pilots understand what leading airlines require.
                 </p>
                 <p>
                   From legacy carriers to regional airlines and emerging carriers, understand what each airline values
@@ -756,151 +817,240 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
           ) : (
             <div className="text-white">
               <div className="flex flex-col md:flex-row gap-8">
-                {/* Left side - Header, metadata, and stats */}
-                <div className="md:w-1/3">
+                {/* Left - Airline Identity & Quick Stats */}
+                <div className="md:w-1/2">
                   <h2 className="text-5xl md:text-7xl font-serif font-normal mb-4">{selectedAirline.name}</h2>
-                  <div className="space-y-2 text-slate-300 text-sm mb-6">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-4 text-slate-300 text-sm mb-6">
+                    <div className="flex items-center gap-1.5">
                       <MapPin className="w-4 h-4" />
                       <span>{selectedAirline.location}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       <Globe className="w-4 h-4" />
                       <span>{selectedAirline.region}</span>
                     </div>
                   </div>
                   
-                  {/* Stats under header */}
-                  <div className="space-y-3">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                        Salary Range
-                      </div>
-                      <div className="text-2xl font-bold">
+                  {/* Quick Stats Grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 relative overflow-hidden">
+                      <div className="text-slate-400 text-[10px] uppercase tracking-wider mb-1">Salary Range</div>
+                      <div className={`text-lg font-bold leading-tight ${!hasRecognitionAccess && selectedAirline.salaryRangeDetailed ? 'blur-sm select-none' : ''}`}>
                         {getSalaryRange(selectedAirline)}
                       </div>
                       {!hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
-                        <div className="mt-2">
-                          <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">Pilotrecognition+ Membership for more accurate details</span>
+                        <div className="absolute inset-0 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm rounded-xl">
+                          <span className="text-[10px] bg-white/10 text-white border border-white/20 px-2 py-1 rounded-full font-semibold inline-flex items-center gap-1">
+                            <Shield className="w-3 h-3" /> PilotRecognition+
+                          </span>
                         </div>
                       )}
                       {hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
-                        <div className="mt-2">
-                          <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full">Recognition Plus</span>
-                        </div>
+                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-full mt-1 inline-flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Unlocked</span>
                       )}
                     </div>
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                        Flight Hours Required
-                      </div>
-                      <div className="text-2xl font-bold">
-                        {selectedAirline.flightHours}
-                      </div>
-                      {selectedAirline.id === 'qatar' && (
-                        <div className="text-slate-400 text-[10px] mt-1">
-                          NTR: Non-Type Rated | DEC: Direct Entry Captain
-                        </div>
-                      )}
+                      <div className="text-slate-400 text-[10px] uppercase tracking-wider mb-1">Flight Hours</div>
+                      <div className="text-lg font-bold leading-tight">{selectedAirline.flightHours}</div>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                      <div className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                        Fleet Type
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 col-span-2">
+                      <div className="text-slate-400 text-[10px] uppercase tracking-wider mb-2">Fleet</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {selectedAirline.fleetWithEndOfService
+                          ? selectedAirline.fleetWithEndOfService.map((item, i) => {
+                              const isPhasing = item.endOfService.toLowerCase().includes('phasing');
+                              return (
+                                <div key={i} className={`relative overflow-hidden rounded-full ${isPhasing ? 'cursor-not-allowed' : ''}`}>
+                                  <span className={`text-xs px-2 py-0.5 rounded-full inline-block ${isPhasing ? 'bg-white/10 text-white blur-sm select-none' : 'bg-white/10 text-white'}`}>
+                                    {item.aircraft}
+                                  </span>
+                                  {isPhasing && (
+                                    <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm rounded-full z-10">
+                                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-rose-500/90 text-white shadow-sm">
+                                        Phasing Out
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })
+                          : normalizeFleet(selectedAirline.fleet || 'Modern Aircraft Fleet').map((ac, i) => (
+                              <span key={i} className="text-xs bg-white/10 text-white px-2 py-0.5 rounded-full">{ac}</span>
+                            ))
+                        }
                       </div>
-                      {selectedAirline.id === 'qatar' && selectedAirline.fleetWithEndOfService ? (
-                        <div>
-                          <div className="text-xs text-slate-300 mb-1">Current Fleet:</div>
-                          <div className="space-y-1 mb-2">
-                            {selectedAirline.fleetWithEndOfService.map((item, idx) => (
-                              <div key={idx} className="flex items-center justify-between text-xs">
-                                <span className="text-white">{item.aircraft}</span>
-                                <span className={`text-[10px] ${item.endOfService === 'Ongoing' ? 'text-emerald-400' : item.endOfService === '2032' ? 'text-amber-400' : 'text-rose-400'}`}>
-                                  {item.endOfService}
-                                </span>
-                              </div>
-                            ))}
+                    </div>
+
+                    {selectedAirline.id === 'qatar' && selectedAirline.fleetWithEndOfService && (
+                      <div className="col-span-2 text-center">
+                        <p className="text-white/70 text-[10px] font-medium">
+                          Subscribe to <span className="text-sky-400 font-semibold">PilotRecognition+</span> to view phasing and new demand fleets to secure your type ratings with Etihads Expectations.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Key Features */}
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {selectedAirline.tags.map((tag, idx) => (
+                      <span key={idx} className="text-xs bg-sky-500/20 text-sky-300 px-2.5 py-1 rounded-full border border-sky-500/30">{tag}</span>
+                    ))}
+                  </div>
+
+                  {/* Profile Comparison CTA */}
+                  <div className="mt-4 p-3 rounded-xl bg-white/5 backdrop-blur-md border border-white/10">
+                    {currentUser && hasRecognitionAccess ? (
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-semibold text-white">Profile Match</span>
+                          <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">Recognition+</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="flex-1">
+                            <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                              <div className="h-full bg-gradient-to-r from-sky-400 to-emerald-400 rounded-full" style={{ width: '60%' }} />
+                            </div>
                           </div>
-                          {selectedAirline.futureDemand && (
-                            <>
-                              <div className="text-xs text-slate-300 mb-1">Future Demand:</div>
-                              {userProfile?.isRecognitionPlusMember ? (
-                                <div className="text-sm font-bold leading-tight text-emerald-300">
-                                  {selectedAirline.futureDemand}
-                                </div>
-                              ) : (
-                                <div className="relative">
-                                  <div className="text-sm font-bold leading-tight text-emerald-300 blur-sm select-none">
-                                    {selectedAirline.futureDemand}
-                                  </div>
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-xs font-semibold text-rose-400 bg-slate-900/80 px-3 py-1 rounded-full">
-                                      Subscribe to Pilot Recognition+
-                                    </span>
-                                  </div>
-                                </div>
-                              )}
-                            </>
-                          )}
+                          <span className="text-sm font-bold text-emerald-300">--</span>
                         </div>
-                      ) : (
-                        <div className="text-base font-bold leading-tight">
-                          {selectedAirline.fleet || 'Modern Aircraft Fleet'}
-                        </div>
-                      )}
-                    </div>
+                        <p className="text-[10px] text-slate-400 mt-1.5">Complete your profile to unlock your match score</p>
+                        <button
+                          onClick={() => onNavigate && onNavigate('pilot-profile')}
+                          className="mt-2 w-full py-2 rounded-xl bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition-all"
+                        >
+                          View Full Match
+                        </button>
+                      </div>
+                    ) : currentUser ? (
+                      <div>
+                        <p className="text-xs font-semibold text-white mb-1">Compare Your Profile</p>
+                        <p className="text-[10px] text-slate-400 mb-2">See how your experience matches {selectedAirline.name} requirements</p>
+                        <button
+                          onClick={() => onNavigate && onNavigate('become-member')}
+                          className="w-full py-2 rounded-xl bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition-all"
+                        >
+                          Upgrade to PilotRecognition+
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="text-xs font-semibold text-white mb-1">Compare Your Profile</p>
+                        <p className="text-[10px] text-slate-400 mb-2">See how your experience matches {selectedAirline.name} requirements</p>
+                        <button
+                          onClick={() => onNavigate && onNavigate('login')}
+                          className="w-full py-2 rounded-xl bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition-all"
+                        >
+                          Sign In to Compare
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
-                {/* Center - Empty */}
-                <div className="md:w-1/3"></div>
-                
-                {/* Right center - Description and Requirements */}
-                <div className="md:w-1/3 flex items-center">
-                  <div className="text-slate-300 text-sm leading-relaxed space-y-4">
+                {/* Right - Description & Requirements */}
+                <div className="md:w-1/2 flex items-center">
+                  <div className="text-slate-300 text-sm leading-relaxed space-y-5">
                     <p>{selectedAirline.description}</p>
-                    <div className="space-y-2">
-                      <p className="font-semibold text-white">Key Features:</p>
-                      <div className="space-y-1 text-xs">
-                        {selectedAirline.tags.map((tag, idx) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                            <span>{tag}</span>
-                          </div>
-                        ))}
+                    
+                    {/* Minimum Requirements — data-driven */}
+                    <div>
+                      <p className="font-semibold text-white text-xs uppercase tracking-wider mb-2">Minimum Requirements</p>
+                      <div className="space-y-1.5 text-xs">
+                        {selectedAirline.pilotRequirements ? (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                              <span>{selectedAirline.pilotRequirements.minHours.toLocaleString()} hrs total flight time</span>
+                            </div>
+                            {selectedAirline.pilotRequirements.typeRatingRequired.length > 0 && (
+                              <div className="flex items-center gap-2">
+                                <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                                <span>Type rating: {selectedAirline.pilotRequirements.typeRatingRequired.join(', ')}</span>
+                              </div>
+                            )}
+                            {selectedAirline.pilotRequirements.additionalCertifications.map((cert, i) => (
+                              <div key={i} className="flex items-center gap-2">
+                                <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                                <span>{cert}</span>
+                              </div>
+                            ))}
+                            {selectedAirline.pilotRequirements.languageRequirements.map((lang, i) => (
+                              <div key={i} className="flex items-center gap-2">
+                                <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                                <span>{lang}</span>
+                              </div>
+                            ))}
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                              <span>Valid ATPL/CPL & Class 1 Medical</span>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                              <span>{selectedAirline.flightHours} Total Flight Time</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                              <span>Valid ATPL or CPL</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                              <span>ICAO English Level 4+</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                              <span>Class 1 Medical Certificate</span>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <p className="font-semibold text-white">Minimum Requirements</p>
-                      <div className="space-y-1 text-xs">
-                        {[
-                          `${selectedAirline.flightHours} Total Flight Time`,
-                          'Valid ATPL or CPL',
-                          'ICAO English Level 4+',
-                          'Class 1 Medical Certificate',
-                          'Multi-Engine Instrument Rating',
-                        ].map((req, i) => (
-                          <div key={i} className="flex items-center gap-2">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                            <span>{req}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="font-semibold text-white">Preferred</p>
-                      <div className="space-y-1 text-xs">
-                        {[
-                          `Type Rating on ${selectedAirline.name} fleet aircraft`,
-                          'Previous airline / commercial experience',
-                          'EBT / CBTA certification',
-                          'MCC course completion',
-                          'Recent line experience (last 12 months)',
-                        ].map((req, i) => (
-                          <div key={i} className="flex items-center gap-2">
-                            <Star className="w-3 h-3 text-amber-400" />
-                            <span>{req}</span>
-                          </div>
-                        ))}
+
+                    {/* Preferred — data-driven */}
+                    <div>
+                      <p className="font-semibold text-white text-xs uppercase tracking-wider mb-2">Preferred</p>
+                      <div className="space-y-1.5 text-xs">
+                        {selectedAirline.pilotRequirements ? (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                              <span>{selectedAirline.pilotRequirements.preferredHours.toLocaleString()} hrs total flight time</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                              <span>Previous airline / commercial experience</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                              <span>EBT / CBTA certification</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                              <span>Recent line experience (last 12 months)</span>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                              <span>Type Rating on {selectedAirline.name} fleet aircraft</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                              <span>Previous airline / commercial experience</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                              <span>EBT / CBTA certification</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Star className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                              <span>Recent line experience (last 12 months)</span>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -935,9 +1085,44 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                 <h2 className="text-4xl md:text-5xl font-serif text-white mb-2">{selectedAirline.name}</h2>
                 <div className="flex items-center gap-4 flex-wrap">
                   <span className="flex items-center gap-1.5 text-white/80 text-sm"><MapPin className="w-4 h-4" />{selectedAirline.location}</span>
-                  <span className="flex items-center gap-1.5 text-emerald-300 text-sm font-medium"><DollarSign className="w-4 h-4" />{getSalaryRange(selectedAirline)}</span>
+                  <span className="flex items-center gap-1.5 text-emerald-300 text-sm font-medium relative">
+                    <DollarSign className="w-4 h-4" />
+                    <span className={`${!hasRecognitionAccess && selectedAirline.salaryRangeDetailed ? 'blur-sm select-none' : ''}`}>
+                      {getSalaryRange(selectedAirline)}
+                    </span>
+                    {!hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
+                      <span className="absolute inset-0 flex items-center justify-center">
+                        <Shield className="w-3.5 h-3.5 text-white/80" />
+                      </span>
+                    )}
+                  </span>
                   <span className="flex items-center gap-1.5 text-sky-300 text-sm"><Clock className="w-4 h-4" />{selectedAirline.flightHours}</span>
                 </div>
+              </div>
+
+              {/* Top center notice */}
+              <div className="absolute top-0 left-0 right-0 p-4 flex items-start justify-center pointer-events-none">
+                <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 flex items-center gap-2 pointer-events-auto">
+                  <Shield className="w-3.5 h-3.5 text-sky-400" />
+                  <span className="text-white/80 text-xs">
+                    Subscribe to <span className="text-sky-400 font-semibold">PilotRecognition+</span> for detailed insights, profile matching, latest aircraft demands & phasing out aircraft
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Stay Updated Banner */}
+            <div className={`px-6 md:px-8 py-2.5 ${isDarkMode ? 'bg-slate-800/80 border-b border-slate-700' : 'bg-slate-50/90 border-b border-slate-200'}`}>
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Bell className={`w-3.5 h-3.5 flex-shrink-0 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`} />
+                  <p className={`text-xs truncate ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                    Stay up to date with phasing out aircraft, salary data changes & expectation updates
+                  </p>
+                </div>
+                <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full flex-shrink-0 ${isDarkMode ? 'bg-sky-500/15 text-sky-300 border border-sky-500/20' : 'bg-sky-50 text-sky-700 border border-sky-200'}`}>
+                  <Shield className="w-3 h-3" /> PilotRecognition+
+                </span>
               </div>
             </div>
 
@@ -1090,6 +1275,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                 {selectedAirline.fleetWithEndOfService.map((item, idx) => {
                                   const manufacturerId = (window as any).getManufacturerId(item.aircraft);
                                   const aircraftId = (window as any).getAircraftId(item.aircraft, manufacturerId);
+                                  const isPhasing = item.endOfService.toLowerCase().includes('phasing');
 
                                   return (
                                     <button
@@ -1104,24 +1290,44 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                           window.location.href = `/type-rating-search?${params.toString()}`;
                                         }
                                       }}
-                                      className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-colors flex items-center justify-between ${
+                                      className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-colors ${
                                         isDarkMode ? 'bg-slate-700/50 text-sky-300 hover:bg-slate-700' : 'bg-white text-sky-700 hover:bg-sky-50 border border-slate-200'
                                       } ${!manufacturerId ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                      disabled={!manufacturerId}
+                                      disabled={!manufacturerId || isPhasing}
                                     >
-                                      <span className="text-xs">{item.aircraft}</span>
-                                      <span className={`text-[10px] font-semibold px-2 py-1 rounded-full ${
-                                        item.endOfService === 'Ongoing' ? 'bg-emerald-500/20 text-emerald-400' : 
-                                        item.endOfService === '2032' ? 'bg-amber-500/20 text-amber-400' : 
-                                        'bg-rose-500/20 text-rose-400'
-                                      }`}>
-                                        {item.endOfService}
-                                      </span>
-                                      {manufacturerId && <ChevronRight className="w-4 h-4" />}
+                                      <div className={`flex items-center justify-between w-full ${isPhasing ? 'blur-sm select-none' : ''}`}>
+                                        <span className="text-xs">{item.aircraft}</span>
+                                        <span className={`text-[10px] font-semibold px-2 py-1 rounded-full ${
+                                          item.endOfService === 'Ongoing' ? 'bg-emerald-500/20 text-emerald-400' :
+                                          item.endOfService === '2032' ? 'bg-amber-500/20 text-amber-400' :
+                                          'bg-rose-500/20 text-rose-400'
+                                        }`}>
+                                          {item.endOfService}
+                                        </span>
+                                        {manufacturerId && <ChevronRight className="w-4 h-4" />}
+                                      </div>
                                     </button>
                                   );
                                 })}
                               </div>
+
+                              {/* PilotRecognition+ banner for phasing out aircraft */}
+                              {selectedAirline.fleetWithEndOfService.some((item: any) => item.endOfService.toLowerCase().includes('phasing')) && (
+                                <div className={`mt-4 p-4 rounded-lg text-center ${isDarkMode ? 'bg-slate-700/50 border border-slate-600' : 'bg-slate-100 border border-slate-200'}`}>
+                                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs mb-2 bg-rose-500/90 text-white shadow-sm">
+                                    <Shield className="w-3.5 h-3.5" /> PilotRecognition+
+                                  </div>
+                                  <p className={`text-sm font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                                    Subscribe to view aircrafts reaching end of service!
+                                  </p>
+                                  <button
+                                    onClick={() => onNavigate && onNavigate('become-member')}
+                                    className={`text-xs font-semibold px-5 py-2.5 rounded-full transition-colors ${isDarkMode ? 'text-slate-900 bg-white hover:bg-white/90' : 'text-white bg-slate-900 hover:bg-slate-800'}`}
+                                  >
+                                    Unlock Access
+                                  </button>
+                                </div>
+                              )}
                             </div>
 
                             <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'} relative`}>
@@ -1136,13 +1342,14 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                   </div>
                                 ))}
                               </div>
-                              <div className="absolute inset-0 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm rounded-xl">
+                              <div className={`absolute inset-0 flex items-center justify-center ${isDarkMode ? 'bg-slate-900/60' : 'bg-white/60'} backdrop-blur-sm rounded-xl z-10`}>
                                 <div className="text-center">
-                                  <span className="font-bold text-xl tracking-wider brand-font mb-2 block">
-                                    <span className="text-black">PILOT</span> <span className="text-red-500">RECOGNITION+</span>
-                                  </span>
-                                  <button className="text-sm font-semibold text-black bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50 hover:bg-white/90 transition-colors">
-                                    Subscribe to view future demand
+                                  <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs mb-2 ${isDarkMode ? 'bg-white/10 text-white border border-white/20' : 'bg-slate-100 text-slate-800 border border-slate-300'}`}>
+                                    <Shield className="w-3.5 h-3.5" /> PilotRecognition+
+                                  </div>
+                                  <p className={`text-xs mb-3 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Subscribe to view future demand</p>
+                                  <button className={`text-xs font-semibold px-4 py-2 rounded-full transition-colors ${isDarkMode ? 'text-slate-900 bg-white hover:bg-white/90' : 'text-white bg-slate-900 hover:bg-slate-800'}`}>
+                                    Unlock Access
                                   </button>
                                 </div>
                               </div>
@@ -1158,6 +1365,92 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                 return (
                                   <button
                                     key={idx}
+                  {/* Question Bank */}
+                  <div className={`relative overflow-hidden rounded-xl ${isDarkMode ? 'bg-slate-800/40 border border-slate-700/50' : 'bg-white/60 border border-slate-200/60'}`}>
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center">
+                          <Brain className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h4 className={`font-semibold text-lg ${text}`}>Interview Question Bank</h4>
+                          <p className={`text-xs ${subtext}`}>Competency-based questions aligned with {selectedAirline.name} assessment criteria</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-6">
+                        {selectedAirline.questionBank?.map((section, i) => (
+                          <div key={i}>
+                            <h5 className={`text-sm font-semibold mb-3 ${text} flex items-center gap-2`}>
+                              <span className={`w-2 h-2 rounded-full ${
+                                i === 0 ? 'bg-amber-400' : i === 1 ? 'bg-blue-400' : i === 2 ? 'bg-emerald-400' : 'bg-violet-400'
+                              }`} />
+                              {section.pillar}
+                            </h5>
+                            <div className="space-y-3">
+                              {section.questions.map((q, j) => (
+                                <div key={j} className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                                  <div className="flex items-start gap-3 mb-3">
+                                    <span className={`text-xs font-bold px-2 py-0.5 rounded mt-0.5 ${
+                                      q.type === 'situational' ? 'bg-orange-500/20 text-orange-400' :
+                                      q.type === 'behavioral' ? 'bg-sky-500/20 text-sky-400' :
+                                      q.type === 'technical' ? 'bg-emerald-500/20 text-emerald-400' :
+                                      'bg-purple-500/20 text-purple-400'
+                                    }`}>{q.type}</span>
+                                    <div className="flex-1">
+                                      <p className={`text-sm font-medium mb-1 ${text}`}>{q.q}</p>
+                                      <p className={`text-[11px] ${subtext}`}>{q.alignment}</p>
+                                    </div>
+                                  </div>
+
+                                  {/* Model Answer — gated cliffhanger */}
+                                  <div className="relative mt-2">
+                                    {!hasRecognitionAccess ? (
+                                      <>
+                                        <div className={`p-3 rounded-lg blur-sm select-none ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-100'}`}>
+                                          <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>Model Answer & Scoring Guide</p>
+                                          <p className={`text-xs ${subtext} line-clamp-2`}>{q.modelAnswer}</p>
+                                        </div>
+                                        <div className={`absolute inset-0 flex items-center justify-center ${isDarkMode ? 'bg-slate-900/50' : 'bg-white/60'} backdrop-blur-[2px] rounded-lg`}>
+                                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-bold text-[10px] bg-slate-500/90 text-white shadow-sm">
+                                            <Shield className="w-3 h-3" /> PilotRecognition+
+                                          </div>
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-slate-100 border border-slate-200'}`}>
+                                        <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`}>Model Answer & Scoring Guide</p>
+                                        <p className={`text-xs leading-relaxed ${subtext}`}>{q.modelAnswer}</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Global lock banner for free users */}
+                      {!hasRecognitionAccess && (
+                        <div className={`mt-6 p-4 rounded-xl text-center ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-slate-100 border border-slate-200'}`}>
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs mb-2 bg-slate-500/90 text-white shadow-sm">
+                            <Shield className="w-3.5 h-3.5" /> PilotRecognition+
+                          </div>
+                          <p className={`text-sm font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                            Unlock model answers & scoring guides for all 16 questions
+                          </p>
+                          <button
+                            onClick={() => onNavigate && onNavigate('become-member')}
+                            className={`text-xs font-semibold px-5 py-2.5 rounded-full transition-colors ${isDarkMode ? 'text-slate-900 bg-white hover:bg-white/90' : 'text-white bg-slate-900 hover:bg-slate-800'}`}
+                          >
+                            Unlock Access
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
                                     onClick={() => {
                                       if (manufacturerId) {
                                         const params = new URLSearchParams();
@@ -1197,53 +1490,13 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                       ))}
                     </div>
 
-                    <h3 className={`text-lg font-semibold mb-3 ${text}`}>Quick Stats</h3>
-                    <div className="space-y-3">
-                      <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
-                        <p className={`text-xs ${subtext} mb-1`}>Salary Range</p>
-                        <p className={`font-semibold ${text}`}>{getSalaryRange(selectedAirline)}</p>
-                        {!hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
-                          <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full ml-2">Pilotrecognition+ Membership for more accurate details</span>
-                        )}
-                        {hasRecognitionAccess && selectedAirline.salaryRangeDetailed && (
-                          <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full ml-2">Recognition Plus</span>
-                        )}
-                      </div>
-                      <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
-                        <p className={`text-xs ${subtext} mb-1`}>Flight Hours Required</p>
-                        <p className={`font-semibold ${text}`}>{selectedAirline.flightHours}</p>
-                      </div>
-                      <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
-                        <p className={`text-xs ${subtext} mb-1`}>Location</p>
-                        <p className={`font-semibold ${text}`}>{selectedAirline.location}</p>
-                      </div>
-                      {selectedAirline.assessmentProcessPublic && (
-                        <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
-                          <p className={`text-xs ${subtext} mb-1`}>Assessment Process</p>
-                          <p className={`font-semibold ${text}`}>{getAssessmentProcess(selectedAirline)}</p>
-                          {!hasRecognitionAccess && selectedAirline.assessmentProcessDetailed && (
-                            <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full ml-2 mt-2 inline-block">Pilotrecognition+ Membership for more accurate details</span>
-                          )}
-                          {hasRecognitionAccess && selectedAirline.assessmentProcessDetailed && (
-                            <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full ml-2 mt-2 inline-block">Recognition Plus</span>
-                          )}
-                        </div>
-                      )}
-                      {selectedAirline.dataSource && (
-                        <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
-                          <p className={`text-xs ${subtext} mb-1`}>Data Source</p>
-                          <p className={`font-semibold ${text} text-xs`}>{selectedAirline.dataSource}</p>
-                          {selectedAirline.lastUpdated && (
-                            <p className={`text-xs ${subtext} mt-1`}>Updated: {selectedAirline.lastUpdated}</p>
-                          )}
-                          {selectedAirline.verificationStatus && (
-                            <div className={`mt-1 text-xs ${selectedAirline.verificationStatus === 'verified' ? 'text-green-400' : selectedAirline.verificationStatus === 'pending' ? 'text-yellow-400' : 'text-red-400'}`}>
-                              Status: {selectedAirline.verificationStatus.charAt(0).toUpperCase() + selectedAirline.verificationStatus.slice(1)}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
+                    <QuickStats
+                      airline={selectedAirline}
+                      hasRecognitionAccess={hasRecognitionAccess}
+                      isDarkMode={isDarkMode}
+                      getSalaryRange={getSalaryRange}
+                      getAssessmentProcess={getAssessmentProcess}
+                    />
 
                     {/* CTA for Aptitude Test */}
                     <div className={`mt-6 p-4 rounded-xl ${isDarkMode ? 'bg-gradient-to-r from-sky-900/50 to-blue-900/50 border border-sky-500/30' : 'bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200'}`}>
@@ -1267,28 +1520,47 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
             </div>
 
               {activeTab === 'Expectations' && (
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
+                <div className="space-y-8">
+                  <div className="text-center">
                     <h3 className={`text-3xl font-serif font-normal ${text} mb-3`}>What {selectedAirline.name} Really Looks For</h3>
                     <p className={`text-sm ${subtext} max-w-2xl mx-auto`}>Understanding the key expectations and requirements that airlines evaluate when selecting pilots. These competencies are assessed through our EBT CBTA-aligned framework.</p>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-6">
+
+                  {/* Context banner */}
+                  <div className={`relative overflow-hidden rounded-xl p-5 ${isDarkMode ? 'bg-slate-800/60 border border-slate-700' : 'bg-slate-50 border border-slate-200'}`}>
+                    <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-sky-500/10 to-purple-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+                    <div className="relative z-10 flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                        <Target className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className={`font-semibold text-sm mb-1 ${text}`}>These competencies are what {selectedAirline.name} evaluates in the Pulling System</h4>
+                        <p className={`text-xs ${subtext} leading-relaxed`}>Your Recognition Score measures how you stack up against each of these pillars. Pilots with higher scores get priority access when {selectedAirline.name} pulls from our live database. This is not a job board — it is your currency for pathway access.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-5">
                     {(selectedAirline.expectations || CORE_EXPECTATIONS).map((exp, idx) => {
                       const Icon = exp.icon;
+                      const num = String(idx + 1).padStart(2, '0');
                       return (
-                        <div key={idx} className={`rounded-xl border p-6 relative overflow-hidden ${isDarkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-                          <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${exp.color || 'from-slate-500 to-slate-600'} opacity-10 rounded-full -translate-y-1/2 translate-x-1/2`} />
+                        <div key={idx} className={`group rounded-xl border p-6 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${isDarkMode ? 'bg-slate-800/40 border-slate-700/50 backdrop-blur-sm' : 'bg-white/60 border-slate-200/60 backdrop-blur-sm'}`}>
+                          <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${exp.color || 'from-slate-500 to-slate-600'} opacity-[0.07] group-hover:opacity-[0.12] rounded-full -translate-y-1/2 translate-x-1/2 transition-opacity duration-300`} />
                           <div className="relative z-10">
-                            {Icon && (
-                              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${exp.color || 'from-slate-500 to-slate-600'} flex items-center justify-center mb-4`}>
-                                <Icon className="w-6 h-6 text-white" />
-                              </div>
-                            )}
-                            <h4 className={`font-semibold text-lg mb-3 ${text}`}>{exp.title}</h4>
+                            <div className="flex items-center justify-between mb-4">
+                              {Icon && (
+                                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${exp.color || 'from-slate-500 to-slate-600'} flex items-center justify-center shadow-sm`}>
+                                  <Icon className="w-6 h-6 text-white" />
+                                </div>
+                              )}
+                              <span className={`text-2xl font-bold opacity-10 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{num}</span>
+                            </div>
+                            <h4 className={`font-semibold text-lg mb-2 ${text}`}>{exp.title}</h4>
                             <p className={`text-sm leading-relaxed mb-4 ${subtext}`}>{exp.desc}</p>
                             <div className="flex flex-wrap gap-2">
                               {exp.bullets && exp.bullets.map(b => (
-                                <span key={b} className={`text-xs px-3 py-1 rounded-full font-medium ${isDarkMode ? 'bg-slate-700 text-slate-300' : 'bg-white text-slate-600 border border-slate-200'}`}>{b}</span>
+                                <span key={b} className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${isDarkMode ? 'bg-slate-700/60 text-slate-300 group-hover:bg-slate-700' : 'bg-slate-100 text-slate-600 border border-slate-200/60 group-hover:bg-slate-200/60'}`}>{b}</span>
                               ))}
                             </div>
                           </div>
@@ -1297,38 +1569,199 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                     })}
                   </div>
                   
-                  {/* Additional Information Section */}
-                  <div className={`mt-8 p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-                    <h4 className={`font-semibold text-lg mb-4 ${text}`}>How We Assess These Expectations</h4>
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div className="text-center">
-                        <div className={`w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center mx-auto mb-2`}>
-                          <Target className={`w-5 h-5 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`} />
+                  {/* Your Gap Analysis Teaser */}
+                  <div className={`relative overflow-hidden rounded-xl ${isDarkMode ? 'bg-slate-800/40 border border-slate-700/50' : 'bg-white/60 border border-slate-200/60'}`}>
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-rose-500 flex items-center justify-center">
+                          <TrendingUp className="w-5 h-5 text-white" />
                         </div>
-                        <h5 className={`font-medium text-sm mb-1 ${text}`}>EBT CBTA Framework</h5>
-                        <p className={`text-xs ${subtext}`}>Evidence-based training aligned with manufacturer standards</p>
+                        <div>
+                          <h4 className={`font-semibold text-lg ${text}`}>Your Gap Analysis</h4>
+                          <p className={`text-xs ${subtext}`}>See where you stand against {selectedAirline.name} expectations</p>
+                        </div>
                       </div>
-                      <div className="text-center">
-                        <div className={`w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-2`}>
-                          <Shield className={`w-5 h-5 ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`} />
+
+                      {!hasRecognitionAccess ? (
+                        <div className="relative">
+                          <div className="blur-sm select-none space-y-3">
+                            <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                              <div className="flex items-center justify-between mb-2">
+                                <span className={`text-sm font-medium ${text}`}>Technical Excellence</span>
+                                <span className="text-xs text-amber-400 font-semibold">Gap: 2 competencies</span>
+                              </div>
+                              <div className={`h-2 rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}><div className="h-2 rounded-full bg-amber-400 w-[60%]" /></div>
+                            </div>
+                            <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                              <div className="flex items-center justify-between mb-2">
+                                <span className={`text-sm font-medium ${text}`}>5-Star Service Standards</span>
+                                <span className="text-xs text-emerald-400 font-semibold">Aligned</span>
+                              </div>
+                              <div className={`h-2 rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}><div className="h-2 rounded-full bg-emerald-400 w-[85%]" /></div>
+                            </div>
+                            <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                              <div className="flex items-center justify-between mb-2">
+                                <span className={`text-sm font-medium ${text}`}>Team Leadership</span>
+                                <span className="text-xs text-amber-400 font-semibold">Gap: 1 competency</span>
+                              </div>
+                              <div className={`h-2 rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}><div className="h-2 rounded-full bg-amber-400 w-[70%]" /></div>
+                            </div>
+                          </div>
+                          <div className={`absolute inset-0 flex flex-col items-center justify-center ${isDarkMode ? 'bg-slate-900/60' : 'bg-white/70'} backdrop-blur-sm rounded-xl`}>
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs mb-3 bg-slate-500/90 text-white shadow-sm">
+                              <Shield className="w-3.5 h-3.5" /> PilotRecognition+
+                            </div>
+                            <p className={`text-sm font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                              Unlock your personalized gap analysis
+                            </p>
+                            <button
+                              onClick={() => onNavigate && onNavigate('become-member')}
+                              className={`text-xs font-semibold px-5 py-2.5 rounded-full transition-colors ${isDarkMode ? 'text-slate-900 bg-white hover:bg-white/90' : 'text-white bg-slate-900 hover:bg-slate-800'}`}
+                            >
+                              Unlock Access
+                            </button>
+                          </div>
                         </div>
-                        <h5 className={`font-medium text-sm mb-1 ${text}`}>Verified Mentorship</h5>
-                        <p className={`text-xs ${subtext}`}>50+ hours of practical validation with industry mentors</p>
-                      </div>
-                      <div className="text-center">
-                        <div className={`w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-2`}>
-                          <TrendingUp className={`w-5 h-5 ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`} />
+                      ) : (
+                        <div className="space-y-3">
+                          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                            <div className="flex items-center justify-between mb-2">
+                              <span className={`text-sm font-medium ${text}`}>Technical Excellence</span>
+                              <span className="text-xs text-amber-400 font-semibold">Gap: 2 competencies</span>
+                            </div>
+                            <div className={`h-2 rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}><div className="h-2 rounded-full bg-amber-400 w-[60%]" /></div>
+                            <p className={`text-xs mt-2 ${subtext}`}>Strengthen SOP Compliance and Automation Mastery via our Transition Program</p>
+                          </div>
+                          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                            <div className="flex items-center justify-between mb-2">
+                              <span className={`text-sm font-medium ${text}`}>5-Star Service Standards</span>
+                              <span className="text-xs text-emerald-400 font-semibold">Aligned</span>
+                            </div>
+                            <div className={`h-2 rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}><div className="h-2 rounded-full bg-emerald-400 w-[85%]" /></div>
+                          </div>
+                          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                            <div className="flex items-center justify-between mb-2">
+                              <span className={`text-sm font-medium ${text}`}>Team Leadership</span>
+                              <span className="text-xs text-amber-400 font-semibold">Gap: 1 competency</span>
+                            </div>
+                            <div className={`h-2 rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}><div className="h-2 rounded-full bg-amber-400 w-[70%]" /></div>
+                            <p className={`text-xs mt-2 ${subtext}`}>Book verified mentorship to close CRM Excellence gap</p>
+                          </div>
                         </div>
-                        <h5 className={`font-medium text-sm mb-1 ${text}`}>Recognition Profile</h5>
-                        <p className={`text-xs ${subtext}`}>Comprehensive scoring system for career advancement</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* How We Assess — gated */}
+                  <div className={`relative overflow-hidden rounded-xl ${isDarkMode ? 'bg-slate-800/40 border border-slate-700/50' : 'bg-white/60 border border-slate-200/60'}`}>
+                    <div className="p-6">
+                      <h4 className={`font-semibold text-lg mb-5 ${text}`}>How We Assess These Expectations</h4>
+                      <div className="grid md:grid-cols-3 gap-4">
+                        <div className="text-center">
+                          <div className={`w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center mx-auto mb-2`}>
+                            <Target className={`w-5 h-5 ${isDarkMode ? 'text-sky-400' : 'text-sky-600'}`} />
+                          </div>
+                          <h5 className={`font-medium text-sm mb-1 ${text}`}>EBT CBTA Framework</h5>
+                          <p className={`text-xs ${subtext}`}>Evidence-based training aligned with manufacturer standards</p>
+                        </div>
+                        <div className="text-center">
+                          <div className={`w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-2`}>
+                            <Shield className={`w-5 h-5 ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`} />
+                          </div>
+                          <h5 className={`font-medium text-sm mb-1 ${text}`}>Verified Mentorship</h5>
+                          <p className={`text-xs ${subtext}`}>50+ hours of practical validation with industry mentors</p>
+                        </div>
+                        <div className="text-center">
+                          <div className={`w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-2`}>
+                            <TrendingUp className={`w-5 h-5 ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`} />
+                          </div>
+                          <h5 className={`font-medium text-sm mb-1 ${text}`}>Recognition Profile</h5>
+                          <p className={`text-xs ${subtext}`}>Comprehensive scoring system for career advancement</p>
+                        </div>
                       </div>
                     </div>
+                    {!hasRecognitionAccess && (
+                      <div className={`absolute inset-0 flex flex-col items-center justify-center ${isDarkMode ? 'bg-slate-900/70' : 'bg-white/80'} backdrop-blur-sm rounded-xl z-10`}>
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs mb-3 bg-slate-500/90 text-white shadow-sm">
+                          <Shield className="w-3.5 h-3.5" /> PilotRecognition+
+                        </div>
+                        <p className={`text-sm font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                          Unlock detailed assessment methodology
+                        </p>
+                        <button
+                          onClick={() => onNavigate && onNavigate('become-member')}
+                          className={`text-xs font-semibold px-5 py-2.5 rounded-full transition-colors ${isDarkMode ? 'text-slate-900 bg-white hover:bg-white/90' : 'text-white bg-slate-900 hover:bg-slate-800'}`}
+                        >
+                          Unlock Access
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
 
-              {activeTab === 'Requirements' && selectedAirline.detailedInfo && (
+              {activeTab === 'Requirements' && (
                 <div className="space-y-6">
+                  {/* Pilot Requirements — always visible */}
+                  {selectedAirline.pilotRequirements && (
+                    <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
+                      <h3 className={`text-xl font-semibold mb-4 ${text}`}>Pilot Requirements</h3>
+                      <p className={`text-sm ${subtext} mb-4`}>Detailed requirements and qualifications needed</p>
+                      <div className="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <h4 className={`font-semibold mb-2 ${text} text-sm`}>Flight Hours</h4>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-xs">
+                              <span className={subtext}>Minimum</span>
+                              <span className={`font-semibold ${text}`}>{selectedAirline.pilotRequirements.minHours.toLocaleString()} hrs</span>
+                            </div>
+                            <div className="flex justify-between text-xs">
+                              <span className={subtext}>Preferred</span>
+                              <span className={`font-semibold ${text}`}>{selectedAirline.pilotRequirements.preferredHours.toLocaleString()} hrs</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className={`font-semibold mb-2 ${text} text-sm`}>Type Ratings Required</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedAirline.pilotRequirements.typeRatingRequired.map(rating => (
+                              <button
+                                key={rating}
+                                onClick={() => window.location.href = '/type-ratings'}
+                                className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
+                                  isDarkMode ? 'bg-sky-500/20 text-sky-300 hover:bg-sky-500/30' : 'bg-sky-50 text-sky-700 hover:bg-sky-100'
+                                }`}
+                              >
+                                {rating}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <h4 className={`font-semibold mb-2 ${text} text-sm`}>Additional Certifications</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedAirline.pilotRequirements.additionalCertifications.map(cert => (
+                              <span key={cert} className={`text-xs px-3 py-1 rounded-full ${isDarkMode ? 'bg-teal-500/20 text-teal-300' : 'bg-teal-50 text-teal-700'}`}>{cert}</span>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className={`font-semibold mb-2 ${text} text-sm`}>Language Requirements</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedAirline.pilotRequirements.languageRequirements.map(lang => (
+                              <span key={lang} className={`text-xs px-3 py-1 rounded-full ${isDarkMode ? 'bg-rose-500/20 text-rose-300' : 'bg-rose-50 text-rose-700'}`}>{lang}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Detailed Requirements — behind paywall */}
+                  {selectedAirline.detailedInfo && (
+                  <>
                   {!hasRecognitionAccess ? (
                     <div className={`rounded-xl p-8 text-center ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
                       <Shield className={`w-12 h-12 mx-auto mb-4 ${isDarkMode ? 'text-slate-600' : 'text-slate-400'}`} />
@@ -1505,6 +1938,8 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                   )}
                     </>
                   )}
+                  </>
+                  )}
                 </div>
               )}
 
@@ -1567,7 +2002,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                         {selectedAirline.detailedInfo?.coreCompetencies ? (
                           <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
                             <h4 className={`text-lg font-semibold mb-4 ${text}`}>Core Competency Alignment (2026 Standards)</h4>
-                            <p className={`text-xs ${subtext} mb-4`}>Qatar Airways evaluates candidates against five primary core values during the HR panel, which overlap with the 9 industry-standard pilot competencies.</p>
+                            <p className={`text-xs ${subtext} mb-4`}>{selectedAirline.name} evaluates candidates against five primary core values during the HR panel, which overlap with the 9 industry-standard pilot competencies.</p>
                             <div className="space-y-3">
                               {selectedAirline.detailedInfo.coreCompetencies.oneTeam && (
                                 <div className="flex items-start gap-3">
@@ -1638,7 +2073,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                       {selectedAirline.detailedInfo?.coreCompetencies ? (
                         <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
                           <h4 className={`text-lg font-semibold mb-4 ${text}`}>Core Competency Alignment (2026 Standards)</h4>
-                          <p className={`text-xs ${subtext} mb-4`}>Qatar Airways evaluates candidates against five primary core values during the HR panel, which overlap with the 9 industry-standard pilot competencies.</p>
+                          <p className={`text-xs ${subtext} mb-4`}>{selectedAirline.name} evaluates candidates against five primary core values during the HR panel, which overlap with the 9 industry-standard pilot competencies.</p>
                           <div className="space-y-3">
                             {selectedAirline.detailedInfo.coreCompetencies.oneTeam && (
                               <div className="flex items-start gap-3">
@@ -1796,19 +2231,42 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                       <h3 className={`text-xl font-semibold mb-4 ${text}`}>Current Fleet</h3>
                       <p className={`text-sm ${subtext} mb-4`}>Active aircraft in Qatar Airways fleet</p>
                       <div className="space-y-2">
-                        {selectedAirline.fleetWithEndOfService.map((item, idx) => (
-                          <div key={idx} className={`flex items-center justify-between p-3 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
-                            <span className={`font-medium text-sm ${text}`}>{item.aircraft}</span>
-                            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                              item.endOfService === 'Ongoing' ? 'bg-emerald-500/20 text-emerald-400' : 
-                              item.endOfService === '2032' ? 'bg-amber-500/20 text-amber-400' : 
-                              'bg-rose-500/20 text-rose-400'
-                            }`}>
-                              {item.endOfService}
-                            </span>
-                          </div>
-                        ))}
+                        {selectedAirline.fleetWithEndOfService.map((item, idx) => {
+                          const isPhasing = item.endOfService.toLowerCase().includes('phasing');
+                          return (
+                            <div key={idx} className={`p-3 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-white border border-slate-200'}`}>
+                              <div className={`flex items-center justify-between ${isPhasing ? 'blur-sm select-none' : ''}`}>
+                                <span className={`font-medium text-sm ${text}`}>{item.aircraft}</span>
+                                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                                  item.endOfService === 'Ongoing' ? 'bg-emerald-500/20 text-emerald-400' :
+                                  item.endOfService === '2032' ? 'bg-amber-500/20 text-amber-400' :
+                                  'bg-rose-500/20 text-rose-400'
+                                }`}>
+                                  {item.endOfService}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
+
+                      {/* PilotRecognition+ banner for phasing out aircraft */}
+                      {selectedAirline.fleetWithEndOfService.some((item: any) => item.endOfService.toLowerCase().includes('phasing')) && (
+                        <div className={`mt-4 p-4 rounded-lg text-center ${isDarkMode ? 'bg-slate-700/50 border border-slate-600' : 'bg-slate-100 border border-slate-200'}`}>
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs mb-2 bg-rose-500/90 text-white shadow-sm">
+                            <Shield className="w-3.5 h-3.5" /> PilotRecognition+
+                          </div>
+                          <p className={`text-sm font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                            Subscribe to view aircrafts reaching end of service!
+                          </p>
+                          <button
+                            onClick={() => onNavigate && onNavigate('become-member')}
+                            className={`text-xs font-semibold px-5 py-2.5 rounded-full transition-colors ${isDarkMode ? 'text-slate-900 bg-white hover:bg-white/90' : 'text-white bg-slate-900 hover:bg-slate-800'}`}
+                          >
+                            Unlock Access
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -1856,13 +2314,14 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                           <p className={`text-xs ${subtext}`}>{selectedAirline.futureFleetPlans.expansionPlans}</p>
                         </div>
                         
-                        <div className="absolute inset-0 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm rounded-xl">
+                        <div className={`absolute inset-0 flex items-center justify-center ${isDarkMode ? 'bg-slate-900/60' : 'bg-white/60'} backdrop-blur-sm rounded-xl z-10`}>
                           <div className="text-center">
-                            <span className="font-bold text-xl tracking-wider brand-font mb-2 block">
-                              <span className="text-black">PILOT</span> <span className="text-red-500">RECOGNITION+</span>
-                            </span>
-                            <button className="text-sm font-semibold text-black bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50 hover:bg-white/90 transition-colors">
-                              Subscribe to view future fleet plans
+                            <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs mb-2 ${isDarkMode ? 'bg-white/10 text-white border border-white/20' : 'bg-slate-100 text-slate-800 border border-slate-300'}`}>
+                              <Shield className="w-3.5 h-3.5" /> PilotRecognition+
+                            </div>
+                            <p className={`text-xs mb-3 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Subscribe to view future fleet plans</p>
+                            <button className={`text-xs font-semibold px-4 py-2 rounded-full transition-colors ${isDarkMode ? 'text-slate-900 bg-white hover:bg-white/90' : 'text-white bg-slate-900 hover:bg-slate-800'}`}>
+                              Unlock Access
                             </button>
                           </div>
                         </div>
@@ -1974,66 +2433,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                 </div>
               )}
 
-              {activeTab === 'Requirements' && (
-                <div>
-                  {selectedAirline.pilotRequirements && (
-                    <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
-                      <h3 className={`text-xl font-semibold mb-4 ${text}`}>Pilot Requirements</h3>
-                      <p className={`text-sm ${subtext} mb-4`}>Detailed requirements and qualifications needed</p>
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                          <h4 className={`font-semibold mb-2 ${text} text-sm`}>Flight Hours</h4>
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-xs">
-                              <span className={subtext}>Minimum</span>
-                              <span className={`font-semibold ${text}`}>{selectedAirline.pilotRequirements.minHours.toLocaleString()} hrs</span>
-                            </div>
-                            <div className="flex justify-between text-xs">
-                              <span className={subtext}>Preferred</span>
-                              <span className={`font-semibold ${text}`}>{selectedAirline.pilotRequirements.preferredHours.toLocaleString()} hrs</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className={`font-semibold mb-2 ${text} text-sm`}>Type Ratings Required</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {selectedAirline.pilotRequirements.typeRatingRequired.map(rating => (
-                              <button
-                                key={rating}
-                                onClick={() => window.location.href = '/type-ratings'}
-                                className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
-                                  isDarkMode ? 'bg-sky-500/20 text-sky-300 hover:bg-sky-500/30' : 'bg-sky-50 text-sky-700 hover:bg-sky-100'
-                                }`}
-                              >
-                                {rating}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <h4 className={`font-semibold mb-2 ${text} text-sm`}>Additional Certifications</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {selectedAirline.pilotRequirements.additionalCertifications.map(cert => (
-                              <span key={cert} className={`text-xs px-3 py-1 rounded-full ${isDarkMode ? 'bg-teal-500/20 text-teal-300' : 'bg-teal-50 text-teal-700'}`}>{cert}</span>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className={`font-semibold mb-2 ${text} text-sm`}>Language Requirements</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {selectedAirline.pilotRequirements.languageRequirements.map(lang => (
-                              <span key={lang} className={`text-xs px-3 py-1 rounded-full ${isDarkMode ? 'bg-rose-500/20 text-rose-300' : 'bg-rose-50 text-rose-700'}`}>{lang}</span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
               {activeTab === 'Career' && (
                 <div>
                   <h3 className={`text-2xl font-serif font-normal ${text} mb-2`}>The Assessment Pipeline</h3>
@@ -2090,28 +2489,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
             </div>
           </div>
       )}
-      <>
-      {/* Match Profile Banner */}
-      <div className="max-w-7xl mx-auto px-6 mb-16">
-        <div className="rounded-2xl overflow-hidden bg-gradient-to-r from-sky-900 via-blue-900 to-indigo-900 border border-sky-800/50 p-8 text-center">
-          <Globe className="w-10 h-10 text-sky-400 mx-auto mb-4" />
-          <h3 className="text-2xl font-serif text-black mb-2">Check Your Airline Match Score</h3>
-          <p className="text-slate-600 text-sm max-w-xl mx-auto mb-6">
-            Your PilotRecognition PilotRecognition profile is automatically matched against each airline's verified requirements. Build your profile to unlock personalised match scores.
-          </p>
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur px-5 py-2.5 rounded-full border border-slate-200">
-              <span className="text-black text-sm font-medium">Profile Score</span>
-              <span className="text-sky-600 font-bold text-lg">{userProfile ? '82%' : '--'}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur px-5 py-2.5 rounded-full border border-slate-200">
-              <span className="text-black text-sm font-medium">Airlines Matched</span>
-              <span className="text-emerald-600 font-bold text-lg">{userProfile ? AIRLINES.length : '0'}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      </>
 
     </div>
   );

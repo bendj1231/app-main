@@ -20,7 +20,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
                 },
                 {
                     q: "Is PilotRecognition free?",
-                    a: "Creating a profile, logging flight hours, and viewing 3 pathways per month are free. Programs cost money: <strong>Foundation Program ($49)</strong> includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. <strong>Transition Program ($149)</strong> is the advanced stage with EBT CBTA video assessment. Foundation graduates unlock it at $99. <strong>Recognition Plus ($99/year)</strong> unlocks unlimited pathway views and priority matching. Revenue comes from pilot programs and operator subscriptions."
+                    a: "Creating a profile, logging flight hours, and viewing 3 pathways per month are free. <strong>Foundation Program</strong> is free to enter and includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. Certification at completion is $49. <strong>Transition Program ($149)</strong> is the advanced stage with EBT CBTA video assessment. Foundation graduates unlock it at $99. <strong>Recognition Plus ($99/year)</strong> unlocks unlimited pathway views and priority matching. Revenue comes from pilot programs and operator subscriptions."
                 },
                 {
                     q: "How does it work?",
@@ -41,7 +41,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             questions: [
                 {
                     q: "What is the Foundation Program?",
-                    a: "<strong>$49.</strong> Includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. EBT CBTA-aligned competency assessment. Foundation graduates unlock the Transition Program at graduate pricing ($99, a $50 discount from $149). This builds your baseline recognition score that determines pathway access."
+                    a: "<strong>Free to enter.</strong> Includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. EBT CBTA-aligned competency assessment. Certification at completion is $49. Foundation graduates unlock the Transition Program at graduate pricing ($99, a $50 discount from $149). This builds your baseline recognition score that determines pathway access."
                 },
                 {
                     q: "What is the Transition Program?",

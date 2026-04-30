@@ -771,19 +771,19 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
     const getCardClickHandler = (card: GridCardData) => {
         return () => {
-            console.log("Card clicked:", card.id, "isLoggedIn:", isLoggedIn, "currentViewKey:", currentViewKey);
+            // debug: Card clicked
             
             // When on Home view, clicking Programs/Pathways switches to that view
             // Pilot Recognition navigates to the profile page when logged in
             if (currentViewKey === 'home' && card.id === 'pilot-recognition' && isLoggedIn) {
-                console.log("Navigating to pilot-recognition-profile page");
+                // debug: Navigating to pilot-recognition-profile page
                 onNavigate('pilot-recognition-profile');
                 return;
             }
             if (currentViewKey === 'home' && ['programs', 'pathways'].includes(card.id)) {
                 const targetIndex = viewIndexMap[card.id];
                 if (targetIndex !== undefined) {
-                    console.log("Switching to view:", card.id, "index:", targetIndex);
+                    // debug: Switching to view
                     goToView(targetIndex);
                     return;
                 }
@@ -831,7 +831,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
             const target = navMap[card.id];
             if (target) {
-                console.log("Navigating to:", target, "for card:", card.id);
+                // debug: Navigating to target for card
                 onNavigate(target);
             } else {
                 onGoToProgramDetail({
@@ -1315,39 +1315,12 @@ const GridCard: React.FC<GridCardProps> = ({
         return () => clearInterval(interval);
     }, [shouldUseCarousel, shouldUseLoggedInCarousel, shouldUseEnrolledCarousel, carouselImages, card.isCarousel, card.images, isPaused]);
 
-    // Debug logging for pilot-pathways card
-    useEffect(() => {
-        if (card.id === 'pilot-pathways') {
-            console.log('pilot-pathways card debug:', {
-                cardId: card.id,
-                shouldUseCarousel,
-                shouldUseLoggedInCarousel,
-                shouldUseEnrolledCarousel,
-                carouselImages,
-                displayImage,
-                isLoggedIn,
-                isEnrolledInFoundation
-            });
-        }
-    }, [card.id, shouldUseCarousel, shouldUseLoggedInCarousel, shouldUseEnrolledCarousel, carouselImages, displayImage, isLoggedIn, isEnrolledInFoundation]);
 
     // Reset animation scene index when carousel image changes
     useEffect(() => {
         setAnimationSceneIndex(0);
     }, [currentImageIndex]);
 
-    // Debug log for discover card carousel
-    useEffect(() => {
-        if (card.id === 'discover') {
-            console.log('Discover card debug:', {
-                hasArrows: card.hasArrows,
-                images: card.images,
-                imagesLength: card.images?.length,
-                currentImageIndex,
-                isLoggedIn
-            });
-        }
-    }, [card.id, card.hasArrows, card.images, currentImageIndex, isLoggedIn]);
     
     // Cleanup pause timeout on unmount
     useEffect(() => {
@@ -1396,7 +1369,7 @@ const GridCard: React.FC<GridCardProps> = ({
     
     // Handle card click - for discover card, navigate based on state
     const handleCardClick = (e: React.MouseEvent) => {
-        console.log("GridCard handleCardClick - card.id:", card.id, "currentImageIndex:", currentImageIndex, "isLoggedIn:", isLoggedIn);
+        // debug: GridCard handleCardClick
         if (card.id === 'discover') {
             e.preventDefault();
             e.stopPropagation();
@@ -1412,7 +1385,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 2: 'type-rating-search',    // Type Rating Search
             };
             const targetPage = pageMap[currentImageIndex] || 'airline-expectations';
-            console.log("Navigating to:", targetPage, "for currentImageIndex:", currentImageIndex);
+            // debug: Navigating to targetPage for currentImageIndex
             onNavigate(targetPage);
         } else {
             onClick();
@@ -1560,10 +1533,10 @@ const GridCard: React.FC<GridCardProps> = ({
                                         alt={`${card.title} ${idx + 1}`}
                                         className={`w-full h-full object-cover object-center ${enableAnimations && isHovered && idx === currentImageIndex && !(card.id === 'discover' && isLoggedIn) ? 'scale-110' : ''}`}
                                         onError={(e) => {
-                                            console.error('Carousel image load error:', card.id, idx, img, e);
+                                            console.error('Carousel image load error:', card.id, idx);
                                         }}
                                         onLoad={() => {
-                                            console.log('Carousel image loaded successfully:', card.id, idx, img);
+                                            // image loaded successfully
                                         }}
                                     />
                                 </div>
@@ -1606,10 +1579,10 @@ const GridCard: React.FC<GridCardProps> = ({
                                                     ${isHovered && idx === currentImageIndex ? 'scale-105' : ''}
                                                 `}
                                                 onError={(e) => {
-                                                    console.error('General carousel image load error:', card.id, idx, img, e);
+                                                    console.error('General carousel image load error:', card.id, idx);
                                                 }}
                                                 onLoad={() => {
-                                                    console.log('General carousel image loaded successfully:', card.id, idx, img);
+                                                    // general carousel image loaded
                                                 }}
                                             />
                                         )}
@@ -1628,11 +1601,10 @@ const GridCard: React.FC<GridCardProps> = ({
                                 style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : card.id === 'type-rating-search' ? 'top 20% center' : 'center' }}
                                 className={`w-full h-full object-cover ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
                                 onError={(e) => {
-                                    console.error('Image load error:', card.id, currentImage || displayImage, e);
-                                    console.error('Card:', card);
+                                    console.error('Image load error:', card.id);
                                 }}
                                 onLoad={() => {
-                                    console.log('Image loaded successfully:', card.id, currentImage || displayImage);
+                                    // image loaded successfully
                                 }}
                             />
                         )

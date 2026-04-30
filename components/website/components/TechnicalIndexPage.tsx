@@ -16,7 +16,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
 }) => {
     const aboutSections = [
         {
-            category: "Foundation Program - Competency Development ($49)",
+            category: "Foundation Program - Free Entry, $49 Certification",
             content: [
                 {
                     title: "Program Overview",

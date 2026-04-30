@@ -148,14 +148,14 @@ export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({
                             Start Your Foundation Program
                         </h2>
                         <p className="max-w-2xl mx-auto text-base text-blue-200 leading-relaxed mb-8">
-                            $49. 50 hours of verified mentorship. EBT CBTA-aligned assessment. A live profile that operators pull. That's how you bridge the gap.
+                            Free to enter. $49 certification at completion. 50 hours of verified mentorship. EBT CBTA-aligned assessment. A live profile that operators pull. That's how you bridge the gap.
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <button
                                 onClick={() => onNavigate('become-member')}
                                 className="px-8 py-4 bg-white text-blue-900 font-bold rounded-xl hover:bg-blue-50 transition-all shadow-xl"
                             >
-                                Enroll Now — $49
+                                Start Free — $49 at Certification
                             </button>
                             <button
                                 onClick={() => onNavigate('about')}

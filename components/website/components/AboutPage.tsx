@@ -50,7 +50,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Programs</h3>
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <p className="font-semibold text-slate-900 mb-1">Foundation Program — $49</p>
+                                    <p className="font-semibold text-slate-900 mb-1">Foundation Program — Free to Enter</p>
                                     <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
                                         <li>Competency development across 9 EBT CBTA core areas</li>
                                         <li>50 hours evidence-based mentorship</li>
@@ -217,7 +217,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <h3 className="text-xl font-bold text-slate-900">Foundation Program</h3>
                             </div>
                             <div className="text-slate-700 space-y-1">
-                                <p>Foundation Program ($49). Scholarship seats for verified low-income applicants.</p>
+                                <p>Foundation Program — free to enter, $49 certification at completion. Scholarship seats for verified low-income applicants.</p>
                                 <p>Build baseline competency. Get verified. Access pathway cards.</p>
                                 <p>Build verified competency. Access pathways that match your skills.</p>
                             </div>

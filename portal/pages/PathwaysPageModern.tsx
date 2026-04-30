@@ -1823,6 +1823,8 @@ const PathwayCard: React.FC<{
     if (isExpanded && pathway.isEnterprise && !hasTrackedView.current) {
       hasTrackedView.current = true;
       const cardId = pathway.id.replace('enterprise-', '');
+      // Skip tracking on localhost to avoid CORS errors during development
+      if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1'))) return;
       // Fire and forget - don't block UI
       fetch('https://us-central1-pilotrecognition-airline.cloudfunctions.net/trackCardView', {
         method: 'POST',
@@ -4243,6 +4245,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   useEffect(() => {
     const fetchEnterpriseCards = async () => {
       try {
+        // Skip on localhost to avoid CORS errors during development
+        if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1'))) return;
         const res = await fetch('https://us-central1-pilotrecognition-airline.cloudfunctions.net/getEnterprisePathwayCards');
         if (!res.ok) return;
         const data = await res.json();
@@ -4293,6 +4297,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Check if user can post pathway cards
   useEffect(() => {
     if (currentUser?.id) {
+      // Skip on localhost to avoid CORS errors during development
+      if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1'))) {
+        setCanPostPathways(false);
+        return;
+      }
       const checkPostingAccess = async () => {
         try {
           const response = await fetch(`https://us-central1-pilotrecognition-airline.cloudfunctions.net/checkPathwayPostingAccess?userId=${currentUser.id}`);
@@ -4758,7 +4767,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             {/* Navigation Buttons - always visible */}
             <div className="flex items-center gap-3">
               {[
-                { label: 'Airline Expectations', page: 'portal-airline-expectations' },
+                { label: 'Airline Expectations', page: currentUser ? 'portal-airline-expectations' : 'airline-expectations' },
                 { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
                 { label: 'Pilot Pathways', page: 'pathways-modern' },
                 { label: 'Job Listings', page: 'job-listings' },
