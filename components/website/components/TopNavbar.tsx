@@ -398,6 +398,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         }
     };
 
+    const pilotRecognitionTarget = currentUser ? 'recognition-plus' : 'what-is-recognition';
+
     const navItems: NavItem[] = [
         {
             name: 'Home',
@@ -436,7 +438,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         },
         {
             name: 'Pilot Recognition',
-            target: 'recognition-plus',
+            target: pilotRecognitionTarget,
             subItems: [
                 { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
                 { name: 'Pilot Recognition Profile', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },

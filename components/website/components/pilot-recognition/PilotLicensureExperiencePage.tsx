@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../../src/lib/supabase';
+import { useAuth } from '@/src/contexts/AuthContext';
 
 interface PilotLicensureExperiencePageProps {
   onBack: () => void;
@@ -153,8 +154,19 @@ const PILOT_JOB_POSITIONS_OPTIONS = [
 
 export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePageProps> = ({ 
   onBack, 
-  userProfile 
+  userProfile: userProfileProp 
 }) => {
+  // Get auth context as fallback when accessed directly via URL
+  const { currentUser, userProfile: authUserProfile } = useAuth();
+  
+  // Use prop if provided (nested navigation), otherwise use auth context (direct URL access)
+  const userProfile = userProfileProp || authUserProfile || (currentUser ? {
+    id: currentUser.id,
+    uid: currentUser.uid,
+    email: currentUser.email,
+    firstName: authUserProfile?.first_name || '',
+    lastName: authUserProfile?.last_name || ''
+  } : null);
   // Personal Info State
   const [firstName, setFirstName] = useState(userProfile?.firstName || '');
   const [middleName, setMiddleName] = useState('');

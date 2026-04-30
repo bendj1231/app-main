@@ -40,6 +40,8 @@ import { PlatformPilotedDronesPage } from '@/components/website/components/pathw
 import { FoundationalVerificationPage } from '@/components/website/components/programs/FoundationalVerificationPage';
 import { PilotRecognitionPage } from '@/components/website/components/pilot-recognition/PilotRecognitionPage';
 import { PilotRecognitionProfilePage } from '@/components/website/components/pilot-recognition/PilotRecognitionProfilePage';
+import { PilotLicensureExperiencePage } from '@/components/website/components/pilot-recognition/PilotLicensureExperiencePage';
+import WhatIsPilotRecognitionPage from '../../components/website/components/WhatIsPilotRecognitionPage';
 import { ScoreOptimizationPage } from '@/components/website/components/pilot-recognition/ScoreOptimizationPage';
 import { RecognitionScoreInfoPage } from '@/components/website/components/pilot-recognition/RecognitionScoreInfoPage';
 import { RecognitionCareerMatchesPage } from '@/components/website/components/pilot-recognition/RecognitionCareerMatchesPage';
@@ -160,8 +162,20 @@ export const AppRoutes = () => {
       <Route path="/foundational-verification" element={<FoundationalVerificationPage onBack={() => handleBack('/foundational-platform')} onNavigate={handleNavigate} />} />
 
       {/* Pilot recognition routes */}
+      <Route
+        path="/pilot-recognition"
+        element={
+          <PilotRecognitionPage
+            onBack={() => handleBack()}
+            onNavigate={handleNavigate}
+            onLogin={() => setIsLoginModalOpen(true)}
+          />
+        }
+      />
+      <Route path="/what-is-recognition" element={<WhatIsPilotRecognitionPage onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} onJoinUs={() => navigate('/become-member')} />} />
       <Route path="/recognition-plus" element={<PilotRecognitionProfilePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/pilot-recognition-profile" element={<PilotRecognitionProfilePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/pilot-licensure-experience" element={<PilotLicensureExperiencePage onBack={() => handleBack('/pilot-recognition-profile')} />} />
       <Route path="/score-optimization" element={<ScoreOptimizationPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/recognition-score-info" element={<RecognitionScoreInfoPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/recognition-career-matches" element={<RecognitionCareerMatchesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />

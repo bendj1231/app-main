@@ -18,8 +18,13 @@ const safeRedirect = (path: string) => {
 };
 
 const navigateTo = (page: string, data?: any) => {
-  if (page === 'recognition-plus' || page === 'pilot-recognition') {
+  if (page === 'recognition-plus') {
     safeRedirect('/recognition-plus');
+    return;
+  }
+
+  if (page === 'pilot-recognition') {
+    safeRedirect('/pilot-recognition');
     return;
   }
 
