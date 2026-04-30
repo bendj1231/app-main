@@ -337,7 +337,7 @@ const newsroomHighlights = [
         tag: 'Recognition Systems',
         title: 'How to Build the Right Recognition Profile',
         description: 'CEO & Founder Karl Brian Vogt breaks down how to align your profile with Airbus EBT standards. It is not about flight hours alone — airlines want cognitive skills, behavioral markers, and constructivist thinking that static CVs never capture.',
-        image: '/PR3.png',
+        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777590630/newsroom/kvos2ityyztesx5idue2.png',
         metrics: [
             { label: 'Live Webinars', value: 'This week' },
             { label: 'Profile Views', value: '2,340 +' }
@@ -354,7 +354,7 @@ const newsroomHighlights = [
         tag: 'Pathway Cards',
         title: 'Discover Pilot Profile-Matching Pathways',
         description: 'Stop sending static CVs into black holes. Airlines and operators post live pathway requirements with exact competency gaps. Your Recognition Profile auto-matches against them — you see your missing pieces before you apply, and operators pull verified pilots directly from the database.',
-        image: '/discoverpathways.png',
+        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777590647/newsroom/tws5xzryqjepzxoyc94d.png',
         metrics: [
             { label: 'Live Pathways', value: '11 carriers' },
             { label: 'Match Accuracy', value: '88% hit' }
@@ -371,7 +371,7 @@ const newsroomHighlights = [
         tag: 'Foundation Program',
         title: 'Foundation Program Enrollment Open Now',
         description: 'Start with 50 hours of verified mentorship, EBT CBTA-aligned competency assessment, and industry-recognized CV formatting. Build your Recognition Score from day one — the currency that gets you pulled by operators instead of begging for interviews.',
-        image: '/foundation.png',
+        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777590658/newsroom/b81ubzdpz0dmyqutiyqj.png',
         metrics: [
             { label: 'Mentorship Hours', value: '50 included' },
             { label: 'Certification', value: 'enroll now for free!' }
