@@ -125,12 +125,12 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'card-2',
-            images: ['/pr2.png', '/images/airline-operations.png'],
-            image: '/pr2.png',
-            loggedInImages: ['/pr2.png'],
-            loggedInImage: '/pr2.png',
-            enrolledImage: '/pr2.png',
-            enrolledImages: ['/pr2.png'],
+            images: ['/pathway2.png', '/images/airline-operations.png', '/typeratingsearch.png'],
+            image: '/typeratingsearch.png',
+            loggedInImages: ['/pathway2.png', '/images/airline-operations.png', '/typeratingsearch.png'],
+            loggedInImage: '/typeratingsearch.png',
+            enrolledImage: '/typeratingsearch.png',
+            enrolledImages: ['/pathway2.png', '/images/airline-operations.png', '/typeratingsearch.png'],
             title: 'Discover Pathways',
             loggedInTitle: 'Discover Pathways',
             enrolledTitle: 'Discover Pathways',
@@ -169,7 +169,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         },
         {
             id: 'pathways',
-            image: '/images/airline-operations.png',
+            image: '/pathway4.png',
             title: 'Pathways',
             subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
             icon: ShoppingBag,
@@ -967,7 +967,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                 <>
                                     <div className="md:hidden grid grid-cols-1 gap-2 mb-4">
                                         {currentCards.slice(0, 5).map((card, idx) => (
-                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[220px]' : 'h-[170px]'}>
+                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[340px]' : 'h-[170px]'}>
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 2} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -975,7 +975,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
                                     <div className="hidden md:grid md:grid-cols-2 gap-2 md:gap-2.5 mb-2.5">
                                         {currentCards.slice(0, 2).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[220px] lg:h-[240px]">
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[340px] lg:h-[360px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -1530,7 +1530,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                     <img
                                         src={img}
                                         alt={`${card.title} ${idx + 1}`}
-                                        className={`w-full h-full object-cover object-center ${enableAnimations && isHovered && idx === currentImageIndex && !(card.id === 'discover' && isLoggedIn) ? 'scale-110' : ''}`}
+                                        className={`w-full h-full object-cover ${card.id === 'card-2' ? 'object-bottom' : 'object-center'} ${enableAnimations && isHovered && idx === currentImageIndex && !(card.id === 'discover' && isLoggedIn) ? 'scale-110' : ''}`}
                                         onError={(e) => {
                                             console.error('Carousel image load error:', card.id, idx);
                                         }}
@@ -1574,7 +1574,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                                 src={img}
                                                 alt={`${card.title} ${idx + 1}`}
                                                 className={`
-                                                    w-full h-full object-cover
+                                                    w-full h-full object-cover ${card.id === 'card-2' ? 'object-top' : 'object-center'}
                                                     ${isHovered && idx === currentImageIndex ? 'scale-105' : ''}
                                                 `}
                                                 onError={(e) => {
@@ -1593,7 +1593,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         </div>
                     ) : displayImage || currentImage ? (
                         // Single image - Hidden for top row cards
-                        !(card.id === 'discover' || card.id === 'pathways') && (
+                        !(card.id === 'discover') && (
                             <img
                                 src={currentImage || displayImage}
                                 alt={card.title}
