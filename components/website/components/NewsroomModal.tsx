@@ -104,7 +104,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
     if (!isOpen || !activeNewsItem) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-12 md:pt-20 lg:pt-24 p-3 md:p-4">
             {/* Backdrop */}
             <div 
                 className="absolute inset-0 bg-slate-900/60 backdrop-blur-[8px]"
@@ -119,7 +119,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute -top-3 -right-3 z-20 w-10 h-10 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg shadow-black/40 border-2 border-white/20 transition-all hover:scale-110"
+                    className="absolute top-2 right-2 md:-top-3 md:-right-3 z-20 w-9 h-9 md:w-10 md:h-10 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg shadow-black/40 border-2 border-white/20 transition-all hover:scale-110"
                     aria-label="Close newsroom"
                 >
                     <X className="w-5 h-5" />
@@ -147,7 +147,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
 
                             <div>
                                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-200/80">{activeNewsItem.tag}</p>
-                                <h2 className="text-2xl md:text-3xl lg:text-[2.2rem] font-serif leading-tight mt-2">
+                                <h2 className="text-xl md:text-3xl lg:text-[2.2rem] font-serif leading-tight mt-2">
                                     {activeNewsItem.title}
                                 </h2>
                                 <p className="text-slate-100/85 text-sm md:text-base mt-3 leading-relaxed">
@@ -164,7 +164,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
                                 ))}
                             </ul>
 
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 {activeNewsItem.metrics.map((metric: { label: string; value: string }) => (
                                     <div key={`${activeNewsItem.id}-${metric.label}`} className="border border-white/25 bg-white/5 px-4 py-3 shadow-lg shadow-black/30">
                                         <p className="text-[11px] uppercase tracking-[0.25em] text-white/70">{metric.label}</p>
@@ -209,7 +209,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
                             </div>
                         </div>
 
-                        <div className="relative min-h-[200px] md:min-h-0 border border-white/25 flex-shrink-0">
+                        <div className="relative min-h-[160px] md:min-h-0 border border-white/25 flex-shrink-0">
                             <img src={activeNewsItem.image} alt={activeNewsItem.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
                             <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/75 via-slate-900/10 to-transparent" />
                             <div className="absolute bottom-4 left-4 right-4">
