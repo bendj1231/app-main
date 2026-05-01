@@ -1135,6 +1135,30 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     </div>
                     <div className="flex flex-col items-center justify-center flex-1 gap-6 overflow-y-auto">
                         <div className="w-full max-w-sm space-y-4 py-4">
+                            {/* Auth buttons at the top of mobile menu */}
+                            {isAuthRestoring ? (
+                                <div className="flex flex-col items-center gap-4 mb-8">
+                                    <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                                    <span className="text-sm text-slate-600 font-medium">Restoring session...</span>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-3 mb-8">
+                                    <button
+                                        onClick={currentUser ? handleLogout : () => { onNavigate('become-member'); setIsMenuOpen(false); }}
+                                        className={`w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest ${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
+                                    >
+                                        {currentUser ? 'Sign Out' : 'Become a Member'}
+                                    </button>
+
+                                    <button
+                                        onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
+                                        className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest shadow-xl`}
+                                    >
+                                        {currentUser ? 'Access Portal' : 'Login'}
+                                    </button>
+                                </div>
+                            )}
+
                             {visibleNavItems.map((item) => (
                                 <div key={item.name} className="flex flex-col items-center gap-3">
                                     <button
@@ -1160,56 +1184,31 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 </div>
                             ))}
 
-
-
-                            {isAuthRestoring ? (
-                                <div className="flex flex-col items-center gap-4 mt-8">
-                                    <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                                    <span className="text-sm text-slate-600 font-medium">Restoring session...</span>
-                                </div>
-                            ) : (
-                                <>
-                                    <button
-                                        onClick={currentUser ? handleLogout : () => { onNavigate('become-member'); setIsMenuOpen(false); }}
-                                        className={`w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest mt-8 ${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
-                                    >
-                                        {currentUser ? 'Sign Out' : 'Become a Member'}
-                                    </button>
-
-                                    <button
-                                        onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
-                                        className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest mt-4 shadow-xl`}
-                                    >
-                                        {currentUser ? 'Access Portal' : 'Login'}
-                                    </button>
-
-                                    {currentUser && (
-                                        <div className="flex gap-4 mt-4">
-                                            <div className="flex-1 flex items-center justify-center gap-2">
-                                                <div className="relative">
-                                                    <div className="w-12 h-16 rounded-[50%/40%] bg-slate-700 flex items-center justify-center overflow-hidden" style={{ borderRadius: '45% / 50%' }}>
-                                                        {profileImageUrl ? (
-                                                            <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
-                                                        ) : (
-                                                            <User className="w-6 h-8 text-slate-400" />
-                                                        )}
-                                                    </div>
-                                                    <label className="absolute bottom-0 right-0 p-1.5 bg-blue-600 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
-                                                        <Camera className="w-3 h-3" />
-                                                        <input
-                                                            type="file"
-                                                            accept="image/*"
-                                                            onChange={handleImageUpload}
-                                                            disabled={uploading}
-                                                            className="hidden"
-                                                        />
-                                                    </label>
-                                                </div>
-                                                <span className="text-white text-sm font-medium">{pilotId || 'Pilot'}</span>
+                            {currentUser && (
+                                <div className="flex gap-4 mt-4">
+                                    <div className="flex-1 flex items-center justify-center gap-2">
+                                        <div className="relative">
+                                            <div className="w-12 h-16 rounded-[50%/40%] bg-slate-700 flex items-center justify-center overflow-hidden" style={{ borderRadius: '45% / 50%' }}>
+                                                {profileImageUrl ? (
+                                                    <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <User className="w-6 h-8 text-slate-400" />
+                                                )}
                                             </div>
+                                            <label className="absolute bottom-0 right-0 p-1.5 bg-blue-600 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
+                                                <Camera className="w-3 h-3" />
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleImageUpload}
+                                                    disabled={uploading}
+                                                    className="hidden"
+                                                />
+                                            </label>
                                         </div>
-                                    )}
-                                </>
+                                        <span className="text-white text-sm font-medium">{pilotId || 'Pilot'}</span>
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
