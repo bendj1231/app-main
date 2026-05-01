@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Map, GraduationCap, Compass, ShoppingBag, Briefcase, Award, Plane, BookOpen, Users, Zap, Smartphone, Monitor } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { shouldEnableHeavyAnimations, shouldEnable3DEffects } from '@/src/lib/device-detection';
 
@@ -467,6 +467,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
     const [mountKey, setMountKey] = useState(Date.now());
     const [currentViewIndex, setCurrentViewIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [viewMode, setViewMode] = useState<'auto' | 'mobile' | 'desktop'>('auto');
     const [direction, setDirection] = useState(0);
     const gridInteractionRef = useRef<HTMLDivElement | null>(null);
     const isGridHoveredRef = useRef(false);
@@ -477,6 +478,19 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
     const viewKeys = ['home', 'programs', 'pilot-recognition', 'pathways', 'applications', 'membership'];
     const viewCards = getViewCards(isLoggedIn, isEnrolledInFoundation);
+
+    // Determine if we should show mobile layout based on viewMode and screen size
+    const [isMobileView, setIsMobileView] = useState(false);
+
+    useEffect(() => {
+        const updateMobileView = () => {
+            setIsMobileView(viewMode === 'mobile' || (viewMode === 'auto' && window.innerWidth < 768));
+        };
+
+        updateMobileView();
+        window.addEventListener('resize', updateMobileView);
+        return () => window.removeEventListener('resize', updateMobileView);
+    }, [viewMode]);
 
     // Trigger animations on every mount (including refresh)
     useEffect(() => {
@@ -857,6 +871,30 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 onMouseLeave={handleGridMouseLeave}
                 style={{ touchAction: 'pan-y', cursor: 'grab', overscrollBehaviorX: 'contain' }}
             >
+                {/* View Mode Toggle - Desktop only */}
+                <div className="hidden md:flex absolute -top-12 right-0 gap-1 bg-black/40 backdrop-blur-md rounded-lg p-1 border border-white/10">
+                    <button
+                        onClick={() => setViewMode('auto')}
+                        className={`p-2 rounded-md transition-all ${viewMode === 'auto' ? 'bg-white/20 text-white' : 'text-white/60 hover:bg-white/10'}`}
+                        title="Auto (responsive)"
+                    >
+                        <Monitor className="w-4 h-4" />
+                    </button>
+                    <button
+                        onClick={() => setViewMode('mobile')}
+                        className={`p-2 rounded-md transition-all ${viewMode === 'mobile' ? 'bg-white/20 text-white' : 'text-white/60 hover:bg-white/10'}`}
+                        title="Mobile view"
+                    >
+                        <Smartphone className="w-4 h-4" />
+                    </button>
+                    <button
+                        onClick={() => setViewMode('desktop')}
+                        className={`p-2 rounded-md transition-all ${viewMode === 'desktop' ? 'bg-white/20 text-white' : 'text-white/60 hover:bg-white/10'}`}
+                        title="Desktop view"
+                    >
+                        <Monitor className="w-4 h-4" />
+                    </button>
+                </div>
                 {/* Side Navigation Arrows - Left */}
                 <button
                     onClick={goToPrevious}
@@ -965,139 +1003,225 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             {/* Layout 1: Home - Two top cards, three bottom cards */}
                             {currentViewKey === 'home' && (
                                 <>
-                                    <div className="md:hidden grid grid-cols-1 gap-2 mb-4">
-                                        {currentCards.slice(0, 5).map((card, idx) => (
-                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[220px]' : 'h-[130px]'}>
-                                                <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 2} currentViewKey={currentViewKey} />
+                                    <div className={isMobileView ? 'grid grid-cols-1 gap-2 mb-4' : 'hidden md:grid md:grid-cols-2 gap-2 md:gap-2.5 mb-2.5'}>
+                                        {(isMobileView ? currentCards.slice(0, 5) : currentCards.slice(0, 2)).map((card, idx) => (
+                                            <motion.div key={card.id} variants={cardVariants} className={isMobileView ? (idx < 2 ? 'h-[220px]' : 'h-[130px]') : 'h-[340px] lg:h-[360px]'}>
+                                                <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={isMobileView ? idx < 2 : true} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
                                     </div>
 
-                                    <div className="hidden md:grid md:grid-cols-2 gap-2 md:gap-2.5 mb-2.5">
-                                        {currentCards.slice(0, 2).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[340px] lg:h-[360px]">
-                                                <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
-                                            </motion.div>
-                                        ))}
-                                    </div>
-
-                                    <div className="hidden md:grid md:grid-cols-3 gap-2 md:gap-2.5 mb-4 md:mb-6">
-                                        {currentCards.slice(2, 5).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[150px] lg:h-[165px]">
-                                                <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                            </motion.div>
-                                        ))}
-                                    </div>
+                                    {isMobileView ? null : (
+                                        <div className="hidden md:grid md:grid-cols-3 gap-2 md:gap-2.5 mb-2.5">
+                                            {currentCards.slice(2, 5).map((card) => (
+                                                <motion.div key={card.id} variants={cardVariants} className="h-[170px] lg:h-[180px]">
+                                                    <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </>
                             )}
 
                             {/* Layout 2: Programs - Foundation video hero + 3 stacked info cards */}
                             {currentViewKey === 'programs' && (
-                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6 md:h-[400px]">
-                                    {/* Foundation Program - Video showcase, featured left (60%) */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
-                                        <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
-                                    </motion.div>
-                                    {/* 3 Info cards stacked vertically on right (40%) with equal spacing */}
-                                    <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 h-full">
-                                        <motion.div key={currentCards[1]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                        <motion.div key={currentCards[2]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                        <motion.div key={currentCards[3]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                    </div>
-                                </div>
+                                <>
+                                    {/* Mobile view */}
+                                    {isMobileView ? (
+                                        <div className="grid grid-cols-1 gap-2 mb-4">
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="h-[220px]">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[1]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[2]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[3]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6 md:h-[400px]">
+                                            {/* Foundation Program - Video showcase, featured left (60%) */}
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            {/* 3 Info cards stacked vertically on right (40%) with equal spacing */}
+                                            <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 h-full">
+                                                <motion.div key={currentCards[1]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                                <motion.div key={currentCards[2]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                                <motion.div key={currentCards[3]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
 
                             {/* Layout 3: Pathways - Commercial Airlines as main goal, alternatives below */}
                             {currentViewKey === 'pathways' && (
-                                <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-2.5 mb-4 md:mb-6">
-                                    {/* Commercial Airlines - The primary goal, full width */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-6 h-[160px] md:h-[220px]">
-                                        <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
-                                    </motion.div>
-                                    {/* Alternative pathways as equal options - Larger MSFS style */}
-                                    <div className="md:col-span-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-                                        {currentCards.slice(1).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[140px] md:h-[200px]">
-                                                <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                <>
+                                    {isMobileView ? (
+                                        <div className="grid grid-cols-1 gap-2 mb-4">
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="h-[220px]">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                             </motion.div>
-                                        ))}
-                                    </div>
-                                </div>
+                                            {currentCards.slice(1).map((card) => (
+                                                <motion.div key={card.id} variants={cardVariants} className="h-[130px]">
+                                                    <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-2.5 mb-4 md:mb-6">
+                                            {/* Commercial Airlines - The primary goal, full width */}
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-6 h-[160px] md:h-[220px]">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            {/* Alternative pathways as equal options - Larger MSFS style */}
+                                            <div className="md:col-span-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+                                                {currentCards.slice(1).map((card) => (
+                                                    <motion.div key={card.id} variants={cardVariants} className="h-[140px] md:h-[200px]">
+                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
 
                             {/* Layout 4: Pilot Recognition - Video hero (60%) + 3 stacked cards on right (40%) */}
                             {currentViewKey === 'pilot-recognition' && (
-                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6 md:h-[400px]">
-                                    {/* Pilot Recognition Video - Main hero left (60%) */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
-                                        <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
-                                    </motion.div>
-                                    {/* Right side: 3 stacked cards - Credentials, Digital Flight Logs, Profile Matched Jobs */}
-                                    <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 h-full">
-                                        {/* Verified Credentials - Increased height */}
-                                        <motion.div key={currentCards[1]?.id} variants={cardVariants} className="flex-[1.5] min-h-0">
-                                            <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                        {/* Digital Flight Logs - Text-only directory */}
-                                        <motion.div key={currentCards[2]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                        {/* Profile Matched Jobs - Text-only directory */}
-                                        <motion.div key={currentCards[3]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                    </div>
-                                </div>
+                                <>
+                                    {isMobileView ? (
+                                        <div className="grid grid-cols-1 gap-2 mb-4">
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="h-[220px]">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[1]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[2]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[3]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6 md:h-[400px]">
+                                            {/* Pilot Recognition Video - Main hero left (60%) */}
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            {/* Right side: 3 stacked cards - Credentials, Digital Flight Logs, Profile Matched Jobs */}
+                                            <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 h-full">
+                                                {/* Verified Credentials - Increased height */}
+                                                <motion.div key={currentCards[1]?.id} variants={cardVariants} className="flex-[1.5] min-h-0">
+                                                    <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                                {/* Digital Flight Logs - Text-only directory */}
+                                                <motion.div key={currentCards[2]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                                {/* Profile Matched Jobs - Text-only directory */}
+                                                <motion.div key={currentCards[3]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
 
                             {/* Layout 5: Applications - W1000 Suite flagship, supporting tools stacked on right */}
                             {currentViewKey === 'applications' && (
-                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-2.5 mb-4 md:mb-6 md:h-[380px]">
-                                    {/* W1000 Suite - Flagship product, takes center stage */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
-                                        <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
-                                    </motion.div>
-                                    {/* Right side: 4 stacked cards - Access Pathways Platform, Exam Terminal, ATPL Learning Game, Pilot CV Builder */}
-                                    <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 h-full">
-                                        <motion.div key={currentCards[1]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                        <motion.div key={currentCards[2]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                        <motion.div key={currentCards[3]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                        <motion.div key={currentCards[4]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[4]} isHovered={hoveredCard === currentCards[4]?.id} onHover={() => setHoveredCard(currentCards[4]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[4])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                    </div>
-                                </div>
+                                <>
+                                    {isMobileView ? (
+                                        <div className="grid grid-cols-1 gap-2 mb-4">
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="h-[220px]">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[1]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[2]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[3]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[4]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[4]} isHovered={hoveredCard === currentCards[4]?.id} onHover={() => setHoveredCard(currentCards[4]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[4])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-2.5 mb-4 md:mb-6 md:h-[380px]">
+                                            {/* W1000 Suite - Flagship product, takes center stage */}
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            {/* Right side: 4 stacked cards - Access Pathways Platform, Exam Terminal, ATPL Learning Game, Pilot CV Builder */}
+                                            <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 h-full">
+                                                <motion.div key={currentCards[1]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                                <motion.div key={currentCards[2]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                                <motion.div key={currentCards[3]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[3]} isHovered={hoveredCard === currentCards[3]?.id} onHover={() => setHoveredCard(currentCards[3]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[3])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                                <motion.div key={currentCards[4]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[4]} isHovered={hoveredCard === currentCards[4]?.id} onHover={() => setHoveredCard(currentCards[4]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[4])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
 
                             {/* Layout 6: Membership - Benefits lead, community cards stacked */}
                             {currentViewKey === 'membership' && (
-                                <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-2.5 mb-4 md:mb-6 md:h-[380px]">
-                                    {/* Benefits - The value proposition, prominent */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-2 h-[200px] md:h-full">
-                                        <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
-                                    </motion.div>
-                                    {/* Right side: 2 stacked Pilot Community cards with equal sizing */}
-                                    <div className="md:col-span-4 flex flex-col gap-2 md:gap-3 h-full">
-                                        <motion.div key={currentCards[1]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                        <motion.div key={currentCards[2]?.id} variants={cardVariants} className="flex-1 min-h-0">
-                                            <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
-                                        </motion.div>
-                                    </div>
-                                </div>
+                                <>
+                                    {isMobileView ? (
+                                        <div className="grid grid-cols-1 gap-2 mb-4">
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="h-[220px]">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[1]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            <motion.div key={currentCards[2]?.id} variants={cardVariants} className="h-[130px]">
+                                                <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-2.5 mb-4 md:mb-6 md:h-[380px]">
+                                            {/* Benefits - The value proposition, prominent */}
+                                            <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-2 h-[200px] md:h-full">
+                                                <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
+                                            </motion.div>
+                                            {/* Right side: 2 stacked Pilot Community cards with equal sizing */}
+                                            <div className="md:col-span-4 flex flex-col gap-2 md:gap-3 h-full">
+                                                <motion.div key={currentCards[1]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1]?.id} onHover={() => setHoveredCard(currentCards[1]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                                <motion.div key={currentCards[2]?.id} variants={cardVariants} className="flex-1 min-h-0">
+                                                    <GridCard card={currentCards[2]} isHovered={hoveredCard === currentCards[2]?.id} onHover={() => setHoveredCard(currentCards[2]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[2])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
+                                                </motion.div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </motion.div>
                     </motion.div>
@@ -1595,7 +1719,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         // Single image - Hidden for top row cards
                         !(card.id === 'discover') && (
                             card.id === 'FOUNDATION-PROGRAM-ENROLL' ? (
-                                <div className="absolute top-0 left-0 right-0 h-[calc(100%-60px)] md:h-[calc(100%-85px)]">
+                                <div className="absolute top-0 left-0 right-0 h-[calc(100%-85px)]">
                                     <img
                                         src={currentImage || displayImage}
                                         alt={card.title}
