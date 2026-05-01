@@ -861,7 +861,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 <button
                     onClick={goToPrevious}
                     disabled={isAnimating}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 md:-translate-x-20 z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed group"
+                    className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-20 z-50 w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 items-center justify-center transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed group"
                     aria-label="Previous view"
                     style={{ pointerEvents: 'none' }}
                 >
@@ -874,7 +874,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 <button
                     onClick={goToNext}
                     disabled={isAnimating}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 md:translate-x-20 z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed group"
+                    className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-20 z-50 w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 items-center justify-center transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed group"
                     aria-label="Next view"
                     style={{ pointerEvents: 'none' }}
                 >
@@ -967,7 +967,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                 <>
                                     <div className="md:hidden grid grid-cols-1 gap-2 mb-4">
                                         {currentCards.slice(0, 5).map((card, idx) => (
-                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[340px]' : 'h-[170px]'}>
+                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[260px]' : 'h-[140px]'}>
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 2} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -993,9 +993,9 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
                             {/* Layout 2: Programs - Foundation video hero + 3 stacked info cards */}
                             {currentViewKey === 'programs' && (
-                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6 h-[340px] md:h-[400px]">
+                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6 md:h-[400px]">
                                     {/* Foundation Program - Video showcase, featured left (60%) */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-full">
+                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
                                         <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                     </motion.div>
                                     {/* 3 Info cards stacked vertically on right (40%) with equal spacing */}
@@ -1017,13 +1017,13 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             {currentViewKey === 'pathways' && (
                                 <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-2.5 mb-4 md:mb-6">
                                     {/* Commercial Airlines - The primary goal, full width */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-6 h-[180px] md:h-[220px]">
+                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-6 h-[160px] md:h-[220px]">
                                         <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                     </motion.div>
                                     {/* Alternative pathways as equal options - Larger MSFS style */}
                                     <div className="md:col-span-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
                                         {currentCards.slice(1).map((card) => (
-                                            <motion.div key={card.id} variants={cardVariants} className="h-[180px] md:h-[200px]">
+                                            <motion.div key={card.id} variants={cardVariants} className="h-[140px] md:h-[200px]">
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -1033,9 +1033,9 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
                             {/* Layout 4: Pilot Recognition - Video hero (60%) + 3 stacked cards on right (40%) */}
                             {currentViewKey === 'pilot-recognition' && (
-                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6 h-[340px] md:h-[400px]">
+                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6 md:h-[400px]">
                                     {/* Pilot Recognition Video - Main hero left (60%) */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-full">
+                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
                                         <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                     </motion.div>
                                     {/* Right side: 3 stacked cards - Credentials, Digital Flight Logs, Profile Matched Jobs */}
@@ -1058,9 +1058,9 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
                             {/* Layout 5: Applications - W1000 Suite flagship, supporting tools stacked on right */}
                             {currentViewKey === 'applications' && (
-                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-2.5 mb-4 md:mb-6 h-[320px] md:h-[380px]">
+                                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-2.5 mb-4 md:mb-6 md:h-[380px]">
                                     {/* W1000 Suite - Flagship product, takes center stage */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-full">
+                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-3 h-[200px] md:h-full">
                                         <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                     </motion.div>
                                     {/* Right side: 4 stacked cards - Access Pathways Platform, Exam Terminal, ATPL Learning Game, Pilot CV Builder */}
@@ -1083,9 +1083,9 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
                             {/* Layout 6: Membership - Benefits lead, community cards stacked */}
                             {currentViewKey === 'membership' && (
-                                <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-2.5 mb-4 md:mb-6 h-[320px] md:h-[380px]">
+                                <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-2.5 mb-4 md:mb-6 md:h-[380px]">
                                     {/* Benefits - The value proposition, prominent */}
-                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-2 h-full">
+                                    <motion.div key={currentCards[0]?.id} variants={cardVariants} className="md:col-span-2 h-[200px] md:h-full">
                                         <GridCard card={currentCards[0]} isHovered={hoveredCard === currentCards[0]?.id} onHover={() => setHoveredCard(currentCards[0]?.id || null)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[0])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} />
                                     </motion.div>
                                     {/* Right side: 2 stacked Pilot Community cards with equal sizing */}
@@ -1728,7 +1728,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                             {displayTitle}
                                         </h3>
                                     </div>
-                                    <p className={`text-[10px] truncate hidden md:block ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
+                                    <p className={`text-[10px] truncate block ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
                                         {finalDisplaySubtitle.length > 45 ? finalDisplaySubtitle.slice(0, 42) + '...' : finalDisplaySubtitle}
                                     </p>
                                 </div>
