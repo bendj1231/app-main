@@ -967,7 +967,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                 <>
                                     <div className="md:hidden grid grid-cols-1 gap-3 mb-4">
                                         {currentCards.slice(0, 5).map((card, idx) => (
-                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[340px]' : 'h-[200px]'}>
+                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[280px]' : 'h-[160px]'}>
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 2} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
