@@ -617,7 +617,6 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [isNewsroomModalOpen, setIsNewsroomModalOpen] = useState(false);
     const [activeMatchFilter, setActiveMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
     const [activeCarouselCategory, setActiveCarouselCategory] = useState<string>('All');
-    const [showAtlasPreview, setShowAtlasPreview] = useState(false);
     const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
 
     // Auto-open newsroom modal on first visit of the session
@@ -1333,6 +1332,21 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {/* Profile Alignment Section */}
                     {selectedCarouselPathway && (
                         <div className="mb-16">
+                            {/* CTA Button */}
+                            <div className="text-center mb-6">
+                                <button
+                                    onClick={() => selectedCarouselPathway.matchProbability >= 75 ? onNavigate('pathways-modern') : onNavigate('become-member')}
+                                    className={`px-8 py-3 rounded-lg text-sm font-semibold transition-all ${
+                                        selectedCarouselPathway.matchProbability >= 75
+                                            ? 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                                            : 'bg-amber-500 hover:bg-amber-600 text-white'
+                                    }`}
+                                >
+                                    {selectedCarouselPathway.matchProbability >= 75 
+                                        ? 'Submit Interest for Pathway' 
+                                        : 'Improve Your Profile'}
+                                </button>
+                            </div>
                             <div className="text-center mb-6">
                                 <p className="text-xs uppercase tracking-widest text-white/70 mb-2">REQUIREMENTS & PROFILE ALIGNMENT</p>
                                 <p className="text-sm text-white/50">Updated: {new Date().toLocaleDateString()}</p>
@@ -1499,20 +1513,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                                             </li>
                                         </ul>
                                     </div>
-
-                                    {/* CTA */}
-                                    <button
-                                        onClick={() => selectedCarouselPathway.matchProbability >= 75 ? onNavigate('pathways-modern') : onNavigate('become-member')}
-                                        className={`w-full py-3 rounded-lg text-sm font-semibold transition-all ${
-                                            selectedCarouselPathway.matchProbability >= 75
-                                                ? 'bg-emerald-500 hover:bg-emerald-600 text-white'
-                                                : 'bg-amber-500 hover:bg-amber-600 text-white'
-                                        }`}
-                                    >
-                                        {selectedCarouselPathway.matchProbability >= 75 
-                                            ? 'Submit Interest for Pathway' 
-                                            : 'Improve Your Profile'}
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1586,132 +1586,24 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             {activeProductTab === 'profile' && (
                 <div className="relative z-10 mb-10 relative">
-                    <div className="max-w-6xl ml-0 mr-auto lg:ml-4 relative">
+                    <div className="max-w-4xl mx-auto relative">
                         
                         {/* Recognition Profile Section */}
-                        <div className={`transition-all duration-500 ease-in-out ${showAtlasPreview ? 'lg:pr-[360px]' : ''}`}>
+                        <div className="transition-all duration-500 ease-in-out">
                             {/* Section Header */}
                             <div className="mb-4">
                                 <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-slate-300 mb-1">Pilot Data</p>
                                 <p className="text-xs text-slate-400">Identity, credentials, flight activity, and core hour summaries</p>
                             </div>
 
-                            {/* 3-Column Grid */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                                
-                                {/* Profile Card */}
-                                <div className="text-center flex flex-col gap-5" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))', borderRadius: '20px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                                    <div>
-                                        <div className="w-[100px] h-[100px] rounded-full bg-slate-900 flex items-center justify-center mx-auto mb-4 text-white text-2xl font-semibold shadow-[0_15px_35px_rgba(15,23,42,0.25)]">
-                                            BB
-                                        </div>
-                                        <h2 className="text-[1.1rem] text-slate-900 mb-1" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Benjamin Tiger Bowler</h2>
-                                        <p className="text-xs text-blue-600 font-semibold tracking-[0.18em] mb-1">CPL (Philippines) · 5 Ratings</p>
-                                        <p className="text-[0.8rem] text-slate-500">benjamintigerbowler@gmail.com</p>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3 w-full">
-                                        <div className="bg-white/90 rounded-xl p-3 border border-white/40">
-                                            <p className="text-[0.6rem] tracking-[0.12em] text-slate-400 uppercase m-0">Flight Hours</p>
-                                            <p className="text-[1.35rem] font-bold text-slate-900 mt-1 m-0">200</p>
-                                            <p className="text-[0.7rem] font-medium text-amber-500 mt-1 m-0">(unverified)</p>
-                                            <button
-                                                onClick={() => onNavigate('pilot-recognition-profile')}
-                                                className="text-[0.65rem] font-medium text-blue-600 underline mt-1 bg-transparent border-0 p-0 cursor-pointer"
-                                            >
-                                                verify your flight hours
-                                            </button>
-                                        </div>
-                                        <div className="bg-white/90 rounded-xl p-3 border border-white/40">
-                                            <p className="text-[0.6rem] tracking-[0.12em] text-slate-400 uppercase m-0">Recognition Score</p>
-                                            <p className="text-[1.35rem] font-bold text-slate-900 mt-1 m-0">0</p>
-                                        </div>
-                                    </div>
-                                    <div className="text-center mt-3">
-                                        <span className="text-xs text-blue-600 font-medium px-3 py-1 bg-blue-600/10 rounded-full">Foundation Program</span>
-                                    </div>
-                                </div>
-
-                                {/* Credentials Card */}
-                                <div className="flex flex-col gap-4" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))', borderRadius: '20px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                                    <div>
-                                        <h3 className="text-base text-slate-900 m-0" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Pilot Credentials</h3>
-                                        <p className="text-sm text-slate-500 mt-1">Licensing, hours, and access pass</p>
-                                        <button
-                                            onClick={() => onNavigate('pilot-licensure-experience')}
-                                            className="mt-2 bg-transparent border-0 text-blue-600 text-xs font-medium cursor-pointer text-left p-0"
-                                        >
-                                            view details on licensure →
-                                        </button>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        {[
-                                            { label: 'License Type', value: 'CPL' },
-                                            { label: 'License Number', value: '155660' },
-                                            { label: 'License Status', value: 'Not specified' },
-                                            { label: 'English Level', value: 'Not specified' },
-                                            { label: 'Career Stage', value: 'Not specified' }
-                                        ].map((tile, i) => (
-                                            <div key={i} className={`bg-white/90 rounded-xl p-3 border border-white/40 text-center ${i === 4 ? 'col-span-2' : ''}`}>
-                                                <p className="text-[0.65rem] text-slate-500 tracking-[0.1em] m-0">{tile.label}</p>
-                                                <p className="text-sm font-bold text-slate-900 mt-1 m-0">{tile.value}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                                </div>
-
-                                {/* Readiness Card */}
-                                <div style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))', borderRadius: '20px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-                                    <div className="mb-3">
-                                        <p className="text-[0.7rem] tracking-[0.25em] text-slate-400 uppercase m-0">Readiness Snapshot</p>
-                                        <h3 className="text-base text-slate-900 mt-1 m-0" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Resource & Availability</h3>
-                                        <button
-                                            onClick={() => onNavigate('pilot-licensure-experience')}
-                                            className="mt-2 bg-transparent border-0 text-blue-600 text-xs font-medium cursor-pointer text-left p-0"
-                                        >
-                                            view details on readiness →
-                                        </button>
-                                    </div>
-                                    <div className="flex flex-col gap-[0.85rem]">
-                                        {[
-                                            { label: 'Last Flown', value: 'Not specified' },
-                                            { label: 'Countries Visited', value: 'Not specified' },
-                                            { label: 'Favorite Aircraft', value: 'Not specified' }
-                                        ].map(item => (
-                                            <div key={item.label} className="rounded-[14px] p-[0.85rem] border border-white/40 bg-white/90 flex justify-between items-center">
-                                                <div className="text-slate-600 text-sm font-semibold">{item.label}</div>
-                                                <div className="text-slate-900 font-bold text-sm text-right">{item.value}</div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Slide-Out ATLAS Resume Panel */}
-                        <div 
-                            className={`fixed lg:absolute right-0 top-0 h-full z-50 lg:z-auto transition-transform duration-500 ease-in-out ${
-                                showAtlasPreview ? 'translate-x-0' : 'translate-x-[calc(100%-24px)]'
-                            } w-[340px] lg:w-[340px]`}
-                            style={{ maxHeight: '100%' }}
-                        >
-                            {/* Toggle Tab - Minimal handle */}
-                            <button
-                                onClick={() => setShowAtlasPreview(!showAtlasPreview)}
-                                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full flex items-center justify-center bg-red-600/90 hover:bg-red-600 text-white w-6 h-12 rounded-l-lg shadow-lg cursor-pointer transition-all hover:w-7"
-                                title="ATLAS Resume"
-                            >
-                                <ChevronLeft className={`w-3 h-3 transition-transform duration-300 ${showAtlasPreview ? 'rotate-180' : ''}`} />
-                            </button>
-
-                            {/* ATLAS Card Content */}
-                            <div className="bg-white/95 backdrop-blur-sm rounded-l-xl border border-white/30 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.3)] overflow-hidden h-full overflow-y-auto">
-                                {/* Red Header Bar */}
+                            {/* Redesigned Single Card Layout with ATLAS influence */}
+                            <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-white/30 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.3)] overflow-hidden">
+                                {/* ATLAS-style Header Bar */}
                                 <div className="bg-red-600 px-4 py-3 border-b border-red-700">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-red-200 mb-0.5">Pilot Recognition Profile</p>
-                                            <h4 className="text-sm font-bold text-white">Benjamin Tiger Bowler</h4>
+                                            <h4 className="text-sm font-bold text-white">Pete Michelle</h4>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-red-200 mb-1">SHARE LINK</p>
@@ -1725,79 +1617,61 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     </div>
                                 </div>
 
-                                <div className="p-3">
-                                    <div className="grid grid-cols-1 gap-2">
-                                        
-                                        {/* Pilot Credentials */}
-                                        <div className="bg-slate-50/80 rounded-lg p-2.5 border border-slate-100">
-                                            <h5 className="text-xs font-bold text-slate-900 mb-0.5">Credentials</h5>
-                                            <p className="text-[10px] text-slate-500 mb-2">Hours & access pass</p>
-
-                                            <div className="grid grid-cols-2 gap-1.5 mb-2">
-                                                {[
-                                                    { label: 'Hours', value: '3,200' },
-                                                    { label: 'Mentorship', value: '50' },
-                                                    { label: 'Foundation', value: '100%' },
-                                                    { label: 'Score', value: '847' }
-                                                ].map((item, i) => (
-                                                    <div key={i} className="bg-white rounded-md p-1.5 text-center">
-                                                        <p className="text-[9px] text-slate-500">{item.label}</p>
-                                                        <p className="text-sm font-bold text-slate-900">{item.value}</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-
-                                            <div className="flex justify-between items-center text-[10px]">
-                                                <span className="text-slate-500">CPL (A) · Class 1 Medical</span>
-                                                <span className="text-emerald-600 font-bold">Verified</span>
-                                            </div>
+                                <div className="p-4">
+                                    {/* Profile Header */}
+                                    <div className="flex items-center gap-4 mb-4 pb-4 border-b border-slate-200">
+                                        <div className="w-[60px] h-[60px] rounded-full bg-slate-900 flex items-center justify-center text-white text-lg font-semibold flex-shrink-0">
+                                            PM
                                         </div>
-
-                                        {/* Training */}
-                                        <div className="bg-slate-50/80 rounded-lg p-2.5 border border-slate-100">
-                                            <h5 className="text-xs font-bold text-slate-900 mb-2">Training</h5>
-                                            <div className="space-y-1.5 text-[10px]">
-                                                <div className="flex justify-between">
-                                                    <span className="text-slate-500">Type Ratings</span>
-                                                    <span className="font-bold text-slate-900">A320, B737</span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-slate-500">English</span>
-                                                    <span className="font-bold text-slate-900">Level 6</span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-slate-500">Medical</span>
-                                                    <span className="font-bold text-emerald-600">Valid Aug 2026</span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-slate-500">Last Flown</span>
-                                                    <span className="font-bold text-slate-900">2 days ago</span>
-                                                </div>
-                                            </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-xs text-blue-600 font-semibold tracking-[0.18em] mb-1">ATPL (USA) · 8 Ratings</p>
+                                            <p className="text-[10px] text-slate-500 truncate">pete.michelle@aviation.com</p>
                                         </div>
-
-                                        {/* Experience */}
-                                        <div className="bg-slate-50/80 rounded-lg p-2.5 border border-slate-100">
-                                            <h5 className="text-xs font-bold text-slate-900 mb-2">Experience</h5>
-                                            <div className="bg-white rounded-md p-2 mb-2">
-                                                <div className="flex justify-between items-start mb-1">
-                                                    <span className="text-[10px] font-bold text-slate-900">First Officer</span>
-                                                    <span className="text-[9px] text-slate-500">2022-Present</span>
-                                                </div>
-                                                <p className="text-[9px] text-slate-600">Regional Express · ATR 72-600</p>
+                                        <div className="flex flex-col gap-1 items-end flex-shrink-0">
+                                            <div className="text-right">
+                                                <p className="text-[9px] tracking-[0.12em] text-slate-500 uppercase mb-0.5">Flight Hours</p>
+                                                <p className="text-lg font-bold text-slate-900">3,500</p>
                                             </div>
-                                            <div className="text-[9px] text-slate-500 text-center">
-                                                ATLAS CV · ATS-Readable · Verified
+                                            <div className="text-right">
+                                                <p className="text-[9px] tracking-[0.12em] text-slate-500 uppercase mb-0.5">Score</p>
+                                                <p className="text-lg font-bold text-slate-900">847</p>
                                             </div>
                                         </div>
                                     </div>
+
+                                    {/* ATLAS-style Data Grid */}
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                                        {[
+                                            { label: 'License Type', value: 'ATPL' },
+                                            { label: 'License Number', value: 'A-789456' },
+                                            { label: 'License Status', value: 'Valid' },
+                                            { label: 'English Level', value: 'Level 6' },
+                                            { label: 'Career Stage', value: 'Captain' },
+                                            { label: 'Last Flown', value: '2 days ago' },
+                                            { label: 'Countries Visited', value: '12' },
+                                            { label: 'Favorite Aircraft', value: 'B737-800' }
+                                        ].map((item, i) => (
+                                            <div key={i} className="bg-slate-50/80 rounded-lg p-2 border border-slate-100 text-center">
+                                                <p className="text-[9px] text-slate-500 tracking-[0.1em] mb-0.5">{item.label}</p>
+                                                <p className="text-xs font-bold text-slate-900">{item.value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
 
-                                {/* Footer */}
+                                {/* ATLAS-style Footer */}
                                 <div className="bg-slate-50 px-4 py-2 border-t border-slate-200">
-                                    <p className="text-[9px] text-slate-500 text-center">
-                                        ATLAS-formatted CV · Machine-readable by airline ATS · EBT CBTA verified
-                                    </p>
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-[9px] text-slate-500">
+                                            ATLAS CV · ATS-Readable · Verified
+                                        </p>
+                                        <button
+                                            onClick={() => onNavigate('pilot-licensure-experience')}
+                                            className="text-[9px] text-blue-600 font-medium hover:underline"
+                                        >
+                                            View Full Profile →
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1810,14 +1684,9 @@ export const HomePage: React.FC<HomePageProps> = ({
                         >
                             Build Your Profile
                         </button>
-                        <button
-                            onClick={() => setShowAtlasPreview(true)}
-                            className="px-5 py-2.5 bg-white/90 border border-white/40 hover:bg-white text-slate-900 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors"
-                        >
-                            Preview ATLAS Resume
-                        </button>
                     </div>
                 </div>
+            </div>
             )}
             </div>
 
