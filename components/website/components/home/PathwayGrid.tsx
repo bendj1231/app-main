@@ -847,12 +847,12 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
     return (
         <div 
-            className="absolute inset-0 z-40 flex flex-col items-center justify-start pt-20 md:pt-24 lg:pt-28 px-4 md:px-8 lg:px-12 pointer-events-auto"
+            className="absolute inset-0 z-40 flex flex-col items-center justify-start pt-14 md:pt-24 lg:pt-28 px-4 md:px-8 lg:px-12 pointer-events-auto"
         >
 
             <div
                 ref={gridInteractionRef}
-                className="relative w-full max-w-[1000px] xl:max-w-[1100px]"
+                className="relative w-full max-w-[1000px] xl:max-w-[1100px] md:overflow-visible overflow-y-auto max-h-[calc(100vh-100px)] md:max-h-none"
                 onMouseEnter={handleGridMouseEnter}
                 onMouseLeave={handleGridMouseLeave}
                 style={{ touchAction: 'pan-y', cursor: 'grab', overscrollBehaviorX: 'contain' }}
@@ -965,9 +965,9 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             {/* Layout 1: Home - Two top cards, three bottom cards */}
                             {currentViewKey === 'home' && (
                                 <>
-                                    <div className="md:hidden grid grid-cols-1 gap-2 mb-4">
+                                    <div className="md:hidden grid grid-cols-1 gap-3 mb-4">
                                         {currentCards.slice(0, 5).map((card, idx) => (
-                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[260px]' : 'h-[140px]'}>
+                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[340px]' : 'h-[200px]'}>
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 2} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
@@ -1645,7 +1645,7 @@ const GridCard: React.FC<GridCardProps> = ({
 
                 {/* Card ID Label - Top Left */}
                 {(card.id === 'foundation-program-enroll' || card.id === 'card-2') && (
-                    <div className="absolute top-4 left-4 px-2 py-1 bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono uppercase tracking-wider">
+                    <div className="hidden md:block absolute top-4 left-4 px-2 py-1 bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono uppercase tracking-wider">
                         ID: {card.id}
                     </div>
                 )}
@@ -1693,9 +1693,9 @@ const GridCard: React.FC<GridCardProps> = ({
                                 e.stopPropagation();
                                 handleManualNavigation('prev');
                             }}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+                            className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 z-20 p-1.5 md:p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
                         >
-                            <ChevronLeft className="w-5 h-5" />
+                            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                         </button>
                         {/* Right Arrow */}
                         <button
@@ -1703,9 +1703,9 @@ const GridCard: React.FC<GridCardProps> = ({
                                 e.stopPropagation();
                                 handleManualNavigation('next');
                             }}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+                            className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 z-20 p-1.5 md:p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
                         >
-                            <ChevronRight className="w-5 h-5" />
+                            <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
                         </button>
                     </>
                 )}
@@ -1715,7 +1715,7 @@ const GridCard: React.FC<GridCardProps> = ({
                     <div className="absolute bottom-0 left-0 right-0">
                         <div className={`
                             relative
-                            px-3 py-2 md:px-4 md:py-2 transition-all duration-300
+                            px-3 py-1.5 md:px-4 md:py-2 transition-all duration-300
                             ${isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'}
                         `}>
                             {/* Blue accent line at top */}
@@ -1728,8 +1728,8 @@ const GridCard: React.FC<GridCardProps> = ({
                                             {displayTitle}
                                         </h3>
                                     </div>
-                                    <p className={`text-[10px] truncate block ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
-                                        {finalDisplaySubtitle.length > 45 ? finalDisplaySubtitle.slice(0, 42) + '...' : finalDisplaySubtitle}
+                                    <p className={`text-[10px] md:text-xs line-clamp-2 leading-tight ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
+                                        {finalDisplaySubtitle}
                                     </p>
                                 </div>
                             </div>
