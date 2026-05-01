@@ -1595,7 +1595,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         // Single image - Hidden for top row cards
                         !(card.id === 'discover') && (
                             card.id === 'FOUNDATION-PROGRAM-ENROLL' ? (
-                                <div className="absolute top-0 left-0 right-0 h-[calc(100%-85px)]">
+                                <div className="absolute top-0 left-0 right-0 h-[calc(100%-60px)] md:h-[calc(100%-85px)]">
                                     <img
                                         src={currentImage || displayImage}
                                         alt={card.title}
