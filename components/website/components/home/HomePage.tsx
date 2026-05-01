@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, ChevronDown, Home as HomeIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
+import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 import { IMAGES } from '../../../../src/lib/website-constants';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { PathwayGrid } from './PathwayGrid';
@@ -459,6 +460,117 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = React.memo(({ onJoinUs }
     );
 });
 
+const HOME_PATHWAYS = [
+    {
+        id: 'disc-comm-1',
+        title: 'Envoy Air Pilot Cadet Program',
+        company: 'Envoy Air (American Airlines Group)',
+        matchProbability: 94,
+        location: 'United States | Home-Based',
+        image: 'https://www.envoyair.com/wp-content/uploads/2024/03/IMG_CadetProgram_MeganSnow.jpg',
+        tags: ['American Airlines Flow', 'Embraer Fleet', 'Tuition Reimbursement']
+    },
+    {
+        id: 'disc-comm-2',
+        title: 'Air Cambodia Cadet Programme',
+        company: 'Air Cambodia',
+        matchProbability: 92,
+        location: 'Phnom Penh, Cambodia',
+        image: 'https://s28477.pcdn.co/wp-content/uploads/2024/10/CAngkor_1-984x554.png',
+        tags: ['Sponsored Training', 'A320 Type Rating', 'Guaranteed Job']
+    },
+    {
+        id: 'disc-comm-3',
+        title: 'Cathay Pacific Cadet Pilot Programme',
+        company: 'Cathay Pacific Airways',
+        matchProbability: 88,
+        location: 'Hong Kong / Australia',
+        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
+        tags: ['Full Sponsorship', 'A350/B777', 'Definite Return']
+    },
+    {
+        id: 'disc-comm-4',
+        title: 'FlyDubai Pilot Cadet Programme',
+        company: 'FlyDubai',
+        matchProbability: 90,
+        location: 'Dubai, United Arab Emirates',
+        image: 'https://cdn.uc.assets.prezly.com/5f1fd10f-a9bc-4bf0-aa29-b9a26dc42407/-/crop/1952x1066/0,272/-/preview/-/resize/1108x/-/quality/best/-/format/auto/',
+        tags: ['B737 MAX', 'Dubai Base', 'Career Progression']
+    },
+    {
+        id: 'disc-comm-6',
+        title: 'Ryanair Future Flyer Program',
+        company: 'Ryanair / Atlantic Flight Training',
+        matchProbability: 89,
+        location: 'Dublin, Ireland / Various',
+        image: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png',
+        tags: ['Low-Cost Leader', 'Fast Upgrade', '500+ Aircraft']
+    },
+    {
+        id: 'disc-comm-jetblue',
+        title: 'JetBlue Gateway Program',
+        company: 'JetBlue Airways',
+        matchProbability: 92,
+        location: 'New York, NY / Various Bases',
+        image: 'https://sanpedrosun.s3.us-west-1.amazonaws.com/wp-content/uploads/2023/12/09170529/Belizean-pilot-flies-JetBlues-inaugural-flight-to-Belize-3-657x438.jpg',
+        tags: ['Direct-to-Airline', 'A320/A220 Fleet', 'East Coast Network']
+    },
+    {
+        id: 'disc-comm-emirates-cadet',
+        title: 'Emirates Cadet Pilot Programme',
+        company: 'Emirates Airlines',
+        matchProbability: 93,
+        location: 'Dubai, UAE',
+        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png',
+        tags: ['A380/A350 Fleet', '5-Star Airline', 'Global Network']
+    },
+    {
+        id: 'disc-comm-easyjet',
+        title: 'easyJet Cadet Pilot Programme',
+        company: 'easyJet',
+        matchProbability: 87,
+        location: 'London, UK / Various European Bases',
+        image: 'https://www.cae.com/content/images/civil-aviation/_webp/easyJet_crew_.jpg_webp_40cd750bba9870f18aada2478b24840a.webp',
+        tags: ['A320 Fleet', 'European Network', 'Low-Cost Leader']
+    },
+    {
+        id: 'disc-low-1',
+        title: 'Regional Commuter First Officer',
+        company: 'Mesa Airlines / Air Wisconsin',
+        matchProbability: 72,
+        location: 'Phoenix, AZ / Various US Bases',
+        image: 'https://images.unsplash.com/photo-1542296332-2e44a1998db5?w=800&q=80',
+        tags: ['Regional Carrier', 'E175/CRJ Fleet', 'United Express Partner']
+    },
+    {
+        id: 'disc-low-2',
+        title: 'Helicopter EMS Pilot Pathway',
+        company: 'Air Methods / REACH Air Medical',
+        matchProbability: 68,
+        location: 'United States',
+        image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+        tags: ['Rotary Wing', 'Medical Transport', 'IFR Experience Required']
+    },
+    {
+        id: 'disc-low-3',
+        title: 'Cargo Feeder Pilot — Part 135',
+        company: 'Ameriflight / Wiggins Airways',
+        matchProbability: 65,
+        location: 'Various US Hubs',
+        image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
+        tags: ['Part 135 Cargo', 'Beech 99 / SA227', 'Build Turbine Time']
+    },
+    {
+        id: 'disc-low-4',
+        title: 'Agricultural Aviation Pilot',
+        company: 'Various Operators',
+        matchProbability: 74,
+        location: 'Midwest US / Australia',
+        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+        tags: ['Crop Dusting', 'Tailwheel Experience', 'Seasonal Work']
+    }
+];
+
 export const HomePage: React.FC<HomePageProps> = ({
     onJoinUs,
     onLogin,
@@ -491,6 +603,9 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [showOptimizationMessage, setShowOptimizationMessage] = useState(false);
     const [enableShader, setEnableShader] = useState(true);
     const [isNewsroomModalOpen, setIsNewsroomModalOpen] = useState(false);
+    const [activeMatchFilter, setActiveMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
+    const [showAtlasPreview, setShowAtlasPreview] = useState(false);
+    const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
 
     // Auto-open newsroom modal on first visit of the session
     useEffect(() => {
@@ -734,6 +849,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
 
     const carouselRef = useRef<HTMLDivElement>(null);
+    const pathwaysCarouselRef = useRef<HTMLDivElement>(null);
     const [isOverWhite, setIsOverWhite] = useState(false);
 
     const scrollToCarousel = () => {
@@ -839,8 +955,579 @@ export const HomePage: React.FC<HomePageProps> = ({
                 )}
             </div>
             
-            {/* Gradient Fade Below Shader - After Discover More */}
-            <div className="relative w-full h-32 bg-gradient-to-b from-transparent via-slate-200/50 to-white z-40 pointer-events-none -mt-32"></div>
+            {/* Gradient Blur Transition between PathwayGrid and Showcase */}
+            <div className="relative h-32 w-full z-40 pointer-events-none overflow-hidden">
+                <div
+                    className="absolute inset-0"
+                    style={{
+                        background: 'linear-gradient(to bottom, transparent 0%, rgba(15,23,42,0.3) 40%, rgba(15,23,42,0.7) 100%)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        maskImage: 'linear-gradient(to bottom, transparent 0%, black 50%, black 100%)',
+                        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 50%, black 100%)'
+                    }}
+                />
+            </div>
+
+            {/* === AIRBNB-STYLE SHOWCASE SECTION === */}
+            <div className="relative pt-8 pb-16 px-4 md:px-6 overflow-hidden">
+                {/* Mesh Gradient Background - Darkened for white text readability */}
+                <div className="absolute inset-0 z-0">
+                    <MeshGradient
+                        className="w-full h-full"
+                        colors={[
+                            "#000000",
+                            "#050a14",
+                            "#0d1f3c",
+                            "#1e293b",
+                            "#0f172a",
+                            "#1e3a5f",
+                            "#172554",
+                            "#020617"
+                        ]}
+                        speed={0.22}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-900/60 to-slate-950/80" />
+                    <div className="absolute inset-0 backdrop-blur-sm bg-slate-900/20" />
+                </div>
+
+                {/* Product Tabs — Inline Headline */}
+                <div className="relative z-20">
+                    <div className="max-w-7xl mx-auto flex items-center justify-center gap-1 md:gap-8 px-4 py-6">
+                        {[
+                            { id: 'programs' as const, label: 'Programs' },
+                            { id: 'pathways' as const, label: 'Pathways' },
+                            { id: 'profile' as const, label: 'Recognition Profile' }
+                        ].map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveProductTab(tab.id)}
+                                className={`relative pb-1 text-base md:text-lg tracking-wide transition-all duration-300 ${
+                                    activeProductTab === tab.id
+                                        ? 'text-white font-medium'
+                                        : 'text-slate-400 hover:text-white'
+                                }`}
+                                style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}
+                            >
+                                {tab.label}
+                                {activeProductTab === tab.id && (
+                                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-500" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                    {activeProductTab === 'pathways' && (
+                <div className="relative z-10">
+                    {/* Hero Section */}
+                    <div className="mb-8 text-center pt-16">
+                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover Pathways</p>
+                        <h1 className="text-4xl md:text-5xl font-serif font-normal text-white mb-2">
+                            <span style={{ color: '#ffffff' }}>Pilot Recognition</span>{' '}
+                            <span style={{ color: '#dc2626' }}>Pathways</span>
+                        </h1>
+                    </div>
+
+                    {/* Context Banner - Pulling System */}
+                    <div className="mb-6 w-full px-4">
+                        <div className="w-full max-w-7xl mx-auto">
+                            <div className="bg-blue-900/30 backdrop-blur border border-blue-500/30 rounded-xl p-4 text-center">
+                                <p className="text-white text-sm font-medium">
+                                    Pathway Cards — Not Job Listings. Submit your interest. Airlines pull from your live real-time profile.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Search Bar */}
+                    <div className="mb-6 flex justify-center px-4">
+                        <div className="w-full max-w-2xl">
+                            <div className="bg-slate-400/30 backdrop-blur rounded-lg px-4 py-3 text-slate-300 text-sm">
+                                Search pathways, airlines, or locations...
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Category Pills */}
+                    <div className="mb-8 flex flex-wrap justify-center gap-2 px-4">
+                        {[
+                            'Pilot Training & Certification',
+                            'Career Progression',
+                            'Commercial Operations',
+                            'Specialized Operations',
+                            'Humanitarian & Aid',
+                            'Remote & Bush Operations',
+                            'Emerging Technologies',
+                            'Military & Government',
+                            'Aviation Support Services',
+                            'Aviation Industry'
+                        ].map((cat, i) => (
+                            <button
+                                key={i}
+                                onClick={() => onNavigate('pathways-modern')}
+                                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                                    i === 0
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Recommended Pathways Header */}
+                    <div className="mb-4 w-full max-w-7xl mx-auto px-4 text-center">
+                        <h2 className="text-3xl md:text-4xl font-normal text-white" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+                            Recommended Pathways
+                        </h2>
+                        <p className="text-slate-400 text-xs mt-1">26 pathways available</p>
+                    </div>
+
+                    {/* Match Filter */}
+                    <div className="mb-4 w-full max-w-7xl mx-auto px-4 flex justify-center">
+                        <div className="flex items-center gap-2">
+                            <span className="text-base text-slate-400">Match Filter:</span>
+                            <div className="flex gap-2">
+                                {[
+                                    { key: 'all' as const, label: 'All' },
+                                    { key: 'low' as const, label: 'Low 60-75%' },
+                                    { key: 'mid' as const, label: 'Mid 75-90%' },
+                                    { key: 'high' as const, label: 'High 90%+' },
+                                ].map((filter) => (
+                                    <button
+                                        key={filter.key}
+                                        onClick={() => setActiveMatchFilter(filter.key)}
+                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                                            activeMatchFilter === filter.key
+                                                ? 'bg-blue-500 text-white'
+                                                : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
+                                        }`}
+                                    >
+                                        {filter.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Selection hint */}
+                    <div className="text-center mb-4">
+                        <span className="text-sm font-normal text-white/50">Swipe left or right and click to select a card</span>
+                    </div>
+
+                    {/* Pathway Cards Carousel - Full PathwaysPageModern Style */}
+                    <div className="relative w-screen left-1/2 -translate-x-1/2 mb-6">
+                        <style>{`
+                            .pathways-carousel::-webkit-scrollbar { display: none; }
+                            .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
+                            .pathways-carousel {
+                                scroll-snap-type: x mandatory;
+                                scroll-behavior: smooth;
+                            }
+                            .pathways-carousel > div {
+                                scroll-snap-align: center;
+                            }
+                        `}</style>
+                        <div ref={pathwaysCarouselRef} className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4" style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', paddingLeft: '0px', paddingRight: '0px' }}>
+                            {/* Intro Card */}
+                            <div
+                                className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 opacity-100 hover:scale-100"
+                                style={{ width: '600px', scrollSnapAlign: 'center' }}
+                                onClick={() => onNavigate('pathways-modern')}
+                            >
+                                <div className="relative h-[300px] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center">
+                                    <div className="mb-4">
+                                        <span className="text-white text-3xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Discover</span>
+                                        <span className="text-red-500 text-3xl ml-2" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Recommended Pathways</span>
+                                    </div>
+                                    <p className="text-slate-400 text-sm text-center px-8">Explore personalized career pathways matched to your profile and goals</p>
+                                    <button className="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white rounded-lg text-sm font-semibold transition-all shadow-lg">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                            {/* Cadet Programme Cards */}
+                            {HOME_PATHWAYS.filter(pathway => {
+                                if (activeMatchFilter === 'all') return true;
+                                if (activeMatchFilter === 'low') return pathway.matchProbability >= 60 && pathway.matchProbability < 75;
+                                if (activeMatchFilter === 'mid') return pathway.matchProbability >= 75 && pathway.matchProbability < 90;
+                                return pathway.matchProbability >= 90;
+                            }).map((pathway) => (
+                                <div
+                                    key={pathway.id}
+                                    className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 opacity-100 hover:scale-100"
+                                    style={{ width: '600px', scrollSnapAlign: 'center' }}
+                                    onClick={() => onNavigate('pathways-modern')}
+                                >
+                                    <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
+                                        <img 
+                                            src={pathway.image} 
+                                            alt={pathway.title} 
+                                            className="w-full h-full object-cover"
+                                            loading="lazy"
+                                            onError={(e) => { (e.target as HTMLImageElement).src = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/default-airline.jpg'; }}
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                                        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+                                        <div className="absolute top-3 right-3 flex gap-2 items-start">
+                                            <button className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors">
+                                                {pathway.matchProbability}% Match
+                                            </button>
+                                            <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: 77%</span>
+                                        </div>
+                                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                                            <div className="flex items-center justify-center gap-2 mb-1">
+                                                <h4 className="text-lg font-serif font-normal text-white">{pathway.title}</h4>
+                                            </div>
+                                            <p className="text-white/80 text-sm">{pathway.company} · {pathway.location}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Selected Pathway Display */}
+                    <div className="flex items-center justify-center gap-4 mt-4 mb-8">
+                        <button
+                            onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: -616, behavior: 'smooth' })}
+                            className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
+                        >
+                            <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <div className="text-center max-w-xl">
+                            {(() => {
+                                const visible = HOME_PATHWAYS.filter(p => {
+                                    if (activeMatchFilter === 'all') return true;
+                                    if (activeMatchFilter === 'low') return p.matchProbability >= 60 && p.matchProbability < 75;
+                                    if (activeMatchFilter === 'mid') return p.matchProbability >= 75 && p.matchProbability < 90;
+                                    return p.matchProbability >= 90;
+                                });
+                                const first = visible[0];
+                                return first ? (
+                                    <>
+                                        <p className="text-xs uppercase tracking-widest text-white/70 mb-1">Selected Pathway</p>
+                                        <h3 className="text-xl font-serif font-normal text-white mb-1">{first.title}</h3>
+                                        <p className="text-sm text-white/70 mb-2">{first.company} · {first.location}</p>
+                                        <p className="text-sm leading-relaxed text-white/70">{first.tags?.[0] || 'Explore this pathway'}</p>
+                                    </>
+                                ) : (
+                                    <p className="text-sm text-white/50">No pathways match the current filter</p>
+                                );
+                            })()}
+                        </div>
+                        <button
+                            onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: 616, behavior: 'smooth' })}
+                            className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
+                        >
+                            <ChevronRight className="w-5 h-5" />
+                        </button>
+                    </div>
+
+                    {/* Discover More Link */}
+                    <div className="text-center mb-16">
+                        <button
+                            onClick={() => onNavigate('pathways-modern')}
+                            className="inline-flex items-center gap-2 px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-sm font-semibold transition-all border border-white/20"
+                        >
+                            View All Pathways <ChevronRight className="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {activeProductTab === 'programs' && (
+                <div className="relative z-10 max-w-6xl mx-auto px-4 mb-16">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-2">Foundation</p>
+                            <h3 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Foundation Program</h3>
+                            <p className="text-sm text-slate-300 mb-4">50 hours of verified mentorship, EBT CBTA-aligned competency assessment, and industry-recognized CV formatting. Build your Recognition Score from day one.</p>
+                            <div className="flex justify-between items-center text-xs text-slate-400 mb-4">
+                                <span>Mentorship: 50 hrs</span>
+                                <span className="text-white font-semibold">$49</span>
+                            </div>
+                            <button
+                                onClick={() => onNavigate('foundation-program')}
+                                className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-medium tracking-wider transition-colors"
+                            >
+                                Enroll Now
+                            </button>
+                        </div>
+
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-2">Transition</p>
+                            <h3 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Transition Program</h3>
+                            <p className="text-sm text-slate-300 mb-4">Airline transition with 9 core competencies, Airbus HINFACT applications, ATLAS resume formatting, and internship placement.</p>
+                            <div className="flex justify-between items-center text-xs text-slate-400 mb-4">
+                                <span>Full readiness</span>
+                                <span className="text-white font-semibold">$299</span>
+                            </div>
+                            <button
+                                onClick={() => onNavigate('transition-program')}
+                                className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-medium tracking-wider transition-colors"
+                            >
+                                Learn More
+                            </button>
+                        </div>
+
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-2">EBT Scoring</p>
+                            <h3 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>EBT Video Assessment</h3>
+                            <p className="text-sm text-slate-300 mb-4">Recorded interview evaluating cognitive behaviorism and constructivism alignment. Airlines view your interview directly.</p>
+                            <div className="flex justify-between items-center text-xs text-slate-400 mb-4">
+                                <span>Bundle with Transition</span>
+                                <span className="text-white font-semibold">Included</span>
+                            </div>
+                            <button
+                                onClick={() => onNavigate('programs')}
+                                className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-medium tracking-wider transition-colors"
+                            >
+                                View Programs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {activeProductTab === 'profile' && (
+                <div className="relative z-10 mb-10 relative">
+                    <div className="max-w-6xl ml-0 mr-auto lg:ml-4 relative">
+                        
+                        {/* Recognition Profile Section */}
+                        <div className={`transition-all duration-500 ease-in-out ${showAtlasPreview ? 'lg:pr-[360px]' : ''}`}>
+                            {/* Section Header */}
+                            <div className="mb-4">
+                                <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-slate-300 mb-1">Pilot Data</p>
+                                <p className="text-xs text-slate-400">Identity, credentials, flight activity, and core hour summaries</p>
+                            </div>
+
+                            {/* 3-Column Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                                
+                                {/* Profile Card */}
+                                <div className="text-center flex flex-col gap-5" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))', borderRadius: '20px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                                    <div>
+                                        <div className="w-[100px] h-[100px] rounded-full bg-slate-900 flex items-center justify-center mx-auto mb-4 text-white text-2xl font-semibold shadow-[0_15px_35px_rgba(15,23,42,0.25)]">
+                                            BB
+                                        </div>
+                                        <h2 className="text-[1.1rem] text-slate-900 mb-1" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Benjamin Tiger Bowler</h2>
+                                        <p className="text-xs text-blue-600 font-semibold tracking-[0.18em] mb-1">CPL (Philippines) · 5 Ratings</p>
+                                        <p className="text-[0.8rem] text-slate-500">benjamintigerbowler@gmail.com</p>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3 w-full">
+                                        <div className="bg-white/90 rounded-xl p-3 border border-white/40">
+                                            <p className="text-[0.6rem] tracking-[0.12em] text-slate-400 uppercase m-0">Flight Hours</p>
+                                            <p className="text-[1.35rem] font-bold text-slate-900 mt-1 m-0">200</p>
+                                            <p className="text-[0.7rem] font-medium text-amber-500 mt-1 m-0">(unverified)</p>
+                                            <button
+                                                onClick={() => onNavigate('pilot-recognition-profile')}
+                                                className="text-[0.65rem] font-medium text-blue-600 underline mt-1 bg-transparent border-0 p-0 cursor-pointer"
+                                            >
+                                                verify your flight hours
+                                            </button>
+                                        </div>
+                                        <div className="bg-white/90 rounded-xl p-3 border border-white/40">
+                                            <p className="text-[0.6rem] tracking-[0.12em] text-slate-400 uppercase m-0">Recognition Score</p>
+                                            <p className="text-[1.35rem] font-bold text-slate-900 mt-1 m-0">0</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-center mt-3">
+                                        <span className="text-xs text-blue-600 font-medium px-3 py-1 bg-blue-600/10 rounded-full">Foundation Program</span>
+                                    </div>
+                                </div>
+
+                                {/* Credentials Card */}
+                                <div className="flex flex-col gap-4" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))', borderRadius: '20px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                                    <div>
+                                        <h3 className="text-base text-slate-900 m-0" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Pilot Credentials</h3>
+                                        <p className="text-sm text-slate-500 mt-1">Licensing, hours, and access pass</p>
+                                        <button
+                                            onClick={() => onNavigate('pilot-licensure-experience')}
+                                            className="mt-2 bg-transparent border-0 text-blue-600 text-xs font-medium cursor-pointer text-left p-0"
+                                        >
+                                            view details on licensure →
+                                        </button>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {[
+                                            { label: 'License Type', value: 'CPL' },
+                                            { label: 'License Number', value: '155660' },
+                                            { label: 'License Status', value: 'Not specified' },
+                                            { label: 'English Level', value: 'Not specified' },
+                                            { label: 'Career Stage', value: 'Not specified' }
+                                        ].map((tile, i) => (
+                                            <div key={i} className={`bg-white/90 rounded-xl p-3 border border-white/40 text-center ${i === 4 ? 'col-span-2' : ''}`}>
+                                                <p className="text-[0.65rem] text-slate-500 tracking-[0.1em] m-0">{tile.label}</p>
+                                                <p className="text-sm font-bold text-slate-900 mt-1 m-0">{tile.value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                </div>
+
+                                {/* Readiness Card */}
+                                <div style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))', borderRadius: '20px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                                    <div className="mb-3">
+                                        <p className="text-[0.7rem] tracking-[0.25em] text-slate-400 uppercase m-0">Readiness Snapshot</p>
+                                        <h3 className="text-base text-slate-900 mt-1 m-0" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Resource & Availability</h3>
+                                        <button
+                                            onClick={() => onNavigate('pilot-licensure-experience')}
+                                            className="mt-2 bg-transparent border-0 text-blue-600 text-xs font-medium cursor-pointer text-left p-0"
+                                        >
+                                            view details on readiness →
+                                        </button>
+                                    </div>
+                                    <div className="flex flex-col gap-[0.85rem]">
+                                        {[
+                                            { label: 'Last Flown', value: 'Not specified' },
+                                            { label: 'Countries Visited', value: 'Not specified' },
+                                            { label: 'Favorite Aircraft', value: 'Not specified' }
+                                        ].map(item => (
+                                            <div key={item.label} className="rounded-[14px] p-[0.85rem] border border-white/40 bg-white/90 flex justify-between items-center">
+                                                <div className="text-slate-600 text-sm font-semibold">{item.label}</div>
+                                                <div className="text-slate-900 font-bold text-sm text-right">{item.value}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Slide-Out ATLAS Resume Panel */}
+                        <div 
+                            className={`fixed lg:absolute right-0 top-0 h-full z-50 lg:z-auto transition-transform duration-500 ease-in-out ${
+                                showAtlasPreview ? 'translate-x-0' : 'translate-x-[calc(100%-24px)]'
+                            } w-[340px] lg:w-[340px]`}
+                            style={{ maxHeight: '100%' }}
+                        >
+                            {/* Toggle Tab - Minimal handle */}
+                            <button
+                                onClick={() => setShowAtlasPreview(!showAtlasPreview)}
+                                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full flex items-center justify-center bg-red-600/90 hover:bg-red-600 text-white w-6 h-12 rounded-l-lg shadow-lg cursor-pointer transition-all hover:w-7"
+                                title="ATLAS Resume"
+                            >
+                                <ChevronLeft className={`w-3 h-3 transition-transform duration-300 ${showAtlasPreview ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            {/* ATLAS Card Content */}
+                            <div className="bg-white/95 backdrop-blur-sm rounded-l-xl border border-white/30 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.3)] overflow-hidden h-full overflow-y-auto">
+                                {/* Red Header Bar */}
+                                <div className="bg-red-600 px-4 py-3 border-b border-red-700">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-red-200 mb-0.5">Pilot Recognition Profile</p>
+                                            <h4 className="text-sm font-bold text-white">Benjamin Tiger Bowler</h4>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-red-200 mb-1">SHARE LINK</p>
+                                            <button
+                                                onClick={() => onNavigate('pilot-recognition-profile')}
+                                                className="px-2 py-1 bg-white border border-red-300 rounded text-[10px] font-medium text-red-700 hover:bg-red-50 transition-colors"
+                                            >
+                                                Copy URL
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="p-3">
+                                    <div className="grid grid-cols-1 gap-2">
+                                        
+                                        {/* Pilot Credentials */}
+                                        <div className="bg-slate-50/80 rounded-lg p-2.5 border border-slate-100">
+                                            <h5 className="text-xs font-bold text-slate-900 mb-0.5">Credentials</h5>
+                                            <p className="text-[10px] text-slate-500 mb-2">Hours & access pass</p>
+
+                                            <div className="grid grid-cols-2 gap-1.5 mb-2">
+                                                {[
+                                                    { label: 'Hours', value: '3,200' },
+                                                    { label: 'Mentorship', value: '50' },
+                                                    { label: 'Foundation', value: '100%' },
+                                                    { label: 'Score', value: '847' }
+                                                ].map((item, i) => (
+                                                    <div key={i} className="bg-white rounded-md p-1.5 text-center">
+                                                        <p className="text-[9px] text-slate-500">{item.label}</p>
+                                                        <p className="text-sm font-bold text-slate-900">{item.value}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div className="flex justify-between items-center text-[10px]">
+                                                <span className="text-slate-500">CPL (A) · Class 1 Medical</span>
+                                                <span className="text-emerald-600 font-bold">Verified</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Training */}
+                                        <div className="bg-slate-50/80 rounded-lg p-2.5 border border-slate-100">
+                                            <h5 className="text-xs font-bold text-slate-900 mb-2">Training</h5>
+                                            <div className="space-y-1.5 text-[10px]">
+                                                <div className="flex justify-between">
+                                                    <span className="text-slate-500">Type Ratings</span>
+                                                    <span className="font-bold text-slate-900">A320, B737</span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span className="text-slate-500">English</span>
+                                                    <span className="font-bold text-slate-900">Level 6</span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span className="text-slate-500">Medical</span>
+                                                    <span className="font-bold text-emerald-600">Valid Aug 2026</span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span className="text-slate-500">Last Flown</span>
+                                                    <span className="font-bold text-slate-900">2 days ago</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Experience */}
+                                        <div className="bg-slate-50/80 rounded-lg p-2.5 border border-slate-100">
+                                            <h5 className="text-xs font-bold text-slate-900 mb-2">Experience</h5>
+                                            <div className="bg-white rounded-md p-2 mb-2">
+                                                <div className="flex justify-between items-start mb-1">
+                                                    <span className="text-[10px] font-bold text-slate-900">First Officer</span>
+                                                    <span className="text-[9px] text-slate-500">2022-Present</span>
+                                                </div>
+                                                <p className="text-[9px] text-slate-600">Regional Express · ATR 72-600</p>
+                                            </div>
+                                            <div className="text-[9px] text-slate-500 text-center">
+                                                ATLAS CV · ATS-Readable · Verified
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Footer */}
+                                <div className="bg-slate-50 px-4 py-2 border-t border-slate-200">
+                                    <p className="text-[9px] text-slate-500 text-center">
+                                        ATLAS-formatted CV · Machine-readable by airline ATS · EBT CBTA verified
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* CTAs */}
+                        <div className="flex items-center justify-center gap-3 mt-6">
+                        <button
+                            onClick={() => onNavigate('pilot-recognition-profile')}
+                            className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold uppercase tracking-wider transition-colors"
+                        >
+                            Build Your Profile
+                        </button>
+                        <button
+                            onClick={() => setShowAtlasPreview(true)}
+                            className="px-5 py-2.5 bg-white/90 border border-white/40 hover:bg-white text-slate-900 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors"
+                        >
+                            Preview ATLAS Resume
+                        </button>
+                    </div>
+                </div>
+            )}
+            </div>
 
             {/* About Us section - Moved above iPad section */}
             <div className="relative bg-white pt-24 pb-12 px-6">
