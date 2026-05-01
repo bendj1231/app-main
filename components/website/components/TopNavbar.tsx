@@ -73,8 +73,25 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState<any[]>([]);
     const notificationDropdownRef = useRef<HTMLDivElement>(null);
+    const [countryCode, setCountryCode] = useState<string>('');
 
     // Fetch pilot_id and profile data from Supabase profile
+    // Detect user country code via IP geolocation (free tier)
+    useEffect(() => {
+        let cancelled = false;
+        fetch('https://ipapi.co/json/')
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                if (!cancelled && data?.country_code) {
+                    setCountryCode(data.country_code);
+                }
+            })
+            .catch(() => {
+                // Silently fail — country indicator is non-critical
+            });
+        return () => { cancelled = true; };
+    }, []);
+
     useEffect(() => {
         const fetchProfileData = async () => {
             if (currentUser?.uid) {
@@ -513,7 +530,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
                     {/* Logo Section */}
                     <div className="flex items-center gap-4 group cursor-pointer" onClick={() => onNavigate('home')}>
-                        <div className="flex flex-col items-center transition-all duration-300 group-hover:scale-110">
+                        <div className="flex items-baseline transition-all duration-300 group-hover:scale-105">
                             <span
                                 className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'
                                     } text-2xl tracking-tight leading-none`}
@@ -521,7 +538,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             >
                                 <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilot</span>
                                 <span className="text-red-600">recognition</span>
-                                <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>.com</span>
+                                <span className={`relative ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>
+                                    .com
+                                    {countryCode && (
+                                        <sup className={`absolute top-0 -right-2 text-[8px] font-bold leading-none ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-slate-400' : 'text-white/50'}`}>
+                                            {countryCode}
+                                        </sup>
+                                    )}
+                                </span>
                             </span>
                         </div>
                     </div>

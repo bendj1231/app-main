@@ -468,7 +468,8 @@ const HOME_PATHWAYS = [
         matchProbability: 94,
         location: 'United States | Home-Based',
         image: 'https://www.envoyair.com/wp-content/uploads/2024/03/IMG_CadetProgram_MeganSnow.jpg',
-        tags: ['American Airlines Flow', 'Embraer Fleet', 'Tuition Reimbursement']
+        tags: ['American Airlines Flow', 'Embraer Fleet', 'Tuition Reimbursement'],
+        category: 'Pilot Training & Certification'
     },
     {
         id: 'disc-comm-2',
@@ -477,7 +478,8 @@ const HOME_PATHWAYS = [
         matchProbability: 92,
         location: 'Phnom Penh, Cambodia',
         image: 'https://s28477.pcdn.co/wp-content/uploads/2024/10/CAngkor_1-984x554.png',
-        tags: ['Sponsored Training', 'A320 Type Rating', 'Guaranteed Job']
+        tags: ['Sponsored Training', 'A320 Type Rating', 'Guaranteed Job'],
+        category: 'Pilot Training & Certification'
     },
     {
         id: 'disc-comm-3',
@@ -486,7 +488,8 @@ const HOME_PATHWAYS = [
         matchProbability: 88,
         location: 'Hong Kong / Australia',
         image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
-        tags: ['Full Sponsorship', 'A350/B777', 'Definite Return']
+        tags: ['Full Sponsorship', 'A350/B777', 'Definite Return'],
+        category: 'Commercial Operations'
     },
     {
         id: 'disc-comm-4',
@@ -495,7 +498,8 @@ const HOME_PATHWAYS = [
         matchProbability: 90,
         location: 'Dubai, United Arab Emirates',
         image: 'https://cdn.uc.assets.prezly.com/5f1fd10f-a9bc-4bf0-aa29-b9a26dc42407/-/crop/1952x1066/0,272/-/preview/-/resize/1108x/-/quality/best/-/format/auto/',
-        tags: ['B737 MAX', 'Dubai Base', 'Career Progression']
+        tags: ['B737 MAX', 'Dubai Base', 'Career Progression'],
+        category: 'Commercial Operations'
     },
     {
         id: 'disc-comm-6',
@@ -504,7 +508,8 @@ const HOME_PATHWAYS = [
         matchProbability: 89,
         location: 'Dublin, Ireland / Various',
         image: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png',
-        tags: ['Low-Cost Leader', 'Fast Upgrade', '500+ Aircraft']
+        tags: ['Low-Cost Leader', 'Fast Upgrade', '500+ Aircraft'],
+        category: 'Commercial Operations'
     },
     {
         id: 'disc-comm-jetblue',
@@ -513,7 +518,8 @@ const HOME_PATHWAYS = [
         matchProbability: 92,
         location: 'New York, NY / Various Bases',
         image: 'https://sanpedrosun.s3.us-west-1.amazonaws.com/wp-content/uploads/2023/12/09170529/Belizean-pilot-flies-JetBlues-inaugural-flight-to-Belize-3-657x438.jpg',
-        tags: ['Direct-to-Airline', 'A320/A220 Fleet', 'East Coast Network']
+        tags: ['Direct-to-Airline', 'A320/A220 Fleet', 'East Coast Network'],
+        category: 'Career Progression'
     },
     {
         id: 'disc-comm-emirates-cadet',
@@ -522,7 +528,8 @@ const HOME_PATHWAYS = [
         matchProbability: 93,
         location: 'Dubai, UAE',
         image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png',
-        tags: ['A380/A350 Fleet', '5-Star Airline', 'Global Network']
+        tags: ['A380/A350 Fleet', '5-Star Airline', 'Global Network'],
+        category: 'Pilot Training & Certification'
     },
     {
         id: 'disc-comm-easyjet',
@@ -531,7 +538,8 @@ const HOME_PATHWAYS = [
         matchProbability: 87,
         location: 'London, UK / Various European Bases',
         image: 'https://www.cae.com/content/images/civil-aviation/_webp/easyJet_crew_.jpg_webp_40cd750bba9870f18aada2478b24840a.webp',
-        tags: ['A320 Fleet', 'European Network', 'Low-Cost Leader']
+        tags: ['A320 Fleet', 'European Network', 'Low-Cost Leader'],
+        category: 'Commercial Operations'
     },
     {
         id: 'disc-low-1',
@@ -540,7 +548,8 @@ const HOME_PATHWAYS = [
         matchProbability: 72,
         location: 'Phoenix, AZ / Various US Bases',
         image: 'https://images.unsplash.com/photo-1542296332-2e44a1998db5?w=800&q=80',
-        tags: ['Regional Carrier', 'E175/CRJ Fleet', 'United Express Partner']
+        tags: ['Regional Carrier', 'E175/CRJ Fleet', 'United Express Partner'],
+        category: 'Career Progression'
     },
     {
         id: 'disc-low-2',
@@ -549,7 +558,8 @@ const HOME_PATHWAYS = [
         matchProbability: 68,
         location: 'United States',
         image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-        tags: ['Rotary Wing', 'Medical Transport', 'IFR Experience Required']
+        tags: ['Rotary Wing', 'Medical Transport', 'IFR Experience Required'],
+        category: 'Specialized Operations'
     },
     {
         id: 'disc-low-3',
@@ -558,7 +568,8 @@ const HOME_PATHWAYS = [
         matchProbability: 65,
         location: 'Various US Hubs',
         image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-        tags: ['Part 135 Cargo', 'Beech 99 / SA227', 'Build Turbine Time']
+        tags: ['Part 135 Cargo', 'Beech 99 / SA227', 'Build Turbine Time'],
+        category: 'Commercial Operations'
     },
     {
         id: 'disc-low-4',
@@ -567,7 +578,8 @@ const HOME_PATHWAYS = [
         matchProbability: 74,
         location: 'Midwest US / Australia',
         image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
-        tags: ['Crop Dusting', 'Tailwheel Experience', 'Seasonal Work']
+        tags: ['Crop Dusting', 'Tailwheel Experience', 'Seasonal Work'],
+        category: 'Specialized Operations'
     }
 ];
 
@@ -604,6 +616,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [enableShader, setEnableShader] = useState(true);
     const [isNewsroomModalOpen, setIsNewsroomModalOpen] = useState(false);
     const [activeMatchFilter, setActiveMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
+    const [activeCarouselCategory, setActiveCarouselCategory] = useState<string>('All');
     const [showAtlasPreview, setShowAtlasPreview] = useState(false);
     const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
 
@@ -851,6 +864,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     const carouselRef = useRef<HTMLDivElement>(null);
     const pathwaysCarouselRef = useRef<HTMLDivElement>(null);
     const [isOverWhite, setIsOverWhite] = useState(false);
+    const [selectedCarouselPathway, setSelectedCarouselPathway] = useState<any>(null);
 
     const scrollToCarousel = () => {
         carouselRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -876,6 +890,91 @@ export const HomePage: React.FC<HomePageProps> = ({
 
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // Auto-select centered card on pathways carousel scroll
+    useEffect(() => {
+        const carousel = pathwaysCarouselRef.current;
+        if (!carousel) return;
+
+        let scrollTimeout: NodeJS.Timeout;
+
+        const handleScroll = () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const carouselRect = carousel.getBoundingClientRect();
+                const viewportCenter = carouselRect.left + carouselRect.width / 2;
+                
+                // Find which card is closest to center
+                let closestIndex = 0;
+                let closestDistance = Infinity;
+                
+                const cards = carousel.children;
+                const cardElements: HTMLElement[] = [];
+                
+                // Collect only actual card elements
+                for (let i = 0; i < cards.length; i++) {
+                    const card = cards[i] as HTMLElement;
+                    if (card.classList.contains('flex-shrink-0')) {
+                        cardElements.push(card);
+                    }
+                }
+                
+                const visiblePathways = HOME_PATHWAYS.filter(p => {
+                    const matchesMatch = (() => {
+                        if (activeMatchFilter === 'all') return true;
+                        if (activeMatchFilter === 'low') return p.matchProbability >= 60 && p.matchProbability < 75;
+                        if (activeMatchFilter === 'mid') return p.matchProbability >= 75 && p.matchProbability < 90;
+                        return p.matchProbability >= 90;
+                    })();
+                    const matchesCategory = activeCarouselCategory === 'All' || p.category === activeCarouselCategory;
+                    return matchesMatch && matchesCategory;
+                });
+                
+                for (let i = 0; i < cardElements.length; i++) {
+                    const card = cardElements[i];
+                    const cardRect = card.getBoundingClientRect();
+                    const cardCenter = cardRect.left + cardRect.width / 2;
+                    const distance = Math.abs(viewportCenter - cardCenter);
+                    
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestIndex = i;
+                    }
+                }
+                
+                // Skip first card (intro card) and only select if index > 0
+                if (closestIndex > 0 && closestIndex <= visiblePathways.length) {
+                    const centeredCard = visiblePathways[closestIndex - 1]; // -1 because first card is intro
+                    if (centeredCard && centeredCard.id !== selectedCarouselPathway?.id) {
+                        setSelectedCarouselPathway(centeredCard);
+                    }
+                }
+            }, 100); // 100ms debounce
+        };
+
+        carousel.addEventListener('scroll', handleScroll);
+        return () => {
+            clearTimeout(scrollTimeout);
+            carousel.removeEventListener('scroll', handleScroll);
+        };
+    }, [activeMatchFilter, activeCarouselCategory, selectedCarouselPathway?.id]);
+
+    // Initialize selected pathway to first visible non-intro card
+    useEffect(() => {
+        const visiblePathways = HOME_PATHWAYS.filter(p => {
+            const matchesMatch = (() => {
+                if (activeMatchFilter === 'all') return true;
+                if (activeMatchFilter === 'low') return p.matchProbability >= 60 && p.matchProbability < 75;
+                if (activeMatchFilter === 'mid') return p.matchProbability >= 75 && p.matchProbability < 90;
+                return p.matchProbability >= 90;
+            })();
+            const matchesCategory = activeCarouselCategory === 'All' || p.category === activeCarouselCategory;
+            return matchesMatch && matchesCategory;
+        });
+        if (visiblePathways.length > 0 && !selectedCarouselPathway) {
+            setSelectedCarouselPathway(visiblePathways[0]);
+        }
+    }, [activeMatchFilter, activeCarouselCategory, selectedCarouselPathway]);
 
     return (
         <>
@@ -1052,6 +1151,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {/* Category Pills */}
                     <div className="mb-8 flex flex-wrap justify-center gap-2 px-4">
                         {[
+                            'All',
                             'Pilot Training & Certification',
                             'Career Progression',
                             'Commercial Operations',
@@ -1065,9 +1165,9 @@ export const HomePage: React.FC<HomePageProps> = ({
                         ].map((cat, i) => (
                             <button
                                 key={i}
-                                onClick={() => onNavigate('pathways-modern')}
+                                onClick={() => setActiveCarouselCategory(cat)}
                                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                                    i === 0
+                                    activeCarouselCategory === cat
                                         ? 'bg-blue-500 text-white'
                                         : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
                                 }`}
@@ -1125,35 +1225,52 @@ export const HomePage: React.FC<HomePageProps> = ({
                             .pathways-carousel {
                                 scroll-snap-type: x mandatory;
                                 scroll-behavior: smooth;
+                                scroll-padding-left: calc(50vw - 300px);
+                                scroll-padding-right: calc(50vw - 300px);
                             }
                             .pathways-carousel > div {
                                 scroll-snap-align: center;
                             }
                         `}</style>
-                        <div ref={pathwaysCarouselRef} className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4" style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', paddingLeft: '0px', paddingRight: '0px' }}>
+                        <div ref={pathwaysCarouselRef} className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4" style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', paddingLeft: 'calc(50vw - 300px)', paddingRight: 'calc(50vw - 300px)' }}>
                             {/* Intro Card */}
                             <div
+                                key="FOUNDATION-PROGRAM-ENROLL"
                                 className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 opacity-100 hover:scale-100"
                                 style={{ width: '600px', scrollSnapAlign: 'center' }}
-                                onClick={() => onNavigate('pathways-modern')}
+                                onClick={() => onNavigate('programs')}
                             >
-                                <div className="relative h-[300px] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center">
-                                    <div className="mb-4">
-                                        <span className="text-white text-3xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Discover</span>
-                                        <span className="text-red-500 text-3xl ml-2" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Recommended Pathways</span>
+                                <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
+                                    <img
+                                        src="/program1.png"
+                                        alt="Foundation Program"
+                                        className="w-full h-full object-cover"
+                                        loading="lazy"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                                    <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+                                    <div className="absolute top-3 right-3 flex gap-2 items-start">
+                                        <span className="px-3 py-1 rounded-full bg-blue-500/90 text-white text-xs font-semibold">Featured</span>
+                                        <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: 77%</span>
                                     </div>
-                                    <p className="text-slate-400 text-sm text-center px-8">Explore personalized career pathways matched to your profile and goals</p>
-                                    <button className="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white rounded-lg text-sm font-semibold transition-all shadow-lg">
-                                        Learn More
-                                    </button>
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                                        <div className="flex items-center justify-center gap-2 mb-1">
+                                            <h4 className="text-lg font-serif font-normal text-white">Foundation Program</h4>
+                                        </div>
+                                        <p className="text-white/80 text-sm">PilotRecognition · Global</p>
+                                    </div>
                                 </div>
                             </div>
                             {/* Cadet Programme Cards */}
                             {HOME_PATHWAYS.filter(pathway => {
-                                if (activeMatchFilter === 'all') return true;
-                                if (activeMatchFilter === 'low') return pathway.matchProbability >= 60 && pathway.matchProbability < 75;
-                                if (activeMatchFilter === 'mid') return pathway.matchProbability >= 75 && pathway.matchProbability < 90;
-                                return pathway.matchProbability >= 90;
+                                const matchesMatch = (() => {
+                                    if (activeMatchFilter === 'all') return true;
+                                    if (activeMatchFilter === 'low') return pathway.matchProbability >= 60 && pathway.matchProbability < 75;
+                                    if (activeMatchFilter === 'mid') return pathway.matchProbability >= 75 && pathway.matchProbability < 90;
+                                    return pathway.matchProbability >= 90;
+                                })();
+                                const matchesCategory = activeCarouselCategory === 'All' || pathway.category === activeCarouselCategory;
+                                return matchesMatch && matchesCategory;
                             }).map((pathway) => (
                                 <div
                                     key={pathway.id}
@@ -1190,41 +1307,216 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
 
                     {/* Selected Pathway Display */}
-                    <div className="flex items-center justify-center gap-4 mt-4 mb-8">
-                        <button
-                            onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: -616, behavior: 'smooth' })}
-                            className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
-                        >
-                            <ChevronLeft className="w-5 h-5" />
-                        </button>
-                        <div className="text-center max-w-xl">
-                            {(() => {
-                                const visible = HOME_PATHWAYS.filter(p => {
-                                    if (activeMatchFilter === 'all') return true;
-                                    if (activeMatchFilter === 'low') return p.matchProbability >= 60 && p.matchProbability < 75;
-                                    if (activeMatchFilter === 'mid') return p.matchProbability >= 75 && p.matchProbability < 90;
-                                    return p.matchProbability >= 90;
-                                });
-                                const first = visible[0];
-                                return first ? (
-                                    <>
-                                        <p className="text-xs uppercase tracking-widest text-white/70 mb-1">Selected Pathway</p>
-                                        <h3 className="text-xl font-serif font-normal text-white mb-1">{first.title}</h3>
-                                        <p className="text-sm text-white/70 mb-2">{first.company} · {first.location}</p>
-                                        <p className="text-sm leading-relaxed text-white/70">{first.tags?.[0] || 'Explore this pathway'}</p>
-                                    </>
-                                ) : (
-                                    <p className="text-sm text-white/50">No pathways match the current filter</p>
-                                );
-                            })()}
+                    {selectedCarouselPathway && (
+                        <div className="flex items-center justify-center gap-4 mt-4 mb-8">
+                            <button
+                                onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: -616, behavior: 'smooth' })}
+                                className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
+                            >
+                                <ChevronLeft className="w-5 h-5" />
+                            </button>
+                            <div className="text-center max-w-xl">
+                                <p className="text-xs uppercase tracking-widest text-white/70 mb-1">Selected Pathway</p>
+                                <h3 className="text-xl font-serif font-normal text-white mb-1">{selectedCarouselPathway.title}</h3>
+                                <p className="text-sm text-white/70 mb-2">{selectedCarouselPathway.company} · {selectedCarouselPathway.location}</p>
+                                <p className="text-sm leading-relaxed text-white/70">{selectedCarouselPathway.tags?.[0] || 'Explore this pathway'}</p>
+                            </div>
+                            <button
+                                onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: 616, behavior: 'smooth' })}
+                                className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
+                            >
+                                <ChevronRight className="w-5 h-5" />
+                            </button>
                         </div>
-                        <button
-                            onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: 616, behavior: 'smooth' })}
-                            className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
-                        >
-                            <ChevronRight className="w-5 h-5" />
-                        </button>
-                    </div>
+                    )}
+
+                    {/* Profile Alignment Section */}
+                    {selectedCarouselPathway && (
+                        <div className="mb-16">
+                            <div className="text-center mb-6">
+                                <p className="text-xs uppercase tracking-widest text-white/70 mb-2">REQUIREMENTS & PROFILE ALIGNMENT</p>
+                                <p className="text-sm text-white/50">Updated: {new Date().toLocaleDateString()}</p>
+                            </div>
+                            <div className="max-w-4xl mx-auto">
+                                {/* Single Glassy UI Component */}
+                                <div className="bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10">
+                                    {/* Flight Hours */}
+                                    <div className="mb-6">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h4 className="text-sm font-semibold text-white">FLIGHT HOURS</h4>
+                                            {selectedCarouselPathway.matchProbability >= 75 && (
+                                                <span className="text-xs text-emerald-400 flex items-center gap-1">
+                                                    <span>✓</span> Met
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-xs text-white/60 mb-3">
+                                            Your account shows: {totalHours || 0} total flight hours
+                                        </p>
+                                        {selectedCarouselPathway.matchProbability < 75 ? (
+                                            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                                                <p className="text-xs text-red-400 font-medium mb-2">
+                                                    ⚠ {selectedCarouselPathway.matchProbability}%+ Match - Improvement needed
+                                                </p>
+                                                <p className="text-xs text-white/70">
+                                                    <span className="text-white font-semibold">Recommended:</span> Build more flight hours through training, mentorship, or additional certifications. Consider gaining multi-engine and turbine time for better alignment.
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <details className="group">
+                                                <summary className="text-xs text-emerald-400 cursor-pointer hover:underline">View details</summary>
+                                                <div className="mt-2 text-xs text-white/60 pl-4">
+                                                    Good alignment with pathway requirements
+                                                </div>
+                                            </details>
+                                        )}
+                                    </div>
+
+                                    {/* Foundation Program */}
+                                    <div className="mb-6">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h4 className="text-sm font-semibold text-white">FOUNDATION PROGRAM</h4>
+                                            {isEnrolledInFoundation && (
+                                                <span className="text-xs text-emerald-400 flex items-center gap-1">
+                                                    <span>✓</span> Enrolled
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-xs text-white/60 mb-3">
+                                            Your progress: {foundationProgress || 0}% complete
+                                        </p>
+                                        {!isEnrolledInFoundation ? (
+                                            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                                                <p className="text-xs text-red-400 font-medium mb-2">
+                                                    ○ Not Started
+                                                </p>
+                                                <p className="text-xs text-white/70">
+                                                    <span className="text-white font-semibold">Recommended:</span> Enroll in the Foundation Program for 50 hours of verified mentorship, EBT CBTA-aligned competency assessment, and ATLAS CV formatting. This builds your Recognition Score from day one.
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <details className="group">
+                                                <summary className="text-xs text-emerald-400 cursor-pointer hover:underline">View details</summary>
+                                                <div className="mt-2 text-xs text-white/60 pl-4">
+                                                    {foundationProgress || 0}% complete
+                                                </div>
+                                            </details>
+                                        )}
+                                    </div>
+
+                                    {/* Recognition Score */}
+                                    <div>
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h4 className="text-sm font-semibold text-white">RECOGNITION SCORE</h4>
+                                            {(overallRecognitionScore || 0) >= 70 && (
+                                                <span className="text-xs text-emerald-400 flex items-center gap-1">
+                                                    <span>✓</span> Met
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-xs text-white/60 mb-3">
+                                            Your score: {overallRecognitionScore || 0} / 100
+                                        </p>
+                                        {(overallRecognitionScore || 0) < 70 ? (
+                                            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                                                <p className="text-xs text-red-400 font-medium mb-2">
+                                                    ⚠ Recognition Score 70+ - In Progress ({70 - (overallRecognitionScore || 0)} points to go)
+                                                </p>
+                                                <p className="text-xs text-white/70">
+                                                    <span className="text-white font-semibold">Recommended:</span> Complete programs, gain mentorship hours, and improve examination scores. Build networking experience within the aviation community to strengthen your recognition profile.
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <details className="group">
+                                                <summary className="text-xs text-emerald-400 cursor-pointer hover:underline">View details</summary>
+                                                <div className="mt-2 text-xs text-white/60 pl-4">
+                                                    Strong recognition profile
+                                                </div>
+                                            </details>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Recognition AI Strategy Component */}
+                            <div className="max-w-4xl mx-auto mt-8">
+                                <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-md rounded-xl p-6 border border-blue-500/20">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                                            <span className="text-blue-400 text-lg">AI</span>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-bold text-white">Recognition AI Strategy</h4>
+                                            <p className="text-xs text-white/60">Personalized recommendations based on your profile</p>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Recognition Score vs Job */}
+                                    <div className="bg-black/30 rounded-lg p-4 mb-4">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-xs text-white/70">Recognition Score vs Job</span>
+                                            <span className={`text-sm font-bold ${(overallRecognitionScore || 0) >= 70 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                                                {overallRecognitionScore || 0} / 100
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-white/10 rounded-full h-2 mb-2">
+                                            <div 
+                                                className="h-2 rounded-full transition-all duration-300"
+                                                style={{ 
+                                                    width: `${overallRecognitionScore || 0}%`,
+                                                    backgroundColor: (overallRecognitionScore || 0) >= 70 ? '#10b981' : '#f59e0b'
+                                                }}
+                                            />
+                                        </div>
+                                        <p className={`text-xs ${(overallRecognitionScore || 0) >= 70 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                                            {(overallRecognitionScore || 0) >= 70 ? '✓ High Match' : '⚠ Low Match'}
+                                        </p>
+                                    </div>
+
+                                    {/* Profile Alignment Status */}
+                                    <div className="mb-4">
+                                        <p className="text-xs text-white/70 mb-2">Profile Alignment</p>
+                                        <div className={`text-sm font-semibold ${selectedCarouselPathway.matchProbability >= 75 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                                            {selectedCarouselPathway.matchProbability >= 75 ? 'Aligned with high match rate' : 'Needs improvement for better alignment'}
+                                        </div>
+                                    </div>
+
+                                    {/* Recommendations */}
+                                    <div className="bg-white/5 rounded-lg p-4 mb-4">
+                                        <p className="text-xs text-white/70 mb-3">Recommended Actions:</p>
+                                        <ul className="space-y-2">
+                                            <li className="text-xs text-white/80 flex items-start gap-2">
+                                                <span className="text-blue-400">•</span>
+                                                <span>Improve English proficiency through aviation communication training</span>
+                                            </li>
+                                            <li className="text-xs text-white/80 flex items-start gap-2">
+                                                <span className="text-blue-400">•</span>
+                                                <span>Build more flight hours and gain diverse flying experience</span>
+                                            </li>
+                                            <li className="text-xs text-white/80 flex items-start gap-2">
+                                                <span className="text-blue-400">•</span>
+                                                <span>Gain networking experience within the aviation community</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    {/* CTA */}
+                                    <button
+                                        onClick={() => selectedCarouselPathway.matchProbability >= 75 ? onNavigate('pathways-modern') : onNavigate('become-member')}
+                                        className={`w-full py-3 rounded-lg text-sm font-semibold transition-all ${
+                                            selectedCarouselPathway.matchProbability >= 75
+                                                ? 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                                                : 'bg-amber-500 hover:bg-amber-600 text-white'
+                                        }`}
+                                    >
+                                        {selectedCarouselPathway.matchProbability >= 75 
+                                            ? 'Submit Interest for Pathway' 
+                                            : 'Improve Your Profile'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Discover More Link */}
                     <div className="text-center mb-16">

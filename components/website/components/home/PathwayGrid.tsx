@@ -105,8 +105,8 @@ interface ViewSet {
 const viewSets: ViewSet[] = [
     { id: 'home', title: 'Home', accentColor: 'bg-yellow-400', cards: [] },
     { id: 'programs', title: 'Programs', accentColor: 'bg-amber-400', cards: [] },
-    { id: 'pathways', title: 'Pathways', accentColor: 'bg-rose-400', cards: [] },
     { id: 'pilot-recognition', title: 'Pilot Recognition', accentColor: 'bg-violet-400', cards: [] },
+    { id: 'pathways', title: 'Pathways', accentColor: 'bg-rose-400', cards: [] },
     { id: 'applications', title: 'Applications', accentColor: 'bg-emerald-400', cards: [] },
     { id: 'membership', title: 'Membership', accentColor: 'bg-blue-400', cards: [] },
 ];
@@ -115,8 +115,8 @@ const viewSets: ViewSet[] = [
 const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = false) => ({
     home: [
         {
-            id: 'foundation-program-enroll',
-            image: '/pr2.png',
+            id: 'FOUNDATION-PROGRAM-ENROLL',
+            image: '/program1.png',
             title: 'Foundation Program Enroll',
             subtitle: '50+ hours mentorship. Start your journey today!',
             icon: Map,
@@ -1594,18 +1594,28 @@ const GridCard: React.FC<GridCardProps> = ({
                     ) : displayImage || currentImage ? (
                         // Single image - Hidden for top row cards
                         !(card.id === 'discover') && (
-                            <img
-                                src={currentImage || displayImage}
-                                alt={card.title}
-                                style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : card.id === 'type-rating-search' ? 'top 20% center' : 'center' }}
-                                className={`w-full h-full object-cover ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
-                                onError={(e) => {
-                                    console.error('Image load error:', card.id);
-                                }}
-                                onLoad={() => {
-                                    // image loaded successfully
-                                }}
-                            />
+                            card.id === 'FOUNDATION-PROGRAM-ENROLL' ? (
+                                <div className="absolute top-0 left-0 right-0 h-[calc(100%-85px)]">
+                                    <img
+                                        src={currentImage || displayImage}
+                                        alt={card.title}
+                                        className="w-full h-full object-cover object-top"
+                                    />
+                                </div>
+                            ) : (
+                                <img
+                                    src={currentImage || displayImage}
+                                    alt={card.title}
+                                    style={{ objectPosition: card.id === 'benefits' ? 'bottom center' : card.id === 'pilot-pathways' ? 'top center' : card.id === 'type-rating-search' ? 'top 20% center' : 'center' }}
+                                    className={`w-full h-full object-cover ${enableAnimations && isHovered && !(card.id === 'discover' && !isLoggedIn) ? 'scale-110' : ''}`}
+                                    onError={(e) => {
+                                        console.error('Image load error:', card.id);
+                                    }}
+                                    onLoad={() => {
+                                        // image loaded successfully
+                                    }}
+                                />
+                            )
                         )
                     ) : null}
                     {/* MSFS Style Image to Content Transition - skip for carousel cards */}
