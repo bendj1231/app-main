@@ -847,7 +847,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
     return (
         <div 
-            className="absolute inset-0 z-40 flex flex-col items-center justify-start pt-14 md:pt-24 lg:pt-28 px-4 md:px-8 lg:px-12 pointer-events-auto overflow-y-auto"
+            className="absolute inset-0 z-40 flex flex-col items-center justify-start pt-14 md:pt-24 lg:pt-28 px-4 md:px-8 lg:px-12 pointer-events-auto"
         >
 
             <div
@@ -965,9 +965,9 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             {/* Layout 1: Home - Two top cards, three bottom cards */}
                             {currentViewKey === 'home' && (
                                 <>
-                                    <div className="md:hidden grid grid-cols-1 gap-3 mb-4">
+                                    <div className="md:hidden grid grid-cols-1 gap-2 mb-4">
                                         {currentCards.slice(0, 5).map((card, idx) => (
-                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[280px]' : 'h-[160px]'}>
+                                            <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[220px]' : 'h-[130px]'}>
                                                 <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 2} currentViewKey={currentViewKey} />
                                             </motion.div>
                                         ))}
