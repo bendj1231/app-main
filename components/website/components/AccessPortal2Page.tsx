@@ -9,7 +9,7 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
 import BookmarkedPathways from './pathways/BookmarkedPathways';
 import BookmarksView from './bookmarks/BookmarksView';
-import { W1App } from '@/external-references/w1/index.tsx';
+import { W1App } from '@/external-references/W12/index.tsx';
 
 interface AccessPortal2PageProps {
     onNavigate: (page: string) => void;
@@ -1197,7 +1197,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     className="flex-1 min-h-0"
                                                 >
                                                     <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                         onClick={() => setActiveView('w1000')}>
+                                                         onClick={() => onNavigate('/w1000')}>
                                                         {/* Directory Card - Simple text with arrow */}
                                                         <div className={`
                                                             relative w-full h-full rounded-none overflow-hidden

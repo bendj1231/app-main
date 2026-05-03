@@ -26,6 +26,7 @@
     "cloudinary": "^2.9.0",
     "clsx": "^2.1.1",
     "dompurify": "^3.4.1",
+    "firebase": "^12.12.1",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.469.0",
     "radix-ui": "^1.4.3",

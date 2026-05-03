@@ -54,6 +54,7 @@ import { AviationInsightsDirectoryPage } from '@/components/website/components/A
 import { ApplicationsSystemsDirectoryPage } from '@/components/website/components/ApplicationsSystemsDirectoryPage';
 import { MembershipDirectoryPage } from '@/components/website/components/MembershipDirectoryPage';
 import { HinfactPage } from '@/components/website/components/HinfactDirectoryPage';
+import W1000Page from '@/components/website/components/W1000Page';
 import { W1000SuitePage } from '@/components/website/components/W1000SuiteDirectoryPage';
 import { W2000ApplicationPage } from '@/components/website/components/W2000ApplicationPage';
 import { MembershipBenefitsPage } from '@/components/website/components/MembershipBenefitsDirectoryPage';
@@ -208,6 +209,7 @@ export const AppRoutes = () => {
       <Route path="/applications-systems" element={<ApplicationsSystemsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/membership" element={<MembershipDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/hinfact" element={<HinfactPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/w1000" element={<W1000Page onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/w1000-suite" element={<W1000SuitePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/w1000/w2000" element={<W2000ApplicationPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/membership-benefits" element={<MembershipBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
