@@ -1,5 +1,6 @@
-import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
 import { LoginModal } from '@/components/website/components/LoginModal';
@@ -89,6 +90,20 @@ const LoadingFallback = () => (
 export const AppRoutes = () => {
   const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  // Listen for custom login modal events
+  useEffect(() => {
+    const handleOpenLoginModal = () => {
+      console.log('[DEBUG AppRoutes] open-login-modal event received - opening login modal');
+      setIsLoginModalOpen(true);
+    };
+
+    window.addEventListener('open-login-modal', handleOpenLoginModal);
+
+    return () => {
+      window.removeEventListener('open-login-modal', handleOpenLoginModal);
+    };
+  }, []);
 
   const handleNavigate = (page: string) => {
     navigate(`/${page}`);

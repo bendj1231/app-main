@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, Home, Users, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3 } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { ChevronRight, Home, Users, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { NewsroomModal } from './NewsroomModal';
 import { MeshGradient } from '@paper-design/shaders-react';
+import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
+import BookmarkedPathways from './pathways/BookmarkedPathways';
+import BookmarksView from './bookmarks/BookmarksView';
 
 interface AccessPortal2PageProps {
     onNavigate: (page: string) => void;
@@ -37,7 +41,11 @@ const PilotBadge = () => (
 
 export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate }) => {
     const { userProfile, currentUser } = useAuth();
-    const [activeTab, setActiveTab] = useState('profile');
+    const [searchParams] = useSearchParams();
+    const [activeTab, setActiveTab] = useState(() => {
+        const tabParam = searchParams.get('tab');
+        return tabParam || 'profile';
+    });
     const [isVisible, setIsVisible] = useState(false);
     const [activeNewsIndex, setActiveNewsIndex] = useState(0);
     
@@ -111,7 +119,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         { id: 'programs', label: 'PROGRAMS', icon: BookOpen },
         { id: 'dashboard', label: 'DASHBOARD', icon: BarChart3 },
         { id: 'marketplace', label: 'NEWS ROOM' },
-        { id: 'options', label: 'OPTIONS' },
+        { id: 'settings', label: 'SETTINGS', icon: Settings }
     ];
 
     const dashboardCards: DashboardCard[] = [
@@ -326,106 +334,146 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
 
                 {/* Right - User Info */}
                 <div className="flex items-center gap-4">
-                    {/* Profile Picture */}
-                    <div className="relative">
-                        <button
-                            onClick={() => onNavigate('pilot-recognition-profile')}
-                            className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
-                            title="Profile"
-                            style={{ borderRadius: '45% / 50%' }}
-                        >
-                            {profileImageUrl ? (
-                                <img
-                                    src={profileImageUrl}
-                                    alt="Profile"
-                                    className="w-full h-full object-cover"
-                                />
-                            ) : (
-                                <span className="text-lg font-bold text-slate-700">
-                                    {displayName.charAt(0)}
-                                </span>
-                            )}
-                        </button>
-                    </div>
+                    {/* Login and Become Member Buttons for logged out users */}
+                    {!currentUser && (
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => {
+                                    console.log('[DEBUG Portal 2] LOGIN button clicked - opening login modal');
+                                    // Trigger login modal - this will need to be implemented based on your auth system
+                                    const event = new CustomEvent('open-login-modal');
+                                    window.dispatchEvent(event);
+                                    console.log('[DEBUG Portal 2] open-login-modal event dispatched');
+                                }}
+                                className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
+                            >
+                                LOGIN
+                            </button>
+                            <button
+                                onClick={() => {
+                                    console.log('[DEBUG Portal 2] BECOME A MEMBER button clicked - navigating to /become-member');
+                                    window.location.href = '/become-member';
+                                }}
+                                className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
+                            >
+                                BECOME A MEMBER
+                            </button>
+                        </div>
+                    )}
+                    
+                    {/* User-specific navigation (only when logged in) */}
+                    {currentUser && (
+                        <>
+                            {/* Profile Picture */}
+                            <div className="relative">
+                                <button
+                                    onClick={() => onNavigate('pilot-recognition-profile')}
+                                    className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
+                                    title="Profile"
+                                    style={{ borderRadius: '45% / 50%' }}
+                                >
+                                    {profileImageUrl ? (
+                                        <img
+                                            src={profileImageUrl}
+                                            alt="Profile"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <span className="text-lg font-bold text-slate-700">
+                                            {displayName.charAt(0)}
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
 
-                    {/* Settings Dropdown */}
-                    <div className="relative" ref={settingsDropdownRef}>
-                        <button
-                            onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
-                            className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
-                            title="Settings"
-                        >
-                            <Settings className="w-5 h-5" />
-                        </button>
+                            {/* Settings Dropdown */}
+                            <div className="relative" ref={settingsDropdownRef}>
+                                <button
+                                    onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
+                                    className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
+                                    title="Settings"
+                                >
+                                    <Settings className="w-5 h-5" />
+                                </button>
 
-                        {/* Settings Dropdown Menu */}
-                        {isSettingsDropdownOpen && (
-                            <>
-                                <div
-                                    className="fixed inset-0 z-40"
-                                    onClick={() => setIsSettingsDropdownOpen(false)}
-                                />
-                                <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
-                                    <div className="p-4 border-b border-slate-200">
-                                        <h3 className="font-semibold text-slate-900">Quick Settings</h3>
-                                    </div>
-                                    <div className="p-2">
-                                        <button
-                                            onClick={() => {
-                                                onNavigate('settings');
-                                                setIsSettingsDropdownOpen(false);
-                                            }}
-                                            className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                        >
-                                            <Settings className="w-4 h-4 text-slate-600" />
-                                            <span className="text-sm text-slate-700">Account Settings</span>
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                onNavigate('pilot-recognition-profile');
-                                                setIsSettingsDropdownOpen(false);
-                                            }}
-                                            className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                        >
-                                            <Users className="w-4 h-4 text-slate-600" />
-                                            <span className="text-sm text-slate-700">Profile</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
+                                {/* Settings Dropdown Menu */}
+                                {isSettingsDropdownOpen && (
+                                    <>
+                                        <div
+                                            className="fixed inset-0 z-40"
+                                            onClick={() => setIsSettingsDropdownOpen(false)}
+                                        />
+                                        <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                                            <div className="p-4 border-b border-slate-200">
+                                                <h3 className="font-semibold text-slate-900">Quick Settings</h3>
+                                            </div>
+                                            <div className="p-2">
+                                                <button
+                                                    onClick={() => {
+                                                        setActiveTab('bookmarks');
+                                                        setIsSettingsDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <Bookmark className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">Bookmarks</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('settings');
+                                                        setIsSettingsDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <Settings className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">Account Settings</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('pilot-recognition-profile');
+                                                        setIsSettingsDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <Users className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">Profile</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
 
-                    {/* Notification Bell */}
-                    <div className="relative" ref={notificationDropdownRef}>
-                        <button 
-                            onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
-                            className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
-                            title="Notifications"
-                        >
-                            <Bell className="w-5 h-5" />
-                            {notificationCount > 0 && (
-                                <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 bg-white text-red-500 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-red-500">
-                                    {notificationCount > 9 ? '9+' : notificationCount}
-                                </span>
-                            )}
-                        </button>
+                            {/* Notification Bell */}
+                            <div className="relative" ref={notificationDropdownRef}>
+                                <button 
+                                    onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
+                                    className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
+                                    title="Notifications"
+                                >
+                                    <Bell className="w-5 h-5" />
+                                    {notificationCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 bg-white text-red-500 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-red-500">
+                                            {notificationCount > 9 ? '9+' : notificationCount}
+                                        </span>
+                                    )}
+                                </button>
 
-                        {/* Notification Dropdown */}
-                        {isNotificationDropdownOpen && (
-                            <>
-                                <div
-                                    className="fixed inset-0 z-40"
-                                    onClick={() => setIsNotificationDropdownOpen(false)}
-                                />
-                                <div className="absolute right-0 top-full mt-2 w-96 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 max-h-[500px] overflow-hidden flex flex-col">
-                                    {/* Header */}
-                                    <div className="p-4 border-b border-slate-200">
-                                        <h3 className="font-semibold text-slate-900">Notifications</h3>
-                                    </div>
-                                    
-                                    {/* Notifications List */}
-                                    <div className="overflow-y-auto flex-1">
+                                {/* Notification Dropdown */}
+                                {isNotificationDropdownOpen && (
+                                    <>
+                                        <div
+                                            className="fixed inset-0 z-40"
+                                            onClick={() => setIsNotificationDropdownOpen(false)}
+                                        />
+                                        <div className="absolute right-0 top-full mt-2 w-96 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 max-h-[500px] overflow-hidden flex flex-col">
+                                            {/* Header */}
+                                            <div className="p-4 border-b border-slate-200">
+                                                <h3 className="font-semibold text-slate-900">Notifications</h3>
+                                            </div>
+                                            
+                                            {/* Notifications List */}
+                                            <div className="overflow-y-auto flex-1">
                                         {notifications.length === 0 ? (
                                             <div className="p-8 text-center">
                                                 <Bell className="w-12 h-12 text-slate-300 mx-auto mb-3" />
@@ -446,6 +494,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                             </>
                         )}
                     </div>
+                        </>
+                    )}
                 </div>
             </div>
 
@@ -459,8 +509,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
-                            onClick={() => onNavigate('pilot-recognition-profile')}
-                            className="w-72 flex-shrink-0 cursor-pointer group"
+                            className="w-72 flex-shrink-0"
                             style={{
                                 background: 'rgba(30, 41, 59, 0.8)',
                                 backdropFilter: 'blur(10px)',
@@ -468,33 +517,35 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                             }}
                         >
                             <div className="p-6">
-                                {/* Profile Image - Same style as Pilot Recognition Profile */}
-                                <div className="relative w-24 h-24 mx-auto mb-4">
-                                    {profileImage ? (
-                                        <img 
-                                            src={profileImage} 
-                                            alt={fullName}
-                                            className="w-full h-full object-cover rounded-full border-2 border-white/30"
-                                        />
-                                    ) : (
-                                        <div 
-                                            className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl"
-                                            style={{ backgroundColor: '#3b82f6' }}
-                                        >
-                                            <span>{initials}</span>
+                                {currentUser ? (
+                                    <>
+                                        {/* Profile Image - Same style as Pilot Recognition Profile */}
+                                        <div className="relative w-24 h-24 mx-auto mb-4">
+                                            {profileImage ? (
+                                                <img 
+                                                    src={profileImage} 
+                                                    alt={fullName}
+                                                    className="w-full h-full object-cover rounded-full border-2 border-white/30"
+                                                />
+                                            ) : (
+                                                <div 
+                                                    className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl"
+                                                    style={{ backgroundColor: '#3b82f6' }}
+                                                >
+                                                    <span>{initials}</span>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
 
-                                {/* Name and Level */}
-                                <h2 className="text-lg font-bold text-white text-center mb-1 tracking-wider">
-                                    {fullName}
-                                </h2>
-                                <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">
-                                    {currentLevel}
-                                </p>
+                                        {/* Name and Level */}
+                                        <h2 className="text-lg font-bold text-white text-center mb-1 tracking-wider">
+                                            {fullName}
+                                        </h2>
+                                        <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">
+                                            {currentLevel}
+                                        </p>
 
-                                {/* Stats Grid */}
+                                        {/* Stats Grid */}
                                 <div className="grid grid-cols-2 gap-3 mb-4">
                                     <div className="text-center p-2 bg-white/5 rounded">
                                         <p className="text-lg font-bold text-white">{flightHours}</p>
@@ -527,14 +578,55 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         />
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* Pilot Profile Button */}
-                            <div 
-                                className="w-full flex items-center gap-3 px-6 py-4 group-hover:bg-white/5 transition-colors border-t border-white/10"
-                            >
-                                <ChevronRight className="w-5 h-5 text-white/70" />
-                                <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
+                                {/* Pilot Profile Button */}
+                                <div 
+                                    onClick={() => onNavigate('pilot-recognition-profile')}
+                                    className="w-full flex items-center gap-3 px-6 py-4 group-hover:bg-white/5 transition-colors border-t border-white/10 cursor-pointer"
+                                >
+                                    <ChevronRight className="w-5 h-5 text-white/70" />
+                                    <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
+                                </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* Sign in to view profile content */}
+                                        <div className="text-center">
+                                            <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-slate-700 flex items-center justify-center">
+                                                <Users className="w-12 h-12 text-slate-400" />
+                                            </div>
+                                            
+                                            <h2 className="text-lg font-bold text-white text-center mb-2 tracking-wider">
+                                                Sign In Required
+                                            </h2>
+                                            <p className="text-center text-slate-300 text-sm mb-6">
+                                                Sign in to view your pilot profile and track your progress
+                                            </p>
+                                            
+                                            <button
+                                                onClick={() => {
+                                                    console.log('[DEBUG Profile Sidebar] SIGN IN button clicked - opening login modal');
+                                                    const event = new CustomEvent('open-login-modal');
+                                                    window.dispatchEvent(event);
+                                                    console.log('[DEBUG Profile Sidebar] open-login-modal event dispatched');
+                                                }}
+                                                className="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25 mb-3"
+                                            >
+                                                SIGN IN
+                                            </button>
+                                            
+                                            <button
+                                                onClick={() => {
+                                                    console.log('[DEBUG Profile Sidebar] BECOME A MEMBER button clicked - navigating to /become-member');
+                                                    window.location.href = '/become-member';
+                                                }}
+                                                className="w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
+                                            >
+                                                BECOME A MEMBER
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
                             {/* Hover Border Effect */}
@@ -626,9 +718,18 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                 ))}
                             </div>
                         ) : activeTab === 'pathways' ? (
-                            <div className="grid grid-cols-3 gap-4">
-                                <h2 className="col-span-3 text-2xl font-bold text-white tracking-wider mb-2">PATHWAYS</h2>
-                                {pathwaysCards.map((card, index) => (
+                            <div className="flex flex-col space-y-8">
+                                {/* PATHWAYS Header */}
+                                <div className="flex flex-col items-start justify-start">
+                                    <h2 className="text-2xl font-bold text-white tracking-wider">PATHWAYS</h2>
+                                </div>
+                                
+                                {/* Bookmarked Pathways Component */}
+                                <BookmarkedPathways onNavigate={setActiveTab} />
+                                
+                                {/* Original Pathways Content */}
+                                <div className="grid grid-cols-3 gap-4">
+                                    {pathwaysCards.map((card, index) => (
                                     <motion.div
                                         key={card.id}
                                         custom={index}
@@ -679,6 +780,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-300 pointer-events-none" />
                                     </motion.div>
                                 ))}
+                                </div>
                             </div>
                         ) : activeTab === 'programs' ? (
                             <div className="flex flex-col items-center justify-start min-h-[calc(100vh-200px)]">
@@ -855,7 +957,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 transition={{ delay: 0.3 }}
                                                 className="flex-1 min-h-0"
                                             >
-                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full">
+                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
+                                                     onClick={() => onNavigate('foundational-platform')}>
                                                     {/* Directory Card - Simple text with arrow */}
                                                     <div className={`
                                                         relative w-full h-full rounded-none overflow-hidden
@@ -870,10 +973,53 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     `}>
                                                         <div className="flex flex-col">
                                                             <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » Learn More
+                                                                » Foundational Platform
                                                             </h3>
                                                             <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Deep dive into curriculum details, mentorship structure, and success stories
+                                                                Access your enrolled courses, track progress, and engage with program materials
+                                                            </p>
+                                                        </div>
+                                                        <div className={`
+                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
+                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
+                                                            transition-all duration-300
+                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
+                                                        `}>
+                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                            
+                                            {/* Foundational Platform - Rectangular strip */}
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.4 }}
+                                                className="flex-1 min-h-0"
+                                            >
+                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
+                                                     onClick={() => onNavigate('foundational-platform')}>
+                                                    {/* Directory Card - Simple text with arrow */}
+                                                    <div className={`
+                                                        relative w-full h-full rounded-none overflow-hidden
+                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
+                                                        border border-white/20 shadow-2xl shadow-black/50
+                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
+                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
+                                                        before:transition-opacity before:duration-300
+                                                        transition-all duration-500 ease-out
+                                                        flex items-center justify-between px-6 md:px-8
+                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
+                                                    `}>
+                                                        <div className="flex flex-col">
+                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
+                                                                » Platform Access
+                                                            </h3>
+                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
+                                                                Enter your learning environment, access modules, and connect with mentors
                                                             </p>
                                                         </div>
                                                         <div className={`
@@ -901,103 +1047,14 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                     <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32"></div>
                                 </div>
                                 
-                                {/* Dashboard Content - Three main sections */}
-                                <div className="w-full max-w-7xl mx-auto space-y-8">
-                                    {/* Part 1: Recognition Profile Analytics */}
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.1 }}
-                                        className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 rounded-none p-6 shadow-2xl shadow-black/50"
-                                    >
-                                        <div className="flex items-center gap-3 mb-6">
-                                            <BarChart3 className="w-6 h-6 text-blue-400" />
-                                            <h3 className="text-xl font-bold text-white">» RECOGNITION PROFILE ANALYTICS</h3>
-                                        </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                                            {/* Core Metrics */}
-                                            <div className="text-center">
-                                                <div className="text-3xl font-bold text-white mb-1">{flightHours.toLocaleString()}</div>
-                                                <div className="text-sm text-slate-300">Flight Hours</div>
-                                                <div className="text-xs text-teal-400 mt-1">+12 this month</div>
-                                            </div>
-                                            <div className="text-center">
-                                                <div className="text-3xl font-bold text-white mb-1">{recognitionScore.toLocaleString()}</div>
-                                                <div className="text-sm text-slate-300">Recognition Score</div>
-                                                <div className="text-xs text-blue-400 mt-1">Top 15%</div>
-                                            </div>
-                                            <div className="text-center">
-                                                <div className="text-3xl font-bold text-white mb-1">24</div>
-                                                <div className="text-sm text-slate-300">Certificates</div>
-                                                <div className="text-xs text-purple-400 mt-1">8 type ratings</div>
-                                            </div>
-                                            <div className="text-center">
-                                                <div className="text-3xl font-bold text-white mb-1">A+</div>
-                                                <div className="text-sm text-slate-300">Profile Strength</div>
-                                                <div className="text-xs text-green-400 mt-1">Excellent</div>
-                                            </div>
-                                        </div>
+                                {/* Dashboard Content - Show login prompt for logged out users */}
+                                {currentUser ? (
+                                    <div className="w-full max-w-7xl mx-auto space-y-8">
+                                        {/* Part 1: Recognition Profile Analytics - Flight Instrument Dashboard */}
+                                        <FlightInstrumentDashboard userId={currentUser?.id || ''} />
                                         
-                                        {/* Recognition Breakdown */}
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
-                                                <h4 className="text-white font-bold mb-3">Technical Skills</h4>
-                                                <div className="space-y-2">
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">A320 Type Rating</span>
-                                                        <span className="text-teal-400">Expert</span>
-                                                    </div>
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">IFR Procedures</span>
-                                                        <span className="text-blue-400">Advanced</span>
-                                                    </div>
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">CRM Skills</span>
-                                                        <span className="text-purple-400">Proficient</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
-                                                <h4 className="text-white font-bold mb-3">Leadership Metrics</h4>
-                                                <div className="space-y-2">
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">Mentorship Score</span>
-                                                        <span className="text-green-400">92/100</span>
-                                                    </div>
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">Team Leadership</span>
-                                                        <span className="text-teal-400">88/100</span>
-                                                    </div>
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">Decision Making</span>
-                                                        <span className="text-blue-400">95/100</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
-                                                <h4 className="text-white font-bold mb-3">Career Progression</h4>
-                                                <div className="space-y-2">
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">Current Level</span>
-                                                        <span className="text-purple-400">Senior Pilot</span>
-                                                    </div>
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">Experience</span>
-                                                        <span className="text-blue-400">8.5 years</span>
-                                                    </div>
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-slate-300">Next Milestone</span>
-                                                        <span className="text-teal-400">Captain</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                    
-                                    {/* Part 2: Programs Section */}
-                                    <motion.div
+                                        {/* Part 2: Programs Section */}
+                                        <motion.div
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.2 }}
@@ -1380,7 +1437,77 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         </div>
                                     </motion.div>
                                 </div>
+                                    ) : (
+                                        <>
+                                            {/* Login prompt for dashboard */}
+                                            <div className="text-center py-16">
+                                                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-slate-700 flex items-center justify-center">
+                                                    <BarChart3 className="w-12 h-12 text-slate-400" />
+                                                </div>
+                                                
+                                                <h2 className="text-2xl font-bold text-white mb-4 tracking-wider">
+                                                    Login to View Your Dashboard
+                                                </h2>
+                                                <p className="text-slate-300 text-lg mb-8 max-w-md mx-auto">
+                                                    Sign in to access your personalized analytics, program progress, and pathway insights
+                                                </p>
+                                                
+                                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                                    <button
+                                                        onClick={() => {
+                                                            console.log('[DEBUG Dashboard] SIGN IN button clicked - opening login modal');
+                                                            const event = new CustomEvent('open-login-modal');
+                                                            window.dispatchEvent(event);
+                                                            console.log('[DEBUG Dashboard] open-login-modal event dispatched');
+                                                        }}
+                                                        className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
+                                                    >
+                                                        SIGN IN
+                                                    </button>
+                                                    
+                                                    <button
+                                                        onClick={() => {
+                                                            console.log('[DEBUG Dashboard] BECOME A MEMBER button clicked - navigating to /become-member');
+                                                            window.location.href = '/become-member';
+                                                        }}
+                                                        className="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
+                                                    >
+                                                        BECOME A MEMBER
+                                                    </button>
+                                                </div>
+                                                
+                                                {/* Features list */}
+                                                <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                                                    <div className="text-center">
+                                                        <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-700 flex items-center justify-center">
+                                                            <BarChart3 className="w-6 h-6 text-teal-400" />
+                                                        </div>
+                                                        <h3 className="text-white font-semibold mb-2">Flight Analytics</h3>
+                                                        <p className="text-slate-400 text-sm">Track your flight hours and progress</p>
+                                                    </div>
+                                                    
+                                                    <div className="text-center">
+                                                        <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-700 flex items-center justify-center">
+                                                            <GraduationCap className="w-6 h-6 text-purple-400" />
+                                                        </div>
+                                                        <h3 className="text-white font-semibold mb-2">Program Progress</h3>
+                                                        <p className="text-slate-400 text-sm">Monitor your training completion</p>
+                                                    </div>
+                                                    
+                                                    <div className="text-center">
+                                                        <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-700 flex items-center justify-center">
+                                                            <Plane className="w-6 h-6 text-blue-400" />
+                                                        </div>
+                                                        <h3 className="text-white font-semibold mb-2">Pathway Insights</h3>
+                                                        <p className="text-slate-400 text-sm">Discover career opportunities</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
                             </div>
+                        ) : activeTab === 'bookmarks' ? (
+                            <BookmarksView onNavigate={setActiveTab} />
                         ) : activeTab === 'marketplace' ? (
                             <div className="space-y-6">
                                 <h2 className="text-2xl font-bold text-white tracking-wider mb-6">NEWS ROOM</h2>

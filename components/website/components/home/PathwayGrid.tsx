@@ -848,35 +848,28 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         return () => {
             // debug: Card clicked
             
-            // When on Home view, clicking Programs/Pathways switches to that view
-            // Pilot Recognition navigates to the profile page when logged in
+            // When on Home view, clicking Pilot Recognition navigates to profile page when logged in
             if (currentViewKey === 'home' && card.id === 'pilot-recognition' && isLoggedIn) {
                 // debug: Navigating to pilot-recognition-profile page
                 onNavigate('pilot-recognition-profile');
                 return;
             }
-            if (currentViewKey === 'home' && ['programs', 'pathways'].includes(card.id)) {
-                const targetIndex = viewIndexMap[card.id];
-                if (targetIndex !== undefined) {
-                    // debug: Switching to view
-                    goToView(targetIndex);
-                    return;
-                }
-            }
+            // Note: Removed the condition that switches to internal view for 'programs' and 'pathways' cards
+            // These should now use the navMap to navigate to Portal 2
 
             // Navigation mapping for all view cards
             const navMap: Record<string, string> = {
-                'FOUNDATION-PROGRAM-ENROLL': !isLoggedIn ? 'become-member' : isEnrolledInFoundation ? 'foundational-platform' : 'foundational-program',
-                'card-2': 'become-member',
+                'FOUNDATION-PROGRAM-ENROLL': !isLoggedIn ? 'become-member' : isEnrolledInFoundation ? 'access-portal-2?tab=programs' : 'foundational-program',
+                'card-2': 'access-portal-2?tab=pathways',
                 'foundation-program-enroll': 'become-member',
-                'discover': 'pathways-modern',
+                'discover': !isLoggedIn ? 'pathways-modern' : 'access-portal-2?tab=pathways',
                 'pilot-pathways': 'pathways-modern',
                 'type-rating-search': 'type-rating-search',
                 'airline-expectations': 'airline-expectations',
                 'recognition-pathways': 'pilot-recognition',
-                'programs': 'programs',
-                'pilot-recognition': 'pilot-recognition',
-                'pathways': 'pathways',
+                'programs': 'access-portal-2?tab=programs',
+                'pilot-recognition': 'access-portal-2?tab=profile',
+                'pathways': 'access-portal-2?tab=pathways',
                 'foundation': 'become-member',
                 'benefits': 'benefits',
                 'news': 'news-updates',
@@ -905,13 +898,16 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
             };
 
             // Debug: log prop values explicitly
-            console.log('[DEBUG PathwayGrid] isLoggedIn=' + isLoggedIn + ' isEnrolledInFoundation=' + isEnrolledInFoundation + ' card.id=' + card.id);
+            console.log('[DEBUG PathwayGrid] isLoggedIn=' + isLoggedIn + ' isEnrolledInFoundation=' + isEnrolledInFoundation + ' card.id=' + card.id + ' card.title=' + card.title + ' [UPDATED]');
+            console.log('[DEBUG PathwayGrid] currentUser exists:', !!currentUser, 'currentUser uid:', currentUser?.uid);
+            console.log('[DEBUG PathwayGrid] userProfile exists:', !!userProfile, 'userProfile:', userProfile);
 
             const target = navMap[card.id];
-            console.log('[NAVMAP LOOKUP] card.id=' + card.id + ' target=' + target);
+            console.log('[NAVMAP LOOKUP] card.id=' + card.id + ' card.title=' + card.title + ' target=' + target + ' [UPDATED]');
+            console.log('[DEBUG PathwayGrid] navMap entry for card-2:', navMap['card-2']);
             if (target) {
                 if (target === 'foundational-platform') {
-                    setFoundationNavTarget(target);
+                    setFoundationNavTarget('access-portal-2?tab=programs');
                     setShowFoundationLoading(true);
                     return;
                 }
@@ -1867,7 +1863,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                         if (!isLoggedIn) {
                                             onNavigate('become-member');
                                         } else if (isEnrolledInFoundation) {
-                                            setFoundationNavTarget('foundational-platform');
+                                            setFoundationNavTarget('access-portal-2?tab=programs');
                                             setShowFoundationLoading(true);
                                         } else if (onEnrollFoundation) {
                                             onEnrollFoundation();
