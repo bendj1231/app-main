@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, Plane, CheckCircle2, Star, DollarSign, Calendar, FileText, Gauge, Building2, BookOpen, MousePointerClick, Briefcase, X, Globe, Users, User, Clock, Award, Shield, ArrowLeft, Bookmark } from 'lucide-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '../src/contexts/AuthContext';
 import { supabase } from '../src/lib/supabase';
+import { bookmarkService } from '../src/services/bookmarkService';
 
 // Types from Supabase schema
 interface Manufacturer {
@@ -354,6 +355,9 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
   const [aircraftTypeRatings, setAircraftTypeRatings] = useState<AircraftTypeRating[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
+  
+  // Bookmark state
+  const [bookmarkedAircraft, setBookmarkedAircraft] = useState<Set<string>>(new Set());
 
   // Fetch manufacturers and aircraft from Supabase
   useEffect(() => {
@@ -388,6 +392,109 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
     fetchData();
   }, []);
+
+  // Load bookmarks from database on mount and when user changes
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const loadBookmarks = async () => {
+      try {
+        const aircraftBookmarks = await bookmarkService.getBookmarksByType('aircraft', currentUser.id);
+        const bookmarkedIds = new Set(aircraftBookmarks.map(b => b.item_id));
+        setBookmarkedAircraft(bookmarkedIds);
+      } catch (error) {
+        console.error('Error loading bookmarks:', error);
+        // Fallback to localStorage if database fails
+        const savedAircraftBookmarks = localStorage.getItem('bookmarkedAircraft');
+        if (savedAircraftBookmarks) {
+          setBookmarkedAircraft(new Set(JSON.parse(savedAircraftBookmarks)));
+        }
+      }
+    };
+
+    loadBookmarks();
+  }, [currentUser]);
+
+  // Toggle aircraft bookmark
+  const toggleAircraftBookmark = async (aircraftId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card selection
+    
+    if (!currentUser) {
+      // Fallback to localStorage if user not authenticated
+      setBookmarkedAircraft(prev => {
+        const newBookmarks = new Set(prev);
+        if (newBookmarks.has(aircraftId)) {
+          newBookmarks.delete(aircraftId);
+        } else {
+          newBookmarks.add(aircraftId);
+        }
+        localStorage.setItem('bookmarkedAircraft', JSON.stringify(Array.from(newBookmarks)));
+        // Force re-render by creating a new Set
+        return new Set(Array.from(newBookmarks));
+      });
+      return;
+    }
+
+    try {
+      // Find aircraft data for bookmark
+      const aircraft = aircraftTypeRatings.find(a => a.id === aircraftId);
+      if (!aircraft) return;
+
+      const result = await bookmarkService.toggleBookmark(
+        aircraftId,
+        'aircraft',
+        {
+          title: aircraft.model,
+          description: aircraft.description || 'Bookmarked aircraft from type rating search',
+          image_url: aircraft.image,
+          metadata: {
+            manufacturer_id: aircraft.manufacturer_id,
+            category: aircraft.category,
+            subcategory: aircraft.subcategory
+          }
+        },
+        currentUser.id
+      );
+
+      // Update local state
+      setBookmarkedAircraft(prev => {
+        const newBookmarks = new Set(prev);
+        if (result.action === 'added') {
+          newBookmarks.add(aircraftId);
+        } else {
+          newBookmarks.delete(aircraftId);
+        }
+        // Force re-render by creating a new Set
+        return new Set(Array.from(newBookmarks));
+      });
+
+      // Also update localStorage as backup
+      localStorage.setItem('bookmarkedAircraft', JSON.stringify(Array.from(result.action === 'added' ? 
+        [...bookmarkedAircraft, aircraftId] : 
+        Array.from(bookmarkedAircraft).filter(id => id !== aircraftId)
+      )));
+
+    } catch (error) {
+      console.error('Error toggling bookmark:', error);
+      // Fallback to localStorage on error
+      setBookmarkedAircraft(prev => {
+        const newBookmarks = new Set(prev);
+        if (newBookmarks.has(aircraftId)) {
+          newBookmarks.delete(aircraftId);
+        } else {
+          newBookmarks.add(aircraftId);
+        }
+        localStorage.setItem('bookmarkedAircraft', JSON.stringify(Array.from(newBookmarks)));
+        // Force re-render by creating a new Set
+        return new Set(Array.from(newBookmarks));
+      });
+    }
+  };
+
+  // Check if aircraft is bookmarked
+  const isAircraftBookmarked = (aircraftId: string) => {
+    return bookmarkedAircraft.has(aircraftId);
+  };
 
   // Handle URL parameters for pre-selection
   useEffect(() => {
@@ -480,7 +587,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
   }, []);
 
   const scroll = (dir: 'left' | 'right') =>
-    carouselRef.current?.scrollBy({ left: dir === 'left' ? -288 : 288, behavior: 'smooth' });
+    carouselRef.current?.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' });
 
   const handleSelect = (aircraft: AircraftTypeRating) => {
     setSelectedAircraft(aircraft);
@@ -1510,8 +1617,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         )}
       </div>
 
-      {/* White background for content below hero */}
-      <div className="relative z-10 bg-white pb-12">
+      {/* Dark blue background for content below hero */}
+      <div className="relative z-10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pb-12">
       {!selectedManufacturer ? (
         // Profile view when no manufacturer is selected
         <div className="max-w-7xl mx-auto px-6 pt-8">
@@ -1679,8 +1786,8 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         // Category filter chips and manufacturer details when selected
         <>
       {/* Category Filter Chips */}
-      <div className="max-w-7xl mx-auto px-6 mb-8 relative z-10">
-        <div className="flex flex-wrap gap-2">
+      <div className="max-w-7xl mx-auto px-6 mb-10 relative z-10">
+        <div className="flex flex-wrap gap-2 justify-center">
           {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
             <button
               key={key}
@@ -1705,7 +1812,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
         {/* Subcategory filters for specific categories */}
         {activeCategory === 'legacy' && (
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-3 justify-center">
             {Object.entries(LEGACY_SUBCATEGORY_LABELS).map(([key, label]) => (
               <button
                 key={key}
@@ -1723,7 +1830,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         )}
 
         {activeCategory === 'helicopter' && (
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-3 justify-center">
             {Object.entries(HELICOPTER_SUBCATEGORY_LABELS).map(([key, label]) => (
               <button
                 key={key}
@@ -1741,7 +1848,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         )}
 
         {activeCategory === 'military' && (
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-3 justify-center">
             {Object.entries(MILITARY_SUBCATEGORY_LABELS).map(([key, label]) => (
               <button
                 key={key}
@@ -1759,7 +1866,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         )}
 
         {activeCategory === 'cargo' && (
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-3 justify-center">
             {Object.entries(CARGO_SUBCATEGORY_LABELS).map(([key, label]) => (
               <button
                 key={key}
@@ -1777,7 +1884,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
         )}
 
         {activeCategory === 'flagship' && (
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-3 justify-center">
             {Object.entries(FLAGSHIP_SUBCATEGORY_LABELS).map(([key, label]) => (
               <button
                 key={key}
@@ -1799,15 +1906,15 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       <div className="px-0 mb-12 relative z-10">
         <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-serif font-normal text-slate-900">Browse Aircraft</h2>
-            <p className="text-sm text-slate-500">{filteredAircraft.length} aircraft available</p>
+            <h2 className="text-2xl font-serif font-normal text-white">Browse Aircraft</h2>
+            <p className="text-sm text-slate-300">{filteredAircraft.length} aircraft available</p>
           </div>
           {/* Scroll arrows */}
           <div className="flex gap-2">
-            <button onClick={() => scroll('left')} className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+            <button onClick={() => scroll('left')} className="p-2 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-white transition-colors backdrop-blur-sm border border-slate-600/30">
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <button onClick={() => scroll('right')} className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+            <button onClick={() => scroll('right')} className="p-2 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-white transition-colors backdrop-blur-sm border border-slate-600/30">
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
@@ -1822,7 +1929,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
           {dataLoading ? (
             <div className="flex gap-4 w-full">
               {[1, 2, 3, 4].map(i => (
-                <div key={i} className="flex-shrink-0 w-72 h-64 rounded-2xl bg-slate-200 animate-pulse" />
+                <div key={i} className="flex-shrink-0 w-80 h-72 rounded-2xl bg-slate-200 animate-pulse" />
               ))}
             </div>
           ) : (
@@ -1830,14 +1937,37 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
             <div
               key={aircraft.id}
               onClick={() => handleSelect(aircraft)}
-              className={`flex-shrink-0 w-72 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 border ${
+              className={`flex-shrink-0 w-80 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 border ${
                 selectedAircraft?.id === aircraft.id
                   ? 'ring-2 ring-sky-500 border-sky-500/50'
                   : 'border-slate-200 hover:border-slate-400'
               } bg-white group`}
             >
               {/* Thumbnail */}
-              <div className="relative h-44 overflow-hidden bg-slate-100">
+              <div className="relative h-56 overflow-hidden bg-slate-100">
+                {/* Bookmark Icon - Top Left */}
+                <button
+                  onClick={(e) => toggleAircraftBookmark(aircraft.id, e)}
+                  className={`absolute top-2 left-2 w-8 h-8 backdrop-blur-sm border rounded-lg flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 z-20 ${
+                    isAircraftBookmarked(aircraft.id)
+                      ? 'bg-teal-500/90 border-teal-400'
+                      : 'bg-slate-800/80 border-slate-600/50 hover:bg-slate-700/90'
+                  }`}
+                  title={isAircraftBookmarked(aircraft.id) ? "Remove bookmark" : "Add bookmark"}
+                >
+                  <Bookmark 
+                    className={`w-4 h-4 transition-colors duration-300 ${
+                      isAircraftBookmarked(aircraft.id) 
+                        ? '!text-white !fill-white' 
+                        : '!text-slate-300 hover:!text-white'
+                    }`}
+                    style={{
+                      color: isAircraftBookmarked(aircraft.id) ? 'white' : '#cbd5e1',
+                      fill: isAircraftBookmarked(aircraft.id) ? 'white' : 'none'
+                    }}
+                  />
+                </button>
+                
                 {aircraft.sketchfab_id ? (
                   <SketchfabThumbnail
                     sketchfabId={aircraft.sketchfab_id}
@@ -1849,7 +1979,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                     src={
                       (aircraft.image && !aircraft.image.includes('efqjszksldcdm6kbnzoq.png'))
                         ? aircraft.image
-                        : manufacturers.find(m => m.id === aircraft.manufacturer_id)?.logo || 'https://via.placeholder.com/288x176?text=No+Image'
+                        : manufacturers.find(m => m.id === aircraft.manufacturer_id)?.logo || 'https://via.placeholder.com/320x224?text=No+Image'
                     }
                     alt={aircraft.model}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -1859,21 +1989,21 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                       if (manufacturer?.logo && e.currentTarget.src !== manufacturer.logo) {
                         e.currentTarget.src = manufacturer.logo;
                       } else {
-                        e.currentTarget.src = 'https://via.placeholder.com/288x176?text=No+Image';
+                        e.currentTarget.src = 'https://via.placeholder.com/320x224?text=No+Image';
                       }
                     }}
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 {aircraft.sketchfab_id && (
-                  <div className="absolute top-2 right-2 bg-sky-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
+                  <div className="absolute top-3 right-3 bg-sky-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
                     3D
                   </div>
                 )}
-                <div className="absolute bottom-3 left-3 right-3">
-                  <span className="text-white font-serif text-base leading-tight">{aircraft.model}</span>
-                  <div className="flex items-center gap-1 text-white/70 text-xs mt-0.5">
-                    <Plane className="w-3 h-3" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <span className="text-white font-serif text-lg leading-tight font-semibold">{aircraft.model}</span>
+                  <div className="flex items-center gap-2 text-white/80 text-sm mt-1">
+                    <Plane className="w-4 h-4" />
                     {CATEGORY_LABELS[aircraft.category]}
                   </div>
                 </div>
