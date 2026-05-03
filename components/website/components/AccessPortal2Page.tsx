@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ChevronRight, Home, Users, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark } from 'lucide-react';
+import { ChevronRight, Home, Users, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark, Brain, Clock, Target, PlayCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
@@ -945,68 +945,51 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                 {/* Programs Content - Larger, centered layout */}
                                 <div className="w-full max-w-6xl mx-auto">
                                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
-                                        {/* Foundation Program - Large hero card */}
+                                        {/* W1000 Flight Deck - Large hero card */}
                                         <motion.div
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             className="md:col-span-2 h-80 md:h-96"
                                         >
                                             <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                 onClick={() => onNavigate(isEnrolledInFoundational ? 'foundational-platform' : 'foundational-program')}>
+                                                 onClick={() => onNavigate('/w1000')}>
                                                 {/* Split-section design */}
                                                 <div className="h-full flex flex-col">
-                                                    {/* Top half - Video (70% of height) */}
-                                                    <div className="relative h-[70%] overflow-hidden">
-                                                        <video
-                                                            ref={(el) => {
-                                                                if (el) {
-                                                                    el.muted = isVideoMuted;
-                                                                }
-                                                            }}
-                                                            className="w-full h-full object-cover"
-                                                            autoPlay
-                                                            muted={isVideoMuted}
-                                                            loop
-                                                            playsInline
-                                                        >
-                                                            <source src="/images/My Movie 3 - 720WebShareName.mov" type="video/mp4" />
-                                                        </video>
+                                                    {/* Top half - Blue gradient background (70% of height) */}
+                                                    <div className="relative h-[70%] overflow-hidden bg-gradient-to-br from-blue-600/30 to-cyan-500/30">
+                                                        {/* Flight deck visual elements */}
+                                                        <div className="absolute inset-0 flex items-center justify-center">
+                                                            <div className="text-center">
+                                                                <Plane className="w-16 h-16 text-blue-400 mx-auto mb-4 animate-pulse" />
+                                                                <div className="text-blue-300 text-sm font-bold tracking-wider uppercase">Flight Simulator</div>
+                                                            </div>
+                                                        </div>
                                                         
-                                                        {/* Sharp-cornered teal badge */}
+                                                        {/* Sharp-cornered blue badge */}
                                                         <div className="absolute top-4 right-4">
-                                                            <span className="px-4 py-2 bg-teal-500 text-white text-sm font-bold uppercase tracking-wider">
-                                                                {isEnrolledInFoundational ? 'Access Platform' : 'Start Here'}
+                                                            <span className="px-4 py-2 bg-blue-500 text-white text-sm font-bold uppercase tracking-wider">
+                                                                {isEnrolledInFoundational ? 'Access Simulator' : 'Enroll Required'}
                                                             </span>
                                                         </div>
                                                         
-                                                        {/* Unmute button */}
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setIsVideoMuted(!isVideoMuted);
-                                                            }}
-                                                            className="absolute bottom-4 left-4 w-10 h-10 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg flex items-center justify-center hover:bg-white/30 transition-all duration-200 group"
-                                                        >
-                                                            {isVideoMuted ? (
-                                                                <svg className="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-                                                                </svg>
-                                                            ) : (
-                                                                <svg className="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                                                                </svg>
-                                                            )}
-                                                        </button>
+                                                        {/* Instrument overlay graphics */}
+                                                        <div className="absolute bottom-4 left-4 flex gap-2">
+                                                            <div className="w-8 h-8 bg-blue-500/20 border border-blue-400/50 rounded-full flex items-center justify-center">
+                                                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                                            </div>
+                                                            <div className="w-8 h-8 bg-blue-500/20 border border-blue-400/50 rounded-full flex items-center justify-center">
+                                                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     
                                                     {/* Bottom half - Solid dark navy (30% of height) */}
                                                     <div className="h-[30%] bg-slate-900 border-t-0 border-l border-r border-b border-slate-700 p-4 flex flex-col justify-center">
                                                         <h3 className="text-white font-bold text-lg uppercase tracking-wider mb-1">
-                                                            » Foundation Program
+                                                            » W1000 Flight Deck
                                                         </h3>
                                                         <p className="text-slate-300 text-xs leading-tight">
-                                                            Start your pilot journey with structured mentorship and guidance
+                                                            Advanced aviation training simulator with PFD, VOR, and exam modules
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1018,90 +1001,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         
                                         {/* Three directory cards stacked vertically */}
                                         <div className="md:col-span-2 flex flex-col gap-3 md:gap-4 h-80 md:h-96">
-                                            {/* News & Updates - Rectangular strip */}
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.1 }}
-                                                className="flex-1 min-h-0"
-                                            >
-                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full">
-                                                    {/* Directory Card - Simple text with arrow */}
-                                                    <div className={`
-                                                        relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
-                                                        border border-white/20 shadow-2xl shadow-black/50
-                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
-                                                        before:transition-opacity before:duration-300
-                                                        transition-all duration-500 ease-out
-                                                        flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
-                                                    `}>
-                                                        <div className="flex flex-col">
-                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » News & Updates
-                                                            </h3>
-                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Latest industry insights, program announcements, and aviation trends
-                                                            </p>
-                                                        </div>
-                                                        <div className={`
-                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
-                                                            transition-all duration-300
-                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
-                                                        `}>
-                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                            
-                                            {/* Program Benefits - Rectangular strip */}
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.2 }}
-                                                className="flex-1 min-h-0"
-                                            >
-                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full">
-                                                    {/* Directory Card - Simple text with arrow */}
-                                                    <div className={`
-                                                        relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
-                                                        border border-white/20 shadow-2xl shadow-black/50
-                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
-                                                        before:transition-opacity before:duration-300
-                                                        transition-all duration-500 ease-out
-                                                        flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
-                                                    `}>
-                                                        <div className="flex flex-col">
-                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » Program Benefits
-                                                            </h3>
-                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Discover certification advantages, career pathways, and exclusive member perks
-                                                            </p>
-                                                        </div>
-                                                        <div className={`
-                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
-                                                            transition-all duration-300
-                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
-                                                        `}>
-                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                            
+                                                                                        
+                                                                                        
                                             {/* Learn More - Rectangular strip */}
                                             <motion.div
                                                 initial={{ opacity: 0, y: 20 }}
@@ -1145,91 +1046,51 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 </div>
                                             </motion.div>
                                             
-                                            {/* Foundational Platform - Rectangular strip */}
+                                                                                        
+                                                                                        
+                                            {/* Examination Portal - Show for all users */}
                                             <motion.div
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.4 }}
+                                                transition={{ delay: 0.6 }}
                                                 className="flex-1 min-h-0"
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                     onClick={() => onNavigate('foundational-platform')}>
+                                                     onClick={() => {
+                                                         console.log('[DEBUG Programs] Examination Portal clicked - navigating to examination portal');
+                                                         window.location.href = '/examination-portal';
+                                                     }}>
                                                     {/* Directory Card - Simple text with arrow */}
                                                     <div className={`
                                                         relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
-                                                        border border-white/20 shadow-2xl shadow-black/50
+                                                        bg-gradient-to-br from-orange-600/20 to-red-500/20 backdrop-blur-2xl
+                                                        border border-orange-400/30 shadow-2xl shadow-black/50
                                                         before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
+                                                        before:bg-gradient-to-br before:from-orange-400/20 before:to-transparent before:opacity-0
                                                         before:transition-opacity before:duration-300
                                                         transition-all duration-500 ease-out
                                                         flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
+                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-orange-400/50'}
                                                     `}>
                                                         <div className="flex flex-col">
                                                             <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » Platform Access
+                                                                » Examination Portal
                                                             </h3>
                                                             <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Enter your learning environment, access modules, and connect with mentors
+                                                                Certification examinations, assessments, and progress tracking for program advancement
                                                             </p>
                                                         </div>
                                                         <div className={`
                                                             w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
+                                                            bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 shadow-lg
                                                             transition-all duration-300
-                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
+                                                            ${'hover:bg-orange-500/30 scale-110 border-orange-400/50'}
                                                         `}>
-                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
+                                                            <Brain className="w-5 h-5 md:w-6 md:h-6 text-orange-400" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </motion.div>
-                                            
-                                            {/* W1000 Flight Deck - Only show for enrolled users */}
-                                            {isEnrolledInFoundational && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 20 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ delay: 0.5 }}
-                                                    className="flex-1 min-h-0"
-                                                >
-                                                    <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                         onClick={() => onNavigate('/w1000')}>
-                                                        {/* Directory Card - Simple text with arrow */}
-                                                        <div className={`
-                                                            relative w-full h-full rounded-none overflow-hidden
-                                                            bg-gradient-to-br from-blue-600/20 to-cyan-500/20 backdrop-blur-2xl
-                                                            border border-blue-400/30 shadow-2xl shadow-black/50
-                                                            before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                            before:bg-gradient-to-br before:from-blue-400/20 before:to-transparent before:opacity-0
-                                                            before:transition-opacity before:duration-300
-                                                            transition-all duration-500 ease-out
-                                                            flex items-center justify-between px-6 md:px-8
-                                                            ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-blue-400/50'}
-                                                        `}>
-                                                            <div className="flex flex-col">
-                                                                <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                    » W1000 Flight Deck
-                                                                </h3>
-                                                                <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                    Advanced aviation training simulator with PFD, VOR, and exam modules
-                                                                </p>
-                                                            </div>
-                                                            <div className={`
-                                                                w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                                bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 shadow-lg
-                                                                transition-all duration-300
-                                                                ${'hover:bg-blue-500/30 scale-110 border-blue-400/50'}
-                                                            `}>
-                                                                <Plane className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -1301,7 +1162,58 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         </div>
                                     </motion.div>
                                     
-                                    {/* Part 3: Pathway Recommendations - Infinite Edge Carousel with GridCard Design */}
+                                    {/* Part 3: Examination Portal Section */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.25 }}
+                                        className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 rounded-none p-6 shadow-2xl shadow-black/50"
+                                    >
+                                        <div className="flex items-center gap-3 mb-6">
+                                            <Brain className="w-6 h-6 text-orange-400" />
+                                            <h3 className="text-xl font-bold text-white">» EXAMINATION PORTAL</h3>
+                                        </div>
+                                        <div className="bg-slate-900/50 border border-slate-700 rounded-none p-6">
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                    <Brain className="w-6 h-6 text-orange-600" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h4 className="text-white font-bold text-lg mb-2">Certification Examinations</h4>
+                                                    <p className="text-slate-300 text-sm mb-4 leading-relaxed">
+                                                        Complete your certification examinations to track your progress through the Foundational Program. Each exam unlocks new mentorship resources and advancement opportunities.
+                                                    </p>
+                                                    <div className="flex items-center gap-4 text-xs text-slate-400 mb-4">
+                                                        <div className="flex items-center gap-1">
+                                                            <Clock className="w-3 h-3" />
+                                                            <span>Timed assessments</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1">
+                                                            <Award className="w-3 h-3" />
+                                                            <span>Industry certification</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1">
+                                                            <Target className="w-3 h-3" />
+                                                            <span>Progress tracking</span>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => {
+                                                            console.log('[DEBUG Dashboard] Examination Portal button clicked - navigating to examination portal');
+                                                            // Navigate to examination portal
+                                                            window.location.href = '/examination-portal';
+                                                        }}
+                                                        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-orange-500/25 flex items-center gap-2"
+                                                    >
+                                                        <PlayCircle className="w-5 h-5" />
+                                                        <span>Access Examination Portal</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                    
+                                    {/* Part 4: Pathway Recommendations - Infinite Edge Carousel with GridCard Design */}
                                     <motion.div
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}

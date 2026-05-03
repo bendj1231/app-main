@@ -101,7 +101,10 @@ const WelcomeScreen: React.FC<{ onStart: () => void }> = ({ onStart }) => {
 };
 
 
-const App: React.FC = () => {
+const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avatarUrl?: string } }> = ({ userProfile }) => {
+  console.log('[W1000App] Received userProfile:', userProfile);
+  console.log('[W1000App] userProfile.avatarUrl:', userProfile?.avatarUrl);
+  
   const [hasLaunched, setHasLaunched] = useState(true);
   const [interfaceMode, setInterfaceMode] = useState<InterfaceMode>('STANDARD');
   const [currentView, setCurrentView] = useState<ScreenView>('MFD');
@@ -260,7 +263,7 @@ const App: React.FC = () => {
         case Page.HANDBOOK: return <ProgramHandbook onSelectChapter={handleSubPageSelection} onExit={handleGoHome} />;
         case Page.EXAMS: return <ExamTerminal onSelectExam={handleSubPageSelection} onExit={handleGoHome} />;
         case Page.SIMULATOR: return <SimulatorRoom onExit={handleGoHome} />;
-        case Page.BLACKBOX: return <BlackBox onExit={handleGoHome} />;
+        case Page.BLACKBOX: return <BlackBox isLoggedIn={true} onLogin={() => {}} onLogout={handleGoHome} userProfile={userProfile} />;
         case Page.PROFILE: return <UserProfile />;
         case Page.COMMS:
              return (
@@ -301,6 +304,7 @@ const App: React.FC = () => {
                   isMiniMfdOpen={isMiniMfdOpen}
                   setIsMiniMfdOpen={setIsMiniMfdOpen}
                   onSelectSubPage={handleSubPageSelection}
+                  userProfile={userProfile}
             />
         )}
       </div>

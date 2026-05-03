@@ -14,6 +14,11 @@ interface PrimaryFlightDisplayProps {
     isMiniMfdOpen: boolean;
     setIsMiniMfdOpen: (isOpen: boolean) => void;
     onSelectSubPage: (id: string | number) => void;
+    userProfile?: {
+        displayName?: string;
+        email?: string;
+        avatarUrl?: string;
+    };
 }
 
 // Utility for rolling numbers
@@ -23,7 +28,7 @@ const Digit = ({ value }: { value: string }) => (
     </div>
 );
 
-const PrimaryFlightDisplay: React.FC<PrimaryFlightDisplayProps> = ({ activePage, subPageId, isMiniMfdOpen, setIsMiniMfdOpen, onSelectSubPage }) => {
+const PrimaryFlightDisplay: React.FC<PrimaryFlightDisplayProps> = ({ activePage, subPageId, isMiniMfdOpen, setIsMiniMfdOpen, onSelectSubPage, userProfile }) => {
   // Simulated flight data state
   const [pitch, setPitch] = useState(0);
   const [roll, setRoll] = useState(0);
@@ -66,7 +71,7 @@ const PrimaryFlightDisplay: React.FC<PrimaryFlightDisplayProps> = ({ activePage,
                </div>
           );
           case Page.FORUM: return <Forum postId={subPageId} />;
-          case Page.BLACKBOX: return <BlackBox />;
+          case Page.BLACKBOX: return <BlackBox userProfile={userProfile} />;
           case Page.PROFILE: return <UserProfile />;
           case Page.PFD:
           default: 

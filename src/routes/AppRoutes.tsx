@@ -81,6 +81,7 @@ import SpecializedPathwaysIndex from '@/portal/pages/SpecializedPathwaysIndex';
 import SpecializedOperationsIndex from '@/portal/pages/SpecializedOperationsIndex';
 import CareerPathwaysIndex from '@/portal/pages/CareerPathwaysIndex';
 import { AccessPortal2Page } from '@/components/website/components/AccessPortal2Page';
+import ExaminationPortal from '@/components/website/components/examinations/ExaminationPortal';
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -160,8 +161,7 @@ export const AppRoutes = () => {
       {/* Program routes */}
       <Route path="/about_programs" element={<ProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/programs" element={<ProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
-      <Route path="/benefits" element={<ProgramBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
-      <Route path="/news-updates" element={<NewsUpdatesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+            <Route path="/news-updates" element={<NewsUpdatesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/transition-program" element={<TransitionProgramPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/ebt-cbta" element={<EBTCBTAPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
@@ -240,6 +240,11 @@ export const AppRoutes = () => {
       <Route path="/specialized-operations" element={<SpecializedOperationsIndex onBack={() => handleBack('/pathways-modern')} onNavigate={handleNavigate} />} />
       <Route path="/career-pathways" element={<CareerPathwaysIndex onBack={() => handleBack('/pathways-modern')} onNavigate={handleNavigate} />} />
       <Route path="/access-portal-2" element={<AccessPortal2Page onNavigate={handleNavigate} />} />
+      <Route path="/examination-portal" element={
+        <ProtectedRoute>
+          <ExaminationPortal />
+        </ProtectedRoute>
+      } />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />

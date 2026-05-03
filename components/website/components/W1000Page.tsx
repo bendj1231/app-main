@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { W1App } from '@/external-references/W12/index.tsx';
 import { ArrowLeft, Maximize2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/shared/lib/supabase';
+import { useAuth } from '../../../src/contexts/AuthContext';
 
 interface W1000PageProps {
     onBack: () => void;
@@ -8,6 +11,74 @@ interface W1000PageProps {
 }
 
 const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
+    const navigate = useNavigate();
+    const { currentUser, userProfile } = useAuth();
+    const [notifications, setNotifications] = useState<Array<{ id: string; title: string; message: string; type: 'success' | 'error' | 'warning' | 'info'; is_read: boolean; created_at: string }>>([]);
+    const [notificationCount, setNotificationCount] = useState(0);
+    const [w12UserProfile, setW12UserProfile] = useState<{ displayName?: string; email?: string; avatarUrl?: string } | undefined>(undefined);
+
+    // Initialize w12UserProfile and fetch profile image
+    useEffect(() => {
+        const initProfile = async () => {
+            let profile = userProfile ? {
+                displayName: userProfile.display_name || userProfile.displayName || currentUser?.email?.split('@')[0],
+                email: currentUser?.email,
+                avatarUrl: userProfile.profile_image_url || userProfile.avatar_url || userProfile.avatarUrl
+            } : currentUser ? {
+                displayName: currentUser.email?.split('@')[0],
+                email: currentUser.email,
+                avatarUrl: undefined
+            } : undefined;
+
+            // Fetch profile image from profiles table if not already set
+            if (currentUser?.uid && !profile?.avatarUrl) {
+                try {
+                    const { data, error } = await supabase
+                        .from('profiles')
+                        .select('profile_image_url')
+                        .eq('id', currentUser.uid)
+                        .maybeSingle();
+
+                    if (!error && data && data.profile_image_url) {
+                        profile = { ...profile, avatarUrl: data.profile_image_url };
+                    }
+                } catch (err) {
+                    console.error('Error fetching profile image:', err);
+                }
+            }
+
+            setW12UserProfile(profile);
+        };
+
+        initProfile();
+    }, [userProfile, currentUser]);
+
+    // Fetch notifications
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            if (userProfile?.id) {
+                try {
+                    const { data, error } = await supabase
+                        .from('notifications')
+                        .select('*')
+                        .eq('user_id', userProfile.id)
+                        .order('created_at', { ascending: false })
+                        .limit(10);
+
+                    if (!error && data) {
+                        setNotifications(data);
+                        const unreadCount = data.filter((n: any) => !n.is_read).length;
+                        setNotificationCount(unreadCount);
+                    }
+                } catch (err) {
+                    console.error('Error fetching notifications:', err);
+                }
+            }
+        };
+
+        fetchNotifications();
+    }, [userProfile]);
+
     // Hide side panel when W12 loads
     useEffect(() => {
         // Add a class to body to hide any global side panels
@@ -16,6 +87,27 @@ const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
             document.body.classList.remove('w12-fullscreen');
         };
     }, []);
+
+    // Handle logout message from W12 iframe
+    useEffect(() => {
+        const handleMessage = async (event: MessageEvent) => {
+            if (event.data.action === 'logout') {
+                try {
+                    // Sign out from Supabase auth
+                    await supabase.auth.signOut();
+                    // Navigate to home page
+                    navigate('/');
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    // Fallback: still navigate to home page even if logout fails
+                    navigate('/');
+                }
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
+    }, [navigate]);
 
     const toggleFullscreen = () => {
         if (!document.fullscreenElement) {
@@ -36,7 +128,7 @@ const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
                     <ArrowLeft className="w-4 h-4 text-white group-hover:-translate-x-1 transition-transform" />
                     <span className="text-white text-xs font-medium">Back</span>
                 </button>
-                
+
                 <button
                     onClick={toggleFullscreen}
                     className="flex items-center gap-2 bg-black/60 backdrop-blur-lg border border-white/30 px-3 py-2 rounded-lg hover:bg-black/80 transition-all group shadow-lg"
@@ -46,7 +138,7 @@ const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
                     <span className="text-white text-xs font-medium">FS</span>
                 </button>
             </div>
-            
+
             {/* W12 Application - Full Screen without side tools */}
             <div className="h-full w-full">
                 <style>{`
@@ -59,7 +151,13 @@ const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
                         margin-left: 0 !important;
                     }
                 `}</style>
-                <W1App />
+                {w12UserProfile ? (
+                    <W1App userProfile={w12UserProfile} notifications={notifications} notificationCount={notificationCount} />
+                ) : (
+                    <div className="h-full w-full flex items-center justify-center bg-black">
+                        <div className="w-16 h-16 border-4 border-sky-500/20 border-t-sky-500 rounded-full animate-spin"></div>
+                    </div>
+                )}
             </div>
         </div>
     );

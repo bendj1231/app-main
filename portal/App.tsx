@@ -1051,7 +1051,11 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           console.log('[DEBUG App] Rendering W1000App, currentView:', currentView);
           console.log('[DEBUG App] W1000App component:', W1000App);
           try {
-            return <W1000App />;
+            return <W1000App userProfile={{
+  displayName: authState.userProfile?.firstName || authState.userProfile?.email?.split('@')[0],
+  email: authState.userProfile?.email,
+  avatarUrl: authState.userProfile?.profile_image_url
+}} />;
           } catch (error) {
             console.error('[DEBUG App] Error rendering W1000App:', error);
             return <div style={{color: 'white', padding: '20px'}}>Error loading W1000 App: {error.message}</div>;
