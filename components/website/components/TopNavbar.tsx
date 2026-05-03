@@ -43,7 +43,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     currentPage = '',
     pathwayGridRef,
 }) => {
-    const { currentUser, logout, loading: authLoading, signupInProgress } = useAuth();
+    const { currentUser, userProfile, logout, loading: authLoading, signupInProgress } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(forceScrolled);
     const [passedPathwayGrid, setPassedPathwayGrid] = useState(false);
@@ -287,64 +287,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     // Fetch notification count and notifications
     useEffect(() => {
         const fetchNotifications = async () => {
-            if (currentUser?.uid) {
+            if (currentUser?.uid && userProfile?.id) {
                 try {
-                    console.log('Fetching notifications for Firebase UID:', currentUser.uid);
+                    console.log('Fetching notifications for Supabase user:', userProfile.id);
                     
-                    // First, get the profile ID from the Firebase UID
-                    const { data: profileData, error: profileError } = await supabase
-                        .from('profiles')
-                        .select('id')
-                        .eq('firebase_uid', currentUser.uid)
-                        .maybeSingle();
+                    const profileId = userProfile.id;
                     
-                    if (profileError || !profileData) {
-                        console.error('Error fetching profile:', profileError);
-                        // Try to fetch by email as fallback
-                        const { data: emailProfile, error: emailError } = await supabase
-                            .from('profiles')
-                            .select('id')
-                            .eq('email', currentUser.email)
-                            .maybeSingle();
-                        
-                        if (emailError || !emailProfile) {
-                            console.error('Error fetching profile by email:', emailError);
-                            return;
-                        }
-                        
-                        const profileId = emailProfile.id;
-                        console.log('Found profile by email, ID:', profileId);
-                        
-                        // Fetch count
-                        const { count, error: countError } = await supabase
-                            .from('notifications')
-                            .select('*', { count: 'exact', head: true })
-                            .eq('user_id', profileId)
-                            .eq('is_read', false);
-                        
-                        if (!countError && count !== null) {
-                            setNotificationCount(count);
-                            console.log('Notification count:', count);
-                        }
-
-                        // Fetch actual notifications
-                        const { data, error } = await supabase
-                            .from('notifications')
-                            .select('*')
-                            .eq('user_id', profileId)
-                            .order('created_at', { ascending: false })
-                            .limit(10);
-                        
-                        if (!error && data) {
-                            setNotifications(data);
-                            console.log('Fetched notifications:', data.length);
-                        }
-                        return;
-                    }
-
-                    const profileId = profileData.id;
-                    console.log('Found profile by Firebase UID, ID:', profileId);
-
                     // Fetch count
                     const { count, error: countError } = await supabase
                         .from('notifications')
@@ -368,6 +316,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     if (!error && data) {
                         setNotifications(data);
                         console.log('Fetched notifications:', data.length);
+                    } else if (error) {
+                        console.error('Error fetching notifications:', error);
                     }
                 } catch (err) {
                     console.error('Error fetching notifications:', err);
@@ -457,60 +407,60 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const navItems: NavItem[] = [
         {
             name: 'Home',
-            target: 'home'
+            target: '/access-portal-2?view=home'
         },
         {
             name: 'About',
-            target: 'about',
+            target: '/access-portal-2?view=about',
             subItems: [
-                { category: 'For Pilots', name: 'About PilotRecognition', target: 'about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
-                { name: 'Mission & Vision', target: 'mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
-                { name: 'What is the Pilot Gap?', target: 'pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
-                { category: 'For Industry', name: 'For Airlines & Operators', target: 'about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
-                { name: 'Industry Stewardship', target: 'industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
+                { category: 'For Pilots', name: 'About PilotRecognition', target: '/access-portal-2?view=about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
+                { name: 'Mission & Vision', target: '/access-portal-2?view=mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
+                { name: 'What is the Pilot Gap?', target: '/access-portal-2?view=pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
+                { category: 'For Industry', name: 'For Airlines & Operators', target: '/access-portal-2?view=about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
+                { name: 'Industry Stewardship', target: '/access-portal-2?view=industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
             ]
         },
         {
             name: 'Programs',
-            target: 'about_programs',
+            target: '/access-portal-2?view=about_programs',
             subItems: [
-                { category: 'Core Programs', name: 'Foundational Program', target: 'foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
-                { name: 'What is the pilot gap?', target: 'pilot-gap', isYellow: true },
-                { name: 'Transition Program', target: 'transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
-                { name: 'EBT CBTA Familiarization', target: 'ebt-cbta', isYellow: true }
+                { category: 'Core Programs', name: 'Foundational Program', target: '/access-portal-2?view=foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
+                { name: 'What is the pilot gap?', target: '/access-portal-2?view=pilot-gap', isYellow: true },
+                { name: 'Transition Program', target: '/access-portal-2?view=transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
+                { name: 'EBT CBTA Familiarization', target: '/access-portal-2?view=ebt-cbta', isYellow: true }
             ]
         },
         {
             name: 'Pathways',
-            target: 'pathways-modern',
+            target: '/access-portal-2?view=pathways-modern',
             subItems: [
-                { name: 'Type Rating Search', target: 'type-rating-search', bullets: ['Aircraft Manufacturers', 'Training Centers', 'Licensing Requirements'] },
-                { name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Entry Requirements', 'Operator Standards', 'Application Insights'] },
-                { name: 'Pilot Career Pathways', target: 'pathways-modern', bullets: ['Cadet Programs', 'Cargo & Charter', 'eVTOL & Drones'] }
+                { name: 'Type Rating Search', target: '/access-portal-2?view=type-rating-search', bullets: ['Aircraft Manufacturers', 'Training Centers', 'Licensing Requirements'] },
+                { name: 'Airline Expectations', target: '/access-portal-2?view=airline-expectations', bullets: ['Entry Requirements', 'Operator Standards', 'Application Insights'] },
+                { name: 'Pilot Career Pathways', target: '/access-portal-2?view=pathways-modern', bullets: ['Cadet Programs', 'Cargo & Charter', 'eVTOL & Drones'] }
             ]
         },
         {
             name: 'Pilot Recognition',
-            target: pilotRecognitionTarget,
+            target: `/access-portal-2?view=${pilotRecognitionTarget}`,
             subItems: [
-                { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Profile', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
-                { name: 'Recognition Career Matches', target: 'recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] },
-                { name: 'Examination Results', target: 'examination-results-directory', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
-                { name: 'Digital Logbook', target: 'digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
+                { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: '/access-portal-2?view=atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { name: 'Pilot Recognition Profile', target: '/access-portal-2?view=recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'Recognition Career Matches', target: '/access-portal-2?view=recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] },
+                { name: 'Examination Results', target: '/access-portal-2?view=examination-results-directory', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
+                { name: 'Digital Logbook', target: '/access-portal-2?view=digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
             ]
         },
         {
             name: 'Membership',
-            target: 'membership',
+            target: '/access-portal-2?view=membership',
             subItems: [
-                { category: 'The Network', name: 'Benefits of Membership', target: 'membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
-                { category: 'Premium Tier', name: 'Recognition Plus', target: 'recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
-                { name: 'Become a Member', target: 'become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] },
-                { category: 'The Digital Ecosystem', name: 'PilotRecognition W1000 Suite', target: 'w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
-                { name: 'Hinfact AIRBUS integrated applications', target: 'hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
-                { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Systems', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { category: 'The Network', name: 'Benefits of Membership', target: '/access-portal-2?view=membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
+                { category: 'Premium Tier', name: 'Recognition Plus', target: '/access-portal-2?view=recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
+                { name: 'Become a Member', target: '/access-portal-2?view=become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] },
+                { category: 'The Digital Ecosystem', name: 'PilotRecognition W1000 Suite', target: '/access-portal-2?view=w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
+                { name: 'Hinfact AIRBUS integrated applications', target: '/access-portal-2?view=hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
+                { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: '/access-portal-2?view=atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { name: 'Pilot Recognition Systems', target: '/access-portal-2?view=recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
             ]
         },
         { name: 'FAQ', target: 'faq' },
@@ -532,6 +482,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             setActiveDropdown(null);
             setActiveSubItem(null);
         }, 150);
+    };
+
+    const handleNavClick = (target: string) => {
+        // Use page routing for Portal 2 URLs
+        if (target.startsWith('/access-portal-2')) {
+            window.location.href = target;
+        } else {
+            onNavigate(target);
+        }
     };
 
     return (
@@ -598,7 +557,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 onMouseLeave={handleMouseLeave}
                             >
                                 <button
-                                    onClick={() => onNavigate(item.target)}
+                                    onClick={() => handleNavClick(item.target)}
                                     className={`text-[0.7rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${item.target === 'home' && !forceScrolled
                                         ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
                                             ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
@@ -1209,7 +1168,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             {visibleNavItems.map((item) => (
                                 <div key={item.name} className="flex flex-col items-center gap-3">
                                     <button
-                                        onClick={() => { onNavigate(item.target); setIsMenuOpen(false); }}
+                                        onClick={() => { handleNavClick(item.target); setIsMenuOpen(false); }}
                                         className="text-2xl md:text-3xl font-bold text-white uppercase tracking-widest hover:text-blue-400 transition-colors py-3 px-6 min-h-[48px] min-w-[200px]"
                                     >
                                         {item.name}
@@ -1219,7 +1178,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                             {item.subItems.map((subItem) => (
                                                 <button
                                                     key={`${subItem.name}-${subItem.target}`}
-                                                    onClick={() => { onNavigate(subItem.target); setIsMenuOpen(false); }}
+                                                    onClick={() => { handleNavClick(subItem.target); setIsMenuOpen(false); }}
                                                     className={`text-sm md:text-base font-medium uppercase tracking-widest transition-colors flex items-center justify-center gap-2 py-3 px-4 min-h-[44px] w-full ${subItem.isYellow ? 'text-yellow-400' : 'text-white/40 hover:text-blue-300'}`}
                                                 >
                                                     {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}

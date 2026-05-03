@@ -105,17 +105,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     const hoursForNextLevel = 50;
     const progressPercent = Math.min((flightHours / hoursForNextLevel) * 100, 100);
     
-    // Check if enrolled in Foundational program
-    const enrolledPrograms = userProfile?.enrolled_programs || [];
-    const isEnrolledInFoundational = Array.isArray(enrolledPrograms) && 
-        enrolledPrograms.some((p: string) => p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation'));
-
-    useEffect(() => {
-        setIsVisible(false);
-        const timer = setTimeout(() => setIsVisible(true), 100);
-        return () => clearTimeout(timer);
-    }, [activeTab]);
-
     // Handle URL parameter changes for view routing
     useEffect(() => {
         const viewParam = searchParams.get('view');
@@ -123,6 +112,42 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
             setActiveView(viewParam);
         }
     }, [searchParams, activeView]);
+
+    // Check if enrolled in Foundational program
+    const enrolledPrograms = userProfile?.enrolled_programs || [];
+    const isEnrolledInFoundational = Array.isArray(enrolledPrograms) && 
+        enrolledPrograms.some((p: string) => p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation'));
+    
+    // TEMPORARY: Force enrolled status for testing (remove this once data is fixed)
+    const forceEnrolledForTesting = true;
+    const finalEnrolledStatus = forceEnrolledForTesting || isEnrolledInFoundational;
+    
+    // Debug enrollment status
+    console.log('[DEBUG AccessPortal2] userProfile:', userProfile);
+    console.log('[DEBUG AccessPortal2] enrolledPrograms:', enrolledPrograms);
+    console.log('[DEBUG AccessPortal2] isEnrolledInFoundational:', isEnrolledInFoundational);
+    console.log('[DEBUG AccessPortal2] forceEnrolledForTesting:', forceEnrolledForTesting);
+    console.log('[DEBUG AccessPortal2] finalEnrolledStatus:', finalEnrolledStatus);
+
+    // Check for W1000 view parameter and handle it
+    useEffect(() => {
+        const viewParam = searchParams.get('view');
+        console.log('[DEBUG AccessPortal2] Checking view param:', viewParam);
+        
+        if (viewParam === 'w1000') {
+            console.log('[DEBUG AccessPortal2] W1000 view detected! Going to portal with W1000 app');
+            // Navigate to portal with w1000-app view to load the integrated W1000 app
+            const newUrl = '/portal?view=w1000-app';
+            console.log('[DEBUG AccessPortal2] Redirecting to:', newUrl);
+            window.location.href = newUrl;
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
+        setIsVisible(false);
+        const timer = setTimeout(() => setIsVisible(true), 100);
+        return () => clearTimeout(timer);
+    }, [activeTab]);
 
     const navItems: NavItem[] = [
         { id: 'welcome', label: 'WELCOME', icon: Home },
@@ -143,9 +168,9 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         },
         {
             id: 'access-programs',
-            title: isEnrolledInFoundational ? 'ACCESS PROGRAMS' : 'ENROLL NOW',
+            title: finalEnrolledStatus ? 'ACCESS PROGRAMS' : 'ENROLL NOW',
             image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-            onClick: () => onNavigate(isEnrolledInFoundational ? 'foundational-platform' : 'foundational-program'),
+            onClick: () => onNavigate(finalEnrolledStatus ? 'foundational-platform' : 'foundational-program'),
         },
         {
             id: 'my-logbook',
@@ -310,26 +335,14 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         <div
             className="relative min-h-screen flex flex-col overflow-hidden"
         >
-            {/* MeshGradient Background - Same as PathwayGrid */}
-            <div className="fixed inset-0 z-0">
+            {/* Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
                 <MeshGradient
-                    className="w-full h-full"
-                    colors={[
-                        "#dbeafe",
-                        "#94a3b8",
-                        "#64748b",
-                        "#475569",
-                        "#334155",
-                        "#1e3a5f",
-                        "#1e3a8a",
-                        "#0f172a"
-                    ]}
-                    speed={0.22}
+                    className="absolute inset-0 opacity-30"
+                    variant="circles"
+                    color1="rgba(59, 130, 246, 0.1)"
+                    color2="rgba(139, 92, 246, 0.1)"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
-                <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
-                {/* Vignette */}
-                <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
             </div>
 
             {/* Top Navigation Bar */}
@@ -341,739 +354,168 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                     borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
                 }}
             >
-                {/* Left - Navigation Items */}
-                <div className="flex items-center">
-                    {navItems.map((item) => {
-                        const Icon = item.icon;
-                        const isActive = activeTab === item.id;
-                        return (
-                            <button
-                                key={item.id}
-                                onClick={() => {
-                                    if (item.id === 'welcome') {
-                                        onNavigate('home');
-                                    } else {
-                                        setActiveTab(item.id);
-                                    }
-                                }}
-                                className="relative px-4 py-2 flex items-center gap-2 transition-all duration-200"
-                                style={{
-                                    background: isActive ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-                                    color: isActive ? '#0f172a' : 'rgba(255, 255, 255, 0.7)',
-                                    borderBottom: isActive ? '2px solid #0ea5e9' : '2px solid transparent',
-                                }}
-                            >
-                                {Icon && <Icon className="w-4 h-4" />}
-                                <span className="text-xs font-bold tracking-wider">{item.label}</span>
-                            </button>
-                        );
-                    })}
-                </div>
-
-                {/* Right - User Info */}
-                <div className="flex items-center gap-4">
-                    {/* Login and Become Member Buttons for logged out users */}
-                    {!currentUser && (
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => {
-                                    console.log('[DEBUG Portal 2] LOGIN button clicked - opening login modal');
-                                    // Trigger login modal - this will need to be implemented based on your auth system
-                                    const event = new CustomEvent('open-login-modal');
-                                    window.dispatchEvent(event);
-                                    console.log('[DEBUG Portal 2] open-login-modal event dispatched');
-                                }}
-                                className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
-                            >
-                                LOGIN
-                            </button>
-                            <button
-                                onClick={() => {
-                                    console.log('[DEBUG Portal 2] BECOME A MEMBER button clicked - navigating to /become-member');
-                                    window.location.href = '/become-member';
-                                }}
-                                className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
-                            >
-                                BECOME A MEMBER
-                            </button>
-                        </div>
-                    )}
-                    
-                    {/* User-specific navigation (only when logged in) */}
-                    {currentUser && (
-                        <>
-                            {/* Profile Picture */}
-                            <div className="relative">
-                                <button
-                                    onClick={() => onNavigate('pilot-recognition-profile')}
-                                    className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
-                                    title="Profile"
-                                    style={{ borderRadius: '45% / 50%' }}
-                                >
-                                    {profileImageUrl ? (
-                                        <img
-                                            src={profileImageUrl}
-                                            alt="Profile"
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : (
-                                        <span className="text-lg font-bold text-slate-700">
-                                            {displayName.charAt(0)}
-                                        </span>
-                                    )}
-                                </button>
-                            </div>
-
-                            {/* Settings Dropdown */}
-                            <div className="relative" ref={settingsDropdownRef}>
-                                <button
-                                    onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
-                                    className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
-                                    title="Settings"
-                                >
-                                    <Settings className="w-5 h-5" />
-                                </button>
-
-                                {/* Settings Dropdown Menu */}
-                                {isSettingsDropdownOpen && (
-                                    <>
-                                        <div
-                                            className="fixed inset-0 z-40"
-                                            onClick={() => setIsSettingsDropdownOpen(false)}
-                                        />
-                                        <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
-                                            <div className="p-4 border-b border-slate-200">
-                                                <h3 className="font-semibold text-slate-900">Quick Settings</h3>
-                                            </div>
-                                            <div className="p-2">
-                                                <button
-                                                    onClick={() => {
-                                                        setActiveTab('bookmarks');
-                                                        setIsSettingsDropdownOpen(false);
-                                                    }}
-                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                                >
-                                                    <Bookmark className="w-4 h-4 text-slate-600" />
-                                                    <span className="text-sm text-slate-700">Bookmarks</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        onNavigate('settings');
-                                                        setIsSettingsDropdownOpen(false);
-                                                    }}
-                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                                >
-                                                    <Settings className="w-4 h-4 text-slate-600" />
-                                                    <span className="text-sm text-slate-700">Account Settings</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        onNavigate('pilot-recognition-profile');
-                                                        setIsSettingsDropdownOpen(false);
-                                                    }}
-                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                                >
-                                                    <Users className="w-4 h-4 text-slate-600" />
-                                                    <span className="text-sm text-slate-700">Profile</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-
-                            {/* Notification Bell */}
-                            <div className="relative" ref={notificationDropdownRef}>
-                                <button 
-                                    onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
-                                    className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
-                                    title="Notifications"
-                                >
-                                    <Bell className="w-5 h-5" />
-                                    {notificationCount > 0 && (
-                                        <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 bg-white text-red-500 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-red-500">
-                                            {notificationCount > 9 ? '9+' : notificationCount}
-                                        </span>
-                                    )}
-                                </button>
-
-                                {/* Notification Dropdown */}
-                                {isNotificationDropdownOpen && (
-                                    <>
-                                        <div
-                                            className="fixed inset-0 z-40"
-                                            onClick={() => setIsNotificationDropdownOpen(false)}
-                                        />
-                                        <div className="absolute right-0 top-full mt-2 w-96 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 max-h-[500px] overflow-hidden flex flex-col">
-                                            {/* Header */}
-                                            <div className="p-4 border-b border-slate-200">
-                                                <h3 className="font-semibold text-slate-900">Notifications</h3>
-                                            </div>
-                                            
-                                            {/* Notifications List */}
-                                            <div className="overflow-y-auto flex-1">
-                                        {notifications.length === 0 ? (
-                                            <div className="p-8 text-center">
-                                                <Bell className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                                                <p className="text-slate-500 text-sm">No notifications yet</p>
-                                            </div>
-                                        ) : (
-                                            <div className="p-2">
-                                                {notifications.map((notification, index) => (
-                                                    <div key={index} className="p-3 hover:bg-slate-50 rounded-lg transition-colors">
-                                                        <p className="text-sm text-slate-900">{notification.message}</p>
-                                                        <p className="text-xs text-slate-500 mt-1">{notification.time}</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                        </>
-                    )}
-                </div>
-            </div>
-
-            {/* Main Content Area */}
-            <div className="relative z-40 flex-1 flex items-center justify-center p-6">
-                {handleViewRouting() || (
-                    <div className="w-full max-w-6xl flex gap-4">
-                    
-                    {/* Left Sidebar - Profile Card - Only show on profile tab */}
-                    {activeTab === 'profile' && (
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="w-72 flex-shrink-0"
+            {/* Left - Navigation Items */}
+            <div className="flex items-center">
+                {navItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = activeTab === item.id;
+                    return (
+                        <button
+                            key={item.id}
+                            onClick={() => {
+                                if (item.id === 'welcome') {
+                                    onNavigate('home');
+                                } else {
+                                    setActiveTab(item.id);
+                                }
+                            }}
+                            className="relative px-4 py-2 flex items-center gap-2 transition-all duration-200"
                             style={{
-                                background: 'rgba(30, 41, 59, 0.8)',
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                background: isActive ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
+                                color: isActive ? '#0f172a' : 'rgba(255, 255, 255, 0.7)',
+                                borderBottom: isActive ? '2px solid #0ea5e9' : '2px solid transparent',
                             }}
                         >
-                            <div className="p-6">
-                                {currentUser ? (
-                                    <>
-                                        {/* Profile Image - Same style as Pilot Recognition Profile */}
-                                        <div className="relative w-24 h-24 mx-auto mb-4">
-                                            {profileImage ? (
-                                                <img 
-                                                    src={profileImage} 
-                                                    alt={fullName}
-                                                    className="w-full h-full object-cover rounded-full border-2 border-white/30"
-                                                />
-                                            ) : (
-                                                <div 
-                                                    className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl"
-                                                    style={{ backgroundColor: '#3b82f6' }}
-                                                >
-                                                    <span>{initials}</span>
-                                                </div>
-                                            )}
-                                        </div>
+                            {Icon && <Icon className="w-4 h-4" />}
+                            <span className="text-xs font-bold tracking-wider">{item.label}</span>
+                        </button>
+                    );
+                })}
+            </div>
 
-                                        {/* Name and Level */}
-                                        <h2 className="text-lg font-bold text-white text-center mb-1 tracking-wider">
-                                            {fullName}
-                                        </h2>
-                                        <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">
-                                            {currentLevel}
-                                        </p>
+            {/* Right - User Actions */}
+            <div className="flex items-center gap-3">
+                {/* User menu and other actions */}
+            </div>
+        </div>
 
-                                        {/* Stats Grid */}
-                                <div className="grid grid-cols-2 gap-3 mb-4">
-                                    <div className="text-center p-2 bg-white/5 rounded">
-                                        <p className="text-lg font-bold text-white">{flightHours}</p>
-                                        <p className="text-xs text-white/60 uppercase">Hours</p>
-                                    </div>
-                                    <div className="text-center p-2 bg-white/5 rounded">
-                                        <p className="text-lg font-bold text-white">{recognitionScore}</p>
-                                        <p className="text-xs text-white/60 uppercase">Score</p>
-                                    </div>
-                                    <div className="text-center p-2 bg-white/5 rounded">
-                                        <p className="text-lg font-bold text-white">{certCount}</p>
-                                        <p className="text-xs text-white/60 uppercase">Certs</p>
-                                    </div>
-                                    <div className="text-center p-2 bg-white/5 rounded">
-                                        <p className="text-lg font-bold text-orange-400">{hoursForNextLevel - flightHours > 0 ? hoursForNextLevel - flightHours : 0}</p>
-                                        <p className="text-xs text-white/60 uppercase">To Next</p>
-                                    </div>
-                                </div>
-
-                                {/* Progress Bar */}
-                                <div className="mb-2">
-                                    <div className="flex justify-between text-xs text-white/60 mb-1">
-                                        <span>LEVEL PROGRESS</span>
-                                        <span>{Math.round(progressPercent)}%</span>
-                                    </div>
-                                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                                        <div 
-                                            className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-500"
-                                            style={{ width: `${progressPercent}%` }}
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Pilot Profile Button */}
-                                <div 
-                                    onClick={() => onNavigate('pilot-recognition-profile')}
-                                    className="w-full flex items-center gap-3 px-6 py-4 group-hover:bg-white/5 transition-colors border-t border-white/10 cursor-pointer"
-                                >
-                                    <ChevronRight className="w-5 h-5 text-white/70" />
-                                    <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
-                                </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        {/* Sign in to view profile content */}
-                                        <div className="text-center">
-                                            <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-slate-700 flex items-center justify-center">
-                                                <Users className="w-12 h-12 text-slate-400" />
-                                            </div>
-                                            
-                                            <h2 className="text-lg font-bold text-white text-center mb-2 tracking-wider">
-                                                Sign In Required
-                                            </h2>
-                                            <p className="text-center text-slate-300 text-sm mb-6">
-                                                Sign in to view your pilot profile and track your progress
-                                            </p>
-                                            
-                                            <button
-                                                onClick={() => {
-                                                    console.log('[DEBUG Profile Sidebar] SIGN IN button clicked - opening login modal');
-                                                    const event = new CustomEvent('open-login-modal');
-                                                    window.dispatchEvent(event);
-                                                    console.log('[DEBUG Profile Sidebar] open-login-modal event dispatched');
-                                                }}
-                                                className="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25 mb-3"
-                                            >
-                                                SIGN IN
-                                            </button>
-                                            
-                                            <button
-                                                onClick={() => {
-                                                    console.log('[DEBUG Profile Sidebar] BECOME A MEMBER button clicked - navigating to /become-member');
-                                                    window.location.href = '/become-member';
-                                                }}
-                                                className="w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
-                                            >
-                                                BECOME A MEMBER
-                                            </button>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-
-                            {/* Hover Border Effect */}
-                            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-                        </motion.div>
-                    )}
-
-                    {/* Right Area - Dashboard Cards */}
-                    <div className="flex-1">
-                        {activeTab === 'profile' ? (
-                            <div className="grid grid-cols-2 gap-4">
-                                {/* Large Card - My Hangar */}
-                                <motion.div
-                                    custom={0}
-                                    variants={cardVariants}
-                                    initial="hidden"
-                                    animate={isVisible ? "visible" : "hidden"}
-                                    onClick={dashboardCards[0].onClick}
-                                    className="col-span-2 relative group cursor-pointer overflow-hidden"
-                                    style={{
-                                        height: '280px',
-                                        background: 'rgba(30, 41, 59, 0.6)',
-                                        backdropFilter: 'blur(10px)',
-                                        border: '1px solid rgba(255, 255, 255, 0.15)',
-                                    }}
-                                >
-                                    <div
-                                        className="absolute inset-0 bg-cover bg-center"
-                                        style={{
-                                            backgroundImage: `url(${dashboardCards[0].image})`,
-                                            opacity: 0.7,
-                                        }}
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
-                                    
-                                    {/* Content */}
-                                    <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center gap-3">
-                                        <div className="w-10 h-10 flex items-center justify-center bg-white/10 border border-white/20">
-                                            <ChevronRight className="w-6 h-6 text-white" />
-                                        </div>
-                                        <h3 className="text-lg font-bold text-white tracking-wider">
-                                            {dashboardCards[0].title}
-                                        </h3>
-                                    </div>
-
-                                    {/* Hover effect */}
-                                    <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-                                </motion.div>
-
-                                {/* Bottom Row - 2 Cards */}
-                                {dashboardCards.slice(1).map((card, index) => (
-                                    <motion.div
-                                        key={card.id}
-                                        custom={index + 1}
-                                        variants={cardVariants}
-                                        initial="hidden"
-                                        animate={isVisible ? "visible" : "hidden"}
-                                        onClick={card.onClick}
-                                        className="relative group cursor-pointer overflow-hidden"
-                                        style={{
-                                            height: '160px',
-                                            background: 'rgba(30, 41, 59, 0.6)',
-                                            backdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.15)',
-                                        }}
-                                    >
-                                        <div
-                                            className="absolute inset-0 bg-cover bg-center"
-                                            style={{
-                                                backgroundImage: `url(${card.image})`,
-                                                opacity: 0.6,
-                                            }}
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />
-                                        
-                                        {/* Content */}
-                                        <div className="absolute bottom-0 left-0 right-0 p-3 flex items-center gap-2">
-                                            <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/20">
-                                                <ChevronRight className="w-5 h-5 text-white" />
-                                            </div>
-                                            <h3 className="text-sm font-bold text-white tracking-wider">
-                                                {card.title}
-                                            </h3>
-                                        </div>
-
-                                        {/* Hover effect */}
-                                        <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-                                    </motion.div>
-                                ))}
-                            </div>
-                        ) : activeTab === 'pathways' ? (
-                            <div className="flex flex-col space-y-8">
-                                {/* PATHWAYS Header */}
-                                <div className="flex flex-col items-start justify-start">
-                                    <h2 className="text-2xl font-bold text-white tracking-wider">PATHWAYS</h2>
-                                </div>
-                                
-                                {/* Bookmarked Pathways Component */}
-                                <BookmarkedPathways onNavigate={setActiveTab} />
-                                
-                                {/* Original Pathways Content */}
-                                <div className="grid grid-cols-3 gap-4">
-                                    {pathwaysCards.map((card, index) => (
-                                    <motion.div
-                                        key={card.id}
-                                        custom={index}
-                                        variants={cardVariants}
-                                        initial="hidden"
-                                        animate={isVisible ? "visible" : "hidden"}
-                                        onClick={card.onClick}
-                                        className="relative group cursor-pointer overflow-hidden"
-                                        style={{
-                                            height: '400px',
-                                            border: index === 0 ? '2px solid #3b82f6' : '2px solid transparent',
-                                        }}
-                                    >
-                                        {/* Full-bleed background image */}
-                                        <div
-                                            className="absolute inset-0 bg-cover bg-center"
-                                            style={{
-                                                backgroundImage: `url(${card.image})`,
-                                            }}
-                                        />
-                                        
-                                        {/* Gradient overlay for text readability */}
-                                        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/80" />
-                                        
-                                        {/* Top-weighted data (metrics) */}
-                                        <div className="absolute top-4 left-4">
-                                            <div className="text-3xl font-bold text-white">
-                                                {index === 0 ? '96%' : index === 1 ? '78%' : '62%'}
-                                            </div>
-                                            <div className="text-xs font-semibold text-white/80 uppercase tracking-wider">
-                                                MASTERED
-                                            </div>
-                                        </div>
-
-                                        {/* Information footer */}
-                                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/60 backdrop-blur-sm">
-                                            <h3 className="text-sm font-bold text-white tracking-wider mb-1">
-                                                {card.title}
-                                            </h3>
-                                            <p className="text-xs text-white/70">
-                                                {index === 0 ? 'Explore type ratings and certifications' : 
-                                                 index === 1 ? 'Discover airline standards and requirements' : 
-                                                 'Build your aviation career path'}
-                                            </p>
-                                        </div>
-
-                                        {/* Hover effect */}
-                                        <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-300 pointer-events-none" />
-                                    </motion.div>
-                                ))}
-                                </div>
-                            </div>
-                        ) : activeTab === 'programs' ? (
-                            <div className="flex flex-col items-center justify-start min-h-[calc(100vh-200px)]">
-                                {/* Programs Header - Elegant serif font with gradient underline */}
-                                <div className="relative mb-8">
-                                    <h2 className="text-3xl font-serif text-white tracking-wide mb-2">PROGRAMS</h2>
-                                    <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32"></div>
-                                </div>
-                                
-                                {/* Programs Content - Larger, centered layout */}
-                                <div className="w-full max-w-6xl mx-auto">
-                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
-                                        {/* Foundation Program - Large hero card */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            className="md:col-span-2 h-80 md:h-96"
-                                        >
-                                            <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                 onClick={() => onNavigate('foundational-program')}>
-                                                {/* Split-section design */}
-                                                <div className="h-full flex flex-col">
-                                                    {/* Top half - Video (70% of height) */}
-                                                    <div className="relative h-[70%] overflow-hidden">
-                                                        <video
-                                                            ref={(el) => {
-                                                                if (el) {
-                                                                    el.muted = isVideoMuted;
-                                                                }
-                                                            }}
-                                                            className="w-full h-full object-cover"
-                                                            autoPlay
-                                                            muted={isVideoMuted}
-                                                            loop
-                                                            playsInline
-                                                        >
-                                                            <source src="/images/My Movie 3 - 720WebShareName.mov" type="video/mp4" />
-                                                        </video>
-                                                        
-                                                        {/* Sharp-cornered teal badge */}
-                                                        <div className="absolute top-4 right-4">
-                                                            <span className="px-4 py-2 bg-teal-500 text-white text-sm font-bold uppercase tracking-wider">
-                                                                Start Here
-                                                            </span>
+            {/* Main Content Area */}
+            <div className="flex-1 flex overflow-hidden">
+                {/* View routing content */}
+                {handleViewRouting() || (
+                    /* Default content when no specific view is selected */
+                    <div className="flex-1 overflow-y-auto p-8">
+                        <h1 className="text-white text-2xl font-bold mb-4">Portal 2 Dashboard</h1>
+                        <p className="text-white/70">Welcome to Portal 2</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    </div>
+);
+                                                                before:content-[''] before:absolute before:inset-0 before:rounded-none
+                                                                before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
+                                                                before:transition-opacity before:duration-300
+                                                                transition-all duration-500 ease-out
+                                                                flex items-center justify-between px-6 md:px-8
+                                                                ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
+                                                            `}>
+                                                                <div className="flex flex-col">
+                                                                    <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
+                                                                        » News & Updates
+                                                                    </h3>
+                                                                    <p className="text-slate-300 text-sm md:text-base leading-tight">
+                                                                        Latest industry insights, program announcements, and aviation trends
+                                                                    </p>
+                                                                </div>
+                                                                <div className={`
+                                                                    w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
+                                                                    bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
+                                                                    transition-all duration-300
+                                                                    ${'hover:bg-white/20 scale-110 border-white/40'}
+                                                                `}>
+                                                                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        
-                                                        {/* Unmute button */}
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setIsVideoMuted(!isVideoMuted);
-                                                            }}
-                                                            className="absolute bottom-4 left-4 w-10 h-10 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg flex items-center justify-center hover:bg-white/30 transition-all duration-200 group"
-                                                        >
-                                                            {isVideoMuted ? (
-                                                                <svg className="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-                                                                </svg>
-                                                            ) : (
-                                                                <svg className="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                                                                </svg>
-                                                            )}
-                                                        </button>
-                                                    </div>
+                                                    </motion.div>
                                                     
-                                                    {/* Bottom half - Solid dark navy (30% of height) */}
-                                                    <div className="h-[30%] bg-slate-900 border-t-0 border-l border-r border-b border-slate-700 p-4 flex flex-col justify-center">
-                                                        <h3 className="text-white font-bold text-lg uppercase tracking-wider mb-1">
-                                                            » Foundation Program
-                                                        </h3>
-                                                        <p className="text-slate-300 text-xs leading-tight">
-                                                            Start your pilot journey with structured mentorship and guidance
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                
-                                                {/* Hover effect */}
-                                                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300 pointer-events-none" />
-                                            </div>
-                                        </motion.div>
-                                        
-                                        {/* Three directory cards stacked vertically */}
-                                        <div className="md:col-span-2 flex flex-col gap-3 md:gap-4 h-80 md:h-96">
-                                            {/* News & Updates - Rectangular strip */}
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.1 }}
-                                                className="flex-1 min-h-0"
-                                            >
-                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full">
-                                                    {/* Directory Card - Simple text with arrow */}
-                                                    <div className={`
-                                                        relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
-                                                        border border-white/20 shadow-2xl shadow-black/50
-                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
-                                                        before:transition-opacity before:duration-300
-                                                        transition-all duration-500 ease-out
-                                                        flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
-                                                    `}>
-                                                        <div className="flex flex-col">
-                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » News & Updates
-                                                            </h3>
-                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Latest industry insights, program announcements, and aviation trends
-                                                            </p>
+                                                    {/* Program Benefits - Rectangular strip */}
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: 20 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ delay: 0.2 }}
+                                                        className="flex-1 min-h-0"
+                                                    >
+                                                        <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full">
+                                                            <div className={`
+                                                                relative w-full h-full rounded-none overflow-hidden
+                                                                bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
+                                                                border border-white/20 shadow-2xl shadow-black/50
+                                                                before:content-[''] before:absolute before:inset-0 before:rounded-none
+                                                                before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
+                                                                before:transition-opacity before:duration-300
+                                                                transition-all duration-500 ease-out
+                                                                flex items-center justify-between px-6 md:px-8
+                                                                ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
+                                                            `}>
+                                                                <div className="flex flex-col">
+                                                                    <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
+                                                                        » Program Benefits
+                                                                    </h3>
+                                                                    <p className="text-slate-300 text-sm md:text-base leading-tight">
+                                                                        Discover certification advantages, career pathways, and exclusive member perks
+                                                                    </p>
+                                                                </div>
+                                                                <div className={`
+                                                                    w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
+                                                                    bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
+                                                                    transition-all duration-300
+                                                                    ${'hover:bg-white/20 scale-110 border-white/40'}
+                                                                `}>
+                                                                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div className={`
-                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
-                                                            transition-all duration-300
-                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
-                                                        `}>
-                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
+                                                    </motion.div>
+                                                    
+                                                    {/* Foundational Platform - Rectangular strip */}
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: 20 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ delay: 0.3 }}
+                                                        className="flex-1 min-h-0"
+                                                    >
+                                                        <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
+                                                             onClick={() => onNavigate('foundational-program')}>
+                                                            <div className={`
+                                                                relative w-full h-full rounded-none overflow-hidden
+                                                                bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
+                                                                border border-white/20 shadow-2xl shadow-black/50
+                                                                before:content-[''] before:absolute before:inset-0 before:rounded-none
+                                                                before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
+                                                                before:transition-opacity before:duration-300
+                                                                transition-all duration-500 ease-out
+                                                                flex items-center justify-between px-6 md:px-8
+                                                                ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
+                                                            `}>
+                                                                <div className="flex flex-col">
+                                                                    <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
+                                                                        » Foundational Platform
+                                                                    </h3>
+                                                                    <p className="text-slate-300 text-sm md:text-base leading-tight">
+                                                                        Access your enrolled courses, track progress, and engage with program materials
+                                                                    </p>
+                                                                </div>
+                                                                <div className={`
+                                                                    w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
+                                                                    bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
+                                                                    transition-all duration-300
+                                                                    ${'hover:bg-white/20 scale-110 border-white/40'}
+                                                                `}>
+                                                                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                            
-                                            {/* Program Benefits - Rectangular strip */}
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.2 }}
-                                                className="flex-1 min-h-0"
-                                            >
-                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full">
-                                                    {/* Directory Card - Simple text with arrow */}
-                                                    <div className={`
-                                                        relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
-                                                        border border-white/20 shadow-2xl shadow-black/50
-                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
-                                                        before:transition-opacity before:duration-300
-                                                        transition-all duration-500 ease-out
-                                                        flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
-                                                    `}>
-                                                        <div className="flex flex-col">
-                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » Program Benefits
-                                                            </h3>
-                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Discover certification advantages, career pathways, and exclusive member perks
-                                                            </p>
-                                                        </div>
-                                                        <div className={`
-                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
-                                                            transition-all duration-300
-                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
-                                                        `}>
-                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                            
-                                            {/* Learn More - Rectangular strip */}
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.3 }}
-                                                className="flex-1 min-h-0"
-                                            >
-                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                     onClick={() => onNavigate('foundational-platform')}>
-                                                    {/* Directory Card - Simple text with arrow */}
-                                                    <div className={`
-                                                        relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
-                                                        border border-white/20 shadow-2xl shadow-black/50
-                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
-                                                        before:transition-opacity before:duration-300
-                                                        transition-all duration-500 ease-out
-                                                        flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
-                                                    `}>
-                                                        <div className="flex flex-col">
-                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » Foundational Platform
-                                                            </h3>
-                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Access your enrolled courses, track progress, and engage with program materials
-                                                            </p>
-                                                        </div>
-                                                        <div className={`
-                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
-                                                            transition-all duration-300
-                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
-                                                        `}>
-                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                            
-                                            {/* Foundational Platform - Rectangular strip */}
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.4 }}
-                                                className="flex-1 min-h-0"
-                                            >
-                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                     onClick={() => onNavigate('foundational-platform')}>
-                                                    {/* Directory Card - Simple text with arrow */}
-                                                    <div className={`
-                                                        relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
-                                                        border border-white/20 shadow-2xl shadow-black/50
-                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
-                                                        before:transition-opacity before:duration-300
-                                                        transition-all duration-500 ease-out
-                                                        flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
-                                                    `}>
-                                                        <div className="flex flex-col">
-                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » Platform Access
-                                                            </h3>
-                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Enter your learning environment, access modules, and connect with mentors
-                                                            </p>
-                                                        </div>
-                                                        <div className={`
-                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
-                                                            transition-all duration-300
-                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
-                                                        `}>
-                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
+                                                    </motion.div>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -1103,46 +545,93 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             <BookOpen className="w-6 h-6 text-teal-400" />
                                             <h3 className="text-xl font-bold text-white">» PROGRAMS</h3>
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            {/* Foundation Program */}
-                                            <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
-                                                <div className="flex items-center justify-between mb-3">
-                                                    <GraduationCap className="w-5 h-5 text-purple-400" />
-                                                    <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded-none font-bold uppercase">Completed</span>
-                                                </div>
-                                                <h4 className="text-white font-bold mb-2">Foundation Program</h4>
-                                                <p className="text-slate-300 text-sm mb-3">Core pilot development and mentorship</p>
-                                                <div className="w-full bg-slate-700 rounded-none h-2">
-                                                    <div className="bg-purple-500 h-2 rounded-none" style={{ width: '100%' }}></div>
-                                                </div>
-                                            </div>
-                                            
-                                            {/* Transition Program */}
-                                            <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
-                                                <div className="flex items-center justify-between mb-3">
-                                                    <Plane className="w-5 h-5 text-blue-400" />
-                                                    <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded-none font-bold uppercase">In Progress</span>
-                                                </div>
-                                                <h4 className="text-white font-bold mb-2">Transition Program</h4>
-                                                <p className="text-slate-300 text-sm mb-3">Airline transition and industry alignment</p>
-                                                <div className="w-full bg-slate-700 rounded-none h-2">
-                                                    <div className="bg-blue-500 h-2 rounded-none" style={{ width: '65%' }}></div>
+                                        {/* Conditional Programs Grid */}
+                                        {finalEnrolledStatus ? (
+                                            // Enrolled User Grid - Show access components
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {/* Access Mentorship Logbook */}
+                                                <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
+                                                    <div className="flex items-center justify-between mb-3">
+                                                        <BookOpen className="w-5 h-5 text-amber-400" />
+                                                        <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-none font-bold uppercase">Available</span>
+                                                    </div>
+                                                    <h4 className="text-white font-bold mb-2">Mentorship Logbook</h4>
+                                                    <p className="text-slate-300 text-sm mb-3">Track your mentorship sessions and progress</p>
+                                                    <div className="w-full bg-slate-700 rounded-none h-2 mb-3">
+                                                        <div className="bg-amber-500 h-2 rounded-none" style={{ width: '45%' }}></div>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => onNavigate('mentorship-logbook')}
+                                                        className="w-full px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-amber-500/25"
+                                                    >
+                                                        ACCESS LOGBOOK
+                                                    </button>
                                                 </div>
                                             </div>
-                                            
-                                            {/* EBT Video Scoring */}
-                                            <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
-                                                <div className="flex items-center justify-between mb-3">
-                                                    <Award className="w-5 h-5 text-green-400" />
-                                                    <span className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-none font-bold uppercase">Available</span>
+                                        ) : (
+                                            // Non-Enrolled User Grid - Show enrollment options
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                {/* Foundation Program */}
+                                                <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
+                                                    <div className="flex items-center justify-between mb-3">
+                                                        <GraduationCap className="w-5 h-5 text-purple-400" />
+                                                        <span className="text-xs bg-orange-500/20 text-orange-300 px-2 py-1 rounded-none font-bold uppercase">Available</span>
+                                                    </div>
+                                                    <h4 className="text-white font-bold mb-2">Foundation Program</h4>
+                                                    <p className="text-slate-300 text-sm mb-3">Core pilot development and mentorship</p>
+                                                    <div className="w-full bg-slate-700 rounded-none h-2 mb-3">
+                                                        <div 
+                                                            className="bg-purple-500 h-2 rounded-none transition-all duration-300" 
+                                                            style={{ width: '0%' }}
+                                                        ></div>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => {
+                                                            if (!currentUser) {
+                                                                onNavigate('become-member');
+                                                            } else {
+                                                                onNavigate('foundational-program');
+                                                            }
+                                                        }}
+                                                        className="w-full px-3 py-2 bg-purple-500 hover:bg-purple-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-purple-500/25"
+                                                    >
+                                                        ENROLL NOW
+                                                    </button>
                                                 </div>
-                                                <h4 className="text-white font-bold mb-2">EBT Video Scoring</h4>
-                                                <p className="text-slate-300 text-sm mb-3">Behavioral assessment and interview prep</p>
-                                                <div className="w-full bg-slate-700 rounded-none h-2">
-                                                    <div className="bg-green-500 h-2 rounded-none" style={{ width: '0%' }}></div>
+                                                
+                                                {/* Transition Program */}
+                                                <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
+                                                    <div className="flex items-center justify-between mb-3">
+                                                        <Plane className="w-5 h-5 text-blue-400" />
+                                                        <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded-none font-bold uppercase">Locked</span>
+                                                    </div>
+                                                    <h4 className="text-white font-bold mb-2">Transition Program</h4>
+                                                    <p className="text-slate-300 text-sm mb-3">Airline transition and industry alignment</p>
+                                                    <div className="w-full bg-slate-700 rounded-none h-2">
+                                                        <div className="bg-slate-600 h-2 rounded-none" style={{ width: '0%' }}></div>
+                                                    </div>
+                                                    <div className="text-center text-slate-400 text-xs mt-2">
+                                                        Complete Foundation Program first
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* EBT Video Scoring */}
+                                                <div className="bg-slate-900/50 border border-slate-700 rounded-none p-4">
+                                                    <div className="flex items-center justify-between mb-3">
+                                                        <Award className="w-5 h-5 text-green-400" />
+                                                        <span className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-none font-bold uppercase">Locked</span>
+                                                    </div>
+                                                    <h4 className="text-white font-bold mb-2">EBT Video Scoring</h4>
+                                                    <p className="text-slate-300 text-sm mb-3">Behavioral assessment and interview prep</p>
+                                                    <div className="w-full bg-slate-700 rounded-none h-2">
+                                                        <div className="bg-slate-600 h-2 rounded-none" style={{ width: '0%' }}></div>
+                                                    </div>
+                                                    <div className="text-center text-slate-400 text-xs mt-2">
+                                                        Complete Foundation Program first
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </motion.div>
                                     
                                     {/* Part 3: Pathway Recommendations - Infinite Edge Carousel with GridCard Design */}
@@ -1675,7 +1164,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                         )}
                     </div>
                 </div>
-                )}
             </div>
         </div>
     );

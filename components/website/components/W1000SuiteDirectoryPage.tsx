@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Monitor, Play } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
 
@@ -238,6 +238,13 @@ export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNaviga
                             Start building your verified pilot profile today.
                         </p>
                         <div className="flex flex-wrap justify-center gap-6">
+                            <button
+                                onClick={() => onNavigate('access-portal-2?tab=programs&w1000=launch')}
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-5 rounded-2xl font-bold text-lg transition-all shadow-xl shadow-blue-900/10 hover:shadow-blue-900/30 hover:scale-[1.02] active:scale-98 border border-white/10 font-sans uppercase tracking-[0.1em] flex items-center gap-3"
+                            >
+                                <Monitor className="w-6 h-6" />
+                                Launch W1000 Application
+                            </button>
                             <button
                                 onClick={() => onNavigate('become-member')}
                                 className="bg-[#050A30] hover:bg-[#070D3D] text-white px-12 py-5 rounded-2xl font-bold text-lg transition-all shadow-xl shadow-blue-900/10 hover:shadow-blue-900/30 hover:scale-[1.02] active:scale-98 border border-white/10 font-sans uppercase tracking-[0.1em]"

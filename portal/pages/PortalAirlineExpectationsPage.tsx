@@ -540,10 +540,10 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                 {/* Back Button */}
                 <button
                   onClick={() => {
-                    if (onBack) {
-                      onBack();
+                    if (onNavigate) {
+                      onNavigate('access-portal-2?tab=pathways');
                     } else {
-                      window.location.href = '/';
+                      window.location.href = '/access-portal-2?tab=pathways';
                     }
                   }}
                   className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-transform hover:scale-105"

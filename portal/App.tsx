@@ -152,6 +152,8 @@ import { MentorshipSupervisionPage } from './pages/MentorshipSupervisionPage';
 import PilotGapModulePage from './pages/PilotGapModulePage';
 import PilotGapModule2 from './pages/PilotGapModule2';
 import PilotJobDatabasePage from './pages/PilotJobDatabasePage';
+import { W1000App } from './components/w1000/W1000App';
+import { W1000ModulePage } from './pages/W1000ModulePage';
 
 const GRAPHICS_PRESET_STORAGE_KEY = 'wm-graphics-preset';
 const GRAPHICS_PRESET_CONFIRMED_STORAGE_KEY = 'wm-graphics-preset-confirmed';
@@ -294,12 +296,14 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'job-database'
     | 'become-member'
     | 'examination-portal'
-    | 'portal-airline-expectations';
+    | 'portal-airline-expectations'
+    | 'w1000'
+    | 'w1000-app';
 
   const VIEW_WHITELIST: ViewName[] = [
     'hub','programs','pathways-modern','foundational','privatesector',
     'foundational-onboarding','enrollment-confirmation','post-enrollment-slideshow','ai-screening','remote-segment','terms-conditions','mentorship',
-    'reset-password','module-01','pilot-profile','pilot-portfolio','recognition','job-database','become-member','examination-portal','pathway-detail','air-taxi-pathways','licensure-type-rating-pathways','specialized-operations','career-pathways','portal-airline-expectations'
+    'reset-password','module-01','pilot-profile','pilot-portfolio','recognition','job-database','become-member','examination-portal','pathway-detail','air-taxi-pathways','licensure-type-rating-pathways','specialized-operations','career-pathways','portal-airline-expectations','w1000','w1000-app'
   ];
 
   const [currentView, setCurrentView] = useState<ViewName>(directToEnrollment ? 'foundational' : 'hub');
@@ -314,6 +318,60 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     setGraphicsDetection(detected);
 
     if (typeof window === 'undefined') return;
+
+    console.log('[DEBUG Portal] App.tsx mounted, checking initial URL params');
+
+    // Function to check URL parameters
+    const checkUrlParams = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const w1000Launch = urlParams.get('w1000');
+      const viewParam = urlParams.get('view');
+      console.log('[DEBUG Portal] Checking URL params:', { w1000Launch, viewParam, fullSearch: window.location.search, pathname: window.location.pathname, currentView });
+      if (w1000Launch === 'launch' || viewParam === 'w1000') {
+        console.log('🚀 [DEBUG Portal] W1000 parameter detected! Setting view to w1000');
+        setCurrentView('w1000');
+        // Clear the URL parameter to prevent re-triggering
+        const newSearch = window.location.search
+          .replace(/[?&]view=w1000/, '')
+          .replace(/[?&]w1000=launch/, '')
+          .replace(/^\?/, '');
+        const newUrl = window.location.pathname + (newSearch ? '?' + newSearch : '');
+        console.log('[DEBUG Portal] Clearing URL params, new URL:', newUrl);
+        window.history.replaceState({}, '', newUrl);
+      }
+      if (viewParam === 'w1000-app') {
+        console.log('🚀 [DEBUG Portal] W1000-app parameter detected! Setting view to w1000-app');
+        setCurrentView('w1000-app');
+        // Don't clear URL parameters - let W1000 app manage its own routing
+        console.log('[DEBUG Portal] Keeping URL params for W1000 app routing');
+      }
+    };
+
+    // Check on mount
+    checkUrlParams();
+
+    // Listen for URL changes (popstate event)
+    const handlePopState = () => {
+      console.log('[DEBUG Portal] popstate event - URL changed');
+      checkUrlParams();
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    // Listen for hash changes
+    const handleHashChange = () => {
+      console.log('[DEBUG Portal] hashchange event - URL changed');
+      checkUrlParams();
+    };
+    window.addEventListener('hashchange', handleHashChange);
+
+    // Also check periodically in case navigation happens without events
+    const interval = setInterval(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('view') === 'w1000' || urlParams.get('w1000') === 'launch') {
+        console.log('[DEBUG Portal] Interval detected W1000 param');
+        checkUrlParams();
+      }
+    }, 300);
 
     // Clear cache on page reload
     console.log('🧹 [CACHE] Clearing cache on page reload');
@@ -330,6 +388,13 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     setGraphicsPreset(savedPreset || detected.recommendedPreset);
     setHasConfirmedGraphicsPreset(savedConfirmed);
     setIsDarkMode(savedDarkMode);
+
+    return () => {
+      console.log('[DEBUG Portal] App.tsx unmounting, cleaning up listeners');
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handleHashChange);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleConfirmGraphicsPreset = useCallback(() => {
@@ -964,6 +1029,34 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         </div>
       ) : currentView === 'job-database' ? (
         <PilotJobDatabasePage onBack={() => setCurrentView('hub')} onLogout={handleLogout} userProfile={authState.userProfile} />
+      ) : currentView === 'w1000' ? (
+        (() => {
+          console.log('[DEBUG App] Rendering W1000ModulePage, currentView:', currentView);
+          return (
+            <W1000ModulePage
+              onBack={() => {
+                console.log('[DEBUG App] W1000ModulePage onBack called');
+                setCurrentView('hub');
+              }}
+              onLogout={handleLogout}
+              onLaunchW1000={() => {
+                console.log('[DEBUG App] W1000ModulePage onLaunchW1000 called, navigating to w1000-app');
+                setCurrentView('w1000-app');
+              }}
+            />
+          );
+        })()
+      ) : currentView === 'w1000-app' ? (
+        (() => {
+          console.log('[DEBUG App] Rendering W1000App, currentView:', currentView);
+          console.log('[DEBUG App] W1000App component:', W1000App);
+          try {
+            return <W1000App />;
+          } catch (error) {
+            console.error('[DEBUG App] Error rendering W1000App:', error);
+            return <div style={{color: 'white', padding: '20px'}}>Error loading W1000 App: {error.message}</div>;
+          }
+        })()
       ) : (
         <></>
       )}

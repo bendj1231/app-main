@@ -154,12 +154,6 @@ const overviewCards = [
         image: '/images/pilot-gap.png'
     },
     {
-        tag: '1.5 · W1000 Access',
-        title: 'Application Access',
-        description: 'Prior to your examination, you will receive access to the W1000 application—a state-of-the-art software for pilot development featuring examination practice, core material for PPL, CPL, IR, and ME, examination reviewers, PowerPoint slides, video content, POH handbooks, an IFR Jeppesen Charts database, and IFR simulators. The Apps serve as a practical examination terminal for exam preparation—not the official examination. The Black Box contains PowerPoint presentations, core material, and the Simulator Room, which offers IFR simulation for practicing VOR homing, ILS landing approaches, G1000 system practice, and flight plan navigation.',
-        image: '/images/foundational-showcase-1.png'
-    },
-    {
         tag: '2 · Examination',
         title: 'Examination',
         description: 'Your first examination evaluates how well you know the industry and the chapters you have read. The initial pilot licensure examination uses integrated Gleims software for FAA/CAAP examinations. This examination will provide your first score, identifying areas where you are struggling and highlighting weaknesses based on recurrency through monthly examinations to stay current before mentorship. This will also create the first imprint on your pilot recognition profile—you may check the examination results as well as your profile score.',

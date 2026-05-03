@@ -2948,54 +2948,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* 4. Applications & Quick Links */}
-            <CategorySection title="Applications" description="Quick access to W1000, examination portal, and external resources">
+            <CategorySection title="Applications" description="Quick access to examination portal and external resources">
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                {/* W1000 Link */}
-                <a
-                  href={isFoundationalEnrolled ? "https://w1000.vercel.app" : undefined}
-                  target={isFoundationalEnrolled ? "_blank" : undefined}
-                  rel={isFoundationalEnrolled ? "noopener noreferrer" : undefined}
-                  onClick={(e) => {
-                    if (!isFoundationalEnrolled) {
-                      e.preventDefault();
-                    }
-                  }}
-                  style={{
-                    background: isFoundationalEnrolled 
-                      ? 'linear-gradient(135deg, #0ea5e9, #0284c7)'
-                      : 'linear-gradient(135deg, #94a3b8, #64748b)',
-                    borderRadius: '16px',
-                    padding: '1.5rem',
-                    boxShadow: isFoundationalEnrolled
-                      ? '0 10px 30px rgba(14, 165, 233, 0.2)'
-                      : '0 10px 30px rgba(100, 116, 139, 0.1)',
-                    border: isFoundationalEnrolled
-                      ? '1px solid rgba(14, 165, 233, 0.3)'
-                      : '1px solid rgba(148, 163, 184, 0.3)',
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    gap: '0.75rem',
-                    transition: 'all 0.2s ease',
-                    opacity: isFoundationalEnrolled ? 1 : 0.5,
-                    cursor: isFoundationalEnrolled ? 'pointer' : 'not-allowed'
-                  }}
-                >
-                  <div>
-                    <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: 'white' }}>
-                      W1000
-                      {!isFoundationalEnrolled && ' (Locked)'}
-                    </h4>
-                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: 'rgba(255,255,255,0.9)' }}>
-                      Training Platform
-                      {!isFoundationalEnrolled && ' • Requires Enrollment'}
-                    </p>
-                  </div>
-                </a>
-
                 {/* Examination Portal */}
                 <button
                   onClick={onViewExaminationPortal}

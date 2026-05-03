@@ -27,7 +27,6 @@ import { ProgramBenefitsPage } from '@/components/website/components/programs/Pr
 import { NewsUpdatesPage } from '@/components/website/components/programs/NewsUpdatesPage';
 import { ProgramsPathwaysPage } from '@/components/website/components/programs/ProgramsPathwaysPage';
 import { ProgramsPage } from '@/components/website/components/programs/ProgramsPage';
-import { PathwaysPage } from '@/components/website/components/pathways/PathwaysPage';
 import { PlatformFoundationalProgramPage } from '@/components/website/components/programs/PlatformFoundationalProgramPage';
 import { EnrolledFoundationalPage } from '@/components/website/components/programs/EnrolledFoundationalPage';
 import { FoundationalModulesPage } from '@/components/website/components/programs/FoundationalModulesPage';
@@ -56,6 +55,7 @@ import { ApplicationsSystemsDirectoryPage } from '@/components/website/component
 import { MembershipDirectoryPage } from '@/components/website/components/MembershipDirectoryPage';
 import { HinfactPage } from '@/components/website/components/HinfactDirectoryPage';
 import { W1000SuitePage } from '@/components/website/components/W1000SuiteDirectoryPage';
+import { W2000ApplicationPage } from '@/components/website/components/W2000ApplicationPage';
 import { MembershipBenefitsPage } from '@/components/website/components/MembershipBenefitsDirectoryPage';
 import ExaminationResultsDirectoryPage from '@/components/website/components/ExaminationResultsDirectoryPage';
 import { DigitalLogbookDirectoryPage } from '@/components/website/components/DigitalLogbookDirectoryPage';
@@ -148,7 +148,6 @@ export const AppRoutes = () => {
       <Route path="/onboarding-recognition" element={<OnboardingRecognition onBack={() => handleBack()} onNavigate={handleNavigate} />} />
 
       {/* Pathways routes */}
-      <Route path="/discover-pathways" element={<PathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/emirates-atpl" element={<EmiratesAtplPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/emerging-air-taxi" element={<EmergingAirTaxiPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/piloted-drones" element={<PilotedDronesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
@@ -168,7 +167,7 @@ export const AppRoutes = () => {
       <Route path="/airbus-aligned-ebt-cbta-programs" element={<EBTCBTAPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
 
       {/* Platform routes */}
-      <Route path="/foundational-platform" element={<EnrolledFoundationalPage onBack={() => handleBack('/programs')} onNavigate={handleNavigate} />} />
+      <Route path="/foundational-platform" element={<EnrolledFoundationalPage onBack={() => handleBack('access-portal-2?tab=programs')} onNavigate={handleNavigate} />} />
       <Route path="/foundational-modules" element={<FoundationalModulesPage onBack={() => handleBack('/foundational-platform')} onNavigate={handleNavigate} />} />
       <Route path="/pilot-gap-module" element={<PilotGapModulePage onBack={() => handleBack('/foundational-modules')} onNavigateToMentorModules={() => handleNavigate('foundational-modules')} onNavigateToExaminationPortal={() => handleNavigate('foundational-progress')} />} />
       <Route path="/foundational-chapter-1" element={<FoundationalChapter1Page onBack={() => handleBack('/foundational-modules')} onNavigate={handleNavigate} />} />
@@ -210,6 +209,7 @@ export const AppRoutes = () => {
       <Route path="/membership" element={<MembershipDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/hinfact" element={<HinfactPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/w1000-suite" element={<W1000SuitePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/w1000/w2000" element={<W2000ApplicationPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/membership-benefits" element={<MembershipBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/examination-results" element={<ExaminationResultsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/examination-results-directory" element={<ExaminationResultsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />

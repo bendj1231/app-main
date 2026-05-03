@@ -22,9 +22,10 @@ const RESOURCES: Resource[] = [
 interface W1000ModulePageProps {
     onBack: () => void;
     onLogout: () => void;
+    onLaunchW1000?: () => void;
 }
 
-export const W1000ModulePage: React.FC<W1000ModulePageProps> = ({ onBack, onLogout }) => {
+export const W1000ModulePage: React.FC<W1000ModulePageProps> = ({ onBack, onLogout, onLaunchW1000 }) => {
     const [activeTab, setActiveTab] = useState<'sim' | 'exam' | 'blackbox'>('sim');
     const [filter, setFilter] = useState<'All' | 'PPL' | 'CPL' | 'IR' | 'ME'>('All');
 
@@ -88,10 +89,16 @@ export const W1000ModulePage: React.FC<W1000ModulePageProps> = ({ onBack, onLogo
                         <div className="space-y-6">
                             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 text-center">
                                 <Icons.Monitor style={{ width: 48, height: 48, color: '#2563eb' }} className="mx-auto mb-4" />
-                                <h3 className="text-lg font-bold text-slate-900 mb-2">Simulation Engine</h3>
-                                <p className="text-sm text-slate-500 mb-6">Initialize the G1000-inspired environment for the IFR/VFR modules.</p>
-                                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all">
-                                    Initialize Flight Deck
+                                <h3 className="text-lg font-bold text-slate-900 mb-2">W1000 Flight Deck</h3>
+                                <p className="text-sm text-slate-500 mb-6">Launch the G1000-inspired environment with full avionics suite, simulator room, and black box directory.</p>
+                                <button 
+                                    onClick={() => {
+                                        console.log('[DEBUG W1000ModulePage] Launch button clicked, onLaunchW1000:', onLaunchW1000);
+                                        onLaunchW1000?.();
+                                    }}
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all"
+                                >
+                                    Launch W1000 Application
                                 </button>
                             </div>
 

@@ -634,7 +634,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               <div className="flex items-center gap-3">
                 {/* Back Button */}
                 <button
-                  onClick={() => onNavigate ? onNavigate('pathways-modern') : onBack ? onBack() : window.history.back()}
+                  onClick={() => onNavigate ? onNavigate('access-portal-2?tab=pathways') : onBack ? onBack() : window.location.href = '/access-portal-2?tab=pathways'}
                   className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-transform hover:scale-105"
                   title="Back to Home"
                 >

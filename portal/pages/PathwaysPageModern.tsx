@@ -1984,14 +1984,7 @@ const PathwayCard: React.FC<{
             </div>
           )}
 
-          {/* PR Score and Match Percentage */}
-          <div className="absolute top-2 right-2 flex gap-1">
-            <div className="bg-emerald-500 px-2 py-0.5 rounded-full text-white text-[10px] font-bold">
-              PR: {userProfile?.totalScore || 77}%
-            </div>
-            <ProbabilityBadge probability={pathway.matchProbability} size="sm" />
-          </div>
-        </div>
+                  </div>
 
         {/* Bottom - Content */}
         <div className="mt-3 space-y-2">
@@ -3469,19 +3462,11 @@ const ThreeStagePathwayFilter: React.FC<{
                         {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
                         <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
                         <div className="absolute top-3 right-3 flex gap-2 items-start">
-                          {!isPilotRecognitionCard && (
-                            <>
-                              <button className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors">
-                                {card.matchProbability}% Match
-                              </button>
-                              <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {(card as any).recognitionScore || 41}%</span>
-                              {card.hiringStatus === 'actively_hiring' && (
-                                <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/80 text-white text-xs font-semibold">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                                  Hiring
-                                </span>
-                              )}
-                            </>
+                          {!isPilotRecognitionCard && card.hiringStatus === 'actively_hiring' && (
+                            <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/80 text-white text-xs font-semibold">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                              Hiring
+                            </span>
                           )}
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
@@ -4741,10 +4726,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 {/* Back Button */}
                 <button
                   onClick={() => {
-                    if (onNavigateToMainApp) {
-                      onNavigateToMainApp('home');
+                    if (onNavigate) {
+                      onNavigate('access-portal-2?tab=pathways');
                     } else {
-                      window.location.href = '/';
+                      window.location.href = '/access-portal-2?tab=pathways';
                     }
                   }}
                   className={`p-2 rounded-lg ${buttonBg} ${buttonText} hover:scale-105 transition-transform`}
@@ -5266,35 +5251,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
                         <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
                         <div className="absolute top-3 right-3 flex gap-2 items-start">
-                          {!isPilotRecognitionCard && (() => {
-                            const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
-                              String(j.company || '').toLowerCase() === String(pathway.airline || '').toLowerCase() ||
-                              String(j.title || '').toLowerCase() === String(pathway.name || '').toLowerCase()
-                            );
-                            return (
-                              <div className="relative">
-                                <button
-                                  onClick={(e) => { e.stopPropagation(); setPopoverJobId(popoverJobId === pathway.id ? null : pathway.id); }}
-                                  className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors"
-                                >
-                                  {pathway.matchProbability}% Match
-                                </button>
-                                <AnimatePresence>
-                                  {popoverJobId === pathway.id && fbJob && (
-                                    <MatchBreakdownPopover
-                                      breakdown={fbJob.breakdown}
-                                      matchPct={fbJob.matchPct}
-                                      missingRating={fbJob.missingRating}
-                                      isDarkMode={isDarkMode}
-                                      onClose={() => setPopoverJobId(null)}
-                                    />
-                                  )}
-                                </AnimatePresence>
-                              </div>
-                            );
-                          })()}
-                          {!isPilotRecognitionCard && <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 77}%</span>}
-                          {!isPilotRecognitionCard && pathway.hiringStatus === 'actively_hiring' && (
+                                                    {!isPilotRecognitionCard && pathway.hiringStatus === 'actively_hiring' && (
                             <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/80 text-white text-xs font-semibold">
                               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                               Hiring
@@ -5358,6 +5315,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           )}
         </div>
 
+        
         {/* ThreeStagePathwayFilter - Inline Pathways Display */}
         {mode === 'pathways' && (
           <ThreeStagePathwayFilter
