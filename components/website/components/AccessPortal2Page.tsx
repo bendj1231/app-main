@@ -955,31 +955,20 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                  onClick={() => onNavigate('/w1000')}>
                                                 {/* Split-section design */}
                                                 <div className="h-full flex flex-col">
-                                                    {/* Top half - Blue gradient background (70% of height) */}
-                                                    <div className="relative h-[70%] overflow-hidden bg-gradient-to-br from-blue-600/30 to-cyan-500/30">
-                                                        {/* Flight deck visual elements */}
-                                                        <div className="absolute inset-0 flex items-center justify-center">
-                                                            <div className="text-center">
-                                                                <Plane className="w-16 h-16 text-blue-400 mx-auto mb-4 animate-pulse" />
-                                                                <div className="text-blue-300 text-sm font-bold tracking-wider uppercase">Flight Simulator</div>
-                                                            </div>
-                                                        </div>
-                                                        
+                                                    {/* Top half - Image background (70% of height) */}
+                                                    <div className="relative h-[70%] overflow-hidden">
+                                                        <img
+                                                            src="w12.png"
+                                                            alt="W1000 Flight Deck"
+                                                            className="absolute inset-0 w-full h-full object-cover"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
+
                                                         {/* Sharp-cornered blue badge */}
                                                         <div className="absolute top-4 right-4">
                                                             <span className="px-4 py-2 bg-blue-500 text-white text-sm font-bold uppercase tracking-wider">
                                                                 {isEnrolledInFoundational ? 'Access Simulator' : 'Enroll Required'}
                                                             </span>
-                                                        </div>
-                                                        
-                                                        {/* Instrument overlay graphics */}
-                                                        <div className="absolute bottom-4 left-4 flex gap-2">
-                                                            <div className="w-8 h-8 bg-blue-500/20 border border-blue-400/50 rounded-full flex items-center justify-center">
-                                                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                                            </div>
-                                                            <div className="w-8 h-8 bg-blue-500/20 border border-blue-400/50 rounded-full flex items-center justify-center">
-                                                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     
@@ -1012,35 +1001,27 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                      onClick={() => onNavigate('foundational-platform')}>
-                                                    {/* Directory Card - Simple text with arrow */}
+                                                    {/* Directory Card - Image with text overlay */}
                                                     <div className={`
                                                         relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl
                                                         border border-white/20 shadow-2xl shadow-black/50
-                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-white/20 before:to-transparent before:opacity-0
-                                                        before:transition-opacity before:duration-300
-                                                        transition-all duration-500 ease-out
-                                                        flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-white/30'}
+                                                        ${'hover:scale-[1.02] shadow-black/70 border-white/30'}
                                                     `}>
-                                                        <div className="flex flex-col">
-                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » Foundational Platform
-                                                            </h3>
-                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Access your enrolled courses, track progress, and engage with program materials
-                                                            </p>
-                                                        </div>
-                                                        <div className={`
-                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg
-                                                            transition-all duration-300
-                                                            ${'hover:bg-white/20 scale-110 border-white/40'}
-                                                        `}>
-                                                            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
+                                                        <img
+                                                            src="fp1.png"
+                                                            alt="Foundational Platform"
+                                                            className="absolute inset-0 w-full h-full object-cover"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent" />
+                                                        <div className="relative h-full flex items-center px-6 md:px-8">
+                                                            <div className="flex flex-col">
+                                                                <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
+                                                                    » Foundational Platform
+                                                                </h3>
+                                                                <p className="text-slate-300 text-sm md:text-base leading-tight">
+                                                                    Access your enrolled courses, track progress, and engage with program materials
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1060,33 +1041,32 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                          console.log('[DEBUG Programs] Examination Portal clicked - navigating to examination portal');
                                                          window.location.href = '/examination-portal';
                                                      }}>
-                                                    {/* Directory Card - Simple text with arrow */}
+                                                    {/* Directory Card - Image with text overlay */}
                                                     <div className={`
                                                         relative w-full h-full rounded-none overflow-hidden
-                                                        bg-gradient-to-br from-orange-600/20 to-red-500/20 backdrop-blur-2xl
-                                                        border border-orange-400/30 shadow-2xl shadow-black/50
-                                                        before:content-[''] before:absolute before:inset-0 before:rounded-none
-                                                        before:bg-gradient-to-br before:from-orange-400/20 before:to-transparent before:opacity-0
-                                                        before:transition-opacity before:duration-300
-                                                        transition-all duration-500 ease-out
-                                                        flex items-center justify-between px-6 md:px-8
-                                                        ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-orange-400/50'}
+                                                        border border-white/20 shadow-2xl shadow-black/50
+                                                        ${'hover:scale-[1.02] shadow-black/70 border-white/30'}
                                                     `}>
-                                                        <div className="flex flex-col">
-                                                            <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
-                                                                » Examination Portal
-                                                            </h3>
-                                                            <p className="text-slate-300 text-sm md:text-base leading-tight">
-                                                                Certification examinations, assessments, and progress tracking for program advancement
-                                                            </p>
-                                                        </div>
-                                                        <div className={`
-                                                            w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
-                                                            bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 shadow-lg
-                                                            transition-all duration-300
-                                                            ${'hover:bg-orange-500/30 scale-110 border-orange-400/50'}
-                                                        `}>
-                                                            <Brain className="w-5 h-5 md:w-6 md:h-6 text-orange-400" />
+                                                        <img
+                                                            src="/ep.png"
+                                                            alt="Examination Portal"
+                                                            className="absolute inset-0 w-full h-full object-cover"
+                                                            onError={(e) => {
+                                                                // Fallback to gradient if image fails to load
+                                                                e.currentTarget.style.display = 'none';
+                                                                e.currentTarget.parentElement?.classList.add('bg-gradient-to-br', 'from-blue-600/30', 'to-blue-400/30');
+                                                            }}
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/60 to-transparent" />
+                                                        <div className="relative h-full flex items-center px-6 md:px-8">
+                                                            <div className="flex flex-col">
+                                                                <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
+                                                                    » Examination Portal
+                                                                </h3>
+                                                                <p className="text-slate-300 text-sm md:text-base leading-tight">
+                                                                    Certification examinations, assessments, and progress tracking for program advancement
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

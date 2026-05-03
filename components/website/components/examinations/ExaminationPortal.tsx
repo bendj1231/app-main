@@ -197,12 +197,12 @@ const ExaminationPortal: React.FC = () => {
                 animate="visible"
                 custom={index}
                 whileHover={{ y: -2 }}
-                className={`bg-white rounded-xl shadow-sm border ${isLocked ? 'border-slate-200 opacity-75' : 'border-slate-300 hover:border-orange-300'} transition-all duration-200 overflow-hidden`}
+                className={`bg-white rounded-xl shadow-sm border ${isLocked ? 'border-slate-200 opacity-75' : 'border-slate-300 hover:border-blue-300'} transition-all duration-200 overflow-hidden`}
             >
                 <div className="p-6">
                     <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${isLocked ? 'bg-slate-100' : isCompleted ? 'bg-emerald-50' : 'bg-orange-50'}`}>
-                            <Icon className={`w-6 h-6 ${isLocked ? 'text-slate-400' : isCompleted ? 'text-emerald-600' : 'text-orange-600'}`} />
+                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${isLocked ? 'bg-slate-100' : isCompleted ? 'bg-emerald-50' : 'bg-blue-50'}`}>
+                            <Icon className={`w-6 h-6 ${isLocked ? 'text-slate-400' : isCompleted ? 'text-emerald-600' : 'text-blue-600'}`} />
                         </div>
                         <div className="flex-1">
                             <h3 className="font-semibold text-slate-900 mb-2">{examination.title}</h3>
@@ -240,7 +240,7 @@ const ExaminationPortal: React.FC = () => {
                                         ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
                                         : isCompleted
                                         ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
-                                        : 'bg-orange-500 hover:bg-orange-600 text-white shadow-md hover:shadow-orange-500/25'
+                                        : 'bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-blue-500/25'
                                 }`}
                             >
                                 {isLocked ? (
@@ -273,7 +273,7 @@ const ExaminationPortal: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div className="min-h-screen bg-slate-50" style={{ transform: 'scale(0.8)', transformOrigin: 'top left', width: '125%', height: '125%' }}>
             {/* Header */}
             <div className="bg-white border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-4 py-6">
@@ -287,19 +287,13 @@ const ExaminationPortal: React.FC = () => {
                             <ArrowLeft className="w-5 h-5" />
                         </button>
                         
-                        {/* PilotRecognition Logo */}
-                        <div className="w-12 h-12 relative">
-                            <svg viewBox="0 0 100 100" className="w-full h-full">
-                                {/* Diamond background */}
-                                <polygon points="50,5 95,50 50,95 5,50" fill="#1e293b" stroke="#f97316" strokeWidth="2"/>
-                                {/* Eagle/wings symbol */}
-                                <path d="M50 25 L65 45 L50 40 L35 45 Z" fill="#f97316"/>
-                                <path d="M50 40 L70 55 L50 70 L30 55 Z" fill="#f97316"/>
-                            </svg>
+                        {/* WingMentor Logo */}
+                        <div className="w-32 h-32 relative">
+                            <img src="/logo.png" alt="WingMentor Logo" className="w-full h-full object-contain" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold text-slate-900">WINGMENTOR PROGRAMS</h1>
-                            <p className="text-lg font-semibold text-orange-600">Examination Portal</p>
+                            <p className="text-lg font-semibold text-blue-600">Examination Portal</p>
                         </div>
                     </div>
                     
@@ -319,8 +313,8 @@ const ExaminationPortal: React.FC = () => {
                     return (
                         <div key={category.id} className="mb-12">
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
-                                    <Icon className="w-5 h-5 text-orange-600" />
+                                <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+                                    <Icon className="w-5 h-5 text-blue-600" />
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-slate-900">{category.title}</h2>

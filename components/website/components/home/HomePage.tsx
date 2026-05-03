@@ -1047,7 +1047,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 <div className="relative p-2 md:p-3 grid grid-cols-1 md:grid-cols-3 gap-1.5 md:gap-2">
                                     {/* Card 1: Access Foundation Program */}
                                     <button
-                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('foundational-platform'); }}
+                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('access-portal-2?tab=programs'); }}
                                         className="group relative text-left overflow-hidden border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/30"
                                     >
                                         <div className="relative aspect-[9/16] overflow-hidden">
@@ -1080,7 +1080,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                     {/* Card 2: Build Your Profile */}
                                     <button
-                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('pilot-recognition'); }}
+                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('pilot-recognition-profile'); }}
                                         className="group relative text-left overflow-hidden border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/30"
                                     >
                                         <div className="relative aspect-[9/16] overflow-hidden">
@@ -1113,7 +1113,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                     {/* Card 3: Explore Pathways */}
                                     <button
-                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('pathways-modern'); }}
+                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('recognition-career-matches'); }}
                                         className="group relative text-left overflow-hidden border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/30"
                                     >
                                         <div className="relative aspect-[9/16] overflow-hidden">
