@@ -3,11 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import { ChevronRight, Home, Users, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { supabase } from '@/shared/lib/supabase';
 import { NewsroomModal } from './NewsroomModal';
 import { MeshGradient } from '@paper-design/shaders-react';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
 import BookmarkedPathways from './pathways/BookmarkedPathways';
 import BookmarksView from './bookmarks/BookmarksView';
+import { W1App } from '@/external-references/w1/index.tsx';
 
 interface AccessPortal2PageProps {
     onNavigate: (page: string) => void;
@@ -55,6 +57,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     
     // Profile and notification state
     const [profileImageUrl, setProfileImageUrl] = useState<string>('');
+    const [enrolledPrograms, setEnrolledPrograms] = useState<string[]>([]);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
     const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
     const [notificationCount, setNotificationCount] = useState(0);
@@ -81,21 +84,22 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     }, [isCarouselPaused]);
 
     // Profile data from recognition profile
-    const displayName = userProfile?.displayName || userProfile?.firstName || 
+    const displayName = userProfile?.displayName || userProfile?.firstName || userProfile?.first_name || 
                         (currentUser?.email ? currentUser.email.split('@')[0].toUpperCase() : 'PILOT');
-    const lastName = userProfile?.lastName || '';
-    const fullName = userProfile?.full_name || (lastName ? `${displayName} ${lastName}` : displayName);
+    const lastName = userProfile?.lastName || userProfile?.last_name || '';
+    const fullName = userProfile?.full_name || userProfile?.full_name || (lastName ? `${displayName} ${lastName}` : displayName);
     
+        
     // Flight hours and stats
     const flightHours = userProfile?.total_flight_hours || userProfile?.flight_hours || userProfile?.total_hours || 0;
     const recognitionScore = userProfile?.recognition_score || userProfile?.score || userProfile?.overall_recognition_score || 0;
     const currentLevel = userProfile?.current_level || userProfile?.level || userProfile?.current_occupation || 'Student Pilot';
     
-    // Profile image
-    const profileImage = userProfile?.profile_image_url || userProfile?.avatar_url || null;
+    // Profile image - use the same state as nav bar for consistency
+    const profileImage = profileImageUrl;
     
-    // Initials for default avatar (same as pilot recognition profile)
-    const initials = fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+    // Initials for default avatar (same as nav bar for consistency)
+    const initials = displayName.charAt(0).toUpperCase();
     
     // Certifications count
     const certifications = userProfile?.certifications || userProfile?.licenses || userProfile?.ratings || [];
@@ -105,10 +109,40 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     const hoursForNextLevel = 50;
     const progressPercent = Math.min((flightHours / hoursForNextLevel) * 100, 100);
     
+    // Debug sidebar profile data
+    console.log('AccessPortal2 - Sidebar profile data:', {
+        profileImage,
+        initials,
+        fullName,
+        displayName,
+        flightHours,
+        recognitionScore,
+        certCount,
+        currentLevel,
+        progressPercent
+    });
+    
     // Check if enrolled in Foundational program
-    const enrolledPrograms = userProfile?.enrolled_programs || [];
     const isEnrolledInFoundational = Array.isArray(enrolledPrograms) && 
         enrolledPrograms.some((p: string) => p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation'));
+    
+    // Debug enrollment checking logic step by step
+    console.log('AccessPortal2 - Enrollment debug:', {
+        enrolledPrograms,
+        isEnrolledInFoundational,
+        hasEnrolledPrograms: Array.isArray(enrolledPrograms),
+        programCount: Array.isArray(enrolledPrograms) ? enrolledPrograms.length : 0,
+        enrollmentCheckSteps: {
+            step1_isArray: Array.isArray(enrolledPrograms),
+            step2_programCount: Array.isArray(enrolledPrograms) ? enrolledPrograms.length : 0,
+            step3_someCheck: Array.isArray(enrolledPrograms) ? enrolledPrograms.some((p: string) => {
+                const matches = p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation');
+                console.log(`  - Checking program "${p}": matches foundational = ${matches}`);
+                return matches;
+            }) : false,
+            step4_finalResult: isEnrolledInFoundational
+        }
+    });
 
     useEffect(() => {
         setIsVisible(false);
@@ -256,12 +290,71 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         return () => clearInterval(interval);
     }, [activeTab, newsroomHighlights.length]);
 
-    // Fetch profile image from user profile
+    // Fetch profile data from Supabase (same approach as TopNavbar)
     useEffect(() => {
-        if (userProfile?.profile_image_url) {
-            setProfileImageUrl(userProfile.profile_image_url);
-        }
-    }, [userProfile]);
+        const fetchProfileData = async () => {
+            if (currentUser) {
+                try {
+                    const { data, error } = await supabase
+                        .from('profiles')
+                        .select('profile_image_url, total_flight_hours, overall_recognition_score, enrolled_programs')
+                        .eq('id', currentUser.uid)
+                        .maybeSingle();
+                    
+                    if (data && !error) {
+                        setProfileImageUrl(data.profile_image_url || '');
+                        
+                        // Debug enrolled programs data structure
+                        console.log('AccessPortal2 - Raw enrolled_programs data:', data.enrolled_programs);
+                        console.log('AccessPortal2 - Type of enrolled_programs:', typeof data.enrolled_programs);
+                        console.log('AccessPortal2 - Is enrolled_programs an array:', Array.isArray(data.enrolled_programs));
+                        
+                        if (data.enrolled_programs) {
+                            if (Array.isArray(data.enrolled_programs)) {
+                                console.log('AccessPortal2 - Enrolled programs array:', data.enrolled_programs);
+                                console.log('AccessPortal2 - Program names:', data.enrolled_programs.map(p => `"${p}"`));
+                                setEnrolledPrograms(data.enrolled_programs);
+                            } else {
+                                console.log('AccessPortal2 - enrolled_programs is not an array, value:', data.enrolled_programs);
+                                // Try to parse if it's a string
+                                try {
+                                    const parsed = JSON.parse(data.enrolled_programs);
+                                    if (Array.isArray(parsed)) {
+                                        console.log('AccessPortal2 - Parsed enrolled programs:', parsed);
+                                        setEnrolledPrograms(parsed);
+                                    } else {
+                                        console.log('AccessPortal2 - Parsed value is not an array:', parsed);
+                                        setEnrolledPrograms([]);
+                                    }
+                                } catch (e) {
+                                    console.log('AccessPortal2 - Failed to parse enrolled_programs as JSON');
+                                    setEnrolledPrograms([]);
+                                }
+                            }
+                        } else {
+                            console.log('AccessPortal2 - No enrolled_programs field found');
+                            setEnrolledPrograms([]);
+                        }
+                        
+                        console.log('AccessPortal2 - Profile data fetched from Supabase:', data);
+                    } else {
+                        setProfileImageUrl('');
+                        setEnrolledPrograms([]);
+                        console.log('AccessPortal2 - No profile data found in Supabase');
+                    }
+                } catch (error) {
+                    console.error('Error fetching profile data:', error);
+                    setProfileImageUrl('');
+                    setEnrolledPrograms([]);
+                }
+            } else {
+                setProfileImageUrl('');
+                setEnrolledPrograms([]);
+            }
+        };
+
+        fetchProfileData();
+    }, [currentUser]);
 
     // Handle click outside for dropdowns
     useEffect(() => {
@@ -296,6 +389,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                 return <div className="flex-1 overflow-auto"><p className="text-white text-center p-8">Recognition Plus View</p></div>;
             case 'membership':
                 return <div className="flex-1 overflow-auto"><p className="text-white text-center p-8">Membership View</p></div>;
+            case 'w1000':
+                return <div className="flex-1 overflow-auto"><W1App /></div>;
             case 'type-rating-search':
                 return <div className="flex-1 overflow-auto"><p className="text-white text-center p-8">Type Rating Search View</p></div>;
             case 'airline-expectations':
@@ -405,7 +500,16 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                             {/* Profile Picture */}
                             <div className="relative">
                                 <button
-                                    onClick={() => onNavigate('pilot-recognition-profile')}
+                                    onClick={() => {
+                                        console.log('[DEBUG Portal 2] Profile icon clicked - navigating to pilot-recognition-profile');
+                                        try {
+                                            onNavigate('pilot-recognition-profile');
+                                        } catch (error) {
+                                            console.error('[DEBUG Portal 2] Error in onNavigate:', error);
+                                            // Fallback navigation
+                                            window.location.href = '/pilot-recognition-profile';
+                                        }
+                                    }}
                                     className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
                                     title="Profile"
                                     style={{ borderRadius: '45% / 50%' }}
@@ -417,8 +521,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             className="w-full h-full object-cover"
                                         />
                                     ) : (
-                                        <span className="text-lg font-bold text-slate-700">
-                                            {displayName.charAt(0)}
+                                        <span className="text-xl font-bold text-slate-700 flex items-center justify-center w-full h-full bg-slate-100">
+                                            {displayName.charAt(0).toUpperCase()}
                                         </span>
                                     )}
                                 </button>
@@ -620,7 +724,16 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
 
                                 {/* Pilot Profile Button */}
                                 <div 
-                                    onClick={() => onNavigate('pilot-recognition-profile')}
+                                    onClick={() => {
+                                        console.log('[DEBUG Portal 2] Sidebar profile button clicked - navigating to pilot-recognition-profile');
+                                        try {
+                                            onNavigate('pilot-recognition-profile');
+                                        } catch (error) {
+                                            console.error('[DEBUG Portal 2] Error in onNavigate:', error);
+                                            // Fallback navigation
+                                            window.location.href = '/pilot-recognition-profile';
+                                        }
+                                    }}
                                     className="w-full flex items-center gap-3 px-6 py-4 group-hover:bg-white/5 transition-colors border-t border-white/10 cursor-pointer"
                                 >
                                     <ChevronRight className="w-5 h-5 text-white/70" />
@@ -839,7 +952,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             className="md:col-span-2 h-80 md:h-96"
                                         >
                                             <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                 onClick={() => onNavigate('foundational-program')}>
+                                                 onClick={() => onNavigate(isEnrolledInFoundational ? 'foundational-platform' : 'foundational-program')}>
                                                 {/* Split-section design */}
                                                 <div className="h-full flex flex-col">
                                                     {/* Top half - Video (70% of height) */}
@@ -862,7 +975,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                         {/* Sharp-cornered teal badge */}
                                                         <div className="absolute top-4 right-4">
                                                             <span className="px-4 py-2 bg-teal-500 text-white text-sm font-bold uppercase tracking-wider">
-                                                                Start Here
+                                                                {isEnrolledInFoundational ? 'Access Platform' : 'Start Here'}
                                                             </span>
                                                         </div>
                                                         
@@ -1074,6 +1187,49 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     </div>
                                                 </div>
                                             </motion.div>
+                                            
+                                            {/* W1000 Flight Deck - Only show for enrolled users */}
+                                            {isEnrolledInFoundational && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: 0.5 }}
+                                                    className="flex-1 min-h-0"
+                                                >
+                                                    <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
+                                                         onClick={() => setActiveView('w1000')}>
+                                                        {/* Directory Card - Simple text with arrow */}
+                                                        <div className={`
+                                                            relative w-full h-full rounded-none overflow-hidden
+                                                            bg-gradient-to-br from-blue-600/20 to-cyan-500/20 backdrop-blur-2xl
+                                                            border border-blue-400/30 shadow-2xl shadow-black/50
+                                                            before:content-[''] before:absolute before:inset-0 before:rounded-none
+                                                            before:bg-gradient-to-br before:from-blue-400/20 before:to-transparent before:opacity-0
+                                                            before:transition-opacity before:duration-300
+                                                            transition-all duration-500 ease-out
+                                                            flex items-center justify-between px-6 md:px-8
+                                                            ${'hover:scale-[1.02] shadow-black/70 before:opacity-100 border-blue-400/50'}
+                                                        `}>
+                                                            <div className="flex flex-col">
+                                                                <h3 className="text-white font-serif text-base md:text-lg tracking-wide mb-2">
+                                                                    » W1000 Flight Deck
+                                                                </h3>
+                                                                <p className="text-slate-300 text-sm md:text-base leading-tight">
+                                                                    Advanced aviation training simulator with PFD, VOR, and exam modules
+                                                                </p>
+                                                            </div>
+                                                            <div className={`
+                                                                w-10 h-10 md:w-12 md:h-12 rounded-none flex items-center justify-center
+                                                                bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 shadow-lg
+                                                                transition-all duration-300
+                                                                ${'hover:bg-blue-500/30 scale-110 border-blue-400/50'}
+                                                            `}>
+                                                                <Plane className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

@@ -611,6 +611,9 @@ export const HomePage: React.FC<HomePageProps> = ({
     }, []);
     
     useEffect(() => {
+        // Scroll to top on component mount to prevent unwanted scroll behavior
+        window.scrollTo(0, 0);
+        
         // Detect device performance on mount
         const tier = getDevicePerformanceTier();
         setDeviceTier(tier);
