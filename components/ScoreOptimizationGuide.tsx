@@ -306,28 +306,28 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
   const trendSign = changePercent > 0 ? '+' : '';
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+    <div className="bg-slate-800/80 rounded-lg shadow-lg p-6 space-y-6 border border-slate-700 backdrop-blur-sm">
       {/* Dashboard Metrics */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Current Score</p>
-          <p className="text-2xl font-bold text-gray-900">{currentScoreScaled}</p>
-          <p className="text-xs text-gray-400 mt-1">Recognition Score</p>
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Current Score</p>
+          <p className="text-2xl font-bold text-white">{currentScoreScaled}</p>
+          <p className="text-xs text-slate-500 mt-1">Recognition Score</p>
         </div>
-        <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-          <p className="text-xs text-green-600 uppercase tracking-wide mb-1">Projected Score</p>
-          <p className="text-2xl font-bold text-green-600">{Math.round(projectedScore)}</p>
-          <p className="text-xs text-green-400 mt-1">↑ {actualPotentialGain} pts gain</p>
+        <div className="bg-emerald-900/30 rounded-lg p-4 border border-emerald-700">
+          <p className="text-xs text-emerald-400 uppercase tracking-wide mb-1">Projected Score</p>
+          <p className="text-2xl font-bold text-emerald-400">{Math.round(projectedScore)}</p>
+          <p className="text-xs text-emerald-500 mt-1">↑ {actualPotentialGain} pts gain</p>
         </div>
-        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">Potential Continuation</p>
-          <p className="text-2xl font-bold text-gray-900">{Math.round(totalPotentialGain)}</p>
-          <p className="text-xs text-gray-400 mt-1">If continued</p>
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Potential Continuation</p>
+          <p className="text-2xl font-bold text-white">{Math.round(totalPotentialGain)}</p>
+          <p className="text-xs text-slate-500 mt-1">If continued</p>
         </div>
-        <div className={`bg-${trendColor}-50 rounded-lg p-4 border border-${trendColor}-200`}>
-          <p className={`text-xs text-${trendColor}-600 uppercase tracking-wide mb-1`}>Current Progression</p>
-          <p className={`text-2xl font-bold text-${trendColor}-600`}>{trendSign}{changePercent}%</p>
-          <p className={`text-xs text-${trendColor}-400 mt-1`}>{trend === 'up' ? 'Trending up' : trend === 'down' ? 'Trending down' : 'Stable'}</p>
+        <div className={`${trendColor === 'green' ? 'bg-emerald-900/30 border-emerald-700' : 'bg-red-900/30 border-red-700'} rounded-lg p-4 border`}>
+          <p className={`text-xs ${trendColor === 'green' ? 'text-emerald-400' : 'text-red-400'} uppercase tracking-wide mb-1`}>Current Progression</p>
+          <p className={`text-2xl font-bold ${trendColor === 'green' ? 'text-emerald-400' : 'text-red-400'}`}>{trendSign}{changePercent}%</p>
+          <p className={`text-xs ${trendColor === 'green' ? 'text-emerald-500' : 'text-red-500'} mt-1`}>{trend === 'up' ? 'Trending up' : trend === 'down' ? 'Trending down' : 'Stable'}</p>
         </div>
       </div>
 
@@ -347,8 +347,8 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
           onClick={() => setSelectedCategory('all')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             selectedCategory === 'all'
-              ? 'bg-blue-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-blue-600 text-white'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           All ({tips.length})
@@ -357,8 +357,8 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
           onClick={() => setSelectedCategory('hours')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             selectedCategory === 'hours'
-              ? 'bg-blue-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-blue-600 text-white'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           Hours ({tips.filter((t) => t.category === 'hours').length})
@@ -367,8 +367,8 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
           onClick={() => setSelectedCategory('experience')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             selectedCategory === 'experience'
-              ? 'bg-purple-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-purple-600 text-white'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           Experience ({tips.filter((t) => t.category === 'experience').length})
@@ -377,8 +377,8 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
           onClick={() => setSelectedCategory('assessments')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             selectedCategory === 'assessments'
-              ? 'bg-green-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-emerald-600 text-white'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           Assessments ({tips.filter((t) => t.category === 'assessments').length})
@@ -387,8 +387,8 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
           onClick={() => setSelectedCategory('mentorship')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             selectedCategory === 'mentorship'
-              ? 'bg-orange-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-orange-600 text-white'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           Mentorship ({tips.filter((t) => t.category === 'mentorship').length})
@@ -400,7 +400,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         {displayTips.length > 0 && (
           <>
             <div 
-              className={`border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors bg-white shadow-sm ${
+              className={`border border-slate-600 rounded-lg p-6 hover:border-blue-500 transition-colors bg-slate-700/50 shadow-md ${
                 !isPremium ? 'blur-sm opacity-60' : ''
               }`}
             >
@@ -408,35 +408,35 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
                 <div className="flex items-center justify-between mb-2">
                   <span className={`px-3 py-1 rounded text-xs font-medium ${
                     displayTips[currentIndex].difficulty === 'easy'
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-emerald-900/50 text-emerald-400'
                       : displayTips[currentIndex].difficulty === 'medium'
-                      ? 'bg-yellow-100 text-yellow-700'
-                      : 'bg-red-100 text-red-700'
+                      ? 'bg-amber-900/50 text-amber-400'
+                      : 'bg-red-900/50 text-red-400'
                   }`}>
                     {displayTips[currentIndex].difficulty}
                   </span>
-                  <span className="text-sm font-semibold text-green-600">+{Math.round(displayTips[currentIndex].potentialGain)} pts</span>
+                  <span className="text-sm font-semibold text-emerald-400">+{Math.round(displayTips[currentIndex].potentialGain)} pts</span>
                 </div>
-                <span className="text-sm text-gray-500">{displayTips[currentIndex].timeEstimate}</span>
+                <span className="text-sm text-slate-400">{displayTips[currentIndex].timeEstimate}</span>
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2 text-lg">{displayTips[currentIndex].title}</h3>
-              <p className="text-sm text-gray-600 mb-4">{displayTips[currentIndex].description}</p>
+              <h3 className="font-semibold text-white mb-2 text-lg">{displayTips[currentIndex].title}</h3>
+              <p className="text-sm text-slate-300 mb-4">{displayTips[currentIndex].description}</p>
               <button
                 onClick={() => setExpandedTip(expandedTip === currentIndex ? null : currentIndex)}
-                className="w-full text-blue-600 hover:text-blue-700 text-sm font-medium py-2 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors"
+                className="w-full text-blue-400 hover:text-blue-300 text-sm font-medium py-2 border border-blue-600 rounded-lg hover:bg-blue-900/30 transition-colors"
                 disabled={!isPremium && !displayTips[currentIndex].actionable}
               >
                 {expandedTip === currentIndex ? 'Collapse' : 'Expand'}
               </button>
               {expandedTip === currentIndex && (
-                <div className="mt-4 p-4 bg-gray-50 border-t border-gray-200 rounded-lg">
+                <div className="mt-4 p-4 bg-slate-800/50 border-t border-slate-600 rounded-lg">
                   {isPremium ? (
                     <>
-                      <p className="text-gray-700 mb-4">{displayTips[currentIndex].description}</p>
-                      <p className="text-sm text-gray-600 mb-3">
+                      <p className="text-slate-300 mb-4">{displayTips[currentIndex].description}</p>
+                      <p className="text-sm text-slate-400 mb-3">
                         Detailed steps to achieve this improvement:
                       </p>
-                      <ul className="text-sm text-gray-600 space-y-1">
+                      <ul className="text-sm text-slate-400 space-y-1">
                         <li>• Review current progress in this area</li>
                         <li>• Set specific goals and timeline</li>
                         <li>• Track completion and log activities</li>
@@ -447,16 +447,16 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
                           onClick={() => {
                             console.log('Apply changes for:', displayTips[currentIndex].title);
                           }}
-                          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors w-full"
+                          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors w-full"
                         >
                           Get Started
                         </button>
                       )}
                     </>
                   ) : (
-                    <div className="flex items-center gap-2 p-3 bg-amber-50 rounded-lg border border-amber-200">
-                      <Lock className="w-4 h-4 text-amber-600" />
-                      <p className="text-sm text-amber-700">
+                    <div className="flex items-center gap-2 p-3 bg-amber-900/30 rounded-lg border border-amber-700">
+                      <Lock className="w-4 h-4 text-amber-400" />
+                      <p className="text-sm text-amber-400">
                         Upgrade to Premium to access detailed optimization steps and personalized action plans
                       </p>
                     </div>
@@ -467,19 +467,19 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
             
             {/* Upgrade Overlay for Non-Members */}
             {!isPremium && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-lg">
+              <div className="absolute inset-0 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm rounded-lg">
                 <div className="text-center p-6">
                   <img 
                     src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" 
                     alt="Logo" 
                     className="w-32 h-16 mx-auto mb-4 object-contain"
                   />
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Unlock Career Progression Metrics & Priority Recognition</h3>
-                  <p className="text-sm text-gray-600 mb-4">
+                  <h3 className="text-xl font-bold text-white mb-2">Unlock Career Progression Metrics & Priority Recognition</h3>
+                  <p className="text-sm text-slate-300 mb-4">
                     Subscribe to Recognition + to unlock advanced career progression analytics, personalized optimization strategies, and get priority placement when airlines demand pilots with your profile.
                   </p>
                   <button
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all"
+                    className="bg-gradient-to-r from-blue-600 to-purple-700 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-800 transition-all"
                     onClick={() => console.log('Navigate to membership upgrade')}
                   >
                     Subscribe to Recognition +
@@ -496,7 +496,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
                     key={index}
                     onClick={() => setCurrentIndex(index)}
                     className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentIndex ? 'bg-blue-500' : 'bg-gray-300'
+                      index === currentIndex ? 'bg-blue-500' : 'bg-slate-600'
                     }`}
                     aria-label={`Go to tip ${index + 1}`}
                   />
@@ -511,16 +511,16 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
       {limit && filteredTips.length > limit && onViewAll && (
         <button
           onClick={onViewAll}
-          className="w-full bg-blue-500 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
+          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
         >
           View All {filteredTips.length} Optimization Tips
         </button>
       )}
 
       {filteredTips.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-slate-400">
           <svg
-            className="w-16 h-16 mx-auto mb-4 text-gray-300"
+            className="w-16 h-16 mx-auto mb-4 text-slate-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -532,8 +532,8 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <p className="font-medium">Great job!</p>
-          <p className="text-sm">You're maximizing your score in this category.</p>
+          <p className="font-medium text-white">Great job!</p>
+          <p className="text-sm text-slate-300">You're maximizing your score in this category.</p>
         </div>
       )}
     </div>

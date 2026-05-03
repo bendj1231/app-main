@@ -2,11 +2,7 @@
 export { HomePage } from '@/components/website/components/home/HomePage';
 export { AboutPage } from '@/components/website/components/AboutPage';
 export { FAQPage } from '@/components/website/components/FAQPage';
-export { BoardPage } from '@/components/website/components/BoardPage';
-export { GovernancePage } from '@/components/website/components/GovernancePage';
-export { CommitteesPage } from '@/components/website/components/CommitteesPage';
 export { MissionVisionPage } from '@/components/website/components/MissionVisionPage';
-export { CoreValuesPage } from '@/components/website/components/CoreValuesPage';
 export { IndustryStewardshipPage } from '@/components/website/components/IndustryStewardshipPage';
 export { ContactSupportPage } from '@/components/website/components/ContactSupportPage';
 export { BecomeMemberPage } from '@/components/website/components/BecomeMemberPage';

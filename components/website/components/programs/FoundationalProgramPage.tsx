@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import { TopNavbar } from '../TopNavbar';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { ArrowLeft, ChevronLeft, ChevronRight, CheckCircle, Home } from 'lucide-react';
+import { useAuth } from '@/src/contexts/AuthContext';
+import { supabase } from '@/src/lib/supabase';
 import { ProgramStages } from './ProgramStages';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
+import { FoundationLoadingScreen } from './FoundationLoadingScreen';
 
 interface FoundationalProgramPageProps {
     onBack: () => void;
@@ -15,8 +17,12 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
     onNavigate,
     onLogin
 }) => {
+    const { currentUser, refreshUserProfile } = useAuth();
+    const isLoggedIn = !!currentUser;
     const [currentSlide, setCurrentSlide] = useState(0);
     const [autoPlay, setAutoPlay] = useState(true);
+    const [showEnrollmentLoading, setShowEnrollmentLoading] = useState(false);
+    const enrollmentSuccessRef = useRef(false);
 
     const carouselSlides = [
         {
@@ -95,6 +101,48 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
         setCurrentSlide(index);
     };
 
+    const handleApplyEnrollment = async () => {
+        if (!currentUser?.uid) {
+            onNavigate('become-member');
+            return;
+        }
+        setShowEnrollmentLoading(true);
+        try {
+            const { data: existingProfile } = await supabase
+                .from('profiles')
+                .select('enrolled_programs')
+                .eq('id', currentUser.uid)
+                .maybeSingle();
+            const currentPrograms = existingProfile?.enrolled_programs || [];
+            const updatedPrograms = currentPrograms.includes('Foundational')
+                ? currentPrograms
+                : [...currentPrograms, 'Foundational'];
+            const { error } = await supabase
+                .from('profiles')
+                .update({ enrolled_programs: updatedPrograms })
+                .eq('id', currentUser.uid);
+            if (error) {
+                console.error('Profile update error details:', error);
+                throw error;
+            }
+            await supabase.from('notifications').insert({
+                user_id: currentUser.uid,
+                title: 'Congratulations!',
+                message: 'You have now been enrolled in the Foundation Program. Welcome aboard!',
+                type: 'success',
+                is_read: false,
+            });
+            // Refresh user profile to update enrollment state immediately
+            if (refreshUserProfile) {
+                await refreshUserProfile();
+            }
+            enrollmentSuccessRef.current = true;
+        } catch (err) {
+            console.error('Enrollment error:', err);
+            enrollmentSuccessRef.current = false;
+        }
+    };
+
     return (
         <>
             <BreadcrumbSchema items={[
@@ -103,10 +151,24 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                 { name: 'Foundational Program', url: '/foundational-program' }
             ]} />
             <div className="min-h-screen bg-white text-slate-900 font-sans">
-            <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
+                {/* Home Button */}
+                <button
+                    onClick={() => onNavigate('home')}
+                    className="fixed top-4 left-4 z-50 flex items-center gap-2 px-3 py-2 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition-all text-slate-700 text-sm font-medium"
+                    aria-label="Go to home"
+                >
+                    <Home className="w-4 h-4" />
+                    <span className="hidden sm:inline">Home</span>
+                </button>
 
             <div style={{ maxWidth: '950px', margin: '0 auto', animation: 'fadeIn 0.5s ease-in-out', paddingBottom: '4rem' }}>
                 <div style={{ textAlign: 'center', marginBottom: '5rem', paddingTop: '2rem' }}>
+                    {/* Logo */}
+                    <img
+                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
+                        alt="PilotRecognition"
+                        style={{ height: '96px', width: 'auto', objectFit: 'contain', margin: '0 auto 1.5rem' }}
+                    />
                     <div style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                         FOUNDATION PROGRAM
                     </div>
@@ -116,6 +178,15 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                     <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.8, margin: '0 auto', maxWidth: '44rem' }}>
                         Pilots invest $50,000 and 4 years in training. The industry lacks a standardized way to recognize professional capabilities. The Foundational Program provides the recognition framework you need to connect your investment to career opportunity.
                     </p>
+                    <div style={{ marginTop: '2rem' }}>
+                        <button
+                            onClick={handleApplyEnrollment}
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30"
+                        >
+                            <CheckCircle className="w-5 h-5" />
+                            {isLoggedIn ? 'Apply Enrollment' : 'Enroll Now'}
+                        </button>
+                    </div>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', alignItems: 'center' }}>
@@ -517,7 +588,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                             Join our pilot community and gain access to verified mentorship, competency assessment, and pathway tools.
                         </p>
                         <button
-                            onClick={() => onNavigate('become-member')}
+                            onClick={handleApplyEnrollment}
                             style={{
                                 padding: '1rem 3rem',
                                 backgroundColor: '#2563eb',
@@ -571,7 +642,20 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                     Back to Home
                 </button>
             </div>
-        </div>
+            </div>
+
+            {/* Enrollment Loading Overlay */}
+            {showEnrollmentLoading && (
+                <FoundationLoadingScreen
+                    onComplete={() => {
+                        setShowEnrollmentLoading(false);
+                        if (enrollmentSuccessRef.current) {
+                            sessionStorage.setItem('enrollmentSuccess', 'true');
+                            onNavigate('home');
+                        }
+                    }}
+                />
+            )}
         </>
     );
 };

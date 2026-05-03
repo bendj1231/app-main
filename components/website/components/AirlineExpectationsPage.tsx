@@ -110,8 +110,8 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             <div className="min-h-screen bg-white text-slate-900 font-sans">
             <PathwaysHeader onBack={onBack} onNavigate={onNavigate} />
 
-            {/* Header Section - matching AboutPage style */}
-            <div className={selectedAirline ? "pt-12 pb-8 px-6" : "pt-32 pb-12 px-6"}>
+            {/* Header Section - Dark Blue Shader */}
+            <div className={selectedAirline ? "pt-12 pb-8 px-6 bg-gradient-to-b from-blue-950 via-blue-900 to-blue-950" : "pt-32 pb-12 px-6 bg-gradient-to-b from-blue-950 via-blue-900 to-blue-950"}>
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
                         <img
@@ -119,16 +119,16 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                             alt="PilotRecognition Logo"
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
-                        <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
+                        <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-300 mb-4">
                             Strategic Career Guidance
                         </p>
-                        <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
+                        <h1 className="text-4xl md:text-6xl font-serif text-white leading-tight mb-4">
                             Airline Requirements Search
                         </h1>
                         <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
                             Requirements | Expectations | Career Pathways
                         </span>
-                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
+                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-300 leading-relaxed">
                             Understanding what airlines really look for in pilot candidates—beyond the 1,500-hour requirement.
                             We bridge the gap between "having the hours" and "being the right candidate." Through our <strong>AI-powered pathway matching</strong> system,
                             we analyze your verified PilotRecognition profile against airline requirements to identify optimal career opportunities.
@@ -146,8 +146,8 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             {!selectedAirline && (
                 <div className="relative overflow-hidden mb-8 z-10 min-h-[600px]">
                     {/* Dark blue background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-950 z-0" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-900/60 to-blue-900/40 z-0" />
                     
                     <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
                         <div className="text-center text-white">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, Settings, Bell } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -8,6 +8,7 @@ import { RecognitionScoreDisplay } from '../../../RecognitionScoreDisplay';
 import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
 import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
+import { MeshGradient } from '@paper-design/shaders-react';
 
 interface PilotRecognitionProfilePageProps {
     onNavigate: (page: string) => void;
@@ -41,6 +42,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [recommendedPathways, setRecommendedPathways] = useState<any[]>([]);
     const [selectedPathway, setSelectedPathway] = useState<any>(null);
     const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+    
+    // Navigation state
+    const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
+    const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
+    const [notificationCount, setNotificationCount] = useState(0);
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const settingsDropdownRef = useRef<HTMLDivElement>(null);
+    const notificationDropdownRef = useRef<HTMLDivElement>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
     const [currentDocumentationPage, setCurrentDocumentationPage] = useState<'examination' | 'logbook' | 'licensure' | null>(null);
     const [uploadingImage, setUploadingImage] = useState(false);
@@ -365,6 +374,23 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         fetchProfileData();
     }, []);
 
+    // Handle click outside for dropdowns
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target as Node)) {
+                setIsSettingsDropdownOpen(false);
+            }
+            if (notificationDropdownRef.current && !notificationDropdownRef.current.contains(event.target as Node)) {
+                setIsNotificationDropdownOpen(false);
+            }
+        };
+
+        if (isSettingsDropdownOpen || isNotificationDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => document.removeEventListener('mousedown', handleClickOutside);
+        }
+    }, [isSettingsDropdownOpen, isNotificationDropdownOpen]);
+
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file || !profileData?.user_id) return;
@@ -632,26 +658,45 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     };
 
     const baseCardStyle: React.CSSProperties = {
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))',
+        background: 'rgba(30, 41, 59, 0.8)',
         borderRadius: '20px',
         padding: '1.5rem',
-        boxShadow: '0 20px 45px rgba(15,23,42,0.08)',
-        border: '1px solid rgba(255,255,255,0.45)',
+        boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)'
     };
 
     if (loading) {
         return (
-            <div style={{ backgroundColor: '#eef4fb', paddingBottom: '4rem', minHeight: '100vh' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+            <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+                <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+                    <MeshGradient
+                        className="w-full h-full"
+                        colors={[
+                            "#dbeafe",
+                            "#94a3b8",
+                            "#64748b",
+                            "#475569",
+                            "#334155",
+                            "#1e3a5f",
+                            "#1e3a8a",
+                            "#0f172a"
+                        ]}
+                        speed={0.22}
+                    />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(100,116,139,0.2), rgba(30,41,59,0.35), rgba(15,23,42,0.6))' }} />
+                    <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
+                </div>
+                <div style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
                     <div style={{ textAlign: 'center' }}>
                         <div style={{ 
-                            width: '48px', height: '48px', border: '3px solid #e2e8f0', 
+                            width: '48px', height: '48px', border: '3px solid rgba(255,255,255,0.2)', 
                             borderTopColor: '#3b82f6', borderRadius: '50%', 
                             animation: 'spin 1s linear infinite', margin: '0 auto'
                         }}></div>
-                        <p style={{ marginTop: '1rem', color: '#64748b' }}>Loading your recognition profile...</p>
+                        <p style={{ marginTop: '1rem', color: 'rgba(255,255,255,0.7)' }}>Loading your recognition profile...</p>
                     </div>
                 </div>
                 <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
@@ -663,14 +708,208 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const initials = pilotName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
     return (
-        <div style={{ backgroundColor: '#eef4fb', paddingBottom: '4rem', minHeight: '100vh' }}>
-            <main style={{ position: 'relative', width: '100%', maxWidth: '1200px', margin: '0 auto', minHeight: '100vh' }}>
-                {/* Header */}
+        <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+            {/* MeshGradient Background - Same as Portal 2 */}
+            <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+                <MeshGradient
+                    className="w-full h-full"
+                    colors={[
+                        "#dbeafe",
+                        "#94a3b8",
+                        "#64748b",
+                        "#475569",
+                        "#334155",
+                        "#1e3a5f",
+                        "#1e3a8a",
+                        "#0f172a"
+                    ]}
+                    speed={0.22}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(100,116,139,0.2), rgba(30,41,59,0.35), rgba(15,23,42,0.6))' }} />
+                <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
+            </div>
+            <main style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '1200px', margin: '0 auto', minHeight: '100vh' }}>
+                {/* Portal 2 Navigation Bar */}
+                <div
+                    className="relative z-50 flex items-center justify-between px-4 py-2"
+                    style={{
+                        background: 'rgba(15, 23, 42, 0.9)',
+                        backdropFilter: 'blur(10px)',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                    }}
+                >
+                    {/* Left - Navigation Items */}
+                    <div className="flex items-center">
+                        {[
+                            { id: 'welcome', label: 'WELCOME', icon: Home },
+                            { id: 'profile', label: 'PROFILE', icon: null },
+                            { id: 'pathways', label: 'PATHWAYS', icon: null },
+                            { id: 'marketplace', label: 'NEWS ROOM', icon: null },
+                            { id: 'options', label: 'OPTIONS', icon: null },
+                        ].map((item) => {
+                            const Icon = item.icon;
+                            const isActive = item.id === 'profile';
+                            return (
+                                <button
+                                    key={item.id}
+                                    onClick={() => {
+                                        if (item.id === 'welcome') {
+                                            onNavigate('home');
+                                        } else if (item.id === 'profile') {
+                                            // Stay on current page
+                                        } else if (item.id === 'pathways') {
+                                            onNavigate('access-portal-2');
+                                        } else {
+                                            onNavigate(item.id);
+                                        }
+                                    }}
+                                    className="relative px-4 py-2 flex items-center gap-2 transition-all duration-200"
+                                    style={{
+                                        background: isActive ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
+                                        color: isActive ? '#0f172a' : 'rgba(255, 255, 255, 0.7)',
+                                        borderBottom: isActive ? '2px solid #0ea5e9' : '2px solid transparent',
+                                    }}
+                                >
+                                    {Icon && <Icon className="w-4 h-4" />}
+                                    <span className="text-xs font-bold tracking-wider">{item.label}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Right - User Info */}
+                    <div className="flex items-center gap-4">
+                        {/* Profile Picture */}
+                        <div className="relative">
+                            <button
+                                onClick={() => onNavigate('pilot-recognition-profile')}
+                                className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
+                                title="Profile"
+                                style={{ borderRadius: '45% / 50%' }}
+                            >
+                                {profileImageUrl ? (
+                                    <img
+                                        src={profileImageUrl}
+                                        alt="Profile"
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <span className="text-lg font-bold text-slate-700">
+                                        {(profileData?.full_name || 'Pilot').charAt(0)}
+                                    </span>
+                                )}
+                            </button>
+                        </div>
+
+                        {/* Settings Dropdown */}
+                        <div className="relative" ref={settingsDropdownRef}>
+                            <button
+                                onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
+                                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
+                                title="Settings"
+                            >
+                                <Settings className="w-5 h-5" />
+                            </button>
+
+                            {/* Settings Dropdown Menu */}
+                            {isSettingsDropdownOpen && (
+                                <>
+                                    <div
+                                        className="fixed inset-0 z-40"
+                                        onClick={() => setIsSettingsDropdownOpen(false)}
+                                    />
+                                    <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                                        <div className="p-4 border-b border-slate-200">
+                                            <h3 className="font-semibold text-slate-900">Quick Settings</h3>
+                                        </div>
+                                        <div className="p-2">
+                                            <button
+                                                onClick={() => {
+                                                    onNavigate('settings');
+                                                    setIsSettingsDropdownOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                            >
+                                                <Settings className="w-4 h-4 text-slate-600" />
+                                                <span className="text-sm text-slate-700">Account Settings</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    onNavigate('pilot-recognition-profile');
+                                                    setIsSettingsDropdownOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                            >
+                                                <Users className="w-4 h-4 text-slate-600" />
+                                                <span className="text-sm text-slate-700">Profile</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+
+                        {/* Notification Bell */}
+                        <div className="relative" ref={notificationDropdownRef}>
+                            <button 
+                                onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
+                                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
+                                title="Notifications"
+                            >
+                                <Bell className="w-5 h-5" />
+                                {notificationCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 bg-white text-red-500 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-red-500">
+                                        {notificationCount > 9 ? '9+' : notificationCount}
+                                    </span>
+                                )}
+                            </button>
+
+                            {/* Notification Dropdown */}
+                            {isNotificationDropdownOpen && (
+                                <>
+                                    <div
+                                        className="fixed inset-0 z-40"
+                                        onClick={() => setIsNotificationDropdownOpen(false)}
+                                    />
+                                    <div className="absolute right-0 top-full mt-2 w-96 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 max-h-[500px] overflow-hidden flex flex-col">
+                                        {/* Header */}
+                                        <div className="p-4 border-b border-slate-200">
+                                            <h3 className="font-semibold text-slate-900">Notifications</h3>
+                                        </div>
+                                        
+                                        {/* Notifications List */}
+                                        <div className="overflow-y-auto flex-1">
+                                            {notifications.length === 0 ? (
+                                                <div className="p-8 text-center">
+                                                    <Bell className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                                                    <p className="text-slate-500 text-sm">No notifications yet</p>
+                                                </div>
+                                            ) : (
+                                                <div className="p-2">
+                                                    {notifications.map((notification, index) => (
+                                                        <div key={index} className="p-3 hover:bg-slate-50 rounded-lg transition-colors">
+                                                            <p className="text-sm text-slate-900">{notification.message}</p>
+                                                            <p className="text-xs text-slate-500 mt-1">{notification.time}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Original Header Content */}
                 <header style={{
                     padding: '3rem 4rem',
-                    background: 'linear-gradient(180deg, #fff 0%, #f0f4fb 100%)',
+                    background: 'rgba(15, 23, 42, 0.6)',
+                    backdropFilter: 'blur(10px)',
                     position: 'relative',
-                    borderBottom: '1px solid #e2e8f0',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center'
@@ -690,10 +929,13 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             gap: '0.5rem',
                             fontSize: '0.875rem',
                             fontWeight: 500,
-                            color: '#475569'
+                            color: '#94a3b8',
+                            transition: 'color 0.2s ease'
                         }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = '#ef4444'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}
                     >
-                        <ArrowLeft style={{ width: 16, height: 16 }} />
+                        <ChevronLeft style={{ width: '16px', height: '16px' }} />
                         Back
                     </button>
 
@@ -719,17 +961,16 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </button>
 
                     <div style={{ marginBottom: '1rem', marginTop: '0.5rem' }}>
-                        <img 
-                            src="/logo.png" 
-                            alt="WingMentor Logo" 
-                            style={{ height: '120px', width: 'auto' }}
-                            onError={(e) => console.error('[IMAGE] Logo error: /logo.png', e)}
-                        />
+                        <div style={{ fontSize: '2rem', fontWeight: '700', letterSpacing: '-0.02em' }}>
+                            <span style={{ color: '#ffffff' }}>pilot</span>
+                            <span style={{ color: '#dc2626' }}>recognition</span>
+                            <span style={{ color: '#ffffff' }}>.com</span>
+                        </div>
                     </div>
                     <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase', textAlign: 'center' }}>
                         Pilot Recognition Profile
                     </p>
-                    <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0.5rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal', textAlign: 'center' }}>
+                    <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0.5rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal', textAlign: 'center' }}>
                         Pilot Profile
                     </h1>
 
@@ -836,7 +1077,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             accept="image/*"
                                             style={{ display: 'none' }}
                                         />
-                                        <h2 style={{ fontSize: '1.4rem', color: '#0f172a', marginBottom: '0.25rem', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>{pilotName}</h2>
+                                        <h2 style={{ fontSize: '1.4rem', color: '#ffffff', marginBottom: '0.25rem', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>{pilotName}</h2>
                                         <p style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 600, letterSpacing: '0.18em', marginBottom: '0.2rem' }}>
                                             {(() => {
                                                 const license = profileData?.license_type || '';
@@ -912,9 +1153,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             { label: 'Flight Hours', value: profileData?.total_hours || 0, unverified: true },
                                             { label: 'Recognition Score', value: profileData?.overall_recognition_score || 0 }
                                         ].map(tile => (
-                                            <div key={tile.label} style={{ background: 'rgba(255,255,255,0.9)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.4)' }}>
+                                            <div key={tile.label} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                                 <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.12em', color: '#94a3b8', textTransform: 'uppercase' }}>{tile.label}</p>
-                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.35rem', fontWeight: 700, color: '#0f172a' }}>{tile.value}</p>
+                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.35rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
                                                 {tile.unverified && <p style={{ margin: '0.25rem 0 0', fontSize: '0.7rem', fontWeight: 500, color: '#f59e0b' }}>(unverified)</p>}
                                                 {tile.unverified && <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: '0.25rem 0 0 0', fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>}
                                             </div>
@@ -934,7 +1175,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 {/* Credentials Card */}
                                 <div style={{ ...baseCardStyle, display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
                                     <div>
-                                        <h3 style={{ margin: 0, fontSize: '1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Pilot Credentials</h3>
+                                        <h3 style={{ margin: 0, fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Pilot Credentials</h3>
                                         <p style={{ margin: '0.35rem 0 0', color: '#64748b', fontSize: '0.85rem' }}>Licensing, hours, and access pass</p>
                                         <button
                                             onClick={() => onNavigate('pilot-licensure-experience')}
@@ -977,9 +1218,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 { label: 'Career Stage', value: profileData?.career_stage || 'Not specified' }
                                             ];
                                         })().map(tile => (
-                                            <div key={tile.label} style={{ background: 'rgba(255,255,255,0.9)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.4)', textAlign: 'center' }}>
+                                            <div key={tile.label} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center' }}>
                                                 <p style={{ margin: 0, fontSize: '0.65rem', color: '#6b7280', letterSpacing: '0.1em' }}>{tile.label}</p>
-                                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{tile.value}</p>
+                                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -989,7 +1230,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 <div style={{ ...baseCardStyle, minHeight: '100%' }}>
                                     <div style={{ marginBottom: '0.75rem' }}>
                                         <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Readiness Snapshot</p>
-                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Resource & Availability</h3>
+                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Resource & Availability</h3>
                                         <button
                                             onClick={() => onNavigate('pilot-licensure-experience')}
                                             style={{
@@ -1014,9 +1255,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             { label: 'Countries Visited', value: profileData?.countries_visited || 'Not specified' },
                                             { label: 'Favorite Aircraft', value: profileData?.favorite_aircraft || 'Not specified' }
                                         ].map(item => (
-                                            <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.9)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <div style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
-                                                <div style={{ color: '#0f172a', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
+                                                <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -1025,11 +1266,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 {/* Quick Stats Card */}
                                 <div style={{
                                     gridColumn: '1 / -1',
-                                    background: 'white',
+                                    background: 'rgba(30, 41, 59, 0.8)',
                                     borderRadius: '26px',
                                     padding: '1.5rem',
-                                    border: '1px solid rgba(226,232,240,0.9)',
-                                    boxShadow: '0 20px 45px rgba(15,23,42,0.08)'
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    boxShadow: '0 20px 45px rgba(0,0,0,0.3)'
                                 }}>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '0.35rem' }}>
                                         {/* Total Hours */}
@@ -1040,7 +1281,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
                                             }} />
                                             <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Total Hours</p>
-                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#0ea5e9' }}>{profileData?.total_hours || 0}</p>
+                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.total_hours || 0}</p>
                                             <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Logged Hours</p>
                                             <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#f59e0b', fontWeight: 500 }}>(unverified)</p>
                                             <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: 0, fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>
@@ -1054,7 +1295,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
                                             }} />
                                             <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Recognition</p>
-                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#10b981' }}>{profileData?.overall_recognition_score || 0}</p>
+                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
                                             <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Verified Score</p>
                                         </div>
 
@@ -1066,7 +1307,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
                                             }} />
                                             <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Recency Exam</p>
-                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ec4899' }}>{profileData?.recency_examination_score || 0}</p>
+                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.recency_examination_score || 0}</p>
                                             <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Recency Score</p>
                                         </div>
 
@@ -1087,14 +1328,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 {/* Examination */}
                                                 <div style={{ textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Examination</p>
-                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#f59e0b' }}>{profileData?.examination_score || 0}</p>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.examination_score || 0}</p>
                                                     <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#94a3b8' }}>Knowledge Test</p>
                                                 </div>
 
                                                 {/* Mentor Hours */}
                                                 <div style={{ textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Mentor Hours</p>
-                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#8b5cf6' }}>{profileData?.mentorship_hours || 0}</p>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.mentorship_hours || 0}</p>
                                                     <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#94a3b8' }}>Engagement</p>
                                                 </div>
                                             </div>
@@ -1107,7 +1348,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         {/* Score Optimization Guide */}
                         <div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>Recognition Score Optimization</h2>
+                                <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Recognition Score Optimization</h2>
                                 <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Improve your pilot recognition score</span>
                             </div>
                             <ScoreOptimizationGuide
@@ -1146,16 +1387,16 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 <div style={{ ...baseCardStyle }}>
                                     <div style={{ marginBottom: '0.75rem' }}>
                                         <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Career Information</p>
-                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Professional Details</h3>
+                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Professional Details</h3>
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                                         {[
                                             { label: 'Current Occupation', value: profileData?.current_occupation || 'Not specified' },
                                             { label: 'Current Employer', value: profileData?.current_employer || 'Not specified' }
                                         ].map(item => (
-                                            <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.9)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <div style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
-                                                <div style={{ color: '#0f172a', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
+                                                <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -1164,7 +1405,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 <div style={{ ...baseCardStyle }}>
                                     <div style={{ marginBottom: '0.75rem' }}>
                                         <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Pathway Interests</p>
-                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Career Goals</h3>
+                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Career Goals</h3>
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                         {profileData?.pathway_interests?.map((interest: string, index: number) => (
@@ -1178,7 +1419,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 <div style={{ ...baseCardStyle }}>
                                     <div style={{ marginBottom: '0.75rem' }}>
                                         <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Insight Interests</p>
-                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Learning Goals</h3>
+                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Learning Goals</h3>
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                         {profileData?.insight_interests?.map((interest: string, index: number) => (
@@ -1215,26 +1456,26 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     }
                                 ].map(card => (
                                     <div key={card.title} style={{
-                                        background: 'rgba(255, 255, 255, 0.9)',
+                                        background: 'rgba(30, 41, 59, 0.6)',
                                         borderRadius: '24px',
                                         padding: '1.75rem',
-                                        boxShadow: '0 20px 45px rgba(15, 23, 42, 0.08)',
+                                        boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
                                         display: 'grid',
                                         gridTemplateColumns: '1fr auto',
                                         gap: '1.5rem',
                                         alignItems: 'center'
                                     }}>
                                         <div>
-                                            <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#0f172a' }}>{card.title}</h3>
+                                            <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff' }}>{card.title}</h3>
                                             <p style={{ margin: 0, color: '#475569', fontSize: '0.95rem', lineHeight: 1.5 }}>{card.description}</p>
                                         </div>
                                         <button
                                             style={{
                                                 padding: '0.65rem 1.75rem',
                                                 borderRadius: '999px',
-                                                border: card.filled ? 'none' : '1px solid #cbd5e1',
+                                                border: card.filled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
                                                 background: card.filled ? '#0ea5e9' : 'transparent',
-                                                color: card.filled ? '#fff' : '#0f172a',
+                                                color: card.filled ? '#fff' : '#94a3b8',
                                                 fontWeight: 600,
                                                 cursor: 'pointer'
                                             }}
@@ -1259,16 +1500,16 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             <div style={{ ...baseCardStyle }}>
                                 <div style={{ marginBottom: '0.75rem' }}>
                                     <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Personal Details</p>
-                                    <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>About You</h3>
+                                    <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>About You</h3>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                                     {[
                                         { label: 'Why You Want to Become a Pilot', value: profileData?.why_become_pilot || 'Not specified' },
                                         { label: 'Other Skills', value: profileData?.other_skills || 'Not specified' }
                                     ].map(item => (
-                                        <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.9)' }}>
+                                        <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
                                             <div style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.35rem' }}>{item.label}</div>
-                                            <div style={{ color: '#0f172a', fontSize: '0.9rem', lineHeight: 1.5 }}>{item.value}</div>
+                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{item.value}</div>
                                         </div>
                                     ))}
                                 </div>
@@ -1277,7 +1518,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                         {/* ATLAS Resume Section */}
                         <CategorySection title="ATLAS Resume" description="ATS-Approved ATLAS CV Formatting">
-                            <div style={{ maxWidth: '80rem', margin: '0 auto', background: 'white', borderRadius: '1rem', border: '1px solid #e2e8f0', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
+                            <div style={{ maxWidth: '80rem', margin: '0 auto', background: 'rgba(30, 41, 59, 0.8)', borderRadius: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)', overflow: 'hidden' }}>
                                 {/* Header Card */}
                                 <div style={{ background: '#dc2626', padding: '1.25rem 1.5rem', borderBottom: '1px solid #b91c1c' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -1298,37 +1539,37 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 <div style={{ padding: '1.5rem' }}>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
                                         {/* Pilot Credentials */}
-                                        <div style={{ background: 'white', borderRadius: '0.75rem', padding: '1rem', border: '1px solid #e2e8f0' }}>
-                                            <h5 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>Pilot Credentials</h5>
+                                        <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '0.75rem', padding: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                            <h5 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.25rem' }}>Pilot Credentials</h5>
                                             <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', marginBottom: '1rem' }}>Licensing, hours, and access pass</p>
                                             
                                             {/* Flight Hours Grid - 4 boxes */}
                                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem', marginBottom: '1rem' }}>
-                                                <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
+                                                <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Total Hours</p>
-                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.total_hours || 0}</p>
+                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.total_hours || 0}</p>
                                                     <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#f59e0b', fontWeight: 500 }}>(unverified)</p>
                                                     <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: '0.25rem 0 0 0', fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>
                                                 </div>
-                                                <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
+                                                <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Mentorship</p>
-                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.mentorship_hours || 0}</p>
+                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.mentorship_hours || 0}</p>
                                                 </div>
-                                                <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
+                                                <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Foundation</p>
-                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.foundation_progress || 0}%</p>
+                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.foundation_progress || 0}%</p>
                                                 </div>
-                                                <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
+                                                <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Recognition</p>
-                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.overall_recognition_score || 0}</p>
+                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
                                                 </div>
                                             </div>
 
                                             {/* Type & Status */}
-                                            <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', marginBottom: '0.75rem' }}>
+                                            <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', marginBottom: '0.75rem' }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Type</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.license_type || 'Commercial Pilot'}</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.license_type || 'Commercial Pilot'}</span>
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Status</span>
@@ -1342,12 +1583,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </div>
 
                                         {/* Training */}
-                                        <div style={{ background: 'white', borderRadius: '0.75rem', padding: '1rem', border: '1px solid #e2e8f0' }}>
-                                            <h5 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Training</h5>
+                                        <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '0.75rem', padding: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                            <h5 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem' }}>Training</h5>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>License</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.license_type || 'CPL (A)'}</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.license_type || 'CPL (A)'}</span>
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Medical</span>
@@ -1355,45 +1596,45 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Type Ratings</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>Multi-Engine</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>Multi-Engine</span>
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>English Proficiency</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.english_proficiency_level || 'Level 6 (Expert)'}</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.english_proficiency_level || 'Level 6 (Expert)'}</span>
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Languages</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>English, Spanish</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>English, Spanish</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {/* Readiness Snapshot */}
-                                        <div style={{ background: 'white', borderRadius: '0.75rem', padding: '1rem', border: '1px solid #e2e8f0' }}>
+                                        <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '0.75rem', padding: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                             <h5 style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>READINESS SNAPSHOT</h5>
-                                            <h6 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Resource & Availability</h6>
+                                            <h6 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem' }}>Resource & Availability</h6>
                                             
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                                <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Medical Certificate</span>
                                                     <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#059669' }}>Valid Until Aug 2026</span>
                                                 </div>
-                                                <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Last Flown</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.last_flown || 'Not Available'}</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.last_flown || 'Not Available'}</span>
                                                 </div>
-                                                <div style={{ background: '#f8fafc', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Recognition Score</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.overall_recognition_score || 0}/100</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}/100</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     {/* Job Experience Section */}
-                                    <div style={{ marginTop: '1rem', background: 'white', borderRadius: '0.75rem', padding: '1.25rem', border: '1px solid #e2e8f0' }}>
+                                    <div style={{ marginTop: '1rem', background: 'rgba(30, 41, 59, 0.6)', borderRadius: '0.75rem', padding: '1.25rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-                                            <h5 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#0f172a' }}>Recent Job Experience & Industry Aligned Accredited Programs</h5>
+                                            <h5 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#ffffff' }}>Recent Job Experience & Industry Aligned Accredited Programs</h5>
                                             <a href="#" style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                                 Edit Experience <span>→</span>
                                             </a>
@@ -1403,7 +1644,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #f1f5f9' }}>
                                             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                                                 <div>
-                                                    <h6 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 600, color: '#0f172a' }}>{profileData?.current_occupation || 'Flight Instructor'}</h6>
+                                                    <h6 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 600, color: '#ffffff' }}>{profileData?.current_occupation || 'Flight Instructor'}</h6>
                                                     <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>{profileData?.current_employer || 'Skyway Aviation Academy'}</p>
                                                 </div>
                                                 <span style={{ fontSize: '0.625rem', color: '#94a3b8' }}>Jan 2024 - Present</span>
@@ -1419,7 +1660,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                 </div>
 
-                                <div style={{ background: '#f8fafc', padding: '0.75rem 1.5rem', borderTop: '1px solid #e2e8f0' }}>
+                                <div style={{ background: 'rgba(15, 23, 42, 0.5)', padding: '0.75rem 1.5rem', borderTop: '1px solid #e2e8f0' }}>
                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', textAlign: 'center' }}>
                                         This ATLAS-formatted CV is machine-readable by airline ATS systems and includes verified competency data from the WingMentor Foundation Program.
                                     </p>
@@ -1435,7 +1676,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     fontSize: '3rem', 
                                     fontWeight: 'normal', 
                                     fontFamily: 'Georgia, serif', 
-                                    color: '#0f172a', 
+                                    color: '#ffffff', 
                                     letterSpacing: '-0.02em' 
                                 }}>
                                     Recommended Pathways
@@ -1531,7 +1772,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h3 style={{ margin: 0, fontSize: '2rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#0f172a', lineHeight: 1 }}>
+                                            <h3 style={{ margin: 0, fontSize: '2rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#ffffff', lineHeight: 1 }}>
                                                 {profileData?.overall_recognition_score || 0}
                                             </h3>
                                         </div>
@@ -1547,14 +1788,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         marginTop: '0.5rem',
                                         width: '350px',
                                         padding: '1rem',
-                                        background: 'white',
+                                        background: 'rgba(30, 41, 59, 0.95)',
                                         borderRadius: '0.5rem',
-                                        border: '1px solid #e2e8f0',
-                                        boxShadow: '0 10px 25px rgba(15,23,42,0.15)',
+                                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                                        boxShadow: '0 10px 25px rgba(0,0,0,0.4)',
                                         zIndex: 1000,
                                         textAlign: 'left'
                                     }}>
-                                        <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a' }}>
+                                        <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: 600, color: '#ffffff' }}>
                                             About Your Profile Score
                                         </h4>
                                         <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.75rem', color: '#64748b', lineHeight: 1.5 }}>
@@ -1737,7 +1978,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.5rem' }}>
                                             Selected Pathway
                                         </p>
-                                        <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '0.5rem', fontFamily: 'Georgia, serif' }}>
+                                        <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'normal', color: '#ffffff', marginBottom: '0.5rem', fontFamily: 'Georgia, serif' }}>
                                             {selectedPathway.title}
                                         </h3>
                                         <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
@@ -1787,7 +2028,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                             {/* Header and description above the card */}
                             <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
-                                <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#0f172a' }}>
+                                <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#ffffff' }}>
                                     Requirements & Profile Alignment
                                 </h3>
                                 <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b', lineHeight: 1.6 }}>
@@ -1797,7 +2038,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                             {/* Description Component below header */}
                             {selectedPathway && (
-                                <div style={{ padding: '1.5rem', background: 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.45)', boxShadow: '0 20px 45px rgba(15,23,42,0.08)' }}>
+                                <div style={{ padding: '1.5rem', background: 'rgba(30, 41, 59, 0.8)', borderRadius: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 20px 45px rgba(0,0,0,0.3)' }}>
                                     
                                     {/* Requirements Section */}
                                     {selectedPathway.requirements && (
@@ -1825,7 +2066,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             {Object.entries(groupRequirementsByCategory(checkRequirements(selectedPathway))).map(([category, reqs]) => (
                                                 reqs.length > 0 && (
                                                     <div key={category} style={{ marginBottom: '1.5rem' }}>
-                                                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', color: '#0f172a', fontWeight: 700, textTransform: 'uppercase' }}>
+                                                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', color: '#ffffff', fontWeight: 700, textTransform: 'uppercase' }}>
                                                             {category}
                                                         </p>
                                                         <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.8rem', color: '#64748b', fontStyle: 'italic' }}>
@@ -1842,7 +2083,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                             <tbody>
                                                                 {reqs.map((req) => (
                                                                     <tr key={req.id} style={{ borderBottom: '1px solid rgba(203, 213, 225, 0.2)' }}>
-                                                                        <td style={{ padding: '0.75rem', color: '#0f172a', fontWeight: 500 }}>
+                                                                        <td style={{ padding: '0.75rem', color: '#ffffff', fontWeight: 500 }}>
                                                                             {req.label}
                                                                             {req.openToForeignNationals !== undefined && (
                                                                                 <span style={{ marginLeft: '0.5rem', fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>
@@ -1917,16 +2158,16 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             <div style={{ marginTop: '2rem' }}>
                                 <div style={{ 
                                     padding: '1.5rem', 
-                                    background: 'linear-gradient(135deg, rgba(255,255,255,0.92), rgba(241,245,249,0.82))', 
+                                    background: 'rgba(30, 41, 59, 0.8)', 
                                     borderRadius: '1rem', 
-                                    border: '1px solid rgba(255,255,255,0.45)', 
-                                    boxShadow: '0 20px 45px rgba(15,23,42,0.08)'
+                                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                    boxShadow: '0 20px 45px rgba(0,0,0,0.3)'
                                 }}>
                                     <div style={{ marginBottom: '1.5rem' }}>
                                         <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>
                                             Advanced Recognition Metrics
                                         </p>
-                                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
+                                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
                                             Expanded Formula Variables
                                         </h3>
                                         <p style={{ margin: '0', fontSize: '0.85rem', color: '#64748b', lineHeight: 1.5 }}>
@@ -1985,7 +2226,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                                     {/* Dropdown Content */}
                                     {advancedMetricsOpen === 'B' && (
-                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(255,255,255,0.95)', borderRadius: '0.75rem', border: '1px solid rgba(37, 99, 235, 0.15)' }}>
+                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(15, 23, 42, 0.6)', borderRadius: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                             <p style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', letterSpacing: '0.15em', color: '#2563eb', textTransform: 'uppercase', fontWeight: 700 }}>
                                                 Behavioral & CRM Index (B)
                                             </p>
@@ -1998,7 +2239,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     { label: 'Decision-Making', value: profileData?.behavioral_decision_making || 0, key: 'behavioral_decision_making' },
                                                     { label: 'CRM Assessment', value: profileData?.behavioral_crm_assessment || 0, key: 'behavioral_crm_assessment' }
                                                 ].map((item) => (
-                                                    <div key={item.key} style={{ background: 'rgba(248, 250, 252, 0.8)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(226, 232, 240, 0.6)' }}>
+                                                    <div key={item.key} style={{ background: 'rgba(15, 23, 42, 0.4)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
                                                         <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>{item.label}</p>
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                                             <div style={{ flex: 1, height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
@@ -2010,7 +2251,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                                     transition: 'width 0.3s ease'
                                                                 }} />
                                                             </div>
-                                                            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', minWidth: '35px' }}>{item.value}%</span>
+                                                            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#ffffff', minWidth: '35px' }}>{item.value}%</span>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -2019,7 +2260,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     )}
 
                                     {advancedMetricsOpen === 'L' && (
-                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(255,255,255,0.95)', borderRadius: '0.75rem', border: '1px solid rgba(37, 99, 235, 0.15)' }}>
+                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(15, 23, 42, 0.6)', borderRadius: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                             <p style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', letterSpacing: '0.15em', color: '#2563eb', textTransform: 'uppercase', fontWeight: 700 }}>
                                                 Language & Cultural Fit (L)
                                             </p>
@@ -2030,10 +2271,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     { label: 'International Experience', value: profileData?.language_international_experience ? 'Yes' : 'No', key: 'language_international_experience', isText: true },
                                                     { label: 'Cross-Cultural Comm', value: profileData?.language_cross_cultural_comm || 0, key: 'language_cross_cultural_comm' }
                                                 ].map((item) => (
-                                                    <div key={item.key} style={{ background: 'rgba(248, 250, 252, 0.8)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(226, 232, 240, 0.6)' }}>
+                                                    <div key={item.key} style={{ background: 'rgba(15, 23, 42, 0.4)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
                                                         <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>{item.label}</p>
                                                         {item.isText ? (
-                                                            <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{item.value}</p>
+                                                            <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{item.value}</p>
                                                         ) : (
                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                                                 <div style={{ flex: 1, height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
@@ -2045,7 +2286,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                                         transition: 'width 0.3s ease'
                                                                     }} />
                                                                 </div>
-                                                                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', minWidth: '35px' }}>{item.value}%</span>
+                                                                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#ffffff', minWidth: '35px' }}>{item.value}%</span>
                                                             </div>
                                                         )}
                                                     </div>
@@ -2055,7 +2296,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     )}
 
                                     {advancedMetricsOpen === 'S' && (
-                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(255,255,255,0.95)', borderRadius: '0.75rem', border: '1px solid rgba(37, 99, 235, 0.15)' }}>
+                                        <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(15, 23, 42, 0.6)', borderRadius: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                             <p style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', letterSpacing: '0.15em', color: '#2563eb', textTransform: 'uppercase', fontWeight: 700 }}>
                                                 Specialized Skills Index (S)
                                             </p>
@@ -2067,7 +2308,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     { label: 'Type Rating Diversity', value: profileData?.skills_type_rating_diversity || 0, key: 'skills_type_rating_diversity' },
                                                     { label: 'Instrument Approaches', value: profileData?.skills_instrument_approaches || 0, key: 'skills_instrument_approaches' }
                                                 ].map((item) => (
-                                                    <div key={item.key} style={{ background: 'rgba(248, 250, 252, 0.8)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(226, 232, 240, 0.6)' }}>
+                                                    <div key={item.key} style={{ background: 'rgba(15, 23, 42, 0.4)', borderRadius: '0.5rem', padding: '1rem', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
                                                         <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>{item.label}</p>
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                                             <div style={{ flex: 1, height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
@@ -2079,7 +2320,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                                     transition: 'width 0.3s ease'
                                                                 }} />
                                                             </div>
-                                                            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', minWidth: '35px' }}>{item.value}%</span>
+                                                            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#ffffff', minWidth: '35px' }}>{item.value}%</span>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -2151,21 +2392,21 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     padding: '1rem'
                 }}>
                     <div style={{
-                        background: 'white',
+                        background: 'rgba(30, 41, 59, 0.95)',
                         borderRadius: '16px',
                         padding: '2rem',
                         maxWidth: '450px',
                         width: '100%',
                         boxShadow: '0 20px 45px rgba(15, 23, 42, 0.2)'
                     }}>
-                        <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.25rem', color: '#0f172a', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
+                        <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.25rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
                             Delete Account
                         </h3>
                         <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.9rem', color: '#64748b', lineHeight: 1.6 }}>
                             Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your data including profile information, flight logs, and enrollment records.
                         </p>
                         <div style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.5rem' }}>
                                 Type <span style={{ fontFamily: 'monospace', background: '#f1f5f9', padding: '0.25rem 0.5rem', borderRadius: '4px' }}>pilotrecognition</span> to confirm
                             </label>
                             <input

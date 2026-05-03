@@ -26,6 +26,7 @@ interface AuthContextType {
     deleteAccount: (userId: string) => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
     getAuthHeaders: () => { 'X-CSRF-Token'?: string };
+    refreshUserProfile: () => Promise<void>;
     // MFA functions
     mfaEnabled: boolean;
     mfaSetupStep: 'none' | 'qr' | 'verify';
@@ -609,6 +610,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             setCurrentUser(supabaseUser);
 
+            // Scroll to top after successful login
+            window.scrollTo(0, 0);
+
             // Fetch user profile from Supabase
             try {
                 console.log("Fetching user profile from Supabase for:", data.user.id);
@@ -616,7 +620,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     .from('profiles')
                     .select('*')
                     .eq('id', data.user.id)
-                    .single();
+                    .maybeSingle();
 
                 if (profileData && !profileError) {
                     console.log("✅ User profile fetched from profiles table:", data.user.id);
@@ -628,7 +632,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         .from('pilot_licensure_experience')
                         .select('*')
                         .eq('user_id', data.user.id)
-                        .single();
+                        .maybeSingle();
                     
                     if (pilotData && !pilotError) {
                         console.log("✅ User profile fetched from pilot_licensure_experience table:", data.user.id);
@@ -706,6 +710,50 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (error) {
             throw new Error(error.message);
+        }
+    }
+
+    // Refresh user profile from Supabase
+    async function refreshUserProfile() {
+        if (!currentUser) {
+            console.log('⚠️ No current user to refresh profile');
+            return;
+        }
+
+        try {
+            console.log('🔄 Refreshing user profile for:', currentUser.id);
+            
+            // Fetch profile from Supabase
+            const { data: profileData, error } = await supabase
+                .from('pilot_licensure_experience')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .maybeSingle();
+
+            if (profileData && !error) {
+                console.log('✅ User profile refreshed successfully:', currentUser.id);
+                setUserProfile(profileData);
+                logProfileUpdate(currentUser.id, { action: 'Profile refreshed after enrollment', timestamp: new Date().toISOString() });
+            } else {
+                console.log('⚠️ No profile found during refresh, checking profiles table');
+                
+                // Try profiles table as fallback
+                const { data: profilesData, error: profilesError } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', currentUser.id)
+                    .maybeSingle();
+                
+                if (profilesData && !profilesError) {
+                    console.log('✅ Profile refreshed from profiles table:', currentUser.id);
+                    setUserProfile(profilesData);
+                    logProfileUpdate(currentUser.id, { action: 'Profile refreshed from profiles table', timestamp: new Date().toISOString() });
+                } else {
+                    console.log('⚠️ No profile found in any table during refresh');
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error refreshing user profile:', error);
         }
     }
 
@@ -914,6 +962,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     setCurrentUser(supabaseUser);
                     setExplicitLogoutInStorage(false); // Clear logout flag on sign-in
 
+                    // Scroll to top after successful login
+                    window.scrollTo(0, 0);
+
                     // Check if user has an existing account profile
                     try {
                         console.log('Checking profile for user:', session.user.id);
@@ -921,7 +972,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             .from('profiles')
                             .select('*')
                             .eq('id', session.user.id)
-                            .single();
+                            .maybeSingle();
 
                         console.log('Profile check result from profiles table:', { profileData, error });
 
@@ -937,7 +988,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                 .from('pilot_licensure_experience')
                                 .select('*')
                                 .eq('user_id', session.user.id)
-                                .single();
+                                .maybeSingle();
 
                             if (pilotData && !pilotError) {
                                 console.log("✅ Profile found for OAuth user in pilot_licensure_experience table:", session.user.id);
@@ -1044,13 +1095,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                     setCurrentUser(verifiedUser);
 
+                    // Scroll to top on session restoration
+                    window.scrollTo(0, 0);
+
                     // Fetch profile from Supabase
                     try {
                         const { data: profileData, error } = await supabase
                             .from('pilot_licensure_experience')
                             .select('*')
                             .eq('user_id', session.user.id)
-                            .single();
+                            .maybeSingle();
 
                         if (profileData && !error) {
                             console.log("✅ Supabase profile fetched for user:", session.user.id);
@@ -1108,6 +1162,7 @@ const value = {
     deleteAccount,
     resetPassword,
     getAuthHeaders,
+    refreshUserProfile,
     // MFA properties
     mfaEnabled,
     mfaSetupStep,

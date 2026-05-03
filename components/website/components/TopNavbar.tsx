@@ -79,11 +79,36 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     // Detect user country code via IP geolocation (free tier)
     useEffect(() => {
         let cancelled = false;
+        
+        // Check cache first
+        const cachedCountry = localStorage.getItem('cachedCountryCode');
+        const cachedTime = localStorage.getItem('cachedCountryTime');
+        const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+        
+        if (cachedCountry && cachedTime) {
+            const timeDiff = Date.now() - parseInt(cachedTime);
+            if (timeDiff < CACHE_DURATION) {
+                setCountryCode(cachedCountry);
+                return;
+            }
+        }
+        
         fetch('https://ipapi.co/json/')
-            .then(res => res.ok ? res.json() : null)
+            .then(res => {
+                if (!res.ok) {
+                    if (res.status === 429) {
+                        console.warn('ipapi.co rate limit reached, using cached value if available');
+                    }
+                    return null;
+                }
+                return res.json();
+            })
             .then(data => {
                 if (!cancelled && data?.country_code) {
                     setCountryCode(data.country_code);
+                    // Cache the result
+                    localStorage.setItem('cachedCountryCode', data.country_code);
+                    localStorage.setItem('cachedCountryTime', Date.now().toString());
                 }
             })
             .catch(() => {
@@ -138,19 +163,31 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         fetchProfileData();
     }, [currentUser]);
 
-    const handleLogout = async () => {
+    const handleLogout = async (e?: React.MouseEvent) => {
+        e?.preventDefault();
+        e?.stopPropagation();
+        console.log('[LOGOUT CLICK] handleLogout called, logoutLoading:', logoutLoading, 'currentUser:', currentUser?.email);
         // Prevent multiple simultaneous logout calls
-        if (logoutLoading) return;
-
+        if (logoutLoading) {
+            console.log('[LOGOUT BLOCKED] Already logging out');
+            return;
+        }
+        if (!logout) {
+            console.error('[LOGOUT ERROR] logout function is undefined');
+            return;
+        }
         try {
             setLogoutLoading(true);
+            console.log('[LOGOUT START] Calling auth.logout()...');
             await logout();
+            console.log('[LOGOUT SUCCESS] Redirecting to home');
             onNavigate('home'); // Redirect to home after logout
             setIsMenuOpen(false);
         } catch (error) {
-            console.error("❌ Failed to log out", error);
+            console.error("[LOGOUT ERROR] Failed to log out:", error);
         } finally {
             setLogoutLoading(false);
+            console.log('[LOGOUT END] logoutLoading reset');
         }
     };
 
@@ -259,7 +296,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         .from('profiles')
                         .select('id')
                         .eq('firebase_uid', currentUser.uid)
-                        .single();
+                        .maybeSingle();
                     
                     if (profileError || !profileData) {
                         console.error('Error fetching profile:', profileError);
@@ -268,7 +305,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             .from('profiles')
                             .select('id')
                             .eq('email', currentUser.email)
-                            .single();
+                            .maybeSingle();
                         
                         if (emailError || !emailProfile) {
                             console.error('Error fetching profile by email:', emailError);
@@ -428,14 +465,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             subItems: [
                 { category: 'For Pilots', name: 'About PilotRecognition', target: 'about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
                 { name: 'Mission & Vision', target: 'mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
-                { name: 'Core Values', target: 'core-values', bullets: ['Connection', 'Attitude', 'Respect'] },
                 { name: 'What is the Pilot Gap?', target: 'pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
-                { name: 'Frequently Asked Questions', target: 'faq', bullets: ['Eligibility', 'Program Timeline', 'Pricing Details'] },
                 { category: 'For Industry', name: 'For Airlines & Operators', target: 'about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
                 { name: 'Industry Stewardship', target: 'industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
-                { category: 'Governance', name: 'Our Board', target: 'board', bullets: ['Executive Leadership', 'Airlines Advisory', 'Tech Innovators'] },
-                { name: 'Committees', target: 'committees', bullets: ['Safety Board', 'Curriculum Review', 'Pilot Advocacy'] },
-                { name: 'Governance', target: 'governance', bullets: ['Regulatory Compliance', 'Data Ethics', 'Partner Transparency'] },
             ]
         },
         {
@@ -445,13 +477,17 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Core Programs', name: 'Foundational Program', target: 'foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
                 { name: 'What is the pilot gap?', target: 'pilot-gap', isYellow: true },
                 { name: 'Transition Program', target: 'transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
-                { name: 'EBT CBTA Familiarization', target: 'ebt-cbta', isYellow: true },
-                { name: 'Airline Expectations', target: 'airline-expectations', isYellow: true }
+                { name: 'EBT CBTA Familiarization', target: 'ebt-cbta', isYellow: true }
             ]
         },
         {
             name: 'Pathways',
-            target: 'pathways-modern'
+            target: 'pathways-modern',
+            subItems: [
+                { name: 'Type Rating Search', target: 'type-rating-search', bullets: ['Aircraft Manufacturers', 'Training Centers', 'Licensing Requirements'] },
+                { name: 'Airline Expectations', target: 'airline-expectations', bullets: ['Entry Requirements', 'Operator Standards', 'Application Insights'] },
+                { name: 'Pilot Career Pathways', target: 'pathways-modern', bullets: ['Cadet Programs', 'Cargo & Charter', 'eVTOL & Drones'] }
+            ]
         },
         {
             name: 'Pilot Recognition',
@@ -475,10 +511,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'Hinfact AIRBUS integrated applications', target: 'hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
                 { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: 'atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
                 { name: 'Pilot Recognition Systems', target: 'recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
-                { category: 'Program Access', name: 'Foundation Program application', target: 'foundational-application', bullets: ['Join Global Registry', 'Start Mentorship', 'Build Profile'] },
-                { name: 'Transition Program Application', target: 'transition-application', bullets: ['Optimize Career', 'Advanced Training', 'Direct Broker Entry'] }
             ]
         },
+        { name: 'FAQ', target: 'faq' },
         { name: 'Contact', target: 'contact-support' },
     ];
 
@@ -501,16 +536,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
     return (
         <>
-            <NavigationSchema 
+            <NavigationSchema
                 items={[
                     { name: 'Home', url: '/' },
                     { name: 'About', url: '/about' },
                     { name: 'Programs', url: '/programs' },
-                    { name: 'Pathways', url: '/discover-pathways' },
-                    { name: 'New Pathways', url: '/pathways-modern' },
+                    { name: 'Pathways', url: '/pathways-modern' },
+                    { name: 'Type Rating Search', url: '/type-rating-search' },
+                    { name: 'Airline Expectations', url: '/airline-expectations' },
+                    { name: 'Pilot Career Pathways', url: '/pathways-modern' },
                     { name: 'Pilot Recognition', url: '/recognition-plus' },
                     { name: 'Applications', url: '/pilot-recognition' },
                     { name: 'Membership', url: '/become-member' },
+                    { name: 'FAQ', url: '/faq' },
                     { name: 'Contact', url: '/contact-support' }
                 ]}
                 siteName="Pilot Recognition"
@@ -708,29 +746,38 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         ) : (
                             <>
                                 <button
-                                    onClick={currentUser ? handleLogout : () => onNavigate('become-member')}
-                                    className={`${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-1.5 whitespace-nowrap`}
+                                    onClick={currentUser ? (e) => handleLogout(e) : () => onNavigate('become-member')}
+                                    className={`${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-1.5 whitespace-nowrap`}
                                 >
                                     {currentUser ? 'Sign Out' : 'Become a Member'}
                                 </button>
 
                                 <button
                                     onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
-                                    className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-3 py-1.5 rounded-sm text-[0.65rem] font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
+                                    className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
                                 >
                                     {currentUser ? 'Access Portal' : 'Login'}
                                 </button>
 
+                                <button
+                                    onClick={() => onNavigate('access-portal-2')}
+                                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-purple-500/20 flex items-center gap-1.5"
+                                >
+                                    Access Portal 2
+                                </button>
+
                                 {/* Graphics Settings Button - Always visible */}
                                 <div className="relative group">
-                                    <button
-                                        onClick={() => setIsGraphicsModalOpen(true)}
-                                        className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
-                                        title="Graphics Settings"
-                                    >
-                                        <Monitor className="w-4 h-4" />
+                                    <div className="relative">
+                                        <button
+                                            onClick={() => setIsGraphicsModalOpen(true)}
+                                            className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
+                                            title="Graphics Settings"
+                                        >
+                                            <Monitor className="w-5 h-5" />
+                                        </button>
                                         {showGraphicsTooltip && (
-                                            <button
+                                            <div
                                                 onClick={() => {
                                                     setShowGraphicsTooltip(false);
                                                     localStorage.setItem('hasSeenGraphicsTooltip', 'true');
@@ -741,9 +788,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                 <p className="text-[10px] text-slate-700 font-medium">
                                                     Adjust graphics
                                                 </p>
-                                            </button>
+                                            </div>
                                         )}
-                                    </button>
+                                    </div>
                                 </div>
                             </>
                         )}
@@ -754,9 +801,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <div className="relative" ref={notificationDropdownRef}>
                                     <button 
                                         onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
-                                        className={`w-8 h-8 flex items-center justify-center transition-all relative ${isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-slate-900 hover:text-slate-700' : 'text-white hover:text-white/80'}`}
+                                        className={`w-10 h-10 flex items-center justify-center transition-all relative ${isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-slate-900 hover:text-slate-700' : 'text-white hover:text-white/80'}`}
                                     >
-                                        <Bell className="w-5 h-5" />
+                                        <Bell className="w-6 h-6" />
                                         {notificationCount > 0 && (
                                             <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 bg-white text-red-500 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-red-500">
                                                 {notificationCount > 9 ? '9+' : notificationCount}
@@ -865,14 +912,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <div className="relative" ref={dropdownRef}>
                                     <button
                                         onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                                        className="w-10 h-12 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
+                                        className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
                                         title="Profile"
                                         style={{ borderRadius: '45% / 50%' }}
                                     >
                                         {profileImageUrl ? (
                                             <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
                                         ) : (
-                                            <User className="w-5 h-6" />
+                                            <User className="w-6 h-7" />
                                         )}
                                     </button>
 
@@ -1051,10 +1098,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <div className="relative" ref={settingsDropdownRef}>
                                     <button
                                         onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
-                                        className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
+                                        className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
                                         title="Settings"
                                     >
-                                        <Settings className="w-4 h-4" />
+                                        <Settings className="w-5 h-5" />
                                     </button>
 
                                     {/* Settings Dropdown Menu */}
@@ -1111,7 +1158,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                         aria-expanded={isMenuOpen}
                     >
-                        {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+                        {isMenuOpen ? <X className="w-10 h-10" /> : <Menu className="w-10 h-10" />}
                     </button>
                 </div>
             </nav>
@@ -1144,15 +1191,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             ) : (
                                 <div className="flex flex-col gap-3 mb-8">
                                     <button
-                                        onClick={currentUser ? handleLogout : () => { onNavigate('become-member'); setIsMenuOpen(false); }}
-                                        className={`w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest ${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
+                                        onClick={currentUser ? (e) => handleLogout(e) : () => { onNavigate('become-member'); setIsMenuOpen(false); }}
+                                        className={`w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest text-sm ${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white transition-colors shadow-lg`}
                                     >
                                         {currentUser ? 'Sign Out' : 'Become a Member'}
                                     </button>
 
                                     <button
                                         onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
-                                        className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg font-bold uppercase tracking-widest shadow-xl`}
+                                        className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg text-sm font-bold uppercase tracking-widest shadow-xl`}
                                     >
                                         {currentUser ? 'Access Portal' : 'Login'}
                                     </button>

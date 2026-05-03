@@ -493,21 +493,6 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
     return matchesRegion && matchesSearch;
   });
 
-  // Auto-scroll carousel
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!carouselRef.current) return;
-      const container = carouselRef.current;
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      if (container.scrollLeft >= maxScroll - 10) {
-        container.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        container.scrollBy({ left: 320, behavior: 'smooth' });
-      }
-    }, 3500);
-    return () => clearInterval(interval);
-  }, []);
-
   const scroll = (dir: 'left' | 'right') => {
     carouselRef.current?.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' });
   };
@@ -656,14 +641,14 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
       <div className="relative overflow-hidden pt-16 pb-12 px-6 z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/30 via-transparent to-purple-900/20 pointer-events-none" />
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover Expectations</p>
-          <h1 className={`text-4xl md:text-6xl font-serif font-normal leading-tight mb-4 ${text}`}>
-            Airline Expectations Search
+          <p className="text-xs font-bold tracking-[0.3em] uppercase mb-3"><span className="text-black">Discover</span> <span className="text-red-600">Expectations</span></p>
+          <h1 className="text-4xl md:text-6xl font-serif font-normal leading-tight mb-4">
+            <span className="text-black">Airline </span><span className="text-red-600">Expectations</span><span className="text-black"> Search</span>
           </h1>
-          <p className="text-lg md:text-xl mb-2" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
+          <p className="text-lg md:text-xl mb-2 text-red-600" style={{ fontFamily: 'Georgia, serif' }}>
             Requirements · Expectations · Career Pathways
           </p>
-          <p className={`max-w-2xl mx-auto text-sm md:text-base leading-relaxed ${subtext} mt-4`}>
+          <p className="max-w-2xl mx-auto text-sm md:text-base leading-relaxed text-black mt-4">
             Understanding what airlines really look for—beyond the 1,500-hour requirement. We bridge the gap between "having the hours" and "being the right candidate" through AI-powered pathway matching.
           </p>
 
@@ -675,7 +660,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
               placeholder="Search airlines, locations, tags..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className={`w-full pl-4 pr-11 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all ${inputBg}`}
+              className="w-full pl-4 pr-11 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all bg-white border-slate-300 text-slate-900 placeholder-slate-400"
             />
           </div>
           <div className="flex flex-wrap justify-center gap-2 mt-4">
@@ -705,7 +690,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
       <div className="px-0 mb-12 relative z-30">
         <div className="max-w-7xl mx-auto px-6 mb-4 bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-300 dark:border-slate-700">
           <div className="mb-4">
-            <h2 className={`text-2xl font-serif font-normal ${text}`}>Browse Airlines</h2>
+            <h2 className="text-2xl font-serif font-normal text-black">Browse Airlines</h2>
             <p className={`text-sm ${subtext}`}>{filteredAirlines.length} airlines available</p>
           </div>
           <div className="flex items-center justify-between gap-4">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../../src/lib/supabase';
+import { MeshGradient } from '@paper-design/shaders-react';
 
 interface FlightLogEntry {
   id: string;
@@ -1221,7 +1222,28 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
   const totalHours = flightLogs.reduce((sum, log) => sum + log.hours, 0);
 
   return (
-    <div style={{ backgroundColor: '#eef4fb', minHeight: '100vh', paddingBottom: '4rem' }}>
+    <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+      {/* MeshGradient Background - Same as Portal 2 */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+        <MeshGradient
+          className="w-full h-full"
+          colors={[
+            "#dbeafe",
+            "#94a3b8",
+            "#64748b",
+            "#475569",
+            "#334155",
+            "#1e3a5f",
+            "#1e3a8a",
+            "#0f172a"
+          ]}
+          speed={0.22}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(100,116,139,0.2), rgba(30,41,59,0.35), rgba(15,23,42,0.6))' }} />
+        <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
+      </div>
+      <div style={{ position: 'relative', zIndex: 10, paddingBottom: '4rem' }}>
       <div style={{
         position: 'relative',
         width: '100%',
@@ -1232,11 +1254,12 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
         {/* Header */}
         <header style={{
           padding: '3rem 4rem',
-          background: 'linear-gradient(180deg, #fff 0%, #f0f4fb 100%)',
+          background: 'rgba(15, 23, 42, 0.6)',
+          backdropFilter: 'blur(10px)',
           borderRadius: '20px',
           position: 'relative',
           textAlign: 'center',
-          border: '1px solid #e2e8f0',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
           marginBottom: '2rem'
         }}>
           <button
@@ -1282,28 +1305,33 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
           </div>
 
           <div style={{ marginBottom: '1rem', marginTop: '0.5rem' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '72px', width: 'auto' }} />
+            <div style={{ display: 'flex', alignItems: 'baseline', fontSize: '2rem', fontWeight: 700, fontFamily: 'Arial, sans-serif', justifyContent: 'center' }}>
+              <span style={{ color: '#ffffff' }}>pilot</span>
+              <span style={{ color: '#dc2626' }}>recognition</span>
+              <span style={{ color: '#ffffff' }}>.com</span>
+            </div>
           </div>
           <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
             PILOT RECOGNITION PROFILE
           </p>
-          <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0', color: '#0f172a', fontWeight: 600 }}>
+          <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0', color: '#ffffff', fontWeight: 600 }}>
             Digital Logbook
           </h1>
         </header>
 
         {/* Main Content Card */}
         <div style={{
-          background: 'white',
+          background: 'rgba(30, 41, 59, 0.8)',
           borderRadius: '20px',
           padding: '3rem',
-          boxShadow: '0 20px 45px rgba(15,23,42,0.08)',
-          border: '1px solid rgba(226,232,240,0.9)'
+          boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
+          position: 'relative',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
           {/* Title Section */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
             <div>
-              <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0f172a', margin: '0 0 0.5rem' }}>
+              <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.5rem' }}>
                 Digital Logbook
               </h2>
               <p style={{ margin: 0, color: '#10b981', fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em' }}>
@@ -1333,10 +1361,10 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   padding: '0.5rem 1rem',
                   borderRadius: '8px',
                   border: '1px solid #cbd5e1',
-                  background: '#fff',
+                  background: 'rgba(15, 23, 42, 0.5)',
                   fontSize: '0.875rem',
                   fontWeight: 500,
-                  color: '#0f172a',
+                  color: '#ffffff',
                   cursor: 'pointer'
                 }}
               >
@@ -1369,13 +1397,13 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
           {/* Add Entry Form */}
           {showAddForm && (
             <div style={{
-              background: '#f8fafc',
+              background: 'rgba(30, 41, 59, 0.6)',
               borderRadius: '12px',
               padding: '1.5rem',
               marginBottom: '2rem',
               border: '1px solid #e2e8f0'
             }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#ffffff', marginBottom: '1rem' }}>
                 {logbookFormat === 'anac' ? 'New Flight Entry - ANAC Format' : 'New Flight Entry'}
               </h3>
               
@@ -8275,7 +8303,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+                  <tr style={{ background: 'rgba(30, 41, 59, 0.6)', borderBottom: '2px solid #e2e8f0' }}>
                     <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>DATE</th>
                     <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>TYPE</th>
                     <th style={{ padding: '0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>IDENT</th>
@@ -8303,7 +8331,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   ) : (
                     flightLogs.map((log) => (
                       <tr key={log.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#ffffff', fontWeight: 600 }}>
                           {log.date}
                         </td>
                         <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0ea5e9', fontWeight: 600 }}>
@@ -8312,7 +8340,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                         <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#64748b' }}>
                           {log.registration || '-'}
                         </td>
-                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a' }}>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#ffffff' }}>
                           {log.route || '-'}
                         </td>
                         <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#10b981', fontWeight: 600, textTransform: 'uppercase' }}>
@@ -8321,7 +8349,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                         <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#64748b' }}>
                           {log.remarks || '-'}
                         </td>
-                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0f172a', textAlign: 'right' }}>
+                        <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#ffffff', textAlign: 'right' }}>
                           {log.hours.toFixed(1)}
                         </td>
                         <td style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#0ea5e9', fontWeight: 700, textAlign: 'right' }}>
@@ -8365,11 +8393,11 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                 </div>
               ) : (
                 flightLogs.map((log) => (
-                  <div key={log.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '1rem', border: '1px solid #e2e8f0' }}>
+                  <div key={log.id} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '8px', padding: '1rem', border: '1px solid #e2e8f0' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                       <div>
                         <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>{log.date}</div>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0f172a' }}>{log.aircraftType}</div>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#ffffff' }}>{log.aircraftType}</div>
                       </div>
                       <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0ea5e9' }}>{log.hours.toFixed(1)}h</div>
                     </div>
@@ -8414,11 +8442,11 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                 </div>
               ) : (
                 flightLogs.map((log) => (
-                  <div key={log.id} style={{ background: '#f8fafc', borderRadius: '12px', padding: '1.5rem', border: '1px solid #e2e8f0' }}>
+                  <div key={log.id} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '1.5rem', border: '1px solid #e2e8f0' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                       <div>
                         <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.25rem' }}>{log.date}</div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a' }}>{log.aircraftType}</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>{log.aircraftType}</div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0ea5e9' }}>{log.hours.toFixed(1)}h</div>
@@ -8428,15 +8456,15 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
                       <div>
                         <div style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Registration</div>
-                        <div style={{ fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</div>
+                        <div style={{ fontSize: '0.875rem', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</div>
                       </div>
                       <div>
                         <div style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Route</div>
-                        <div style={{ fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>{log.route || '-'}</div>
+                        <div style={{ fontSize: '0.875rem', color: '#ffffff', fontWeight: 600 }}>{log.route || '-'}</div>
                       </div>
                       <div>
                         <div style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Description</div>
-                        <div style={{ fontSize: '0.875rem', color: '#0f172a', fontWeight: 600 }}>{log.remarks || '-'}</div>
+                        <div style={{ fontSize: '0.875rem', color: '#ffffff', fontWeight: 600 }}>{log.remarks || '-'}</div>
                       </div>
                     </div>
                     <button
@@ -8479,11 +8507,11 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   </div>
                 ) : (
                   flightLogs.map((log) => (
-                    <div key={log.id} style={{ background: '#f8fafc', borderRadius: '12px', padding: '1rem', border: '1px solid #e2e8f0', position: 'relative' }}>
+                    <div key={log.id} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '1rem', border: '1px solid #e2e8f0', position: 'relative' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
                         <div>
                           <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>{log.date}</div>
-                          <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>{log.aircraftType}</div>
+                          <div style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{log.aircraftType}</div>
                         </div>
                         <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0ea5e9' }}>{log.hours.toFixed(1)}h</div>
                       </div>
@@ -9446,17 +9474,17 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #22c55e' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.flightCategory || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.pilotFunctionTcca || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.airTime?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a', fontWeight: 700 }}>{log.flightTimeBlock?.toFixed(1) || log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.dayHours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.nightHours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.instrumentActual ? 'A' : (log.instrumentHood ? 'H' : '-')}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#0f172a' }}>{log.flightCrewName || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.flightCategory || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.pilotFunctionTcca || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.airTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff', fontWeight: 700 }}>{log.flightTimeBlock?.toFixed(1) || log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.dayHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.nightHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.instrumentActual ? 'A' : (log.instrumentHood ? 'H' : '-')}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e', color: '#ffffff' }}>{log.flightCrewName || '-'}</td>
                           <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #22c55e' }}>
                             <button
                               onClick={() => handleDeleteEntry(log.id)}
@@ -9584,7 +9612,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                         padding: '0.25rem 0.75rem',
                         borderRadius: '6px',
                         border: '1px solid #7c3aed',
-                        background: '#fff',
+                        background: 'rgba(15, 23, 42, 0.5)',
                         color: '#7c3aed',
                         fontSize: '0.75rem',
                         fontWeight: 600,
@@ -9676,27 +9704,27 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #8b5cf6' }}>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacDepartureIcao || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacArrivalIcao || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOffBlockTime || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOnBlockTime || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'PIC' || log.dgacOperatingCapacity === 'SIC' ? 'X' : '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'PICUS' ? 'X' : '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'PIC' ? log.hours?.toFixed(1) : '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'SIC' ? log.hours?.toFixed(1) : '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'Dual' ? log.hours?.toFixed(1) : '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacOperatingCapacity === 'PICUS' ? log.hours?.toFixed(1) : '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dgacFstdTime?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.dayHours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.nightHours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.ifrHours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
-                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#0f172a', fontSize: '0.65rem' }}>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacOperatingCapacity === 'PIC' || log.dgacOperatingCapacity === 'SIC' ? 'X' : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacOperatingCapacity === 'PICUS' ? 'X' : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacOperatingCapacity === 'PIC' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacOperatingCapacity === 'SIC' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacOperatingCapacity === 'Dual' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacOperatingCapacity === 'PICUS' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dgacFstdTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.dayHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.nightHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.ifrHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
+                          <td style={{ padding: '0.4rem', textAlign: 'center', border: '1px solid #8b5cf6', color: '#ffffff', fontSize: '0.65rem' }}>
                             {log.remarks || ''}
                             {log.dgacInstructorCountersign && <div style={{ color: '#dc2626', fontWeight: 600 }}>✓ {log.dgacInstructorCountersign}</div>}
                           </td>
@@ -9876,24 +9904,24 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #fca5a5' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacDepartureIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacArrivalIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacOffBlockTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacOnBlockTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacFunction || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacMultiPilot ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacTurbineJetTime?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.dayHours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.nightHours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacInstrumentActual ? 'A' : (log.caacInstrumentSimulated ? 'S' : '-')}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a' }}>{log.caacAutoLandings || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#0f172a', fontSize: '0.65rem' }}>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacFunction || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacMultiPilot ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacTurbineJetTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.dayHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.nightHours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacInstrumentActual ? 'A' : (log.caacInstrumentSimulated ? 'S' : '-')}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff' }}>{log.caacAutoLandings || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fca5a5', color: '#ffffff', fontSize: '0.65rem' }}>
                             {log.remarks || ''}
                             {log.caacPhaseCheck && <div style={{ color: '#dc2626', fontWeight: 600 }}>PC: {log.caacPhaseCheck}</div>}
                           </td>
@@ -10118,24 +10146,24 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #60a5fa' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a', fontWeight: 700 }}>{log.nzcaaFlightFunction || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaCommandPractice || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaDeparturePoint || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a', fontSize: '0.65rem' }}>{log.nzcaaIntermediateLandings || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaArrivalPoint || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaAirTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a', fontWeight: 700 }}>{log.nzcaaFlightTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaDay ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaNight ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaInstrumentActual ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaInstrumentSimulated ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaInstrumentGround ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a', fontSize: '0.65rem' }}>{log.nzcaaTrainingExercises || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a', fontSize: '0.65rem' }}>{log.nzcaaInstructorName || (log.nzcaaSafetyPilotName || '-')}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#0f172a' }}>{log.nzcaaCertified ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff', fontWeight: 700 }}>{log.nzcaaFlightFunction || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaCommandPractice || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaDeparturePoint || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff', fontSize: '0.65rem' }}>{log.nzcaaIntermediateLandings || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaArrivalPoint || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaAirTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff', fontWeight: 700 }}>{log.nzcaaFlightTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaDay ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaInstrumentActual ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaInstrumentSimulated ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaInstrumentGround ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff', fontSize: '0.65rem' }}>{log.nzcaaTrainingExercises || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff', fontSize: '0.65rem' }}>{log.nzcaaInstructorName || (log.nzcaaSafetyPilotName || '-')}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa', color: '#ffffff' }}>{log.nzcaaCertified ? '✓' : '-'}</td>
                           <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #60a5fa' }}>
                             <button
                               onClick={() => handleDeleteEntry(log.id)}
@@ -10299,25 +10327,25 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #fcd34d' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaDepartureIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaArrivalIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaChocksOff || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaChocksOn || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.sacaaFlightFunction || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaDay ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaNight ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaInstrumentActual ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaInstrumentSimulated ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaInstrumentFstd ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaLandingsDay || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.sacaaLandingsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.sacaaFlightNature || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.sacaaInstructorName ? `${log.sacaaInstructorName} (${log.sacaaInstructorLicenseNumber || '-'})` : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.sacaaCommanderName ? `${log.sacaaCommanderName} (${log.sacaaCommanderLicenseNumber || '-'})` : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaChocksOff || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaChocksOn || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 700 }}>{log.sacaaFlightFunction || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaDay ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaInstrumentActual ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaInstrumentSimulated ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaInstrumentFstd ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaLandingsDay || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.sacaaLandingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontSize: '0.65rem' }}>{log.sacaaFlightNature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontSize: '0.65rem' }}>{log.sacaaInstructorName ? `${log.sacaaInstructorName} (${log.sacaaInstructorLicenseNumber || '-'})` : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontSize: '0.65rem' }}>{log.sacaaCommanderName ? `${log.sacaaCommanderName} (${log.sacaaCommanderLicenseNumber || '-'})` : '-'}</td>
                           <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>
                             <button
                               onClick={() => handleDeleteEntry(log.id)}
@@ -10499,25 +10527,25 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ background: log.id === 'temp' ? '#f0f9ff' : '#fff' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.date || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaDepartureIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaArrivalIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaOffBlock || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaOnBlock || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.gcaaPilotFunction || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaDay ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaNight ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaInstrumentActual ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaInstrumentSimulated ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaInstrumentFstd ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaLandingsDay || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaLandingsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.gcaaAutolandings || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontSize: '0.65rem' }}>{log.gcaaFlightNature || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontSize: '0.65rem' }}>{log.gcaaCommanderName ? `${log.gcaaCommanderName} (${log.gcaaCommanderGcaaLicense || '-'})` : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.date || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaOffBlock || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaOnBlock || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.gcaaPilotFunction || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaDay ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaInstrumentActual ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaInstrumentSimulated ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaInstrumentFstd ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaLandingsDay || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaLandingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.gcaaAutolandings || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontSize: '0.65rem' }}>{log.gcaaFlightNature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontSize: '0.65rem' }}>{log.gcaaCommanderName ? `${log.gcaaCommanderName} (${log.gcaaCommanderGcaaLicense || '-'})` : '-'}</td>
                           <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>
                             <button
                               onClick={() => handleDeleteEntry(log.id)}
@@ -10558,7 +10586,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2563eb' }}>{flightLogs.reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
                   </div>
                 </div>
-                <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: '#fff', borderRadius: '4px', border: '1px dashed #93c5fd' }}>
+                <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: 'rgba(15, 23, 42, 0.5)', borderRadius: '4px', border: '1px dashed #93c5fd' }}>
                   <p style={{ fontSize: '0.75rem', color: '#1e40af', margin: 0, textAlign: 'center' }}>
                     <strong>Pilot Certification:</strong> I certify that the above entries are true and correct to the best of my knowledge and belief.
                   </p>
@@ -10701,22 +10729,22 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ background: log.id === 'temp' ? '#f0f9ff' : '#fff' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.date || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaOffBlock || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaOnBlock || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.ukcaaPilotFunction || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaNight ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaIfr ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaFstd ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaTakeoffsDay || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaTakeoffsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaLandingsDay || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.ukcaaLandingsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontSize: '0.65rem' }}>{log.ukcaaFlightNature || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontSize: '0.65rem' }}>{log.ukcaaCommanderName || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.date || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaOffBlock || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaOnBlock || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.ukcaaPilotFunction || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaIfr ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaFstd ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaTakeoffsDay || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaTakeoffsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaLandingsDay || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.ukcaaLandingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontSize: '0.65rem' }}>{log.ukcaaFlightNature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontSize: '0.65rem' }}>{log.ukcaaCommanderName || '-'}</td>
                           <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>
                             <button
                               onClick={() => handleDeleteEntry(log.id)}
@@ -10757,7 +10785,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2563eb' }}>{flightLogs.reduce((acc, log) => acc + log.hours, 0).toFixed(1)}h</div>
                   </div>
                 </div>
-                <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: '#fff', borderRadius: '4px', border: '1px dashed #93c5fd' }}>
+                <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: 'rgba(15, 23, 42, 0.5)', borderRadius: '4px', border: '1px dashed #93c5fd' }}>
                   <p style={{ fontSize: '0.75rem', color: '#1e40af', margin: 0, textAlign: 'center' }}>
                     <strong>Certified True Copy:</strong> I certify that this is a true copy of my flight logbook.
                   </p>
@@ -10895,27 +10923,27 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #93c5fd' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaDepartureIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaArrivalIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaOffBlockTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaOnBlockTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaMultiPilot ? 'MP' : 'SP'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.easaPilotFunction === 'PIC' ? log.hours?.toFixed(1) : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.easaPilotFunction === 'Co-pilot' ? log.hours?.toFixed(1) : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.easaPilotFunction === 'PICUS' ? log.hours?.toFixed(1) : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontWeight: 700 }}>{log.easaPilotFunction === 'Dual' ? log.hours?.toFixed(1) : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaNight ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaIfr ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaFstd ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.easaCrossCountry ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontSize: '0.65rem' }}>{log.easaFlightNature || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#0f172a', fontSize: '0.65rem' }}>{log.easaCommanderSignature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaMultiPilot ? 'MP' : 'SP'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.easaPilotFunction === 'PIC' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.easaPilotFunction === 'Co-pilot' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.easaPilotFunction === 'PICUS' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontWeight: 700 }}>{log.easaPilotFunction === 'Dual' ? log.hours?.toFixed(1) : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaIfr ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaFstd ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.easaCrossCountry ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.takeoffsDay || 0 + log.takeoffsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontSize: '0.65rem' }}>{log.easaFlightNature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd', color: '#ffffff', fontSize: '0.65rem' }}>{log.easaCommanderSignature || '-'}</td>
                           <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #93c5fd' }}>
                             <button
                               onClick={() => handleDeleteEntry(log.id)}
@@ -11094,22 +11122,22 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #fcd34d' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadDepartureIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadArrivalIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadOffBlockTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadOnBlockTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.hkcadPilotCapacity || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadDay ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadNight ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadInstrumentActual ? 'A' : log.hkcadInstrumentSimulated ? 'S' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.hkcadFstdTime?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.hkcadInstrumentApproachType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.hkcadCommanderName ? `${log.hkcadCommanderName} (${log.hkcadCommanderLicenseNumber})` : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.hkcadDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.hkcadArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.hkcadOffBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.hkcadOnBlockTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 700 }}>{log.hkcadPilotCapacity || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.hkcadDay ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.hkcadNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.hkcadInstrumentActual ? 'A' : log.hkcadInstrumentSimulated ? 'S' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.hkcadFstdTime?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontSize: '0.65rem' }}>{log.hkcadInstrumentApproachType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.landingsDay || 0 + log.landingsNight || 0}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontSize: '0.65rem' }}>{log.hkcadCommanderName ? `${log.hkcadCommanderName} (${log.hkcadCommanderLicenseNumber})` : '-'}</td>
                           <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>
                             <button
                               onClick={() => handleDeleteEntry(log.id)}
@@ -11290,24 +11318,24 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #fcd34d' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaDepartureIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaArrivalIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaChocksOff || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaChocksOn || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.aircraftType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.dgacindiaPilotCapacity || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaDay ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaNight ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaInstrumentActual ? 'A' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaInstrumentHood ? 'H' : log.dgacindiaInstrumentSimulated ? 'S' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{(log.dgacindiaTakeoffsDay || 0) + (log.dgacindiaTakeoffsNight || 0)}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{(log.dgacindiaLandingsDay || 0) + (log.dgacindiaLandingsNight || 0)}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.dgacindiaFlightNature || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a' }}>{log.dgacindiaSpic ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#0f172a', fontSize: '0.65rem' }}>{log.dgacindiaInstructorName ? `${log.dgacindiaInstructorName} (${log.dgacindiaInstructorDgcaLicense})` : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaChocksOff || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaChocksOn || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.aircraftType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 700 }}>{log.dgacindiaPilotCapacity || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontWeight: 700 }}>{log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaDay ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaInstrumentActual ? 'A' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaInstrumentHood ? 'H' : log.dgacindiaInstrumentSimulated ? 'S' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{(log.dgacindiaTakeoffsDay || 0) + (log.dgacindiaTakeoffsNight || 0)}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{(log.dgacindiaLandingsDay || 0) + (log.dgacindiaLandingsNight || 0)}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontSize: '0.65rem' }}>{log.dgacindiaFlightNature || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff' }}>{log.dgacindiaSpic ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d', color: '#ffffff', fontSize: '0.65rem' }}>{log.dgacindiaInstructorName ? `${log.dgacindiaInstructorName} (${log.dgacindiaInstructorDgcaLicense})` : '-'}</td>
                           <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #fcd34d' }}>
                             <button
                               onClick={() => handleDeleteEntry(log.id)}
@@ -11469,23 +11497,23 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                     ) : (
                       flightLogs.map((log) => (
                         <tr key={log.id} style={{ borderBottom: '1px solid #3b82f6' }}>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{log.date}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a', fontWeight: 600 }}>{log.registration || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a', fontSize: '0.65rem' }}>{log.jcabAircraftClass || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a', fontSize: '0.65rem' }}>{log.jcabAircraftCategory || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{log.jcabDepartureIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{log.jcabArrivalIcao || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{log.jcabChocksOff || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{log.jcabChocksOn || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a', fontWeight: 700 }}>{log.jcabPilotCapacity || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a', fontWeight: 700 }}>{log.jcabServiceTime || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a', fontWeight: 700 }}>{log.jcabFlightTime || log.hours?.toFixed(1) || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{log.jcabDay ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{log.jcabNight ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{log.jcabInstrumentTime ? '✓' : '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>{(log.jcabLandingsDay || 0) + (log.jcabLandingsNight || 0)}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a', fontSize: '0.65rem' }}>{log.jcabInstrumentApproachType || '-'}</td>
-                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#0f172a' }}>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{log.date}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff', fontWeight: 600 }}>{log.registration || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff', fontSize: '0.65rem' }}>{log.jcabAircraftClass || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff', fontSize: '0.65rem' }}>{log.jcabAircraftCategory || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{log.jcabDepartureIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{log.jcabArrivalIcao || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{log.jcabChocksOff || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{log.jcabChocksOn || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff', fontWeight: 700 }}>{log.jcabPilotCapacity || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff', fontWeight: 700 }}>{log.jcabServiceTime || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff', fontWeight: 700 }}>{log.jcabFlightTime || log.hours?.toFixed(1) || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{log.jcabDay ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{log.jcabNight ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{log.jcabInstrumentTime ? '✓' : '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>{(log.jcabLandingsDay || 0) + (log.jcabLandingsNight || 0)}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff', fontSize: '0.65rem' }}>{log.jcabInstrumentApproachType || '-'}</td>
+                          <td style={{ padding: '0.5rem', textAlign: 'center', border: '1px solid #3b82f6', color: '#ffffff' }}>
                             {log.jcabVerified ? (
                               <span style={{ color: '#22c55e', fontWeight: 600 }}>✓ {log.jcabVerifiedBy || ''}</span>
                             ) : (
@@ -12208,9 +12236,9 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
             <div style={{
               marginTop: '2rem',
               padding: '1rem',
-              background: '#f0f9ff',
+              background: 'rgba(15, 23, 42, 0.5)',
               borderRadius: '12px',
-              border: '1px solid #bae6fd',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
               display: 'flex',
               justifyContent: 'flex-end',
               alignItems: 'center',
@@ -12225,6 +12253,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import {
-    User, MapPin, School, Phone, Clock, Award, Upload, Plus, Trash2, Plane, FileText, CheckCircle2
+    User, MapPin, School, Phone, Clock, Award, Upload, Plus, Trash2, Plane, FileText, CheckCircle2, Loader2
 } from 'lucide-react';
 import { TopNavbar } from '../TopNavbar';
+import { useAuth } from '@/src/contexts/AuthContext';
+import { supabase } from '@/src/lib/supabase';
 
 interface FoundationalVerificationPageProps {
     onBack: () => void;
@@ -18,6 +20,9 @@ interface LogEntry {
 }
 
 export const FoundationalVerificationPage: React.FC<FoundationalVerificationPageProps> = ({ onBack, onNavigate, onLogin }) => {
+    const { currentUser, refreshUserProfile } = useAuth();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     // Identity
     const [wingMentorId, setPilotRecognitionId] = useState('');
@@ -356,16 +361,88 @@ export const FoundationalVerificationPage: React.FC<FoundationalVerificationPage
                                 </button>
                                 <button
                                     type="submit"
-                                    onClick={(e) => {
+                                    disabled={isSubmitting}
+                                    onClick={async (e) => {
                                         e.preventDefault();
-                                        onNavigate('become-member');
+                                        if (!currentUser?.uid) {
+                                            setSubmitError('You must be logged in to submit verification.');
+                                            return;
+                                        }
+                                        setIsSubmitting(true);
+                                        setSubmitError(null);
+                                        try {
+                                            let photoUrl = '';
+                                            if (photo) {
+                                                const fileExt = photo.name.split('.').pop();
+                                                const filePath = `${currentUser.uid}/verification-${Date.now()}.${fileExt}`;
+                                                const { error: uploadError } = await supabase.storage
+                                                    .from('profile pics')
+                                                    .upload(filePath, photo);
+                                                if (uploadError) throw uploadError;
+                                                const { data: { publicUrl } } = supabase.storage
+                                                    .from('profile pics')
+                                                    .getPublicUrl(filePath);
+                                                photoUrl = publicUrl;
+                                            }
+
+                                            const { data: existingProfile } = await supabase
+                                                .from('profiles')
+                                                .select('enrolled_programs')
+                                                .eq('id', currentUser.uid)
+                                                .maybeSingle();
+
+                                            const currentPrograms = existingProfile?.enrolled_programs || [];
+                                            const updatedPrograms = currentPrograms.includes('Foundational')
+                                                ? currentPrograms
+                                                : [...currentPrograms, 'Foundational'];
+
+                                            const { error: updateError } = await supabase
+                                                .from('profiles')
+                                                .update({
+                                                    pilot_id: wingMentorId || null,
+                                                    full_name: fullName || null,
+                                                    profile_image_url: photoUrl || undefined,
+                                                    address: address || null,
+                                                    flight_school: flightSchool || null,
+                                                    contact_number: contactNumber || null,
+                                                    licenses: selectedCredentials.length > 0 ? selectedCredentials : null,
+                                                    total_flight_hours: totalHours ? parseFloat(totalHours) : null,
+                                                    flight_log: logEntries.length > 0 ? JSON.stringify(logEntries) : null,
+                                                    enrolled_programs: updatedPrograms,
+                                                })
+                                                .eq('id', currentUser.uid);
+
+                                            if (updateError) {
+                                                console.error('Profile update error details:', updateError);
+                                                throw updateError;
+                                            }
+                                            await supabase.from('notifications').insert({
+                                                user_id: currentUser.uid,
+                                                title: 'Congratulations!',
+                                                message: 'You have now been enrolled in the Foundation Program. Welcome aboard!',
+                                                type: 'success',
+                                                is_read: false,
+                                            });
+                                            sessionStorage.setItem('enrollmentSuccess', 'true');
+                                            onNavigate('home');
+                                        } catch (err: any) {
+                                            console.error('Verification submission error:', err);
+                                            setSubmitError(err?.message || 'Failed to submit verification. Please try again.');
+                                        } finally {
+                                            setIsSubmitting(false);
+                                        }
                                     }}
-                                    className="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30 flex items-center gap-2"
+                                    className="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    <CheckCircle2 className="w-5 h-5" />
-                                    Submit for Verification
+                                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
+                                    {isSubmitting ? 'Processing...' : 'Submit for Verification'}
                                 </button>
                             </div>
+                            {submitError && (
+                                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium">
+                                    {submitError}
+                                </div>
+                            )}
                         </form>
                     </div>
                 </div>

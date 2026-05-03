@@ -195,31 +195,29 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 <div className="flex flex-col md:flex-row min-h-[550px]">
                     {/* Left Side - Dark Blue with Info */}
                     <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-6 md:p-10 flex flex-col relative order-2 md:order-1">
-                        {/* Logo - Centered, larger, and positioned lower */}
+                        {/* Brand Text */}
                         <div className="mt-8 mb-6 flex justify-center">
-                            <img
-                                src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                                alt="PilotRecognition Logo"
-                                className="w-48 h-auto object-contain"
-                            />
+                            <h1 className="text-2xl font-bold">
+                                <span className="text-white">PILOT</span> <span className="text-red-500">RECOGNITION</span><span className="text-white">.com</span>
+                            </h1>
                         </div>
 
                         {/* Content - Centered in remaining space */}
                         <div className="flex-1 flex flex-col justify-center items-center">
 
-                        {/* Mentor Network Label */}
+                        {/* Kevin O'Leary Label */}
                         <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-400 mb-3 text-center">
-                            Mentor Network
+                            Stop Wasting Money
                         </p>
 
                         {/* Title */}
                         <h2 className="text-3xl md:text-4xl font-serif mb-4 text-center">
-                            Pilot Portal
+                            Live Career Intelligence for Pilots
                         </h2>
 
-                        {/* Description */}
+                        {/* Description - Pilot Portal */}
                         <p className="text-white/70 text-sm leading-relaxed mb-6 text-center max-w-sm">
-                            Access personalized program enrollment, pathway briefs, and PilotRecognition Pilot Portfolio data—covering flight experience, assessments, and ATS-ready records shared with approved aviation bodies. Explore the pilot network search for type-rating intel, airline requirements, and aircraft references.
+                            Your Pilot Portal dashboard puts everything in one place. Access your Pilot Portfolio with verified flight hours, assessments, and ATS-ready records. Track program enrollment, view pathway briefs matched to your profile, and monitor your Recognition Score as it updates live. Browse type-rating intelligence, airline expectation cards, and career pathways tailored to your experience level. Your profile is live—airlines see your current readiness, not an old CV.
                         </p>
 
                         {/* Learn More Button */}

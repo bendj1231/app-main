@@ -4,12 +4,7 @@ import { ChevronLeft, ChevronRight, Search, MapPin, Star, DollarSign, Graduation
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { DUMMY_FLIGHT_SCHOOLS, Region } from '../../data/flight-schools';
 import { useAuth } from '../../src/contexts/AuthContext';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdraGJncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNDA1NDksImV4cCI6MjA2MDYxNjU0OX0.MjUa3LdM8Y7F8X9jYqK3Z7q0W5X1nY2qK3Z7q0W5X1nY'
-);
+import { supabase } from '../../shared/lib/supabase';
 
 interface PathwayDetailPageProps {
   pathwayId: string;
