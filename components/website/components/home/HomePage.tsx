@@ -588,6 +588,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [activeCarouselCategory, setActiveCarouselCategory] = useState<string>('All');
     const [showAllCategories, setShowAllCategories] = useState(false);
     const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
+    const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
 
     // Auto-open newsroom modal on first visit of the session
     useEffect(() => {
@@ -598,6 +599,15 @@ export const HomePage: React.FC<HomePageProps> = ({
                 setIsNewsroomModalOpen(true);
                 sessionStorage.setItem('hasSeenNewsroom', 'true');
             }, 500);
+        }
+    }, []);
+
+    // Check for enrollment success and show confirmation modal
+    useEffect(() => {
+        const enrollmentSuccess = sessionStorage.getItem('enrollmentSuccess');
+        if (enrollmentSuccess === 'true') {
+            setShowEnrollmentModal(true);
+            sessionStorage.removeItem('enrollmentSuccess');
         }
     }, []);
     
@@ -963,6 +973,166 @@ export const HomePage: React.FC<HomePageProps> = ({
                 onNavigate={onNavigate}
                 newsroomHighlights={newsroomHighlights}
             />
+
+            {/* Enrollment Confirmation Modal */}
+            <AnimatePresence>
+                {showEnrollmentModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-start justify-center pt-16 md:pt-24 p-4 bg-slate-900/60 backdrop-blur-[8px]"
+                        onClick={() => setShowEnrollmentModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.92, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.92, opacity: 0, y: 20 }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                            className="relative w-full max-w-[90vw] md:max-w-[700px] pointer-events-auto"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button
+                                onClick={() => setShowEnrollmentModal(false)}
+                                className="absolute -top-3 -right-3 z-20 w-10 h-10 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg shadow-black/40 border-2 border-white/20 transition-all hover:scale-110"
+                                aria-label="Close"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+
+                            <div className="relative border border-white/10 bg-gradient-to-br from-slate-900/80 via-slate-900/65 to-slate-950/80 shadow-[0_25px_60px_rgba(0,0,0,0.5)] backdrop-blur-[12px] rounded-2xl">
+                                <div className="absolute inset-0 pointer-events-none mix-blend-screen opacity-40" style={{ background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 45%)' }} />
+
+                                {/* Header */}
+                                <div className="relative p-2 md:p-3 text-center border-b border-white/10">
+                                    <div className="flex items-center justify-center gap-1.5 mb-1">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                        <span className="text-[9px] uppercase tracking-[0.15em] text-emerald-200/90 font-black">Live Confirmation</span>
+                                    </div>
+                                    <h2 className="text-sm md:text-lg font-serif text-white leading-tight">
+                                        Enrollment Confirmed
+                                    </h2>
+                                    <p className="text-white/60 text-[10px] mt-1 max-w-lg mx-auto">
+                                        You are now enrolled in the Foundation Program. Choose your next step below.
+                                    </p>
+                                </div>
+
+                                {/* Cards Grid */}
+                                <div className="relative p-2 md:p-3 grid grid-cols-1 md:grid-cols-3 gap-1.5 md:gap-2">
+                                    {/* Card 1: Access Foundation Program */}
+                                    <button
+                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('access-portal-2?tab=programs'); }}
+                                        className="group relative text-left overflow-hidden border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/30"
+                                    >
+                                        <div className="relative aspect-[9/16] overflow-hidden">
+                                            <img
+                                                src="https://res.cloudinary.com/dridtecu6/image/upload/v1777590658/newsroom/b81ubzdpz0dmyqutiyqj.png"
+                                                alt="Foundation Program"
+                                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent" />
+                                            <div className="absolute top-1 left-1">
+                                                <span className="px-1 py-0.5 text-[8px] font-black uppercase tracking-[0.1em] bg-blue-500/80 text-white border border-white/30 backdrop-blur-sm">
+                                                    Primary
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="p-1.5 space-y-0.5">
+                                            <h3 className="text-[10px] md:text-xs font-semibold text-white group-hover:text-blue-300 transition-colors">
+                                                Access Foundation Program
+                                            </h3>
+                                            <p className="text-[9px] text-white/60 leading-tight">
+                                                Enter your program dashboard, track progress, and access all training materials.
+                                            </p>
+                                            <div className="flex items-center gap-0.5 pt-0.5">
+                                                <Zap className="w-2.5 h-2.5 text-blue-400" />
+                                                <span className="text-[8px] uppercase tracking-[0.1em] text-blue-300/80">Dashboard</span>
+                                            </div>
+                                        </div>
+                                    </button>
+
+                                    {/* Card 2: Build Your Profile */}
+                                    <button
+                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('pilot-recognition-profile'); }}
+                                        className="group relative text-left overflow-hidden border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/30"
+                                    >
+                                        <div className="relative aspect-[9/16] overflow-hidden">
+                                            <img
+                                                src="https://res.cloudinary.com/dridtecu6/image/upload/v1777590630/newsroom/kvos2ityyztesx5idue2.png"
+                                                alt="Build Profile"
+                                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent" />
+                                            <div className="absolute top-1 left-1">
+                                                <span className="px-1 py-0.5 text-[8px] font-black uppercase tracking-[0.1em] bg-amber-500/80 text-white border border-white/30 backdrop-blur-sm">
+                                                    Essential
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="p-1.5 space-y-0.5">
+                                            <h3 className="text-[10px] md:text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
+                                                Build Your Profile
+                                            </h3>
+                                            <p className="text-[9px] text-white/60 leading-tight">
+                                                Complete your pilot recognition profile to unlock pathway matching and scoring.
+                                            </p>
+                                            <div className="flex items-center gap-0.5 pt-0.5">
+                                                <User className="w-2.5 h-2.5 text-amber-400" />
+                                                <span className="text-[8px] uppercase tracking-[0.1em] text-amber-300/80">Recognition</span>
+                                            </div>
+                                        </div>
+                                    </button>
+
+                                    {/* Card 3: Explore Pathways */}
+                                    <button
+                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('recognition-career-matches'); }}
+                                        className="group relative text-left overflow-hidden border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/30"
+                                    >
+                                        <div className="relative aspect-[9/16] overflow-hidden">
+                                            <img
+                                                src="https://res.cloudinary.com/dridtecu6/image/upload/v1777590647/newsroom/tws5xzryqjepzxoyc94d.png"
+                                                alt="Explore Pathways"
+                                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent" />
+                                            <div className="absolute top-1 left-1">
+                                                <span className="px-1 py-0.5 text-[8px] font-black uppercase tracking-[0.1em] bg-emerald-500/80 text-white border border-white/30 backdrop-blur-sm">
+                                                    Discover
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="p-1.5 space-y-0.5">
+                                            <h3 className="text-[10px] md:text-xs font-semibold text-white group-hover:text-emerald-300 transition-colors">
+                                                Explore Pathways
+                                            </h3>
+                                            <p className="text-[9px] text-white/60 leading-tight">
+                                                Discover airline expectations, cadet programs, and career transition routes.
+                                            </p>
+                                            <div className="flex items-center gap-0.5 pt-0.5">
+                                                <Navigation className="w-2.5 h-2.5 text-emerald-400" />
+                                                <span className="text-[8px] uppercase tracking-[0.1em] text-emerald-300/80">Pathways</span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </div>
+
+                                {/* Footer */}
+                                <div className="relative px-2 md:px-3 py-1.5 border-t border-white/10 bg-slate-900/30">
+                                    <button
+                                        onClick={() => setShowEnrollmentModal(false)}
+                                        className="w-full py-1.5 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-white/50 hover:text-white/90 transition-colors border border-white/10 hover:border-white/30 bg-white/5 hover:bg-white/10"
+                                    >
+                                        Continue to Home
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* MeshGradient Background - Same as TypeRatingSearchPage */}
             <div className="relative w-full h-screen">
