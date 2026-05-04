@@ -164,6 +164,7 @@ export const AppRoutes = () => {
       {/* Program routes */}
       <Route path="/about_programs" element={<ProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/programs" element={<ProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/benefits" element={<ProgramBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
             <Route path="/news-updates" element={<NewsUpdatesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/foundational-program" element={<FoundationalProgramPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/transition-program" element={<TransitionProgramPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
