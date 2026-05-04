@@ -48,7 +48,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
         </h2>
 
         {/* Free Account */}
-        <div className="bg-gradient-to-br from-green-50 to-slate-50 border-2 border-green-200 rounded-2xl p-6 mb-6">
+        <div className="bg-slate-200/50 backdrop-blur-md border border-slate-300/50 rounded-2xl p-6 mb-6 shadow-xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-slate-900 mb-2">Free Account</h3>
             <p className="text-3xl font-bold text-slate-900 mb-1">$0<span className="text-lg font-normal text-slate-600">/forever</span></p>
@@ -62,11 +62,11 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 font-bold">✓</span>
-              <span className="text-slate-700">Basic profile matching (shows 2 gaps)</span>
+              <span className="text-slate-700">Basic profile matching (shows 3 comparisons)</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 font-bold">✓</span>
-              <span className="text-slate-700">3 pathways per month</span>
+              <span className="text-slate-700">View career pathways</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 font-bold">✓</span>
@@ -80,9 +80,9 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
               window.scrollTo(0, 0);
             }}
             disabled={processing}
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition-all shadow-lg hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition-all shadow-lg hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {processing ? 'Processing...' : 'Create Free Account'}
+            {processing ? 'Processing...' : 'CREATE FREE ACCOUNT'}
           </button>
         </div>
 
@@ -93,16 +93,17 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
               <h3 className="text-xl font-bold text-slate-900 mb-2">Recognition Plus</h3>
               <p className="text-3xl font-bold text-slate-900 mb-1">$100<span className="text-lg font-normal text-slate-600">/year</span></p>
               <p className="text-sm text-slate-600">Premium features & priority access</p>
+              <p className="text-xs text-blue-600 font-semibold mt-1">✓ 3-day free trial</p>
             </div>
             
             <ul className="space-y-3 mb-6 text-sm">
               <li className="flex items-start gap-2">
                 <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Full profile comparison</span>
+                <span className="text-slate-700">Full profile comparison (vs. basic 3 comparisons)</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Unlimited pathway views</span>
+                <span className="text-slate-700">Pathway recommendations based on profile</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-blue-600 font-bold">✓</span>
@@ -110,11 +111,31 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">AI career strategist</span>
+                <span className="text-slate-700">AI Career Strategist</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Interview fast-track</span>
+                <span className="text-slate-700">EBT CBTA Interview Fast-Track (Foundation Program)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 font-bold">✓</span>
+                <span className="text-slate-700">Recognition AI (OEM Aligned)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 font-bold">✓</span>
+                <span className="text-slate-700">AI Medical Alerts (60-day warnings)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 font-bold">✓</span>
+                <span className="text-slate-700">Priority Pipeline (Hiring Surges)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 font-bold">✓</span>
+                <span className="text-slate-700">Zero-Fail Compliance Monitoring</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 font-bold">✓</span>
+                <span className="text-slate-700">Background Check Verification (Criminal Records)</span>
               </li>
             </ul>
 
@@ -135,18 +156,19 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             
             <div className="mb-4 mt-2">
               <h3 className="text-xl font-bold text-slate-900 mb-2">Recognition Plus</h3>
-              <p className="text-3xl font-bold text-slate-900 mb-1">$50<span className="text-lg font-normal text-slate-600">/6 months</span></p>
+              <p className="text-3xl font-bold text-slate-900 mb-1">$60<span className="text-lg font-normal text-slate-600">/6 months</span></p>
               <p className="text-sm text-slate-600">Same features, flexible payment</p>
+              <p className="text-xs text-purple-600 font-semibold mt-1">✓ 3-day free trial</p>
             </div>
             
             <ul className="space-y-3 mb-6 text-sm">
               <li className="flex items-start gap-2">
                 <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Full profile comparison</span>
+                <span className="text-slate-700">Full profile comparison (vs. basic 3 comparisons)</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Unlimited pathway views</span>
+                <span className="text-slate-700">Pathway recommendations based on profile</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-purple-600 font-bold">✓</span>
@@ -154,11 +176,31 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">AI career strategist</span>
+                <span className="text-slate-700">AI Career Strategist</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Interview fast-track</span>
+                <span className="text-slate-700">EBT CBTA Interview Fast-Track (Foundation Program)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-600 font-bold">✓</span>
+                <span className="text-slate-700">Recognition AI (OEM Aligned)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-600 font-bold">✓</span>
+                <span className="text-slate-700">AI Medical Alerts (60-day warnings)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-600 font-bold">✓</span>
+                <span className="text-slate-700">Priority Pipeline (Hiring Surges)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-600 font-bold">✓</span>
+                <span className="text-slate-700">Zero-Fail Compliance Monitoring</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-600 font-bold">✓</span>
+                <span className="text-slate-700">Background Check Verification (Criminal Records)</span>
               </li>
             </ul>
 

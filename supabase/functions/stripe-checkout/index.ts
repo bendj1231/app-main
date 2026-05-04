@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
       return new Response('Method not allowed', { status: 405, headers: corsHeaders });
     }
 
-    const { priceId } = await req.json();
+    const { priceId, trialPeriodDays } = await req.json();
 
     if (!priceId) {
       return new Response(JSON.stringify({ error: 'Missing priceId' }), {
@@ -39,7 +39,7 @@ Deno.serve(async (req) => {
         },
       ],
       subscription_data: {
-        trial_period_days: 3,
+        trial_period_days: trialPeriodDays || 3,
       },
       success_url: `${Deno.env.get('VITE_APP_URL') || 'http://localhost:3002'}/recognition-plus?success=true`,
       cancel_url: `${Deno.env.get('VITE_APP_URL') || 'http://localhost:3002'}/recognition-plus?cancelled=true`,

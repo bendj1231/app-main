@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { ChevronDown, ChevronRight, X } from 'lucide-react';
 
 export default function RecognitionPlusPage() {
+  const [searchParams] = useSearchParams();
   const [isFeaturesExpanded, setIsFeaturesExpanded] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [showSuccessBanner, setShowSuccessBanner] = useState(false);
+  const [showCancelledBanner, setShowCancelledBanner] = useState(false);
 
-  const handleCheckout = async (priceId: string, planName: string) => {
+  useEffect(() => {
+    if (searchParams.get('success') === 'true') {
+      setShowSuccessBanner(true);
+    }
+    if (searchParams.get('cancelled') === 'true') {
+      setShowCancelledBanner(true);
+    }
+  }, [searchParams]);
+
+  const handleCheckout = async (priceId: string, planName: string, trialPeriodDays?: number) => {
     setProcessing(true);
     try {
       const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
@@ -17,7 +29,8 @@ export default function RecognitionPlusPage() {
           'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY`
         },
         body: JSON.stringify({ 
-          priceId
+          priceId,
+          trialPeriodDays
         }),
       });
 
@@ -38,59 +51,137 @@ export default function RecognitionPlusPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Success Banner */}
+      {showSuccessBanner && (
+        <div className="bg-green-50 border-b-2 border-green-200 px-6 py-4">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-lg">✓</span>
+              </div>
+              <div>
+                <p className="font-bold text-green-900">Payment Successful!</p>
+                <p className="text-sm text-green-700">Your Recognition Plus subscription is now active. Welcome aboard!</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowSuccessBanner(false)}
+              className="text-green-600 hover:text-green-800 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Cancelled Banner */}
+      {showCancelledBanner && (
+        <div className="bg-amber-50 border-b-2 border-amber-200 px-6 py-4">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-lg">!</span>
+              </div>
+              <div>
+                <p className="font-bold text-amber-900">Payment Cancelled</p>
+                <p className="text-sm text-amber-700">You cancelled the checkout. No charges were made. Feel free to try again anytime.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowCancelledBanner(false)}
+              className="text-amber-600 hover:text-amber-800 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-8 mb-16 overflow-x-auto shadow-2xl border border-white/20">
-          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">Platform Components</h3>
+          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">Free vs Recognition Plus</h3>
           <table className="w-full text-sm">
             <thead>
               <tr>
-                <th className="text-left py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm rounded-tl-lg border-b border-white/30">Component</th>
-                <th className="text-center py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Profile</th>
-                <th className="text-center py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Program</th>
-                <th className="text-center py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Pathways</th>
-                <th className="text-center py-4 px-4 font-bold text-amber-600 bg-amber-50/70 backdrop-blur-sm w-1/4 rounded-tr-lg border-b border-amber-200/50" colSpan={2}>Recognition Plus</th>
-              </tr>
-              <tr className="bg-white/30 backdrop-blur-sm">
-                <th className="text-left py-3 px-4 font-semibold text-slate-700 border-b border-white/30"></th>
-                <th className="text-center py-3 px-4 font-semibold text-slate-700 border-b border-white/30"></th>
-                <th className="text-center py-3 px-4 font-semibold text-slate-700 border-b border-white/30"></th>
-                <th className="text-center py-3 px-4 font-semibold text-slate-700 border-b border-white/30"></th>
-                <th className="text-center py-3 px-4 font-semibold text-amber-700 bg-amber-100/70 backdrop-blur-sm border-b border-amber-200/50">AI</th>
-                <th className="text-center py-3 px-4 font-semibold text-amber-700 bg-amber-100/70 backdrop-blur-sm border-b border-amber-200/50">Priority</th>
+                <th className="text-left py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm rounded-tl-lg border-b border-white/30">Feature</th>
+                <th className="text-center py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Free Tier</th>
+                <th className="text-center py-4 px-4 font-bold text-amber-600 bg-amber-50/70 backdrop-blur-sm w-1/3 rounded-tr-lg border-b border-amber-200/50">Recognition Plus</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Profile</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100/70 backdrop-blur-sm text-blue-700 rounded-full font-medium border border-blue-200/50 shadow-sm">✓ Credentials display</span></td>
-                <td className="py-4 px-4 text-center text-slate-600">Free enrollment</td>
-                <td className="py-4 px-4 text-center text-slate-600">Direct entry pathways</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-slate-900 font-bold">Profile Creation</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Programs</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓ Free mentorship</span></td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-slate-900 font-bold">Profile Matching</td>
+                <td className="py-4 px-4 text-center text-slate-600">Basic (shows 3 comparisons)</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓ Full comparison</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Pathways</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100/70 backdrop-blur-sm text-blue-700 rounded-full font-medium border border-blue-200/50 shadow-sm">✓ Score calculation</span></td>
-                <td className="py-4 px-4 text-center text-slate-600">Standard access</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓ Unlimited sectors</span></td>
+                <td className="py-4 px-4 text-slate-900 font-bold">Pathway Access</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓ Recommended based on profile</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Recognition Score</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Foundation Program (Free)</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Priority Matching</td>
                 <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">AI Career Strategist</td>
                 <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">EBT CBTA Interview Fast-Track (Foundation Program)</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Recognition AI (OEM Aligned)</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">AI Medical Alerts (60-day warnings)</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Priority Pipeline (Hiring Surges)</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Zero-Fail Compliance Monitoring</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Background Check Verification (Criminal Records)</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓</span></td>
+              </tr>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Auto Logbook Sync</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓</span></td>
               </tr>
               <tr className="bg-gradient-to-r from-amber-50/80 to-yellow-50/80 backdrop-blur-sm hover:from-amber-100/90 hover:to-yellow-100/90 transition-all duration-300 border-b border-amber-200/50">
-                <td className="py-4 px-4 text-amber-900 font-bold">Recognition Plus</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓ OEM aligned</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓ Fast-track</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓ AI recommendations</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-300/80 backdrop-blur-sm text-amber-950 rounded-full font-bold border border-amber-400/50 shadow-lg">✓ Verification</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-300/80 backdrop-blur-sm text-amber-950 rounded-full font-bold border border-amber-400/50 shadow-lg">✓ First in pools</span></td>
+                <td className="py-4 px-4 text-amber-900 font-bold">Price</td>
+                <td className="py-4 px-4 text-center text-slate-900 font-bold">Free</td>
+                <td className="py-4 px-4 text-center text-amber-900 font-bold">$99/year</td>
               </tr>
             </tbody>
           </table>
@@ -108,12 +199,70 @@ export default function RecognitionPlusPage() {
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
             Recognition Plus delivers over $100 in annual value through career acceleration, priority access, and comprehensive compliance management.
           </p>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Monthly Plan */}
+            <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl p-8 text-center">
+              <h3 className="text-xl font-bold text-white mb-2">Monthly Plan</h3>
+              <p className="text-4xl font-bold text-white mb-1">$12<span className="text-lg font-normal text-teal-200">/month</span></p>
+              <p className="text-sm text-teal-200 mb-2">Flexible, month-to-month</p>
+              <p className="text-xs text-teal-300 mb-6 font-semibold">✓ 7-day free trial</p>
+              <ul className="space-y-2 mb-6 text-left text-sm text-white">
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>Full profile comparison</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>Pathway recommendations based on profile</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>Priority matching</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>AI career strategist</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>EBT CBTA Interview Fast-Track (Foundation Program)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>Recognition AI (OEM Aligned)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>AI medical alerts (60-day warnings)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>Priority pipeline (hiring surges)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>Zero-Fail compliance monitoring</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-200 font-bold">✓</span>
+                  <span>Background check verification (criminal records)</span>
+                </li>
+              </ul>
+              <button 
+                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_MONTHLY_PRICE_ID || '', 'Recognition Plus Monthly', 7)}
+                disabled={processing}
+                className="w-full bg-white hover:bg-teal-50 text-teal-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {processing ? 'Processing...' : 'Get Monthly Plan'}
+              </button>
+            </div>
+
             {/* Annual Plan */}
             <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-8 text-center">
               <h3 className="text-xl font-bold text-white mb-2">Annual Plan</h3>
-              <p className="text-4xl font-bold text-white mb-1">$100<span className="text-lg font-normal text-blue-200">/year</span></p>
-              <p className="text-sm text-blue-200 mb-6">Best value - saves $20/year</p>
+              <p className="text-4xl font-bold text-white mb-1">$99<span className="text-lg font-normal text-blue-200">/year</span></p>
+              <p className="text-sm text-blue-200 mb-2">Best value - saves $45/year</p>
+              <p className="text-xs text-blue-300 mb-6 font-semibold">✓ 3-day free trial</p>
               <ul className="space-y-2 mb-6 text-left text-sm text-white">
                 <li className="flex items-start gap-2">
                   <span className="text-blue-200 font-bold">✓</span>
@@ -121,7 +270,7 @@ export default function RecognitionPlusPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-200 font-bold">✓</span>
-                  <span>Unlimited pathway views</span>
+                  <span>Pathway recommendations based on profile</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-200 font-bold">✓</span>
@@ -133,11 +282,31 @@ export default function RecognitionPlusPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-200 font-bold">✓</span>
-                  <span>Interview fast-track</span>
+                  <span>EBT CBTA Interview Fast-Track (Foundation Program)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>Recognition AI (OEM Aligned)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>AI medical alerts (60-day warnings)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>Priority pipeline (hiring surges)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>Zero-Fail compliance monitoring</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>Background check verification (criminal records)</span>
                 </li>
               </ul>
               <button 
-                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_ANNUAL_PRICE_ID || '', 'Recognition Plus Annual')}
+                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_ANNUAL_PRICE_ID || '', 'Recognition Plus Annual', 3)}
                 disabled={processing}
                 className="w-full bg-white hover:bg-blue-50 text-blue-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -149,7 +318,8 @@ export default function RecognitionPlusPage() {
             <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-8 text-center">
               <h3 className="text-xl font-bold text-white mb-2">Semi-Annual Plan</h3>
               <p className="text-4xl font-bold text-white mb-1">$60<span className="text-lg font-normal text-purple-200">/6 months</span></p>
-              <p className="text-sm text-purple-200 mb-6">Same features, flexible payment</p>
+              <p className="text-sm text-purple-200 mb-2">Same features, flexible payment</p>
+              <p className="text-xs text-purple-300 mb-6 font-semibold">✓ 3-day free trial</p>
               <ul className="space-y-2 mb-6 text-left text-sm text-white">
                 <li className="flex items-start gap-2">
                   <span className="text-purple-200 font-bold">✓</span>
@@ -157,7 +327,7 @@ export default function RecognitionPlusPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-purple-200 font-bold">✓</span>
-                  <span>Unlimited pathway views</span>
+                  <span>Pathway recommendations based on profile</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-purple-200 font-bold">✓</span>
@@ -169,11 +339,31 @@ export default function RecognitionPlusPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-purple-200 font-bold">✓</span>
-                  <span>Interview fast-track</span>
+                  <span>EBT CBTA Interview Fast-Track (Foundation Program)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>Recognition AI (OEM Aligned)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>AI medical alerts (60-day warnings)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>Priority pipeline (hiring surges)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>Zero-Fail compliance monitoring</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>Background check verification (criminal records)</span>
                 </li>
               </ul>
               <button 
-                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_SEMI_ANNUAL_PRICE_ID || '', 'Recognition Plus Semi-Annual')}
+                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_SEMI_ANNUAL_PRICE_ID || '', 'Recognition Plus Semi-Annual', 3)}
                 disabled={processing}
                 className="w-full bg-white hover:bg-purple-50 text-purple-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -181,7 +371,7 @@ export default function RecognitionPlusPage() {
               </button>
             </div>
           </div>
-          <p className="text-slate-400 text-sm mt-8">Cancel anytime. No hidden fees.</p>
+          <p className="text-slate-400 text-sm mt-8">Cancel anytime. No hidden fees. 3-day free trial included.</p>
         </div>
 
         {/* Feature Breakdown */}
@@ -199,31 +389,37 @@ export default function RecognitionPlusPage() {
                 <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Access all career pathways (Cargo, Air Taxi, Private Charter, etc.)</p>
+                <p className="text-slate-700">Basic profile matching (shows 3 comparisons)</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Unlimited job applications</p>
+                <p className="text-slate-700">View career pathways</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Profile score calculation</p>
+                <p className="text-slate-700">Recognition Score calculation</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Foundation Program interview access</p>
+                <p className="text-slate-700">Foundation Program (Free)</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Static medical certificate display on profile</p>
+                <p className="text-slate-700">Static medical certificate display</p>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-white text-xs">✓</span>
+                </div>
+                <p className="text-slate-700">Auto Logbook Sync</p>
               </li>
             </ul>
           </div>
@@ -241,43 +437,49 @@ export default function RecognitionPlusPage() {
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Recognition AI - manufacturer data comparison, verification checks, utmost accuracy</p>
+                <p className="text-slate-700">Full profile comparison (vs. basic 3 comparisons)</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">AI Career Strategist - pathway recommendations, experience advice, job notifications</p>
+                <p className="text-slate-700">Pathway recommendations based on profile</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Priority Pipeline - AI-ranked for partner airline hiring surges</p>
+                <p className="text-slate-700">Priority matching</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Interview Fast-Track - skip initial screening with partners</p>
+                <p className="text-slate-700">AI Career Strategist - pathway recommendations</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Pool of Interest Priority - shown first in operator selection pools</p>
+                <p className="text-slate-700">EBT CBTA Interview Fast-Track (Foundation Program) - skip initial screening</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">OEM Aligned Profiles - Airbus/Boeing standards</p>
+                <p className="text-slate-700">Recognition AI - OEM aligned (Airbus/Boeing)</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">AI-automated medical alerts with 60-day warnings</p>
+                <p className="text-slate-700">AI Medical Alerts - 60-day expiration warnings</p>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-white text-xs">✓</span>
+                </div>
+                <p className="text-slate-700">Priority Pipeline - first in hiring surge pools</p>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
@@ -289,13 +491,7 @@ export default function RecognitionPlusPage() {
                 <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-white text-xs">✓</span>
                 </div>
-                <p className="text-slate-700">Auto logbook sync with Recognition Score</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Full database job matching including interview data</p>
+                <p className="text-slate-700">Background Check Verification - criminal records aligned with aviation regulatory standards</p>
               </li>
             </ul>
           </div>
