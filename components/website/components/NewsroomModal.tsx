@@ -11,6 +11,7 @@ interface NewsroomItem {
     metrics: { label: string; value: string }[];
     bullets: string[];
     ctaTarget: string;
+    category: 'pathways' | 'program' | 'pilot' | 'industry' | 'airlines';
 }
 
 interface NewsroomModalProps {
@@ -20,6 +21,14 @@ interface NewsroomModalProps {
     newsroomHighlights: NewsroomItem[];
 }
 
+const CATEGORIES = [
+    { id: 'pathways' as const, label: 'Pathways' },
+    { id: 'program' as const, label: 'Program' },
+    { id: 'pilot' as const, label: 'Pilot' },
+    { id: 'industry' as const, label: 'Industry & Manufacturer' },
+    { id: 'airlines' as const, label: 'Airlines' },
+];
+
 export const NewsroomModal: React.FC<NewsroomModalProps> = ({
     isOpen,
     onClose,
@@ -27,20 +36,25 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
     newsroomHighlights
 }) => {
     const [activeNewsIndex, setActiveNewsIndex] = useState(0);
+    const [activeCategory, setActiveCategory] = useState<'pathways' | 'program' | 'pilot' | 'industry' | 'airlines' | 'all'>('all');
     const modalRef = useRef<HTMLDivElement>(null);
     const lastInteractionRef = useRef<number>(Date.now());
     const autoCycleRef = useRef<NodeJS.Timeout | null>(null);
 
-    const activeNewsItem = newsroomHighlights[activeNewsIndex];
+    const filteredNews = activeCategory === 'all'
+        ? newsroomHighlights
+        : newsroomHighlights.filter(item => item.category === activeCategory);
+
+    const activeNewsItem = filteredNews[activeNewsIndex];
 
     // Select random news item when modal opens
     useEffect(() => {
         if (isOpen) {
-            const randomIndex = Math.floor(Math.random() * newsroomHighlights.length);
+            const randomIndex = Math.floor(Math.random() * filteredNews.length);
             setActiveNewsIndex(randomIndex);
             lastInteractionRef.current = Date.now();
         }
-    }, [isOpen, newsroomHighlights.length]);
+    }, [isOpen, filteredNews.length]);
 
     // Auto-cycle every 6 seconds if no mouse/keyboard activity
     useEffect(() => {
@@ -51,7 +65,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
             autoCycleRef.current = setInterval(() => {
                 const idleTime = Date.now() - lastInteractionRef.current;
                 if (idleTime >= 6000) {
-                    setActiveNewsIndex(prev => (prev + 1) % newsroomHighlights.length);
+                    setActiveNewsIndex(prev => (prev + 1) % filteredNews.length);
                 }
             }, 6000);
         };
@@ -69,7 +83,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
             if (autoCycleRef.current) clearInterval(autoCycleRef.current);
             events.forEach(evt => document.removeEventListener(evt, resetTimer));
         };
-    }, [isOpen, newsroomHighlights.length]);
+    }, [isOpen, filteredNews.length]);
 
     // Handle ESC key to close modal
     useEffect(() => {
@@ -95,6 +109,11 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
             document.body.style.overflow = '';
         };
     }, [isOpen]);
+
+    // Reset activeNewsIndex when category changes
+    useEffect(() => {
+        setActiveNewsIndex(0);
+    }, [activeCategory]);
 
     const handleNewsroomHome = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -128,6 +147,35 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
                 <div className="relative border border-white/10 bg-gradient-to-br from-slate-900/80 via-slate-900/65 to-slate-950/80 shadow-[0_25px_60px_rgba(0,0,0,0.5)] backdrop-blur-[12px] flex flex-col max-h-[92vh] overflow-hidden">
                     <div className="absolute inset-0 pointer-events-none mix-blend-screen opacity-40" style={{ background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 45%)' }} />
                     
+                    {/* Category Tabs */}
+                    <div className="relative px-3 md:px-5 pt-3 md:pt-4 pb-2 border-b border-white/10 bg-slate-900/30 z-10">
+                        <div className="flex flex-wrap gap-1.5 md:gap-2">
+                            <button
+                                onClick={() => setActiveCategory('all')}
+                                className={`px-3 py-1.5 text-[10px] md:text-[11px] font-black uppercase tracking-[0.15em] rounded-lg border transition-all ${
+                                    activeCategory === 'all'
+                                        ? 'bg-white/20 border-white/40 text-white'
+                                        : 'bg-white/5 border-white/20 text-white/60 hover:bg-white/10 hover:text-white/80'
+                                }`}
+                            >
+                                All
+                            </button>
+                            {CATEGORIES.map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => setActiveCategory(cat.id)}
+                                    className={`px-3 py-1.5 text-[10px] md:text-[11px] font-black uppercase tracking-[0.15em] rounded-lg border transition-all ${
+                                        activeCategory === cat.id
+                                            ? 'bg-white/20 border-white/40 text-white'
+                                            : 'bg-white/5 border-white/20 text-white/60 hover:bg-white/10 hover:text-white/80'
+                                    }`}
+                                >
+                                    {cat.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="grid gap-3 md:gap-4 md:grid-cols-[1.4fr,1fr] p-3 md:p-5 overflow-y-auto">
                         <div className="text-white space-y-2 md:space-y-4 flex flex-col min-h-0">
                             <div className="flex items-center justify-between gap-3">
@@ -141,7 +189,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-[11px] uppercase tracking-[0.25em] text-white/50">{activeNewsIndex + 1} / {newsroomHighlights.length}</span>
+                                    <span className="text-[11px] uppercase tracking-[0.25em] text-white/50">{activeNewsIndex + 1} / {filteredNews.length}</span>
                                 </div>
                             </div>
 
@@ -228,7 +276,7 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
                         <div className="flex flex-col gap-2">
                             <span className="text-[11px] uppercase tracking-[0.25em] text-white/50">Latest Updates</span>
                             <div className="flex gap-1.5">
-                                {newsroomHighlights.map((_, index) => (
+                                {filteredNews.map((_, index) => (
                                     <button
                                         key={index}
                                         onClick={() => setActiveNewsIndex(index)}

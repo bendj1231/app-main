@@ -349,7 +349,8 @@ const newsroomHighlights = [
             'Behavioral scoring, mentorship hours, and competency verification in one live profile',
             'Airlines and operators pull verified profiles — no more static CVs into black holes'
         ],
-        ctaTarget: 'recognition-plus'
+        ctaTarget: 'recognition-plus',
+        category: 'pilot' as const
     },
     {
         id: 'pathway-cards',
@@ -366,7 +367,8 @@ const newsroomHighlights = [
             'Gap analysis shows exactly which hours, ratings, and EBT scores you need to close',
             'Pull system — operators invite matched pilots directly, no applications, no waiting in line'
         ],
-        ctaTarget: 'pathways-modern'
+        ctaTarget: 'pathways-modern',
+        category: 'pathways' as const
     },
     {
         id: 'platform-update',
@@ -383,7 +385,8 @@ const newsroomHighlights = [
             'Recognition Score starts building from day one — operators pull from live profiles, not static CVs',
             'Scholarship seats available — 10% of spots are free for qualified applicants'
         ],
-        ctaTarget: 'programs'
+        ctaTarget: 'programs',
+        category: 'program' as const
     }
 ];
 
