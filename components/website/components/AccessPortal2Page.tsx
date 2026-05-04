@@ -252,7 +252,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                 'Industry-recognized competency validation',
                 'Live profile matching with operators'
             ],
-            ctaTarget: 'recognition-profile'
+            ctaTarget: 'recognition-profile',
+            category: 'pilot' as const
         },
         {
             id: 'pathway-cards',
@@ -269,7 +270,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                 'Verified pilot database access',
                 'Direct operator recruitment pipeline'
             ],
-            ctaTarget: 'pathways'
+            ctaTarget: 'pathways',
+            category: 'pathways' as const
         },
         {
             id: 'foundation-program',
@@ -286,20 +288,40 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                 'EBT CBTA competency assessment',
                 'Industry-recognized CV formatting'
             ],
-            ctaTarget: 'foundational-program'
+            ctaTarget: 'foundational-program',
+            category: 'program' as const
         }
     ];
+
+    const CATEGORIES = [
+        { id: 'pathways' as const, label: 'Pathways' },
+        { id: 'program' as const, label: 'Program' },
+        { id: 'pilot' as const, label: 'Pilot' },
+        { id: 'industry' as const, label: 'Industry & Manufacturer' },
+        { id: 'airlines' as const, label: 'Airlines' },
+    ];
+
+    const [activeNewsCategory, setActiveNewsCategory] = useState<'pathways' | 'program' | 'pilot' | 'industry' | 'airlines' | 'all'>('all');
+
+    const filteredNews = activeNewsCategory === 'all'
+        ? newsroomHighlights
+        : newsroomHighlights.filter(item => item.category === activeNewsCategory);
+
+    // Reset activeNewsIndex when category changes
+    useEffect(() => {
+        setActiveNewsIndex(0);
+    }, [activeNewsCategory]);
 
     // Auto-rotate news carousel every 6 seconds when marketplace tab is active
     useEffect(() => {
         if (activeTab !== 'marketplace') return;
         
         const interval = setInterval(() => {
-            setActiveNewsIndex((prev) => (prev + 1) % newsroomHighlights.length);
+            setActiveNewsIndex((prev) => (prev + 1) % filteredNews.length);
         }, 6000);
         
         return () => clearInterval(interval);
-    }, [activeTab, newsroomHighlights.length]);
+    }, [activeTab, filteredNews.length]);
 
     // Fetch profile data from Supabase (same approach as TopNavbar)
     useEffect(() => {
@@ -1707,6 +1729,35 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                     <div className="relative border border-white/10 bg-gradient-to-br from-slate-900/80 via-slate-900/65 to-slate-950/80 shadow-[0_25px_60px_rgba(0,0,0,0.5)] backdrop-blur-[12px] flex flex-col overflow-hidden">
                                         <div className="absolute inset-0 pointer-events-none mix-blend-screen opacity-40" style={{ background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 45%)' }} />
                                         
+                                        {/* Category Tabs */}
+                                        <div className="relative px-3 md:px-5 pt-3 md:pt-4 pb-2 border-b border-white/10 bg-slate-900/30 z-10">
+                                            <div className="flex flex-wrap gap-1.5 md:gap-2">
+                                                <button
+                                                    onClick={() => setActiveNewsCategory('all')}
+                                                    className={`px-3 py-1.5 text-[10px] md:text-[11px] font-black uppercase tracking-[0.15em] rounded-lg border transition-all ${
+                                                        activeNewsCategory === 'all'
+                                                            ? 'bg-white/20 border-white/40 text-white'
+                                                            : 'bg-white/5 border-white/20 text-white/60 hover:bg-white/10 hover:text-white/80'
+                                                    }`}
+                                                >
+                                                    All
+                                                </button>
+                                                {CATEGORIES.map((cat) => (
+                                                    <button
+                                                        key={cat.id}
+                                                        onClick={() => setActiveNewsCategory(cat.id)}
+                                                        className={`px-3 py-1.5 text-[10px] md:text-[11px] font-black uppercase tracking-[0.15em] rounded-lg border transition-all ${
+                                                            activeNewsCategory === cat.id
+                                                                ? 'bg-white/20 border-white/40 text-white'
+                                                                : 'bg-white/5 border-white/20 text-white/60 hover:bg-white/10 hover:text-white/80'
+                                                        }`}
+                                                    >
+                                                        {cat.label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
                                         <div className="grid gap-3 md:gap-4 md:grid-cols-[1.4fr,1fr] p-3 md:p-5 overflow-y-auto">
                                             <div className="text-white space-y-2 md:space-y-4 flex flex-col min-h-0">
                                                 <div className="flex items-center justify-between gap-3">
@@ -1720,23 +1771,23 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-2">
-                                                        <span className="text-[11px] uppercase tracking-[0.25em] text-white/50">{activeNewsIndex + 1} / {newsroomHighlights.length}</span>
+                                                        <span className="text-[11px] uppercase tracking-[0.25em] text-white/50">{activeNewsIndex + 1} / {filteredNews.length}</span>
                                                     </div>
                                                 </div>
 
                                                 <div>
-                                                    <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-200/80">{newsroomHighlights[activeNewsIndex].tag}</p>
+                                                    <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-200/80">{filteredNews[activeNewsIndex].tag}</p>
                                                     <h2 className="text-lg md:text-3xl lg:text-[2.2rem] font-serif leading-tight mt-1 md:mt-2">
-                                                        {newsroomHighlights[activeNewsIndex].title}
+                                                        {filteredNews[activeNewsIndex].title}
                                                     </h2>
                                                     <p className="text-slate-100/85 text-xs md:text-base mt-2 md:mt-3 leading-relaxed">
-                                                        {newsroomHighlights[activeNewsIndex].description}
+                                                        {filteredNews[activeNewsIndex].description}
                                                     </p>
                                                 </div>
 
                                                 <ul className="space-y-1 md:space-y-1.5">
-                                                    {newsroomHighlights[activeNewsIndex].bullets.map((bullet: string, index: number) => (
-                                                        <li key={`${newsroomHighlights[activeNewsIndex].id}-bullet-${index}`} className="flex items-start gap-2 text-xs md:text-sm text-slate-100/90">
+                                                    {filteredNews[activeNewsIndex].bullets.map((bullet: string, index: number) => (
+                                                        <li key={`${filteredNews[activeNewsIndex].id}-bullet-${index}`} className="flex items-start gap-2 text-xs md:text-sm text-slate-100/90">
                                                             <CheckCircle2 className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-300 mt-0.5 shrink-0" />
                                                             <span>{bullet}</span>
                                                         </li>
@@ -1744,8 +1795,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 </ul>
 
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                                    {newsroomHighlights[activeNewsIndex].metrics.map((metric: { label: string; value: string }) => (
-                                                        <div key={`${newsroomHighlights[activeNewsIndex].id}-${metric.label}`} className="border border-white/25 bg-white/5 px-2 py-1.5 md:px-3 md:py-2 shadow-lg shadow-black/30">
+                                                    {filteredNews[activeNewsIndex].metrics.map((metric: { label: string; value: string }) => (
+                                                        <div key={`${filteredNews[activeNewsIndex].id}-${metric.label}`} className="border border-white/25 bg-white/5 px-2 py-1.5 md:px-3 md:py-2 shadow-lg shadow-black/30">
                                                             <p className="text-[10px] uppercase tracking-[0.25em] text-white/70">{metric.label}</p>
                                                             {metric.label === 'Certification' && metric.value === 'enroll now for free!' ? (
                                                                 <button
@@ -1774,7 +1825,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                         <Home className="w-3.5 h-3.5 md:w-4 md:h-4" /> Home
                                                     </button>
                                                     <button
-                                                        onClick={() => onNavigate(newsroomHighlights[activeNewsIndex].ctaTarget)}
+                                                        onClick={() => onNavigate(filteredNews[activeNewsIndex].ctaTarget)}
                                                         className="text-xs font-semibold uppercase tracking-[0.35em] text-white/80 hover:text-white"
                                                     >
                                                         Open update →
@@ -1783,12 +1834,12 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             </div>
 
                                             <div className="relative min-h-[100px] md:min-h-0 border border-white/25 flex-shrink-0">
-                                                <img src={newsroomHighlights[activeNewsIndex].image} alt={newsroomHighlights[activeNewsIndex].title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                                                <img src={filteredNews[activeNewsIndex].image} alt={filteredNews[activeNewsIndex].title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
                                                 <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/75 via-slate-900/10 to-transparent" />
                                                 <div className="absolute bottom-2 left-2 right-2 md:bottom-4 md:left-4 md:right-4">
                                                     <p className="text-[10px] md:text-[11px] uppercase tracking-[0.35em] text-white/70">Latest drop</p>
                                                     <p className="text-sm md:text-lg font-semibold text-white leading-tight">
-                                                        {newsroomHighlights[activeNewsIndex].tag}
+                                                        {filteredNews[activeNewsIndex].tag}
                                                     </p>
                                                     <p className="text-xs md:text-sm text-white/80 hidden sm:block">
                                                         Recognition, programs, and pathways broadcast through one newsroom overlay.
@@ -1801,7 +1852,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             <div className="flex flex-col gap-2">
                                                 <span className="text-[11px] uppercase tracking-[0.25em] text-white/50">Latest Updates</span>
                                                 <div className="flex gap-1.5">
-                                                    {newsroomHighlights.map((_, index) => (
+                                                    {filteredNews.map((_, index) => (
                                                         <button
                                                             key={index}
                                                             onClick={() => setActiveNewsIndex(index)}
