@@ -10,6 +10,7 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { PathwayGrid } from './PathwayGrid';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier } from '@/src/lib/device-detection';
+import StripePaymentSection from './StripePaymentSection';
 import { NewsroomModal } from '../NewsroomModal';
 
 interface HomePageProps {
@@ -581,7 +582,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     // Automatic device detection for performance optimization
     const [deviceTier, setDeviceTier] = useState<'low' | 'medium' | 'high'>('high');
     const [showOptimizationMessage, setShowOptimizationMessage] = useState(false);
-    const [enableShader, setEnableShader] = useState(true);
+    const [enableShader, setEnableShader] = useState(false); // Disabled to fix WebGL context leaks
     const [isNewsroomModalOpen, setIsNewsroomModalOpen] = useState(false);
     const [activeMatchFilter, setActiveMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
     const [activeCarouselCategory, setActiveCarouselCategory] = useState<string>('All');
@@ -809,24 +810,6 @@ export const HomePage: React.FC<HomePageProps> = ({
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Save scroll position on visibility change (restoration disabled for development)
-    useEffect(() => {
-        const handleVisibilityChange = () => {
-            if (document.hidden) {
-                // Save scroll position when tab is hidden
-                const currentScroll = window.scrollY;
-                scrollPositionRef.current = currentScroll;
-                sessionStorage.setItem('scrollPosition', currentScroll.toString());
-                sessionStorage.setItem('scrollPositionTimestamp', Date.now().toString());
-                console.log('💾 Saved scroll position:', currentScroll);
-            }
-            // Note: Scroll restoration disabled to prevent unwanted scrolling when switching IDE tabs
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-    }, []);
-
     // Ensure currentSlide is always in range when category changes
     useEffect(() => {
         if (currentSlide >= slides.length) {
@@ -962,7 +945,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <BreadcrumbSchema items={[
                 { name: 'Home', url: '/' }
             ]} />
-            <div className="relative min-h-screen font-sans bg-black overflow-x-hidden">
+            <div className="relative font-sans bg-black overflow-x-hidden flex flex-col min-h-screen">
             {/* Navigation Bar */}
             <TopNavbar
                 onNavigate={onNavigate}
@@ -2096,166 +2079,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div className="text-center mb-8">
                                 <AnimatedHeader />
                         </div>
-
-                        <div className="max-w-6xl mx-auto space-y-6">
-                            {/* Card 1: Become A Member - Simplified */}
-                            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl max-w-2xl mx-auto">
-                                <h2 className="text-2xl md:text-4xl font-serif text-slate-900 mb-8 leading-tight text-center">
-                                    Create Your Pilot Recognition Profile
-                                </h2>
-
-                                {/* Create Profile Button */}
-                                <button
-                                    onClick={onJoinUs}
-                                    className="w-full max-w-md bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-xl font-bold uppercase tracking-[0.15em] transition-all shadow-lg flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-95 mb-4 mx-auto"
-                                >
-                                    Create Account
-                                </button>
-
-                                {/* Social Login Option */}
-                                <button
-                                    onClick={onLogin}
-                                    className="w-full max-w-md bg-white hover:bg-slate-50 text-slate-900 py-4 rounded-xl font-bold uppercase tracking-[0.15em] transition-all shadow-lg border-2 border-slate-200 flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-95 mb-8 mx-auto"
-                                >
-                                    Sign in with Google
-                                </button>
-
-                                {/* Recognition Plus Section */}
-                                <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 rounded-2xl p-6 mb-8">
-                                    <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-xl flex items-center justify-center shrink-0">
-                                            <span className="text-white font-bold text-lg">+</span>
-                                        </div>
-                                        <div className="text-left">
-                                            <h3 className="text-lg font-bold text-slate-900 mb-2">Recognition Plus</h3>
-                                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                                Unlock premium features including verified priority pipeline, AI career strategist, interview fast-track, OEM-aligned profiles, and predictive medical alerts.
-                                            </p>
-                                            <button onClick={() => onNavigate('recognition-plus')} className="text-amber-600 hover:text-amber-700 text-sm font-bold underline text-left">
-                                                Learn more about Recognition Plus →
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Comparison Table */}
-                                <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-6 mb-8 overflow-x-auto">
-                                    <h3 className="text-lg font-bold text-slate-900 mb-4 text-center">Platform Components</h3>
-                                    <table className="w-full text-xs">
-                                        <thead>
-                                            <tr>
-                                                <th className="text-left py-2 px-2 font-semibold text-slate-900 w-1/5">Component</th>
-                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Profile</th>
-                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Program</th>
-                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Pathways</th>
-                                                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/3" colSpan={2}>Recognition Plus</th>
-                                            </tr>
-                                            <tr className="border-b-2 border-slate-300">
-                                                <th className="text-left py-2 px-2 font-semibold text-slate-900 w-1/5"></th>
-                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
-                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
-                                                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
-                                                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/6">AI</th>
-                                                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/6">Priority</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className="border-b border-slate-200 bg-slate-100">
-                                                <td className="py-2 px-2 text-slate-900 font-semibold">Profile</td>
-                                                <td className="py-2 px-2 text-center text-blue-600">Credentials display</td>
-                                                <td className="py-2 px-2 text-center text-slate-700">Free enrollment</td>
-                                                <td className="py-2 px-2 text-center text-slate-700">Direct entry pathways</td>
-                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                                            </tr>
-                                            <tr className="border-b border-slate-200">
-                                                <td className="py-2 px-2 text-slate-900 font-semibold">Programs</td>
-                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                                                <td className="py-2 px-2 text-center text-slate-700">50+ hours mentorship</td>
-                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                                                <td className="py-2 px-2 text-center text-slate-700">✓ Earned priority</td>
-                                            </tr>
-                                            <tr className="border-b border-slate-200 bg-slate-100">
-                                                <td className="py-2 px-2 text-slate-900 font-semibold">Pathways</td>
-                                                <td className="py-2 px-2 text-center text-blue-600">Profile matching</td>
-                                                <td className="py-2 px-2 text-center text-slate-700">Interview access</td>
-                                                <td className="py-2 px-2 text-center text-slate-700">Unlimited sectors</td>
-                                                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                                                <td className="py-2 px-2 text-center text-slate-700">Pool access</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="py-2 px-2 text-amber-900 font-semibold">Recognition Plus</td>
-                                                <td className="py-2 px-2 text-center text-amber-600">OEM aligned</td>
-                                                <td className="py-2 px-2 text-center text-amber-600">Fast-track</td>
-                                                <td className="py-2 px-2 text-center text-amber-600">AI recommendations</td>
-                                                <td className="py-2 px-2 text-center text-amber-600">Verification</td>
-                                                <td className="py-2 px-2 text-center text-amber-600">✓ First in pools</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <button onClick={() => onNavigate('membership')} className="block text-center text-blue-600 hover:text-blue-700 text-sm font-bold underline mt-4">
-                                        View full comparison →
-                                    </button>
-                                </div>
-
-                                {/* Contact Us */}
-                                <div className="mb-8 text-center">
-                                    <p className="text-slate-600 text-sm mb-2">
-                                        Want to inquire? <a href="#" className="text-blue-600 hover:text-blue-700 underline font-semibold">Contact us</a>
-                                    </p>
-                                    <p className="text-slate-600 text-sm">
-                                        Want to know more? <a href="#" className="text-blue-600 hover:text-blue-700 underline font-semibold">Learn about our platform</a>
-                                    </p>
-                                </div>
-
-                                {/* Operator CTA */}
-                                <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6">
-                                    <p className="text-slate-900 text-sm mb-2 font-semibold text-center">
-                                        Are you an operator?
-                                    </p>
-                                    <button
-                                        onClick={() => window.location.href = '/enterprise-access'}
-                                        className="w-full text-blue-600 hover:text-blue-700 text-sm font-bold underline text-center"
-                                    >
-                                        Click here for enterprise access
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Footer Note: Progressive Pathway */}
-                        {/* Footer Note: Progressive Pathway */}
-                        <div className="text-center mt-4 mb-6 max-w-3xl mx-auto">
-                            <p className="text-white italic text-xs md:text-sm leading-relaxed">
-                                <span className="text-blue-900 font-bold block mb-1 not-italic uppercase tracking-widest text-[10px]">Progressive Pathway Recommendation</span>
-                                Doing the Foundational Program first will give you a <strong className="text-white">preferred edge</strong> within the PilotRecognition Pilot Database.
-                            </p>
-                        </div>
-
-
-                        {/* Section 3: The Why (For Airlines & ATOs) */}
-                        <div className="mt-8 mb-6 text-center max-w-4xl mx-auto relative z-10 px-4">
-                            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                                <h3 className="text-lg md:text-2xl font-sans font-bold text-slate-900 mb-3">
-                                    Airlines, Operators, or Regulatory Authorities?
-                                </h3>
-                                <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
-                                    PilotRecognition provides an industry-standard database of candidates vetted through EBT CBTA familiarization and Hinfact.
-                                </p>
-                                <button onClick={() => window.location.href = '/enterprise-access'} className="inline-flex items-center justify-center px-6 py-2 text-xs font-bold text-white uppercase tracking-widest bg-slate-900 border border-slate-900 rounded-lg group">
-                                        <span>Contact for Enterprise Access</span>
-                                        <i className="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform"></i>
-                                    </button>
-                            </div>
-                        </div>
-
-                        {/* User Agreement */}
-                        <div className="text-center relative z-10 pb-6">
-                            <p className="text-slate-400/60 text-[10px] uppercase tracking-widest">
-                                By joining, you agree to the <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors underline decoration-slate-300 underline-offset-4">Privacy Policy</a> & <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors underline decoration-slate-300 underline-offset-4">User Agreement</a>
-                            </p>
-                        </div>
+                        <StripePaymentSection onNavigate={onNavigate} />
                     </div>
                 </div>
 
@@ -2263,7 +2087,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             </div>
             {/* Footer */}
-            <footer className="bg-slate-900 text-white py-12 px-6">
+            <footer className="relative z-10 mt-auto bg-slate-900 text-white py-12 px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-4 gap-8 mb-8">
                         <div>
@@ -2302,6 +2126,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 <li><button onClick={() => onNavigate('privacy-policy')} className="hover:text-white cursor-pointer transition-colors text-left">Privacy Policy</button></li>
                                 <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-white cursor-pointer transition-colors text-left">Terms of Service</button></li>
                                 <li><button onClick={() => onNavigate('cookie-policy')} className="hover:text-white cursor-pointer transition-colors text-left">Cookie Policy</button></li>
+                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-white cursor-pointer transition-colors text-left">Our Services</button></li>
                             </ul>
                         </div>
                     </div>
