@@ -208,6 +208,7 @@ export const AppRoutes = () => {
       <Route path="/atlas-cv" element={<ATLASCVPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
 
       {/* Directory routes */}
+      <Route path="/accreditation" element={<Navigate to="/about" replace />} />
       <Route path="/insights" element={<AviationInsightsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/applications_systems" element={<ApplicationsSystemsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/applications-systems" element={<ApplicationsSystemsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
