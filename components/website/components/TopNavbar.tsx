@@ -407,60 +407,60 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const navItems: NavItem[] = [
         {
             name: 'Home',
-            target: '/access-portal-2?view=home'
+            target: '/'
         },
         {
             name: 'About',
-            target: '/access-portal-2?view=about',
+            target: '/about',
             subItems: [
-                { category: 'For Pilots', name: 'About PilotRecognition', target: '/access-portal-2?view=about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
-                { name: 'Mission & Vision', target: '/access-portal-2?view=mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
-                { name: 'What is the Pilot Gap?', target: '/access-portal-2?view=pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
-                { category: 'For Industry', name: 'For Airlines & Operators', target: '/access-portal-2?view=about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
-                { name: 'Industry Stewardship', target: '/access-portal-2?view=industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
+                { category: 'For Pilots', name: 'About PilotRecognition', target: '/about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
+                { name: 'Mission & Vision', target: '/mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
+                { name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
+                { category: 'For Industry', name: 'For Airlines & Operators', target: '/about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
+                { name: 'Industry Stewardship', target: '/industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
             ]
         },
         {
             name: 'Programs',
-            target: '/access-portal-2?view=about_programs',
+            target: '/programs',
             subItems: [
-                { category: 'Core Programs', name: 'Foundational Program', target: '/access-portal-2?view=foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
-                { name: 'What is the pilot gap?', target: '/access-portal-2?view=pilot-gap', isYellow: true },
-                { name: 'Transition Program', target: '/access-portal-2?view=transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
-                { name: 'EBT CBTA Familiarization', target: '/access-portal-2?view=ebt-cbta', isYellow: true }
+                { category: 'Core Programs', name: 'Foundational Program', target: '/foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
+                { name: 'What is the pilot gap?', target: '/pilot-gap-about', isYellow: true },
+                { name: 'Transition Program', target: '/transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
+                { name: 'EBT CBTA Familiarization', target: '/ebt-cbta', isYellow: true }
             ]
         },
         {
             name: 'Pathways',
-            target: '/access-portal-2?view=pathways-modern',
+            target: '/pathways-modern',
             subItems: [
-                { name: 'Type Rating Search', target: '/access-portal-2?view=type-rating-search', bullets: ['Aircraft Manufacturers', 'Training Centers', 'Licensing Requirements'] },
-                { name: 'Airline Expectations', target: '/access-portal-2?view=airline-expectations', bullets: ['Entry Requirements', 'Operator Standards', 'Application Insights'] },
-                { name: 'Pilot Career Pathways', target: '/access-portal-2?view=pathways-modern', bullets: ['Cadet Programs', 'Cargo & Charter', 'eVTOL & Drones'] }
+                { name: 'Type Rating Search', target: '/type-rating-search', bullets: ['Aircraft Manufacturers', 'Training Centers', 'Licensing Requirements'] },
+                { name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry Requirements', 'Operator Standards', 'Application Insights'] },
+                { name: 'Pilot Career Pathways', target: '/pathways-modern', bullets: ['Cadet Programs', 'Cargo & Charter', 'eVTOL & Drones'] }
             ]
         },
         {
             name: 'Pilot Recognition',
-            target: `/access-portal-2?view=${pilotRecognitionTarget}`,
+            target: pilotRecognitionTarget,
             subItems: [
-                { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: '/access-portal-2?view=atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Profile', target: '/access-portal-2?view=recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
-                { name: 'Recognition Career Matches', target: '/access-portal-2?view=recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] },
-                { name: 'Examination Results', target: '/access-portal-2?view=examination-results-directory', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
-                { name: 'Digital Logbook', target: '/access-portal-2?view=digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
+                { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: '/atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { name: 'Pilot Recognition Profile', target: '/recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'Recognition Career Matches', target: '/recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] },
+                { name: 'Examination Results', target: '/examination-results-directory', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
+                { name: 'Digital Logbook', target: '/digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
             ]
         },
         {
             name: 'Membership',
-            target: '/access-portal-2?view=membership',
+            target: '/membership',
             subItems: [
-                { category: 'The Network', name: 'Benefits of Membership', target: '/access-portal-2?view=membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
-                { category: 'Premium Tier', name: 'Recognition Plus', target: '/access-portal-2?view=recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
-                { name: 'Become a Member', target: '/access-portal-2?view=become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] },
-                { category: 'The Digital Ecosystem', name: 'PilotRecognition W1000 Suite', target: '/access-portal-2?view=w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
-                { name: 'Hinfact AIRBUS integrated applications', target: '/access-portal-2?view=hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
-                { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: '/access-portal-2?view=atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Systems', target: '/access-portal-2?view=recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { category: 'The Network', name: 'Benefits of Membership', target: '/membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
+                { category: 'Premium Tier', name: 'Recognition Plus', target: '/recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
+                { name: 'Become a Member', target: '/become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] },
+                { category: 'The Digital Ecosystem', name: 'PilotRecognition W1000 Suite', target: '/w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
+                { name: 'Hinfact AIRBUS integrated applications', target: '/hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
+                { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: '/atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { name: 'Pilot Recognition Systems', target: '/recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
             ]
         },
         { name: 'FAQ', target: 'faq' },
