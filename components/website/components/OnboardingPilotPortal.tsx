@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TopNavbar } from './TopNavbar';
 
@@ -56,6 +56,11 @@ const features = [
 export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ onBack, onNavigate, onLogin }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [selectedFeature, setSelectedFeature] = useState<typeof features[0] | null>(null);
+
+    // Redirect directly to portal 2
+    useEffect(() => {
+        onNavigate('access-portal-2');
+    }, [onNavigate]);
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % features.length);
@@ -140,16 +145,6 @@ export const OnboardingPilotPortal: React.FC<OnboardingPilotPortalProps> = ({ on
                     <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md mb-8">
                         <h3 className="text-xl font-bold text-slate-900 mb-2">{features[currentSlide].title}</h3>
                         <p className="text-slate-600 leading-relaxed">{features[currentSlide].details}</p>
-                    </div>
-                    
-                    <div className="flex justify-center">
-                        <button
-                            onClick={() => onNavigate('onboarding-programs')}
-                            className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                        >
-                            Next: Programs
-                            <ArrowRight className="w-5 h-5" />
-                        </button>
                     </div>
                 </div>
             </div>

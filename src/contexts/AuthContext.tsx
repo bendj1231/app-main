@@ -138,51 +138,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             let firebaseUser: any = null;
             let userAlreadyExisted = false;
 
-            // Step 1: Use Edge Function for auth signup with rate limiting and CSRF protection
+            // Skip Edge Function to avoid rate limiting (429 errors) - use direct Supabase auth
             try {
-                console.log('🔵 Step 1: Creating Supabase auth user via Edge Function...');
-                const { data, error } = await supabase.functions.invoke('auth-signup', {
-                    body: { email, password, userData },
-                    headers: getAuthHeaders()
-                });
-
-                if (error) {
-                    // If Edge Function fails, fall back to direct Supabase auth
-                    console.warn('⚠️ Edge Function signup failed, falling back to direct auth:', error.message);
-                    throw error;
-                }
-
-                if (!data?.success) {
-                    console.warn('⚠️ Edge Function returned error, falling back to direct auth:', data?.error);
-                    throw new Error(data?.error || 'Signup failed');
-                }
-
-                // Store CSRF token from response
-                if (data?.csrfToken) {
-                    setCsrfToken(data.csrfToken);
-                }
-
-                userId = data.user.id;
-                console.log('✅ User created via Edge Function:', userId);
-
-                // If Edge Function returned a session, the user is already signed in
-                // Otherwise, we need to sign in to get the session for profile creation
-                if (data.session) {
-                    console.log('✅ Session returned from Edge Function');
-                } else {
-                    console.log('🔵 Signing in to get session for profile creation...');
-                    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-                        email,
-                        password
-                    });
-                    
-                    if (signInError) {
-                        throw new Error(`Failed to sign in after signup: ${signInError.message}`);
-                    }
-                    console.log('✅ Signed in successfully');
-                }
+                console.log('🔵 Skipping Edge Function, using direct Supabase auth to avoid rate limiting...');
+                throw new Error('SKIP_EDGE_FUNCTION');
             } catch (edgeFunctionError) {
-                console.log('🔵 Edge Function failed, using direct Supabase auth as fallback...');
+                console.log('🔵 Using direct Supabase auth as fallback...');
                 
                 // Fallback to direct Supabase auth (original logic)
                 const { data: supabaseData, error: supabaseError } = await supabase.auth.signUp({
