@@ -1138,7 +1138,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                             playsInline
                                                             className="absolute inset-0 w-full h-full object-cover opacity-80"
                                                         >
-                                                            <source src="/pilot-training-video.mp4" type="video/mp4" />
+                                                            <source src="/images/My Movie 3 - 720WebShareName.mov" type="video/mp4" />
                                                         </video>
                                                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
 
