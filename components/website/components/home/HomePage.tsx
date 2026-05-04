@@ -1270,21 +1270,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                         </h1>
                     </div>
 
-                    {/* Context Banner - Pulling System */}
-                    <div className="mb-6 w-full px-4">
-                        <div className="w-full max-w-7xl mx-auto">
-                            <div className="bg-blue-900/30 backdrop-blur border border-blue-500/30 rounded-xl p-4 text-center">
-                                <p className="text-white text-sm font-medium">
-                                    Pathway Cards — Not Job Listings. Submit your interest. Airlines pull from your live real-time profile.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Search Bar */}
                     <div className="mb-6 flex justify-center px-4">
                         <div className="w-full max-w-2xl">
-                            <div className="bg-slate-400/30 backdrop-blur rounded-lg px-4 py-3 text-slate-300 text-sm">
+                            <div className="bg-white rounded-lg px-4 py-3 text-slate-700 text-sm border border-slate-300">
                                 Search pathways, airlines, or locations...
                             </div>
                         </div>
@@ -1336,7 +1325,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
 
                     {/* Recommended Pathways Header */}
-                    <div className="mb-4 w-full max-w-7xl mx-auto px-4 text-center">
+                    <div className="mb-4 w-full px-4 text-left">
                         <h2 className="text-3xl md:text-4xl font-normal text-white" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
                             Recommended Pathways
                         </h2>
@@ -1376,27 +1365,51 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
 
                     {/* Pathway Cards Carousel - Full PathwaysPageModern Style */}
-                    <div className="relative w-screen left-1/2 -translate-x-1/2 mb-6">
+                    <div className="relative w-full mb-6">
                         <style>{`
                             .pathways-carousel::-webkit-scrollbar { display: none; }
                             .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
                             .pathways-carousel {
                                 scroll-snap-type: x mandatory;
                                 scroll-behavior: smooth;
-                                scroll-padding-left: calc(50vw - 300px);
-                                scroll-padding-right: calc(50vw - 300px);
+                                scroll-padding-left: 16px;
+                                scroll-padding-right: 16px;
                             }
                             .pathways-carousel > div {
                                 scroll-snap-align: center;
                             }
                         `}</style>
-                        <div ref={pathwaysCarouselRef} className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4" style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', paddingLeft: 'calc(50vw - 300px)', paddingRight: 'calc(50vw - 300px)' }}>
+                        <div ref={pathwaysCarouselRef} className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4" style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', paddingLeft: '16px', paddingRight: '16px' }}>
                             {/* Intro Card */}
                             <div
                                 key="FOUNDATION-PROGRAM-ENROLL"
                                 className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 opacity-100 hover:scale-100"
                                 style={{ width: '600px', scrollSnapAlign: 'center' }}
-                                onClick={() => onNavigate('programs')}
+                                onClick={(e) => {
+                                    setSelectedCarouselPathway({
+                                        id: 'FOUNDATION-PROGRAM-ENROLL',
+                                        title: 'Foundation Program',
+                                        company: 'PilotRecognition',
+                                        location: 'Global',
+                                        tags: ['Featured Program', '50 Hours Mentorship']
+                                    });
+                                    // Center the card
+                                    const card = e.currentTarget;
+                                    const carousel = pathwaysCarouselRef.current;
+                                    if (carousel && card) {
+                                        const cardLeft = card.offsetLeft;
+                                        const cardWidth = card.offsetWidth;
+                                        const carouselWidth = carousel.offsetWidth;
+                                        carousel.scrollLeft = cardLeft - (carouselWidth / 2) + (cardWidth / 2);
+                                    }
+                                    // Scroll to the selected pathway section
+                                    setTimeout(() => {
+                                        const selectedSection = document.querySelector('[data-selected-pathway="true"]');
+                                        if (selectedSection) {
+                                            selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                        }
+                                    }, 300);
+                                }}
                             >
                                 <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
                                     <img
@@ -1434,7 +1447,25 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     key={pathway.id}
                                     className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 opacity-100 hover:scale-100"
                                     style={{ width: '600px', scrollSnapAlign: 'center' }}
-                                    onClick={() => onNavigate('pathways-modern')}
+                                    onClick={(e) => {
+                                        setSelectedCarouselPathway(pathway);
+                                        // Center the card
+                                        const card = e.currentTarget;
+                                        const carousel = pathwaysCarouselRef.current;
+                                        if (carousel && card) {
+                                            const cardLeft = card.offsetLeft;
+                                            const cardWidth = card.offsetWidth;
+                                            const carouselWidth = carousel.offsetWidth;
+                                            carousel.scrollLeft = cardLeft - (carouselWidth / 2) + (cardWidth / 2);
+                                        }
+                                        // Scroll to the selected pathway section
+                                        setTimeout(() => {
+                                            const selectedSection = document.querySelector('[data-selected-pathway="true"]');
+                                            if (selectedSection) {
+                                                selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                            }
+                                        }, 300);
+                                    }}
                                 >
                                     <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
                                         <img 
@@ -1466,7 +1497,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                     {/* Selected Pathway Display */}
                     {selectedCarouselPathway && (
-                        <div className="flex items-center justify-center gap-4 mt-4 mb-8">
+                        <div data-selected-pathway="true" className="flex items-center justify-center gap-4 mt-4 mb-8">
                             <button
                                 onClick={() => pathwaysCarouselRef.current?.scrollBy({ left: -616, behavior: 'smooth' })}
                                 className="p-3 rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all flex-shrink-0 backdrop-blur-md"
@@ -1497,7 +1528,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     onClick={() => selectedCarouselPathway.matchProbability >= 75 ? onNavigate('pathways-modern') : onNavigate('become-member')}
                                     className={`px-8 py-3 rounded-lg text-sm font-semibold transition-all ${
                                         selectedCarouselPathway.matchProbability >= 75
-                                            ? 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                                            ? 'bg-red-500 hover:bg-red-600 text-white'
                                             : 'bg-amber-500 hover:bg-amber-600 text-white'
                                     }`}
                                 >
@@ -1975,13 +2006,12 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* About Us section - Moved above iPad section */}
             <div className="relative bg-white pt-24 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
-                    <RevealOnScroll delay={100}>
-                        <p className="text-lg font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
-                            ABOUT US
-                        </p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 leading-tight mb-6">
-                            About PilotRecognition
-                        </h2>
+                    <p className="text-lg font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
+                        ABOUT US
+                    </p>
+                    <h2 className="text-3xl md:text-4xl font-serif text-slate-900 leading-tight mb-6">
+                        About PilotRecognition
+                    </h2>
 
                         <div className="max-w-4xl mx-auto space-y-6 mb-12 text-left">
                             <p className="text-slate-700 text-sm md:text-base leading-relaxed font-sans">
@@ -2001,7 +2031,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                         >
                             LEARN MORE ABOUT OUR ACCREDITATIONS AND SUPPORT PROVIDED <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </button>
-                    </RevealOnScroll>
                 </div>
             </div>
 

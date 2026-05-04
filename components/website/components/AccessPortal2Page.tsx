@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ChevronRight, Home, Users, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark, Brain, Clock, Target, PlayCircle } from 'lucide-react';
+import { ChevronRight, Home, Users, User, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark, Brain, Clock, Target, PlayCircle, LogOut } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
@@ -58,10 +58,12 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     // Profile and notification state
     const [profileImageUrl, setProfileImageUrl] = useState<string>('');
     const [enrolledPrograms, setEnrolledPrograms] = useState<string[]>([]);
+    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
     const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
     const [notificationCount, setNotificationCount] = useState(0);
     const [notifications, setNotifications] = useState<any[]>([]);
+    const profileDropdownRef = useRef<HTMLDivElement>(null);
     const settingsDropdownRef = useRef<HTMLDivElement>(null);
     const notificationDropdownRef = useRef<HTMLDivElement>(null);
     
@@ -148,6 +150,15 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         setIsVisible(false);
         const timer = setTimeout(() => setIsVisible(true), 100);
         return () => clearTimeout(timer);
+    }, [activeTab]);
+
+    useEffect(() => {
+        console.log('AccessPortal2Page mounted - current activeTab:', activeTab);
+        // Add a class to body to hide any global side panels
+        document.body.classList.add('w12-fullscreen');
+        return () => {
+            document.body.classList.remove('w12-fullscreen');
+        };
     }, [activeTab]);
 
     // Handle URL parameter changes for view routing
@@ -359,6 +370,9 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     // Handle click outside for dropdowns
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
+            if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+                setIsProfileDropdownOpen(false);
+            }
             if (settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target as Node)) {
                 setIsSettingsDropdownOpen(false);
             }
@@ -367,11 +381,11 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
             }
         };
 
-        if (isSettingsDropdownOpen || isNotificationDropdownOpen) {
+        if (isProfileDropdownOpen || isSettingsDropdownOpen || isNotificationDropdownOpen) {
             document.addEventListener('mousedown', handleClickOutside);
             return () => document.removeEventListener('mousedown', handleClickOutside);
         }
-    }, [isSettingsDropdownOpen, isNotificationDropdownOpen]);
+    }, [isProfileDropdownOpen, isSettingsDropdownOpen, isNotificationDropdownOpen]);
 
     // Handle view routing
     const handleViewRouting = () => {
@@ -498,18 +512,9 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                     {currentUser && (
                         <>
                             {/* Profile Picture */}
-                            <div className="relative">
+                            <div className="relative" ref={profileDropdownRef}>
                                 <button
-                                    onClick={() => {
-                                        console.log('[DEBUG Portal 2] Profile icon clicked - navigating to pilot-recognition-profile');
-                                        try {
-                                            onNavigate('pilot-recognition-profile');
-                                        } catch (error) {
-                                            console.error('[DEBUG Portal 2] Error in onNavigate:', error);
-                                            // Fallback navigation
-                                            window.location.href = '/pilot-recognition-profile';
-                                        }
-                                    }}
+                                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                                     className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
                                     title="Profile"
                                     style={{ borderRadius: '45% / 50%' }}
@@ -526,6 +531,65 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         </span>
                                     )}
                                 </button>
+
+                                {/* Profile Dropdown Menu */}
+                                {isProfileDropdownOpen && (
+                                    <>
+                                        <div
+                                            className="fixed inset-0 z-40"
+                                            onClick={() => setIsProfileDropdownOpen(false)}
+                                        />
+                                        <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                                            <div className="p-4 border-b border-slate-200">
+                                                <h3 className="font-semibold text-slate-900">{fullName}</h3>
+                                                <p className="text-xs text-slate-500">{currentLevel}</p>
+                                            </div>
+                                            <div className="p-2">
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('pilot-recognition-profile');
+                                                        setIsProfileDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <User className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">View Profile</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        console.log('My Programs button clicked - setting activeTab to programs');
+                                                        setActiveTab('programs');
+                                                        setIsProfileDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <BookOpen className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">My Programs</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        onNavigate('settings');
+                                                        setIsProfileDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <Settings className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">Settings</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        // Handle logout
+                                                        setIsProfileDropdownOpen(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                                >
+                                                    <LogOut className="w-4 h-4 text-slate-600" />
+                                                    <span className="text-sm text-slate-700">Sign Out</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
                             {/* Settings Dropdown */}
@@ -952,7 +1016,10 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             className="md:col-span-2 h-80 md:h-96"
                                         >
                                             <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                 onClick={() => onNavigate('/w1000')}>
+                                                 onClick={() => {
+                                                     console.log('W1000 Flight Deck card clicked - navigating to /w1000');
+                                                     onNavigate('/w1000');
+                                                 }}>
                                                 {/* Split-section design */}
                                                 <div className="h-full flex flex-col">
                                                     {/* Top half - Image background (70% of height) */}
@@ -1000,7 +1067,10 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 className="flex-1 min-h-0"
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
-                                                     onClick={() => onNavigate('foundational-platform')}>
+                                                     onClick={() => {
+                                                         console.log('Foundational Platform card clicked - navigating to foundational-platform');
+                                                         onNavigate('foundational-platform');
+                                                     }}>
                                                     {/* Directory Card - Image with text overlay */}
                                                     <div className={`
                                                         relative w-full h-full rounded-none overflow-hidden
@@ -1065,6 +1135,39 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                                 </h3>
                                                                 <p className="text-slate-300 text-sm md:text-base leading-tight">
                                                                     Certification examinations, assessments, and progress tracking for program advancement
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+
+                                            {/* Official Examination Board & Certifications */}
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.7 }}
+                                                className="flex-1 min-h-0"
+                                            >
+                                                <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
+                                                     onClick={() => {
+                                                         console.log('[DEBUG Programs] Official Examination Board clicked - navigating to official-examination-board');
+                                                         onNavigate('official-examination-board');
+                                                     }}>
+                                                    {/* Directory Card - White background */}
+                                                    <div className={`
+                                                        relative w-full h-full rounded-none overflow-hidden
+                                                        bg-white
+                                                        border border-white/20 shadow-2xl shadow-black/50
+                                                        ${'hover:scale-[1.02] shadow-black/70 border-white/30'}
+                                                    `}>
+                                                        <div className="relative h-full flex items-center px-6 md:px-8">
+                                                            <div className="flex flex-col">
+                                                                <h3 className="text-slate-900 font-serif text-base md:text-lg tracking-wide mb-2">
+                                                                    » Official Examination Board & Certifications
+                                                                </h3>
+                                                                <p className="text-slate-600 text-sm md:text-base leading-tight">
+                                                                    Official certification bodies, examination boards, and industry-standard credentials
                                                                 </p>
                                                             </div>
                                                         </div>

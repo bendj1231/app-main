@@ -711,19 +711,25 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     {currentUser ? 'Sign Out' : 'Become a Member'}
                                 </button>
 
-                                <button
-                                    onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
-                                    className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5`}
-                                >
-                                    {currentUser ? 'Access Portal' : 'Login'}
-                                </button>
+                                {/* Access Portal button - Only show when not logged in */}
+                                {!currentUser && (
+                                    <button
+                                        onClick={onLoginModalOpen || (() => {})}
+                                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5"
+                                    >
+                                        Login
+                                    </button>
+                                )}
 
-                                <button
-                                    onClick={() => onNavigate('access-portal-2')}
-                                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-purple-500/20 flex items-center gap-1.5"
-                                >
-                                    Access Portal 2
-                                </button>
+                                {/* Access Portal 2 button - Only show when logged in */}
+                                {currentUser && (
+                                    <button
+                                        onClick={() => onNavigate('access-portal-2')}
+                                        className="bg-black hover:bg-slate-800 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-1.5"
+                                    >
+                                        Access Portal
+                                    </button>
+                                )}
 
                                 {/* Graphics Settings Button - Always visible */}
                                 <div className="relative group">

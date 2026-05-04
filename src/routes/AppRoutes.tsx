@@ -59,6 +59,7 @@ import { W1000SuitePage } from '@/components/website/components/W1000SuiteDirect
 import { W2000ApplicationPage } from '@/components/website/components/W2000ApplicationPage';
 import { MembershipBenefitsPage } from '@/components/website/components/MembershipBenefitsDirectoryPage';
 import ExaminationResultsDirectoryPage from '@/components/website/components/ExaminationResultsDirectoryPage';
+import OfficialExaminationBoardPage from '@/components/website/components/OfficialExaminationBoardPage';
 import { DigitalLogbookDirectoryPage } from '@/components/website/components/DigitalLogbookDirectoryPage';
 import { DigitalLogbookPage } from '@/components/website/components/pilot-recognition/DigitalLogbookPage';
 import { EBTCBTAPage } from '@/components/website/components/EBTCBTAPage';
@@ -215,6 +216,7 @@ export const AppRoutes = () => {
       <Route path="/membership-benefits" element={<MembershipBenefitsPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/examination-results" element={<ExaminationResultsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/examination-results-directory" element={<ExaminationResultsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/official-examination-board" element={<OfficialExaminationBoardPage onBack={() => handleBack('access-portal-2?tab=programs')} onNavigate={handleNavigate} />} />
       <Route path="/digital-logbook-directory" element={<DigitalLogbookDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/digital-logbook" element={<DigitalLogbookPage onBack={() => handleBack()} userProfile={null} />} />
 
