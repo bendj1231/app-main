@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, Settings, Bell } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, User, Settings, Bell, BookOpen, LogOut } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -44,10 +44,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
     
     // Navigation state
+    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
     const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
     const [notificationCount, setNotificationCount] = useState(0);
     const [notifications, setNotifications] = useState<any[]>([]);
+    const profileDropdownRef = useRef<HTMLDivElement>(null);
     const settingsDropdownRef = useRef<HTMLDivElement>(null);
     const notificationDropdownRef = useRef<HTMLDivElement>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
@@ -377,6 +379,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     // Handle click outside for dropdowns
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
+            if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+                setIsProfileDropdownOpen(false);
+            }
             if (settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target as Node)) {
                 setIsSettingsDropdownOpen(false);
             }
@@ -385,11 +390,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             }
         };
 
-        if (isSettingsDropdownOpen || isNotificationDropdownOpen) {
+        if (isProfileDropdownOpen || isSettingsDropdownOpen || isNotificationDropdownOpen) {
             document.addEventListener('mousedown', handleClickOutside);
             return () => document.removeEventListener('mousedown', handleClickOutside);
         }
-    }, [isSettingsDropdownOpen, isNotificationDropdownOpen]);
+    }, [isProfileDropdownOpen, isSettingsDropdownOpen, isNotificationDropdownOpen]);
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -781,9 +786,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     {/* Right - User Info */}
                     <div className="flex items-center gap-4">
                         {/* Profile Picture */}
-                        <div className="relative">
+                        <div className="relative" ref={profileDropdownRef}>
                             <button
-                                onClick={() => onNavigate('pilot-recognition-profile')}
+                                onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                                 className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
                                 title="Profile"
                                 style={{ borderRadius: '45% / 50%' }}
@@ -800,6 +805,62 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </span>
                                 )}
                             </button>
+
+                            {/* Profile Dropdown Menu */}
+                            {isProfileDropdownOpen && (
+                                <>
+                                    <div
+                                        className="fixed inset-0 z-40"
+                                        onClick={() => setIsProfileDropdownOpen(false)}
+                                    />
+                                    <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                                        <div className="p-4 border-b border-slate-200">
+                                            <h3 className="font-semibold text-slate-900">{profileData?.full_name || 'Pilot'}</h3>
+                                            <p className="text-xs text-slate-500">{profileData?.license_type || 'Student Pilot'}</p>
+                                        </div>
+                                        <div className="p-2">
+                                            <button
+                                                onClick={() => {
+                                                    setIsProfileDropdownOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                            >
+                                                <User className="w-4 h-4 text-slate-600" />
+                                                <span className="text-sm text-slate-700">View Profile</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    onNavigate('access-portal-2?tab=programs');
+                                                    setIsProfileDropdownOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                            >
+                                                <BookOpen className="w-4 h-4 text-slate-600" />
+                                                <span className="text-sm text-slate-700">My Programs</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setIsProfileDropdownOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                            >
+                                                <Settings className="w-4 h-4 text-slate-600" />
+                                                <span className="text-sm text-slate-700">Settings</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    // Handle logout
+                                                    setIsProfileDropdownOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
+                                            >
+                                                <LogOut className="w-4 h-4 text-slate-600" />
+                                                <span className="text-sm text-slate-700">Sign Out</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </div>
 
                         {/* Settings Dropdown */}
