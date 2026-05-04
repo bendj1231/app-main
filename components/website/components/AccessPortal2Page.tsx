@@ -85,23 +85,23 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         return () => clearInterval(interval);
     }, [isCarouselPaused]);
 
-    // Profile data from recognition profile
-    const displayName = userProfile?.displayName || userProfile?.firstName || userProfile?.first_name || 
-                        (currentUser?.email ? currentUser.email.split('@')[0].toUpperCase() : 'PILOT');
-    const lastName = userProfile?.lastName || userProfile?.last_name || '';
-    const fullName = userProfile?.full_name || userProfile?.full_name || (lastName ? `${displayName} ${lastName}` : displayName);
+    // Profile data from recognition profile (only when logged in)
+    const displayName = currentUser ? (userProfile?.displayName || userProfile?.firstName || userProfile?.first_name || 
+                        (currentUser?.email ? currentUser.email.split('@')[0].toUpperCase() : 'PILOT')) : '';
+    const lastName = currentUser ? (userProfile?.lastName || userProfile?.last_name || '') : '';
+    const fullName = currentUser ? (userProfile?.full_name || userProfile?.full_name || (lastName ? `${displayName} ${lastName}` : displayName)) : '';
     
         
-    // Flight hours and stats
-    const flightHours = userProfile?.total_flight_hours || userProfile?.flight_hours || userProfile?.total_hours || 0;
-    const recognitionScore = userProfile?.recognition_score || userProfile?.score || userProfile?.overall_recognition_score || 0;
-    const currentLevel = userProfile?.current_level || userProfile?.level || userProfile?.current_occupation || 'Student Pilot';
+    // Flight hours and stats (only when logged in)
+    const flightHours = currentUser ? (userProfile?.total_flight_hours || userProfile?.flight_hours || userProfile?.total_hours || 0) : 0;
+    const recognitionScore = currentUser ? (userProfile?.recognition_score || userProfile?.score || userProfile?.overall_recognition_score || 0) : 0;
+    const currentLevel = currentUser ? (userProfile?.current_level || userProfile?.level || userProfile?.current_occupation || 'Student Pilot') : '';
     
     // Profile image - use the same state as nav bar for consistency
-    const profileImage = profileImageUrl;
+    const profileImage = currentUser ? profileImageUrl : '';
     
     // Initials for default avatar (same as nav bar for consistency)
-    const initials = displayName.charAt(0).toUpperCase();
+    const initials = currentUser ? displayName.charAt(0).toUpperCase() : '';
     
     // Certifications count
     const certifications = userProfile?.certifications || userProfile?.licenses || userProfile?.ratings || [];
