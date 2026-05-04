@@ -68,6 +68,17 @@ export const ProgramBenefitsPage: React.FC<ProgramBenefitsPageProps> = ({
             <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
+            {/* Back Button - Top Left */}
+            <div className="absolute top-24 left-6 z-30">
+                <button
+                    onClick={onBack}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm text-slate-900 font-semibold rounded-lg hover:bg-white hover:shadow-lg transition-all border border-slate-200"
+                >
+                    <ArrowLeft className="w-4 h-4" />
+                    Back
+                </button>
+            </div>
+
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <img
