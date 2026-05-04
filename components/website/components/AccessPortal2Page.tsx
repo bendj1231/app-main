@@ -125,8 +125,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     });
     
     // Check if enrolled in Foundational program (must be logged in)
-    const isEnrolledInFoundational = currentUser && Array.isArray(enrolledPrograms) && 
-        enrolledPrograms.some((p: string) => p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation'));
+    const isEnrolledInFoundational = Boolean(currentUser && Array.isArray(enrolledPrograms) && 
+        enrolledPrograms.some((p: string) => p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')));
     
     // Debug enrollment checking logic step by step
     console.log('AccessPortal2 - Enrollment debug:', {
