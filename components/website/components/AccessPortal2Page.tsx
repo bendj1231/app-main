@@ -1093,7 +1093,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                         {/* Sharp-cornered blue badge */}
                                                         <div className="absolute top-4 right-4">
                                                             <span className="px-4 py-2 bg-blue-500 text-white text-sm font-bold uppercase tracking-wider">
-                                                                {isEnrolledInFoundational ? 'Access Simulator' : 'Enroll Required'}
+                                                                Access Simulator
                                                             </span>
                                                         </div>
                                                     </div>
@@ -1105,6 +1105,65 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                         </h3>
                                                         <p className="text-slate-300 text-xs leading-tight">
                                                             Advanced aviation training simulator with PFD, VOR, and exam modules
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* Hover effect */}
+                                                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300 pointer-events-none" />
+                                            </div>
+                                        </motion.div>
+                                        )}
+
+                                        {/* Video Component for unenrolled users */}
+                                        {(!currentUser || !isEnrolledInFoundational) && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="md:col-span-2 h-80 md:h-96"
+                                        >
+                                            <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
+                                                 onClick={() => {
+                                                     console.log('Foundation Program card clicked - navigating to foundational-program');
+                                                     onNavigate('foundational-program');
+                                                 }}>
+                                                {/* Split-section design */}
+                                                <div className="h-full flex flex-col">
+                                                    {/* Top half - Video (70% of height) */}
+                                                    <div className="relative h-[70%] overflow-hidden bg-slate-900">
+                                                        <video
+                                                            autoPlay
+                                                            loop
+                                                            muted
+                                                            playsInline
+                                                            className="absolute inset-0 w-full h-full object-cover opacity-80"
+                                                        >
+                                                            <source src="/pilot-training-video.mp4" type="video/mp4" />
+                                                        </video>
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+
+                                                        {/* Sharp-cornered teal badge */}
+                                                        <div className="absolute top-4 right-4">
+                                                            <span className="px-4 py-2 bg-teal-500 text-white text-sm font-bold uppercase tracking-wider">
+                                                                Start Here
+                                                            </span>
+                                                        </div>
+
+                                                        {/* Play button overlay */}
+                                                        <div className="absolute inset-0 flex items-center justify-center">
+                                                            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/50">
+                                                                <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[14px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    {/* Bottom half - Solid dark navy (30% of height) */}
+                                                    <div className="h-[30%] bg-slate-900 border-t-0 border-l border-r border-b border-slate-700 p-4 flex flex-col justify-center">
+                                                        <h3 className="text-white font-bold text-lg uppercase tracking-wider mb-1">
+                                                            » Foundation Program
+                                                        </h3>
+                                                        <p className="text-slate-300 text-xs leading-tight">
+                                                            Start your pilot journey with structured mentorship and guidance
                                                         </p>
                                                     </div>
                                                 </div>
