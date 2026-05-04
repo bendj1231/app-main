@@ -4,129 +4,99 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 
 export default function RecognitionPlusPage() {
   const [isFeaturesExpanded, setIsFeaturesExpanded] = useState(false);
+  const [processing, setProcessing] = useState(false);
+
+  const handleCheckout = async (priceId: string, planName: string) => {
+    setProcessing(true);
+    try {
+      const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+      const response = await fetch(`${supabaseUrl}/functions/v1/stripe-checkout`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY`
+        },
+        body: JSON.stringify({ 
+          priceId
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.details || errorData.error || 'Failed to create checkout session');
+      }
+
+      const { url: checkoutUrl } = await response.json();
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert(`Failed to start checkout: ${error.message}`);
+    } finally {
+      setProcessing(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header - Same as About Us */}
-      <div className="relative bg-white pt-24 pb-12 px-6">
-        <div className="max-w-6xl mx-auto text-center relative z-20">
-          <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-slate-400 mb-2">
-            PILOTRECOGNITION.COM
-          </p>
-          <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
-            RECOGNITION PLUS
-          </p>
-          <h2 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
-            AI-Powered Career Acceleration: Your Competitive Edge in Aviation
-          </h2>
-          <p className="text-xl font-medium tracking-wide text-slate-700 italic mb-10">
-            Premium Recognition for Professional Pilots Worth $100/Year
-          </p>
-
-          <div className="max-w-4xl mx-auto space-y-8 mb-12">
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-              Recognition Plus is the premium subscription that transforms your pilot career from reactive to proactive. In an industry where timing is everything and opportunities are scarce, Recognition Plus gives you the AI-powered insights, verified credentials, and priority access that put you at the front of the line when airlines hire. Our proprietary Recognition AI analyzes your profile against manufacturer standards and airline requirements, providing personalized pathway recommendations that eliminate guesswork and accelerate your journey to the cockpit.
-            </p>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-              For just $99 per year—less than $8.33 per month—you gain access to features that professional pilots value at over $100 annually. This isn't just a subscription; it's an investment in your career that pays dividends through faster hiring, better opportunities, and continuous professional development. Our OEM-aligned profiles verify your competencies against Airbus and Boeing standards, giving airlines the confidence they need to fast-track your application. When hiring surges occur, Recognition Plus members are automatically prioritized in operator selection pools, giving you a significant advantage over free-tier applicants.
-            </p>
-
-            {!isFeaturesExpanded && (
-              <button
-                onClick={() => setIsFeaturesExpanded(true)}
-                className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group px-4 py-2 bg-white border-2 border-blue-600 rounded-lg"
-              >
-                READ MORE <ChevronDown className="w-4 h-4" />
-              </button>
-            )}
-
-            {isFeaturesExpanded && (
-              <>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                  Our Recognition AI system is the cornerstone of the subscription. It continuously monitors your profile, flight hours, type ratings, and certifications against real-time industry data from airlines and manufacturers. When you're 12 flight hours away from qualifying for a specific airline role, the AI alerts you with exact requirements and actionable steps. It recommends optimal pathways based on your career goals—whether that's cargo operations, corporate aviation, or major airlines—and provides experience advice that helps you make informed decisions about your next career move.
-                </p>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                  The Priority Access feature ensures that when operators review pathway pools, your profile appears first. This AI-ranked priority system considers multiple factors including your Recognition Score, verified competencies, and subscription status. During partner hiring surges—when airlines urgently need qualified pilots—Recognition Plus members receive interview fast-track access, skipping initial screening stages that can take weeks. This time advantage can mean the difference between landing your dream job and missing the opportunity entirely.
-                </p>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                  Compliance management is another critical benefit. Our 24/7 automated monitoring system tracks all your licenses, medical certificates, and type ratings with AI-automated alerts that warn you 60 days before expiration. It even suggests local Aviation Medical Examiners with open slots, ensuring you never face a grounding situation due to missed renewals. The auto-logbook sync feature automatically updates your Recognition Score as you fly, keeping your profile current without manual data entry. Zero-fail compliance means you can focus on flying while we handle the administrative burden.
-                </p>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                  Full database job matching goes beyond the basic profile score available to free users. Recognition Plus includes interview performance data, complete profile analysis, and AI-ranked recommendations for partner airline hiring surges. This comprehensive matching system identifies opportunities that free-tier users miss, connecting you with roles that align perfectly with your experience and career aspirations. The investment of $99 per year provides access to a career acceleration platform that delivers measurable ROI through faster hiring, better positions, and continuous professional growth.
-                </p>
-              </>
-            )}
-          </div>
-
-          <Link
-            to="/recognition-plus-comparison"
-            className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group"
-          >
-            VIEW FULL COMPARISON TABLE <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-      </div>
-
-      {/* Detailed Comparison Table */}
       <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-8 mb-16 overflow-x-auto shadow-xl">
-          <h3 className="text-lg font-bold text-slate-900 mb-4 text-center">Platform Components</h3>
+        <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-8 mb-16 overflow-x-auto shadow-2xl border border-white/20">
+          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">Platform Components</h3>
           <table className="w-full text-sm">
             <thead>
               <tr>
-                <th className="text-left py-2 px-2 font-semibold text-slate-900 w-1/5">Component</th>
-                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Profile</th>
-                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Program</th>
-                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6">Pathways</th>
-                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/3" colSpan={2}>Recognition Plus</th>
+                <th className="text-left py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm rounded-tl-lg border-b border-white/30">Component</th>
+                <th className="text-center py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Profile</th>
+                <th className="text-center py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Program</th>
+                <th className="text-center py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Pathways</th>
+                <th className="text-center py-4 px-4 font-bold text-amber-600 bg-amber-50/70 backdrop-blur-sm w-1/4 rounded-tr-lg border-b border-amber-200/50" colSpan={2}>Recognition Plus</th>
               </tr>
-              <tr className="border-b-2 border-slate-300">
-                <th className="text-left py-2 px-2 font-semibold text-slate-900 w-1/5"></th>
-                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
-                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
-                <th className="text-center py-2 px-2 font-semibold text-slate-900 w-1/6"></th>
-                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/6">AI</th>
-                <th className="text-center py-2 px-2 font-semibold text-amber-600 w-1/6">Priority</th>
+              <tr className="bg-white/30 backdrop-blur-sm">
+                <th className="text-left py-3 px-4 font-semibold text-slate-700 border-b border-white/30"></th>
+                <th className="text-center py-3 px-4 font-semibold text-slate-700 border-b border-white/30"></th>
+                <th className="text-center py-3 px-4 font-semibold text-slate-700 border-b border-white/30"></th>
+                <th className="text-center py-3 px-4 font-semibold text-slate-700 border-b border-white/30"></th>
+                <th className="text-center py-3 px-4 font-semibold text-amber-700 bg-amber-100/70 backdrop-blur-sm border-b border-amber-200/50">AI</th>
+                <th className="text-center py-3 px-4 font-semibold text-amber-700 bg-amber-100/70 backdrop-blur-sm border-b border-amber-200/50">Priority</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-slate-200 bg-slate-100">
-                <td className="py-2 px-2 text-slate-900 font-semibold">Profile</td>
-                <td className="py-2 px-2 text-center text-blue-600">Credentials display</td>
-                <td className="py-2 px-2 text-center text-slate-700">Free enrollment</td>
-                <td className="py-2 px-2 text-center text-slate-700">Direct entry pathways</td>
-                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Profile</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100/70 backdrop-blur-sm text-blue-700 rounded-full font-medium border border-blue-200/50 shadow-sm">✓ Credentials display</span></td>
+                <td className="py-4 px-4 text-center text-slate-600">Free enrollment</td>
+                <td className="py-4 px-4 text-center text-slate-600">Direct entry pathways</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
               </tr>
-              <tr className="border-b border-slate-200">
-                <td className="py-2 px-2 text-slate-900 font-semibold">Programs</td>
-                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                <td className="py-2 px-2 text-center text-slate-700">Free mentorship</td>
-                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Programs</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓ Free mentorship</span></td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
               </tr>
-              <tr className="border-b border-slate-200 bg-slate-100">
-                <td className="py-2 px-2 text-slate-900 font-semibold">Pathways</td>
-                <td className="py-2 px-2 text-center text-blue-600">Score calculation</td>
-                <td className="py-2 px-2 text-center text-slate-700">Standard access</td>
-                <td className="py-2 px-2 text-center text-slate-700">Unlimited sectors</td>
-                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
-                <td className="py-2 px-2 text-center text-slate-400">Not included</td>
+              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
+                <td className="py-4 px-4 text-slate-900 font-bold">Pathways</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100/70 backdrop-blur-sm text-blue-700 rounded-full font-medium border border-blue-200/50 shadow-sm">✓ Score calculation</span></td>
+                <td className="py-4 px-4 text-center text-slate-600">Standard access</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 backdrop-blur-sm text-green-700 rounded-full font-medium border border-green-200/50 shadow-sm">✓ Unlimited sectors</span></td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
+                <td className="py-4 px-4 text-center text-slate-400">—</td>
               </tr>
-              <tr>
-                <td className="py-2 px-2 text-amber-900 font-semibold">Recognition Plus</td>
-                <td className="py-2 px-2 text-center text-amber-600">OEM aligned</td>
-                <td className="py-2 px-2 text-center text-amber-600">Fast-track</td>
-                <td className="py-2 px-2 text-center text-amber-600">AI recommendations</td>
-                <td className="py-2 px-2 text-center text-amber-600">Verification</td>
-                <td className="py-2 px-2 text-center text-amber-600">✓ First in pools</td>
+              <tr className="bg-gradient-to-r from-amber-50/80 to-yellow-50/80 backdrop-blur-sm hover:from-amber-100/90 hover:to-yellow-100/90 transition-all duration-300 border-b border-amber-200/50">
+                <td className="py-4 px-4 text-amber-900 font-bold">Recognition Plus</td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓ OEM aligned</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓ Fast-track</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-200/80 backdrop-blur-sm text-amber-900 rounded-full font-bold border border-amber-300/50 shadow-md">✓ AI recommendations</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-300/80 backdrop-blur-sm text-amber-950 rounded-full font-bold border border-amber-400/50 shadow-lg">✓ Verification</span></td>
+                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-300/80 backdrop-blur-sm text-amber-950 rounded-full font-bold border border-amber-400/50 shadow-lg">✓ First in pools</span></td>
               </tr>
             </tbody>
           </table>
           <Link
             to="/recognition-plus-comparison"
-            className="block text-center text-blue-600 hover:text-blue-700 text-sm font-bold underline mt-4"
+            className="block text-center text-blue-600 hover:text-blue-700 text-sm font-bold underline mt-6"
           >
             View full comparison →
           </Link>
@@ -136,17 +106,82 @@ export default function RecognitionPlusPage() {
         <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-12 text-center mb-16">
           <h2 className="text-3xl font-bold text-white mb-4">Invest in Your Career Today</h2>
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
-            Recognition Plus delivers over $100 in annual value through career acceleration, priority access, and comprehensive compliance management—all for just $99/year.
+            Recognition Plus delivers over $100 in annual value through career acceleration, priority access, and comprehensive compliance management.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-8 py-4 rounded-full transition-colors">
-              Upgrade to Recognition Plus - $99/year
-            </button>
-            <button className="bg-white hover:bg-slate-100 text-slate-900 font-semibold px-8 py-4 rounded-full transition-colors">
-              or $14.99/month
-            </button>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {/* Annual Plan */}
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-8 text-center">
+              <h3 className="text-xl font-bold text-white mb-2">Annual Plan</h3>
+              <p className="text-4xl font-bold text-white mb-1">$100<span className="text-lg font-normal text-blue-200">/year</span></p>
+              <p className="text-sm text-blue-200 mb-6">Best value - saves $20/year</p>
+              <ul className="space-y-2 mb-6 text-left text-sm text-white">
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>Full profile comparison</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>Unlimited pathway views</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>Priority matching</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>AI career strategist</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-200 font-bold">✓</span>
+                  <span>Interview fast-track</span>
+                </li>
+              </ul>
+              <button 
+                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_ANNUAL_PRICE_ID || '', 'Recognition Plus Annual')}
+                disabled={processing}
+                className="w-full bg-white hover:bg-blue-50 text-blue-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {processing ? 'Processing...' : 'Get Annual Plan'}
+              </button>
+            </div>
+
+            {/* Semi-Annual Plan */}
+            <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-8 text-center">
+              <h3 className="text-xl font-bold text-white mb-2">Semi-Annual Plan</h3>
+              <p className="text-4xl font-bold text-white mb-1">$60<span className="text-lg font-normal text-purple-200">/6 months</span></p>
+              <p className="text-sm text-purple-200 mb-6">Same features, flexible payment</p>
+              <ul className="space-y-2 mb-6 text-left text-sm text-white">
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>Full profile comparison</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>Unlimited pathway views</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>Priority matching</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>AI career strategist</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-200 font-bold">✓</span>
+                  <span>Interview fast-track</span>
+                </li>
+              </ul>
+              <button 
+                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_SEMI_ANNUAL_PRICE_ID || '', 'Recognition Plus Semi-Annual')}
+                disabled={processing}
+                className="w-full bg-white hover:bg-purple-50 text-purple-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {processing ? 'Processing...' : 'Get Semi-Annual Plan'}
+              </button>
+            </div>
           </div>
-          <p className="text-slate-400 text-sm mt-4">Cancel anytime. No hidden fees.</p>
+          <p className="text-slate-400 text-sm mt-8">Cancel anytime. No hidden fees.</p>
         </div>
 
         {/* Feature Breakdown */}
@@ -369,6 +404,66 @@ export default function RecognitionPlusPage() {
               </p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Header - Moved to Bottom */}
+      <div className="relative bg-white pt-24 pb-12 px-6">
+        <div className="max-w-6xl mx-auto text-center relative z-20">
+          <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-slate-400 mb-2">
+            PILOTRECOGNITION.COM
+          </p>
+          <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
+            RECOGNITION PLUS
+          </p>
+          <h2 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
+            AI-Powered Career Acceleration: Your Competitive Edge in Aviation
+          </h2>
+          <p className="text-xl font-medium tracking-wide text-slate-700 italic mb-10">
+            Premium Recognition for Professional Pilots Worth $100/Year
+          </p>
+
+          <div className="max-w-4xl mx-auto space-y-8 mb-12">
+            <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+              Recognition Plus is the premium subscription that transforms your pilot career from reactive to proactive. In an industry where timing is everything and opportunities are scarce, Recognition Plus gives you the AI-powered insights, verified credentials, and priority access that put you at the front of the line when airlines hire. Our proprietary Recognition AI analyzes your profile against manufacturer standards and airline requirements, providing personalized pathway recommendations that eliminate guesswork and accelerate your journey to the cockpit.
+            </p>
+            <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+              For just $99 per year—less than $8.33 per month—you gain access to features that professional pilots value at over $100 annually. This isn't just a subscription; it's an investment in your career that pays dividends through faster hiring, better opportunities, and continuous professional development. Our OEM-aligned profiles verify your competencies against Airbus and Boeing standards, giving airlines the confidence they need to fast-track your application. When hiring surges occur, Recognition Plus members are automatically prioritized in operator selection pools, giving you a significant advantage over free-tier applicants.
+            </p>
+
+            {!isFeaturesExpanded && (
+              <button
+                onClick={() => setIsFeaturesExpanded(true)}
+                className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group px-4 py-2 bg-white border-2 border-blue-600 rounded-lg"
+              >
+                READ MORE <ChevronDown className="w-4 h-4" />
+              </button>
+            )}
+
+            {isFeaturesExpanded && (
+              <>
+                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+                  Our Recognition AI system is the cornerstone of the subscription. It continuously monitors your profile, flight hours, type ratings, and certifications against real-time industry data from airlines and manufacturers. When you're 12 flight hours away from qualifying for a specific airline role, the AI alerts you with exact requirements and actionable steps. It recommends optimal pathways based on your career goals—whether that's cargo operations, corporate aviation, or major airlines—and provides experience advice that helps you make informed decisions about your next career move.
+                </p>
+                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+                  The Priority Access feature ensures that when operators review pathway pools, your profile appears first. This AI-ranked priority system considers multiple factors including your Recognition Score, verified competencies, and subscription status. During partner hiring surges—when airlines urgently need qualified pilots—Recognition Plus members receive interview fast-track access, skipping initial screening stages that can take weeks. This time advantage can mean the difference between landing your dream job and missing the opportunity entirely.
+                </p>
+                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+                  Compliance management is another critical benefit. Our 24/7 automated monitoring system tracks all your licenses, medical certificates, and type ratings with AI-automated alerts that warn you 60 days before expiration. It even suggests local Aviation Medical Examiners with open slots, ensuring you never face a grounding situation due to missed renewals. The auto-logbook sync feature automatically updates your Recognition Score as you fly, keeping your profile current without manual data entry. Zero-fail compliance means you can focus on flying while we handle the administrative burden.
+                </p>
+                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
+                  Full database job matching goes beyond the basic profile score available to free users. Recognition Plus includes interview performance data, complete profile analysis, and AI-ranked recommendations for partner airline hiring surges. This comprehensive matching system identifies opportunities that free-tier users miss, connecting you with roles that align perfectly with your experience and career aspirations. The investment of $99 per year provides access to a career acceleration platform that delivers measurable ROI through faster hiring, better positions, and continuous professional growth.
+                </p>
+              </>
+            )}
+          </div>
+
+          <Link
+            to="/recognition-plus-comparison"
+            className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group"
+          >
+            VIEW FULL COMPARISON TABLE <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
     </div>

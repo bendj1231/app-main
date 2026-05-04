@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "types": ["https://deno.land/x/types@v0.1.1/lib.d.ts"],
+    "lib": ["deno.window"]
+  }
+}
