@@ -100,115 +100,115 @@ export default function RecognitionPlusPage() {
       )}
 
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 px-6 py-8">
+      <div className="bg-white border-b border-slate-200 px-4 md:px-6 py-6 md:py-8">
         <div className="max-w-6xl mx-auto">
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors mb-4"
           >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Back to Home</span>
+            <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+            <span className="text-xs md:text-sm font-medium">Back to Home</span>
           </button>
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
               <span className="text-black">Pilot</span>{' '}
               <span className="text-red-600 relative inline-block">
                 Recognition
-                <span className="absolute -top-3 -right-3 text-red-600 text-3xl font-bold">+</span>
+                <span className="absolute -top-2 md:-top-3 -right-2 md:-right-3 text-red-600 text-xl md:text-3xl font-bold">+</span>
               </span>
             </h1>
-            <p className="text-slate-600 mt-4 text-lg">Unlock premium features, priority matching, and AI-powered career tools for your aviation journey</p>
+            <p className="text-slate-600 mt-4 text-sm md:text-base lg:text-lg">Unlock premium features, priority matching, and AI-powered career tools for your aviation journey</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-8 mb-16 overflow-x-auto shadow-2xl border border-white/20">
-          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">Free vs Recognition Plus</h3>
-          <table className="w-full text-sm">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-16">
+        <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-4 md:p-8 mb-8 md:mb-16 overflow-x-auto shadow-2xl border border-white/20">
+          <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-6 md:mb-8 text-center">Free vs Recognition Plus</h3>
+          <table className="w-full text-xs md:text-sm">
             <thead>
               <tr>
-                <th className="text-left py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm rounded-tl-lg border-b border-white/30">Feature</th>
-                <th className="text-center py-4 px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Free Tier</th>
-                <th className="text-center py-4 px-4 font-bold text-red-600 bg-red-50/70 backdrop-blur-sm w-1/3 rounded-tr-lg border-b border-red-200/50">Recognition Plus</th>
+                <th className="text-left py-3 md:py-4 px-2 md:px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm rounded-tl-lg border-b border-white/30">Feature</th>
+                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Free Tier</th>
+                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-red-600 bg-red-50/70 backdrop-blur-sm w-1/3 rounded-tr-lg border-b border-red-200/50">Recognition Plus</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Profile Creation</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm">✓</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Profile Creation</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Profile Matching</td>
-                <td className="py-4 px-4 text-center text-slate-600">Basic (shows 3 comparisons)</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓ Full comparison</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Profile Matching</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-600 text-xs md:text-sm">Basic (shows 3 comparisons)</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓ Full comparison</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Pathway Access</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm">✓</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓ Recommended based on profile</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Pathway Access</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓ Recommended based on profile</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Recognition Score</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm">✓</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Recognition Score</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Foundation Program (Free)</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm">✓</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Foundation Program (Free)</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Priority Matching</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Priority Matching</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">AI Career Strategist</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">AI Career Strategist</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">EBT CBTA Interview Fast-Track (Foundation Program)</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">EBT CBTA Interview Fast-Track (Foundation Program)</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Recognition AI (OEM Aligned)</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Recognition AI (OEM Aligned)</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">AI Medical Alerts (60-day warnings)</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">AI Medical Alerts (60-day warnings)</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Priority Pipeline (Hiring Surges)</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Priority Pipeline (Hiring Surges)</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Zero-Fail Compliance Monitoring</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Zero-Fail Compliance Monitoring</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Background Check Verification (Criminal Records)</td>
-                <td className="py-4 px-4 text-center text-slate-400">—</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Background Check Verification (Criminal Records)</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-4 px-4 text-slate-900 font-bold">Auto Logbook Sync</td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm">✓</span></td>
-                <td className="py-4 px-4 text-center"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Auto Logbook Sync</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
               </tr>
               <tr className="bg-gradient-to-r from-red-50/80 to-red-100/80 backdrop-blur-sm hover:from-red-100/90 hover:to-red-200/90 transition-all duration-300 border-b border-red-200/50">
-                <td className="py-4 px-4 text-red-900 font-bold">Price</td>
-                <td className="py-4 px-4 text-center text-slate-900 font-bold">Free</td>
-                <td className="py-4 px-4 text-center text-red-900 font-bold">
-                  <div className="text-lg">$99/year</div>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-red-900 font-bold text-xs md:text-sm">Price</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-900 font-bold text-xs md:text-sm">Free</td>
+                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-red-900 font-bold">
+                  <div className="text-base md:text-lg">$99/year</div>
                   <div className="text-xs text-red-700 font-normal">or $60/6 months</div>
                 </td>
               </tr>
@@ -216,26 +216,26 @@ export default function RecognitionPlusPage() {
           </table>
           <Link
             to="/recognition-plus-comparison"
-            className="block text-center text-blue-600 hover:text-blue-700 text-sm font-bold underline mt-6"
+            className="block text-center text-blue-600 hover:text-blue-700 text-xs md:text-sm font-bold underline mt-4 md:mt-6"
           >
             View full comparison →
           </Link>
         </div>
 
         {/* Pricing CTA */}
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-12 text-center mb-16">
-          <h2 className="text-3xl font-bold text-white mb-4">Choose Your Plan</h2>
-          <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
+        <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-6 md:p-12 text-center mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Choose Your Plan</h2>
+          <p className="text-slate-300 text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">
             Start your journey with a free trial. Upgrade to Recognition Plus for priority matching, AI-powered career tools, and industry-standard compliance monitoring.
           </p>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
             {/* Monthly Plan */}
-            <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl p-8 text-center">
-              <h3 className="text-xl font-bold text-white mb-2">Monthly</h3>
-              <p className="text-4xl font-bold text-white mb-1">$12<span className="text-lg font-normal text-teal-200">/month</span></p>
-              <p className="text-sm text-teal-200 mb-2">Cancel anytime</p>
-              <p className="text-xs text-teal-300 mb-6 font-semibold">✓ 7-day free trial</p>
-              <ul className="space-y-2 mb-6 text-left text-sm text-white">
+            <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl p-4 md:p-8 text-center">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-2">Monthly</h3>
+              <p className="text-3xl md:text-4xl font-bold text-white mb-1">$12<span className="text-base md:text-lg font-normal text-teal-200">/month</span></p>
+              <p className="text-xs md:text-sm text-teal-200 mb-2">Cancel anytime</p>
+              <p className="text-xs text-teal-300 mb-4 md:mb-6 font-semibold">✓ 7-day free trial</p>
+              <ul className="space-y-1 md:space-y-2 mb-4 md:mb-6 text-left text-xs md:text-sm text-white">
                 <li className="flex items-start gap-2">
                   <span className="text-teal-200 font-bold">✓</span>
                   <span>Full profile comparison</span>
@@ -280,20 +280,20 @@ export default function RecognitionPlusPage() {
               <button 
                 onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_MONTHLY_PRICE_ID || '', 'Recognition Plus Monthly', 7)}
                 disabled={processing}
-                className="w-full bg-white hover:bg-teal-50 text-teal-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white hover:bg-teal-50 text-teal-700 font-bold py-2 md:py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm"
               >
                 {processing ? 'Processing...' : 'Get Monthly Plan'}
               </button>
             </div>
 
             {/* Annual Plan */}
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-8 text-center transform scale-105">
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-4 md:p-8 text-center transform md:scale-105 scale-100">
               <div className="text-blue-200 text-xs font-bold uppercase mb-2">Best Value</div>
-              <h3 className="text-xl font-bold text-white mb-2">Annual</h3>
-              <p className="text-4xl font-bold text-white mb-1">$99<span className="text-lg font-normal text-blue-200">/year</span></p>
-              <p className="text-sm text-blue-200 mb-2">Save $45/year</p>
-              <p className="text-xs text-blue-300 mb-6 font-semibold">✓ 3-day free trial</p>
-              <ul className="space-y-2 mb-6 text-left text-sm text-white">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-2">Annual</h3>
+              <p className="text-3xl md:text-4xl font-bold text-white mb-1">$99<span className="text-base md:text-lg font-normal text-blue-200">/year</span></p>
+              <p className="text-xs md:text-sm text-blue-200 mb-2">Save $45/year</p>
+              <p className="text-xs text-blue-300 mb-4 md:mb-6 font-semibold">✓ 3-day free trial</p>
+              <ul className="space-y-1 md:space-y-2 mb-4 md:mb-6 text-left text-xs md:text-sm text-white">
                 <li className="flex items-start gap-2">
                   <span className="text-blue-200 font-bold">✓</span>
                   <span>Full profile comparison</span>
@@ -338,19 +338,19 @@ export default function RecognitionPlusPage() {
               <button 
                 onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_ANNUAL_PRICE_ID || '', 'Recognition Plus Annual', 3)}
                 disabled={processing}
-                className="w-full bg-white hover:bg-blue-50 text-blue-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white hover:bg-blue-50 text-blue-700 font-bold py-2 md:py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm"
               >
                 {processing ? 'Processing...' : 'Get Annual Plan'}
               </button>
             </div>
 
             {/* Semi-Annual Plan */}
-            <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-8 text-center">
-              <h3 className="text-xl font-bold text-white mb-2">Semi-Annual</h3>
-              <p className="text-4xl font-bold text-white mb-1">$60<span className="text-lg font-normal text-purple-200">/6 months</span></p>
-              <p className="text-sm text-purple-200 mb-2">Flexible payment</p>
-              <p className="text-xs text-purple-300 mb-6 font-semibold">✓ 3-day free trial</p>
-              <ul className="space-y-2 mb-6 text-left text-sm text-white">
+            <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-4 md:p-8 text-center">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-2">Semi-Annual</h3>
+              <p className="text-3xl md:text-4xl font-bold text-white mb-1">$60<span className="text-base md:text-lg font-normal text-purple-200">/6 months</span></p>
+              <p className="text-xs md:text-sm text-purple-200 mb-2">Flexible payment</p>
+              <p className="text-xs text-purple-300 mb-4 md:mb-6 font-semibold">✓ 3-day free trial</p>
+              <ul className="space-y-1 md:space-y-2 mb-4 md:mb-6 text-left text-xs md:text-sm text-white">
                 <li className="flex items-start gap-2">
                   <span className="text-purple-200 font-bold">✓</span>
                   <span>Full profile comparison</span>
@@ -395,7 +395,7 @@ export default function RecognitionPlusPage() {
               <button 
                 onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_SEMI_ANNUAL_PRICE_ID || '', 'Recognition Plus Semi-Annual', 3)}
                 disabled={processing}
-                className="w-full bg-white hover:bg-purple-50 text-purple-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white hover:bg-purple-50 text-purple-700 font-bold py-2 md:py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm"
               >
                 {processing ? 'Processing...' : 'Get Semi-Annual Plan'}
               </button>
