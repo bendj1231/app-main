@@ -28,6 +28,7 @@ import { NewsUpdatesPage } from '@/components/website/components/programs/NewsUp
 import { ProgramsPathwaysPage } from '@/components/website/components/programs/ProgramsPathwaysPage';
 import { ProgramsPage } from '@/components/website/components/programs/ProgramsPage';
 import { PlatformFoundationalProgramPage } from '@/components/website/components/programs/PlatformFoundationalProgramPage';
+import RecognitionPlusPage from '@/app/recognition-plus/page';
 import { EnrolledFoundationalPage } from '@/components/website/components/programs/EnrolledFoundationalPage';
 import { FoundationalModulesPage } from '@/components/website/components/programs/FoundationalModulesPage';
 import { FoundationalProgressPage } from '@/components/website/components/programs/FoundationalProgressPage';
@@ -196,7 +197,7 @@ export const AppRoutes = () => {
         }
       />
       <Route path="/what-is-recognition" element={<WhatIsPilotRecognitionPage onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} onJoinUs={() => navigate('/become-member')} />} />
-      <Route path="/recognition-plus" element={<PilotRecognitionProfilePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/recognition-plus" element={<RecognitionPlusPage />} />
       <Route path="/pilot-recognition-profile" element={<PilotRecognitionProfilePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/pilot-licensure-experience" element={<PilotLicensureExperiencePage onBack={() => handleBack('/pilot-recognition-profile')} />} />
       <Route path="/score-optimization" element={<ScoreOptimizationPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />

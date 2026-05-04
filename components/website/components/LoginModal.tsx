@@ -151,7 +151,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot';
             addToast('success', `Welcome back, ${userName}!`);
 
-            onNavigate('home');
+            // Scroll to top after successful login to prevent unwanted scroll behavior
+            window.scrollTo(0, 0);
             onClose();
         } catch (err: any) {
             console.error('Login failed:', err);

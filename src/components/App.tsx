@@ -49,6 +49,7 @@ export const App = () => {
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
   const { currentUser, logout } = useAuth();
 
+  
   // Fetch user's enrollment status from Supabase
   useEffect(() => {
     const fetchEnrollmentStatus = async () => {

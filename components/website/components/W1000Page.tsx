@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { W1App } from '@/external-references/W12/index.tsx';
+import { W1000App } from '../../../portal/components/w1000/W1000App';
 import { ArrowLeft, Maximize2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/shared/lib/supabase';
@@ -152,7 +152,7 @@ const W1000Page: React.FC<W1000PageProps> = ({ onBack, onNavigate }) => {
                     }
                 `}</style>
                 {w12UserProfile ? (
-                    <W1App userProfile={w12UserProfile} notifications={notifications} notificationCount={notificationCount} />
+                    <W1000App userProfile={w12UserProfile} />
                 ) : (
                     <div className="h-full w-full flex items-center justify-center bg-black">
                         <div className="w-16 h-16 border-4 border-sky-500/20 border-t-sky-500 rounded-full animate-spin"></div>
