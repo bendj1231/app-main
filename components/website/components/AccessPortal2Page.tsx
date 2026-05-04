@@ -9,7 +9,7 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
 import BookmarkedPathways from './pathways/BookmarkedPathways';
 import BookmarksView from './bookmarks/BookmarksView';
-import { W1App } from '@/external-references/W12/index.tsx';
+// import { W1App } from '@/external-references/W12/index.tsx';
 
 interface AccessPortal2PageProps {
     onNavigate: (page: string) => void;
@@ -404,7 +404,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
             case 'membership':
                 return <div className="flex-1 overflow-auto"><p className="text-white text-center p-8">Membership View</p></div>;
             case 'w1000':
-                return <div className="flex-1 overflow-auto"><W1App /></div>;
+                return <div className="flex-1 overflow-auto"><p className="text-white text-center p-8">W1000 View</p></div>;
             case 'type-rating-search':
                 return <div className="flex-1 overflow-auto"><p className="text-white text-center p-8">Type Rating Search View</p></div>;
             case 'airline-expectations':
