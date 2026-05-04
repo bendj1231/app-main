@@ -124,8 +124,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         progressPercent
     });
     
-    // Check if enrolled in Foundational program
-    const isEnrolledInFoundational = Array.isArray(enrolledPrograms) && 
+    // Check if enrolled in Foundational program (must be logged in)
+    const isEnrolledInFoundational = currentUser && Array.isArray(enrolledPrograms) && 
         enrolledPrograms.some((p: string) => p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation'));
     
     // Debug enrollment checking logic step by step
