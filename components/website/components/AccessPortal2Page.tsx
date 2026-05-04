@@ -290,6 +290,42 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
             ],
             ctaTarget: 'foundational-program',
             category: 'program' as const
+        },
+        {
+            id: 'airbus-manufacturer-update',
+            tag: 'Airbus Manufacturer',
+            title: 'Airbus EBT Standards Integration Update',
+            description: 'Airbus announces new integration with PilotRecognition platform for EBT CBTA standards verification. Airlines can now directly access verified pilot competency data aligned with Airbus HINFACT requirements.',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777590658/newsroom/b81ubzdpz0dmyqutiyqj.png',
+            metrics: [
+                { label: 'Integrated Carriers', value: '8 airlines' },
+                { label: 'Verification Rate', value: '95% faster' }
+            ],
+            bullets: [
+                'Direct integration with Airbus HINFACT application system',
+                'Real-time competency verification for EBT CBTA standards',
+                'Streamlined pathway matching for Airbus operator requirements'
+            ],
+            ctaTarget: 'pathways',
+            category: 'industry' as const
+        },
+        {
+            id: 'airline-update',
+            tag: 'Airline Partnerships',
+            title: 'Major Airlines Join PilotRecognition Platform',
+            description: 'Leading airlines including Emirates, Qatar Airways, and Etihad have joined the PilotRecognition platform to directly recruit verified pilots through the pull system. No more applications — operators pull based on verified competencies.',
+            image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777590647/newsroom/tws5xzryqjepzxoyc94d.png',
+            metrics: [
+                { label: 'Partner Airlines', value: '15 carriers' },
+                { label: 'Active Pulls', value: '2,400+ monthly' }
+            ],
+            bullets: [
+                'Direct recruitment through verified profile matching system',
+                'Elimination of application black holes — operators pull qualified pilots',
+                'Real-time pathway matching with airline-specific requirements'
+            ],
+            ctaTarget: 'pathways',
+            category: 'airlines' as const
         }
     ];
 
