@@ -1067,7 +1067,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                 {/* Programs Content - Larger, centered layout */}
                                 <div className="w-full max-w-6xl mx-auto">
                                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
-                                        {/* W1000 Flight Deck - Large hero card */}
+                                        {/* W1000 Flight Deck - Large hero card - Only show for enrolled users */}
+                                        {currentUser && isEnrolledInFoundational && (
                                         <motion.div
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
@@ -1112,6 +1113,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300 pointer-events-none" />
                                             </div>
                                         </motion.div>
+                                        )}
                                         
                                         {/* Three directory cards stacked vertically */}
                                         <div className="md:col-span-2 flex flex-col gap-3 md:gap-4 h-80 md:h-96">
