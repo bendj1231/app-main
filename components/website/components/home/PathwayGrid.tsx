@@ -159,7 +159,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'programs',
             image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-            title: 'Programs',
+            title: 'Discover Programs',
             subtitle: 'Structured training pathways from flight school to airline-ready professional',
             icon: GraduationCap,
             badge: null,
@@ -168,7 +168,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'pilot-recognition',
             image: '/images/pilotrecognitioncompoennt.png',
-            title: 'Pilot Recognition',
+            title: 'Discover Recognition+',
             subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
             icon: Compass,
             badge: null,
@@ -177,7 +177,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'pathways',
             image: '/pathway4.png',
-            title: 'Pathways',
+            title: 'Discover Career Pathways',
             subtitle: 'Airline, charter, cargo, and emerging aviation sector opportunities',
             icon: ShoppingBag,
             badge: null,
@@ -277,7 +277,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'pilot-recognition',
             videoUrl: '/fp.mp4',
-            title: 'Pilot Recognition',
+            title: 'Discover Recognition+',
             subtitle: 'Verified credentials, milestones, and industry-recognized achievements',
             icon: Compass,
             badge: null,
@@ -897,22 +897,14 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 'support': 'become-member',
             };
 
-            // Debug: log prop values explicitly
-            console.log('[DEBUG PathwayGrid] isLoggedIn=' + isLoggedIn + ' isEnrolledInFoundation=' + isEnrolledInFoundation + ' card.id=' + card.id + ' card.title=' + card.title + ' [UPDATED]');
-            console.log('[DEBUG PathwayGrid] currentUser exists:', !!currentUser, 'currentUser uid:', currentUser?.uid);
-            console.log('[DEBUG PathwayGrid] userProfile exists:', !!userProfile, 'userProfile:', userProfile);
 
             const target = navMap[card.id];
-            console.log('[NAVMAP LOOKUP] card.id=' + card.id + ' card.title=' + card.title + ' target=' + target + ' [UPDATED]');
-            console.log('[DEBUG PathwayGrid] navMap entry for card-2:', navMap['card-2']);
             if (target) {
                 if (target === 'foundational-platform') {
                     setFoundationNavTarget('access-portal-2?tab=programs');
                     setShowFoundationLoading(true);
                     return;
                 }
-                // debug: Navigating to target for card
-                console.log('[NAVIGATE] target=' + target);
                 onNavigate(target);
             } else {
                 onGoToProgramDetail({
@@ -1339,43 +1331,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                     </div>
                 </motion.div>
 
-                {/* Discover More - Scroll Indicator (moved below social media) */}
-                <motion.div 
-                    className="mt-4 flex flex-col items-center z-50"
-                    variants={{
-                        hidden: { opacity: 0, y: 20 },
-                        visible: { 
-                            opacity: 1, 
-                            y: 0,
-                            transition: {
-                                delay: 1.2,
-                                duration: 0.5,
-                                ease: 'easeOut' as 'easeOut'
-                            }
-                        }
-                    }}
-                >
-                    <span 
-                        className="text-yellow-400 text-base md:text-lg font-bold tracking-[0.12em] mb-0.5"
-                        style={{ 
-                            textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, -2px 0 0 #000, 2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000'
-                        }}
-                    >
-                        Discover more!
-                    </span>
-                    <div className="flex flex-col items-center leading-none">
-                        <svg className="w-5 h-5 text-yellow-400 -mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 1px 0 #000) drop-shadow(1px 0 0 #000) drop-shadow(0 -1px 0 #000) drop-shadow(-1px 0 0 #000)' }}>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                        </svg>
-                        <svg className="w-5 h-5 text-yellow-400 -mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 1px 0 #000) drop-shadow(1px 0 0 #000) drop-shadow(0 -1px 0 #000) drop-shadow(-1px 0 0 #000)' }}>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                        </svg>
-                        <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 1px 0 #000) drop-shadow(1px 0 0 #000) drop-shadow(0 -1px 0 #000) drop-shadow(-1px 0 0 #000)' }}>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                </motion.div>
-
+                
                 {/* Foundation Loading Screen Overlay */}
                 {showFoundationLoading && (
                     <FoundationLoadingScreen

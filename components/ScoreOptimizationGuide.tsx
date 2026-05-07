@@ -38,6 +38,14 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
   onViewAll,
   onNavigate,
 }) => {
+  // Debug logging
+  console.log('[ScoreOptimizationGuide] isPremium prop received:', isPremium);
+  
+  // Track isPremium changes
+  useEffect(() => {
+    console.log('[ScoreOptimizationGuide] isPremium changed to:', isPremium);
+  }, [isPremium]);
+  
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedTip, setExpandedTip] = useState<number | null>(null);
   const [aiAdvice, setAiAdvice] = useState<any>(null);
@@ -468,12 +476,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
             {/* Upgrade Overlay for Non-Members */}
             {!isPremium && (
               <div className="absolute inset-0 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm rounded-lg">
-                <div className="text-center p-6">
-                  <img 
-                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png" 
-                    alt="Logo" 
-                    className="w-32 h-16 mx-auto mb-4 object-contain"
-                  />
+                <div className="text-center p-6 max-w-md">
                   <h3 className="text-xl font-bold text-white mb-2">Unlock Career Progression Metrics & Priority Recognition</h3>
                   <p className="text-sm text-slate-300 mb-4">
                     Subscribe to Recognition + to unlock advanced career progression analytics, personalized optimization strategies, and get priority placement when airlines demand pilots with your profile.

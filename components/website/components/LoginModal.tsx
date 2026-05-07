@@ -178,79 +178,39 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 aria-hidden="true"
             />
             
-            {/* Modal Container */}
+            {/* Modal Container - Modern Centered Design */}
             <div 
                 ref={modalRef}
-                className="relative z-10 w-full max-w-[900px] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl animate-fadeInUp max-h-[90vh] overflow-y-auto"
+                className="relative z-10 w-full max-w-[420px] mx-4 bg-white rounded-2xl shadow-2xl animate-fadeInUp"
                 role="document"
             >
-                {/* Glassy X Button - Top Right */}
+                {/* Close Button - Top Right */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-20 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 backdrop-blur-sm"
+                    className="absolute top-4 right-4 z-20 p-2 text-slate-400 hover:text-slate-600 rounded-full transition-all duration-300"
                     aria-label="Close login modal"
                 >
-                    <X className="w-6 h-6" />
+                    <X className="w-5 h-5" />
                 </button>
 
-                <div className="flex flex-col md:flex-row min-h-[550px]">
-                    {/* Left Side - Dark Blue with Info */}
-                    <div className="w-full md:w-[45%] bg-[#0a1628] text-white p-6 md:p-10 flex flex-col relative order-2 md:order-1">
-                        {/* Brand Text */}
-                        <div className="mt-8 mb-6 flex justify-center">
-                            <h1 className="text-2xl font-bold">
-                                <span className="text-white">PILOT</span> <span className="text-red-500">RECOGNITION</span><span className="text-white">.com</span>
-                            </h1>
-                        </div>
-
-                        {/* Content - Centered in remaining space */}
-                        <div className="flex-1 flex flex-col justify-center items-center">
-
-                        {/* Kevin O'Leary Label */}
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-400 mb-3 text-center">
-                            Stop Wasting Money
-                        </p>
-
-                        {/* Title */}
-                        <h2 className="text-3xl md:text-4xl font-serif mb-4 text-center">
-                            Live Career Intelligence for Pilots
-                        </h2>
-
-                        {/* Description - Pilot Portal */}
-                        <p className="text-white/70 text-sm leading-relaxed mb-6 text-center max-w-sm">
-                            Your Pilot Portal dashboard puts everything in one place. Access your Pilot Portfolio with verified flight hours, assessments, and ATS-ready records. Track program enrollment, view pathway briefs matched to your profile, and monitor your Recognition Score as it updates live. Browse type-rating intelligence, airline expectation cards, and career pathways tailored to your experience level. Your profile is live—airlines see your current readiness, not an old CV.
-                        </p>
-
-                        {/* Learn More Button */}
-                        <button
-                            onClick={() => {
-                                onNavigate('pilot-recognition');
-                                onClose();
-                            }}
-                            className="px-6 py-2.5 border border-white/30 rounded-full text-sm font-medium hover:bg-white/10 transition-all duration-300"
-                            aria-label="Learn more about Pilot Portal"
-                        >
-                            Learn more
-                        </button>
-                        </div>
+                <div className="p-8 md:p-10">
+                    {/* Logo */}
+                    <div className="flex justify-center mb-8">
+                        <h1 className="text-xl font-bold tracking-tight">
+                            <span className="text-slate-900">PILOT</span>
+                            <span className="text-red-500">RECOGNITION</span>
+                        </h1>
                     </div>
 
-                    {/* Right Side - Login Form */}
-                    <div className="w-full md:w-[55%] bg-gradient-to-br from-slate-100 to-slate-200 p-6 md:p-10 flex flex-col justify-center order-1 md:order-2">
-                        {/* Header */}
-                        <div className="mb-6">
-                            <h2 id="login-modal-title" className="text-xl md:text-2xl lg:text-3xl font-serif text-slate-800 mb-2">
-                                Connecting pilots to the aviation industry
-                            </h2>
-                            <p id="login-modal-description" className="text-slate-500 text-sm md:text-base">
-                                Sign in with your PilotRecognition credentials.
-                            </p>
-                        </div>
-
-                        {/* PilotRecognition Account Label */}
-                        <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">
-                            WINGMENTOR ACCOUNT
+                    {/* Header */}
+                    <div className="text-center mb-8">
+                        <h2 id="login-modal-title" className="text-2xl font-semibold text-slate-900 mb-2">
+                            Welcome back
+                        </h2>
+                        <p id="login-modal-description" className="text-slate-500 text-sm">
+                            Sign in to access your pilot profile
                         </p>
+                    </div>
 
                         {/* Error Message */}
                         {error && (
@@ -259,45 +219,43 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                             </div>
                         )}
 
-                        {/* Login Form */}
-                        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-                            {/* Email Input */}
-                            <div className="relative">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                </div>
-                                <input
-                                    id="email"
-                                    ref={emailInputRef}
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Enter your email"
-                                    className="w-full pl-12 pr-4 py-4 min-h-[52px] bg-slate-100 border border-slate-300 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
-                                    aria-label="Email address"
-                                    aria-required="true"
-                                    autoComplete="email"
-                                    required
-                                    aria-invalid={!!error}
-                                    aria-describedby={error ? 'login-error' : undefined}
-                                />
-                            </div>
+                    {/* Login Form */}
+                    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                        {/* Email Input */}
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
+                                Email
+                            </label>
+                            <input
+                                id="email"
+                                ref={emailInputRef}
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="name@example.com"
+                                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
+                                aria-label="Email address"
+                                aria-required="true"
+                                autoComplete="email"
+                                required
+                                aria-invalid={!!error}
+                                aria-describedby={error ? 'login-error' : undefined}
+                            />
+                        </div>
 
-                            {/* Password Input */}
+                        {/* Password Input */}
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
+                                Password
+                            </label>
                             <div className="relative">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                    </svg>
-                                </div>
                                 <input
+                                    id="password"
                                     type={showPassword ? 'text' : 'password'}
-                                    placeholder="Password"
+                                    placeholder="Enter your password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-12 pr-14 py-4 min-h-[52px] bg-slate-100 border border-slate-300 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
+                                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
                                     required
                                     aria-label="Password"
                                     aria-invalid={!!error}
@@ -305,77 +263,84 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-2"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                                 >
-                                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
                             </div>
-
-                            {/* Forgot Password */}
-                            <div className="flex justify-end">
-                                <button
-                                    type="button"
-                                    className="text-sm md:text-base text-blue-600 hover:text-blue-700 font-medium py-2"
-                                    aria-label="Reset password"
-                                >
-                                    Forgot Password?
-                                </button>
-                            </div>
-
-                            {/* Login Button */}
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full py-4 min-h-[52px] bg-[#1a1f36] hover:bg-[#252b4a] text-white rounded-xl font-semibold text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                                aria-busy={loading}
-                            >
-                                {loading ? 'Logging in...' : 'Login'}
-                                {!loading && <ArrowRight className="w-4 h-4" />}
-                            </button>
-
-                            {/* Remember Me */}
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="checkbox"
-                                    id="remember"
-                                    checked={rememberMe}
-                                    onChange={(e) => setRememberMe(e.target.checked)}
-                                    className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                />
-                                <label htmlFor="remember" className="text-sm md:text-base text-slate-600">
-                                    Remember me
-                                </label>
-                            </div>
-                        </form>
-
-                        {/* Footer Links */}
-                        <div className="mt-6 pt-6 border-t border-slate-300">
-                            <p className="text-sm md:text-base text-slate-500 text-center">
-                                Not a member?{' '}
-                                <button
-                                    onClick={() => {
-                                        onNavigate('become-member');
-                                        onClose();
-                                    }}
-                                    className="text-blue-600 hover:text-blue-700 font-medium py-2"
-                                    aria-label="Create a new account"
-                                >
-                                    Create an account
-                                </button>
-                                {' • '}
-                                <button
-                                    onClick={() => {
-                                        onNavigate('pilot-recognition');
-                                        onClose();
-                                    }}
-                                    className="text-blue-600 hover:text-blue-700 font-medium py-2"
-                                    aria-label="Visit Pilot Network"
-                                >
-                                    Visit Pilot Network
-                                </button>
-                            </p>
                         </div>
+
+                        {/* Forgot Password */}
+                        <div className="flex justify-end">
+                            <button
+                                type="button"
+                                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                aria-label="Reset password"
+                            >
+                                Forgot password?
+                            </button>
+                        </div>
+
+                        {/* Login Button */}
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-semibold text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            aria-busy={loading}
+                        >
+                            {loading ? 'Signing in...' : 'Sign in'}
+                        </button>
+
+                        {/* Remember Me */}
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="remember"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                                className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            <label htmlFor="remember" className="text-sm text-slate-600">
+                                Remember me
+                            </label>
+                        </div>
+                    </form>
+
+                    {/* Divider */}
+                    <div className="relative my-6">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-slate-200"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-2 bg-white text-slate-500">Or continue with</span>
+                        </div>
+                    </div>
+
+                    {/* Google Sign In */}
+                    <button
+                        type="button"
+                        className="w-full py-3 px-4 bg-white border border-slate-300 rounded-lg font-medium text-slate-700 hover:bg-slate-50 transition-all duration-200 flex items-center justify-center gap-3"
+                    >
+                        <GoogleIcon />
+                        Google
+                    </button>
+
+                    {/* Footer */}
+                    <div className="mt-6 text-center">
+                        <p className="text-sm text-slate-500">
+                            Don't have an account?{' '}
+                            <button
+                                onClick={() => {
+                                    onNavigate('become-member');
+                                    onClose();
+                                }}
+                                className="text-blue-600 hover:text-blue-700 font-semibold"
+                                aria-label="Create a new account"
+                            >
+                                Sign up
+                            </button>
+                        </p>
                     </div>
                 </div>
             </div>

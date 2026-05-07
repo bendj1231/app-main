@@ -150,7 +150,7 @@ export const ScoreOptimizationPage: React.FC<ScoreOptimizationPageProps> = ({
                 <section style={{ padding: '0 clamp(1.5rem, 4vw, 3.5rem) 3rem' }}>
                     <ScoreOptimizationGuide
                         currentScore={currentScore}
-                        isPremium={false}
+                        isPremium={true}
                         userId={profileData?.user_id}
                         limit={undefined} // Show all tips
                         onNavigate={onNavigate}

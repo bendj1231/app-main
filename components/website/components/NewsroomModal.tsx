@@ -97,6 +97,22 @@ export const NewsroomModal: React.FC<NewsroomModalProps> = ({
         return () => document.removeEventListener('keydown', handleEscape);
     }, [isOpen, onClose]);
 
+    // Handle custom login modal events
+    useEffect(() => {
+        const handleLoginModal = (e: CustomEvent) => {
+            if (e.type === 'open-login-modal' && isOpen) {
+                onClose();
+                // Navigate to become member page after closing modal
+                setTimeout(() => {
+                    onNavigate('become-member');
+                }, 100);
+            }
+        };
+
+        document.addEventListener('open-login-modal', handleLoginModal);
+        return () => document.removeEventListener('open-login-modal', handleLoginModal);
+    }, [isOpen, onClose]);
+
     // Prevent body scroll when modal is open
     useEffect(() => {
         if (isOpen) {

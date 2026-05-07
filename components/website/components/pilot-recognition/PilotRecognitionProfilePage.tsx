@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, User, Settings, Bell, BookOpen, LogOut } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, User, Settings, Bell, BookOpen, LogOut, Sun, Moon } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { PilotLicensureExperiencePage } from './PilotLicensureExperiencePage';
 import { RecognitionScoreDisplay } from '../../../RecognitionScoreDisplay';
 import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
+import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
+import { VeremarkVerifiedBadge } from './VeremarkVerifiedBadge';
+import { CareerPathwayPriority } from './CareerPathwayPriority';
 import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
 import { MeshGradient } from '@paper-design/shaders-react';
@@ -56,14 +59,71 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [currentDocumentationPage, setCurrentDocumentationPage] = useState<'examination' | 'logbook' | 'licensure' | null>(null);
     const [uploadingImage, setUploadingImage] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-    const [deletingAccount, setDeletingAccount] = useState(false);
-    const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
     const [advancedMetricsOpen, setAdvancedMetricsOpen] = useState<'B' | 'L' | 'S' | null>(null);
     const [recognitionScore, setRecognitionScore] = useState<RecognitionScore | null>(null);
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
     const { score: recognitionScoreData, loading: scoreDataLoading } = useRecognitionScore();
+    const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+    const [isPremium, setIsPremium] = useState(false);
+
+    // Check subscription status
+    useEffect(() => {
+        const checkSubscription = async () => {
+            console.log('[DEBUG] Starting subscription check...');
+            try {
+                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                console.log('[DEBUG] Auth user:', user?.id, 'Error:', userError);
+                
+                if (user) {
+                    console.log('[DEBUG] Checking subscriptions for user:', user.id);
+                    const { data: subscriptions, error } = await supabase
+                        .from('subscriptions')
+                        .select('*')
+                        .eq('user_id', user.id)
+                        .eq('status', 'active');
+                    
+                    console.log('[DEBUG] Subscriptions query result:', { subscriptions, error });
+                    
+                    if (error) {
+                        console.error('[DEBUG] Subscription query error:', error);
+                        return;
+                    }
+                    
+                    // Check if any active subscription exists
+                    const hasActiveSubscription = subscriptions && subscriptions.length > 0;
+                    console.log('[DEBUG] Has active subscription:', hasActiveSubscription, 'Count:', subscriptions?.length);
+                    console.log('[DEBUG] Setting isPremium to:', hasActiveSubscription);
+                    setIsPremium(hasActiveSubscription);
+                } else {
+                    console.log('[DEBUG] No user found, setting isPremium to false');
+                    setIsPremium(false);
+                }
+            } catch (error) {
+                console.error('[DEBUG] Error in checkSubscription:', error);
+            }
+        };
+        checkSubscription();
+    }, []);
+
+    // Debug isPremium changes
+    useEffect(() => {
+        console.log('[DEBUG] isPremium state changed to:', isPremium);
+    }, [isPremium]);
+
+    // Load theme from localStorage on mount
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('pilot-recognition-theme') as 'dark' | 'light' | null;
+        if (savedTheme) {
+            setTheme(savedTheme);
+        }
+    }, []);
+
+    // Save theme to localStorage when changed
+    const toggleTheme = (newTheme: 'dark' | 'light') => {
+        setTheme(newTheme);
+        localStorage.setItem('pilot-recognition-theme', newTheme);
+    };
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -432,69 +492,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         }
     };
 
-    const handleDeleteAccount = async () => {
-
-        if (!profileData?.user_id) {
-            console.error('[DELETE ACCOUNT] No user ID found');
-            return;
-        }
-        if (deleteConfirmationText !== 'pilotrecognition') {
-            console.error('[DELETE ACCOUNT] Confirmation text does not match');
-            alert('Please type "pilotrecognition" to confirm account deletion.');
-            return;
-        }
-
-        setDeletingAccount(true);
-
-        try {
-            const { data: { user }, error: userError } = await supabase.auth.getUser();
-            
-            if (!user) {
-                console.error('[DELETE ACCOUNT] No authenticated user found');
-                throw new Error('Not authenticated');
-            }
-
-            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-            
-            if (!session) {
-                console.error('[DELETE ACCOUNT] No session found');
-                throw new Error('No session');
-            }
-
-
-            const response = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/delete-account', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${session.access_token}`,
-                },
-                body: JSON.stringify({ userId: profileData.user_id }),
-            });
-
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('[DELETE ACCOUNT] Edge Function error:', errorData);
-                throw new Error(errorData.error || 'Failed to delete account');
-            }
-
-            // Sign out after successful deletion
-            await supabase.auth.signOut();
-            setDeleteConfirmationText('');
-            // Force navigation to home after sign out
-            window.location.href = '/';
-        } catch (err) {
-            console.error('[DELETE ACCOUNT] Error during deletion:', err);
-            console.error('[DELETE ACCOUNT] Error name:', err.name);
-            console.error('[DELETE ACCOUNT] Error message:', err.message);
-            console.error('[DELETE ACCOUNT] Error stack:', err.stack);
-            alert('Failed to delete account. Please try again.');
-        } finally {
-            setDeletingAccount(false);
-            setShowDeleteDialog(false);
-        }
-    };
-
     const fetchProfileData = async () => {
         try {
             // Fetch user's profile data directly from Supabase
@@ -713,7 +710,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const initials = pilotName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
     return (
-        <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+        <div 
+            style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}
+            className={theme === 'light' ? 'light-theme' : 'dark-theme'}
+            data-theme={theme}
+        >
             {/* MeshGradient Background - Same as Portal 2 */}
             <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
                 <MeshGradient
@@ -905,6 +906,32 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 <Users className="w-4 h-4 text-slate-600" />
                                                 <span className="text-sm text-slate-700">Profile</span>
                                             </button>
+                                            <div className="border-t border-slate-200 my-2"></div>
+                                            <div className="px-3 py-2">
+                                                <p className="text-xs text-slate-500 mb-2">Theme</p>
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        onClick={() => {
+                                                            toggleTheme('light');
+                                                            setIsSettingsDropdownOpen(false);
+                                                        }}
+                                                        className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all ${theme === 'light' ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                                                    >
+                                                        <Sun className="w-4 h-4" />
+                                                        <span className="text-sm">Light</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            toggleTheme('dark');
+                                                            setIsSettingsDropdownOpen(false);
+                                                        }}
+                                                        className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all ${theme === 'dark' ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                                                    >
+                                                        <Moon className="w-4 h-4" />
+                                                        <span className="text-sm">Dark</span>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </>
@@ -964,82 +991,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </div>
                 </div>
 
-                {/* Original Header Content */}
-                <header style={{
-                    padding: '3rem 4rem',
-                    background: 'rgba(15, 23, 42, 0.6)',
-                    backdropFilter: 'blur(10px)',
-                    position: 'relative',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center'
-                }}>
-                    <button
-                        onClick={onBack || (() => onNavigate('home'))}
-                        style={{
-                            position: 'absolute',
-                            top: '2rem',
-                            left: '2rem',
-                            padding: '0.5rem 1rem',
-                            border: 'none',
-                            background: 'transparent',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            fontSize: '0.875rem',
-                            fontWeight: 500,
-                            color: '#94a3b8',
-                            transition: 'color 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.color = '#ef4444'}
-                        onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}
-                    >
-                        <ChevronLeft style={{ width: '16px', height: '16px' }} />
-                        Back
-                    </button>
-
-                    <button
-                        onClick={() => setShowDeleteDialog(true)}
-                        style={{
-                            position: 'absolute',
-                            top: '2rem',
-                            right: '2rem',
-                            padding: '0.4rem 0.8rem',
-                            border: 'none',
-                            background: 'transparent',
-                            cursor: 'pointer',
-                            fontSize: '0.75rem',
-                            fontWeight: 500,
-                            color: '#94a3b8',
-                            transition: 'color 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.color = '#ef4444'}
-                        onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}
-                    >
-                        Delete
-                    </button>
-
-                    <div style={{ marginBottom: '1rem', marginTop: '0.5rem' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: '700', letterSpacing: '-0.02em' }}>
-                            <span style={{ color: '#ffffff' }}>pilot</span>
-                            <span style={{ color: '#dc2626' }}>recognition</span>
-                            <span style={{ color: '#ffffff' }}>.com</span>
-                        </div>
-                    </div>
-                    <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase', textAlign: 'center' }}>
-                        Pilot Recognition Profile
-                    </p>
-                    <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0.5rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal', textAlign: 'center' }}>
-                        Pilot Profile
-                    </h1>
-
-                    {/* Recognition Score Display */}
-                    <div style={{ marginTop: '1.5rem', width: '100%', maxWidth: '600px' }}>
+                {/* Recognition Score Display */}
+                <div style={{ padding: '1rem 1.5rem 0', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
                         {recognitionScoreData ? (
-                            <RecognitionScoreDisplay
-                                score={calculateRecognitionScore({
+                            <ScoreOptimizationGuide
+                                currentScore={calculateRecognitionScore({
                                     stats: {
                                         totalHours: profileData?.total_hours || 0,
                                         picHours: profileData?.pic_hours || 0,
@@ -1061,13 +1017,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         cases: 0,
                                     },
                                 })}
-                                loading={scoreDataLoading}
-                                showBreakdown={false}
-                                showRecommendations={false}
+                                isPremium={isPremium}
+                                userId={profileData?.user_id}
+                                limit={3}
+                                onViewAll={() => onNavigate('score-optimization')}
+                                onNavigate={onNavigate}
                             />
                         ) : null}
-                    </div>
-                </header>
+                </div>
 
                 <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
@@ -1409,8 +1366,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         {/* Score Optimization Guide */}
                         <div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Recognition Score Optimization</h2>
-                                <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Improve your pilot recognition score</span>
+                                <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Recognition+</h2>
+                                <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Premium Score Optimization</span>
                             </div>
                             <ScoreOptimizationGuide
                                 currentScore={calculateRecognitionScore({
@@ -1435,12 +1392,54 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         cases: 0,
                                     },
                                 })}
-                                isPremium={false}
+                                isPremium={isPremium}
                                 userId={profileData?.user_id}
                                 limit={3}
                                 onViewAll={() => onNavigate('score-optimization')}
                                 onNavigate={onNavigate}
                             />
+
+                            {/* Recognition+ Premium Features */}
+                            {isPremium && (
+                                <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    {/* Currency & Compliance Notifications */}
+                                    <RecognitionPlusNotifications
+                                        lastFlownDate={profileData?.last_flight_date ? new Date(profileData.last_flight_date) : null}
+                                        medicalExpiry={profileData?.medical_expiry ? new Date(profileData.medical_expiry) : null}
+                                        licenseExpiry={profileData?.license_expiry ? new Date(profileData.license_expiry) : null}
+                                        totalHours={profileData?.total_hours || 0}
+                                        onAction={(action) => {
+                                            if (action === 'Schedule Flight') onNavigate('digital-logbook');
+                                            if (action === 'Schedule Medical') onNavigate('medical-certificate');
+                                            if (action === 'View Requirements') onNavigate('license-requirements');
+                                            if (action === 'Update Logbook') onNavigate('digital-logbook');
+                                        }}
+                                    />
+
+                                    {/* Veremark Verified Badge */}
+                                    <VeremarkVerifiedBadge
+                                        isVerified={profileData?.veremark_verified || false}
+                                        verificationDate={profileData?.veremark_verified_at ? new Date(profileData.veremark_verified_at) : undefined}
+                                        expiryDate={profileData?.veremark_expires_at ? new Date(profileData.veremark_expires_at) : undefined}
+                                        verificationId={profileData?.veremark_verification_id || undefined}
+                                        onRequestVerification={() => onNavigate('veremark-verification')}
+                                        onViewDetails={() => onNavigate('verification-details')}
+                                    />
+
+                                    {/* Career Pathway Priority */}
+                                    <CareerPathwayPriority
+                                        selectedInterests={profileData?.pathway_interests || []}
+                                        currentHours={profileData?.total_hours || 0}
+                                        currentRatings={profileData?.ratings || []}
+                                        onInterestChange={(interests) => {
+                                            // Update profile with new interests
+                                            console.log('Pathway interests updated:', interests);
+                                        }}
+                                        onViewProgram={(program) => onNavigate(`program/${program}`)}
+                                        onViewTraining={(trainingId) => onNavigate(`training/${trainingId}`)}
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         <CategorySection title="Career & Interests" description="Professional information and pathway preferences">
@@ -2437,115 +2436,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 </div>
             )}
 
-            {/* Delete Account Confirmation Dialog */}
-            {showDeleteDialog && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    zIndex: 2000,
-                    background: 'rgba(0, 0, 0, 0.5)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '1rem'
-                }}>
-                    <div style={{
-                        background: 'rgba(30, 41, 59, 0.95)',
-                        borderRadius: '16px',
-                        padding: '2rem',
-                        maxWidth: '450px',
-                        width: '100%',
-                        boxShadow: '0 20px 45px rgba(15, 23, 42, 0.2)'
-                    }}>
-                        <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.25rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
-                            Delete Account
-                        </h3>
-                        <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.9rem', color: '#64748b', lineHeight: 1.6 }}>
-                            Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your data including profile information, flight logs, and enrollment records.
-                        </p>
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.5rem' }}>
-                                Type <span style={{ fontFamily: 'monospace', background: '#f1f5f9', padding: '0.25rem 0.5rem', borderRadius: '4px' }}>pilotrecognition</span> to confirm
-                            </label>
-                            <input
-                                type="text"
-                                value={deleteConfirmationText}
-                                onChange={(e) => setDeleteConfirmationText(e.target.value)}
-                                placeholder="Type pilotrecognition"
-                                disabled={deletingAccount}
-                                style={{
-                                    width: '100%',
-                                    padding: '0.75rem',
-                                    border: '1px solid #e2e8f0',
-                                    borderRadius: '8px',
-                                    fontSize: '0.875rem',
-                                    fontFamily: 'monospace',
-                                    letterSpacing: '0.05em',
-                                    outline: 'none',
-                                    transition: 'border-color 0.2s ease'
-                                }}
-                                onFocus={(e) => e.currentTarget.style.borderColor = '#3b82f6'}
-                                onBlur={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}
-                            />
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                            <button
-                                onClick={() => {
-                                    setShowDeleteDialog(false);
-                                    setDeleteConfirmationText('');
-                                }}
-                                disabled={deletingAccount}
-                                style={{
-                                    padding: '0.75rem 1.5rem',
-                                    border: '1px solid #e2e8f0',
-                                    background: 'white',
-                                    color: '#64748b',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    borderRadius: '8px',
-                                    cursor: deletingAccount ? 'not-allowed' : 'pointer',
-                                    transition: 'all 0.2s ease'
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!deletingAccount) {
-                                        e.currentTarget.style.background = '#f8fafc';
-                                        e.currentTarget.style.color = '#0f172a';
-                                    }
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!deletingAccount) {
-                                        e.currentTarget.style.background = 'white';
-                                        e.currentTarget.style.color = '#64748b';
-                                    }
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleDeleteAccount}
-                                disabled={deletingAccount || deleteConfirmationText !== 'pilotrecognition'}
-                                style={{
-                                    padding: '0.75rem 1.5rem',
-                                    border: 'none',
-                                    background: deleteConfirmationText === 'pilotrecognition' ? '#ef4444' : '#e2e8f0',
-                                    color: deleteConfirmationText === 'pilotrecognition' ? 'white' : '#94a3b8',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    borderRadius: '8px',
-                                    cursor: deletingAccount || deleteConfirmationText !== 'pilotrecognition' ? 'not-allowed' : 'pointer',
-                                    transition: 'all 0.2s ease',
-                                    opacity: deletingAccount || deleteConfirmationText !== 'pilotrecognition' ? 0.5 : 1
-                                }}
-                            >
-                                {deletingAccount ? 'Deleting...' : 'Delete Account'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

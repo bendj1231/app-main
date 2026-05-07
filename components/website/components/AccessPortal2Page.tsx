@@ -184,19 +184,40 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
             id: 'my-hangar',
             title: 'MY PATHWAYS',
             image: '/images/airline-operations.png',
-            onClick: () => setActiveTab('pathways'),
+            onClick: () => {
+                if (userProfile) {
+                    setActiveTab('pathways');
+                } else {
+                    const event = new CustomEvent('open-login-modal');
+                    window.dispatchEvent(event);
+                }
+            },
         },
         {
             id: 'access-programs',
-            title: isEnrolledInFoundational ? 'ACCESS PROGRAMS' : 'ENROLL NOW',
+            title: isEnrolledInFoundational ? 'ACCESS PROGRAMS' : 'MY PROGRAMS',
             image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-            onClick: () => onNavigate(isEnrolledInFoundational ? 'foundational-platform' : 'foundational-program'),
+            onClick: () => {
+                if (userProfile) {
+                    onNavigate(isEnrolledInFoundational ? 'foundational-platform' : 'foundational-program');
+                } else {
+                    const event = new CustomEvent('open-login-modal');
+                    window.dispatchEvent(event);
+                }
+            },
         },
         {
             id: 'my-logbook',
-            title: 'MY LOGBOOK',
+            title: 'ACCESS LOGBOOK',
             image: '/images/pilotrecognitioncompoennt.png',
-            onClick: () => onNavigate('digital-logbook'),
+            onClick: () => {
+                if (userProfile) {
+                    onNavigate('digital-logbook');
+                } else {
+                    const event = new CustomEvent('open-login-modal');
+                    window.dispatchEvent(event);
+                }
+            },
         },
     ];
 
@@ -871,10 +892,10 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             </div>
                                             
                                             <h2 className="text-lg font-bold text-white text-center mb-2 tracking-wider">
-                                                Sign In Required
+                                                login Required
                                             </h2>
                                             <p className="text-center text-slate-300 text-sm mb-6">
-                                                Sign in to view your pilot profile and track your progress
+                                                login to view Real-Time Data collection from your Recognition Profile
                                             </p>
                                             
                                             <button
@@ -886,7 +907,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 }}
                                                 className="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25 mb-3"
                                             >
-                                                SIGN IN
+                                                LOGIN
                                             </button>
                                             
                                             <button
@@ -1758,7 +1779,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     Login to View Your Dashboard
                                                 </h2>
                                                 <p className="text-slate-300 text-lg mb-8 max-w-md mx-auto">
-                                                    Sign in to access your personalized analytics, program progress, and pathway insights
+                                                    Sign in to view Real-Time Data collection from your Recognition Profile
                                                 </p>
                                                 
                                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1771,7 +1792,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                         }}
                                                         className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
                                                     >
-                                                        SIGN IN
+                                                        LOGIN
                                                     </button>
                                                     
                                                     <button
