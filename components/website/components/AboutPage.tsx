@@ -26,10 +26,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-                        About Us
+                        Access | Insight | Authority
                     </p>
                     <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
-                        PilotRecognition Platform
+                        Your Aviation Identity Lives Here
                     </h1>
                     <span className="text-xl md:text-2xl text-slate-500 leading-none block mb-8">
                         Programs · Recognition · Pathways
@@ -37,7 +37,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
                     <div className="max-w-3xl mx-auto text-base text-slate-700 leading-relaxed text-left space-y-6">
                         <p>
-                            PilotRecognition is an aviation competency platform operated by WM Pilot Group. The system provides competency-based profiling and experience programs aligned with EBT CBTA standards. Profiles are maintained in ATLAS Aviation CV format, with competency assessment integrated within the Transition Program.
+                            PilotRecognition is the world's first unified platform built for the entire cockpit. Whether you are a student seeking your first $50 industry milestone, a hobbyist mastering the W1000 and tracking global airline shifts, or a veteran ready to showcase a vetted, top-tier PR Score—this is where your aviation identity lives. Get recognized by the peers and airlines that matter.
                         </p>
                         <p>
                             Pathways are structured career routes — cadet programs, type ratings, license progression, business aviation, eVTOL, and specialized operations. Each pathway lists operator requirements and identifies competency gaps against the pilot's profile. The platform does not operate as a job board. Pathways are available to all users; free tier sees 3 per month, Plus tier sees unlimited. Pilots indicate interest in a pathway; when operators join, they can pull verified profiles based on competency scores, flight hours, and EBT assessment data. The profile updates as you log hours, certifications, and mentorship completion. Examination results are verified and recorded. The competency score improves your matching priority with operators.

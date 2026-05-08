@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon, X, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
@@ -1313,6 +1313,59 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     Get <span style={{ color: '#dc2626' }}>Recognition+</span>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* === THREE PILLARS SECTION === */}
+            <div className="relative z-30 w-full px-4 md:px-8 py-16 bg-white">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">Built for Every Pilot</p>
+                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
+                            Your Aviation Identity Lives Here
+                        </h2>
+                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
+                            Whether you are a student seeking your first $50 industry milestone, a hobbyist mastering the W1000 and tracking global airline shifts, or a veteran ready to showcase a vetted, top-tier PR Score—this is where you get recognized.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Students */}
+                        <div className="group relative p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all">
+                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
+                                <User className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3">Bridge the Industry Gap</h3>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                Don't wait for your first job to start your career. Get real-world industry experience for just $50 through our specialized programs.
+                            </p>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-widest">Students</p>
+                        </div>
+
+                        {/* Hobbyists */}
+                        <div className="group relative p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all">
+                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
+                                <Cpu className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3">The Expert's Toolkit</h3>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                Fly like a professional. Access the latest type rating requirements, monitor global aviation changes, and benchmark your profile against real airline expectations.
+                            </p>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-widest">Hobbyists</p>
+                        </div>
+
+                        {/* Established Pilots */}
+                        <div className="group relative p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all">
+                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
+                                <Award className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3">Verified Prestige</h3>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                You've earned your stripes; now get the recognition you deserve. A top PR Score isn't just a number—it's a digital badge of honor.
+                            </p>
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-widest">Veterans</p>
                         </div>
                     </div>
                 </div>
