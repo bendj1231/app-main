@@ -55,11 +55,11 @@ export function getDevicePerformanceTier(): PerformanceTier {
     return 'low';
   }
 
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
-  const hardwareConcurrency = navigator.hardwareConcurrency || 4;
-  const deviceMemory = (navigator as any).deviceMemory || 4;
+  const ua = navigator.userAgent;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+  const hardwareConcurrency = navigator.hardwareConcurrency || 2;
+  // Safari caps deviceMemory at 8; undefined means unknown, assume 4GB
+  const deviceMemory = (navigator as any).deviceMemory ?? 4;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (prefersReducedMotion) {
@@ -68,13 +68,38 @@ export function getDevicePerformanceTier(): PerformanceTier {
   if (isMobile) {
     return 'low';
   }
-  if (deviceMemory < 4 || hardwareConcurrency < 4) {
+
+  // Apple Silicon fast-path: M1/M2/M3/M4 Macs are always high-end
+  // navigator.userAgent on Apple Silicon Macs does NOT include 'Intel'
+  // and platform is 'MacIntel' for compat reasons, but GPU string confirms Apple Silicon
+  const isMac = /mac/i.test(ua) && !isMobile;
+  if (isMac) {
+    // Try WebGL GPU string to detect Apple Silicon
+    try {
+      const c = document.createElement('canvas');
+      const gl = (c.getContext('webgl') || c.getContext('experimental-webgl')) as WebGLRenderingContext | null;
+      if (gl) {
+        const ext = gl.getExtension('WEBGL_debug_renderer_info') as WEBGL_debug_renderer_info | null;
+        const renderer = ext ? (gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) as string).toLowerCase() : '';
+        const loseCtx = (gl as any).getExtension('WEBGL_lose_context');
+        if (loseCtx) loseCtx.loseContext();
+        c.remove();
+        if (renderer.includes('apple') || renderer.includes('metal')) {
+          return 'high'; // M1/M2/M3/M4 Apple GPU
+        }
+      } else {
+        c.remove();
+      }
+    } catch { /* continue to score-based */ }
+  }
+
+  // Score-based fallback for Intel Macs, Windows, Linux
+  // Low: < 4 cores or < 4GB — truly old hardware (2-core i5, 4GB school PCs)
+  if (hardwareConcurrency < 4 || deviceMemory < 4) {
     return 'low';
   }
-  if (deviceMemory < 6 || hardwareConcurrency < 6) {
-    return 'low';
-  }
-  if (deviceMemory < 8 || hardwareConcurrency < 8) {
+  // Medium: < 6 cores or < 8GB — 2019 MBA class hardware
+  if (hardwareConcurrency < 6 || deviceMemory < 8) {
     return 'medium';
   }
 
@@ -190,3 +215,181 @@ export const performanceConfig = {
   enable3DEffects: shouldEnable3DEffects(),
   animationMultiplier: getAnimationDurationMultiplier(),
 } as const;
+
+/**
+ * Homepage-specific graphics configuration.
+ * Controls MeshGradient shader on/off, animation speed, and backdrop-blur usage.
+ *
+ * Device mapping (auto-detected, no external API required):
+ *   low    → 2017 MacBook Air (i5 dual-core, 8GB, Intel HD 6000), school library PCs (i5-6th gen, 4-8GB), old i5 Windows laptops
+ *   medium → 2019 MacBook Air (i5 1.6GHz quad-core, Intel UHD 617), mainstream 2018-2021 laptops, Chromebooks
+ *   high   → 2020 M1 MacBook Air, 2021+ Intel MBP, modern desktops with discrete GPU
+ *
+ * Detection signals used (all built-in browser APIs, zero cost, zero external requests):
+ *   navigator.hardwareConcurrency  — CPU thread count
+ *   navigator.deviceMemory          — RAM in GB (Chrome/Edge; Safari reports undefined → assumed 4)
+ *   navigator.userAgent             — platform family
+ *   window.devicePixelRatio         — retina vs non-retina
+ *   matchMedia prefers-reduced-motion — OS accessibility setting
+ *   WebGL WEBGL_debug_renderer_info — GPU string (Intel HD vs Apple GPU vs Iris Plus)
+ *   localStorage graphicsQuality    — manual user override ('low' | 'medium' | 'high' | 'auto')
+ */
+export interface HomepageGraphicsConfig {
+  tier: PerformanceTier;
+  enableMeshGradient: boolean;   // Whether to render the WebGL shader at all
+  meshGradientSpeed: number;     // 0 = static, 0.1 = slow, 0.22 = normal
+  enableBackdropBlur: boolean;   // backdrop-filter: blur() is GPU-accelerated but costly on Intel HD
+  enableHoverScale: boolean;     // CSS transform scale on hover
+  deviceLabel: string;           // Human-readable label shown in the settings toast
+  reason: string;                // Why this tier was chosen
+}
+
+function getGPURendererString(): string | null {
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
+    if (!gl) return null;
+    const ext = gl.getExtension('WEBGL_debug_renderer_info') as WEBGL_debug_renderer_info | null;
+    const renderer = ext ? (gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) as string) : null;
+    const loseCtx = (gl as any).getExtension('WEBGL_lose_context');
+    if (loseCtx) loseCtx.loseContext();
+    canvas.remove();
+    return renderer;
+  } catch {
+    return null;
+  }
+}
+
+export function getHomepageGraphicsConfig(): HomepageGraphicsConfig {
+  // 1. Manual override wins — set via settings UI, stored in localStorage
+  const override = (typeof localStorage !== 'undefined' ? localStorage.getItem('graphicsQuality') : null) as PerformanceTier | 'auto' | null;
+  if (override && override !== 'auto') {
+    const presets: Record<PerformanceTier, Omit<HomepageGraphicsConfig, 'tier' | 'deviceLabel' | 'reason'>> = {
+      low:    { enableMeshGradient: false, meshGradientSpeed: 0,    enableBackdropBlur: false, enableHoverScale: false },
+      medium: { enableMeshGradient: true,  meshGradientSpeed: 0.08, enableBackdropBlur: true,  enableHoverScale: true  },
+      high:   { enableMeshGradient: true,  meshGradientSpeed: 0.22, enableBackdropBlur: true,  enableHoverScale: true  },
+    };
+    return { tier: override, deviceLabel: 'Manual override', reason: `Graphics manually set to ${override}`, ...presets[override] };
+  }
+
+  // 2. OS accessibility — always respect prefers-reduced-motion
+  if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return {
+      tier: 'low', enableMeshGradient: false, meshGradientSpeed: 0,
+      enableBackdropBlur: false, enableHoverScale: false,
+      deviceLabel: 'Reduced Motion (OS setting)',
+      reason: 'prefers-reduced-motion is enabled in system settings',
+    };
+  }
+
+  const cores = navigator.hardwareConcurrency || 2;
+  const memory = (navigator as any).deviceMemory ?? 4; // Safari reports undefined; default 4GB
+  const ua = navigator.userAgent.toLowerCase();
+  const isMobile = /android|iphone|ipod/.test(ua);
+  const isTablet = /ipad/.test(ua) || (navigator.maxTouchPoints > 1 && /mac/.test(ua));
+  const pixelRatio = window.devicePixelRatio || 1;
+  const screenPixels = window.screen.width * window.screen.height;
+  const gpuRenderer = getGPURendererString() ?? '';
+
+  // 3. Mobile phones always get low (battery + heat)
+  if (isMobile) {
+    return {
+      tier: 'low', enableMeshGradient: false, meshGradientSpeed: 0,
+      enableBackdropBlur: false, enableHoverScale: true,
+      deviceLabel: 'Mobile Device',
+      reason: 'Mobile phones use low graphics to preserve battery and prevent overheating',
+    };
+  }
+
+  // 4. Score-based tier assignment
+  let score = 0;
+
+  // CPU cores: 2017 MBA has 2 cores / 4 threads; 2019 MBA has 4 cores; M1 has 8 cores
+  if (cores >= 8)       score += 4;
+  else if (cores >= 6)  score += 3;
+  else if (cores >= 4)  score += 2;
+  else                  score += 0; // 2-core (2017 MBA, old Celerons, old i5 dual-core)
+
+  // RAM: school PCs often have 4GB, 2017 MBA was 8GB, M1 has 8-16GB
+  if (memory >= 16)      score += 4;
+  else if (memory >= 8)  score += 2;
+  else if (memory >= 4)  score += 1;
+  else                   score += 0;
+
+  // GPU: Intel HD 6000 (2017 MBA) vs Intel Iris Plus (2019) vs Apple GPU (M1)
+  const gpuLower = gpuRenderer.toLowerCase();
+  if (gpuLower.includes('apple') || gpuLower.includes('metal')) {
+    score += 4; // M1/M2/M3 Apple Silicon GPU
+  } else if (gpuLower.includes('iris plus') || gpuLower.includes('iris pro')) {
+    score += 2; // 2019 MBA Iris Plus 617
+  } else if (gpuLower.includes('intel hd') || gpuLower.includes('hd graphics')) {
+    score += 0; // 2017 MBA Intel HD 6000, school library PCs
+  } else if (gpuLower.includes('amd') || gpuLower.includes('radeon') || gpuLower.includes('nvidia') || gpuLower.includes('geforce')) {
+    score += 3; // Discrete GPU on Windows desktops
+  } else if (gpuLower !== '') {
+    score += 1; // Unknown integrated
+  }
+
+  // Screen pixels: low-res school monitors vs retina
+  if (screenPixels >= 3840 * 2160)      score += 2; // 4K
+  else if (screenPixels >= 2560 * 1440) score += 2; // QHD / retina
+  else if (screenPixels >= 1920 * 1080) score += 1; // FHD
+  else                                  score += 0; // 720p or less (old school monitors)
+
+  // Retina / HiDPI display signals higher-end hardware
+  if (pixelRatio >= 2) score += 1;
+
+  // Determine tier
+  let tier: PerformanceTier;
+  if (score >= 10)      tier = 'high';
+  else if (score >= 5)  tier = 'medium';
+  else                  tier = 'low';
+
+  // Build device label from signals
+  let deviceLabel = 'Unknown Device';
+  if (ua.includes('mac')) {
+    if (gpuLower.includes('apple')) {
+      // Safari doesn't expose real deviceMemory on Apple Silicon — omit to avoid misleading "4GB"
+      deviceLabel = `Mac (Apple Silicon) · ${cores} cores · Apple GPU`;
+    } else if (cores <= 4) {
+      deviceLabel = `Mac (Intel, ${cores}-core) · ${memory}GB · Intel HD/Iris`;
+    } else {
+      deviceLabel = `Mac (Intel, ${cores}-core) · ${memory}GB`;
+    }
+  } else if (ua.includes('windows')) {
+    deviceLabel = `Windows PC · ${cores} threads · ${memory}GB`;
+  } else if (ua.includes('linux')) {
+    deviceLabel = `Linux · ${cores} threads · ${memory}GB`;
+  } else if (isTablet) {
+    deviceLabel = `iPad / Tablet · ${cores} cores`;
+  }
+
+  const tierReasons: Record<PerformanceTier, string> = {
+    low:    `Low-end hardware detected (score ${score}/14) — shader disabled for smooth performance`,
+    medium: `Mid-range hardware detected (score ${score}/14) — reduced shader speed for balance`,
+    high:   `High-end hardware detected (score ${score}/14) — full visual quality enabled`,
+  };
+
+  return {
+    tier,
+    enableMeshGradient: tier !== 'low',
+    meshGradientSpeed: tier === 'high' ? 0.22 : tier === 'medium' ? 0.08 : 0,
+    enableBackdropBlur: tier !== 'low',
+    enableHoverScale: true,
+    deviceLabel,
+    reason: tierReasons[tier],
+  };
+}
+
+/**
+ * Save a manual graphics override to localStorage.
+ * Pass 'auto' to clear the override and return to auto-detection.
+ */
+export function setGraphicsOverride(quality: PerformanceTier | 'auto'): void {
+  if (typeof localStorage === 'undefined') return;
+  if (quality === 'auto') {
+    localStorage.removeItem('graphicsQuality');
+  } else {
+    localStorage.setItem('graphicsQuality', quality);
+  }
+}

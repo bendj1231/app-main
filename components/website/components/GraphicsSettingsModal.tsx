@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Monitor, Zap, Check } from 'lucide-react';
-import { getDevicePerformanceTier } from '@/src/lib/device-detection';
+import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 
 type GraphicsQuality = 'auto' | 'low' | 'medium' | 'high';
 
@@ -11,6 +11,7 @@ interface GraphicsSettingsModalProps {
 
 export function GraphicsSettingsModal({ isOpen, onClose }: GraphicsSettingsModalProps) {
     const [quality, setQuality] = useState<GraphicsQuality>('auto');
+    const [detectedLabel, setDetectedLabel] = useState<string>('');
     const [detectedTier, setDetectedTier] = useState<string>('');
 
     useEffect(() => {
@@ -19,10 +20,11 @@ export function GraphicsSettingsModal({ isOpen, onClose }: GraphicsSettingsModal
         if (saved) {
             setQuality(saved);
         }
-        
-        // Detect current device tier
-        const tier = getDevicePerformanceTier();
-        setDetectedTier(tier);
+
+        // Detect current device using rich config
+        const cfg = getHomepageGraphicsConfig();
+        setDetectedTier(cfg.tier);
+        setDetectedLabel(cfg.deviceLabel);
     }, []);
 
     const handleQualityChange = (newQuality: GraphicsQuality) => {
@@ -80,16 +82,23 @@ export function GraphicsSettingsModal({ isOpen, onClose }: GraphicsSettingsModal
                 {/* Device Info */}
                 <div className="p-6 bg-slate-50 border-b border-slate-200">
                     <div className="flex items-center justify-between">
-                        <div>
+                        <div className="flex-1 min-w-0 pr-3">
                             <p className="text-sm font-medium text-slate-900">Detected Device</p>
-                            <p className="text-xs text-slate-600 mt-1">
-                                {detectedTier === 'low' && 'Low-end device detected'}
-                                {detectedTier === 'medium' && 'Medium-end device detected'}
-                                {detectedTier === 'high' && 'High-end device detected'}
-                            </p>
+                            <p className="text-xs text-slate-700 mt-1 font-medium truncate">{detectedLabel || 'Detecting...'}</p>
+                            <span className={`inline-block mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                detectedTier === 'high' ? 'bg-green-100 text-green-700' :
+                                detectedTier === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-red-100 text-red-700'
+                            }`}>
+                                {detectedTier === 'high' ? 'High-end' : detectedTier === 'medium' ? 'Mid-range' : 'Low-end'} · Auto-detected
+                            </span>
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
-                            <Zap className="w-5 h-5 text-slate-600" />
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                            detectedTier === 'high' ? 'bg-green-100' : detectedTier === 'medium' ? 'bg-yellow-100' : 'bg-red-100'
+                        }`}>
+                            <Zap className={`w-5 h-5 ${
+                                detectedTier === 'high' ? 'text-green-600' : detectedTier === 'medium' ? 'text-yellow-600' : 'text-red-600'
+                            }`} />
                         </div>
                     </div>
                 </div>

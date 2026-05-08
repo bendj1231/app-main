@@ -10,7 +10,7 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { PathwayGrid } from './PathwayGrid';
 import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
-import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier } from '@/src/lib/device-detection';
+import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier, getHomepageGraphicsConfig, setGraphicsOverride, type HomepageGraphicsConfig } from '@/src/lib/device-detection';
 import StripePaymentSection from './StripePaymentSection';
 import { NewsroomModal } from '../NewsroomModal';
 
@@ -623,6 +623,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [deviceTier, setDeviceTier] = useState<'low' | 'medium' | 'high'>('high');
     const [showOptimizationMessage, setShowOptimizationMessage] = useState(false);
     const [enableShader, setEnableShader] = useState(false); // Disabled to fix WebGL context leaks
+    const [graphicsConfig, setGraphicsConfig] = useState<HomepageGraphicsConfig | null>(null);
+    const [showGraphicsToast, setShowGraphicsToast] = useState(false);
     const [isNewsroomModalOpen, setIsNewsroomModalOpen] = useState(false);
     const [activeMatchFilter, setActiveMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
     const [activeCarouselCategory, setActiveCarouselCategory] = useState<string>('All');
@@ -671,6 +673,10 @@ export const HomePage: React.FC<HomePageProps> = ({
         // Disable shader on low-end devices
         const shouldEnableShader = shouldEnable3DEffects();
         setEnableShader(shouldEnableShader);
+
+        // Homepage-specific graphics config (covers MeshGradient, backdrop-blur, speed)
+        const cfg = getHomepageGraphicsConfig();
+        setGraphicsConfig(cfg);
         
         // Show optimization message on low-end devices
         if (tier === 'low') {
@@ -1008,6 +1014,63 @@ export const HomePage: React.FC<HomePageProps> = ({
                 currentPage="home"
             />
 
+            {/* Graphics Settings Button + Toast */}
+            {graphicsConfig && (
+                <div className="fixed bottom-6 left-6 z-50">
+                    {showGraphicsToast && (
+                        <div className="mb-2 bg-slate-900/95 border border-white/20 rounded-xl shadow-2xl p-4 w-64 backdrop-blur-md">
+                            <div className="flex items-center justify-between mb-3">
+                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Graphics Quality</span>
+                                <button onClick={() => setShowGraphicsToast(false)} className="text-slate-400 hover:text-white">
+                                    <X className="w-3.5 h-3.5" />
+                                </button>
+                            </div>
+                            <p className="text-[10px] text-slate-400 mb-3 leading-relaxed">
+                                <span className="text-white font-medium">{graphicsConfig.deviceLabel}</span><br />
+                                {graphicsConfig.reason}
+                            </p>
+                            <div className="flex gap-2">
+                                {(['low', 'medium', 'high'] as const).map((q) => (
+                                    <button
+                                        key={q}
+                                        onClick={() => {
+                                            setGraphicsOverride(q);
+                                            setGraphicsConfig(getHomepageGraphicsConfig());
+                                            setShowGraphicsToast(false);
+                                        }}
+                                        className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${
+                                            graphicsConfig.tier === q
+                                                ? 'bg-blue-600 text-white'
+                                                : 'bg-white/10 text-slate-300 hover:bg-white/20'
+                                        }`}
+                                    >
+                                        {q}
+                                    </button>
+                                ))}
+                            </div>
+                            <button
+                                onClick={() => {
+                                    setGraphicsOverride('auto');
+                                    setGraphicsConfig(getHomepageGraphicsConfig());
+                                    setShowGraphicsToast(false);
+                                }}
+                                className="mt-2 w-full py-1 text-[10px] text-slate-400 hover:text-white transition-colors"
+                            >
+                                Reset to auto-detect
+                            </button>
+                        </div>
+                    )}
+                    <button
+                        onClick={() => setShowGraphicsToast(v => !v)}
+                        className="bg-slate-900/90 hover:bg-slate-800 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-sm transition-all hover:scale-105"
+                        title={`Graphics: ${graphicsConfig.tier} · ${graphicsConfig.deviceLabel}`}
+                    >
+                        <Cpu className="w-4 h-4" />
+                        <span className={`w-2 h-2 rounded-full ${graphicsConfig.tier === 'high' ? 'bg-green-400' : graphicsConfig.tier === 'medium' ? 'bg-yellow-400' : 'bg-red-400'}`} />
+                    </button>
+                </div>
+            )}
+
             {/* Newsroom Trigger Button */}
             <button
                 onClick={() => setIsNewsroomModalOpen(true)}
@@ -1188,20 +1251,24 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* MeshGradient Background - Same as TypeRatingSearchPage */}
             <div className="relative w-full h-screen">
                 <div className="fixed inset-0 z-0">
-                    <MeshGradient
-                        className="w-full h-full"
-                        colors={[
-                            "#dbeafe",
-                            "#94a3b8",
-                            "#64748b",
-                            "#475569",
-                            "#334155",
-                            "#1e3a5f",
-                            "#1e3a8a",
-                            "#0f172a"
-                        ]}
-                        speed={0.22}
-                    />
+                    {graphicsConfig?.enableMeshGradient ? (
+                        <MeshGradient
+                            className="w-full h-full"
+                            colors={[
+                                "#dbeafe",
+                                "#94a3b8",
+                                "#64748b",
+                                "#475569",
+                                "#334155",
+                                "#1e3a5f",
+                                "#1e3a8a",
+                                "#0f172a"
+                            ]}
+                            speed={graphicsConfig.meshGradientSpeed}
+                        />
+                    ) : (
+                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
+                    )}
                 </div>
 
                 {/* Flight Simulator Style Grid */}
@@ -1468,6 +1535,174 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
 
+            {/* === PATHWAY NEWS FEED CAROUSEL === */}
+            <div className="relative z-30 w-full px-4 md:px-8 py-3">
+                <div className="max-w-7xl mx-auto">
+                    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-slate-800 shadow-lg" style={{ minHeight: '110px' }}>
+
+                        {/* Right-side image — changes per slide */}
+                        {(() => {
+                            const slideIdx = activeBillboardSlide || 0;
+                            type SlideConfig = { src?: string; contain: boolean; invert: boolean; whiteBg?: boolean; prLogo?: boolean };
+                            const slides: SlideConfig[] = [
+                                { src: 'https://1000logos.net/wp-content/uploads/2020/03/Airbus-Logo.png', contain: true, invert: false, whiteBg: true },
+                                { src: 'https://freepnglogo.com/images/all_img/boeing-logo-e30b.png', contain: true, invert: false, whiteBg: true },
+                                { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Etihad-airways-logo.svg/1280px-Etihad-airways-logo.svg.png', contain: true, invert: false, whiteBg: true },
+                                { src: '/images/foundational-program.png', contain: false, invert: false },
+                                { contain: true, invert: false, whiteBg: true, prLogo: true },
+                            ];
+                            const slide = slides[slideIdx] || slides[0];
+                            const isWhiteBg = !!slide.whiteBg;
+                            return (
+                                <div className="absolute inset-y-0 right-0 w-2/5 z-0 hidden md:block" style={{ backgroundColor: isWhiteBg ? '#ffffff' : 'rgba(10,20,60,0.7)' }}>
+                                    {!slide.prLogo ? (
+                                        <img
+                                            key={slide.src}
+                                            src={slide.src!}
+                                            alt=""
+                                            className="w-full h-full"
+                                            style={{
+                                                objectFit: isWhiteBg ? 'contain' : 'cover',
+                                                padding: isWhiteBg ? '2.5rem' : '0',
+                                                filter: slide.invert ? 'brightness(0) invert(1)' : 'none',
+                                                transition: 'opacity 0.5s ease',
+                                            }}
+                                            onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center px-8">
+                                            <span style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif', fontSize: '2rem', lineHeight: 1, letterSpacing: '-0.02em' }}>
+                                                <span style={{ color: '#ffffff' }}>pilot</span>
+                                                <span style={{ color: '#dc2626' }}>recognition</span>
+                                                <span style={{ color: '#ffffff' }}>.com</span>
+                                            </span>
+                                        </div>
+                                    )}
+                                    {!isWhiteBg && (
+                                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #2563eb 0%, rgba(37,99,235,0.85) 20%, rgba(37,99,235,0.2) 65%, transparent 100%)' }} />
+                                    )}
+                                </div>
+                            );
+                        })()}
+
+                        {/* Carousel Content */}
+                        <div className="relative z-10">
+                            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${(activeBillboardSlide || 0) * 100}%)` }}>
+
+                                {/* Slide 1: A320 Type Rating */}
+                                <div className="w-full flex-shrink-0">
+                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-500/20 border border-amber-500/30 rounded-full mb-2">
+                                            <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
+                                            <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">Type Rating Update</span>
+                                        </div>
+                                        <h3 className="text-base font-bold text-white mb-1">
+                                            Airbus A320 Type Rating Requirements Revised
+                                        </h3>
+                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                            EASA updated minimum hours for A320 type rating entry. Pathway cards have been recalculated. Check your gap score now.
+                                        </p>
+                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
+                                            View Updated Pathways
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Slide 2: B737 Type Rating */}
+                                <div className="w-full flex-shrink-0">
+                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-500/20 border border-amber-500/30 rounded-full mb-2">
+                                            <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
+                                            <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">Type Rating Update</span>
+                                        </div>
+                                        <h3 className="text-base font-bold text-white mb-1">
+                                            Boeing 737 Type Rating Requirements Revised
+                                        </h3>
+                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                            FAA &amp; EASA revised simulator hour requirements for B737 type rating. Updated pathway cards now reflect the new minimums.
+                                        </p>
+                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
+                                            View Updated Pathways
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Slide 3: Etihad Added */}
+                                <div className="w-full flex-shrink-0">
+                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-green-500/20 border border-green-500/30 rounded-full mb-2">
+                                            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                                            <span className="text-[10px] font-semibold text-green-300 uppercase tracking-wider">New Airline</span>
+                                        </div>
+                                        <h3 className="text-base font-bold text-white mb-1">
+                                            Etihad Airways Airline Expectations Now Live
+                                        </h3>
+                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                            Etihad's full expectation profile has been added — minimum hours, license requirements, and EBT standards. Match your profile today.
+                                        </p>
+                                        <button onClick={() => onNavigate?.('airline-expectations')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
+                                            View Etihad Expectations
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Slide 4: Foundation Program Enrollment */}
+                                <div className="w-full flex-shrink-0">
+                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-red-500/20 border border-red-500/30 rounded-full mb-2">
+                                            <span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" />
+                                            <span className="text-[10px] font-semibold text-red-300 uppercase tracking-wider">Enrollment Open</span>
+                                        </div>
+                                        <h3 className="text-base font-bold text-white mb-1">
+                                            Foundation Program — Now Accepting Enrollments
+                                        </h3>
+                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                            50+ hours of structured mentorship. Foundational knowledge, leadership, and behavioural frameworks. Limited spots available.
+                                        </p>
+                                        <button onClick={() => onNavigate?.('foundation-program')} className="px-3 py-1.5 bg-white text-blue-700 hover:bg-blue-50 text-xs font-semibold rounded-lg transition-colors shadow">
+                                            Enroll Now
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Slide 5: Pathway Cards */}
+                                <div className="w-full flex-shrink-0">
+                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-violet-500/20 border border-violet-500/30 rounded-full mb-2">
+                                            <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
+                                            <span className="text-[10px] font-semibold text-violet-300 uppercase tracking-wider">Pathway Cards</span>
+                                        </div>
+                                        <h3 className="text-base font-bold text-white mb-1">
+                                            26 New Pathway Cards Added This Month
+                                        </h3>
+                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                            Cargo, charter, and cadet pathways updated with live airline data. Your recognition score unlocks which pathways you can access.
+                                        </p>
+                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
+                                            Browse Pathways
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Progress Dots */}
+                            <div className="absolute bottom-0 left-0 px-6 md:px-10 pb-3">
+                                <div className="flex gap-2">
+                                    {[0, 1, 2, 3, 4].map((index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setActiveBillboardSlide(index)}
+                                            className="h-1 rounded-full transition-all duration-300"
+                                            style={{ width: (activeBillboardSlide || 0) === index ? '32px' : '16px', backgroundColor: (activeBillboardSlide || 0) === index ? 'white' : 'rgba(255,255,255,0.3)' }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* === RECOMMENDED PATHWAYS CAROUSEL === */}
             <div className="relative z-30 w-full px-4 md:px-8 py-8">
                 <div className="max-w-7xl mx-auto">
@@ -1633,174 +1868,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
 
-            {/* === PATHWAY NEWS FEED CAROUSEL === */}
-            <div className="relative z-30 w-full px-4 md:px-8 py-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-slate-800 shadow-2xl" style={{ minHeight: '160px' }}>
-
-                        {/* Right-side image — changes per slide */}
-                        {(() => {
-                            const slideIdx = activeBillboardSlide || 0;
-                            type SlideConfig = { src?: string; contain: boolean; invert: boolean; whiteBg?: boolean; prLogo?: boolean };
-                            const slides: SlideConfig[] = [
-                                { src: 'https://1000logos.net/wp-content/uploads/2020/03/Airbus-Logo.png', contain: true, invert: false, whiteBg: true },
-                                { src: 'https://freepnglogo.com/images/all_img/boeing-logo-e30b.png', contain: true, invert: false, whiteBg: true },
-                                { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Etihad-airways-logo.svg/1280px-Etihad-airways-logo.svg.png', contain: true, invert: false, whiteBg: true },
-                                { src: '/images/foundational-program.png', contain: false, invert: false },
-                                { contain: true, invert: false, whiteBg: true, prLogo: true },
-                            ];
-                            const slide = slides[slideIdx] || slides[0];
-                            const isWhiteBg = !!slide.whiteBg;
-                            return (
-                                <div className="absolute inset-y-0 right-0 w-2/5 z-0 hidden md:block" style={{ backgroundColor: isWhiteBg ? '#ffffff' : 'rgba(10,20,60,0.7)' }}>
-                                    {!slide.prLogo ? (
-                                        <img
-                                            key={slide.src}
-                                            src={slide.src!}
-                                            alt=""
-                                            className="w-full h-full"
-                                            style={{
-                                                objectFit: isWhiteBg ? 'contain' : 'cover',
-                                                padding: isWhiteBg ? '2.5rem' : '0',
-                                                filter: slide.invert ? 'brightness(0) invert(1)' : 'none',
-                                                transition: 'opacity 0.5s ease',
-                                            }}
-                                            onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center px-8">
-                                            <span style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif', fontSize: '2rem', lineHeight: 1, letterSpacing: '-0.02em' }}>
-                                                <span style={{ color: '#ffffff' }}>pilot</span>
-                                                <span style={{ color: '#dc2626' }}>recognition</span>
-                                                <span style={{ color: '#ffffff' }}>.com</span>
-                                            </span>
-                                        </div>
-                                    )}
-                                    {!isWhiteBg && (
-                                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #2563eb 0%, rgba(37,99,235,0.85) 20%, rgba(37,99,235,0.2) 65%, transparent 100%)' }} />
-                                    )}
-                                </div>
-                            );
-                        })()}
-
-                        {/* Carousel Content */}
-                        <div className="relative z-10">
-                            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${(activeBillboardSlide || 0) * 100}%)` }}>
-
-                                {/* Slide 1: A320 Type Rating */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-6 md:px-10 py-7 md:py-9 md:w-3/5">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 border border-amber-500/30 rounded-full mb-3">
-                                            <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-                                            <span className="text-xs font-semibold text-amber-300 uppercase tracking-wider">Type Rating Update</span>
-                                        </div>
-                                        <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">
-                                            Airbus A320 Type Rating Requirements Revised
-                                        </h3>
-                                        <p className="text-sm text-blue-100 max-w-md mb-4">
-                                            EASA updated minimum hours for A320 type rating entry. Pathway cards have been recalculated. Check your gap score now.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
-                                            View Updated Pathways
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Slide 2: B737 Type Rating */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-6 md:px-10 py-7 md:py-9 md:w-3/5">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 border border-amber-500/30 rounded-full mb-3">
-                                            <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-                                            <span className="text-xs font-semibold text-amber-300 uppercase tracking-wider">Type Rating Update</span>
-                                        </div>
-                                        <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">
-                                            Boeing 737 Type Rating Requirements Revised
-                                        </h3>
-                                        <p className="text-sm text-blue-100 max-w-md mb-4">
-                                            FAA & EASA revised simulator hour requirements for B737 type rating. Updated pathway cards now reflect the new minimums.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
-                                            View Updated Pathways
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Slide 3: Etihad Added */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-6 md:px-10 py-7 md:py-9 md:w-3/5">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-full mb-3">
-                                            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                                            <span className="text-xs font-semibold text-green-300 uppercase tracking-wider">New Airline</span>
-                                        </div>
-                                        <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">
-                                            Etihad Airways Airline Expectations Now Live
-                                        </h3>
-                                        <p className="text-sm text-blue-100 max-w-md mb-4">
-                                            Etihad's full expectation profile has been added — minimum hours, license requirements, and EBT standards. Match your profile today.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('airline-expectations')} className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
-                                            View Etihad Expectations
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Slide 4: Foundation Program Enrollment */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-6 md:px-10 py-7 md:py-9 md:w-3/5">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-full mb-3">
-                                            <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
-                                            <span className="text-xs font-semibold text-red-300 uppercase tracking-wider">Enrollment Open</span>
-                                        </div>
-                                        <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">
-                                            Foundation Program — Now Accepting Enrollments
-                                        </h3>
-                                        <p className="text-sm text-blue-100 max-w-md mb-4">
-                                            50+ hours of structured mentorship. Foundational knowledge, leadership, and behavioural frameworks. Limited spots available.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('foundation-program')} className="px-4 py-2 bg-white text-blue-700 hover:bg-blue-50 text-xs font-semibold rounded-lg transition-colors shadow">
-                                            Enroll Now
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Slide 5: Pathway Cards */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-6 md:px-10 py-7 md:py-9 md:w-3/5">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-violet-500/20 border border-violet-500/30 rounded-full mb-3">
-                                            <span className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
-                                            <span className="text-xs font-semibold text-violet-300 uppercase tracking-wider">Pathway Cards</span>
-                                        </div>
-                                        <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">
-                                            26 New Pathway Cards Added This Month
-                                        </h3>
-                                        <p className="text-sm text-blue-100 max-w-md mb-4">
-                                            Cargo, charter, and cadet pathways updated with live airline data. Your recognition score unlocks which pathways you can access.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
-                                            Browse Pathways
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Progress Dots */}
-                            <div className="absolute bottom-0 left-0 px-6 md:px-10 pb-3">
-                                <div className="flex gap-2">
-                                    {[0, 1, 2, 3, 4].map((index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setActiveBillboardSlide(index)}
-                                            className="h-1 rounded-full transition-all duration-300"
-                                            style={{ width: (activeBillboardSlide || 0) === index ? '32px' : '16px', backgroundColor: (activeBillboardSlide || 0) === index ? 'white' : 'rgba(255,255,255,0.3)' }}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* === DISCOVER PROGRAMS SECTION === */}
             <div className="relative z-30 bg-white w-full px-4 md:px-8 py-12">
                 <div className="max-w-7xl mx-auto">
@@ -1876,20 +1943,24 @@ export const HomePage: React.FC<HomePageProps> = ({
             {false && <div className="relative pt-8 pb-16 px-4 md:px-6 overflow-hidden">
                 {/* Mesh Gradient Background - Darkened for white text readability */}
                 <div className="absolute inset-0 z-0">
-                    <MeshGradient
-                        className="w-full h-full"
-                        colors={[
-                            "#000000",
-                            "#050a14",
-                            "#0d1f3c",
-                            "#1e293b",
-                            "#0f172a",
-                            "#1e3a5f",
-                            "#172554",
-                            "#020617"
-                        ]}
-                        speed={0.22}
-                    />
+                    {graphicsConfig?.enableMeshGradient ? (
+                        <MeshGradient
+                            className="w-full h-full"
+                            colors={[
+                                "#000000",
+                                "#050a14",
+                                "#0d1f3c",
+                                "#1e293b",
+                                "#0f172a",
+                                "#1e3a5f",
+                                "#172554",
+                                "#020617"
+                            ]}
+                            speed={graphicsConfig.meshGradientSpeed}
+                        />
+                    ) : (
+                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #020617 0%, #0d1f3c 50%, #020617 100%)' }} />
+                    )}
                 </div>
 
             {/* Product Tabs Selection Section */}
@@ -2430,23 +2501,28 @@ export const HomePage: React.FC<HomePageProps> = ({
                     
                     {/* MeshGradient Background - Rich sky/cloud palette with glassy blur */}
                     <div className="absolute inset-0 z-0 h-full w-full">
-                        <MeshGradient
-                            className="w-full h-full"
-                            colors={[
-                                "#f1f5f9",   // Soft white
-                                "#e2e8f0",   // Light bluish grey
-                                "#94a3b8",   // Medium grey
-                                "#64748b",   // Slate
-                                "#475569",   // Dark grey
-                                "#334155",   // Darker slate
-                                "#1e40af",   // Deep blue
-                                "#1e3a8a",   // Navy
-                                "#0f172a"    // Near black
-                            ]}
-                            speed={0.25}
-                        />
-                        {/* Glassy blur overlay - bathroom glass effect */}
-                        <div className="absolute inset-0 backdrop-blur-[2px] bg-white/5" />
+                        {graphicsConfig?.enableMeshGradient ? (
+                            <MeshGradient
+                                className="w-full h-full"
+                                colors={[
+                                    "#f1f5f9",
+                                    "#e2e8f0",
+                                    "#94a3b8",
+                                    "#64748b",
+                                    "#475569",
+                                    "#334155",
+                                    "#1e40af",
+                                    "#1e3a8a",
+                                    "#0f172a"
+                                ]}
+                                speed={graphicsConfig.meshGradientSpeed}
+                            />
+                        ) : (
+                            <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)' }} />
+                        )}
+                        {graphicsConfig?.enableBackdropBlur && (
+                            <div className="absolute inset-0 backdrop-blur-[2px] bg-white/5" />
+                        )}
                     </div>
 
                     <div className="max-w-7xl mx-auto relative z-10">
