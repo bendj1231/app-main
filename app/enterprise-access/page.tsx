@@ -217,18 +217,60 @@ const EnterpriseAccessPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-slate-900 py-12 px-4">
-            <div className="max-w-4xl mx-auto">
-                {/* Back Button */}
-                <button
-                    onClick={() => window.location.href = 'https://pilotrecognition.com'}
-                    className="mb-6 flex items-center gap-2 text-white hover:text-blue-200 transition-colors"
-                >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                    <span>← pilotrecognition.com</span>
-                </button>
+        <div className="min-h-screen bg-slate-900">
+            {/* ── Hero Header ── */}
+            <div className="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 border-b border-white/10 overflow-hidden">
+                {/* Background glow */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-600/10 blur-3xl rounded-full pointer-events-none" />
+
+                <div className="max-w-5xl mx-auto px-6 pt-8 pb-14">
+                    {/* Back */}
+                    <button
+                        onClick={() => window.location.href = 'https://pilotrecognition.com'}
+                        className="mb-10 flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                        pilotrecognition.com
+                    </button>
+
+                    {/* Eyebrow */}
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-4">Enterprise · Airlines · Operators · Training Organisations</p>
+
+                    {/* Title */}
+                    <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-5">
+                        The Pilot Pipeline.<br />
+                        <span className="text-blue-400">Built for Airlines.</span>
+                    </h1>
+
+                    {/* Description */}
+                    <p className="text-slate-300 text-lg max-w-2xl mb-10 leading-relaxed">
+                        Stop sifting through dead CVs. PilotRecognition gives you a live, scored, background-checked pilot database — filtered by recency, type rating, and readiness. You pull. They don't apply.
+                    </p>
+
+                    {/* Subtopic pillars */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="bg-white/5 border border-white/10 rounded-xl px-5 py-4">
+                            <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">Pull System</p>
+                            <p className="text-white font-semibold text-sm mb-1">Airlines pull pilots — pilots don't apply</p>
+                            <p className="text-slate-400 text-xs">Post a pathway card. Pilots submit interest. You get a ranked, scored shortlist — not a pile of applications.</p>
+                        </div>
+                        <div className="bg-white/5 border border-white/10 rounded-xl px-5 py-4">
+                            <p className="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-1">Live Profiles</p>
+                            <p className="text-white font-semibold text-sm mb-1">Real-time data, not a snapshot</p>
+                            <p className="text-slate-400 text-xs">Every profile updates when a pilot logs hours. You always see current recency, type rating status, and score.</p>
+                        </div>
+                        <div className="bg-white/5 border border-white/10 rounded-xl px-5 py-4">
+                            <p className="text-violet-400 text-xs font-bold uppercase tracking-widest mb-1">Outcome Tracking</p>
+                            <p className="text-white font-semibold text-sm mb-1">One metric: placed within 90 days</p>
+                            <p className="text-slate-400 text-xs">Every placement through a pathway is recorded. You see the outcome. We prove the pipeline works.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="max-w-5xl mx-auto px-6 py-12">
 
                 {/* ── Airline / Operator Pricing Section ── */}
                 <motion.div
@@ -237,7 +279,7 @@ const EnterpriseAccessPage = () => {
                     transition={{ duration: 0.5 }}
                     className="mb-8"
                 >
-                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400 font-semibold mb-2">Airlines · Operators · Training Organisations</p>
+                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400 font-semibold mb-2">Pricing</p>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Simple pricing. <span className="text-blue-400">Pay when you place.</span></h2>
                     <p className="text-slate-400 text-base mb-4 max-w-2xl">Access a verified, background-checked pilot database. Pull profiles, post pathway cards, and only pay a success fee when a pilot is placed through your pathway.</p>
                     <div className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-3.5 mb-8 max-w-2xl">
