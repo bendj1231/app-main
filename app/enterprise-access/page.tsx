@@ -507,11 +507,11 @@ const EnterpriseAccessPage = () => {
                 <div className="max-w-7xl mx-auto px-4 lg:px-6">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
-                        <a href="https://pilotrecognition.com" className="flex items-center gap-2 group">
+                        <a href="https://pilotrecognition.com" className="flex items-center gap-3 group">
                             <span className="text-xl font-bold tracking-tight">
                                 <span className="text-slate-900">Pilot</span><span className="text-red-600">Recognition</span>
                             </span>
-                            <span className="hidden sm:inline-block text-[10px] uppercase tracking-widest text-slate-500 border border-slate-300 px-1.5 py-0.5 rounded">Enterprise</span>
+                            <span className="text-sm font-semibold text-slate-900 tracking-wide">Enterprise</span>
                         </a>
 
                         {/* Desktop dropdowns */}
