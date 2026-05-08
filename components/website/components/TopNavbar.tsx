@@ -419,6 +419,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'For Industry', name: 'For Airlines & Operators', target: '/about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
                 { name: 'Industry Stewardship', target: '/industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
                 { name: 'FAQ', target: 'faq' },
+                { name: 'Why Recognition', target: '/why-recognition', bullets: ['For Students', 'For Hobbyists', 'For Active Pilots'] },
                 { name: 'The Pilot Shortage', target: '/pilot-shortage', bullets: ['The Truth Revealed', 'Why Airlines Are Picky', 'How to Get Vetted'] },
             ]
         },
