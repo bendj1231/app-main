@@ -248,13 +248,13 @@ const EnterpriseAccessPage = () => {
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
                             <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Free</p>
                             <p className="text-3xl font-bold text-white mb-0.5">$0 <span className="text-base font-normal text-slate-400">/ forever</span></p>
-                            <p className="text-slate-400 text-xs mb-5">Start pulling pilots at no cost</p>
+                            <p className="text-slate-400 text-xs mb-5">Browse the pilot database — no commitment</p>
                             <ul className="space-y-2 mb-6">
                                 {[
                                     'Post public pathway cards',
-                                    'View pilot profiles & Recognition Scores',
-                                    'Access pilot database (browse)',
-                                    'See Recognition+ & Verified badges',
+                                    'View pilot Recognition Scores & recency',
+                                    'See who has submitted interest in your pathway',
+                                    'See Recognition+ & Verified badges on profiles',
                                 ].map(f => (
                                     <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
                                         <span className="text-slate-400 mt-0.5 flex-shrink-0">✓</span>{f}

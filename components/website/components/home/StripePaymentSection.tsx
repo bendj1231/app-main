@@ -6,12 +6,12 @@ interface StripePaymentSectionProps {
 }
 
 const FEATURES_60 = [
-  'Recognition Score — public, visible to airlines in the pulling system',
-  'Recognition+ badge on profile — shortlisted tier',
+  'Recognition Score — scored on recency, hours flown, type rating & profile completeness',
+  'Recognition+ badge — airlines see your score in their ranked shortlist bulletin',
+  'Submit pathway interest — airlines pull a scored shortlist of interested pilots (no background check)',
+  'Airlines filter by: score, recency, type rating, hours flown — your profile is ranked, not just listed',
+  'Priority position in shortlist — not buried in a general pool',
   'Unlimited profile comparisons (pathway / airline / type rating)',
-  'Unlimited pathway submissions (no background check)',
-  'Shortlisted by airlines as a Recognition+ member',
-  'Priority listing — not pooled with general applicants',
   'Direct feedback on profile gaps from match engine & score',
   'Recognition AI — extended use, pulls from latest type rating / airline / pathway changes and tells you exactly how to align your profile',
   'Atlas CV — upload documents (licenses, medical, ratings)',
@@ -21,16 +21,17 @@ const FEATURES_60 = [
 ];
 
 const FEATURES_100 = [
-  'Veremark background screening — verified badge on profile',
-  'Recognition Score — public, visible to airlines in the pulling system',
-  'Recognition+ Verified badge — preferred, background checked tier',
-  'Unlimited pathway submissions + background check attached',
-  'Shortlisted by airlines as preferred — background checked',
-  'Priority listing — not pooled with general applicants',
+  'Veremark background screening — verified badge attached to your profile in the pulling system',
+  'Recognition Score — scored on recency, hours flown, type rating, completeness & Veremark status',
+  'Recognition+ Verified badge — airlines filter for this first: background checked, preferred tier',
+  'Submit pathway interest — your profile enters the airline\'s ranked bulletin with background check attached',
+  'Airlines don\'t get random CVs — they pull a scored shortlist of interested pilots. You rank highest.',
+  'Airlines filter by: Veremark status, recency, type rating, hours, score — you appear at the top',
+  'Priority position in shortlist — not buried in a general pool',
   'Direct feedback on profile gaps from match engine & score',
   'Recognition AI — extended use, pulls from latest type rating / airline / pathway changes and tells you exactly how to align your profile',
   'Atlas CV — upload & Veremark-screened documents (licenses, medical, ratings)',
-  'Screened documents visible to airlines & operators',
+  'Screened documents visible to airlines & operators in the pull',
   'Unlimited profile comparisons (pathway / airline / type rating)',
   'EBT CBTA interview fast-track — priority access after Foundation Program (skip the queue)',
   '50% off Foundation & Transition Programs',
@@ -106,7 +107,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
                 <span className="text-6xl font-bold text-white leading-none">$100</span>
                 <span className="text-slate-400 text-base mb-1">/ year</span>
               </div>
-              <p className="text-slate-400 text-sm mb-1">Verified by Veremark — preferred by airlines & operators</p>
+              <p className="text-slate-400 text-sm mb-1">Airlines pull you — you don't chase them. Verified, ranked first.</p>
               <p className="text-blue-400 text-xs font-semibold mb-6">✓ 3-day free trial included</p>
 
               {/* Feature list */}
@@ -147,7 +148,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <div>
               <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Free Account</p>
               <p className="text-3xl font-bold text-white">$0 <span className="text-base font-normal text-slate-400">/ forever</span></p>
-              <p className="text-slate-400 text-sm mt-1">Recognition Score visible (no badge) · 3 comparisons/month · 2 submissions/month · Recognition AI (5 chats/month) · Standard Atlas CV · EBT interview 1–2 months after Foundation</p>
+              <p className="text-slate-400 text-sm mt-1">Recognition Score visible (no badge) · 2 pathway interests/month · enters general pool · Recognition AI (5 chats/month) · Standard Atlas CV · EBT interview 1–2 months after Foundation</p>
             </div>
             <button
               onClick={() => { onNavigate('become-member'); window.scrollTo(0, 0); }}
