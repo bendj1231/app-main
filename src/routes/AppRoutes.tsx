@@ -97,6 +97,14 @@ export const AppRoutes = () => {
   const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  // Subdomain routing — redirect enterprise subdomain to /enterprise-access
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    if (hostname === 'enterprise.pilotrecognition.com' && window.location.pathname === '/') {
+      navigate('/enterprise-access', { replace: true });
+    }
+  }, []);
+
   // Listen for custom login modal events
   useEffect(() => {
     const handleOpenLoginModal = () => {
