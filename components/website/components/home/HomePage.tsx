@@ -1809,62 +1809,70 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
 
                     {/* Selected Pathway Panel */}
-                    {selectedCarouselPathway && (
-                        <div className="flex items-center justify-center gap-4 mt-2 mb-4">
-                            <button
-                                onClick={() => {
-                                    const carousel = topRecommendedCarouselRef.current;
-                                    if (!carousel) return;
-                                    const cards = Array.from(carousel.children) as HTMLElement[];
-                                    const center = carousel.scrollLeft + carousel.offsetWidth / 2;
-                                    let closest = 0;
-                                    let minDist = Infinity;
-                                    cards.forEach((card, i) => {
-                                        const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-                                        if (dist < minDist) { minDist = dist; closest = i; }
-                                    });
-                                    const prev = cards[Math.max(0, closest - 1)];
-                                    if (prev) carousel.scrollLeft = prev.offsetLeft - (carousel.offsetWidth / 2) + (prev.offsetWidth / 2);
-                                }}
-                                className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 text-xl font-bold transition-colors flex-shrink-0"
-                            >
-                                ‹
-                            </button>
-                            <div className="text-center max-w-xl">
-                                <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Selected Pathway</p>
-                                <h3 className="text-xl font-serif font-normal text-slate-900 mb-1">{selectedCarouselPathway.title}</h3>
-                                <p className="text-sm text-slate-600 mb-2">{selectedCarouselPathway.company} · {selectedCarouselPathway.location}</p>
-                                <p className="text-sm text-slate-500 mb-4">{selectedCarouselPathway.tags?.[0] || 'Explore this pathway'}</p>
+                    {(() => {
+                        const filteredPathways = HOME_PATHWAYS.filter(pathway => {
+                            if (activeMatchFilter === 'all') return true;
+                            if (activeMatchFilter === 'low') return pathway.matchProbability >= 60 && pathway.matchProbability < 75;
+                            if (activeMatchFilter === 'mid') return pathway.matchProbability >= 75 && pathway.matchProbability < 90;
+                            return pathway.matchProbability >= 90;
+                        });
+                        // cards[0] = intro Foundation card, cards[1..n] = filteredPathways[0..n-1]
+                        const introCard = { id: 'FOUNDATION-PROGRAM-ENROLL', title: 'Foundation Program', company: 'PilotRecognition', location: 'Global', tags: ['Featured Program', '50 Hours Mentorship'] };
+                        const allCardData = [introCard, ...filteredPathways];
+
+                        const navigateCarousel = (direction: 'prev' | 'next') => {
+                            const carousel = topRecommendedCarouselRef.current;
+                            if (!carousel) return;
+                            const cards = Array.from(carousel.children) as HTMLElement[];
+                            const center = carousel.scrollLeft + carousel.offsetWidth / 2;
+                            let closest = 0;
+                            let minDist = Infinity;
+                            cards.forEach((card, i) => {
+                                const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+                                if (dist < minDist) { minDist = dist; closest = i; }
+                            });
+                            const targetIdx = direction === 'prev'
+                                ? Math.max(0, closest - 1)
+                                : Math.min(cards.length - 1, closest + 1);
+                            const targetCard = cards[targetIdx];
+                            if (targetCard) {
+                                carousel.scrollLeft = targetCard.offsetLeft - (carousel.offsetWidth / 2) + (targetCard.offsetWidth / 2);
+                                const pathway = allCardData[targetIdx];
+                                if (pathway) setSelectedCarouselPathway(pathway);
+                            }
+                        };
+
+                        return selectedCarouselPathway ? (
+                            <div className="flex items-center justify-center gap-4 mt-2 mb-4">
                                 <button
-                                    onClick={() => onNavigate('pathways-modern')}
-                                    className="px-8 py-3 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition-all"
+                                    onClick={() => navigateCarousel('prev')}
+                                    className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 text-xl font-bold transition-colors flex-shrink-0"
                                 >
-                                    Submit Interest for Pathway
+                                    ‹
                                 </button>
-                                <p className="text-xs uppercase tracking-widest text-slate-400 mt-4">Requirements & Profile Alignment</p>
-                                <p className="text-xs text-slate-400 mt-1">Updated: {new Date().toLocaleDateString()}</p>
+                                <div className="text-center max-w-xl">
+                                    <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Selected Pathway</p>
+                                    <h3 className="text-xl font-serif font-normal text-slate-900 mb-1">{selectedCarouselPathway.title}</h3>
+                                    <p className="text-sm text-slate-600 mb-2">{selectedCarouselPathway.company} · {selectedCarouselPathway.location}</p>
+                                    <p className="text-sm text-slate-500 mb-4">{selectedCarouselPathway.tags?.[0] || 'Explore this pathway'}</p>
+                                    <button
+                                        onClick={() => onNavigate('pathways-modern')}
+                                        className="px-8 py-3 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition-all"
+                                    >
+                                        Submit Interest for Pathway
+                                    </button>
+                                    <p className="text-xs uppercase tracking-widest text-slate-400 mt-4">Requirements & Profile Alignment</p>
+                                    <p className="text-xs text-slate-400 mt-1">Updated: {new Date().toLocaleDateString()}</p>
+                                </div>
+                                <button
+                                    onClick={() => navigateCarousel('next')}
+                                    className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 text-xl font-bold transition-colors flex-shrink-0"
+                                >
+                                    ›
+                                </button>
                             </div>
-                            <button
-                                onClick={() => {
-                                    const carousel = topRecommendedCarouselRef.current;
-                                    if (!carousel) return;
-                                    const cards = Array.from(carousel.children) as HTMLElement[];
-                                    const center = carousel.scrollLeft + carousel.offsetWidth / 2;
-                                    let closest = 0;
-                                    let minDist = Infinity;
-                                    cards.forEach((card, i) => {
-                                        const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-                                        if (dist < minDist) { minDist = dist; closest = i; }
-                                    });
-                                    const next = cards[Math.min(cards.length - 1, closest + 1)];
-                                    if (next) carousel.scrollLeft = next.offsetLeft - (carousel.offsetWidth / 2) + (next.offsetWidth / 2);
-                                }}
-                                className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 text-xl font-bold transition-colors flex-shrink-0"
-                            >
-                                ›
-                            </button>
-                        </div>
-                    )}
+                        ) : null;
+                    })()}
                 </div>
             </div>
 
