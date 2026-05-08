@@ -16,19 +16,19 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             questions: [
                 {
                     q: "What is PilotRecognition?",
-                    a: "A three-pillar platform built for every stage of your aviation journey. <strong>Access</strong> through low-cost programs that bridge the industry gap. <strong>Insight</strong> through live recognition scores that match you with verified pathways. <strong>Authority</strong> through verified credentials that airlines trust. From students to veterans, we turn capability into recognition."
+                    a: "A competency framework and career platform for pilots. We assess behavioral markers alongside flight hours, match you with verified pathways, and give operators access to your verified profile. You build a recognition score based on verified mentorship hours, EBT CBTA-aligned competency assessment, and professional development."
                 },
                 {
                     q: "Is PilotRecognition free?",
-                    a: "Creating a profile, logging flight hours, and viewing 3 pathways per month are free. The <strong>Foundation Program</strong> is free to enter—get 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. Certification at completion is $49. The <strong>Transition Program ($149)</strong> adds EBT CBTA video assessment—Foundation graduates unlock it at $99. <strong>Recognition Plus ($99/year)</strong> unlocks unlimited pathway views and priority matching. Start free, pay when you're ready to advance."
+                    a: "Creating a profile, logging flight hours, and viewing 3 pathways per month are free. <strong>Foundation Program</strong> is free to enter and includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. Certification at completion is $49. <strong>Transition Program ($149)</strong> is the advanced stage with EBT CBTA video assessment. Foundation graduates unlock it at $99. <strong>Recognition Plus ($99/year)</strong> unlocks unlimited pathway views and priority matching. Revenue comes from pilot programs and operator subscriptions."
                 },
                 {
                     q: "How does it work?",
-                    a: "Create your profile. Complete verified mentorship hours. Your competencies are assessed through our EBT CBTA-aligned framework. You see match indicators against pathway requirements posted on the platform. When operators join, they can pull verified profiles that match their requirements. Your recognition score is your currency—it determines pathway access and visibility. We are actively recruiting operator partners."
+                    a: "Create your profile. Complete verified mentorship hours. Your competencies are assessed through our EBT CBTA-aligned framework. You see match indicators against pathway requirements posted on the platform. When operators join, they can pull verified profiles that match their requirements. Your recognition score determines your pathway access and visibility. We are actively recruiting operator partners."
                 },
                 {
                     q: "What's the difference from a job board?",
-                    a: "Job boards are push-based: you apply, you wait, you compete. PilotRecognition is a pulling system: operators see verified competency data and pull candidates who match requirements. Your profile updates as you log hours and complete assessments. Pathways show you exactly what competencies you're missing—not just open positions. Recognition travels with you, regardless of airline seniority."
+                    a: "Job boards are push-based: you apply, you wait, you compete. PilotRecognition is a pulling system: when operators join, they see verified competency data and pull candidates who match requirements. Your profile updates as you log hours and complete assessments. Pathways show you exactly what competencies you're missing—not just open positions."
                 },
                 {
                     q: "Why join now?",
@@ -41,19 +41,19 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             questions: [
                 {
                     q: "What is the Foundation Program?",
-                    a: "<strong>Free to enter.</strong> Bridges the industry gap for students and early-stage pilots. Includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. Certification at completion is $49. This builds your baseline recognition score that determines pathway access. From $50, you gain industry experience before your first job."
+                    a: "<strong>Free to enter.</strong> Includes 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. EBT CBTA-aligned competency assessment. Certification at completion is $49. Foundation graduates unlock the Transition Program at graduate pricing ($99, a $50 discount from $149). This builds your baseline recognition score that determines pathway access."
                 },
                 {
                     q: "What is the Transition Program?",
-                    a: "<strong>$149</strong> ($99 for Foundation graduates). Advanced stage with EBT CBTA video assessment after mentorship completion. Detailed competency scoring across 9 markers and direct pathway eligibility. Foundation graduates are prioritized. This is where recognition becomes authority—verified credentials that operators trust."
+                    a: "<strong>$149</strong> ($99 for Foundation graduates). Includes EBT CBTA video assessment after mentorship completion, detailed competency scoring across 9 markers, and direct pathway eligibility. Without Foundation completion, the assessment is rigorous and you may not pass if baseline competencies aren't met. Foundation graduates are prioritized."
                 },
                 {
                     q: "What is Recognition Plus?",
-                    a: "<strong>$99/year.</strong> Unlocks unlimited pathway views, full profile comparison against airline requirements, and priority matching when operators search the platform. Your recognition score is your currency—spend it on pathway access. Free tier covers basic profile creation and 3 pathway views per month. Program participants receive the same priority matching as paid members—effort-based recognition."
+                    a: "<strong>$99/year.</strong> Unlocks unlimited pathway views, full profile comparison against airline requirements, and priority matching when operators search the platform. Free tier is limited to basic profile creation and restricted pathway views. Program participants receive the same priority matching as paid members—effort-based recognition, not pay-to-win."
                 },
                 {
-                    q: "Who is this for?",
-                    a: "<strong>Students:</strong> Build recognition before graduation through the Foundation Program. <strong>Instructors:</strong> Get recognized for 5,000+ hours of experience. <strong>Airline Pilots:</strong> Portable recognition score that travels with you beyond seniority. <strong>Hobbyists:</strong> Track progress and access pathways for private aviation, charter, or specialized sectors. The platform serves every stage of the aviation journey."
+                    q: "Can I skip the Foundation Program?",
+                    a: "You can attempt the Transition Program directly, but the assessment is rigorous. Without the baseline competencies and mentorship hours from Foundation, you may not pass. Foundation graduates are automatically prioritized for Transition acceptance and pathway matching."
                 }
             ]
         },
@@ -88,6 +88,23 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
                 {
                     q: "How do airlines access my profile?",
                     a: "When verified operators subscribe to our platform, they search by competency requirements. They see your recognition score, verified hours, and assessment results—not your personal contact info until you authorize contact. You control visibility. Matching is based on competency alignment, not keyword search. We are actively recruiting operator partners."
+                }
+            ]
+        },
+        {
+            category: "Who Is This For",
+            questions: [
+                {
+                    q: "I'm a student pilot with low hours. Should I join now?",
+                    a: "<strong>Yes—start early.</strong> Your recognition score builds over time. The Foundation Program is free to enter and gives you 50 hours of verified mentorship, competency assessment, and industry-aligned CV formatting. Starting now means you hit the job market with a verified profile and established recognition score, not an empty resume. Waiting until graduation puts you behind pilots who started building their profile while still in training."
+                },
+                {
+                    q: "I'm a hobbyist, not pursuing an airline career. Is this relevant?",
+                    a: "<strong>Yes—competency matters in every sector.</strong> Whether you fly charter, corporate, cargo, or recreation, the EBT CBTA assessment framework improves your decision-making, communication, and safety awareness. Many non-airline operators (agricultural, air ambulance, private charter) use competency-based hiring. A verified recognition profile distinguishes you from pilots with just logbook hours. The skills transfer—airlines don't own the standard."
+                },
+                {
+                    q: "I already have airline connections. Why do I need this?",
+                    a: "<strong>Connections get you the interview. Data gets you the job.</strong> Your network can open doors, but operators still need documented proof of your competencies. A recognition score provides verified, standardized evidence that complements—not replaces—your relationships. It also future-proofs your career: connections change, companies merge, people move. Your recognition score is portable and belongs to you."
                 }
             ]
         },

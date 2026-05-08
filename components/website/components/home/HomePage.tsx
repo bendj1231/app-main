@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon, X, Award, Shield } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TopNavbar } from '../TopNavbar';
 import { RevealOnScroll } from '../RevealOnScroll';
@@ -1314,128 +1314,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* === THREE PILLARS SECTION === */}
-            <div className="relative z-30 w-full px-4 md:px-8 py-16 bg-white">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-12">
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">Built for Every Pilot</p>
-                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
-                            Your Aviation Identity Lives Here
-                        </h2>
-                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                            Whether you are a student seeking your first $50 industry milestone, a hobbyist mastering the W1000 and tracking global airline shifts, or a veteran ready to showcase a vetted, top-tier PR Score—this is where you get recognized.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Students */}
-                        <div className="group relative p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all">
-                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
-                                <User className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">Bridge the Industry Gap</h3>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                Don't wait for your first job to start your career. Get real-world industry experience for just $50 through our specialized programs.
-                            </p>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-widest">Students</p>
-                        </div>
-
-                        {/* Hobbyists */}
-                        <div className="group relative p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all">
-                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
-                                <Cpu className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">The Expert's Toolkit</h3>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                Fly like a professional. Access the latest type rating requirements, monitor global aviation changes, and benchmark your profile against real airline expectations.
-                            </p>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-widest">Hobbyists</p>
-                        </div>
-
-                        {/* Established Pilots */}
-                        <div className="group relative p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all">
-                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
-                                <Award className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">Verified Prestige</h3>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                You've earned your stripes; now get the recognition you deserve. A top PR Score isn't just a number—it's a digital badge of honor.
-                            </p>
-                            <p className="text-xs font-bold text-blue-700 uppercase tracking-widest">Veterans</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* === WHY JOIN SECTION - High-Pressure Fugazzi Messaging === */}
-            <div className="relative z-30 w-full px-4 md:px-8 py-16 bg-slate-50">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-12">
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-red-600 mb-4">The Truth About the "Pilot Shortage"</p>
-                        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
-                            Stop Being an Applicant. Start Being a Candidate.
-                        </h2>
-                        <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                            Everyone talks about a shortage, but the truth is different: Airlines aren't looking for pilots; they are looking for certainty. Thousands of applications sit unread because airlines can't risk hiring the wrong person. Without a PR Score, you are just a number in a stack. Pilot Recognition is the only way to break through the noise and prove you are the solution they are desperate for.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Students - Escape the Low-Hour Trap */}
-                        <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
-                            <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                                <Zap className="w-6 h-6 text-red-600" />
-                            </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Escape the "Low-Hour" Trap</h3>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                The Reality: Flight schools are churning out graduates, but airlines are picky. The Need: For $50, our Industry Experience programs give you the "vetted" status that puts you ahead of the 200 other students graduating this month.
-                            </p>
-                            <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                Without this, your license is just a piece of paper; with it, you are an industry-aligned asset.
-                            </p>
-                        </div>
-
-                        {/* Hobbyists - Information is Survival */}
-                        <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
-                            <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                                <Cpu className="w-6 h-6 text-red-600" />
-                            </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Information is Survival</h3>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                The Reality: The rules change every week—Type Ratings, ICAO standards, and battery tech are moving targets. The Need: You can't fly safely or competently on old info. You need the W1000 application and our real-time pathway updates to stay relevant.
-                            </p>
-                            <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                If you aren't comparing your profile to current airline expectations, you're flying blind in a professional world.
-                            </p>
-                        </div>
-
-                        {/* Veterans - The Respect Tax */}
-                        <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
-                            <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                                <Award className="w-6 h-6 text-red-600" />
-                            </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">The Respect Tax</h3>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                The Reality: Even with a "hookup," the HR department still needs to check a box. The Need: A referral gets you a look, but a Top PR Score gets you the respect. In the modern cockpit, pilots respect those who have been interviewed, vetted, and recognized.
-                            </p>
-                            <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                Don't just rely on who you know—brag about the fact that you've been mathematically proven to be elite.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Bottom Line CTA */}
-                    <div className="mt-12 text-center">
-                        <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                            The "shortage" is a Fugazzi if you're on the outside looking in. Pilot Recognition puts you on the inside. If you aren't vetted, you don't exist.
-                        </p>
-                        <p className="text-lg font-bold text-slate-900">
-                            Join the Global Registry. Get the Score. Get the Job.
-                        </p>
                     </div>
                 </div>
             </div>

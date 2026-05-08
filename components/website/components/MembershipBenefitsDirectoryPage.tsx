@@ -12,28 +12,28 @@ interface MembershipBenefitsPageProps {
 export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ onBack, onNavigate, onLogin }) => {
     const mainBenefits = [
         {
-            title: "Access",
-            desc: "Low-cost programs that bridge the industry gap. From $50, gain industry experience before your first job.",
+            title: "Broker Network Access",
+            desc: "Direct visibility to private jet owners, aircraft brokers, and executive flight departments worldwide.",
             icon: Network,
-            bullets: ["Foundation Program ($49)", "Transition Program ($99-149)", "Recognition Plus ($99/year)"]
+            bullets: ["Priority Recruitment", "Global Job Feed", "Direct Messaging"]
         },
         {
-            title: "Insight",
-            desc: "Live recognition scores that match you with verified pathways. Your score is your currency for access.",
+            title: "Verified Pilot Badge",
+            desc: "A digital seal of credibility representing your verified background, training, and competency standards.",
             icon: Award,
-            bullets: ["Real-time Profile Updates", "Pathway Matching", "Gap Analysis"]
+            bullets: ["Blockchain Verified", "Recruiter Trust", "Profile Distinction"]
         },
         {
-            title: "Authority",
-            desc: "Verified credentials that airlines trust. Recognition travels with you, regardless of airline seniority.",
+            title: "Ecosystem Integration",
+            desc: "Full access to the W1000 Suite, including the Black Box logbook and Examination Terminal.",
             icon: Zap,
-            bullets: ["EBT CBTA Assessment", "Verified Mentorship", "ATLAS CV Formatting"]
+            bullets: ["W1000 Access", "Data Connectivity", "AI CV Formatting"]
         },
         {
-            title: "For Everyone",
-            desc: "Students, instructors, airline pilots, and hobbyists. The platform serves every stage of the aviation journey.",
+            title: "Industry Advocacy",
+            desc: "We speak for the pilot. Benefit from our direct relations with airlines, manufacturers, and regulators.",
             icon: Shield,
-            bullets: ["Students: Build recognition", "Veterans: Portable credentials", "Hobbyists: Track progress"]
+            bullets: ["Policy Influence", "Group Representation", "Legal Guidance"]
         }
     ];
 
@@ -58,13 +58,14 @@ export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ 
                             className="mx-auto w-64 h-auto object-contain mb-2"
                         />
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-                            Access | Insight | Authority
+                            Programs | Specializations | Pathways
                         </p>
                         <h1 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6">
                             Join the Network
                         </h1>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-                            A three-pillar platform built for every stage of your aviation journey. <strong>Access</strong> through low-cost programs that bridge the industry gap. <strong>Insight</strong> through live recognition scores that match you with verified pathways. <strong>Authority</strong> through verified credentials that airlines trust.
+                            PilotRecognition is more than a platform—it's a professional pilot network designed to
+                            enhance your credibility, automate your compliance, and accelerate your pathway into the global flight deck.
                         </p>
                     </RevealOnScroll>
                 </div>
