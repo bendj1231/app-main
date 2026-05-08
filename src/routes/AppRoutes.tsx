@@ -86,6 +86,8 @@ import CareerPathwaysIndex from '@/portal/pages/CareerPathwaysIndex';
 import { AccessPortal2Page } from '@/components/website/components/AccessPortal2Page';
 import ExaminationPortal from '@/components/website/components/examinations/ExaminationPortal';
 import EnterpriseAccessPage from '@/app/enterprise-access/page';
+import { PilotShortagePage } from '@/components/website/components/PilotShortagePage';
+import { WhyRecognitionPage } from '@/components/website/components/WhyRecognitionPage';
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -147,6 +149,8 @@ export const AppRoutes = () => {
       <Route path="/about-industry" element={<AboutIndustryPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/technical-index" element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/faq" element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/pilot-shortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/why-recognition" element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/mission-vision" element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/contact-support" element={<ContactSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
