@@ -6,6 +6,8 @@ interface StripePaymentSectionProps {
 }
 
 const FEATURES_60 = [
+  'Recognition Score — public, visible to airlines in the pulling system',
+  'Recognition+ badge on profile — shortlisted tier',
   'Unlimited profile comparisons (pathway / airline / type rating)',
   'Unlimited pathway submissions (no background check)',
   'Shortlisted by airlines as a Recognition+ member',
@@ -20,6 +22,8 @@ const FEATURES_60 = [
 
 const FEATURES_100 = [
   'Veremark background screening — verified badge on profile',
+  'Recognition Score — public, visible to airlines in the pulling system',
+  'Recognition+ Verified badge — preferred, background checked tier',
   'Unlimited pathway submissions + background check attached',
   'Shortlisted by airlines as preferred — background checked',
   'Priority listing — not pooled with general applicants',
@@ -143,7 +147,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <div>
               <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Free Account</p>
               <p className="text-3xl font-bold text-white">$0 <span className="text-base font-normal text-slate-400">/ forever</span></p>
-              <p className="text-slate-400 text-sm mt-1">3 comparisons/month · 2 submissions/month · Recognition AI (5 chats/month, basic profile only) · Standard Atlas CV · EBT interview 1–2 months after Foundation</p>
+              <p className="text-slate-400 text-sm mt-1">Recognition Score visible (no badge) · 3 comparisons/month · 2 submissions/month · Recognition AI (5 chats/month) · Standard Atlas CV · EBT interview 1–2 months after Foundation</p>
             </div>
             <button
               onClick={() => { onNavigate('become-member'); window.scrollTo(0, 0); }}
