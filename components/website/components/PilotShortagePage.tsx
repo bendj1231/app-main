@@ -63,13 +63,13 @@ export const PilotShortagePage: React.FC<PilotShortagePageProps> = ({ onBack, on
                                 <div>
                                     <p className="font-semibold text-red-600 mb-1">The Reality</p>
                                     <p className="text-slate-600">
-                                        The rules change every week—Type Ratings, ICAO standards, and battery tech are moving targets. Yesterday's currency is today's obsolescence.
+                                        Aviation regulations, Type Rating requirements, and ICAO standards evolve constantly. Yesterday's currency is today's obsolescence. Without current data, you're flying on outdated assumptions.
                                     </p>
                                 </div>
                                 <div>
                                     <p className="font-semibold text-amber-600 mb-1">The Solution</p>
                                     <p className="text-slate-600">
-                                        You can't fly safely on old info. The W1000 application and our real-time pathway updates keep you relevant. If you aren't comparing your profile to current airline expectations, you're flying blind.
+                                        You can't fly safely on old info. The W1000 application and real-time pathway updates keep you current on airspace changes, medical requirements, and operator expectations. Compare your profile to live airline standards—stay professionally relevant even if you're flying for recreation.
                                     </p>
                                 </div>
                             </div>
