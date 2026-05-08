@@ -9,11 +9,12 @@ const FEATURES_60 = [
   'Unlimited profile comparisons (pathway / airline / type rating)',
   'Unlimited pathway submissions (no background check)',
   'Shortlisted by airlines as a Recognition+ member',
+  'Priority listing — not pooled with general applicants',
+  'Direct feedback on profile gaps from match engine & score',
   'Atlas CV — upload documents (licenses, medical, ratings)',
   'Uploaded documents visible on profile — not screened',
   'Recognition AI gap score (OEM aligned)',
   'EBT CBTA interview fast-track — priority access after Foundation Program (skip the queue)',
-  'Priority matching',
   '25% off Foundation & Transition Programs',
 ];
 
@@ -21,12 +22,13 @@ const FEATURES_100 = [
   'Veremark background screening — verified badge on profile',
   'Unlimited pathway submissions + background check attached',
   'Shortlisted by airlines as preferred — background checked',
+  'Priority listing — not pooled with general applicants',
+  'Direct feedback on profile gaps from match engine & score',
   'Atlas CV — upload & Veremark-screened documents (licenses, medical, ratings)',
   'Screened documents visible to airlines & operators',
   'Unlimited profile comparisons (pathway / airline / type rating)',
   'Recognition AI gap score (OEM aligned)',
   'EBT CBTA interview fast-track — priority access after Foundation Program (skip the queue)',
-  'Priority matching',
   '50% off Foundation & Transition Programs',
 ];
 
