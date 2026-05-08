@@ -124,94 +124,115 @@ export default function RecognitionPlusPage() {
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-16">
         <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-4 md:p-8 mb-8 md:mb-16 overflow-x-auto shadow-2xl border border-white/20">
-          <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-6 md:mb-8 text-center">Free vs Recognition Plus</h3>
+          <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2 text-center">Compare All Tiers</h3>
+          <p className="text-slate-500 text-sm text-center mb-6 md:mb-8">See exactly what changes at each level</p>
           <table className="w-full text-xs md:text-sm">
             <thead>
               <tr>
-                <th className="text-left py-3 md:py-4 px-2 md:px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm rounded-tl-lg border-b border-white/30">Feature</th>
-                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-slate-900 bg-white/50 backdrop-blur-sm border-b border-white/30">Free Tier</th>
-                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-red-600 bg-red-50/70 backdrop-blur-sm w-1/3 rounded-tr-lg border-b border-red-200/50">Recognition Plus</th>
+                <th className="text-left py-3 md:py-4 px-2 md:px-4 font-bold text-slate-900 bg-white/50 rounded-tl-lg border-b border-slate-200 w-2/5">Feature</th>
+                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-slate-600 bg-slate-50/80 border-b border-slate-200">
+                  <div>Free</div>
+                  <div className="text-slate-400 font-normal text-[10px] mt-0.5">$0</div>
+                </th>
+                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-violet-700 bg-violet-50/80 border-b border-violet-200">
+                  <div>Recognition+</div>
+                  <div className="text-violet-500 font-normal text-[10px] mt-0.5">$60 / 6 months</div>
+                </th>
+                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-red-600 bg-red-50/80 rounded-tr-lg border-b border-red-200">
+                  <div>Recognition+ Verified</div>
+                  <div className="text-red-400 font-normal text-[10px] mt-0.5">$100 / year</div>
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Profile Creation</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Profile Matching</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-600 text-xs md:text-sm">Basic (shows 3 comparisons)</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓ Full comparison</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Pathway Access</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓ Recommended based on profile</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Recognition Score</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Foundation Program (Free)</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Priority Matching</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">AI Career Strategist</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">EBT CBTA Interview Fast-Track (Foundation Program)</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Recognition AI (OEM Aligned)</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">AI Medical Alerts (60-day warnings)</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Priority Pipeline (Hiring Surges)</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Zero-Fail Compliance Monitoring</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Background Check Verification (Criminal Records)</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-400 text-xs md:text-sm">—</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-200/80 backdrop-blur-sm text-red-600 rounded-full font-bold border border-red-300/50 shadow-md text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="border-b border-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-300">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-slate-900 font-bold text-xs md:text-sm">Auto Logbook Sync</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-slate-100/70 backdrop-blur-sm text-slate-900 rounded-full font-medium border border-slate-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center"><span className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 bg-red-100/70 backdrop-blur-sm text-red-600 rounded-full font-medium border border-red-200/50 shadow-sm text-xs md:text-sm">✓</span></td>
-              </tr>
-              <tr className="bg-gradient-to-r from-red-50/80 to-red-100/80 backdrop-blur-sm hover:from-red-100/90 hover:to-red-200/90 transition-all duration-300 border-b border-red-200/50">
-                <td className="py-3 md:py-4 px-2 md:px-4 text-red-900 font-bold text-xs md:text-sm">Price</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-slate-900 font-bold text-xs md:text-sm">Free</td>
-                <td className="py-3 md:py-4 px-2 md:px-4 text-center text-red-900 font-bold">
-                  <div className="text-base md:text-lg">$99/year</div>
-                  <div className="text-xs text-red-700 font-normal">or $60/6 months</div>
-                </td>
-              </tr>
+              {[
+                {
+                  feature: 'Live real-time profile',
+                  free: '—',
+                  s60: '✓ Updates when you log hours',
+                  s100: '✓ Updates when you log hours',
+                },
+                {
+                  feature: 'Recognition Score',
+                  free: 'Visible, no badge',
+                  s60: '✓ Recognition+ badge',
+                  s100: '✓ Recognition+ Verified badge',
+                },
+                {
+                  feature: 'Veremark background check',
+                  free: '—',
+                  s60: '—',
+                  s100: '✓ Screened & verified',
+                },
+                {
+                  feature: 'Profile in airline pulling system',
+                  free: 'General pool',
+                  s60: 'Ranked shortlist (no background check)',
+                  s100: 'Top of ranked shortlist (background checked)',
+                },
+                {
+                  feature: 'Airline filters you by',
+                  free: '—',
+                  s60: 'Score, recency, type rating, hours',
+                  s100: 'Veremark status, score, recency, type rating, hours',
+                },
+                {
+                  feature: 'Pathway interest submissions',
+                  free: '2 / month',
+                  s60: 'Unlimited',
+                  s100: 'Unlimited',
+                },
+                {
+                  feature: 'Profile comparisons',
+                  free: '3 / month',
+                  s60: 'Unlimited',
+                  s100: 'Unlimited',
+                },
+                {
+                  feature: 'Recognition AI',
+                  free: '5 chats / month (basic)',
+                  s60: '✓ Extended — live type rating, airline & pathway data',
+                  s100: '✓ Extended — live type rating, airline & pathway data',
+                },
+                {
+                  feature: 'Atlas CV',
+                  free: 'Standard (no screening)',
+                  s60: 'Upload documents (not screened)',
+                  s100: 'Upload + Veremark screened, visible to airlines',
+                },
+                {
+                  feature: 'EBT CBTA Interview',
+                  free: '1–2 months after Foundation',
+                  s60: '✓ Fast-track (skip the queue)',
+                  s100: '✓ Fast-track (skip the queue)',
+                },
+                {
+                  feature: 'Program discounts',
+                  free: '—',
+                  s60: '25% off Foundation & Transition',
+                  s100: '50% off Foundation & Transition',
+                },
+                {
+                  feature: 'If placed through a pathway',
+                  free: '—',
+                  s60: 'Profile marked as successful placement',
+                  s100: 'Profile marked as successful placement',
+                },
+                {
+                  feature: 'Price',
+                  free: 'Free',
+                  s60: '$60 / 6 months',
+                  s100: '$100 / year',
+                  isPrice: true,
+                },
+              ].map((row, i) => (
+                <tr key={i} className={`border-b border-slate-100 hover:bg-slate-50/60 transition-colors ${row.isPrice ? 'bg-slate-50 font-bold' : ''}`}>
+                  <td className="py-3 px-2 md:px-4 text-slate-800 font-semibold text-xs md:text-sm">{row.feature}</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-slate-500 text-xs md:text-sm">{row.free}</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-violet-700 text-xs md:text-sm font-medium bg-violet-50/30">{row.s60}</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-red-600 text-xs md:text-sm font-medium bg-red-50/30">{row.s100}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <Link
