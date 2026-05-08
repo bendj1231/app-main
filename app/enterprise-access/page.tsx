@@ -514,11 +514,11 @@ const EnterpriseAccessPage = () => {
                 <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-20">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-5">Enterprise · Aviation Industry Infrastructure</p>
                     <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] mb-6">
-                        The aviation industry's<br />
-                        <span className="bg-gradient-to-r from-blue-400 via-violet-400 to-emerald-400 bg-clip-text text-transparent">talent infrastructure.</span>
+                        Connecting Pilots<br />
+                        <span className="bg-gradient-to-r from-blue-400 via-violet-400 to-emerald-400 bg-clip-text text-transparent">to the Industry.</span>
                     </h1>
                     <p className="text-slate-300 text-xl max-w-3xl mb-10 leading-relaxed">
-                        Live pilot profiles. Veremark-verified. Type-rating filtered. Recognition-scored. Built for airlines, operators, insurers, lenders, ATOs, manufacturers, and every business that touches a pilot's career.
+                        Live pilot profiles. Veremark-verified. Type-rating filtered. Recognition-scored. The infrastructure that connects qualified pilots with airlines, operators, insurers, lenders, ATOs, and manufacturers.
                     </p>
                     <div className="flex flex-wrap gap-3">
                         <button onClick={() => scrollTo('solutions')} className="bg-white text-slate-900 hover:bg-slate-100 font-semibold px-6 py-3 rounded-lg transition-colors">
@@ -554,9 +554,9 @@ const EnterpriseAccessPage = () => {
             {/* ─── WHO WE SERVE / SOLUTIONS GRID ─── */}
             <section id="solutions" className="py-20 px-6 border-b border-white/10">
                 <div className="max-w-6xl mx-auto">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-3">Who We Serve</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">Every business in pilot careers.</h2>
-                    <p className="text-slate-400 text-lg max-w-2xl mb-12">From airline recruitment to pilot lending, insurance underwriting to eVTOL talent pipelines — pick your sector and see how PilotRecognition plugs in.</p>
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-3">Who We Connect</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4">Bridging Pilots & Industry.</h2>
+                    <p className="text-slate-400 text-lg max-w-2xl mb-12">From airline recruitment to pilot finance, insurance underwriting to eVTOL talent pipelines — we connect qualified pilots with the businesses that need them.</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {SECTORS.map(s => (
