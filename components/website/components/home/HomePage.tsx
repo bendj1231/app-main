@@ -1367,40 +1367,46 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* === DISCOVER PILOT RECOGNITION === */}
             <div className="relative z-10 bg-white w-full px-4 md:px-8 py-12">
                 <div className="max-w-7xl mx-auto">
-                    {/* Section Header */}
+                    {/* Section Header - Updated with FOMO messaging */}
                     <div className="mb-8 text-center">
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-red-500">Pilot Recognition</span></h2>
-                        <p className="text-slate-600 text-sm md:text-base">Your live profile that operators pull from — not a résumé you send into a black hole</p>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 border border-red-200 rounded-full mb-4">
+                            <span className="text-xs font-bold text-red-600 uppercase tracking-wider">The Global Registry</span>
+                        </div>
+                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Your <span className="text-red-500">Digital Professional Identity</span></h2>
+                        <p className="text-slate-600 text-sm md:text-base max-w-2xl mx-auto">
+                            In the past, you were just a name on a PDF. Today, you are a PR Score. 
+                            If you aren't recognized, vetted, and scored, you aren't just behind — <strong className="text-red-600">you're off the radar</strong>.
+                        </p>
                     </div>
-                    {/* Feature Highlights */}
+                    {/* Feature Highlights - Updated with sharper hooks */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div className="bg-slate-900 rounded-2xl p-6 border border-slate-700">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-3">Recognition Score</p>
-                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Your Readiness Currency</h4>
+                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-3">The Unfair Advantage</p>
+                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Don't Graduate Into a Vacuum</h4>
                             <p className="text-sm text-slate-300 leading-relaxed">
-                                A single number that measures your profile against industry standards. Airlines filter and sort by this score. It updates live as you gain hours, complete programs, and earn endorsements. No more guessing if you qualify.
+                                Our <strong className="text-white">$50 Industry Experience Programs</strong> put "Professional Alignment" on your resume before you even have your commercial license. Airlines are scouting the next generation of cadets right now — if you aren't on the registry, you're invisible to them.
                             </p>
                         </div>
                         <div className="bg-slate-900 rounded-2xl p-6 border border-slate-700">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-3">Gap Analysis</p>
-                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>See Exactly What You Are Missing</h4>
+                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-amber-400 mb-3">Professional Grade Knowledge</p>
+                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Fly With the Data of a Captain</h4>
                             <p className="text-sm text-slate-300 leading-relaxed">
-                                Compare your profile against any airline pathway card. Instantly see which requirements you meet, which you are close to, and which need work. Target your training spend instead of wasting money on irrelevant ratings.
+                                The <strong className="text-white">W1000 application</strong> brings G1000-inspired precision to your flight prep. Compare your profile against actual airline type-rating requirements — not because you're applying today, but because staying "airline-ready" is the mark of a true aviator.
                             </p>
                         </div>
                         <div className="bg-slate-900 rounded-2xl p-6 border border-slate-700">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-3">Operator Pull</p>
-                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Airlines Come to You</h4>
+                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-emerald-400 mb-3">The Gold Standard of Proof</p>
+                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Don't Just Say You're Good — Prove It</h4>
                             <p className="text-sm text-slate-300 leading-relaxed">
-                                Operators with enterprise access pull directly from the verified database. Your live profile is visible to recruiters with the right permissions. No applications. No cover letters. Just verified data speaking for itself.
+                                Your network gets you the interview, but your <strong className="text-white">Recognition Profile</strong> closes the deal. A high PR Score is the "Blue Checkmark" of aviation — a verified, high-performance data set that earns instant respect from peers and recruiters alike.
                             </p>
                         </div>
                     </div>
-                    {/* Tier Comparison */}
+                    {/* Tier Comparison - Updated with urgency */}
                     <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden mb-8">
                         <div className="p-6 border-b border-white/10">
-                            <h4 className="text-xl text-white mb-1" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Profile Tiers</h4>
-                            <p className="text-sm text-slate-400">Start free. Upgrade when you are ready to unlock full pathway matching.</p>
+                            <h4 className="text-xl text-white mb-1" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Join the Global Registry</h4>
+                            <p className="text-sm text-slate-400">Start free. The pilots who build their profiles now will be ahead of those who wait.</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                             <div className="p-6 border-b md:border-b-0 md:border-r border-white/10">
@@ -1410,13 +1416,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     </div>
                                     <div>
                                         <p className="text-white font-semibold text-sm">Free Tier</p>
-                                        <p className="text-slate-400 text-xs">Platform access at no cost</p>
+                                        <p className="text-slate-400 text-xs">Enter the registry at no cost</p>
                                     </div>
                                 </div>
                                 <ul className="space-y-2 text-sm text-slate-300">
-                                    <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>Basic profile matching (shows 2 gaps)</li>
+                                    <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>Basic profile in the Global Registry</li>
                                     <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>3 pathway views per month</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>Public pathway browsing</li>
+                                    <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>Start building your recognition score</li>
                                     <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>Standard ATLAS CV format</li>
                                 </ul>
                             </div>
@@ -1427,25 +1433,28 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     </div>
                                     <div>
                                         <p className="text-white font-semibold text-sm">Recognition Plus</p>
-                                        <p className="text-slate-400 text-xs">$99/year — full pathway intelligence</p>
+                                        <p className="text-slate-400 text-xs">$99/year — full visibility to operators</p>
                                     </div>
                                 </div>
                                 <ul className="space-y-2 text-sm text-slate-300">
                                     <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Full profile comparison against all pathways</li>
-                                    <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Unlimited pathway views and matching</li>
-                                    <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Priority operator pull visibility</li>
+                                    <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Unlimited pathway intelligence</li>
+                                    <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Priority operator pull visibility — <strong className="text-white">airlines see you first</strong></li>
                                     <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Advanced analytics and benchmarking</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    {/* CTA */}
-                    <div className="flex items-center justify-center gap-3">
+                    {/* CTA - Updated with urgency */}
+                    <div className="flex flex-col items-center justify-center gap-3">
+                        <p className="text-sm text-slate-500 text-center max-w-lg">
+                            The early adopters building recognition scores now will have a head start on the pilots who wait.
+                        </p>
                         <button
-                            onClick={() => onNavigate('pilot-recognition-profile')}
-                            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold uppercase tracking-wider transition-colors"
+                            onClick={() => onNavigate('become-member')}
+                            className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold uppercase tracking-wider transition-colors shadow-lg hover:shadow-xl hover:scale-105 transform"
                         >
-                            Build Your Profile
+                            Claim Your Identity — Get Recognized
                         </button>
                     </div>
                 </div>
