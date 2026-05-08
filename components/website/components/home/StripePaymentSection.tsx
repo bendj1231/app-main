@@ -39,9 +39,12 @@ const FEATURES_100 = [
   '50% off Foundation & Transition Programs',
 ];
 
+const HERO_FEATURES_PREVIEW = 5;
+
 export default function StripePaymentSection({ onNavigate }: StripePaymentSectionProps) {
   const { currentUser } = useAuth();
   const [processing, setProcessing] = useState(false);
+  const [showAllHero, setShowAllHero] = useState(false);
 
   const handleCheckout = async (priceId: string) => {
     if (!currentUser) {
@@ -113,8 +116,8 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
               <p className="text-blue-400 text-xs font-semibold mb-6">✓ 3-day free trial included</p>
 
               {/* Feature list */}
-              <ul className="space-y-2.5 mb-7">
-                {FEATURES_100.map((f) => (
+              <ul className="space-y-2.5 mb-3">
+                {(showAllHero ? FEATURES_100 : FEATURES_100.slice(0, HERO_FEATURES_PREVIEW)).map((f) => (
                   <li key={f} className="flex items-center gap-2.5 text-sm text-slate-300">
                     <span className="w-4 h-4 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center flex-shrink-0">
                       <span className="text-blue-400 text-[10px]">✓</span>
@@ -123,6 +126,12 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
                   </li>
                 ))}
               </ul>
+              <button
+                onClick={() => setShowAllHero(v => !v)}
+                className="text-blue-400 hover:text-blue-300 text-xs font-semibold mb-5 flex items-center gap-1 transition-colors"
+              >
+                {showAllHero ? '↑ Show less' : `+ ${FEATURES_100.length - HERO_FEATURES_PREVIEW} more features`}
+              </button>
 
               {/* CTA */}
               <button
