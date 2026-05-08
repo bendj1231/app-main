@@ -230,7 +230,105 @@ const EnterpriseAccessPage = () => {
                     <span>Back</span>
                 </button>
 
+                {/* ── Airline / Operator Pricing Section ── */}
                 <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                >
+                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400 font-semibold mb-2">Airlines · Operators · Training Organisations</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Simple pricing. <span className="text-blue-400">Pay when you place.</span></h2>
+                    <p className="text-slate-400 text-base mb-8 max-w-2xl">Access a verified, background-checked pilot database. Pull profiles, post pathway cards, and only pay a success fee when a pilot is placed through your pathway.</p>
+
+                    {/* Pricing cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+                        {/* Free */}
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Free</p>
+                            <p className="text-3xl font-bold text-white mb-0.5">$0 <span className="text-base font-normal text-slate-400">/ forever</span></p>
+                            <p className="text-slate-400 text-xs mb-5">Start pulling pilots at no cost</p>
+                            <ul className="space-y-2 mb-6">
+                                {[
+                                    'Post public pathway cards',
+                                    'View pilot profiles & Recognition Scores',
+                                    'Access pilot database (browse)',
+                                    'See Recognition+ & Verified badges',
+                                ].map(f => (
+                                    <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                                        <span className="text-slate-400 mt-0.5 flex-shrink-0">✓</span>{f}
+                                    </li>
+                                ))}
+                            </ul>
+                            <p className="text-slate-500 text-xs">Get started by requesting access below</p>
+                        </div>
+
+                        {/* Enterprise $1,000/month */}
+                        <div className="relative bg-white/5 border border-blue-500/40 rounded-2xl p-6 backdrop-blur-sm overflow-hidden">
+                            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-blue-400 to-transparent" />
+                            <div className="absolute top-4 right-4 px-2.5 py-0.5 rounded-full bg-blue-600/80 text-white text-[10px] font-bold uppercase tracking-wider">Most Popular</div>
+                            <p className="text-[10px] uppercase tracking-widest text-blue-400 mb-1">Enterprise</p>
+                            <p className="text-3xl font-bold text-white mb-0.5">$1,000 <span className="text-base font-normal text-slate-400">/ month</span></p>
+                            <p className="text-slate-400 text-xs mb-5">Full pull access + advanced filtering</p>
+                            <ul className="space-y-2 mb-6">
+                                {[
+                                    'Pull API — unlimited profile pulls',
+                                    'Advanced filtering (score, type rating, region)',
+                                    'EBT video interview access',
+                                    'Verified + background-checked pilot priority',
+                                    'Pathway card management dashboard',
+                                    'Placement tracking — 90-day outcome reports',
+                                    'Direct contact with matched pilots',
+                                ].map(f => (
+                                    <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                                        <span className="text-blue-400 mt-0.5 flex-shrink-0">✓</span>{f}
+                                    </li>
+                                ))}
+                            </ul>
+                            <a href="#enterprise-form" className="block w-full text-center py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider transition-all">
+                                Request Enterprise Access
+                            </a>
+                        </div>
+
+                        {/* Success Fee */}
+                        <div className="relative bg-white/5 border border-emerald-500/40 rounded-2xl p-6 backdrop-blur-sm overflow-hidden">
+                            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-600 via-emerald-400 to-transparent" />
+                            <p className="text-[10px] uppercase tracking-widest text-emerald-400 mb-1">Success Fee</p>
+                            <p className="text-3xl font-bold text-white mb-0.5">$500 <span className="text-base font-normal text-slate-400">/ placed pilot</span></p>
+                            <p className="text-slate-400 text-xs mb-5">Only pay when a pilot is hired through a pathway</p>
+                            <ul className="space-y-2 mb-6">
+                                {[
+                                    'Triggered only on confirmed placements',
+                                    'Pilot profile marked as successful placement',
+                                    '90-day placement window tracked automatically',
+                                    'Placement data feeds your hiring metrics',
+                                    'Industry benchmark: airlines spend $5k–$15k per recruit',
+                                    'You save $4,500+ per hire vs. traditional recruitment',
+                                ].map(f => (
+                                    <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                                        <span className="text-emerald-400 mt-0.5 flex-shrink-0">✓</span>{f}
+                                    </li>
+                                ))}
+                            </ul>
+                            <p className="text-slate-500 text-xs text-center">Included with Enterprise plan · No surprise charges</p>
+                        </div>
+                    </div>
+
+                    {/* Investor-grade metric callout */}
+                    <div className="bg-white/5 border border-white/10 rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
+                            <span className="text-emerald-400 text-lg">↗</span>
+                        </div>
+                        <div>
+                            <p className="text-white font-semibold text-sm">One metric we track obsessively: pilots placed within 90 days</p>
+                            <p className="text-slate-400 text-xs mt-0.5">Every verified pilot placed through a pathway is recorded. You see the outcome. We prove the pipeline works.</p>
+                        </div>
+                    </div>
+                </motion.div>
+
+                <motion.div
+                    id="enterprise-form"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
