@@ -629,6 +629,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [showAllCategories, setShowAllCategories] = useState(false);
     const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
     const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
+    const [activeBillboardSlide, setActiveBillboardSlide] = useState(0);
 
     // Auto-open newsroom modal on first visit of the session
     useEffect(() => {
@@ -867,6 +868,8 @@ export const HomePage: React.FC<HomePageProps> = ({
 
     const carouselRef = useRef<HTMLDivElement>(null);
     const pathwaysCarouselRef = useRef<HTMLDivElement>(null);
+    const homePRCarouselRef = useRef<HTMLDivElement>(null);
+    const topRecommendedCarouselRef = useRef<HTMLDivElement>(null);
     const [isOverWhite, setIsOverWhite] = useState(false);
     const [selectedCarouselPathway, setSelectedCarouselPathway] = useState<any>(null);
 
@@ -1139,7 +1142,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent" />
                                             <div className="absolute top-1 left-1">
-                                                <span className="px-1 py-0.5 text-[8px] font-black uppercase tracking-[0.1em] bg-emerald-500/80 text-white border border-white/30 backdrop-blur-sm">
+                                                <span className="px-1 py-0.5 text-[8px] font-black uppercase tracking-[0.1em] bg-red-500/80 text-red-100 border border-red-300/30 backdrop-blur-sm">
                                                     Discover
                                                 </span>
                                             </div>
@@ -1207,7 +1210,467 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
                 )}
             </div>
-            
+
+            {/* === BECOME A MEMBER BANNER === */}
+            <div className="relative z-30 w-full px-4 md:px-8 py-10">
+                <div className="max-w-7xl mx-auto">
+                    <div className="relative overflow-hidden rounded-xl shadow-xl" style={{ backgroundColor: '#0d1b3e' }}>
+                        <div className="px-10 py-6 md:py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 max-w-full">
+                            <div>
+                                <h2 className="text-xl md:text-2xl font-semibold mb-2" style={{ color: '#ffffff' }}>
+                                    Become a <span style={{ color: '#dc2626' }}>Member</span> — It's Free
+                                </h2>
+                                <p className="text-sm leading-relaxed" style={{ color: '#ffffff', opacity: 0.85 }}>
+                                    Create your live pilot profile, access pathway cards matched to your recognition score, and get discovered by airlines and operators — at no cost.
+                                </p>
+                            </div>
+                            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+                                <button
+                                    onClick={() => onNavigate?.('become-member')}
+                                    className="px-6 py-3 rounded-lg font-semibold text-sm transition-all hover:opacity-90"
+                                    style={{ backgroundColor: '#ffffff', color: '#0d1b3e' }}
+                                >
+                                    Join for free
+                                </button>
+                                <button
+                                    onClick={() => onNavigate?.('recognition-plus')}
+                                    className="px-6 py-3 rounded-lg font-semibold text-sm transition-all border hover:bg-white/10"
+                                    style={{ backgroundColor: 'transparent', color: '#ffffff', borderColor: 'rgba(255,255,255,0.4)' }}
+                                >
+                                    Get <span style={{ color: '#dc2626' }}>Recognition+</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* === FULL IMAGE BANNER - Split Layout === */}
+            <div className="relative z-30 w-full h-[400px] md:h-[520px] lg:h-[600px] overflow-hidden flex">
+                {/* Left Half - Text Content */}
+                <div className="relative z-10 w-1/2 flex items-center bg-slate-950 px-8 md:px-14 lg:px-20">
+                    <div>
+                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight mb-4">
+                            <span className="text-red-500">Recognition+</span> Unlocks
+                        </h3>
+                        <p className="text-slate-300 text-sm md:text-base mb-6 max-w-sm">
+                            Get the recognition you deserve. Background screened, prepared through programs, connected to pathways — giving your profile the edge that airlines notice.
+                        </p>
+                        <button
+                            onClick={() => onNavigate?.('recognition-plus')}
+                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-900 font-semibold text-sm rounded-full hover:bg-slate-100 transition-colors shadow-lg group"
+                        >
+                            <span>Secure your Profile with <span className="text-red-500">Recognition+</span></span>
+                            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 12h4m0 0l-2-2m2 2l-2 2" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Right Half - Image with gradient fade from left */}
+                <div className="relative w-1/2">
+                    <img
+                        src="/recognition-unlock.png"
+                        alt="Recognition+ Unlocks"
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=1600&q=80'; }}
+                    />
+                    {/* Gradient fade from left (slate-950) to transparent */}
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #020617 0%, rgba(2,6,23,0.6) 30%, transparent 70%)' }} />
+                </div>
+            </div>
+
+            {/* === DISCOVER PATHWAYS - Three Vertical Cards === */}
+            <div className="relative z-10 bg-white">
+            <div className="relative z-30 w-full px-4 md:px-8 pb-8 pt-12">
+                <div className="max-w-7xl mx-auto">
+                    {/* Section Header - Centered */}
+                    <div className="mb-6 text-center">
+                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-red-500">Pathways</span></h2>
+                        <p className="text-slate-600 text-sm md:text-base">Explore career opportunities matched to your Recognition Profile</p>
+                    </div>
+
+                    {/* Three Cards Grid - Portal Pathways Style */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto pb-8">
+                        {/* Card 1 - Type Rating Search */}
+                        <div
+                            onClick={() => onNavigate?.('type-rating-search')}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 min-h-[420px]"
+                        >
+                            {/* Full Background Image */}
+                            <img
+                                src="/typeratingsearch.png"
+                                alt="Type Ratings Background"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+
+                            {/* Content */}
+                            <div className="relative z-10 flex flex-col h-full">
+                                {/* Bottom Text Bar */}
+                                <div className="mt-auto bg-black/90 px-4 py-4">
+                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Type Rating <span className="text-red-500">Search</span></h4>
+                                    <p className="text-slate-400 text-xs mt-1">Explore type ratings and certifications</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card 2 - Airline Expectations */}
+                        <div
+                            onClick={() => onNavigate?.('airline-expectations')}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 min-h-[420px]"
+                        >
+                            {/* Full Background Image */}
+                            <img
+                                src="/AE.png"
+                                alt="Airline Expectations Background"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+
+                            {/* Content */}
+                            <div className="relative z-10 flex flex-col h-full">
+                                {/* Bottom Text Bar */}
+                                <div className="mt-auto bg-black/90 px-4 py-4">
+                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Airline <span className="text-red-500">Expectations</span></h4>
+                                    <p className="text-slate-400 text-xs mt-1">Discover what airlines want</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card 3 - Pilot Career Pathways */}
+                        <div
+                            onClick={() => onNavigate?.('pathways-modern')}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 min-h-[420px]"
+                        >
+                            {/* Full Background Image */}
+                            <img
+                                src="/DP.png"
+                                alt="Career Pathways Background"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+
+                            {/* Content */}
+                            <div className="relative z-10 flex flex-col h-full">
+                                {/* Bottom Text Bar */}
+                                <div className="mt-auto bg-black/90 px-4 py-4">
+                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Pilot Career <span className="text-red-500">Pathways</span></h4>
+                                    <p className="text-slate-400 text-xs mt-1">Explore all career opportunities</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* === RECOMMENDED PATHWAYS CAROUSEL === */}
+            <div className="relative z-30 w-full px-4 md:px-8 py-8">
+                <div className="max-w-7xl mx-auto">
+                    {/* Header */}
+                    <div className="mb-6 text-center">
+                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Recommended <span className="text-red-500">Pathways</span></h2>
+                        <p className="text-slate-600 text-sm mb-4">26 pathways matched to your Recognition Profile</p>
+
+                        {/* Match Filter */}
+                        <div className="flex items-center justify-center gap-2 flex-wrap">
+                            {[
+                                { key: 'all' as const, label: 'All' },
+                                { key: 'low' as const, label: 'Low 60-75%' },
+                                { key: 'mid' as const, label: 'Mid 75-90%' },
+                                { key: 'high' as const, label: 'High 90%+' },
+                            ].map((filter) => (
+                                <button
+                                    key={filter.key}
+                                    onClick={() => setActiveMatchFilter(filter.key)}
+                                    className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                                        activeMatchFilter === filter.key
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                                    }`}
+                                >
+                                    {filter.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Hint */}
+                    <div className="text-center mb-4">
+                        <span className="text-sm text-slate-500">Swipe left or right and click to select a card</span>
+                    </div>
+
+                    {/* Horizontal Scrolling Carousel */}
+                    <div className="relative w-full mb-6">
+                        <style>{`
+                            .top-rec-carousel::-webkit-scrollbar { display: none; }
+                            .top-rec-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-behavior: smooth; }
+                            .top-rec-carousel > div { scroll-snap-align: center; }
+                        `}</style>
+                        <div ref={topRecommendedCarouselRef} className="top-rec-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4" style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', paddingLeft: '16px', paddingRight: '16px' }}>
+                            {/* Featured Card - Foundation Program */}
+                            <div
+                                className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 hover:scale-100"
+                                style={{ width: '600px' }}
+                                onClick={(e) => {
+                                    setSelectedCarouselPathway({ id: 'FOUNDATION-PROGRAM-ENROLL', title: 'Foundation Program', company: 'PilotRecognition', location: 'Global', tags: ['Featured Program', '50 Hours Mentorship'] });
+                                    const card = e.currentTarget;
+                                    const carousel = topRecommendedCarouselRef.current;
+                                    if (carousel && card) carousel.scrollLeft = card.offsetLeft - (carousel.offsetWidth / 2) + (card.offsetWidth / 2);
+                                }}
+                            >
+                                <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
+                                    <img src="/program1.png" alt="Foundation Program" className="w-full h-full object-cover" loading="lazy" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                                    <div className="absolute top-3 right-3 flex gap-2">
+                                        <span className="px-3 py-1 rounded-full bg-blue-500/90 text-white text-xs font-semibold">Featured</span>
+                                        <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: 77%</span>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                                        <h4 className="text-lg font-serif font-normal text-white">Foundation Program</h4>
+                                        <p className="text-white/80 text-sm">PilotRecognition · Global</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Pathway Cards */}
+                            {HOME_PATHWAYS.filter(pathway => {
+                                if (activeMatchFilter === 'all') return true;
+                                if (activeMatchFilter === 'low') return pathway.matchProbability >= 60 && pathway.matchProbability < 75;
+                                if (activeMatchFilter === 'mid') return pathway.matchProbability >= 75 && pathway.matchProbability < 90;
+                                return pathway.matchProbability >= 90;
+                            }).map((pathway) => (
+                                <div
+                                    key={pathway.id}
+                                    className="flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] scale-95 hover:scale-100"
+                                    style={{ width: '600px' }}
+                                    onClick={(e) => {
+                                        setSelectedCarouselPathway(pathway);
+                                        const card = e.currentTarget;
+                                        const carousel = topRecommendedCarouselRef.current;
+                                        if (carousel && card) carousel.scrollLeft = card.offsetLeft - (carousel.offsetWidth / 2) + (card.offsetWidth / 2);
+                                    }}
+                                >
+                                    <div className="relative h-[300px] overflow-hidden rounded-xl bg-slate-800">
+                                        <img src={pathway.image} alt={pathway.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/default-airline.jpg'; }} />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                                        <div className="absolute top-3 right-3 flex gap-2">
+                                            <span className="px-3 py-1 rounded-full bg-emerald-500/90 text-white text-xs font-semibold">{pathway.matchProbability}% Match</span>
+                                            <span className="px-3 py-1 rounded-full bg-sky-500/90 text-white text-xs font-semibold">PR: {pathway.pr}</span>
+                                        </div>
+                                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                                            <p className="text-[10px] font-bold tracking-wider uppercase text-blue-300 mb-1">{pathway.category}</p>
+                                            <h4 className="text-base font-serif font-normal text-white">{pathway.title}</h4>
+                                            <p className="text-white/70 text-sm">{pathway.company}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Selected Pathway Panel */}
+                    {selectedCarouselPathway && (
+                        <div className="flex items-center justify-center gap-4 mt-2 mb-4">
+                            <button
+                                onClick={() => {
+                                    const carousel = topRecommendedCarouselRef.current;
+                                    if (!carousel) return;
+                                    const cards = Array.from(carousel.children) as HTMLElement[];
+                                    const center = carousel.scrollLeft + carousel.offsetWidth / 2;
+                                    let closest = 0;
+                                    let minDist = Infinity;
+                                    cards.forEach((card, i) => {
+                                        const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+                                        if (dist < minDist) { minDist = dist; closest = i; }
+                                    });
+                                    const prev = cards[Math.max(0, closest - 1)];
+                                    if (prev) carousel.scrollLeft = prev.offsetLeft - (carousel.offsetWidth / 2) + (prev.offsetWidth / 2);
+                                }}
+                                className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 text-xl font-bold transition-colors flex-shrink-0"
+                            >
+                                ‹
+                            </button>
+                            <div className="text-center max-w-xl">
+                                <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Selected Pathway</p>
+                                <h3 className="text-xl font-serif font-normal text-slate-900 mb-1">{selectedCarouselPathway.title}</h3>
+                                <p className="text-sm text-slate-600 mb-2">{selectedCarouselPathway.company} · {selectedCarouselPathway.location}</p>
+                                <p className="text-sm text-slate-500 mb-4">{selectedCarouselPathway.tags?.[0] || 'Explore this pathway'}</p>
+                                <button
+                                    onClick={() => onNavigate('pathways-modern')}
+                                    className="px-8 py-3 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition-all"
+                                >
+                                    Submit Interest for Pathway
+                                </button>
+                                <p className="text-xs uppercase tracking-widest text-slate-400 mt-4">Requirements & Profile Alignment</p>
+                                <p className="text-xs text-slate-400 mt-1">Updated: {new Date().toLocaleDateString()}</p>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    const carousel = topRecommendedCarouselRef.current;
+                                    if (!carousel) return;
+                                    const cards = Array.from(carousel.children) as HTMLElement[];
+                                    const center = carousel.scrollLeft + carousel.offsetWidth / 2;
+                                    let closest = 0;
+                                    let minDist = Infinity;
+                                    cards.forEach((card, i) => {
+                                        const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+                                        if (dist < minDist) { minDist = dist; closest = i; }
+                                    });
+                                    const next = cards[Math.min(cards.length - 1, closest + 1)];
+                                    if (next) carousel.scrollLeft = next.offsetLeft - (carousel.offsetWidth / 2) + (next.offsetWidth / 2);
+                                }}
+                                className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 text-xl font-bold transition-colors flex-shrink-0"
+                            >
+                                ›
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* === HIGH-VELOCITY RECRUITMENT BILLBOARD - 3-Slide Carousel === */}
+            <div className="relative z-30 w-full px-4 md:px-8 py-6">
+                <div className="max-w-7xl mx-auto">
+                    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-slate-800 shadow-2xl">
+                        {/* Background Pattern */}
+                        <div className="absolute inset-0 opacity-10">
+                            <div className="absolute inset-0" style={{
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                            }} />
+                        </div>
+
+                        {/* Persistent Right Side - 78% Readiness Score */}
+                        <div className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-20">
+                            <div className="flex items-center gap-3">
+                                {/* Progress Ring - Always Visible */}
+                                <div className="relative w-14 h-14">
+                                    <svg className="w-14 h-14 transform -rotate-90">
+                                        <circle cx="28" cy="28" r="24" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-white/20" />
+                                        <circle cx="28" cy="28" r="24" stroke="currentColor" strokeWidth="4" fill="transparent" strokeDasharray="150.8" strokeDashoffset="33.2" className="text-amber-400" />
+                                    </svg>
+                                    <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white">78%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Carousel Container */}
+                        <div className="relative z-10">
+                            {/* Slides Container with Animation */}
+                            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${(activeBillboardSlide || 0) * 100}%)` }}>
+                                {/* Slide 1: Live Placement Alert */}
+                                <div className="w-full flex-shrink-0">
+                                    <div className="flex flex-col md:flex-row items-center justify-between px-6 md:px-10 py-6 md:py-8 gap-4 pr-24 md:pr-32">
+                                        <div className="flex-1 text-center md:text-left">
+                                            {/* Live Data Badge */}
+                                            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-500/20 border border-green-500/30 rounded-full mb-3">
+                                                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                                                <span className="text-xs font-semibold text-green-300 uppercase tracking-wider">New Pathways</span>
+                                            </div>
+
+                                            <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                                                Live Placement Alert: New First Officer @ Cebu Pacific
+                                            </h3>
+                                            <p className="text-sm md:text-base text-blue-100 max-w-lg">
+                                                Verified in 12 days. Placed in 24. Join the 90-Day Placement Track today.
+                                            </p>
+
+                                            <button
+                                                onClick={() => onNavigate?.('foundation-program')}
+                                                className="mt-4 px-5 py-2.5 bg-green-500 hover:bg-green-400 text-white font-semibold text-sm rounded-lg transition-colors shadow-lg"
+                                            >
+                                                Start Your Track
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Slide 2: 47 Airlines Pulling */}
+                                <div className="w-full flex-shrink-0">
+                                    <div className="flex flex-col md:flex-row items-center justify-between px-6 md:px-10 py-6 md:py-8 gap-4 pr-24 md:pr-32">
+                                        <div className="flex-1 text-center md:text-left">
+                                            {/* Verified Pipeline Badge */}
+                                            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 rounded-full mb-3">
+                                                <svg className="w-3 h-3 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                </svg>
+                                                <span className="text-xs font-semibold text-white uppercase tracking-wider">Verified Pipeline</span>
+                                            </div>
+
+                                            <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                                                47 Airlines Are Actively Pulling Pilot Data
+                                            </h3>
+                                            <p className="text-sm md:text-base text-blue-100 max-w-lg">
+                                                Priority access granted to Industry Verified profiles. Is your ATLAS CV ready for review?
+                                            </p>
+
+                                            <button
+                                                onClick={() => onNavigate?.('recognition-plus')}
+                                                className="mt-4 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-white font-semibold text-sm rounded-lg transition-colors shadow-lg"
+                                            >
+                                                Get Verified ($99)
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Slide 3: Carbon-Efficient Pathways */}
+                                <div className="w-full flex-shrink-0">
+                                    <div className="flex flex-col md:flex-row items-center justify-between px-6 md:px-10 py-6 md:py-8 gap-4 pr-24 md:pr-32">
+                                        <div className="flex-1 text-center md:text-left">
+                                            {/* Eco-Certified Badge */}
+                                            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/30 rounded-full mb-3 animate-pulse">
+                                                <svg className="w-3 h-3 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clipRule="evenodd" />
+                                                </svg>
+                                                <span className="text-xs font-semibold text-emerald-300 uppercase tracking-wider">Eco-Certified</span>
+                                            </div>
+
+                                            <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                                                Prove Your Comparative Value: Carbon-Efficient Pathways
+                                            </h3>
+                                            <p className="text-sm md:text-base text-blue-100 max-w-lg">
+                                                Our pathways are 15% more CO2 efficient than standard routes. Stand out to green-initiative airlines.
+                                            </p>
+
+                                            <button
+                                                onClick={() => onNavigate?.('pathways-modern')}
+                                                className="mt-4 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold text-sm rounded-lg transition-colors shadow-lg"
+                                            >
+                                                View Green Pathways
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Progress Bar Navigation */}
+                            <div className="absolute bottom-0 left-0 right-0 px-6 md:px-10 pb-4">
+                                <div className="flex gap-2 max-w-md">
+                                    {[0, 1, 2].map((index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setActiveBillboardSlide(index)}
+                                            className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden"
+                                        >
+                                            <div
+                                                className={`h-full bg-white transition-all duration-300 ${
+                                                    (activeBillboardSlide || 0) === index ? 'w-full' : 'w-0'
+                                                }`}
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Decorative Elements */}
+                        <div className="absolute -right-20 -top-20 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
+                        <div className="absolute -left-20 -bottom-20 w-40 h-40 bg-blue-400/20 rounded-full blur-3xl" />
+                    </div>
+                </div>
+            </div>
+
             {/* Gradient Blur Transition between PathwayGrid and Showcase */}
             <div className="relative h-32 w-full z-40 pointer-events-none overflow-hidden">
                 <div
@@ -1273,7 +1736,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="relative z-10">
                     {/* Hero Section */}
                     <div className="mb-8 text-center pt-16">
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover Pathways</p>
+                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover <span className="text-red-500">Pathways</span></p>
                         <h1 className="text-4xl md:text-5xl font-serif font-normal text-white mb-2">
                             <span style={{ color: '#ffffff' }}>Pilot Recognition</span>{' '}
                             <span style={{ color: '#dc2626' }}>Pathways</span>
@@ -1336,8 +1799,8 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                     {/* Recommended Pathways Header */}
                     <div className="mb-4 w-full px-4 text-left">
-                        <h2 className="text-3xl md:text-4xl font-normal text-white" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-                            Recommended Pathways
+                        <h2 className="text-3xl md:text-4xl font-normal text-slate-900" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+                            Recommended <span className="text-red-500">Pathways</span>
                         </h2>
                         <p className="text-slate-400 text-xs mt-1">26 pathways available</p>
                     </div>
@@ -1992,6 +2455,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </footer>
 
 
+            </div>{/* end white background wrapper */}
         </div>
         </>
     );

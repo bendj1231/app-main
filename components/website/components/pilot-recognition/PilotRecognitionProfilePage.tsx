@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, User, Settings, Bell, BookOpen, LogOut, Sun, Moon } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, User, Settings, Bell, BookOpen, LogOut, Sun, Moon, Plus } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { PilotLicensureExperiencePage } from './PilotLicensureExperiencePage';
+import { DocumentVaultPage } from './DocumentVaultPage';
 import { RecognitionScoreDisplay } from '../../../RecognitionScoreDisplay';
 import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
 import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
@@ -12,6 +13,7 @@ import { CareerPathwayPriority } from './CareerPathwayPriority';
 import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
 import { MeshGradient } from '@paper-design/shaders-react';
+import { useAuth } from '../../../../src/contexts/AuthContext';
 
 interface PilotRecognitionProfilePageProps {
     onNavigate: (page: string) => void;
@@ -27,7 +29,7 @@ const CategorySection: React.FC<{ title: string; description?: string; children:
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div>
             <p style={{ margin: 0, fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>{title}</p>
-            {description && <p style={{ margin: '0.25rem 0 0', color: '#475569', fontSize: '0.9rem' }}>{description}</p>}
+            {description && <p style={{ margin: '0.25rem 0 0', color: '#94a3b8', fontSize: '0.9rem' }}>{description}</p>}
         </div>
         {children}
     </div>
@@ -56,7 +58,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const settingsDropdownRef = useRef<HTMLDivElement>(null);
     const notificationDropdownRef = useRef<HTMLDivElement>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
-    const [currentDocumentationPage, setCurrentDocumentationPage] = useState<'examination' | 'logbook' | 'licensure' | null>(null);
+    const [currentDocumentationPage, setCurrentDocumentationPage] = useState<'examination' | 'logbook' | 'licensure' | 'vault' | null>(null);
     const [uploadingImage, setUploadingImage] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [advancedMetricsOpen, setAdvancedMetricsOpen] = useState<'B' | 'L' | 'S' | null>(null);
@@ -66,45 +68,45 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const { score: recognitionScoreData, loading: scoreDataLoading } = useRecognitionScore();
     const [theme, setTheme] = useState<'dark' | 'light'>('dark');
     const [isPremium, setIsPremium] = useState(false);
+    const { currentUser } = useAuth();
 
-    // Check subscription status
+    // Check subscription status using auth context user (avoids lock race)
     useEffect(() => {
+        if (!currentUser?.id) {
+            console.log('[DEBUG] No authenticated user yet, skipping subscription check');
+            return;
+        }
+
+        let cancelled = false;
         const checkSubscription = async () => {
-            console.log('[DEBUG] Starting subscription check...');
+            console.log('[DEBUG] Starting subscription check for user:', currentUser.id);
             try {
-                const { data: { user }, error: userError } = await supabase.auth.getUser();
-                console.log('[DEBUG] Auth user:', user?.id, 'Error:', userError);
+                const { data: subscriptions, error } = await supabase
+                    .from('subscriptions')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .eq('status', 'active');
                 
-                if (user) {
-                    console.log('[DEBUG] Checking subscriptions for user:', user.id);
-                    const { data: subscriptions, error } = await supabase
-                        .from('subscriptions')
-                        .select('*')
-                        .eq('user_id', user.id)
-                        .eq('status', 'active');
-                    
-                    console.log('[DEBUG] Subscriptions query result:', { subscriptions, error });
-                    
-                    if (error) {
-                        console.error('[DEBUG] Subscription query error:', error);
-                        return;
-                    }
-                    
-                    // Check if any active subscription exists
-                    const hasActiveSubscription = subscriptions && subscriptions.length > 0;
-                    console.log('[DEBUG] Has active subscription:', hasActiveSubscription, 'Count:', subscriptions?.length);
-                    console.log('[DEBUG] Setting isPremium to:', hasActiveSubscription);
-                    setIsPremium(hasActiveSubscription);
-                } else {
-                    console.log('[DEBUG] No user found, setting isPremium to false');
-                    setIsPremium(false);
+                if (cancelled) return;
+                console.log('[DEBUG] Subscriptions query result:', { subscriptions, error });
+                
+                if (error) {
+                    console.error('[DEBUG] Subscription query error:', error);
+                    return;
                 }
+                
+                const hasActiveSubscription = subscriptions && subscriptions.length > 0;
+                console.log('[DEBUG] Has active subscription:', hasActiveSubscription, 'Count:', subscriptions?.length);
+                setIsPremium(hasActiveSubscription);
             } catch (error) {
                 console.error('[DEBUG] Error in checkSubscription:', error);
+                // Don't reset isPremium on error - keep previous state
             }
         };
         checkSubscription();
-    }, []);
+
+        return () => { cancelled = true; };
+    }, [currentUser?.id]);
 
     // Debug isPremium changes
     useEffect(() => {
@@ -715,6 +717,26 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             className={theme === 'light' ? 'light-theme' : 'dark-theme'}
             data-theme={theme}
         >
+            {/* Responsive styles for mobile */}
+            <style>{`
+                @media (max-width: 768px) {
+                    .pilot-data-grid {
+                        grid-template-columns: 1fr !important;
+                    }
+                    .quick-stats-grid {
+                        grid-template-columns: repeat(2, 1fr) !important;
+                        gap: 0.75rem !important;
+                    }
+                    .quick-stats-grid > div:last-child {
+                        grid-column: 1 / -1 !important;
+                    }
+                }
+                @media (max-width: 480px) {
+                    .quick-stats-grid {
+                        grid-template-columns: 1fr !important;
+                    }
+                }
+            `}</style>
             {/* MeshGradient Background - Same as Portal 2 */}
             <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
                 <MeshGradient
@@ -1029,7 +1051,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                         <CategorySection title="Pilot Data" description="Identity, credentials, flight activity, and core hour summaries">
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
+                            <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
                                 {/* Profile Card */}
                                 <div style={{ ...baseCardStyle, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1.25rem', justifyContent: 'space-between' }}>
                                     <div>
@@ -1045,7 +1067,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             fontSize: '2rem',
                                             fontWeight: 600,
                                             color: 'white',
-                                            boxShadow: '0 15px 35px rgba(15, 23, 42, 0.25)',
+                                            boxShadow: '0 15px 35px rgba(15, 23, 42, 0.25), 0 0 0 3px rgba(37, 99, 235, 0.5)',
                                             overflow: 'hidden',
                                             position: 'relative',
                                             cursor: 'pointer',
@@ -1207,8 +1229,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 fontWeight: 500,
                                                 cursor: 'pointer',
                                                 textDecoration: 'none',
-                                                textAlign: 'left'
+                                                textAlign: 'left',
+                                                transition: 'all 0.2s ease'
                                             }}
+                                            onMouseEnter={(e) => { e.currentTarget.style.color = '#60a5fa'; e.currentTarget.style.textDecoration = 'underline'; }}
+                                            onMouseLeave={(e) => { e.currentTarget.style.color = '#2563eb'; e.currentTarget.style.textDecoration = 'none'; }}
                                         >
                                             view details on licensure →
                                         </button>
@@ -1230,15 +1255,26 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                                             return [
                                                 { label: 'License Type', value: highestLicense },
-                                                { label: 'License Number', value: profileData?.license_id || 'Not specified' },
-                                                { label: 'License Status', value: profileData?.license_status || 'Not specified' },
-                                                { label: 'English Level', value: profileData?.english_proficiency_level || 'Not specified' },
-                                                { label: 'Career Stage', value: profileData?.career_stage || 'Not specified' }
+                                                { label: 'License Number', value: profileData?.license_id || '' },
+                                                { label: 'License Status', value: profileData?.license_status || '' },
+                                                { label: 'English Level', value: profileData?.english_proficiency_level || '' },
+                                                { label: 'Career Stage', value: profileData?.career_stage || '' }
                                             ];
                                         })().map(tile => (
                                             <div key={tile.label} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center' }}>
-                                                <p style={{ margin: 0, fontSize: '0.65rem', color: '#6b7280', letterSpacing: '0.1em' }}>{tile.label}</p>
-                                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
+                                                <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>{tile.label}</p>
+                                                {tile.value ? (
+                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => onNavigate('pilot-licensure-experience')}
+                                                        style={{ margin: '0.35rem 0 0', padding: '0.25rem 0.6rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '6px', color: '#64748b', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s ease' }}
+                                                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
+                                                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >
+                                                        <Plus size={12} /> Add
+                                                    </button>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
@@ -1261,21 +1297,35 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 fontWeight: 500,
                                                 cursor: 'pointer',
                                                 textDecoration: 'none',
-                                                textAlign: 'left'
+                                                textAlign: 'left',
+                                                transition: 'all 0.2s ease'
                                             }}
+                                            onMouseEnter={(e) => { e.currentTarget.style.color = '#60a5fa'; e.currentTarget.style.textDecoration = 'underline'; }}
+                                            onMouseLeave={(e) => { e.currentTarget.style.color = '#2563eb'; e.currentTarget.style.textDecoration = 'none'; }}
                                         >
                                             view details on readiness →
                                         </button>
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                                         {[
-                                            { label: 'Last Flown', value: profileData?.last_flown || 'Not specified' },
-                                            { label: 'Countries Visited', value: profileData?.countries_visited || 'Not specified' },
-                                            { label: 'Favorite Aircraft', value: profileData?.favorite_aircraft || 'Not specified' }
+                                            { label: 'Last Flown', value: profileData?.last_flown || '' },
+                                            { label: 'Countries Visited', value: profileData?.countries_visited || '' },
+                                            { label: 'Favorite Aircraft', value: profileData?.favorite_aircraft || '' }
                                         ].map(item => (
                                             <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <div style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
-                                                <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
+                                                <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
+                                                {item.value ? (
+                                                    <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => onNavigate('pilot-licensure-experience')}
+                                                        style={{ padding: '0.25rem 0.6rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '6px', color: '#64748b', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s ease' }}
+                                                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
+                                                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >
+                                                        <Plus size={12} /> Add Info
+                                                    </button>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
@@ -1290,9 +1340,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     border: '1px solid rgba(255, 255, 255, 0.1)',
                                     boxShadow: '0 20px 45px rgba(0,0,0,0.3)'
                                 }}>
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '0.35rem' }}>
+                                    <div className="quick-stats-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0', alignItems: 'center' }}>
                                         {/* Total Hours */}
-                                        <div style={{ padding: '0.4rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative' }}>
                                             <span style={{
                                                 position: 'absolute', top: '20%', right: 0,
                                                 width: '1px', height: '60%',
@@ -1302,11 +1352,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.total_hours || 0}</p>
                                             <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Logged Hours</p>
                                             <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#f59e0b', fontWeight: 500 }}>(unverified)</p>
-                                            <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: 0, fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>
+                                            <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: 0, fontSize: '0.65rem', fontWeight: 500, transition: 'color 0.2s ease' }} onMouseEnter={(e) => e.currentTarget.style.color = '#60a5fa'} onMouseLeave={(e) => e.currentTarget.style.color = '#2563eb'}>verify your flight hours</button>
                                         </div>
 
                                         {/* Recognition */}
-                                        <div style={{ padding: '0.4rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative' }}>
                                             <span style={{
                                                 position: 'absolute', top: '20%', right: 0,
                                                 width: '1px', height: '60%',
@@ -1318,7 +1368,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </div>
 
                                         {/* Recency Examination Score */}
-                                        <div style={{ padding: '0.4rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative' }}>
                                             <span style={{
                                                 position: 'absolute', top: '20%', right: 0,
                                                 width: '1px', height: '60%',
@@ -1331,7 +1381,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                                         {/* Nested Card for Examination and Mentor Hours */}
                                         <div style={{
-                                            background: 'rgba(248,250,252,0.8)',
+                                            background: 'rgba(248,250,252,0.85)',
                                             borderRadius: '16px',
                                             padding: '0.75rem',
                                             border: '1px solid rgba(226,232,240,0.8)',
@@ -1340,21 +1390,21 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             gap: '0.5rem'
                                         }}>
                                             {/* Title */}
-                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, textAlign: 'center' }}>Foundation Program</p>
+                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.15em', color: '#475569', textTransform: 'uppercase', fontWeight: 600, textAlign: 'center' }}>Foundation Program</p>
                                             
                                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem' }}>
                                                 {/* Examination */}
                                                 <div style={{ textAlign: 'center' }}>
-                                                    <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Examination</p>
-                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.examination_score || 0}</p>
-                                                    <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#94a3b8' }}>Knowledge Test</p>
+                                                    <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase' }}>Examination</p>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.examination_score || 0}</p>
+                                                    <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#475569' }}>Knowledge Test</p>
                                                 </div>
 
                                                 {/* Mentor Hours */}
                                                 <div style={{ textAlign: 'center' }}>
-                                                    <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Mentor Hours</p>
-                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.mentorship_hours || 0}</p>
-                                                    <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#94a3b8' }}>Engagement</p>
+                                                    <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase' }}>Mentor Hours</p>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.mentorship_hours || 0}</p>
+                                                    <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#475569' }}>Engagement</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1451,12 +1501,23 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                                         {[
-                                            { label: 'Current Occupation', value: profileData?.current_occupation || 'Not specified' },
-                                            { label: 'Current Employer', value: profileData?.current_employer || 'Not specified' }
+                                            { label: 'Current Occupation', value: profileData?.current_occupation || '' },
+                                            { label: 'Current Employer', value: profileData?.current_employer || '' }
                                         ].map(item => (
                                             <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <div style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
-                                                <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
+                                                <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
+                                                {item.value ? (
+                                                    <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => onNavigate('pilot-licensure-experience')}
+                                                        style={{ padding: '0.25rem 0.6rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '6px', color: '#64748b', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s ease' }}
+                                                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
+                                                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >
+                                                        <Plus size={12} /> Add Info
+                                                    </button>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
@@ -1513,6 +1574,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         description: 'Access your comprehensive digital flight log with detailed flight records, aircraft types, and operational experience.',
                                         cta: 'Open Data Entry',
                                         filled: true
+                                    },
+                                    {
+                                        title: 'Document Vault',
+                                        description: 'Upload and verify your pilot certificates, licenses, and medical documents for ATS visibility.',
+                                        cta: 'Open Vault',
+                                        filled: true
                                     }
                                 ].map(card => (
                                     <div key={card.title} style={{
@@ -1546,6 +1613,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     setCurrentDocumentationPage('logbook');
                                                 } else if (card.title === 'Pilot Licensure & Experience Data Entry') {
                                                     setCurrentDocumentationPage('licensure');
+                                                } else if (card.title === 'Document Vault') {
+                                                    setCurrentDocumentationPage('vault');
                                                 }
                                             }}
                                         >
@@ -1564,12 +1633,23 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                                     {[
-                                        { label: 'Why You Want to Become a Pilot', value: profileData?.why_become_pilot || 'Not specified' },
-                                        { label: 'Other Skills', value: profileData?.other_skills || 'Not specified' }
+                                        { label: 'Why You Want to Become a Pilot', value: profileData?.why_become_pilot || '' },
+                                        { label: 'Other Skills', value: profileData?.other_skills || '' }
                                     ].map(item => (
                                         <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
-                                            <div style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.35rem' }}>{item.label}</div>
-                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{item.value}</div>
+                                            <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.35rem' }}>{item.label}</div>
+                                            {item.value ? (
+                                                <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{item.value}</div>
+                                            ) : (
+                                                <button
+                                                    onClick={() => onNavigate('pilot-licensure-experience')}
+                                                    style={{ padding: '0.3rem 0.75rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '8px', color: '#64748b', fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', transition: 'all 0.2s ease' }}
+                                                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
+                                                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
+                                                >
+                                                    <Plus size={14} /> Add Info
+                                                </button>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -1579,13 +1659,13 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         {/* ATLAS Resume Section */}
                         <CategorySection title="ATLAS Resume" description="ATS-Approved ATLAS CV Formatting">
                             <div style={{ maxWidth: '80rem', margin: '0 auto', background: 'rgba(30, 41, 59, 0.8)', borderRadius: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)', overflow: 'hidden' }}>
-                                {/* Header Card */}
-                                <div style={{ background: '#dc2626', padding: '1.25rem 1.5rem', borderBottom: '1px solid #b91c1c' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <div>
+                                {/* Header Card - Aviation Burgundy for professional authority */}
+                                <div style={{ background: '#7f1d1d', padding: '1.25rem 1.5rem', borderBottom: '1px solid #991b1b' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: '5rem' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                                             <p style={{ margin: 0, fontSize: '0.625rem', color: '#fecaca', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.25rem' }}>Pilot Recognition Profile</p>
-                                            <h4 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: 'white' }}>{pilotName}</h4>
-                                            <p style={{ margin: 0, fontSize: '0.875rem', color: '#fecaca' }}>WingMentor Recognition Portfolio</p>
+                                            <h4 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: 'white', lineHeight: 1.2 }}>{pilotName}</h4>
+                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: '#fecaca' }}>WingMentor Recognition Portfolio</p>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
                                             <p style={{ margin: 0, fontSize: '0.625rem', color: '#fecaca', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem' }}>SHARE LINK</p>
@@ -1613,27 +1693,51 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 </div>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Mentorship</p>
-                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.mentorship_hours || 0}</p>
+                                                    <div style={{ position: 'relative', width: '48px', height: '48px', margin: '0 auto' }}>
+                                                        <svg width="48" height="48" viewBox="0 0 48 48" style={{ transform: 'rotate(-90deg)' }}>
+                                                            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" strokeWidth="4" />
+                                                            <circle cx="24" cy="24" r="20" fill="none" stroke={profileData?.mentorship_hours >= 50 ? '#059669' : '#3b82f6'} strokeWidth="4" strokeDasharray={`${(profileData?.mentorship_hours || 0) / 50 * 125.6} 125.6`} strokeLinecap="round" />
+                                                        </svg>
+                                                        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.875rem', fontWeight: 700, color: '#ffffff' }}>
+                                                            {profileData?.mentorship_hours || 0}
+                                                        </div>
+                                                    </div>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.6rem', color: '#64748b' }}>Goal: 50 hrs</p>
                                                 </div>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Foundation</p>
-                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.foundation_progress || 0}%</p>
+                                                    <div style={{ position: 'relative', width: '48px', height: '48px', margin: '0 auto' }}>
+                                                        <svg width="48" height="48" viewBox="0 0 48 48" style={{ transform: 'rotate(-90deg)' }}>
+                                                            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" strokeWidth="4" />
+                                                            <circle cx="24" cy="24" r="20" fill="none" stroke={profileData?.foundation_progress >= 100 ? '#059669' : '#3b82f6'} strokeWidth="4" strokeDasharray={`${(profileData?.foundation_progress || 0) / 100 * 125.6} 125.6`} strokeLinecap="round" />
+                                                        </svg>
+                                                        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.875rem', fontWeight: 700, color: '#ffffff' }}>
+                                                            {profileData?.foundation_progress || 0}%
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Recognition</p>
-                                                    <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
+                                                    <div style={{ position: 'relative', width: '48px', height: '48px', margin: '0 auto' }}>
+                                                        <svg width="48" height="48" viewBox="0 0 48 48" style={{ transform: 'rotate(-90deg)' }}>
+                                                            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" strokeWidth="4" />
+                                                            <circle cx="24" cy="24" r="20" fill="none" stroke={profileData?.overall_recognition_score >= 70 ? '#059669' : profileData?.overall_recognition_score >= 40 ? '#f59e0b' : '#3b82f6'} strokeWidth="4" strokeDasharray={`${(profileData?.overall_recognition_score || 0) / 100 * 125.6} 125.6`} strokeLinecap="round" />
+                                                        </svg>
+                                                        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.875rem', fontWeight: 700, color: '#ffffff' }}>
+                                                            {profileData?.overall_recognition_score || 0}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             {/* Type & Status */}
                                             <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', marginBottom: '0.75rem' }}>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Type</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.license_type || 'Commercial Pilot'}</span>
-                                                </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Status</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#059669' }}>{profileData?.license_status || 'Verified'}</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span>
+                                                        {profileData?.license_status || 'Verified'}
+                                                    </span>
                                                 </div>
                                             </div>
 
@@ -1646,17 +1750,35 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '0.75rem', padding: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                             <h5 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem' }}>Training</h5>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>License</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.license_type || 'CPL (A)'}</span>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                                    <span style={{ fontSize: '0.75rem', color: '#64748b', flexShrink: 0 }}>License</span>
+                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', justifyContent: 'flex-end' }}>
+                                                        {['ppl', 'cpl', 'ir', 'multi_engine', 'student'].map((license) => (
+                                                            <span key={license} style={{ 
+                                                                fontSize: '0.65rem', 
+                                                                fontWeight: 700, 
+                                                                color: '#ffffff',
+                                                                background: 'rgba(59, 130, 246, 0.2)',
+                                                                padding: '0.15rem 0.4rem',
+                                                                borderRadius: '0.25rem',
+                                                                border: '1px solid rgba(59, 130, 246, 0.4)',
+                                                                textTransform: 'uppercase'
+                                                            }}>
+                                                                {license.replace('_', ' ').toUpperCase()}
+                                                            </span>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Medical</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#059669' }}>Class 1 Valid</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span>
+                                                        Class 1 Valid
+                                                    </span>
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Type Ratings</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>Multi-Engine</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff', textTransform: 'uppercase' }}>Multi-Engine</span>
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>English Proficiency</span>
@@ -1664,7 +1786,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Languages</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>English, Spanish</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff', textTransform: 'uppercase' }}>English, Spanish</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1677,7 +1799,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Medical Certificate</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#059669' }}>Valid Until Aug 2026</span>
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span>
+                                                        Valid Until Aug 2026
+                                                    </span>
                                                 </div>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Last Flown</span>
@@ -1693,7 +1818,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                                     {/* Job Experience Section */}
                                     <div style={{ marginTop: '1rem', background: 'rgba(30, 41, 59, 0.6)', borderRadius: '0.75rem', padding: '1.25rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
                                             <h5 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#ffffff' }}>Recent Job Experience & Industry Aligned Accredited Programs</h5>
                                             <a href="#" style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                                 Edit Experience <span>→</span>
@@ -1701,15 +1826,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </div>
                                         
                                         {/* Job Experience Entry */}
-                                        <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #f1f5f9' }}>
-                                            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                        <div style={{ marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
                                                 <div>
-                                                    <h6 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 600, color: '#ffffff' }}>{profileData?.current_occupation || 'Flight Instructor'}</h6>
-                                                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>{profileData?.current_employer || 'Skyway Aviation Academy'}</p>
+                                                    <h6 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.02em' }}>{profileData?.current_occupation || 'Student Pilot'}</h6>
+                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: '#94a3b8', fontWeight: 500 }}>{profileData?.current_employer || 'Skyway Aviation Academy'}</p>
                                                 </div>
-                                                <span style={{ fontSize: '0.625rem', color: '#94a3b8' }}>Jan 2024 - Present</span>
+                                                <span style={{ fontSize: '0.75rem', color: '#e2e8f0', fontWeight: 600 }}>Jan 2024 - Present</span>
                                             </div>
-                                            <p style={{ margin: 0, fontSize: '0.75rem', color: '#475569', lineHeight: 1.6 }}>
+                                            <p style={{ margin: 0, fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.6 }}>
                                                 {profileData?.why_become_pilot || 'Providing flight instruction for PPL and CPL students. Specializing in instrument training and multi-engine operations.'}
                                             </p>
                                         </div>
@@ -2428,9 +2553,20 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         userProfile={profileData ? {
                             id: profileData.id || profileData.user_id,
                             uid: profileData.id || profileData.user_id,
+                            firstName: profileData.full_name?.split(' ')[0] || '',
+                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || ''
+                        } : null}
+                    />
+                </div>
+            )}
+            {currentDocumentationPage === 'vault' && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000, background: '#f0f4f8', overflowY: 'auto' }}>
+                    <DocumentVaultPage
+                        onBack={() => setCurrentDocumentationPage(null)}
+                        userProfile={profileData ? {
+                            id: profileData.id || profileData.user_id,
                             firstName: profileData.full_name?.split(' ')[0] || profileData.display_name?.split(' ')[0] || '',
-                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || profileData.display_name?.split(' ').slice(1).join(' ') || '',
-                            email: profileData.email
+                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || profileData.display_name?.split(' ').slice(1).join(' ') || ''
                         } : null}
                     />
                 </div>

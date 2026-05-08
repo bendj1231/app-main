@@ -213,15 +213,15 @@ export class PathwayMatchingEngine {
 
     // 2. Recognition score compatibility (25% weight) - with tiered matching
     maxPossibleScore += effectiveWeights.recognitionWeight * 100;
-    if (profile.overallRecognitionScore >= 450) {
+    if (profile.overallRecognitionScore >= 80) {
       totalScore += effectiveWeights.recognitionWeight * 100;
-    } else if (profile.overallRecognitionScore >= 400) {
+    } else if (profile.overallRecognitionScore >= 70) {
       totalScore += effectiveWeights.recognitionWeight * 90;
-    } else if (profile.overallRecognitionScore >= 350) {
+    } else if (profile.overallRecognitionScore >= 60) {
       totalScore += effectiveWeights.recognitionWeight * 75;
-    } else if (profile.overallRecognitionScore >= 300) {
+    } else if (profile.overallRecognitionScore >= 50) {
       totalScore += effectiveWeights.recognitionWeight * 60;
-    } else if (profile.overallRecognitionScore >= 200) {
+    } else if (profile.overallRecognitionScore >= 30) {
       totalScore += effectiveWeights.recognitionWeight * 40;
     } else {
       totalScore += effectiveWeights.recognitionWeight * 20;
@@ -297,7 +297,7 @@ export class PathwayMatchingEngine {
     // Match reasons
     const matchReasons = [
       requirementsMet.hoursMet ? 'Strong flight hours alignment' : 'Flight hours gap present',
-      profile.overallRecognitionScore >= 400 ? 'High recognition score' : 'Recognition score improvement needed',
+      profile.overallRecognitionScore >= 70 ? 'High recognition score' : 'Recognition score improvement needed',
       requirementsMet.licenseMet ? 'License requirements met' : 'License requirements not fully met'
     ];
 
@@ -438,7 +438,7 @@ Consider: career trajectory, industry demand, growth potential, and personal fit
     if (profile.totalFlightHours < 500) {
       focus.push('Build flight hours');
     }
-    if (profile.overallRecognitionScore < 400) {
+    if (profile.overallRecognitionScore < 70) {
       focus.push('Improve recognition score');
     }
 

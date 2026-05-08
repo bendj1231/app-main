@@ -40,7 +40,7 @@ export const RecognitionScoreDisplay: React.FC<RecognitionScoreDisplayProps> = (
 
   const scoreTier = getScoreTier(score.totalScore);
   const scoreColor = getScoreColor(score.totalScore);
-  const scorePercentage = (score.totalScore / 1000) * 100;
+  const scorePercentage = score.totalScore;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
@@ -91,12 +91,12 @@ export const RecognitionScoreDisplay: React.FC<RecognitionScoreDisplayProps> = (
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-700">Flight Hours</span>
-                <span className="font-medium text-gray-900">{score.hoursScore}/350</span>
+                <span className="font-medium text-gray-900">{score.hoursScore}/35</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-blue-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${(score.hoursScore / 350) * 100}%` }}
+                  style={{ width: `${(score.hoursScore / 35) * 100}%` }}
                 />
               </div>
               <p className="text-xs text-gray-500 mt-1">
@@ -108,12 +108,12 @@ export const RecognitionScoreDisplay: React.FC<RecognitionScoreDisplayProps> = (
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-700">Experience</span>
-                <span className="font-medium text-gray-900">{score.experienceScore}/250</span>
+                <span className="font-medium text-gray-900">{score.experienceScore}/25</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-purple-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${(score.experienceScore / 250) * 100}%` }}
+                  style={{ width: `${(score.experienceScore / 25) * 100}%` }}
                 />
               </div>
               <p className="text-xs text-gray-500 mt-1">
@@ -125,12 +125,12 @@ export const RecognitionScoreDisplay: React.FC<RecognitionScoreDisplayProps> = (
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-700">Assessments</span>
-                <span className="font-medium text-gray-900">{score.assessmentScore}/250</span>
+                <span className="font-medium text-gray-900">{score.assessmentScore}/25</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-green-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${(score.assessmentScore / 250) * 100}%` }}
+                  style={{ width: `${(score.assessmentScore / 25) * 100}%` }}
                 />
               </div>
               <p className="text-xs text-gray-500 mt-1">
@@ -142,12 +142,12 @@ export const RecognitionScoreDisplay: React.FC<RecognitionScoreDisplayProps> = (
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-700">Mentorship</span>
-                <span className="font-medium text-gray-900">{score.mentorshipScore}/150</span>
+                <span className="font-medium text-gray-900">{score.mentorshipScore}/15</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-orange-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${(score.mentorshipScore / 150) * 100}%` }}
+                  style={{ width: `${(score.mentorshipScore / 15) * 100}%` }}
                 />
               </div>
               <p className="text-xs text-gray-500 mt-1">

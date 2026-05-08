@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
+import { getDevicePerformanceTier, shouldReduceMotion, isUltraLowPerformanceMode } from '@/src/lib/device-detection';
 
 interface ShaderCloudProps {
     className?: string;
@@ -44,6 +45,25 @@ export const ShaderCloud: React.FC<ShaderCloudProps> = ({ className = '', height
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number | undefined>(undefined);
     const timeRef = useRef(0);
+    const frameSkipRef = useRef(0);
+
+    // Check for ultra-low performance mode (legacy iOS devices)
+    const ultraLow = isUltraLowPerformanceMode();
+
+    // For ultra-low devices, render a static gradient div instead of canvas
+    if (ultraLow) {
+        return (
+            <div
+                className={`relative w-full overflow-hidden ${className}`}
+                style={{
+                    height,
+                    background: 'linear-gradient(to bottom, #e8f4fc 0%, #d4e9f7 30%, #c5dff0 60%, #b8d4ea 100%)'
+                }}
+            >
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/30" />
+            </div>
+        );
+    }
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -52,11 +72,27 @@ export const ShaderCloud: React.FC<ShaderCloudProps> = ({ className = '', height
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
+        // Detect device performance
+        const performanceTier = getDevicePerformanceTier();
+        const reduceMotion = shouldReduceMotion();
+        const isLowEnd = performanceTier === 'low' || reduceMotion;
+        const isMedium = performanceTier === 'medium';
+
+        // Adjust settings based on device capability
+        const pixelStep = isLowEnd ? 8 : isMedium ? 6 : 4; // Larger steps = lower resolution
+        const wispCount = isLowEnd ? 5 : isMedium ? 12 : 20;
+        const frameSkip = isLowEnd ? 2 : isMedium ? 1 : 0; // Skip frames on low-end
+        const timeStep = isLowEnd ? 0.003 : 0.005; // Slower animation
+
         const resizeCanvas = () => {
             const parent = canvas.parentElement;
             if (parent) {
-                canvas.width = parent.clientWidth;
-                canvas.height = parent.clientHeight;
+                // Use lower resolution for low-end devices
+                const scale = isLowEnd ? 0.5 : isMedium ? 0.75 : 1;
+                canvas.width = parent.clientWidth * scale;
+                canvas.height = parent.clientHeight * scale;
+                canvas.style.width = `${parent.clientWidth}px`;
+                canvas.style.height = `${parent.clientHeight}px`;
             }
         };
 
@@ -64,7 +100,14 @@ export const ShaderCloud: React.FC<ShaderCloudProps> = ({ className = '', height
         window.addEventListener('resize', resizeCanvas);
 
         const animate = () => {
-            timeRef.current += 0.005;
+            // Frame skipping for low-end devices
+            frameSkipRef.current++;
+            if (frameSkip > 0 && frameSkipRef.current % (frameSkip + 1) !== 0) {
+                animationRef.current = requestAnimationFrame(animate);
+                return;
+            }
+
+            timeRef.current += timeStep;
 
             // Draw light blue gradient background
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -75,50 +118,53 @@ export const ShaderCloud: React.FC<ShaderCloudProps> = ({ className = '', height
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Create smoke layers using noise
-            const imageData = ctx.createImageData(canvas.width, canvas.height);
-            const data = imageData.data;
+            // Skip expensive noise calculations on low-end devices
+            if (!isLowEnd) {
+                // Create smoke layers using noise
+                const imageData = ctx.createImageData(canvas.width, canvas.height);
+                const data = imageData.data;
 
-            for (let y = 0; y < canvas.height; y += 4) {
-                for (let x = 0; x < canvas.width; x += 4) {
-                    // Multi-layered noise for smoke effect
-                    const noise1 = noise(x * 0.003, y * 0.003, timeRef.current * 0.5);
-                    const noise2 = noise(x * 0.006 + 100, y * 0.006 + 100, timeRef.current * 0.3);
-                    const noise3 = noise(x * 0.012 + 200, y * 0.012 + 200, timeRef.current * 0.2);
-                    
-                    // Combine noise layers
-                    const combinedNoise = (noise1 * 0.5 + noise2 * 0.3 + noise3 * 0.2);
-                    
-                    // Create smoke density
-                    const smokeDensity = (combinedNoise + 1) / 2;
-                    
-                    // Apply smoke color
-                    const r = 200 + smokeDensity * 30;
-                    const g = 215 + smokeDensity * 25;
-                    const b = 235 + smokeDensity * 20;
-                    const alpha = smokeDensity * 0.4;
+                for (let y = 0; y < canvas.height; y += pixelStep) {
+                    for (let x = 0; x < canvas.width; x += pixelStep) {
+                        // Multi-layered noise for smoke effect
+                        const noise1 = noise(x * 0.003, y * 0.003, timeRef.current * 0.5);
+                        const noise2 = noise(x * 0.006 + 100, y * 0.006 + 100, timeRef.current * 0.3);
+                        const noise3 = noise(x * 0.012 + 200, y * 0.012 + 200, timeRef.current * 0.2);
+                        
+                        // Combine noise layers
+                        const combinedNoise = (noise1 * 0.5 + noise2 * 0.3 + noise3 * 0.2);
+                        
+                        // Create smoke density
+                        const smokeDensity = (combinedNoise + 1) / 2;
+                        
+                        // Apply smoke color
+                        const r = 200 + smokeDensity * 30;
+                        const g = 215 + smokeDensity * 25;
+                        const b = 235 + smokeDensity * 20;
+                        const alpha = smokeDensity * 0.4;
 
-                    // Fill 4x4 block
-                    for (let dy = 0; dy < 4; dy++) {
-                        for (let dx = 0; dx < 4; dx++) {
-                            const px = x + dx;
-                            const py = y + dy;
-                            if (px < canvas.width && py < canvas.height) {
-                                const index = (py * canvas.width + px) * 4;
-                                data[index] = r;
-                                data[index + 1] = g;
-                                data[index + 2] = b;
-                                data[index + 3] = alpha * 255;
+                        // Fill pixelStep x pixelStep block
+                        for (let dy = 0; dy < pixelStep; dy++) {
+                            for (let dx = 0; dx < pixelStep; dx++) {
+                                const px = x + dx;
+                                const py = y + dy;
+                                if (px < canvas.width && py < canvas.height) {
+                                    const index = (py * canvas.width + px) * 4;
+                                    data[index] = r;
+                                    data[index + 1] = g;
+                                    data[index + 2] = b;
+                                    data[index + 3] = alpha * 255;
+                                }
                             }
                         }
                     }
                 }
+
+                ctx.putImageData(imageData, 0, 0);
             }
 
-            ctx.putImageData(imageData, 0, 0);
-
-            // Add smoke wisps with gradient
-            for (let i = 0; i < 20; i++) {
+            // Add smoke wisps with gradient (reduced count on low-end)
+            for (let i = 0; i < wispCount; i++) {
                 const x = (noise(i * 100, timeRef.current * 0.2, 0) + 1) / 2 * canvas.width;
                 const y = (noise(i * 200, timeRef.current * 0.15, 100) + 1) / 2 * canvas.height;
                 const radius = 150 + noise(i * 300, timeRef.current * 0.1, 200) * 100;

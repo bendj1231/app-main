@@ -61,6 +61,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
   }, [isPremium, userId, currentScore]);
 
   const fetchAiAdvice = async () => {
+    if (!currentScore) return;
     setLoadingAi(true);
     try {
       const response = await fetch('/api/score/advice', {
@@ -69,7 +70,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         body: JSON.stringify({
           pilotId: userId,
           currentScore: currentScore.totalScore,
-          targetScore: Math.min(currentScore.totalScore + 100, 500),
+          targetScore: Math.min(currentScore.totalScore + 10, 100),
           components: calculateScoreComponents(currentScore),
           profile: { totalFlightHours: currentScore.breakdown.totalHours }
         }),
@@ -119,7 +120,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'hours',
         title: 'Build Flight Hours to 250',
         description: `You currently have ${breakdown.totalHours} hours. Reaching 250 hours will significantly boost your score with linear scaling up to this milestone.`,
-        potentialGain: Math.min((250 - breakdown.totalHours) / 250 * 100, 100),
+        potentialGain: Math.round(Math.min((250 - breakdown.totalHours) / 250 * 10, 10) * 10) / 10,
         difficulty: 'medium',
         timeEstimate: '3-6 months',
         actionable: true,
@@ -131,7 +132,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'hours',
         title: 'Increase PIC Ratio',
         description: `Your PIC ratio is ${(breakdown.picHours / Math.max(breakdown.totalHours, 1) * 100).toFixed(1)}%. Flying more as Pilot-in-Command will improve your score significantly.`,
-        potentialGain: 25,
+        potentialGain: 2.5,
         difficulty: 'medium',
         timeEstimate: '2-4 months',
         actionable: true,
@@ -143,7 +144,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'hours',
         title: 'Gain IFR Experience',
         description: `You have ${breakdown.ifrHours} IFR hours. Building to 50+ IFR hours will demonstrate instrument proficiency and add points.`,
-        potentialGain: Math.min((50 - breakdown.ifrHours) / 50 * 50, 50),
+        potentialGain: Math.round(Math.min((50 - breakdown.ifrHours) / 50 * 5, 5) * 10) / 10,
         difficulty: 'hard',
         timeEstimate: '2-3 months',
         actionable: true,
@@ -156,7 +157,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'experience',
         title: 'Continue Building Experience',
         description: `With ${breakdown.experienceYears} years of experience, each additional year adds significant points. Focus on consistent flight activity.`,
-        potentialGain: Math.min((3 - breakdown.experienceYears) * 3, 9),
+        potentialGain: Math.round(Math.min((3 - breakdown.experienceYears) * 1, 3) * 10) / 10,
         difficulty: 'easy',
         timeEstimate: '1-3 years',
         actionable: false,
@@ -168,7 +169,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'experience',
         title: 'Pursue Additional Achievements',
         description: `You have ${breakdown.achievementsCount} achievements. Each achievement adds up to 3 points. Consider certifications, awards, or special training.`,
-        potentialGain: Math.min((5 - breakdown.achievementsCount) * 3, 15),
+        potentialGain: Math.round(Math.min((5 - breakdown.achievementsCount) * 1, 5) * 10) / 10,
         difficulty: 'medium',
         timeEstimate: '1-6 months',
         actionable: true,
@@ -180,7 +181,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'experience',
         title: 'Obtain Additional Licenses',
         description: `You have ${breakdown.licensesCount} licenses. Additional licenses or type ratings add up to 5 points each.`,
-        potentialGain: Math.min((3 - breakdown.licensesCount) * 5, 15),
+        potentialGain: Math.round(Math.min((3 - breakdown.licensesCount) * 1.5, 4.5) * 10) / 10,
         difficulty: 'hard',
         timeEstimate: '3-12 months',
         actionable: true,
@@ -193,7 +194,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'assessments',
         title: 'Complete Program Modules',
         description: `Your program completion is ${breakdown.programCompletion}%. Completing all modules will maximize your assessment score.`,
-        potentialGain: ((100 - breakdown.programCompletion) / 100) * 20,
+        potentialGain: Math.round(((100 - breakdown.programCompletion) / 100) * 12.5 * 10) / 10,
         difficulty: 'easy',
         timeEstimate: '1-3 months',
         actionable: true,
@@ -205,7 +206,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'assessments',
         title: 'Improve Assessment Performance',
         description: `Your performance score is ${breakdown.performanceScore}. Focus on excelling in assessments to reach 80+ for optimal points.`,
-        potentialGain: Math.min((80 - breakdown.performanceScore) / 100 * 20, 8),
+        potentialGain: Math.round(Math.min((80 - breakdown.performanceScore) / 100 * 12.5, 5) * 10) / 10,
         difficulty: 'medium',
         timeEstimate: '1-2 months',
         actionable: true,
@@ -218,7 +219,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'mentorship',
         title: 'Engage in Mentorship Activities',
         description: `You have ${breakdown.mentorshipHours} mentorship hours. Active participation in mentorship programs builds leadership skills and adds points.`,
-        potentialGain: Math.min((10 - breakdown.mentorshipHours) / 10 * 6, 6),
+        potentialGain: Math.round(Math.min((10 - breakdown.mentorshipHours) / 10 * 2, 2) * 10) / 10,
         difficulty: 'easy',
         timeEstimate: '1-2 months',
         actionable: true,
@@ -230,7 +231,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'mentorship',
         title: 'Participate in Observation Sessions',
         description: `You have ${breakdown.mentorshipObservations} observations. Regular observation sessions enhance learning and add points.`,
-        potentialGain: Math.min((10 - breakdown.mentorshipObservations) / 10 * 6, 6),
+        potentialGain: Math.round(Math.min((10 - breakdown.mentorshipObservations) / 10 * 1.5, 1.5) * 10) / 10,
         difficulty: 'easy',
         timeEstimate: '1-2 months',
         actionable: true,
@@ -242,7 +243,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
         category: 'mentorship',
         title: 'Take on Mentorship Cases',
         description: `You have handled ${breakdown.mentorshipCases} cases. Taking on more cases demonstrates leadership and adds points.`,
-        potentialGain: Math.min((5 - breakdown.mentorshipCases) / 5 * 5, 5),
+        potentialGain: Math.round(Math.min((5 - breakdown.mentorshipCases) / 5 * 1.2, 1.2) * 10) / 10,
         difficulty: 'medium',
         timeEstimate: '2-4 months',
         actionable: true,
@@ -287,26 +288,27 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
     hard: 'bg-red-100 text-red-800',
   };
 
-  const totalPotentialGain = tips.reduce((sum, tip) => sum + tip.potentialGain, 0);
-  const currentScoreScaled = Math.round(currentScore.totalScore / 10);
-  const projectedScore = Math.min(currentScoreScaled + totalPotentialGain, 100);
-  const actualPotentialGain = Math.round(projectedScore - currentScoreScaled);
+  const totalPotentialGain = Math.round(tips.reduce((sum, tip) => sum + tip.potentialGain, 0) * 10) / 10;
+  const currentScoreValue = currentScore.totalScore; // Already 0-100
+  const projectedScore = Math.min(Math.round((currentScoreValue + totalPotentialGain) * 10) / 10, 100);
+  const actualPotentialGain = Math.round((projectedScore - currentScoreValue) * 10) / 10;
 
   // Calculate progression trend based on score components
   const calculateProgressionTrend = () => {
-    const progressionScore = currentScore.experienceScore * 0.3 + // Experience weight
-                             currentScore.hoursScore * 0.4 + // Flight hours weight
-                             currentScore.assessmentScore * 0.3; // Assessment weight
+    // Score components are now on smaller scales (hours max 35, exp max 25, assessments max 25)
+    const progressionScore = currentScore.experienceScore + currentScore.hoursScore + currentScore.assessmentScore;
     
-    // Simple trend calculation based on score components
-    const trend = currentScore.experienceScore > 20 && currentScore.hoursScore > 30 ? 'up' :
-                  currentScore.hoursScore < 15 ? 'down' : 'stable';
+    // Simple trend calculation based on score components (adjusted for /100 scale)
+    const trend = currentScore.experienceScore > 5 && currentScore.hoursScore > 10 ? 'up' :
+                  currentScore.hoursScore < 3 ? 'down' : 'stable';
     
     // Calculate percentage change for stock market style display
-    const changePercent = trend === 'up' ? Math.round(progressionScore * 0.15) :
-                         trend === 'down' ? -Math.round(progressionScore * 0.1) : 0;
+    const maxPossible = 85; // 35 + 25 + 25
+    const progressionPercent = Math.round((progressionScore / maxPossible) * 100);
+    const changePercent = trend === 'up' ? Math.round(progressionPercent * 0.15) :
+                         trend === 'down' ? -Math.round(progressionPercent * 0.1) : 0;
     
-    return { trend, score: Math.round(progressionScore), changePercent };
+    return { trend, score: Math.round(progressionScore * 10) / 10, changePercent };
   };
 
   const { trend, score: progressionScore, changePercent } = calculateProgressionTrend();
@@ -319,18 +321,18 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
       <div className="grid grid-cols-4 gap-4">
         <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
           <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Current Score</p>
-          <p className="text-2xl font-bold text-white">{currentScoreScaled}</p>
-          <p className="text-xs text-slate-500 mt-1">Recognition Score</p>
+          <p className="text-2xl font-bold text-white">{currentScoreValue}</p>
+          <p className="text-xs text-slate-500 mt-1">out of 100</p>
         </div>
         <div className="bg-emerald-900/30 rounded-lg p-4 border border-emerald-700">
           <p className="text-xs text-emerald-400 uppercase tracking-wide mb-1">Projected Score</p>
-          <p className="text-2xl font-bold text-emerald-400">{Math.round(projectedScore)}</p>
+          <p className="text-2xl font-bold text-emerald-400">{projectedScore}</p>
           <p className="text-xs text-emerald-500 mt-1">↑ {actualPotentialGain} pts gain</p>
         </div>
         <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Potential Continuation</p>
-          <p className="text-2xl font-bold text-white">{Math.round(totalPotentialGain)}</p>
-          <p className="text-xs text-slate-500 mt-1">If continued</p>
+          <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Potential Gain</p>
+          <p className="text-2xl font-bold text-white">+{totalPotentialGain}</p>
+          <p className="text-xs text-slate-500 mt-1">If all tips completed</p>
         </div>
         <div className={`${trendColor === 'green' ? 'bg-emerald-900/30 border-emerald-700' : 'bg-red-900/30 border-red-700'} rounded-lg p-4 border`}>
           <p className={`text-xs ${trendColor === 'green' ? 'text-emerald-400' : 'text-red-400'} uppercase tracking-wide mb-1`}>Current Progression</p>

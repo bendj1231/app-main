@@ -418,6 +418,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
                 { category: 'For Industry', name: 'For Airlines & Operators', target: '/about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
                 { name: 'Industry Stewardship', target: '/industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
+                { name: 'FAQ', target: 'faq' },
             ]
         },
         {
@@ -443,11 +444,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'Pilot Recognition',
             target: pilotRecognitionTarget,
             subItems: [
-                { category: 'Recognition Systems', name: 'ATLAS Aviation CV', target: '/atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Profile', target: '/recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
-                { name: 'Recognition Career Matches', target: '/recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] },
+                { category: 'Professional Credentials', name: 'Pilot Recognition Profile', target: '/recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { name: 'Digital Logbook', target: '/digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] },
                 { name: 'Examination Results', target: '/examination-results-directory', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
-                { name: 'Digital Logbook', target: '/digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] }
+                { category: 'Background Screening', name: 'Passport & Visa Status', target: '/passport-visa', bullets: ['Valid Passport', 'Work Visas', 'Travel Documents'] },
+                { name: 'Background Check Documents', target: '/background-checks', bullets: ['Criminal Record Check', 'Employment History', 'Reference Verification'] },
+                { name: 'Drug & Alcohol Testing Records', target: '/drug-alcohol-testing', bullets: ['Test Results', 'Compliance History', 'Medical Clearance'] },
+                { name: 'Security Clearances', target: '/security-clearances', bullets: ['Airport Security Pass', 'Federal Clearances', 'Facility Access'] },
+                { category: 'Health & Insurance', name: 'Medical Certificates', target: '/medical-certificates', bullets: ['Class 1 Medical', 'Class 2 Medical', 'Medical Exam Locations'] },
+                { name: 'Health Resources', target: '/health-resources', bullets: ['Mental Health Support', 'Fitness for Duty', 'Wellness Programs'] },
+                { name: 'Pilot Insurance', target: '/pilot-insurance', bullets: ['Loss of License', 'Life Insurance', 'Disability Coverage'] },
+                { name: 'Operator Insurance', target: '/operator-insurance', bullets: ['Aircraft Insurance', 'Liability Coverage', 'Risk Management'] },
+                { category: 'Career Data & Matching', name: 'ATLAS Formatted CV', target: '/atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { name: 'Recognition Career Matches', target: '/recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] }
             ]
         },
         {
@@ -463,7 +472,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { name: 'Pilot Recognition Systems', target: '/recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
             ]
         },
-        { name: 'FAQ', target: 'faq' },
         { name: 'Contact', target: 'contact-support' },
     ];
 
@@ -507,7 +515,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     { name: 'Pilot Recognition', url: '/recognition-plus' },
                     { name: 'Applications', url: '/pilot-recognition' },
                     { name: 'Membership', url: '/become-member' },
-                    { name: 'FAQ', url: '/faq' },
                     { name: 'Contact', url: '/contact-support' }
                 ]}
                 siteName="Pilot Recognition"
@@ -574,7 +581,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Dropdown Menu */}
                                 {item.subItems && (
                                     <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-300 ${activeDropdown === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
-                                        <div className={`bg-[#050A30]/95 backdrop-blur-xl border border-white/10 rounded-lg p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden ${item.name === 'Pathways' ? 'w-[600px] grid grid-cols-3 gap-4' : 'min-w-[200px] flex flex-col gap-0.5'}`}>
+                                        <div className={`bg-white backdrop-blur-xl border border-slate-200 rounded-lg p-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden ${item.name === 'Pathways' ? 'w-[600px] grid grid-cols-3 gap-4' : 'min-w-[200px] flex flex-col gap-0.5'}`}>
                                             {item.name === 'Pathways' ? (
                                                 // Horizontal square layout for Pathways
                                                 (() => {
@@ -587,7 +594,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
                                                     return Object.entries(categories).map(([category, items]) => (
                                                         <div key={category} className="space-y-2">
-                                                            <h4 className={`text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-400' : 'text-blue-400/60'} border-b border-white/10 pb-2`}>
+                                                            <h4 className={`text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-500' : 'text-blue-600'} border-b border-slate-200 pb-2`}>
                                                                 {category}
                                                             </h4>
                                                             <div className="space-y-1">
@@ -600,15 +607,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                             setActiveDropdown(null);
                                                                         }}
                                                                         className={`w-full text-left px-3 py-2 rounded transition-all flex flex-col gap-0.5 ${activeSubItem === subItem.name
-                                                                            ? subItem.isYellow ? 'bg-yellow-500/10 text-yellow-400' : 'bg-blue-600/20 text-white'
-                                                                            : subItem.isYellow ? 'text-yellow-400/80 hover:text-yellow-400 hover:bg-yellow-500/5' : 'text-white/70 hover:text-white hover:bg-white/5'
+                                                                            ? subItem.isYellow ? 'bg-yellow-50 text-yellow-600' : 'bg-blue-50 text-blue-700'
+                                                                            : subItem.isYellow ? 'text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50/50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                                                                             }`}
                                                                         onMouseEnter={() => setActiveSubItem(subItem.name)}
                                                                         onMouseLeave={() => setActiveSubItem(null)}
                                                                     >
                                                                         <div className="flex items-center gap-1.5">
                                                                             {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
-                                                                            <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-400' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
+                                                                            <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-600' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
                                                                             </span>
                                                                         </div>
 
@@ -616,8 +623,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                             <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeSubItem === subItem.name ? 'max-h-32 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
                                                                                 <ul className="space-y-0.5">
                                                                                     {subItem.bullets.map((bullet, bIdx) => (
-                                                                                        <li key={bIdx} className="flex items-center gap-1.5 text-[0.6rem] text-blue-300/80 font-medium tracking-wide">
-                                                                                            <div className="w-0.5 h-0.5 rounded-full bg-blue-400"></div>
+                                                                                        <li key={bIdx} className="flex items-center gap-1.5 text-[0.6rem] text-slate-500 font-medium tracking-wide">
+                                                                                            <div className="w-0.5 h-0.5 rounded-full bg-blue-500"></div>
                                                                                             {bullet}
                                                                                         </li>
                                                                                     ))}
@@ -635,7 +642,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                 item.subItems.map((subItem, idx) => (
                                                     <React.Fragment key={`${item.name}-${subItem.name}-${idx}`}>
                                                         {subItem.category && (
-                                                            <div className={`px-3 pt-2 pb-1 text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-400' : 'text-blue-400/60'} border-b border-white/5 mb-0.5 mt-0.5 first:mt-0`}>
+                                                            <div className={`px-3 pt-2 pb-1 text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-500' : 'text-blue-600'} border-b border-slate-100 mb-0.5 mt-0.5 first:mt-0`}>
                                                                 {subItem.category}
                                                             </div>
                                                         )}
@@ -651,13 +658,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                     setActiveDropdown(null);
                                                                 }}
                                                                 className={`w-full text-left px-3 py-1.5 rounded transition-all flex flex-col gap-0.5 ${activeSubItem === subItem.name
-                                                                    ? subItem.isYellow ? 'bg-yellow-500/10 text-yellow-400 translate-x-1' : 'bg-blue-600/20 text-white translate-x-1'
-                                                                    : subItem.isYellow ? 'text-yellow-400/80 hover:text-yellow-400 hover:bg-yellow-500/5' : 'text-white/70 hover:text-white hover:bg-white/5'
+                                                                    ? subItem.isYellow ? 'bg-yellow-50 text-yellow-600 translate-x-1' : 'bg-blue-50 text-blue-700 translate-x-1'
+                                                                    : subItem.isYellow ? 'text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50/50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                                                                     }`}
                                                             >
                                                                 <div className="flex items-center gap-1.5">
                                                                     {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
-                                                                    <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-400' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
+                                                                    <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-600' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
                                                                     </span>
                                                                 </div>
 
@@ -666,8 +673,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                     <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeSubItem === subItem.name ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
                                                                         <ul className="space-y-0.5">
                                                                             {subItem.bullets.map((bullet, idx) => (
-                                                                                <li key={idx} className="flex items-center gap-1.5 text-[0.6rem] text-blue-300/80 font-medium tracking-wide">
-                                                                                    <div className="w-0.5 h-0.5 rounded-full bg-blue-400"></div>
+                                                                                <li key={idx} className="flex items-center gap-1.5 text-[0.6rem] text-slate-500 font-medium tracking-wide">
+                                                                                    <div className="w-0.5 h-0.5 rounded-full bg-blue-500"></div>
                                                                                     {bullet}
                                                                                 </li>
                                                                             ))}
@@ -681,8 +688,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                             )}
                                             {/* Bottom message for Pathways dropdown */}
                                             {item.name === 'Pathways' && (
-                                                <div className="col-span-3 mt-4 pt-4 border-t border-white/10 text-center">
-                                                    <p className="text-[0.6rem] text-blue-300/60 font-medium tracking-wide">
+                                                <div className="col-span-3 mt-4 pt-4 border-t border-slate-200 text-center">
+                                                    <p className="text-[0.6rem] text-slate-400 font-medium tracking-wide">
                                                         Access the pilot portal to view more pathways
                                                     </p>
                                                 </div>

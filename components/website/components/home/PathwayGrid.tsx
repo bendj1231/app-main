@@ -1280,7 +1280,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                     }}
                 >
                     <p className="text-white/80 text-sm md:text-base font-serif font-medium mb-3 tracking-wide">
-                        Discover pilotrecognition @
+                        Discover PilotRecognition
                     </p>
                     <div className="flex items-center gap-4 md:gap-5">
                         <a
@@ -1331,7 +1331,6 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                     </div>
                 </motion.div>
 
-                
                 {/* Foundation Loading Screen Overlay */}
                 {showFoundationLoading && (
                     <FoundationLoadingScreen

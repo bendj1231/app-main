@@ -1,6 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { supabase } from '../../../../src/lib/supabase';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2 } from 'lucide-react';
+
+interface UploadedDoc {
+  id: string;
+  type: 'license' | 'medical' | 'rating' | 'logbook';
+  fileName: string;
+  fileSize: number;
+  status: 'uploading' | 'processing' | 'verified' | 'pending_review';
+  extractedData?: {
+    licenseNumber?: string;
+    expiryDate?: string;
+    issuingAuthority?: string;
+    medicalClass?: string;
+  };
+}
 
 interface PilotLicensureExperiencePageProps {
   onBack: () => void;
@@ -101,6 +116,17 @@ const ENGLISH_PROFICIENCY_LEVELS = [
   'Level 6 - Expert'
 ];
 
+const SLATE = {
+  50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1',
+  400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a'
+};
+
+const EMERALD = '#10b981';
+const CORPORATE_BLUE = '#003366';
+
+// Monospace font for data fields
+const MONO_FONT = "'JetBrains Mono', 'SF Mono', 'Menlo', monospace";;
+
 // Aviation Pathways Options
 const AVIATION_PATHWAYS_OPTIONS = [
   'Commercial Aviation (Airlines)',
@@ -171,7 +197,19 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [firstName, setFirstName] = useState(userProfile?.firstName || '');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState(userProfile?.lastName || '');
-  const [fullLegalName, setFullLegalName] = useState('');
+  
+  // Auto-generated full legal name
+  const fullLegalName = useMemo(() => {
+    const parts = [firstName, middleName, lastName].filter(Boolean);
+    return parts.join(' ');
+  }, [firstName, middleName, lastName]);
+  
+  // Search states for dropdowns
+  const [countrySearch, setCountrySearch] = useState('');
+  const [nationalitySearch, setNationalitySearch] = useState('');
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const [showNationalityDropdown, setShowNationalityDropdown] = useState(false);
+  const [flightSchoolSearch, setFlightSchoolSearch] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [residingCountry, setResidingCountry] = useState('');
@@ -222,6 +260,35 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [saveMessage, setSaveMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const TOTAL_STEPS = 4;
+  
+  // Review mode state
+  const [isReviewMode, setIsReviewMode] = useState(false);
+  
+  // Auto-save state
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  
+  // Tooltip state
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  
+  // Document upload state
+  const [uploadedDocs, setUploadedDocs] = useState<UploadedDoc[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [activeUploadType, setActiveUploadType] = useState<'license' | 'medical' | 'rating' | null>(null);
+  
+  // Filtered options based on search
+  const filteredCountries = useMemo(() => {
+    if (!countrySearch) return NATIONALITIES;
+    return NATIONALITIES.filter(c => c.toLowerCase().includes(countrySearch.toLowerCase()));
+  }, [countrySearch]);
+  
+  const filteredNationalities = useMemo(() => {
+    if (!nationalitySearch) return NATIONALITIES;
+    return NATIONALITIES.filter(n => n.toLowerCase().includes(nationalitySearch.toLowerCase()));
+  }, [nationalitySearch]);
 
   // Separate effect to handle minimum display time for loading screen
   useEffect(() => {
@@ -343,7 +410,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           console.log('❌ No existing licensure data found:', error);
           console.log('⚠️ Will use profile data as fallback');
           // Only use profile data as fallback if we haven't already set the values
-          if (!fullLegalName) setFullLegalName(initialData.fullLegalName || '');
           if (!firstName) setFirstName(initialData.firstName || userProfile?.firstName || '');
           if (!lastName) setLastName(initialData.lastName || userProfile?.lastName || '');
           if (!contactNumber) setContactNumber(initialData.contactNumber || '');
@@ -364,7 +430,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           setFirstName(data.first_name || initialData.firstName || userProfile?.firstName || '');
           setMiddleName(data.middle_name || '');
           setLastName(data.last_name || initialData.lastName || userProfile?.lastName || '');
-          setFullLegalName(data.full_legal_name || initialData.fullLegalName || '');
           setDateOfBirth(data.date_of_birth || initialData.dateOfBirth || '');
           setNationality(data.nationality || initialData.nationality || '');
           setResidingCountry(data.residing_country || initialData.residingCountry || '');
@@ -411,9 +476,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         if (!data) {
           console.log('⚠️ No licensure data, using profile fallbacks');
           console.log('⚠️ initialData:', initialData);
-          setFullLegalName(initialData.fullLegalName || '');
-          setFirstName(initialData.firstName || userProfile?.firstName || '');
-          setLastName(initialData.lastName || userProfile?.lastName || '');
+          setFirstName(initialData.firstName || '');
+          setLastName(initialData.lastName || '');
           setContactNumber(initialData.contactNumber || '');
           setResidingCountry(initialData.residingCountry || '');
           setDateOfBirth(initialData.dateOfBirth || '');
@@ -427,6 +491,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         
         // Mark data as loaded - the separate effect will handle hiding the loader after min time
         setDataLoaded(true);
+        setLastSaved(new Date());
         
       } catch (error) {
         console.error('Error loading data:', error);
@@ -485,13 +550,132 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     setAircraftRatings(aircraftRatings.filter(rating => rating.id !== id));
   };
 
-  // Toggle license selection
+  // Toggle license selection with hierarchical logic
   const toggleLicense = (license: string) => {
+    const hierarchy = ['PPL', 'CPL', 'ATPL Frozen', 'ATPL'];
+    const ratings = ['SPL', 'CFI', 'IR', 'ME'];
+    
     if (currentLicenses.includes(license)) {
-      setCurrentLicenses(currentLicenses.filter(l => l !== license));
+      // If deselecting a main license, deselect all higher licenses too
+      if (hierarchy.includes(license)) {
+        const licenseIndex = hierarchy.indexOf(license);
+        const toRemove = hierarchy.slice(licenseIndex);
+        setCurrentLicenses(currentLicenses.filter(l => !toRemove.includes(l)));
+      } else {
+        // Just remove the rating
+        setCurrentLicenses(currentLicenses.filter(l => l !== license));
+      }
     } else {
-      setCurrentLicenses([...currentLicenses, license]);
+      // If selecting a main license, auto-select all lower licenses
+      if (hierarchy.includes(license)) {
+        const licenseIndex = hierarchy.indexOf(license);
+        const lowerLicenses = hierarchy.slice(0, licenseIndex + 1);
+        const newLicenses = [...new Set([...currentLicenses, ...lowerLicenses])];
+        setCurrentLicenses(newLicenses);
+      } else {
+        // Just add the rating
+        setCurrentLicenses([...currentLicenses, license]);
+      }
     }
+  };
+  
+  // Document upload handlers
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent, docType: 'license' | 'medical' | 'rating') => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      processFile(files[0], docType);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, docType: 'license' | 'medical' | 'rating') => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processFile(file, docType);
+    }
+  };
+
+  const processFile = (file: File, docType: 'license' | 'medical' | 'rating') => {
+    const newDoc: UploadedDoc = {
+      id: Date.now().toString(),
+      type: docType,
+      fileName: file.name,
+      fileSize: file.size,
+      status: 'uploading'
+    };
+
+    setUploadedDocs(prev => [...prev, newDoc]);
+
+    // Simulate upload progress
+    setTimeout(() => {
+      setUploadedDocs(prev => 
+        prev.map(doc => 
+          doc.id === newDoc.id 
+            ? { ...doc, status: 'processing' }
+            : doc
+        )
+      );
+    }, 1500);
+
+    // Simulate OCR extraction
+    setTimeout(() => {
+      const detectedMedicalClass = Math.random() > 0.5 ? 'Class 1' : 'Class 2';
+      
+      setUploadedDocs(prev => 
+        prev.map(doc => 
+          doc.id === newDoc.id 
+            ? { 
+                ...doc, 
+                status: 'pending_review',
+                extractedData: {
+                  licenseNumber: docType === 'license' ? 'CPL-' + Math.floor(Math.random() * 100000) : undefined,
+                  expiryDate: docType === 'license' ? '2025-12-31' : undefined,
+                  issuingAuthority: docType === 'license' ? 'CAA' : undefined,
+                  medicalClass: docType === 'medical' ? detectedMedicalClass : undefined
+                }
+              }
+            : doc
+        )
+      );
+      
+      // Auto-detect medical class from OCR and update form
+      if (docType === 'medical') {
+        setMedicalClass(detectedMedicalClass);
+      }
+    }, 3500);
+  };
+
+  const removeDocument = (docId: string) => {
+    setUploadedDocs(prev => prev.filter(doc => doc.id !== docId));
+  };
+
+  const getDocsByType = (type: 'license' | 'medical' | 'rating') => {
+    return uploadedDocs.filter(doc => doc.type === type);
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  };
+  
+  // Check if date is expired
+  const isDateExpired = (dateString: string) => {
+    if (!dateString) return false;
+    const date = new Date(dateString);
+    const today = new Date();
+    return date < today;
   };
 
   // Toggle aviation pathway interest
@@ -549,8 +733,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         flight_school_address: flightSchoolAddress,
         residing_country: residingCountry,
         contact_number: contactNumber,
+        countries_visited: countriesVisited ? parseInt(countriesVisited, 10) : null,
         favorite_aircraft: favoriteAircraft,
         why_become_pilot: whyBecomePilot,
+        other_skills: otherSkills,
         aviation_pathways_interests: aviationPathwaysInterests,
         pilot_job_positions_interests: pilotJobPositionsInterests,
         english_proficiency: englishProficiency,
@@ -608,6 +794,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           console.log('✅ Data synced to profiles table');
         }
       }
+      
+      setLastSaved(new Date());
+      setAutoSaveStatus('saved');
+      setTimeout(() => setAutoSaveStatus('idle'), 2000);
 
       setSaveMessage('Data saved successfully!');
     } catch (error: any) {
@@ -644,6 +834,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               0% { transform: rotate(0deg); }
               100% { transform: rotate(360deg); }
             }
+            @keyframes pulse {
+              0%, 100% { opacity: 1; transform: scale(1); }
+              50% { opacity: 0.5; transform: scale(1.1); }
+            }
           `}</style>
           <p style={{ marginTop: '1.5rem', fontSize: '1.125rem', color: '#475569', fontWeight: 500 }}>
             Loading your profile...
@@ -677,10 +871,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             ← Back to Dashboard
           </button>
           
-          <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ height: '120px', width: 'auto' }} />
-          </div>
-          <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
+          <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase', marginTop: '1rem' }}>
             Pilot Recognition Profile
           </p>
           <h1 style={{ fontSize: '2rem', marginTop: '0.5rem', marginBottom: '0', color: '#0f172a', fontWeight: 600 }}>
@@ -690,6 +881,53 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             This information will be visible to aviation industry manufacturers and airlines who will see your current state, qualifications, and experience.
           </p>
         </header>
+
+        {/* Progress Stepper */}
+        <div style={{ marginBottom: '2rem', background: 'white', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            {[
+              { step: 1, label: 'Personal Info' },
+              { step: 2, label: 'License Info' },
+              { step: 3, label: 'Medical & Ratings' },
+              { step: 4, label: 'Experience' }
+            ].map((item, index) => (
+              <React.Fragment key={item.step}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                  <div style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: currentStep === item.step ? '#dc2626' : currentStep > item.step ? '#10b981' : '#e5e7eb',
+                    color: currentStep >= item.step ? 'white' : '#6b7280',
+                    fontWeight: 700,
+                    fontSize: '0.875rem',
+                    border: `2px solid ${currentStep === item.step ? '#dc2626' : currentStep > item.step ? '#10b981' : '#d1d5db'}`
+                  }}>
+                    {currentStep > item.step ? <Check style={{ width: '20px', height: '20px' }} /> : item.step}
+                  </div>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: currentStep === item.step ? 600 : 500,
+                    color: currentStep === item.step ? '#dc2626' : currentStep > item.step ? '#10b981' : '#6b7280'
+                  }}>
+                    {item.label}
+                  </span>
+                </div>
+                {index < 3 && (
+                  <div style={{
+                    width: '60px',
+                    height: '2px',
+                    background: currentStep > item.step ? '#10b981' : '#9ca3af',
+                    marginTop: '-20px'
+                  }} />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
 
         {/* Save Message */}
         {saveMessage && (
@@ -718,27 +956,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             Personal Information
           </h2>
           
-          {/* Full Legal Name */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-              Full Legal Name *
-            </label>
-            <input
-              type="text"
-              value={fullLegalName}
-              onChange={(e) => setFullLegalName(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '0.875rem'
-              }}
-              placeholder="Captain John Doe"
-            />
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+          {/* Two Column Layout for Personal Info */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', alignItems: 'end' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 First Name *
@@ -750,9 +969,19 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
+                  border: '2px solid #d1d5db',
                   borderRadius: '8px',
-                  fontSize: '0.875rem'
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#dc2626';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
                 placeholder="Enter first name"
               />
@@ -769,9 +998,19 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
+                  border: '2px solid #d1d5db',
                   borderRadius: '8px',
-                  fontSize: '0.875rem'
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#dc2626';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
                 placeholder="Enter middle name (optional)"
               />
@@ -788,9 +1027,19 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
+                  border: '2px solid #d1d5db',
                   borderRadius: '8px',
-                  fontSize: '0.875rem'
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#dc2626';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
                 placeholder="Enter last name"
               />
@@ -807,121 +1056,252 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
+                  border: '2px solid #d1d5db',
                   borderRadius: '8px',
-                  fontSize: '0.875rem'
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#dc2626';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+            
+            {/* Row 3: Country + Contact */}
+            <div style={{ position: 'relative' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                Residing Country *
+                <button
+                  onMouseEnter={() => setActiveTooltip('country')}
+                  onMouseLeave={() => setActiveTooltip(null)}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
+                >
+                  <HelpCircle style={{ width: '14px', height: '14px', color: '#9ca3af' }} />
+                </button>
+                {activeTooltip === 'country' && (
+                  <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
+                    Used for timezone and regulatory jurisdiction matching
+                  </span>
+                )}
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  value={residingCountry || countrySearch}
+                  onChange={(e) => {
+                    setCountrySearch(e.target.value);
+                    setShowCountryDropdown(true);
+                  }}
+                  onFocus={() => setShowCountryDropdown(true)}
+                  placeholder="Search country..."
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                    border: '2px solid #d1d5db',
+                    borderRadius: '8px',
+                    fontSize: '0.875rem',
+                    outline: 'none',
+                    transition: 'border-color 0.2s, box-shadow 0.2s'
+                  }}
+                  onBlur={() => setTimeout(() => setShowCountryDropdown(false), 200)}
+                />
+                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: '#9ca3af' }} />
+              </div>
+              {showCountryDropdown && filteredCountries.length > 0 && (
+                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: '200px', overflowY: 'auto', background: 'white', border: '1px solid #d1d5db', borderRadius: '8px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                  {filteredCountries.slice(0, 8).map(country => (
+                    <button
+                      key={country}
+                      onClick={() => {
+                        setResidingCountry(country);
+                        setCountrySearch('');
+                        setShowCountryDropdown(false);
+                      }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: residingCountry === country ? '#eff6ff' : 'white', color: '#374151', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
+                    >
+                      {country}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div style={{ position: 'relative' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                Nationality *
+                <button
+                  onMouseEnter={() => setActiveTooltip('nationality')}
+                  onMouseLeave={() => setActiveTooltip(null)}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
+                >
+                  <HelpCircle style={{ width: '14px', height: '14px', color: '#9ca3af' }} />
+                </button>
+                {activeTooltip === 'nationality' && (
+                  <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
+                    Required for visa and work permit processing
+                  </span>
+                )}
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  value={nationality || nationalitySearch}
+                  onChange={(e) => {
+                    setNationalitySearch(e.target.value);
+                    setShowNationalityDropdown(true);
+                  }}
+                  onFocus={() => setShowNationalityDropdown(true)}
+                  placeholder="Search nationality..."
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                    border: '2px solid #d1d5db',
+                    borderRadius: '8px',
+                    fontSize: '0.875rem',
+                    outline: 'none',
+                    transition: 'border-color 0.2s, box-shadow 0.2s'
+                  }}
+                  onBlur={() => setTimeout(() => setShowNationalityDropdown(false), 200)}
+                />
+                <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: '#9ca3af' }} />
+              </div>
+              {showNationalityDropdown && filteredNationalities.length > 0 && (
+                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: '200px', overflowY: 'auto', background: 'white', border: '1px solid #d1d5db', borderRadius: '8px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                  {filteredNationalities.slice(0, 8).map(nat => (
+                    <button
+                      key={nat}
+                      onClick={() => {
+                        setNationality(nat);
+                        setNationalitySearch('');
+                        setShowNationalityDropdown(false);
+                      }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', textAlign: 'left', border: 'none', background: nationality === nat ? '#eff6ff' : 'white', color: '#374151', fontSize: '0.875rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
+                    >
+                      {nat}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          
+          {/* Row 4: Flight School Search - Full Width */}
+          <div style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+              Flight School Search
+              <span style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 400, fontStyle: 'italic' }}>(Google Places API - Coming Soon)</span>
+            </label>
+            <div style={{ position: 'relative' }}>
+              <input
+                type="text"
+                value={flightSchoolAddress}
+                onChange={(e) => setFlightSchoolSearch(e.target.value)}
+                placeholder="Search flight school (e.g., 'WCC Aviation', 'CAE Oxford')..."
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 2.5rem 0.75rem 0.75rem',
+                  border: '2px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#dc2626';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              />
+              <Search style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: '#9ca3af' }} />
+            </div>
+            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
+              Auto-completes address, ICAO code, and school details
+            </p>
+          </div>
+
+          {/* Row 5: Contact + Languages */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginTop: '1.5rem' }}>
+            <div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                Contact Number *
+                <button
+                  onMouseEnter={() => setActiveTooltip('contact')}
+                  onMouseLeave={() => setActiveTooltip(null)}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
+                >
+                  <HelpCircle style={{ width: '14px', height: '14px', color: '#9ca3af' }} />
+                </button>
+                {activeTooltip === 'contact' && (
+                  <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
+                    Used by recruiters for urgent interview scheduling
+                  </span>
+                )}
+              </label>
+              <input
+                type="tel"
+                value={contactNumber}
+                onChange={(e) => setContactNumber(e.target.value)}
+                placeholder="+1 (555) 000-0000"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '2px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#dc2626';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
             
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                Residing Country *
+                Languages You Speak *
               </label>
-              <select
-                value={residingCountry}
-                onChange={(e) => setResidingCountry(e.target.value)}
+              <input
+                type="text"
+                value={languages}
+                onChange={(e) => setLanguages(e.target.value)}
+                placeholder="e.g. English, Arabic, French"
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
+                  border: '2px solid #d1d5db',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
-                  background: 'white'
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
                 }}
-              >
-                <option value="">Select residing country</option>
-                {NATIONALITIES.map(nat => (
-                  <option key={nat} value={nat}>{nat}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                Nationality *
-              </label>
-              <select
-                value={nationality}
-                onChange={(e) => setNationality(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  fontSize: '0.875rem',
-                  background: 'white'
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#dc2626';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
                 }}
-              >
-                <option value="">Select nationality</option>
-                {NATIONALITIES.map(nat => (
-                  <option key={nat} value={nat}>{nat}</option>
-                ))}
-              </select>
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              />
+              <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
+                Enter languages separated by commas
+              </p>
             </div>
-          </div>
-          
-          {/* Flight School Address */}
-          <div style={{ marginTop: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-              Flight School Address
-            </label>
-            <input
-              type="text"
-              value={flightSchoolAddress}
-              onChange={(e) => setFlightSchoolAddress(e.target.value)}
-              placeholder="Aviation Way, Sector 4, Global Flight Academy..."
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '0.875rem'
-              }}
-            />
-          </div>
-
-          {/* Contact Number */}
-          <div style={{ marginTop: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-              Contact Number *
-            </label>
-            <input
-              type="tel"
-              value={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
-              placeholder="+1 (555) 000-0000"
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '0.875rem'
-              }}
-            />
-          </div>
-          
-          {/* Languages */}
-          <div style={{ marginTop: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-              Languages You Speak *
-            </label>
-            <input
-              type="text"
-              value={languages}
-              onChange={(e) => setLanguages(e.target.value)}
-              placeholder="e.g. English, Arabic, French"
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '0.875rem'
-              }}
-            />
-            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: '#6b7280' }}>
-              Enter languages separated by commas
-            </p>
           </div>
 
           {/* English Proficiency */}
@@ -952,17 +1332,20 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </div>
         </section>
 
-        {/* License Information Section */}
+        {/* License Information Section - Terminal Style */}
         <section style={{ 
           background: 'white', 
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          border: `1px solid ${SLATE[200]}`
         }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '1.5rem', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-            License Information
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              License Information
+            </h2>
+          </div>
           
           {/* Pilot Licenses - Multi Select */}
           <div style={{ marginBottom: '1.5rem' }}>
@@ -994,8 +1377,20 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 License Number
+                <button
+                  onMouseEnter={() => setActiveTooltip('license')}
+                  onMouseLeave={() => setActiveTooltip(null)}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'help' }}
+                >
+                  <HelpCircle style={{ width: '14px', height: '14px', color: '#9ca3af' }} />
+                </button>
+                {activeTooltip === 'license' && (
+                  <span style={{ position: 'absolute', bottom: '100%', left: 0, background: '#1f2937', color: 'white', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', whiteSpace: 'nowrap', zIndex: 20 }}>
+                    Enter your license number from your physical certificate
+                  </span>
+                )}
               </label>
               <input
                 type="text"
@@ -1004,11 +1399,23 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  fontSize: '0.875rem'
+                  border: `1px solid ${SLATE[300]}`,
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontFamily: MONO_FONT,
+                  letterSpacing: '0.025em',
+                  outline: 'none',
+                  transition: 'all 0.15s'
                 }}
-                placeholder="Enter license number"
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = CORPORATE_BLUE;
+                  e.currentTarget.style.boxShadow = `0 0 0 2px rgba(0, 51, 102, 0.1)`;
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = SLATE[300];
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+                placeholder="e.g., CPL-2024-001234"
               />
             </div>
             
@@ -1036,8 +1443,11 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 License Expiration Date *
+                {isDateExpired(licenseExpiry) && (
+                  <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 500 }}>(Expired)</span>
+                )}
               </label>
               <input
                 type="date"
@@ -1046,31 +1456,151 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  fontSize: '0.875rem'
+                  border: `1px solid ${isDateExpired(licenseExpiry) ? '#ef4444' : SLATE[300]}`,
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontFamily: MONO_FONT,
+                  outline: 'none',
+                  transition: 'all 0.15s'
                 }}
               />
             </div>
           </div>
+          
+          {/* License Certificate Upload - High Fidelity Terminal Style */}
+          <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'white', borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.625rem' }}>
+              <Shield style={{ width: '14px', height: '14px', color: '#001E3C' }} />
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                Document Verification
+              </span>
+              <Lock style={{ width: '12px', height: '12px', color: EMERALD }} />
+              <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>Secure SSL</span>
+            </div>
+            
+            {getDocsByType('license').length === 0 ? (
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, 'license')}
+                onClick={() => {
+                  setActiveUploadType('license');
+                  fileInputRef.current?.click();
+                }}
+                style={{
+                  border: `1px solid ${isDragging ? '#001E3C' : SLATE[200]}`,
+                  borderRadius: '4px',
+                  padding: '1rem 1.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  background: SLATE[50],
+                  cursor: 'pointer',
+                  transition: 'all 0.15s'
+                }}
+              >
+                <FileDigit style={{ width: '18px', height: '18px', color: '#001E3C' }} />
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700] }}>
+                    Upload CPL/ATPL Certificate
+                  </p>
+                  <p style={{ margin: '0.15rem 0 0', fontSize: '0.7rem', color: SLATE[400] }}>
+                    PDF, JPG, PNG • Max 10MB • Required for verification
+                  </p>
+                </div>
+                <span style={{ fontSize: '0.7rem', color: '#001E3C', fontWeight: 600 }}>Browse</span>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {getDocsByType('license').map(doc => (
+                  <div key={doc.id} style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '0.75rem', 
+                    padding: '0.75rem', 
+                    background: SLATE[50], 
+                    borderRadius: '4px', 
+                    border: `1px solid ${doc.status === 'pending_review' ? EMERALD : SLATE[200]}` 
+                  }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: doc.status === 'pending_review' ? '#ecfdf5' : SLATE[100], display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {doc.status === 'processing' ? (
+                        <Loader2 style={{ width: '16px', height: '16px', color: '#f59e0b', animation: 'spin 1s linear infinite' }} />
+                      ) : doc.status === 'pending_review' ? (
+                        <Check style={{ width: '16px', height: '16px', color: EMERALD }} />
+                      ) : (
+                        <FileText style={{ width: '16px', height: '16px', color: SLATE[500] }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.fileName}</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.15rem' }}>
+                        <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>{formatFileSize(doc.fileSize)}</span>
+                        {doc.status === 'uploading' && (
+                          <span style={{ fontSize: '0.7rem', color: SLATE[500] }}>↑ Uploading...</span>
+                        )}
+                        {doc.status === 'processing' && (
+                          <span style={{ fontSize: '0.7rem', color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', animation: 'pulse 1.5s infinite' }} />
+                            Processing OCR...
+                          </span>
+                        )}
+                        {doc.status === 'pending_review' && (
+                          <span style={{ fontSize: '0.7rem', color: EMERALD, fontWeight: 500 }}>
+                            VERIFIED (24-48h)
+                          </span>
+                        )}
+                      </div>
+                      {doc.extractedData && doc.status === 'pending_review' && (
+                        <div style={{ marginTop: '0.4rem', padding: '0.4rem 0.5rem', background: 'white', borderRadius: '3px', border: `1px solid ${SLATE[200]}`, fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <Scan style={{ width: '12px', height: '12px', color: SLATE[400] }} />
+                          <span style={{ color: SLATE[500] }}>Extracted:</span>
+                          <span style={{ color: SLATE[700], fontFamily: MONO_FONT, fontWeight: 500 }}>{doc.extractedData.licenseNumber}</span>
+                          {doc.extractedData.expiryDate && (
+                            <span style={{ color: SLATE[400] }}>•</span>
+                          )}
+                          {doc.extractedData.expiryDate && (
+                            <span style={{ color: SLATE[700], fontFamily: MONO_FONT }}>{doc.extractedData.expiryDate}</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => removeDocument(doc.id)}
+                      style={{ padding: '0.4rem', background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.4, transition: 'opacity 0.15s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = '0.4'}
+                    >
+                      <X style={{ width: '16px', height: '16px', color: SLATE[500] }} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </section>
 
-        {/* Medical Certificate Section */}
+        {/* Medical Certificate Section - Terminal Style */}
         <section style={{ 
           background: 'white', 
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          border: `1px solid ${SLATE[200]}`
         }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '1.5rem', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-            Medical Certificate
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Medical Certificate
+            </h2>
+          </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
                 Medical Certificate Expiration Date *
+                {isDateExpired(medicalExpiry) && (
+                  <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 500 }}>(Expired)</span>
+                )}
               </label>
               <input
                 type="date"
@@ -1079,9 +1609,12 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  fontSize: '0.875rem'
+                  border: `1px solid ${isDateExpired(medicalExpiry) ? '#ef4444' : SLATE[300]}`,
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontFamily: MONO_FONT,
+                  outline: 'none',
+                  transition: 'all 0.15s'
                 }}
               />
             </div>
@@ -1110,25 +1643,44 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
             
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.75rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.75rem' }}>
                 Medical Class *
+                {uploadedDocs.some(d => d.type === 'medical' && d.status === 'pending_review') && (
+                  <span style={{ 
+                    fontSize: '0.7rem', 
+                    color: EMERALD, 
+                    background: '#f0fdf4', 
+                    padding: '0.15rem 0.5rem', 
+                    borderRadius: '4px',
+                    border: `1px solid ${EMERALD}`,
+                    fontWeight: 500,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.25rem'
+                  }}>
+                    <Check style={{ width: '10px', height: '10px' }} />
+                    Auto-filled from document
+                  </span>
+                )}
               </label>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
                 {MEDICAL_CLASSES.map(medClass => (
                   <button
                     key={medClass}
                     onClick={() => setMedicalClass(medClass)}
                     style={{
-                      padding: '0.75rem 1.5rem',
-                      borderRadius: '8px',
-                      border: '2px solid',
-                      borderColor: medicalClass === medClass ? '#2563eb' : '#d1d5db',
-                      background: medicalClass === medClass ? '#2563eb' : 'white',
-                      color: medicalClass === medClass ? 'white' : '#374151',
-                      fontSize: '0.875rem',
+                      padding: '1rem 1.5rem',
+                      borderRadius: '6px',
+                      border: '1px solid',
+                      borderColor: medicalClass === medClass ? '#001E3C' : SLATE[300],
+                      background: medicalClass === medClass ? '#001E3C' : 'white',
+                      color: medicalClass === medClass ? 'white' : SLATE[700],
+                      fontSize: '0.9rem',
                       cursor: 'pointer',
-                      fontWeight: 600,
-                      flex: 1
+                      fontWeight: medicalClass === medClass ? 700 : 500,
+                      flex: 1,
+                      boxShadow: medicalClass === medClass ? '0 2px 8px rgba(0, 30, 60, 0.2)' : 'none',
+                      transition: 'all 0.15s'
                     }}
                   >
                     {medClass}
@@ -1137,19 +1689,128 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               </div>
             </div>
           </div>
+          
+          {/* Medical Certificate Upload - Terminal Style */}
+          <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'white', borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.625rem' }}>
+              <Shield style={{ width: '14px', height: '14px', color: '#001E3C' }} />
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                Medical Verification
+              </span>
+              <Lock style={{ width: '12px', height: '12px', color: EMERALD }} />
+              <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>AeroMedical Secure</span>
+            </div>
+            
+            {getDocsByType('medical').length === 0 ? (
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, 'medical')}
+                onClick={() => {
+                  setActiveUploadType('medical');
+                  fileInputRef.current?.click();
+                }}
+                style={{
+                  border: `1px solid ${isDragging ? '#001E3C' : SLATE[200]}`,
+                  borderRadius: '4px',
+                  padding: '1rem 1.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  background: SLATE[50],
+                  cursor: 'pointer',
+                  transition: 'all 0.15s'
+                }}
+              >
+                <FileDigit style={{ width: '18px', height: '18px', color: '#001E3C' }} />
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700] }}>
+                    Upload Medical Certificate
+                  </p>
+                  <p style={{ margin: '0.15rem 0 0', fontSize: '0.7rem', color: SLATE[400] }}>
+                    ICAO/EASA format • PDF, JPG • Auto-detects Class
+                  </p>
+                </div>
+                <span style={{ fontSize: '0.7rem', color: '#001E3C', fontWeight: 600 }}>Browse</span>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {getDocsByType('medical').map(doc => (
+                  <div key={doc.id} style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '0.75rem', 
+                    padding: '0.75rem', 
+                    background: SLATE[50], 
+                    borderRadius: '4px', 
+                    border: `1px solid ${doc.status === 'pending_review' ? EMERALD : SLATE[200]}` 
+                  }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: doc.status === 'pending_review' ? '#ecfdf5' : SLATE[100], display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {doc.status === 'processing' ? (
+                        <Loader2 style={{ width: '16px', height: '16px', color: '#f59e0b', animation: 'spin 1s linear infinite' }} />
+                      ) : doc.status === 'pending_review' ? (
+                        <Check style={{ width: '16px', height: '16px', color: EMERALD }} />
+                      ) : (
+                        <FileText style={{ width: '16px', height: '16px', color: '#059669' }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.fileName}</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.15rem' }}>
+                        <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>{formatFileSize(doc.fileSize)}</span>
+                        {doc.status === 'uploading' && (
+                          <span style={{ fontSize: '0.7rem', color: SLATE[500] }}>↑ Uploading...</span>
+                        )}
+                        {doc.status === 'processing' && (
+                          <span style={{ fontSize: '0.7rem', color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', animation: 'pulse 1.5s infinite' }} />
+                            Scanning medical class...
+                          </span>
+                        )}
+                        {doc.status === 'pending_review' && (
+                          <span style={{ fontSize: '0.7rem', color: EMERALD, fontWeight: 500 }}>
+                            VERIFIED (24-48h)
+                          </span>
+                        )}
+                      </div>
+                      {doc.extractedData?.medicalClass && doc.status === 'pending_review' && (
+                        <div style={{ marginTop: '0.4rem', padding: '0.4rem 0.5rem', background: 'white', borderRadius: '3px', border: `1px solid ${SLATE[200]}`, fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <Scan style={{ width: '12px', height: '12px', color: SLATE[400] }} />
+                          <span style={{ color: SLATE[500] }}>Auto-detected:</span>
+                          <span style={{ color: '#059669', fontWeight: 600, fontFamily: MONO_FONT }}>{doc.extractedData.medicalClass}</span>
+                          <span style={{ color: EMERALD, fontSize: '0.65rem' }}>✓ Applied</span>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => removeDocument(doc.id)}
+                      style={{ padding: '0.4rem', background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.4, transition: 'opacity 0.15s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = '0.4'}
+                    >
+                      <X style={{ width: '16px', height: '16px', color: SLATE[500] }} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </section>
 
-        {/* Radio License Section */}
+        {/* Radio License Section - Terminal Style */}
         <section style={{ 
           background: 'white', 
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          border: `1px solid ${SLATE[200]}`
         }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '1.5rem', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-            Radio License
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Radio License
+            </h2>
+          </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             <div>
@@ -1160,41 +1821,55 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                 type="date"
                 value={radioLicenseExpiry}
                 onChange={(e) => setRadioLicenseExpiry(e.target.value)}
+                placeholder="DD / MM / YYYY"
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  fontSize: '0.875rem'
+                  border: `1px solid ${SLATE[300]}`,
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontFamily: MONO_FONT
                 }}
               />
             </div>
           </div>
         </section>
 
-        {/* Aircraft Type Ratings Section */}
+        {/* Aircraft Type Ratings Section - Terminal Style */}
         <section style={{ 
           background: 'white', 
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          border: `1px solid ${SLATE[200]}`
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
-              Aircraft Type Ratings
-            </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+              <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+                Aircraft Type Ratings
+              </h2>
+            </div>
             <button
               onClick={addAircraftRating}
               style={{
-                padding: '0.5rem 1rem',
-                background: '#2563eb',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                fontWeight: 600,
-                cursor: 'pointer'
+                padding: '0.4rem 1rem',
+                background: 'white',
+                color: '#001E3C',
+                border: `1px solid #001E3C`,
+                borderRadius: '6px',
+                fontSize: '0.8rem',
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.15s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#001E3C';
+                e.currentTarget.style.color = 'white';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'white';
+                e.currentTarget.style.color = '#001E3C';
               }}
             >
               + Add Rating
@@ -1202,118 +1877,293 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           </div>
           
           {aircraftRatings.length === 0 && (
-            <p style={{ color: '#6b7280', fontStyle: 'italic', textAlign: 'center', padding: '2rem' }}>
-              No aircraft ratings added yet. Click "Add Rating" to add your type ratings.
-            </p>
+            <div style={{ textAlign: 'center', padding: '1.5rem', background: SLATE[50], borderRadius: '8px', border: `1px solid ${SLATE[200]}` }}>
+              <p style={{ color: SLATE[500], fontSize: '0.875rem', margin: 0 }}>
+                No aircraft ratings added yet. Click "Add Rating" to log your A320, B737, or other type ratings.
+              </p>
+            </div>
           )}
           
           {aircraftRatings.map((rating, index) => (
             <div key={rating.id} style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-              gap: '1rem', 
               marginBottom: '1rem',
               padding: '1rem',
-              background: '#f9fafb',
-              borderRadius: '12px',
-              border: '1px solid #e5e7eb'
+              background: 'white',
+              borderRadius: '8px',
+              border: `1px solid ${SLATE[200]}`
             }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
-                  Aircraft Type
-                </label>
-                <select
-                  value={rating.aircraftType}
-                  onChange={(e) => updateAircraftRating(rating.id, 'aircraftType', e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.5rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    fontSize: '0.875rem',
-                    background: 'white'
-                  }}
-                >
-                  <option value="">Select aircraft</option>
-                  {COMMON_AIRCRAFT.map(aircraft => (
-                    <option key={aircraft} value={aircraft}>{aircraft}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', marginBottom: '0.25rem' }}>
-                  Rating Date
-                </label>
-                <input
-                  type="date"
-                  value={rating.ratingDate}
-                  onChange={(e) => updateAircraftRating(rating.id, 'ratingDate', e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.5rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    fontSize: '0.875rem'
-                  }}
-                />
-              </div>
-              
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0.5rem' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={rating.isCurrent}
-                    onChange={(e) => updateAircraftRating(rating.id, 'isCurrent', e.target.checked)}
-                    style={{ width: '1rem', height: '1rem' }}
-                  />
-                  <span style={{ fontSize: '0.875rem', color: '#374151' }}>Current Rating</span>
-                </label>
-              </div>
-              
-              <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+              {/* Rating Header with Status */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', paddingBottom: '0.5rem', borderBottom: `1px solid ${SLATE[100]}` }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: SLATE[800] }}>
+                    Rating #{index + 1}
+                  </span>
+                  {rating.aircraftType && (
+                    <span style={{ 
+                      fontSize: '0.7rem', 
+                      padding: '0.2rem 0.5rem', 
+                      background: getDocsByType('rating').length > index ? '#f0fdf4' : '#fef3c7',
+                      color: getDocsByType('rating').length > index ? EMERALD : '#d97706',
+                      borderRadius: '4px',
+                      fontWeight: 500,
+                      border: `1px solid ${getDocsByType('rating').length > index ? EMERALD : '#fbbf24'}`
+                    }}>
+                      {getDocsByType('rating').length > index ? 'VERIFIED' : 'PENDING'}
+                    </span>
+                  )}
+                </div>
                 <button
                   onClick={() => removeAircraftRating(rating.id)}
                   style={{
-                    padding: '0.5rem 1rem',
-                    background: '#ef4444',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '6px',
-                    fontSize: '0.875rem',
+                    padding: '0.3rem 0.6rem',
+                    background: 'transparent',
+                    color: '#ef4444',
+                    border: '1px solid #ef4444',
+                    borderRadius: '4px',
+                    fontSize: '0.75rem',
                     cursor: 'pointer',
-                    fontWeight: 600
+                    opacity: 0.8,
+                    transition: 'opacity 0.15s'
                   }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
                 >
                   Remove
                 </button>
               </div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr auto', gap: '1rem', alignItems: 'end' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
+                    Aircraft Type
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="text"
+                      value={rating.aircraftType}
+                      onChange={(e) => updateAircraftRating(rating.id, 'aircraftType', e.target.value)}
+                      placeholder="e.g., A320, B737..."
+                      list={`aircraft-list-${rating.id}`}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem 0.75rem',
+                        border: `1px solid ${SLATE[300]}`,
+                        borderRadius: '6px',
+                        fontSize: '0.875rem',
+                        outline: 'none',
+                        fontFamily: MONO_FONT
+                      }}
+                    />
+                    <datalist id={`aircraft-list-${rating.id}`}>
+                      {COMMON_AIRCRAFT.map(aircraft => (
+                        <option key={aircraft} value={aircraft} />
+                      ))}
+                    </datalist>
+                  </div>
+                </div>
+                
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: SLATE[500], marginBottom: '0.25rem' }}>
+                    Rating Date
+                  </label>
+                  <input
+                    type="date"
+                    value={rating.ratingDate}
+                    onChange={(e) => updateAircraftRating(rating.id, 'ratingDate', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.75rem',
+                      border: `1px solid ${SLATE[300]}`,
+                      borderRadius: '6px',
+                      fontSize: '0.875rem',
+                      fontFamily: MONO_FONT
+                    }}
+                  />
+                </div>
+                
+                <div>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.875rem', color: SLATE[700] }}>
+                    <input
+                      type="checkbox"
+                      checked={rating.isCurrent}
+                      onChange={(e) => updateAircraftRating(rating.id, 'isCurrent', e.target.checked)}
+                      style={{ width: '1rem', height: '1rem' }}
+                    />
+                    Current
+                  </label>
+                </div>
+              </div>
             </div>
           ))}
+          
+          {/* Type Rating Certificate Upload - Terminal Style */}
+          <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'white', borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.625rem' }}>
+              <Shield style={{ width: '14px', height: '14px', color: '#001E3C' }} />
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                Type Rating Documentation
+              </span>
+              <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>Optional</span>
+            </div>
+            
+            {getDocsByType('rating').length === 0 ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, 'rating')}
+                  onClick={() => {
+                    setActiveUploadType('rating');
+                    fileInputRef.current?.click();
+                  }}
+                  style={{
+                    border: `1px solid ${isDragging ? '#001E3C' : SLATE[200]}`,
+                    borderRadius: '4px',
+                    padding: '0.75rem 1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    background: SLATE[50],
+                    cursor: 'pointer',
+                    transition: 'all 0.15s'
+                  }}
+                >
+                  <FileDigit style={{ width: '18px', height: '18px', color: '#001E3C' }} />
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700] }}>
+                      Upload ATO Certificate
+                    </p>
+                    <p style={{ margin: '0.15rem 0 0', fontSize: '0.7rem', color: SLATE[400] }}>
+                      PDF, JPG • Max 10MB • Enhances credibility
+                    </p>
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#001E3C', fontWeight: 600 }}>Browse</span>
+                </div>
+                <button
+                  style={{
+                    padding: '0.5rem',
+                    background: 'transparent',
+                    border: 'none',
+                    color: SLATE[400],
+                    fontSize: '0.75rem',
+                    fontWeight: 400,
+                    cursor: 'pointer',
+                    textAlign: 'center'
+                  }}
+                >
+                  Skip for now →
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {getDocsByType('rating').map(doc => (
+                  <div key={doc.id} style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '0.75rem', 
+                    padding: '0.75rem', 
+                    background: SLATE[50], 
+                    borderRadius: '4px', 
+                    border: `1px solid ${doc.status === 'pending_review' ? EMERALD : SLATE[200]}` 
+                  }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: doc.status === 'pending_review' ? '#eff6ff' : SLATE[100], display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {doc.status === 'processing' ? (
+                        <Loader2 style={{ width: '16px', height: '16px', color: '#f59e0b', animation: 'spin 1s linear infinite' }} />
+                      ) : doc.status === 'pending_review' ? (
+                        <Check style={{ width: '16px', height: '16px', color: '#2563eb' }} />
+                      ) : (
+                        <FileText style={{ width: '16px', height: '16px', color: '#2563eb' }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 500, color: SLATE[700], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.fileName}</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.15rem' }}>
+                        <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>{formatFileSize(doc.fileSize)}</span>
+                        {doc.status === 'uploading' && (
+                          <span style={{ fontSize: '0.7rem', color: SLATE[500] }}>↑ Uploading...</span>
+                        )}
+                        {doc.status === 'processing' && (
+                          <span style={{ fontSize: '0.7rem', color: '#f59e0b' }}>Processing...</span>
+                        )}
+                        {doc.status === 'pending_review' && (
+                          <span style={{ fontSize: '0.7rem', color: '#2563eb', fontWeight: 500 }}>
+                            VERIFIED (24-48h)
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => removeDocument(doc.id)}
+                      style={{ padding: '0.4rem', background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.4, transition: 'opacity 0.15s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = '0.4'}
+                    >
+                      <X style={{ width: '16px', height: '16px', color: SLATE[500] }} />
+                    </button>
+                  </div>
+                ))}
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    onClick={() => {
+                      setActiveUploadType('rating');
+                      fileInputRef.current?.click();
+                    }}
+                    style={{ 
+                      flex: 1,
+                      padding: '0.625rem', 
+                      border: `1px dashed ${SLATE[300]}`, 
+                      borderRadius: '4px', 
+                      background: 'white',
+                      color: SLATE[600],
+                      fontSize: '0.75rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    + Add Certificate
+                  </button>
+                  <button
+                    style={{
+                      padding: '0.625rem 1rem',
+                      background: 'transparent',
+                      border: 'none',
+                      color: SLATE[400],
+                      fontSize: '0.75rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </section>
 
-        {/* Job Experience Section */}
+        {/* Job Experience Section - Terminal Style */}
         <section style={{ 
           background: 'white', 
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          border: `1px solid ${SLATE[200]}`
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
-              Job Experience
-            </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+              <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+                Job Experience
+              </h2>
+            </div>
             <button
               onClick={addJobExperience}
               style={{
-                padding: '0.5rem 1rem',
-                background: '#2563eb',
+                padding: '0.4rem 1rem',
+                background: '#001E3C',
                 color: 'white',
                 border: 'none',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                fontWeight: 600,
+                borderRadius: '6px',
+                fontSize: '0.8rem',
+                fontWeight: 500,
                 cursor: 'pointer'
               }}
             >
@@ -1434,53 +2284,70 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
               <button
                 onClick={() => removeJobExperience(job.id)}
                 style={{
-                  padding: '0.5rem 1rem',
-                  background: '#ef4444',
-                  color: 'white',
-                  border: 'none',
+                  padding: '0.4rem 0.75rem',
+                  background: 'transparent',
+                  color: '#ef4444',
+                  border: '1px solid #ef4444',
                   borderRadius: '6px',
-                  fontSize: '0.875rem',
+                  fontSize: '0.75rem',
                   cursor: 'pointer',
-                  fontWeight: 600
+                  fontWeight: 500,
+                  opacity: 0.7,
+                  transition: 'opacity 0.2s'
                 }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
               >
-                Remove Experience
+                ✕ Remove
               </button>
             </div>
           ))}
+          
+          {/* ICAO Data Security Audit Trail */}
+          <div style={{ marginTop: '1.5rem', padding: '0.75rem', background: SLATE[50], borderRadius: '4px', border: `1px solid ${SLATE[200]}`, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Lock style={{ width: '14px', height: '14px', color: SLATE[400] }} />
+            <span style={{ fontSize: '0.7rem', color: SLATE[500] }}>
+              Data encrypted and stored according to ICAO data security standards
+            </span>
+          </div>
         </section>
 
-        {/* Current Occupation Section */}
+        {/* Current Occupation Status Section - Terminal Style */}
         <section style={{ 
           background: 'white', 
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          border: `1px solid ${SLATE[200]}`
         }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '1.5rem', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-            Current Occupation Status
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Current Occupation Status
+            </h2>
+          </div>
           
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.75rem' }}>
               Your Current Employment Status *
             </label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {OCCUPATION_OPTIONS.map(option => (
                 <button
                   key={option.value}
                   onClick={() => setCurrentOccupation(option.value)}
                   style={{
-                    padding: '0.75rem 1.5rem',
-                    borderRadius: '8px',
-                    border: '2px solid',
-                    borderColor: currentOccupation === option.value ? '#2563eb' : '#d1d5db',
-                    background: currentOccupation === option.value ? '#2563eb' : 'white',
-                    color: currentOccupation === option.value ? 'white' : '#374151',
-                    fontSize: '0.875rem',
+                    padding: '0.4rem 0.875rem',
+                    borderRadius: '9999px',
+                    border: '1px solid',
+                    borderColor: currentOccupation === option.value ? '#001E3C' : SLATE[300],
+                    background: currentOccupation === option.value ? '#001E3C' : 'white',
+                    color: currentOccupation === option.value ? 'white' : SLATE[700],
+                    fontSize: '0.8rem',
                     cursor: 'pointer',
-                    fontWeight: 600
+                    fontWeight: currentOccupation === option.value ? 600 : 500,
+                    transition: 'all 0.15s',
+                    boxShadow: currentOccupation === option.value ? '0 2px 6px rgba(0, 30, 60, 0.15)' : 'none'
                   }}
                 >
                   {option.label}
@@ -1532,17 +2399,20 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           )}
         </section>
 
-        {/* Pilot Interests Section */}
+        {/* Pilot Interests Section - Terminal Style */}
         <section style={{ 
           background: 'white', 
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          border: `1px solid ${SLATE[200]}`
         }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '1.5rem', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-            Pilot Interests
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Pilot Interests
+            </h2>
+          </div>
           
           {/* Aviation Pathways Interests - Multiple Choice */}
           <div style={{ marginBottom: '1.5rem' }}>
@@ -1555,16 +2425,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   key={pathway}
                   onClick={() => toggleAviationPathway(pathway)}
                   style={{
-                    padding: '0.5rem 1rem',
+                    padding: '0.4rem 0.875rem',
                     borderRadius: '9999px',
                     border: '1px solid',
-                    borderColor: aviationPathwaysInterests.includes(pathway) ? '#2563eb' : '#d1d5db',
-                    background: aviationPathwaysInterests.includes(pathway) ? '#2563eb' : 'white',
-                    color: aviationPathwaysInterests.includes(pathway) ? 'white' : '#374151',
-                    fontSize: '0.875rem',
+                    borderColor: aviationPathwaysInterests.includes(pathway) ? '#001E3C' : SLATE[300],
+                    background: aviationPathwaysInterests.includes(pathway) ? '#001E3C' : 'white',
+                    color: aviationPathwaysInterests.includes(pathway) ? 'white' : SLATE[700],
+                    fontSize: '0.8rem',
                     cursor: 'pointer',
-                    fontWeight: 500,
-                    transition: 'all 0.2s ease'
+                    fontWeight: aviationPathwaysInterests.includes(pathway) ? 600 : 500,
+                    transition: 'all 0.15s',
+                    boxShadow: aviationPathwaysInterests.includes(pathway) ? '0 2px 6px rgba(0, 30, 60, 0.15)' : 'none'
                   }}
                 >
                   {pathway}
@@ -1584,16 +2455,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   key={position}
                   onClick={() => togglePilotJobPosition(position)}
                   style={{
-                    padding: '0.5rem 1rem',
+                    padding: '0.4rem 0.875rem',
                     borderRadius: '9999px',
                     border: '1px solid',
-                    borderColor: pilotJobPositionsInterests.includes(position) ? '#2563eb' : '#d1d5db',
-                    background: pilotJobPositionsInterests.includes(position) ? '#2563eb' : 'white',
-                    color: pilotJobPositionsInterests.includes(position) ? 'white' : '#374151',
-                    fontSize: '0.875rem',
+                    borderColor: pilotJobPositionsInterests.includes(position) ? '#001E3C' : SLATE[300],
+                    background: pilotJobPositionsInterests.includes(position) ? '#001E3C' : 'white',
+                    color: pilotJobPositionsInterests.includes(position) ? 'white' : SLATE[700],
+                    fontSize: '0.8rem',
                     cursor: 'pointer',
-                    fontWeight: 500,
-                    transition: 'all 0.2s ease'
+                    fontWeight: pilotJobPositionsInterests.includes(position) ? 600 : 500,
+                    transition: 'all 0.15s',
+                    boxShadow: pilotJobPositionsInterests.includes(position) ? '0 2px 6px rgba(0, 30, 60, 0.15)' : 'none'
                   }}
                 >
                   {position}
@@ -1651,64 +2523,244 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
               Why Did You Become a Pilot / Hold a Pilot License?
             </label>
-            <textarea
-              value={whyBecomePilot}
-              onChange={(e) => setWhyBecomePilot(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                minHeight: '120px',
-                resize: 'vertical'
-              }}
-              placeholder="Share your story and motivation for becoming a pilot..."
-            />
+            <div style={{ position: 'relative' }}>
+              <textarea
+                value={whyBecomePilot}
+                onChange={(e) => setWhyBecomePilot(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  paddingRight: '4rem',
+                  border: `1px solid ${SLATE[300]}`,
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  minHeight: '80px',
+                  resize: 'vertical',
+                  fontFamily: MONO_FONT
+                }}
+                placeholder="Focusing on long-haul operations and EBT-aligned training..."
+                maxLength={500}
+              />
+              <span style={{ 
+                position: 'absolute', 
+                bottom: '0.75rem', 
+                right: '0.75rem', 
+                fontSize: '0.75rem', 
+                color: SLATE[400],
+                fontFamily: MONO_FONT,
+                pointerEvents: 'none'
+              }}>
+                {whyBecomePilot.length} / 500
+              </span>
+            </div>
           </div>
           
           <div>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
               Other Skills & Experiences (e.g., Cooking, IT, Languages, etc.)
             </label>
-            <textarea
-              value={otherSkills}
-              onChange={(e) => setOtherSkills(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                minHeight: '100px',
-                resize: 'vertical'
-              }}
-              placeholder="List any additional skills, hobbies, or experiences you have outside of aviation..."
-            />
+            <div style={{ position: 'relative' }}>
+              <textarea
+                value={otherSkills}
+                onChange={(e) => setOtherSkills(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  paddingRight: '4rem',
+                  border: `1px solid ${SLATE[300]}`,
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  minHeight: '60px',
+                  resize: 'vertical',
+                  fontFamily: MONO_FONT
+                }}
+                placeholder="Multi-engine IFR experience, technical documentation, crew resource management..."
+                maxLength={500}
+              />
+              <span style={{ 
+                position: 'absolute', 
+                bottom: '0.75rem', 
+                right: '0.75rem', 
+                fontSize: '0.75rem', 
+                color: SLATE[400],
+                fontFamily: MONO_FONT,
+                pointerEvents: 'none'
+              }}>
+                {otherSkills.length} / 500
+              </span>
+            </div>
           </div>
         </section>
 
-        {/* Industry Visibility Notice */}
+        {/* Review Your Information - Terminal Style */}
         <section style={{ 
           background: 'white', 
-          borderRadius: '20px', 
-          padding: '2rem', 
+          borderRadius: '8px', 
+          padding: '1.5rem', 
           marginBottom: '2rem',
-          border: '1px solid #e2e8f0',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          border: `1px solid ${SLATE[300]}`,
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
         }}>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            Industry Visibility Notice
-          </h3>
-          <p style={{ color: '#0f172a', lineHeight: 1.6, marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${SLATE[200]}` }}>
+            <Shield style={{ width: '20px', height: '20px', color: '#001E3C' }} />
+            <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: SLATE[800], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Review Your Information
+            </h3>
+          </div>
+          
+          <p style={{ color: SLATE[600], lineHeight: 1.6, marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+            Before saving, please review your information. This data will be visible on your ATLAS CV and shared with aviation industry partners including airlines and manufacturers.
+          </p>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div style={{ padding: '1rem', background: SLATE[50], borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+              <p style={{ margin: 0, fontSize: '0.7rem', color: SLATE[500], textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Pilot Name</p>
+              <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', fontWeight: fullLegalName ? 700 : 400, color: fullLegalName ? SLATE[900] : SLATE[400] }}>{fullLegalName || 'Not entered'}</p>
+            </div>
+            <div style={{ padding: '1rem', background: SLATE[50], borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+              <p style={{ margin: 0, fontSize: '0.7rem', color: SLATE[500], textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>License Type</p>
+              <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', fontWeight: currentLicenses.length > 0 ? 700 : 400, color: currentLicenses.length > 0 ? SLATE[900] : SLATE[400] }}>{currentLicenses.join(', ') || 'None selected'}</p>
+            </div>
+            <div style={{ padding: '1rem', background: SLATE[50], borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+              <p style={{ margin: 0, fontSize: '0.7rem', color: SLATE[500], textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Medical Status</p>
+              <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', fontWeight: medicalClass ? 700 : 400, color: medicalClass ? (isDateExpired(medicalExpiry) ? '#ef4444' : EMERALD) : SLATE[400] }}>
+                {medicalClass || 'Not selected'} {isDateExpired(medicalExpiry) && '(Expired)'}
+              </p>
+            </div>
+            <div style={{ padding: '1rem', background: SLATE[50], borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+              <p style={{ margin: 0, fontSize: '0.7rem', color: SLATE[500], textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Type Ratings</p>
+              <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', fontWeight: aircraftRatings.length > 0 ? 700 : 400, color: aircraftRatings.length > 0 ? SLATE[900] : SLATE[400] }}>{aircraftRatings.length > 0 ? `${aircraftRatings.length} rating(s)` : 'None added'}</p>
+            </div>
+          </div>
+          
+          {isDateExpired(licenseExpiry) && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', background: '#fee2e2', borderRadius: '8px', marginBottom: '1rem' }}>
+              <span style={{ color: '#ef4444', fontSize: '0.875rem' }}>⚠️ Your license appears to be expired. Please verify the expiration date.</span>
+            </div>
+          )}
+          {isDateExpired(medicalExpiry) && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', background: '#fee2e2', borderRadius: '8px', marginBottom: '1rem' }}>
+              <span style={{ color: '#ef4444', fontSize: '0.875rem' }}>⚠️ Your medical certificate appears to be expired. Please verify the expiration date.</span>
+            </div>
+          )}
+          
+          <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', cursor: 'pointer', padding: '1rem', background: SLATE[50], borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
+            <input type="checkbox" style={{ marginTop: '0.125rem', width: '1.25rem', height: '1.25rem', accentColor: '#001E3C' }} />
+            <span style={{ fontSize: '0.875rem', color: SLATE[700], lineHeight: 1.5, fontWeight: 500 }}>
+              <strong style={{ color: '#001E3C' }}>Legal Confirmation:</strong> I confirm that all information provided is accurate and complete. I understand this data will be visible to aviation industry partners and may be verified according to ICAO standards.
+            </span>
+          </label>
+        </section>
+
+        {/* Industry Visibility Notice - Terminal Style (Legal Disclosure) */}
+        <section style={{ 
+          background: SLATE[50], 
+          borderRadius: '6px', 
+          padding: '1.25rem', 
+          marginBottom: '2rem',
+          border: `1px solid ${SLATE[200]}`
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <Shield style={{ width: '16px', height: '16px', color: SLATE[500] }} />
+            <h3 style={{ fontSize: '0.8rem', fontWeight: 600, color: SLATE[600], letterSpacing: '0.05em', textTransform: 'uppercase', margin: 0 }}>
+              Industry Visibility Notice
+            </h3>
+          </div>
+          <p style={{ color: SLATE[700], lineHeight: 1.5, marginBottom: '0.75rem', fontSize: '0.8125rem' }}>
             <strong>This information is visible to aviation industry manufacturers and airlines.</strong>
           </p>
-          <p style={{ color: '#64748b', lineHeight: 1.6 }}>
+          <p style={{ color: SLATE[500], lineHeight: 1.5, fontSize: '0.8125rem' }}>
             Leading aviation companies including Boeing, Airbus, Emirates, Etihad Airways, and other major airlines regularly review pilot profiles on our platform. 
             Your current state, qualifications, experience, and employment status will be visible to recruiters and hiring managers who are looking for qualified pilots. 
             Keep your information up-to-date to maximize your opportunities in the aviation industry.
           </p>
         </section>
+
+        {/* Terminal-Style Sticky Action Bar */}
+        <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'white', borderTop: `1px solid ${SLATE[200]}`, padding: '0.75rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100, boxShadow: '0 -4px 20px rgba(0,0,0,0.05)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.75rem', background: SLATE[50], borderRadius: '4px', border: `1px solid ${SLATE[200]}` }}>
+              <Clock style={{ width: '14px', height: '14px', color: SLATE[500] }} />
+              {autoSaveStatus === 'idle' && lastSaved && (
+                <span style={{ fontSize: '0.75rem', color: SLATE[500], fontFamily: MONO_FONT }}>
+                  {lastSaved.toLocaleTimeString()}
+                </span>
+              )}
+              {autoSaveStatus === 'saving' && (
+                <span style={{ fontSize: '0.75rem', color: SLATE[500] }}>Syncing...</span>
+              )}
+              {autoSaveStatus === 'saved' && (
+                <span style={{ fontSize: '0.75rem', color: EMERALD, fontWeight: 500 }}>SAVED</span>
+              )}
+            </div>
+            <span style={{ fontSize: '0.75rem', color: SLATE[400] }}>
+              {uploadedDocs.length} doc{uploadedDocs.length !== 1 ? 's' : ''} queued
+            </span>
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <button
+              onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+              disabled={currentStep === 0}
+              style={{
+                padding: '0.625rem 1.25rem',
+                background: 'white',
+                color: SLATE[600],
+                border: `1px solid ${SLATE[300]}`,
+                borderRadius: '6px',
+                fontSize: '0.8rem',
+                fontWeight: 500,
+                cursor: currentStep === 0 ? 'not-allowed' : 'pointer',
+                opacity: currentStep === 0 ? 0.5 : 1
+              }}
+            >
+              Back
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              style={{
+                padding: '0.75rem 2rem',
+                background: isSaving ? SLATE[300] : '#001E3C',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                cursor: isSaving ? 'not-allowed' : 'pointer',
+                transition: 'all 0.15s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                boxShadow: isSaving ? 'none' : '0 2px 8px rgba(0, 30, 60, 0.25)'
+              }}
+              onMouseEnter={(e) => {
+                if (!isSaving) {
+                  e.currentTarget.style.background = '#00294d';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 30, 60, 0.35)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSaving) {
+                  e.currentTarget.style.background = '#001E3C';
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 30, 60, 0.25)';
+                }
+              }}
+            >
+              {isSaving ? (
+                <>
+                  <Loader2 style={{ width: '14px', height: '14px', animation: 'spin 1s linear infinite' }} />
+                  Generating...
+                </>
+              ) : (
+                <>Generate ATLAS CV →</>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Spacer for fixed bottom bar */}
+        <div style={{ height: '80px' }} />
 
         {/* Save Button */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem', marginBottom: '2rem' }}>

@@ -113,24 +113,24 @@ serve(async (req) => {
         },
       };
 
-      // Import and use the score calculation logic
-      // For now, we'll do a simple calculation
-      const hoursScore = Math.min((scoreInput.stats.totalHours / 1000) * 350, 350);
-      const experienceScore = Math.min((scoreInput.experience.years / 10) * 250, 250);
-      const assessmentScore = (scoreInput.assessments.programCompletion / 100) * 125 + 
-                              (scoreInput.assessments.performanceScore / 100) * 125;
-      const mentorshipScore = Math.min((scoreInput.mentorship.hours / 100) * 150, 150);
+      // Score calculation on 0-100 scale
+      // Hours: max 35, Experience: max 25, Assessments: max 25, Mentorship: max 15
+      const hoursScore = Math.min((scoreInput.stats.totalHours / 1000) * 35, 35);
+      const experienceScore = Math.min((scoreInput.experience.years / 10) * 25, 25);
+      const assessmentScore = (scoreInput.assessments.programCompletion / 100) * 12.5 + 
+                              (scoreInput.assessments.performanceScore / 100) * 12.5;
+      const mentorshipScore = Math.min((scoreInput.mentorship.hours / 100) * 15, 15);
       
-      const totalScore = Math.round(hoursScore + experienceScore + assessmentScore + mentorshipScore);
+      const totalScore = Math.round((hoursScore + experienceScore + assessmentScore + mentorshipScore) * 10) / 10;
       
-      // Determine tier
+      // Determine tier (0-100 scale)
       let scoreTier = 'Iron';
-      if (totalScore >= 900) scoreTier = 'Platinum';
-      else if (totalScore >= 800) scoreTier = 'Gold';
-      else if (totalScore >= 700) scoreTier = 'Silver';
-      else if (totalScore >= 600) scoreTier = 'Bronze';
-      else if (totalScore >= 500) scoreTier = 'Copper';
-      else if (totalScore >= 400) scoreTier = 'Steel';
+      if (totalScore >= 90) scoreTier = 'Platinum';
+      else if (totalScore >= 80) scoreTier = 'Gold';
+      else if (totalScore >= 70) scoreTier = 'Silver';
+      else if (totalScore >= 60) scoreTier = 'Bronze';
+      else if (totalScore >= 50) scoreTier = 'Copper';
+      else if (totalScore >= 40) scoreTier = 'Steel';
 
       const scoreData = {
         user_id: user.id,

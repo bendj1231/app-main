@@ -6,8 +6,41 @@
 export type PerformanceTier = 'low' | 'medium' | 'high';
 
 /**
+ * Detects if device is an older iOS device with limited performance
+ * iPhone 8, iPhone 8 Plus, iPhone X (A11 chip), iPad Pro 12.9" 2015 (A9X)
+ * These devices struggle with WebGL shaders and heavy animations
+ */
+export function isLegacyIOSDevice(): boolean {
+  const ua = navigator.userAgent;
+
+  // iPhone 8, 8 Plus, X (A11 chip - 2017)
+  const isIPhone8OrX = /iPhone10,[1-6]/.test(ua);
+
+  // iPad Pro 12.9" 2015 (A9X - iPad6,7 and iPad6,8)
+  const isIPadPro2015 = /iPad6,[78]/.test(ua);
+
+  // iPad Pro 9.7" 2016 (A9X - iPad6,3 and iPad6,4)
+  const isIPadPro2016 = /iPad6,[34]/.test(ua);
+
+  // iPhone 7/7 Plus (A10 - 2016)
+  const isIPhone7 = /iPhone9,[1-4]/.test(ua);
+
+  // iPhone 6s/6s Plus/SE 1st gen (A9 - 2015)
+  const isIPhone6s = /iPhone8,[1-4]/.test(ua);
+
+  return isIPhone8OrX || isIPadPro2015 || isIPadPro2016 || isIPhone7 || isIPhone6s;
+}
+
+/**
+ * Detects if device is any iOS device (for general iOS optimizations)
+ */
+export function isIOS(): boolean {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+}
+
+/**
  * Determines the performance tier of the current device
- * Based on hardware concurrency, memory, and device type
+ * Based on hardware concurrency, memory, device type, and specific legacy device detection
  * Respects manual override from graphics settings modal
  */
 export function getDevicePerformanceTier(): PerformanceTier {
@@ -15,6 +48,11 @@ export function getDevicePerformanceTier(): PerformanceTier {
   const manualOverride = localStorage.getItem('graphicsQuality') as PerformanceTier | 'auto' | null;
   if (manualOverride && manualOverride !== 'auto') {
     return manualOverride;
+  }
+
+  // Legacy iOS devices get lowest performance settings
+  if (isLegacyIOSDevice()) {
+    return 'low';
   }
 
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -111,6 +149,14 @@ export function shouldEnableHeavyAnimations(): boolean {
 export function shouldEnable3DEffects(): boolean {
   const tier = getDevicePerformanceTier();
   return tier !== 'low' && hasGPU() && !shouldReduceMotion();
+}
+
+/**
+ * Ultra aggressive mode for legacy iOS devices (iPhone 8, iPad Pro 2015, etc.)
+ * Completely disables animations, shaders, and uses static backgrounds
+ */
+export function isUltraLowPerformanceMode(): boolean {
+  return isLegacyIOSDevice() || (getDevicePerformanceTier() === 'low' && isIOS());
 }
 
 /**
