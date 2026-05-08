@@ -2526,10 +2526,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 speed={graphicsConfig.meshGradientSpeed}
                             />
                         ) : (
-                            <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #05091a 0%, #0f2060 40%, #1e3a8a 70%, #05091a 100%)' }} />
+                            <div className="w-full h-full" style={{ background: 'linear-gradient(180deg, #1e3a8a 0%, #0f2060 40%, #080e2a 75%, #05091a 100%)' }} />
                         )}
-                        {/* Deep blue overlay — tones down the shader and locks in the dark-blue feel */}
-                        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(5,9,26,0.72) 0%, rgba(10,18,64,0.55) 50%, rgba(5,9,26,0.80) 100%)' }} />
+                        {/* Deep blue overlay — light blue at top, deep navy at bottom */}
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(30,58,138,0.30) 0%, rgba(15,32,96,0.50) 35%, rgba(5,9,26,0.88) 100%)' }} />
                         {graphicsConfig?.enableBackdropBlur && (
                             <div className="absolute inset-0 backdrop-blur-[1px]" />
                         )}
