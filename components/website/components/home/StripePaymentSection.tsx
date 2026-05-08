@@ -45,6 +45,8 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
   const { currentUser } = useAuth();
   const [processing, setProcessing] = useState(false);
   const [showAllHero, setShowAllHero] = useState(false);
+  const [showAll100, setShowAll100] = useState(false);
+  const [showAll60, setShowAll60] = useState(false);
 
   const handleCheckout = async (priceId: string) => {
     if (!currentUser) {
@@ -180,13 +182,16 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <p className="text-4xl font-bold text-white mb-0.5">$100 <span className="text-base font-normal text-slate-400">/ year</span></p>
             <p className="text-slate-400 text-xs mb-1">Verified by Veremark · Preferred by airlines & operators</p>
             <p className="text-blue-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
-            <ul className="space-y-2 mb-6">
-              {FEATURES_100.map((f) => (
+            <ul className="space-y-2 mb-2">
+              {(showAll100 ? FEATURES_100 : FEATURES_100.slice(0, HERO_FEATURES_PREVIEW)).map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
                   <span className="text-blue-400 mt-0.5 flex-shrink-0">✓</span>{f}
                 </li>
               ))}
             </ul>
+            <button onClick={() => setShowAll100(v => !v)} className="text-blue-400 hover:text-blue-300 text-xs font-semibold mb-5 transition-colors">
+              {showAll100 ? '↑ Show less' : `+ ${FEATURES_100.length - HERO_FEATURES_PREVIEW} more features`}
+            </button>
             <button
               onClick={() => onNavigate('recognition-plus')}
               disabled={processing}
@@ -204,13 +209,16 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <p className="text-4xl font-bold text-white mb-0.5">$60 <span className="text-base font-normal text-slate-400">/ 6 months</span></p>
             <p className="text-slate-400 text-xs mb-1">Full intelligence · Shortlisted as Recognition+ member</p>
             <p className="text-violet-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
-            <ul className="space-y-2 mb-6">
-              {FEATURES_60.map((f) => (
+            <ul className="space-y-2 mb-2">
+              {(showAll60 ? FEATURES_60 : FEATURES_60.slice(0, HERO_FEATURES_PREVIEW)).map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
                   <span className="text-violet-400 mt-0.5 flex-shrink-0">✓</span>{f}
                 </li>
               ))}
             </ul>
+            <button onClick={() => setShowAll60(v => !v)} className="text-violet-400 hover:text-violet-300 text-xs font-semibold mb-5 transition-colors">
+              {showAll60 ? '↑ Show less' : `+ ${FEATURES_60.length - HERO_FEATURES_PREVIEW} more features`}
+            </button>
             <button
               onClick={() => onNavigate('recognition-plus')}
               disabled={processing}
