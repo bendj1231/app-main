@@ -1249,7 +1249,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </AnimatePresence>
 
             {/* MeshGradient Background - Same as TypeRatingSearchPage */}
-            <div className="relative w-full h-screen">
+            <div className="relative w-full min-h-screen">
                 <div className="fixed inset-0 z-0">
                     {graphicsConfig?.enableMeshGradient ? (
                         <MeshGradient
@@ -1455,7 +1455,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             {/* === DISCOVER PATHWAYS - Three Vertical Cards === */}
             <div className="relative z-10 bg-white">
-            <div className="relative z-30 w-full px-4 md:px-8 pb-8 pt-12">
+            <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 pb-6 sm:pb-8 pt-8 sm:pt-10 md:pt-12">
                 <div className="max-w-7xl mx-auto">
                     {/* Section Header - Centered */}
                     <div className="mb-6 text-center">
@@ -1464,11 +1464,11 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
 
                     {/* Three Cards Grid - Portal Pathways Style */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto pb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto pb-8">
                         {/* Card 1 - Type Rating Search */}
                         <div
                             onClick={() => onNavigate?.('type-rating-search')}
-                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 min-h-[420px]"
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
                             <img
@@ -1490,7 +1490,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         {/* Card 2 - Airline Expectations */}
                         <div
                             onClick={() => onNavigate?.('airline-expectations')}
-                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 min-h-[420px]"
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
                             <img
@@ -1512,7 +1512,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         {/* Card 3 - Pilot Career Pathways */}
                         <div
                             onClick={() => onNavigate?.('pathways-modern')}
-                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 min-h-[420px]"
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
                             <img
@@ -1536,9 +1536,9 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === PATHWAY NEWS FEED CAROUSEL === */}
-            <div className="relative z-30 w-full px-4 md:px-8 py-3">
+            <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 py-2 md:py-3">
                 <div className="max-w-7xl mx-auto">
-                    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-slate-800 shadow-lg" style={{ minHeight: '110px' }}>
+                    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-slate-800 shadow-lg" style={{ minHeight: 'clamp(100px, 18vw, 140px)' }}>
 
                         {/* Right-side image — changes per slide */}
                         {(() => {
@@ -1591,15 +1591,15 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                 {/* Slide 1: A320 Type Rating */}
                                 <div className="w-full flex-shrink-0">
-                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
                                         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-500/20 border border-amber-500/30 rounded-full mb-2">
                                             <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
                                             <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">Type Rating Update</span>
                                         </div>
-                                        <h3 className="text-base font-bold text-white mb-1">
+                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
                                             Airbus A320 Type Rating Requirements Revised
                                         </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
                                             EASA updated minimum hours for A320 type rating entry. Pathway cards have been recalculated. Check your gap score now.
                                         </p>
                                         <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
@@ -1610,15 +1610,15 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                 {/* Slide 2: B737 Type Rating */}
                                 <div className="w-full flex-shrink-0">
-                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
                                         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-500/20 border border-amber-500/30 rounded-full mb-2">
                                             <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
                                             <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">Type Rating Update</span>
                                         </div>
-                                        <h3 className="text-base font-bold text-white mb-1">
+                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
                                             Boeing 737 Type Rating Requirements Revised
                                         </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
                                             FAA &amp; EASA revised simulator hour requirements for B737 type rating. Updated pathway cards now reflect the new minimums.
                                         </p>
                                         <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
@@ -1629,15 +1629,15 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                 {/* Slide 3: Etihad Added */}
                                 <div className="w-full flex-shrink-0">
-                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
                                         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-green-500/20 border border-green-500/30 rounded-full mb-2">
                                             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
                                             <span className="text-[10px] font-semibold text-green-300 uppercase tracking-wider">New Airline</span>
                                         </div>
-                                        <h3 className="text-base font-bold text-white mb-1">
+                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
                                             Etihad Airways Airline Expectations Now Live
                                         </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
                                             Etihad's full expectation profile has been added — minimum hours, license requirements, and EBT standards. Match your profile today.
                                         </p>
                                         <button onClick={() => onNavigate?.('airline-expectations')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
@@ -1648,15 +1648,15 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                 {/* Slide 4: Foundation Program Enrollment */}
                                 <div className="w-full flex-shrink-0">
-                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
                                         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-red-500/20 border border-red-500/30 rounded-full mb-2">
                                             <span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" />
                                             <span className="text-[10px] font-semibold text-red-300 uppercase tracking-wider">Enrollment Open</span>
                                         </div>
-                                        <h3 className="text-base font-bold text-white mb-1">
+                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
                                             Foundation Program — Now Accepting Enrollments
                                         </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
                                             50+ hours of structured mentorship. Foundational knowledge, leadership, and behavioural frameworks. Limited spots available.
                                         </p>
                                         <button onClick={() => onNavigate?.('foundation-program')} className="px-3 py-1.5 bg-white text-blue-700 hover:bg-blue-50 text-xs font-semibold rounded-lg transition-colors shadow">
@@ -1667,15 +1667,15 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                 {/* Slide 5: Pathway Cards */}
                                 <div className="w-full flex-shrink-0">
-                                    <div className="px-5 md:px-8 py-4 md:py-5 md:w-3/5">
+                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
                                         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-violet-500/20 border border-violet-500/30 rounded-full mb-2">
                                             <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
                                             <span className="text-[10px] font-semibold text-violet-300 uppercase tracking-wider">Pathway Cards</span>
                                         </div>
-                                        <h3 className="text-base font-bold text-white mb-1">
+                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
                                             26 New Pathway Cards Added This Month
                                         </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-3">
+                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
                                             Cargo, charter, and cadet pathways updated with live airline data. Your recognition score unlocks which pathways you can access.
                                         </p>
                                         <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
@@ -1704,7 +1704,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === RECOMMENDED PATHWAYS CAROUSEL === */}
-            <div className="relative z-30 w-full px-4 md:px-8 py-8">
+            <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8">
                 <div className="max-w-7xl mx-auto">
                     {/* Header */}
                     <div className="mb-6 text-center">
