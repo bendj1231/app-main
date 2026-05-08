@@ -7,28 +7,92 @@ export type PerformanceTier = 'low' | 'medium' | 'high';
 
 /**
  * Detects if device is an older iOS device with limited performance
- * iPhone 8, iPhone 8 Plus, iPhone X (A11 chip), iPad Pro 12.9" 2015 (A9X)
- * These devices struggle with WebGL shaders and heavy animations
+ * Covers iPhone 4 through iPhone X (A4–A11 chips), early iPads
  */
 export function isLegacyIOSDevice(): boolean {
   const ua = navigator.userAgent;
+  // iPhone 4 (A4): iPhone3,[123]
+  // iPhone 4S (A5): iPhone4,1
+  // iPhone 5/5C (A6): iPhone5,[1234]
+  // iPhone 5S (A7): iPhone6,[12]
+  // iPhone 6/6+ (A8): iPhone7,[12]
+  // iPhone 6s/SE1 (A9): iPhone8,[1-4]
+  // iPhone 7/7+ (A10): iPhone9,[1-4]
+  // iPhone 8/8+/X (A11): iPhone10,[1-6]
+  // iPad Pro 2015/2016 (A9X): iPad6,[3-8]
+  // Old iPads (iPad1-4 era): iPad[1-4],[12]
+  return /iPhone([3-9]|10),[1-9]/.test(ua)
+    || /iPad6,[3-8]/.test(ua)
+    || /iPad[1-4],[12]/.test(ua);
+}
 
-  // iPhone 8, 8 Plus, X (A11 chip - 2017)
-  const isIPhone8OrX = /iPhone10,[1-6]/.test(ua);
+/** Returns a friendly iPhone model name from the User-Agent string */
+function getIPhoneModelLabel(ua: string): string {
+  if (/iPhone3,[123]/.test(ua))  return 'iPhone 4';
+  if (/iPhone4,1/.test(ua))      return 'iPhone 4S';
+  if (/iPhone5,[12]/.test(ua))   return 'iPhone 5';
+  if (/iPhone5,[34]/.test(ua))   return 'iPhone 5C';
+  if (/iPhone6,[12]/.test(ua))   return 'iPhone 5S';
+  if (/iPhone7,2/.test(ua))      return 'iPhone 6';
+  if (/iPhone7,1/.test(ua))      return 'iPhone 6 Plus';
+  if (/iPhone8,1/.test(ua))      return 'iPhone 6s';
+  if (/iPhone8,2/.test(ua))      return 'iPhone 6s Plus';
+  if (/iPhone8,4/.test(ua))      return 'iPhone SE (1st gen)';
+  if (/iPhone9,[13]/.test(ua))   return 'iPhone 7';
+  if (/iPhone9,[24]/.test(ua))   return 'iPhone 7 Plus';
+  if (/iPhone10,[13]/.test(ua))  return 'iPhone 8';
+  if (/iPhone10,[24]/.test(ua))  return 'iPhone 8 Plus';
+  if (/iPhone10,[56]/.test(ua))  return 'iPhone X';
+  if (/iPhone11,2/.test(ua))     return 'iPhone XS';
+  if (/iPhone11,[46]/.test(ua))  return 'iPhone XS Max';
+  if (/iPhone11,8/.test(ua))     return 'iPhone XR';
+  if (/iPhone12,1/.test(ua))     return 'iPhone 11';
+  if (/iPhone12,3/.test(ua))     return 'iPhone 11 Pro';
+  if (/iPhone12,5/.test(ua))     return 'iPhone 11 Pro Max';
+  if (/iPhone12,8/.test(ua))     return 'iPhone SE (2nd gen)';
+  if (/iPhone13,1/.test(ua))     return 'iPhone 12 Mini';
+  if (/iPhone13,2/.test(ua))     return 'iPhone 12';
+  if (/iPhone13,3/.test(ua))     return 'iPhone 12 Pro';
+  if (/iPhone13,4/.test(ua))     return 'iPhone 12 Pro Max';
+  if (/iPhone14,[45]/.test(ua))  return 'iPhone 13 Mini / 13';
+  if (/iPhone14,[23]/.test(ua))  return 'iPhone 13 Pro / Pro Max';
+  if (/iPhone14,[67]/.test(ua))  return 'iPhone 14 / Plus';
+  if (/iPhone15,[23]/.test(ua))  return 'iPhone 14 Pro / Pro Max';
+  if (/iPhone15,[45]/.test(ua))  return 'iPhone 15 / Plus';
+  if (/iPhone16,[12]/.test(ua))  return 'iPhone 15 Pro / Pro Max';
+  if (/iPhone17,[12]/.test(ua))  return 'iPhone 16 / Plus';
+  if (/iPhone17,[34]/.test(ua))  return 'iPhone 16 Pro / Pro Max';
+  return 'iPhone';
+}
 
-  // iPad Pro 12.9" 2015 (A9X - iPad6,7 and iPad6,8)
-  const isIPadPro2015 = /iPad6,[78]/.test(ua);
-
-  // iPad Pro 9.7" 2016 (A9X - iPad6,3 and iPad6,4)
-  const isIPadPro2016 = /iPad6,[34]/.test(ua);
-
-  // iPhone 7/7 Plus (A10 - 2016)
-  const isIPhone7 = /iPhone9,[1-4]/.test(ua);
-
-  // iPhone 6s/6s Plus/SE 1st gen (A9 - 2015)
-  const isIPhone6s = /iPhone8,[1-4]/.test(ua);
-
-  return isIPhone8OrX || isIPadPro2015 || isIPadPro2016 || isIPhone7 || isIPhone6s;
+/** Returns a friendly iPad model name from the User-Agent string */
+function getIPadModelLabel(ua: string): string {
+  if (/iPad2,[1-4]/.test(ua))    return 'iPad 2 (A5)';
+  if (/iPad3,[1-3]/.test(ua))    return 'iPad 3rd gen (A5X)';
+  if (/iPad3,[4-6]/.test(ua))    return 'iPad 4th gen (A6X)';
+  if (/iPad4,[1-3]/.test(ua))    return 'iPad Air 1 (A7)';
+  if (/iPad5,[3-4]/.test(ua))    return 'iPad Air 2 (A8X)';
+  if (/iPad6,[3-4]/.test(ua))    return 'iPad Pro 9.7" 2016 (A9X)';
+  if (/iPad6,[7-8]/.test(ua))    return 'iPad Pro 12.9" 2015 (A9X)';
+  if (/iPad7,[1-2]/.test(ua))    return 'iPad Pro 12.9" 2nd gen (A10X)';
+  if (/iPad7,[3-4]/.test(ua))    return 'iPad Pro 10.5" (A10X)';
+  if (/iPad7,[5-6]/.test(ua))    return 'iPad 6th gen (A10)';
+  if (/iPad8,[1-4]/.test(ua))    return 'iPad Pro 11" 1st gen (A12X)';
+  if (/iPad8,[5-8]/.test(ua))    return 'iPad Pro 12.9" 3rd gen (A12X)';
+  if (/iPad8,(9|10)/.test(ua))   return 'iPad Pro 11" 2nd gen (A12Z)';
+  if (/iPad11,[1-2]/.test(ua))   return 'iPad Mini 5 (A12)';
+  if (/iPad11,[3-4]/.test(ua))   return 'iPad Air 3 (A12)';
+  if (/iPad11,[6-7]/.test(ua))   return 'iPad 8th gen (A12)';
+  if (/iPad12,[1-2]/.test(ua))   return 'iPad 9th gen (A13)';
+  if (/iPad13,[1-2]/.test(ua))   return 'iPad Air 4 (A14)';
+  if (/iPad13,[4-9]/.test(ua))   return 'iPad Pro 11" / 12.9" 5th gen (M1)';
+  if (/iPad13,1[6-9]/.test(ua))  return 'iPad 10th gen / Air 5 (M1)';
+  if (/iPad14,[1-2]/.test(ua))   return 'iPad Mini 6 (A15)';
+  if (/iPad14,[3-4]/.test(ua))   return 'iPad Pro 11" 4th gen (M2)';
+  if (/iPad14,[5-6]/.test(ua))   return 'iPad Pro 12.9" 6th gen (M2)';
+  if (/iPad16,[3-4]/.test(ua))   return 'iPad Pro 11" (M4)';
+  if (/iPad16,[5-6]/.test(ua))   return 'iPad Pro 13" (M4)';
+  return 'iPad';
 }
 
 /**
@@ -293,11 +357,42 @@ export function getHomepageGraphicsConfig(): HomepageGraphicsConfig {
 
   // 3. Mobile phones always get low (battery + heat)
   if (isMobile) {
+    const rawUA = navigator.userAgent;
+    let mobileLabel = 'Mobile Device';
+    if (/iphone/i.test(rawUA)) {
+      mobileLabel = getIPhoneModelLabel(rawUA);
+    } else if (/android/i.test(rawUA)) {
+      if (/samsung/i.test(rawUA))           mobileLabel = 'Samsung Android';
+      else if (/huawei/i.test(rawUA))       mobileLabel = 'Huawei Android';
+      else if (/xiaomi|redmi/i.test(rawUA)) mobileLabel = 'Xiaomi Android';
+      else if (/oppo/i.test(rawUA))         mobileLabel = 'OPPO Android';
+      else if (/vivo/i.test(rawUA))         mobileLabel = 'Vivo Android';
+      else if (/pixel/i.test(rawUA))        mobileLabel = 'Google Pixel';
+      else                                  mobileLabel = 'Android Phone';
+    }
     return {
       tier: 'low', enableMeshGradient: false, meshGradientSpeed: 0,
       enableBackdropBlur: false, enableHoverScale: true,
-      deviceLabel: 'Mobile Device',
+      deviceLabel: mobileLabel,
       reason: 'Mobile phones use low graphics to preserve battery and prevent overheating',
+    };
+  }
+
+  // 3b. Tablets — iPads get low or medium depending on age
+  if (isTablet) {
+    const rawUA = navigator.userAgent;
+    const ipadLabel = /ipad/i.test(rawUA) ? getIPadModelLabel(rawUA) : 'Tablet';
+    const isLegacyIPad = isLegacyIOSDevice();
+    return {
+      tier: isLegacyIPad ? 'low' : 'medium',
+      enableMeshGradient: !isLegacyIPad,
+      meshGradientSpeed: isLegacyIPad ? 0 : 0.08,
+      enableBackdropBlur: !isLegacyIPad,
+      enableHoverScale: true,
+      deviceLabel: ipadLabel,
+      reason: isLegacyIPad
+        ? 'Legacy iPad — shader disabled for smooth scrolling'
+        : 'iPad — balanced graphics mode',
     };
   }
 
@@ -357,11 +452,32 @@ export function getHomepageGraphicsConfig(): HomepageGraphicsConfig {
       deviceLabel = `Mac (Intel, ${cores}-core) · ${memory}GB`;
     }
   } else if (ua.includes('windows')) {
-    deviceLabel = `Windows PC · ${cores} threads · ${memory}GB`;
+    // Most Windows browsers don't expose brand in the UA string,
+    // but some OEM builds do. GPU string is more reliable for branding clues.
+    let brand = 'Windows PC';
+    if (ua.includes('dell'))                          brand = 'Dell PC';
+    else if (ua.includes('hp') || ua.includes('hewlett-packard')) brand = 'HP PC';
+    else if (ua.includes('lenovo'))                   brand = 'Lenovo PC';
+    else if (ua.includes('asus'))                     brand = 'ASUS PC';
+    else if (ua.includes('acer'))                     brand = 'Acer PC';
+    else if (ua.includes('sony'))                     brand = 'Sony VAIO';
+    else if (ua.includes('toshiba'))                  brand = 'Toshiba PC';
+    else if (ua.includes('samsung'))                  brand = 'Samsung PC';
+    else if (ua.includes('huawei') || ua.includes('matebook')) brand = 'Huawei MateBook';
+    else if (ua.includes('surface'))                  brand = 'Microsoft Surface';
+    // GPU string fallback if UA has no brand
+    if (brand === 'Windows PC') {
+      if (gpuLower.includes('geforce') || gpuLower.includes('rtx') || gpuLower.includes('gtx')) brand = 'Windows PC (NVIDIA)';
+      else if (gpuLower.includes('radeon') || gpuLower.includes('rx '))                         brand = 'Windows PC (AMD)';
+    }
+    deviceLabel = `${brand} · ${cores} threads · ${memory}GB`;
   } else if (ua.includes('linux')) {
-    deviceLabel = `Linux · ${cores} threads · ${memory}GB`;
-  } else if (isTablet) {
-    deviceLabel = `iPad / Tablet · ${cores} cores`;
+    let linuxBrand = 'Linux PC';
+    if (ua.includes('ubuntu'))      linuxBrand = 'Ubuntu Linux';
+    else if (ua.includes('fedora')) linuxBrand = 'Fedora Linux';
+    else if (ua.includes('debian')) linuxBrand = 'Debian Linux';
+    else if (ua.includes('cros'))   linuxBrand = 'Chromebook';
+    deviceLabel = `${linuxBrand} · ${cores} threads · ${memory}GB`;
   }
 
   const tierReasons: Record<PerformanceTier, string> = {
