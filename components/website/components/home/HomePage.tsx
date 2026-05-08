@@ -1371,59 +1371,59 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
 
-            {/* === WHY JOIN SECTION - Refined Need-Based Messaging === */}
+            {/* === WHY JOIN SECTION - High-Pressure Fugazzi Messaging === */}
             <div className="relative z-30 w-full px-4 md:px-8 py-16 bg-slate-50">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
-                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-red-600 mb-4">Digital Professional Identity</p>
+                        <p className="text-xs font-bold tracking-[0.3em] uppercase text-red-600 mb-4">The Truth About the "Pilot Shortage"</p>
                         <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
-                            Why Every Pilot Needs a Recognition Profile
+                            Stop Being an Applicant. Start Being a Candidate.
                         </h2>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                            In a rapidly evolving industry, a paper logbook and a standard CV are no longer enough. Pilot Recognition is the global infrastructure for your aviation identity. Whether you are flying for a career or for the love of the sky, being "Recognized" is the new industry standard.
+                            Everyone talks about a shortage, but the truth is different: Airlines aren't looking for pilots; they are looking for certainty. Thousands of applications sit unread because airlines can't risk hiring the wrong person. Without a PR Score, you are just a number in a stack. Pilot Recognition is the only way to break through the noise and prove you are the solution they are desperate for.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Students - Start at the Finish Line */}
+                        {/* Students - Escape the Low-Hour Trap */}
                         <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
                             <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                 <Zap className="w-6 h-6 text-red-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Start at the Finish Line</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Escape the "Low-Hour" Trap</h3>
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                Don't wait until you have 1,500 hours to enter the industry. Bridge the Gap: Our $50 Industry Experience Programs provide students with professional alignment and manufacturer-standard insights that usually take years to acquire.
+                                The Reality: Flight schools are churning out graduates, but airlines are picky. The Need: For $50, our Industry Experience programs give you the "vetted" status that puts you ahead of the 200 other students graduating this month.
                             </p>
                             <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                Build Your Digital Footprint: Start your profile today so airlines can track your growth.
+                                Without this, your license is just a piece of paper; with it, you are an industry-aligned asset.
                             </p>
                         </div>
 
-                        {/* Hobbyists - Pro-Level Precision */}
+                        {/* Hobbyists - Information is Survival */}
                         <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
                             <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                 <Cpu className="w-6 h-6 text-red-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Pro-Level Precision</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Information is Survival</h3>
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                Even if you aren't flying for an airline, you should be flying by their standards. The W1000 Advantage: Master the glass cockpit with our W1000 application, designed to bring G1000-inspired precision to your flight prep.
+                                The Reality: The rules change every week—Type Ratings, ICAO standards, and battery tech are moving targets. The Need: You can't fly safely or competently on old info. You need the W1000 application and our real-time pathway updates to stay relevant.
                             </p>
                             <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                Stay Industry-Current: Access real-time data on type rating requirements and global aviation shifts.
+                                If you aren't comparing your profile to current airline expectations, you're flying blind in a professional world.
                             </p>
                         </div>
 
-                        {/* Active Pilots - Blue Checkmark */}
+                        {/* Veterans - The Respect Tax */}
                         <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
                             <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                 <Award className="w-6 h-6 text-red-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">The "Blue Checkmark" of Aviation</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">The Respect Tax</h3>
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                A referral might get you an interview, but a PR Score gets you the job. Verified Authority: In an industry built on trust, having a vetted and recognized profile is your ultimate badge of honor.
+                                The Reality: Even with a "hookup," the HR department still needs to check a box. The Need: A referral gets you a look, but a Top PR Score gets you the respect. In the modern cockpit, pilots respect those who have been interviewed, vetted, and recognized.
                             </p>
                             <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                Global Bragging Rights: A top-tier PR Score is a signal that you are "Airline Ready."
+                                Don't just rely on who you know—brag about the fact that you've been mathematically proven to be elite.
                             </p>
                         </div>
                     </div>
@@ -1431,10 +1431,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {/* Bottom Line CTA */}
                     <div className="mt-12 text-center">
                         <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                            If you aren't on the Global Registry, you're flying off the radar. Pilot Recognition is where the world's pilots are vetted, ranked, and respected.
+                            The "shortage" is a Fugazzi if you're on the outside looking in. Pilot Recognition puts you on the inside. If you aren't vetted, you don't exist.
                         </p>
                         <p className="text-lg font-bold text-slate-900">
-                            Claim your identity. Get Recognized.
+                            Join the Global Registry. Get the Score. Get the Job.
                         </p>
                     </div>
                 </div>
