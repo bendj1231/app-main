@@ -1572,9 +1572,9 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center px-8">
                                             <span style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif', fontSize: '2rem', lineHeight: 1, letterSpacing: '-0.02em' }}>
-                                                <span style={{ color: '#ffffff' }}>pilot</span>
+                                                <span style={{ color: '#0f172a' }}>pilot</span>
                                                 <span style={{ color: '#dc2626' }}>recognition</span>
-                                                <span style={{ color: '#ffffff' }}>.com</span>
+                                                <span style={{ color: '#0f172a' }}>.com</span>
                                             </span>
                                         </div>
                                     )}
