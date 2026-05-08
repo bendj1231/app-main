@@ -2505,31 +2505,33 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
 
                 {/* Join The Network Section - Simplified */}
-                <div className="relative py-8 md:py-12 px-4 md:px-6 bg-slate-900 overflow-hidden" id="join-network-section">
+                <div className="relative py-8 md:py-12 px-4 md:px-6 bg-[#05091a] overflow-hidden" id="join-network-section">
                     
-                    {/* MeshGradient Background - Rich sky/cloud palette with glassy blur */}
+                    {/* MeshGradient Background - Deep navy/blue palette */}
                     <div className="absolute inset-0 z-0 h-full w-full">
                         {graphicsConfig?.enableMeshGradient ? (
                             <MeshGradient
                                 className="w-full h-full"
                                 colors={[
-                                    "#f1f5f9",
-                                    "#e2e8f0",
-                                    "#94a3b8",
-                                    "#64748b",
-                                    "#475569",
-                                    "#334155",
-                                    "#1e40af",
+                                    "#05091a",
+                                    "#080e2a",
+                                    "#0a1240",
+                                    "#0d1850",
+                                    "#0f2060",
+                                    "#112878",
                                     "#1e3a8a",
-                                    "#0f172a"
+                                    "#1e40af",
+                                    "#1d4ed8"
                                 ]}
                                 speed={graphicsConfig.meshGradientSpeed}
                             />
                         ) : (
-                            <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)' }} />
+                            <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #05091a 0%, #0f2060 40%, #1e3a8a 70%, #05091a 100%)' }} />
                         )}
+                        {/* Deep blue overlay — tones down the shader and locks in the dark-blue feel */}
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(5,9,26,0.72) 0%, rgba(10,18,64,0.55) 50%, rgba(5,9,26,0.80) 100%)' }} />
                         {graphicsConfig?.enableBackdropBlur && (
-                            <div className="absolute inset-0 backdrop-blur-[2px] bg-white/5" />
+                            <div className="absolute inset-0 backdrop-blur-[1px]" />
                         )}
                     </div>
 
