@@ -5,17 +5,27 @@ interface StripePaymentSectionProps {
   onNavigate: (page: string) => void;
 }
 
-const PLUS_FEATURES = [
-  'Full profile comparison (unlimited)',
-  'Pathway recommendations based on profile',
+const FEATURES_60 = [
+  'Unlimited profile comparisons (pathway / airline / type rating)',
+  'Unlimited pathway submissions (no background check)',
+  'Shortlisted by airlines as a Recognition+ member',
+  'Recognition AI gap score (OEM aligned)',
+  'Atlas CV / Resume builder',
+  'EBT CBTA Interview Fast-Track (Foundation Program)',
   'Priority matching',
-  'AI Career Strategist',
-  'EBT CBTA Interview Fast-Track',
-  'Recognition AI (OEM Aligned)',
-  'AI Medical Alerts (60-day warnings)',
-  'Priority Pipeline (Hiring Surges)',
-  'Zero-Fail Compliance Monitoring',
-  'Background Check Verification',
+  '25% off Foundation & Transition Programs',
+];
+
+const FEATURES_100 = [
+  'Veremark background screening — verified badge on profile',
+  'Unlimited pathway submissions + background check attached',
+  'Shortlisted by airlines as preferred — background checked',
+  'Unlimited profile comparisons (pathway / airline / type rating)',
+  'Recognition AI gap score (OEM aligned)',
+  'Atlas CV / Resume builder',
+  'EBT CBTA Interview Fast-Track (Foundation Program)',
+  'Priority matching',
+  '50% off Foundation & Transition Programs',
 ];
 
 export default function StripePaymentSection({ onNavigate }: StripePaymentSectionProps) {
@@ -88,12 +98,12 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
                 <span className="text-6xl font-bold text-white leading-none">$100</span>
                 <span className="text-slate-400 text-base mb-1">/ year</span>
               </div>
-              <p className="text-slate-400 text-sm mb-1">Premium features & priority access</p>
+              <p className="text-slate-400 text-sm mb-1">Verified by Veremark — preferred by airlines & operators</p>
               <p className="text-blue-400 text-xs font-semibold mb-6">✓ 3-day free trial included</p>
 
               {/* Feature list */}
               <ul className="space-y-2.5 mb-7">
-                {PLUS_FEATURES.map((f) => (
+                {FEATURES_100.map((f) => (
                   <li key={f} className="flex items-center gap-2.5 text-sm text-slate-300">
                     <span className="w-4 h-4 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center flex-shrink-0">
                       <span className="text-blue-400 text-[10px]">✓</span>
@@ -129,7 +139,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <div>
               <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Free Account</p>
               <p className="text-3xl font-bold text-white">$0 <span className="text-base font-normal text-slate-400">/ forever</span></p>
-              <p className="text-slate-400 text-sm mt-1">Platform access, 3 profile comparisons, view pathways</p>
+              <p className="text-slate-400 text-sm mt-1">3 profile comparisons/month · 2 pathway submissions/month · No airline visibility</p>
             </div>
             <button
               onClick={() => { onNavigate('become-member'); window.scrollTo(0, 0); }}
@@ -148,10 +158,10 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-blue-400 to-transparent" />
             <p className="text-[10px] uppercase tracking-widest text-blue-400 mb-1">Recognition Plus</p>
             <p className="text-4xl font-bold text-white mb-0.5">$100 <span className="text-base font-normal text-slate-400">/ year</span></p>
-            <p className="text-slate-400 text-xs mb-1">Premium features & priority access</p>
+            <p className="text-slate-400 text-xs mb-1">Verified by Veremark · Preferred by airlines & operators</p>
             <p className="text-blue-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
             <ul className="space-y-2 mb-6">
-              {PLUS_FEATURES.map((f) => (
+              {FEATURES_100.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
                   <span className="text-blue-400 mt-0.5 flex-shrink-0">✓</span>{f}
                 </li>
@@ -172,10 +182,10 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <div className="absolute top-4 right-4 px-2.5 py-0.5 rounded-full bg-violet-600/80 text-white text-[10px] font-bold uppercase tracking-wider">Flexible</div>
             <p className="text-[10px] uppercase tracking-widest text-violet-400 mb-1">Recognition Plus</p>
             <p className="text-4xl font-bold text-white mb-0.5">$60 <span className="text-base font-normal text-slate-400">/ 6 months</span></p>
-            <p className="text-slate-400 text-xs mb-1">Same features, flexible payment</p>
+            <p className="text-slate-400 text-xs mb-1">Full intelligence · Shortlisted as Recognition+ member</p>
             <p className="text-violet-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
             <ul className="space-y-2 mb-6">
-              {PLUS_FEATURES.map((f) => (
+              {FEATURES_60.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
                   <span className="text-violet-400 mt-0.5 flex-shrink-0">✓</span>{f}
                 </li>
