@@ -312,21 +312,21 @@ const SECTORS: Sector[] = [
 
 // Static color map (Tailwind cannot resolve dynamic classnames)
 const COLOR_CLASSES: Record<string, { eyebrow: string; check: string; btn: string }> = {
-    blue: { eyebrow: 'text-blue-400', check: 'text-blue-400', btn: 'bg-blue-600 hover:bg-blue-500' },
-    emerald: { eyebrow: 'text-emerald-400', check: 'text-emerald-400', btn: 'bg-emerald-600 hover:bg-emerald-500' },
-    amber: { eyebrow: 'text-amber-400', check: 'text-amber-400', btn: 'bg-amber-600 hover:bg-amber-500' },
-    green: { eyebrow: 'text-green-400', check: 'text-green-400', btn: 'bg-green-600 hover:bg-green-500' },
-    violet: { eyebrow: 'text-violet-400', check: 'text-violet-400', btn: 'bg-violet-600 hover:bg-violet-500' },
-    rose: { eyebrow: 'text-rose-400', check: 'text-rose-400', btn: 'bg-rose-600 hover:bg-rose-500' },
-    cyan: { eyebrow: 'text-cyan-400', check: 'text-cyan-400', btn: 'bg-cyan-600 hover:bg-cyan-500' },
-    orange: { eyebrow: 'text-orange-400', check: 'text-orange-400', btn: 'bg-orange-600 hover:bg-orange-500' },
-    sky: { eyebrow: 'text-sky-400', check: 'text-sky-400', btn: 'bg-sky-600 hover:bg-sky-500' },
-    fuchsia: { eyebrow: 'text-fuchsia-400', check: 'text-fuchsia-400', btn: 'bg-fuchsia-600 hover:bg-fuchsia-500' },
+    blue: { eyebrow: 'text-red-600', check: 'text-red-600', btn: 'bg-red-600 hover:bg-red-500' },
+    emerald: { eyebrow: 'text-emerald-600', check: 'text-emerald-600', btn: 'bg-red-600 hover:bg-red-500' },
+    amber: { eyebrow: 'text-amber-600', check: 'text-amber-600', btn: 'bg-red-600 hover:bg-red-500' },
+    green: { eyebrow: 'text-green-600', check: 'text-green-600', btn: 'bg-red-600 hover:bg-red-500' },
+    violet: { eyebrow: 'text-violet-600', check: 'text-violet-600', btn: 'bg-red-600 hover:bg-red-500' },
+    rose: { eyebrow: 'text-rose-600', check: 'text-rose-600', btn: 'bg-red-600 hover:bg-red-500' },
+    cyan: { eyebrow: 'text-cyan-600', check: 'text-cyan-600', btn: 'bg-red-600 hover:bg-red-500' },
+    orange: { eyebrow: 'text-orange-600', check: 'text-orange-600', btn: 'bg-red-600 hover:bg-red-500' },
+    sky: { eyebrow: 'text-sky-600', check: 'text-sky-600', btn: 'bg-red-600 hover:bg-red-500' },
+    fuchsia: { eyebrow: 'text-fuchsia-600', check: 'text-fuchsia-600', btn: 'bg-red-600 hover:bg-red-500' },
 };
 const TIER_CHECK: Record<string, string> = {
-    sky: 'text-sky-400',
-    blue: 'text-blue-400',
-    emerald: 'text-emerald-400',
+    sky: 'text-sky-600',
+    blue: 'text-red-600',
+    emerald: 'text-emerald-600',
 };
 
 // ─── Component ───────────────────────────────────────────────────
@@ -412,34 +412,34 @@ const EnterpriseAccessPage = () => {
 
     if (submitted) {
         return (
-            <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+            <div className="min-h-screen bg-white flex items-center justify-center px-4">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                    className="bg-slate-900 border border-white/10 rounded-2xl p-10 max-w-lg w-full text-center">
-                    <div className="w-16 h-16 bg-emerald-600/20 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-5">
-                        <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    className="bg-white border border-slate-200 rounded-2xl p-10 max-w-lg w-full text-center shadow-lg">
+                    <div className="w-16 h-16 bg-emerald-100 border border-emerald-200 rounded-full flex items-center justify-center mx-auto mb-5">
+                        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                     </div>
-                    <h2 className="text-2xl font-bold text-white mb-3">Request Received</h2>
-                    <p className="text-slate-400 mb-2">Thank you, <strong className="text-white">{formData.name}</strong>.</p>
-                    <p className="text-slate-400 text-sm mb-6">Your enterprise inquiry for <strong className="text-white">{formData.company}</strong> has been received. The PilotRecognition partnership team will respond at <strong className="text-white">{formData.email}</strong> within 1–2 business days.</p>
-                    <a href="https://pilotrecognition.com" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all">← pilotrecognition.com</a>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-3">Request Received</h2>
+                    <p className="text-slate-600 mb-2">Thank you, <strong className="text-slate-900">{formData.name}</strong>.</p>
+                    <p className="text-slate-600 text-sm mb-6">Your enterprise inquiry for <strong className="text-slate-900">{formData.company}</strong> has been received. The PilotRecognition partnership team will respond at <strong className="text-slate-900">{formData.email}</strong> within 1–2 business days.</p>
+                    <a href="https://pilotrecognition.com" className="inline-block bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all">← pilotrecognition.com</a>
                 </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white">
+        <div className="min-h-screen bg-white text-slate-900">
 
             {/* ─── STICKY NAV ─── */}
-            <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-slate-950/95 backdrop-blur-md border-b border-white/10' : 'bg-slate-950/80 backdrop-blur-sm'}`}>
+            <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm' : 'bg-white/80 backdrop-blur-sm'}`}>
                 <div className="max-w-7xl mx-auto px-4 lg:px-6">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
                         <a href="https://pilotrecognition.com" className="flex items-center gap-2 group">
                             <span className="text-xl font-bold tracking-tight">
-                                <span className="text-white">Pilot</span><span className="text-blue-400">Recognition</span>
+                                <span className="text-slate-900">Pilot</span><span className="text-red-600">Recognition</span>
                             </span>
-                            <span className="hidden sm:inline-block text-[10px] uppercase tracking-widest text-slate-500 border border-slate-700 px-1.5 py-0.5 rounded">Enterprise</span>
+                            <span className="hidden sm:inline-block text-[10px] uppercase tracking-widest text-slate-500 border border-slate-300 px-1.5 py-0.5 rounded">Enterprise</span>
                         </a>
 
                         {/* Desktop dropdowns */}
@@ -451,18 +451,18 @@ const EnterpriseAccessPage = () => {
                                     onMouseEnter={() => setOpenMenu(group.label)}
                                     onMouseLeave={() => setOpenMenu(null)}
                                 >
-                                    <button className="px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors flex items-center gap-1">
+                                    <button className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1">
                                         {group.label}
                                         <svg className={`w-3 h-3 transition-transform ${openMenu === group.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                                     </button>
                                     {openMenu === group.label && (
                                         <div className="absolute top-full left-0 pt-2 min-w-[260px]">
-                                            <div className="bg-slate-900 border border-white/10 rounded-xl shadow-2xl py-2">
+                                            <div className="bg-white border border-slate-200 rounded-xl shadow-2xl py-2">
                                                 {group.items.map(item => (
                                                     <button
                                                         key={item.id}
                                                         onClick={() => scrollTo(item.id)}
-                                                        className="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors"
+                                                        className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                                                     >
                                                         {item.label}
                                                     </button>
@@ -476,10 +476,10 @@ const EnterpriseAccessPage = () => {
 
                         {/* CTA */}
                         <div className="flex items-center gap-3">
-                            <button onClick={() => scrollTo('contact')} className="hidden sm:inline-flex bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+                            <button onClick={() => scrollTo('contact')} className="hidden sm:inline-flex bg-red-600 hover:bg-red-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
                                 Request Access →
                             </button>
-                            <button onClick={() => setMobileNav(v => !v)} className="lg:hidden text-white p-2">
+                            <button onClick={() => setMobileNav(v => !v)} className="lg:hidden text-slate-900 p-2">
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileNav ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} /></svg>
                             </button>
                         </div>
@@ -487,7 +487,7 @@ const EnterpriseAccessPage = () => {
 
                     {/* Mobile nav */}
                     {mobileNav && (
-                        <div className="lg:hidden border-t border-white/10 py-4 max-h-[80vh] overflow-y-auto">
+                        <div className="lg:hidden border-t border-slate-200 py-4 max-h-[80vh] overflow-y-auto bg-white">
                             {NAV_GROUPS.map(group => (
                                 <div key={group.label} className="mb-4">
                                     <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 mb-1.5">{group.label}</p>
@@ -495,7 +495,7 @@ const EnterpriseAccessPage = () => {
                                         <button
                                             key={item.id}
                                             onClick={() => scrollTo(item.id)}
-                                            className="w-full text-left px-2 py-2 text-sm text-slate-300 hover:text-white"
+                                            className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900"
                                         >
                                             {item.label}
                                         </button>
@@ -508,67 +508,67 @@ const EnterpriseAccessPage = () => {
             </header>
 
             {/* ─── HERO ─── */}
-            <section id="home" className="relative overflow-hidden border-b border-white/10">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-600/15 blur-3xl rounded-full pointer-events-none" />
-                <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-violet-600/10 blur-3xl rounded-full pointer-events-none" />
+            <section id="home" className="relative overflow-hidden border-b border-slate-200 bg-white">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-100/50 blur-3xl rounded-full pointer-events-none" />
+                <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-red-100/30 blur-3xl rounded-full pointer-events-none" />
                 <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-20">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-5">Enterprise · Aviation Industry Infrastructure</p>
-                    <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] mb-6">
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-5">Enterprise · Aviation Industry Infrastructure</p>
+                    <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] mb-6 text-slate-900">
                         Connecting Pilots<br />
-                        <span className="bg-gradient-to-r from-blue-400 via-violet-400 to-emerald-400 bg-clip-text text-transparent">to the Industry.</span>
+                        <span className="text-red-600">to the Industry.</span>
                     </h1>
-                    <p className="text-slate-300 text-xl max-w-3xl mb-10 leading-relaxed">
+                    <p className="text-slate-600 text-xl max-w-3xl mb-10 leading-relaxed">
                         Live pilot profiles. Veremark-verified. Type-rating filtered. Recognition-scored. The infrastructure that connects qualified pilots with airlines, operators, insurers, lenders, ATOs, and manufacturers.
                     </p>
                     <div className="flex flex-wrap gap-3">
-                        <button onClick={() => scrollTo('solutions')} className="bg-white text-slate-900 hover:bg-slate-100 font-semibold px-6 py-3 rounded-lg transition-colors">
+                        <button onClick={() => scrollTo('solutions')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-6 py-3 rounded-lg transition-colors">
                             Explore Solutions
                         </button>
-                        <button onClick={() => scrollTo('contact')} className="bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+                        <button onClick={() => scrollTo('contact')} className="bg-white hover:bg-slate-50 border border-slate-300 text-slate-900 font-semibold px-6 py-3 rounded-lg transition-colors">
                             Talk to Partnerships
                         </button>
                     </div>
 
                     {/* Stat strip */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-white/10">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-slate-200">
                         <div>
-                            <p className="text-3xl font-bold text-white mb-1">10+</p>
-                            <p className="text-sm text-slate-400">Industry sectors served</p>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">10+</p>
+                            <p className="text-sm text-slate-500">Industry sectors served</p>
                         </div>
                         <div>
-                            <p className="text-3xl font-bold text-white mb-1">90<span className="text-lg text-slate-400">d</span></p>
-                            <p className="text-sm text-slate-400">Placement metric</p>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">90<span className="text-lg text-slate-500 font-normal">d</span></p>
+                            <p className="text-sm text-slate-500">Placement metric</p>
                         </div>
                         <div>
-                            <p className="text-3xl font-bold text-white mb-1">Live</p>
-                            <p className="text-sm text-slate-400">Real-time pilot profiles</p>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">Live</p>
+                            <p className="text-sm text-slate-500">Real-time pilot profiles</p>
                         </div>
                         <div>
-                            <p className="text-3xl font-bold text-white mb-1">API</p>
-                            <p className="text-sm text-slate-400">First-class integration</p>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">API</p>
+                            <p className="text-sm text-slate-500">First-class integration</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* ─── WHO WE SERVE / SOLUTIONS GRID ─── */}
-            <section id="solutions" className="py-20 px-6 border-b border-white/10">
+            <section id="solutions" className="py-20 px-6 border-b border-slate-200 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-3">Who We Connect</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">Bridging Pilots & Industry.</h2>
-                    <p className="text-slate-400 text-lg max-w-2xl mb-12">From airline recruitment to pilot finance, insurance underwriting to eVTOL talent pipelines — we connect qualified pilots with the businesses that need them.</p>
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Who We Connect</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Bridging Pilots & Industry.</h2>
+                    <p className="text-slate-600 text-lg max-w-2xl mb-12">From airline recruitment to pilot finance, insurance underwriting to eVTOL talent pipelines — we connect qualified pilots with the businesses that need them.</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {SECTORS.map(s => (
                             <button
                                 key={s.id}
                                 onClick={() => scrollTo(s.id)}
-                                className="group text-left bg-white/5 hover:bg-white/[0.08] border border-white/10 hover:border-white/20 rounded-2xl p-6 transition-all"
+                                className="group text-left bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-2xl p-6 transition-all shadow-sm"
                             >
                                 <div className="text-3xl mb-3">{s.icon}</div>
-                                <h3 className="text-white font-semibold text-lg mb-1.5 group-hover:text-blue-300 transition-colors">{s.label}</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">{s.tagline}</p>
-                                <p className="mt-4 text-blue-400 text-xs font-semibold flex items-center gap-1">Learn more <span className="group-hover:translate-x-1 transition-transform">→</span></p>
+                                <h3 className="text-slate-900 font-semibold text-lg mb-1.5 group-hover:text-red-600 transition-colors">{s.label}</h3>
+                                <p className="text-slate-600 text-sm leading-relaxed">{s.tagline}</p>
+                                <p className="mt-4 text-red-600 text-xs font-semibold flex items-center gap-1">Learn more <span className="group-hover:translate-x-1 transition-transform">→</span></p>
                             </button>
                         ))}
                     </div>
@@ -577,55 +577,55 @@ const EnterpriseAccessPage = () => {
 
             {/* ─── SECTOR DEEP-DIVES (one section per sector) ─── */}
             {SECTORS.map((s, idx) => (
-                <section key={s.id} id={s.id} className={`py-20 px-6 border-b border-white/10 ${idx % 2 === 0 ? 'bg-slate-950' : 'bg-slate-900/40'}`}>
+                <section key={s.id} id={s.id} className={`py-20 px-6 border-b border-slate-200 ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
                     <div className="max-w-6xl mx-auto">
                         <div className="grid lg:grid-cols-12 gap-10">
                             {/* Left: intro */}
                             <div className="lg:col-span-5">
                                 <div className="text-5xl mb-4">{s.icon}</div>
-                                <p className={`text-[11px] uppercase tracking-[0.25em] font-semibold mb-3 ${COLOR_CLASSES[s.color]?.eyebrow ?? 'text-blue-400'}`}>{s.label}</p>
-                                <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-5">{s.tagline}</h2>
-                                <div className="bg-rose-950/30 border border-rose-900/40 rounded-xl p-4 mb-5">
-                                    <p className="text-rose-300 text-[10px] uppercase tracking-widest font-bold mb-2">The Problem</p>
-                                    <p className="text-slate-300 text-sm leading-relaxed">{s.pain}</p>
+                                <p className={`text-[11px] uppercase tracking-[0.25em] font-semibold mb-3 ${COLOR_CLASSES[s.color]?.eyebrow ?? 'text-red-600'}`}>{s.label}</p>
+                                <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-5 text-slate-900">{s.tagline}</h2>
+                                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-5">
+                                    <p className="text-red-700 text-[10px] uppercase tracking-widest font-bold mb-2">The Problem</p>
+                                    <p className="text-slate-700 text-sm leading-relaxed">{s.pain}</p>
                                 </div>
-                                <div className="bg-emerald-950/30 border border-emerald-900/40 rounded-xl p-4 mb-5">
-                                    <p className="text-emerald-300 text-[10px] uppercase tracking-widest font-bold mb-2">Our Solution</p>
-                                    <p className="text-slate-300 text-sm leading-relaxed">{s.solution}</p>
+                                <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-5">
+                                    <p className="text-emerald-700 text-[10px] uppercase tracking-widest font-bold mb-2">Our Solution</p>
+                                    <p className="text-slate-700 text-sm leading-relaxed">{s.solution}</p>
                                 </div>
-                                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                                    <p className="text-blue-300 text-[10px] uppercase tracking-widest font-bold mb-2">Pricing & Engagement</p>
-                                    <p className="text-slate-300 text-sm leading-relaxed">{s.cta}</p>
+                                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                                    <p className="text-red-600 text-[10px] uppercase tracking-widest font-bold mb-2">Pricing & Engagement</p>
+                                    <p className="text-slate-700 text-sm leading-relaxed">{s.cta}</p>
                                 </div>
                             </div>
 
                             {/* Right: benefits + pilots */}
                             <div className="lg:col-span-7 space-y-6">
                                 <div>
-                                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400 font-semibold mb-4">What you get</p>
+                                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-500 font-semibold mb-4">What you get</p>
                                     <ul className="grid sm:grid-cols-2 gap-3">
                                         {s.benefits.map(b => (
-                                            <li key={b} className="flex items-start gap-2.5 bg-white/5 border border-white/10 rounded-lg px-3 py-2.5">
-                                                <span className={`${COLOR_CLASSES[s.color]?.check ?? 'text-blue-400'} text-xs mt-0.5 flex-shrink-0`}>✓</span>
-                                                <span className="text-slate-300 text-sm">{b}</span>
+                                            <li key={b} className="flex items-start gap-2.5 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5">
+                                                <span className={`${COLOR_CLASSES[s.color]?.check ?? 'text-red-600'} text-xs mt-0.5 flex-shrink-0`}>✓</span>
+                                                <span className="text-slate-700 text-sm">{b}</span>
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
 
                                 <div>
-                                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400 font-semibold mb-4">Why pilots win too</p>
+                                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-500 font-semibold mb-4">Why pilots win too</p>
                                     <ul className="space-y-2">
                                         {s.pilots.map(p => (
                                             <li key={p} className="flex items-start gap-2.5">
-                                                <span className="text-emerald-400 text-xs mt-1 flex-shrink-0">●</span>
-                                                <span className="text-slate-400 text-sm">{p}</span>
+                                                <span className="text-emerald-600 text-xs mt-1 flex-shrink-0">●</span>
+                                                <span className="text-slate-600 text-sm">{p}</span>
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
 
-                                <button onClick={() => scrollTo('contact')} className={`mt-2 inline-flex items-center gap-2 ${COLOR_CLASSES[s.color]?.btn ?? 'bg-blue-600 hover:bg-blue-500'} text-white font-semibold px-5 py-3 rounded-lg text-sm transition-colors`}>
+                                <button onClick={() => scrollTo('contact')} className={`mt-2 inline-flex items-center gap-2 ${COLOR_CLASSES[s.color]?.btn ?? 'bg-red-600 hover:bg-red-500'} text-white font-semibold px-5 py-3 rounded-lg text-sm transition-colors`}>
                                     Inquire about {s.label} <span>→</span>
                                 </button>
                             </div>
@@ -635,11 +635,11 @@ const EnterpriseAccessPage = () => {
             ))}
 
             {/* ─── PARTNERSHIP TIERS ─── */}
-            <section id="partners" className="py-20 px-6 border-b border-white/10">
+            <section id="partners" className="py-20 px-6 border-b border-slate-200 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-3">Partnership Tiers</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">Three ways to partner.</h2>
-                    <p className="text-slate-400 text-lg max-w-2xl mb-12">Whether you want to plug in, pull pilots, or co-brand a pathway — pick the engagement that fits your business.</p>
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Partnership Tiers</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Three ways to partner.</h2>
+                    <p className="text-slate-600 text-lg max-w-2xl mb-12">Whether you want to plug in, pull pilots, or co-brand a pathway — pick the engagement that fits your business.</p>
 
                     <div className="grid md:grid-cols-3 gap-5">
                         {[
@@ -666,18 +666,18 @@ const EnterpriseAccessPage = () => {
                                 price: 'Free + $500 / placement',
                             },
                         ].map(t => (
-                            <div key={t.tier} className={`relative bg-white/5 border rounded-2xl p-6 ${t.featured ? 'border-blue-500/50 ring-1 ring-blue-500/30' : 'border-white/10'}`}>
-                                {t.featured && <span className="absolute -top-3 left-6 bg-blue-500 text-white text-[10px] uppercase tracking-widest px-2 py-1 rounded font-bold">Most Popular</span>}
-                                <h3 className="text-xl font-bold text-white mb-2">{t.tier}</h3>
-                                <p className="text-slate-400 text-sm mb-5">{t.desc}</p>
+                            <div key={t.tier} className={`relative bg-slate-50 border rounded-2xl p-6 ${t.featured ? 'border-red-500 ring-1 ring-red-500/20' : 'border-slate-200'}`}>
+                                {t.featured && <span className="absolute -top-3 left-6 bg-red-600 text-white text-[10px] uppercase tracking-widest px-2 py-1 rounded font-bold">Most Popular</span>}
+                                <h3 className="text-xl font-bold text-slate-900 mb-2">{t.tier}</h3>
+                                <p className="text-slate-600 text-sm mb-5">{t.desc}</p>
                                 <ul className="space-y-2 mb-6">
                                     {t.items.map(i => (
-                                        <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
-                                            <span className={`${TIER_CHECK[t.color] ?? 'text-blue-400'} text-xs mt-1`}>✓</span>{i}
+                                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                            <span className={`${TIER_CHECK[t.color] ?? 'text-red-600'} text-xs mt-1`}>✓</span>{i}
                                         </li>
                                     ))}
                                 </ul>
-                                <p className="text-white font-semibold text-sm border-t border-white/10 pt-4">{t.price}</p>
+                                <p className="text-slate-900 font-semibold text-sm border-t border-slate-200 pt-4">{t.price}</p>
                             </div>
                         ))}
                     </div>
@@ -685,29 +685,29 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── PRICING ─── */}
-            <section id="pricing" className="py-20 px-6 border-b border-white/10">
+            <section id="pricing" className="py-20 px-6 border-b border-slate-200 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-3">Enterprise Pricing</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">Simple. Outcome-aligned.</h2>
-                    <p className="text-slate-400 text-lg max-w-2xl mb-12">Pay when it works. We track every placement obsessively — you should only pay when a pilot is hired through a pathway you posted.</p>
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Enterprise Pricing</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Simple. Outcome-aligned.</h2>
+                    <p className="text-slate-600 text-lg max-w-2xl mb-12">Pay when it works. We track every placement obsessively — you should only pay when a pilot is hired through a pathway you posted.</p>
 
                     <div className="grid md:grid-cols-3 gap-5">
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                            <p className="text-slate-400 text-xs uppercase tracking-widest font-semibold mb-2">Free</p>
-                            <p className="text-4xl font-bold text-white mb-1">$0</p>
-                            <p className="text-slate-400 text-sm mb-5">Get listed, get discovered</p>
-                            <ul className="space-y-2 text-sm text-slate-300">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                            <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold mb-2">Free</p>
+                            <p className="text-4xl font-bold text-slate-900 mb-1">$0</p>
+                            <p className="text-slate-600 text-sm mb-5">Get listed, get discovered</p>
+                            <ul className="space-y-2 text-sm text-slate-700">
                                 <li>• Public pathway card listing</li>
                                 <li>• Receive pilot interest submissions</li>
                                 <li>• Basic outcome dashboard</li>
                                 <li>• Pay only on placement</li>
                             </ul>
                         </div>
-                        <div className="bg-blue-600/10 border border-blue-500/40 ring-1 ring-blue-500/30 rounded-2xl p-6">
-                            <p className="text-blue-400 text-xs uppercase tracking-widest font-semibold mb-2">Enterprise</p>
-                            <p className="text-4xl font-bold text-white mb-1">$1,000<span className="text-lg text-slate-400 font-normal">/mo</span></p>
-                            <p className="text-slate-400 text-sm mb-5">Pull API + full data access</p>
-                            <ul className="space-y-2 text-sm text-slate-300">
+                        <div className="bg-red-50 border border-red-200 ring-1 ring-red-500/20 rounded-2xl p-6">
+                            <p className="text-red-600 text-xs uppercase tracking-widest font-semibold mb-2">Enterprise</p>
+                            <p className="text-4xl font-bold text-slate-900 mb-1">$1,000<span className="text-lg text-slate-500 font-normal">/mo</span></p>
+                            <p className="text-slate-600 text-sm mb-5">Pull API + full data access</p>
+                            <ul className="space-y-2 text-sm text-slate-700">
                                 <li>• Pull API — query the pilot database</li>
                                 <li>• Unlimited Pathway Cards</li>
                                 <li>• Recognition Score & EBT video access</li>
@@ -716,11 +716,11 @@ const EnterpriseAccessPage = () => {
                                 <li>• Placement tracking dashboard</li>
                             </ul>
                         </div>
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                            <p className="text-emerald-400 text-xs uppercase tracking-widest font-semibold mb-2">Success Fee</p>
-                            <p className="text-4xl font-bold text-white mb-1">$500<span className="text-lg text-slate-400 font-normal">/placement</span></p>
-                            <p className="text-slate-400 text-sm mb-5">Per pilot placed within 90 days</p>
-                            <ul className="space-y-2 text-sm text-slate-300">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                            <p className="text-emerald-600 text-xs uppercase tracking-widest font-semibold mb-2">Success Fee</p>
+                            <p className="text-4xl font-bold text-slate-900 mb-1">$500<span className="text-lg text-slate-500 font-normal">/placement</span></p>
+                            <p className="text-slate-600 text-sm mb-5">Per pilot placed within 90 days</p>
+                            <ul className="space-y-2 text-sm text-slate-700">
                                 <li>• Charged when a pilot is hired</li>
                                 <li>• Tracked through pathway card</li>
                                 <li>• Outcome attribution proven</li>
@@ -734,57 +734,57 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── WHY / METRIC ─── */}
-            <section id="why" className="py-20 px-6 border-b border-white/10">
+            <section id="why" className="py-20 px-6 border-b border-slate-200 bg-white">
                 <div className="max-w-5xl mx-auto">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-3">Why PilotRecognition</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6">A PDF is a dead CV.</h2>
-                    <p className="text-slate-300 text-lg leading-relaxed mb-10 max-w-3xl">
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Why PilotRecognition</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900">A PDF is a dead CV.</h2>
+                    <p className="text-slate-600 text-lg leading-relaxed mb-10 max-w-3xl">
                         The aviation industry runs on stale paperwork. A PDF CV doesn't tell you whether the pilot has flown in the last 6 months. A logbook scan doesn't verify type rating currency. A self-declared medical doesn't catch a 30-day expiry. We rebuilt this from scratch: every pilot profile is live, scored, and verifiable in real time.
                     </p>
                     <div className="grid md:grid-cols-3 gap-5">
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <p className="text-blue-400 text-xs uppercase tracking-widest font-bold mb-2">Pull, don't push</p>
-                            <p className="text-slate-300 text-sm leading-relaxed">Airlines pull pilots from a ranked database. Pilots don't apply into a CV black-hole. The work flows the right direction.</p>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                            <p className="text-red-600 text-xs uppercase tracking-widest font-bold mb-2">Pull, don't push</p>
+                            <p className="text-slate-700 text-sm leading-relaxed">Airlines pull pilots from a ranked database. Pilots don't apply into a CV black-hole. The work flows the right direction.</p>
                         </div>
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <p className="text-emerald-400 text-xs uppercase tracking-widest font-bold mb-2">Live, not snapshot</p>
-                            <p className="text-slate-300 text-sm leading-relaxed">When a pilot logs hours, profiles update. When a medical expires, it's flagged. When a type rating renews, it's verified. Always current.</p>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                            <p className="text-emerald-600 text-xs uppercase tracking-widest font-bold mb-2">Live, not snapshot</p>
+                            <p className="text-slate-700 text-sm leading-relaxed">When a pilot logs hours, profiles update. When a medical expires, it's flagged. When a type rating renews, it's verified. Always current.</p>
                         </div>
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <p className="text-violet-400 text-xs uppercase tracking-widest font-bold mb-2">Verified, not declared</p>
-                            <p className="text-slate-300 text-sm leading-relaxed">Veremark-screened identity, criminal record, employment history. EBT/CBTA scoring on real video interviews. Not "trust me, bro".</p>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                            <p className="text-violet-600 text-xs uppercase tracking-widest font-bold mb-2">Verified, not declared</p>
+                            <p className="text-slate-700 text-sm leading-relaxed">Veremark-screened identity, criminal record, employment history. EBT/CBTA scoring on real video interviews. Not "trust me, bro".</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="metric" className="py-16 px-6 border-b border-white/10 bg-gradient-to-b from-slate-950 to-slate-900/50">
+            <section id="metric" className="py-16 px-6 border-b border-slate-200 bg-gradient-to-b from-slate-100 to-slate-50">
                 <div className="max-w-4xl mx-auto text-center">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-4">The One Metric We Track</p>
-                    <h2 className="text-3xl md:text-5xl font-bold mb-5 leading-tight">
-                        Pilots placed within <span className="text-blue-400">90 days</span> of a pathway being posted.
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-4">The One Metric We Track</p>
+                    <h2 className="text-3xl md:text-5xl font-bold mb-5 leading-tight text-slate-900">
+                        Pilots placed within <span className="text-red-600">90 days</span> of a pathway being posted.
                     </h2>
-                    <p className="text-slate-400 text-lg max-w-2xl mx-auto">Every other vanity metric — listings, profile views, applications — doesn't matter if pilots aren't getting hired. We obsess over outcomes. So should every partner.</p>
+                    <p className="text-slate-600 text-lg max-w-2xl mx-auto">Every other vanity metric — listings, profile views, applications — doesn't matter if pilots aren't getting hired. We obsess over outcomes. So should every partner.</p>
                 </div>
             </section>
 
             {/* ─── CONTACT FORM ─── */}
-            <section id="contact" className="py-20 px-6 bg-gradient-to-b from-slate-900 to-slate-950">
+            <section id="contact" className="py-20 px-6 bg-slate-100">
                 <div className="max-w-3xl mx-auto">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-blue-400 font-semibold mb-3">Request Access</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">Tell us about your business.</h2>
-                    <p className="text-slate-400 text-lg mb-10">We'll route your inquiry to the right team. Most partners hear back within 1–2 business days.</p>
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Request Access</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Tell us about your business.</h2>
+                    <p className="text-slate-600 text-lg mb-10">We'll route your inquiry to the right team. Most partners hear back within 1–2 business days.</p>
 
-                    <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-2xl p-8 space-y-5">
+                    <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-2xl p-8 space-y-5 shadow-sm">
                         {/* Sector */}
                         <div>
-                            <label className="block text-sm font-semibold text-white mb-2">I represent a... *</label>
+                            <label className="block text-sm font-semibold text-slate-900 mb-2">I represent a... *</label>
                             <select
                                 name="sector"
                                 required
                                 value={formData.sector}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                             >
                                 <option value="">Select your sector</option>
                                 <option value="airline">Airline / Operator</option>
@@ -803,36 +803,36 @@ const EnterpriseAccessPage = () => {
 
                         <div className="grid sm:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-semibold text-white mb-2">Full Name *</label>
-                                <input name="name" required value={formData.name} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500" />
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">Full Name *</label>
+                                <input name="name" required value={formData.name} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-white mb-2">Work Email *</label>
-                                <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500" />
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">Work Email *</label>
+                                <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-white mb-2">Company *</label>
-                                <input name="company" required value={formData.company} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500" />
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">Company *</label>
+                                <input name="company" required value={formData.company} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-white mb-2">Role / Title *</label>
-                                <input name="role" required value={formData.role} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500" />
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">Role / Title *</label>
+                                <input name="role" required value={formData.role} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-white mb-2">Country</label>
-                                <input name="country" value={formData.country} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500" />
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">Country</label>
+                                <input name="country" value={formData.country} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-white mb-2">Website</label>
-                                <input name="website" value={formData.website} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500" />
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">Website</label>
+                                <input name="website" value={formData.website} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-white mb-2">Phone</label>
-                                <input name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500" />
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">Phone</label>
+                                <input name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-white mb-2">Company Size</label>
-                                <select name="companySize" value={formData.companySize} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500">
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">Company Size</label>
+                                <select name="companySize" value={formData.companySize} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500">
                                     <option value="">Select size</option>
                                     <option>1–10</option>
                                     <option>11–50</option>
@@ -844,8 +844,8 @@ const EnterpriseAccessPage = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-semibold text-white mb-2">Partnership interest *</label>
-                            <select name="partnershipInterest" required value={formData.partnershipInterest} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500">
+                            <label className="block text-sm font-semibold text-slate-900 mb-2">Partnership interest *</label>
+                            <select name="partnershipInterest" required value={formData.partnershipInterest} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500">
                                 <option value="">Select interest</option>
                                 <option value="pull-api">Pull API access (pull pilots)</option>
                                 <option value="pathway-cards">Post pathway cards</option>
@@ -857,8 +857,8 @@ const EnterpriseAccessPage = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-semibold text-white mb-2">Timeline</label>
-                            <select name="timeline" value={formData.timeline} onChange={handleChange} className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500">
+                            <label className="block text-sm font-semibold text-slate-900 mb-2">Timeline</label>
+                            <select name="timeline" value={formData.timeline} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500">
                                 <option value="">When do you want to start?</option>
                                 <option value="immediate">Immediate (this month)</option>
                                 <option value="quarter">Within 90 days</option>
@@ -868,28 +868,28 @@ const EnterpriseAccessPage = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-semibold text-white mb-2">Tell us more *</label>
-                            <textarea name="message" required rows={5} value={formData.message} onChange={handleChange} placeholder="What problem are you trying to solve? What's your current process? What would make this a win for you?" className="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 resize-none" />
+                            <label className="block text-sm font-semibold text-slate-900 mb-2">Tell us more *</label>
+                            <textarea name="message" required rows={5} value={formData.message} onChange={handleChange} placeholder="What problem are you trying to solve? What's your current process? What would make this a win for you?" className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500 resize-none" />
                         </div>
 
-                        <button type="submit" disabled={submitting} className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold py-4 rounded-lg flex items-center justify-center gap-3 transition-colors">
+                        <button type="submit" disabled={submitting} className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-bold py-4 rounded-lg flex items-center justify-center gap-3 transition-colors">
                             {submitting && <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />}
                             {submitting ? 'Submitting...' : 'Submit Request →'}
                         </button>
-                        <p className="text-center text-slate-500 text-xs">Or email us directly at <a href="mailto:enterprise@pilotrecognition.com" className="text-blue-400 hover:text-blue-300">enterprise@pilotrecognition.com</a></p>
+                        <p className="text-center text-slate-500 text-xs">Or email us directly at <a href="mailto:enterprise@pilotrecognition.com" className="text-red-600 hover:text-red-500">enterprise@pilotrecognition.com</a></p>
                     </form>
                 </div>
             </section>
 
             {/* ─── FOOTER ─── */}
-            <footer className="bg-slate-950 border-t border-white/10 py-10 px-6">
+            <footer className="bg-white border-t border-slate-200 py-10 px-6">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
                     <div className="flex items-center gap-3">
-                        <span className="font-bold"><span className="text-white">Pilot</span><span className="text-blue-400">Recognition</span></span>
-                        <span className="text-[10px] uppercase tracking-widest border border-slate-700 px-1.5 py-0.5 rounded">Enterprise</span>
+                        <span className="font-bold"><span className="text-slate-900">Pilot</span><span className="text-red-600">Recognition</span></span>
+                        <span className="text-[10px] uppercase tracking-widest border border-slate-300 px-1.5 py-0.5 rounded">Enterprise</span>
                     </div>
-                    <p>The aviation industry's talent infrastructure.</p>
-                    <a href="https://pilotrecognition.com" className="text-blue-400 hover:text-blue-300">← pilotrecognition.com</a>
+                    <p className="text-slate-600">Connecting Pilots to the Industry.</p>
+                    <a href="https://pilotrecognition.com" className="text-red-600 hover:text-red-500">← pilotrecognition.com</a>
                 </div>
             </footer>
         </div>
