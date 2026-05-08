@@ -11,9 +11,9 @@ const FEATURES_60 = [
   'Shortlisted by airlines as a Recognition+ member',
   'Priority listing — not pooled with general applicants',
   'Direct feedback on profile gaps from match engine & score',
+  'Recognition AI — extended use, pulls from latest type rating / airline / pathway changes and tells you exactly how to align your profile',
   'Atlas CV — upload documents (licenses, medical, ratings)',
   'Uploaded documents visible on profile — not screened',
-  'Recognition AI gap score (OEM aligned)',
   'EBT CBTA interview fast-track — priority access after Foundation Program (skip the queue)',
   '25% off Foundation & Transition Programs',
 ];
@@ -24,10 +24,10 @@ const FEATURES_100 = [
   'Shortlisted by airlines as preferred — background checked',
   'Priority listing — not pooled with general applicants',
   'Direct feedback on profile gaps from match engine & score',
+  'Recognition AI — extended use, pulls from latest type rating / airline / pathway changes and tells you exactly how to align your profile',
   'Atlas CV — upload & Veremark-screened documents (licenses, medical, ratings)',
   'Screened documents visible to airlines & operators',
   'Unlimited profile comparisons (pathway / airline / type rating)',
-  'Recognition AI gap score (OEM aligned)',
   'EBT CBTA interview fast-track — priority access after Foundation Program (skip the queue)',
   '50% off Foundation & Transition Programs',
 ];
@@ -143,7 +143,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <div>
               <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Free Account</p>
               <p className="text-3xl font-bold text-white">$0 <span className="text-base font-normal text-slate-400">/ forever</span></p>
-              <p className="text-slate-400 text-sm mt-1">3 comparisons/month · 2 submissions/month · Standard Atlas CV · EBT interview scheduled 1–2 months after Foundation Program</p>
+              <p className="text-slate-400 text-sm mt-1">3 comparisons/month · 2 submissions/month · Recognition AI (5 chats/month, basic profile only) · Standard Atlas CV · EBT interview 1–2 months after Foundation</p>
             </div>
             <button
               onClick={() => { onNavigate('become-member'); window.scrollTo(0, 0); }}
