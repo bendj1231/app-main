@@ -2528,8 +2528,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                         ) : (
                             <div className="w-full h-full" style={{ background: 'linear-gradient(180deg, #1e3a8a 0%, #0f2060 40%, #080e2a 75%, #05091a 100%)' }} />
                         )}
-                        {/* Deep blue overlay — light blue at top, deep navy at bottom */}
-                        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(30,58,138,0.30) 0%, rgba(15,32,96,0.50) 35%, rgba(5,9,26,0.88) 100%)' }} />
+                        {/* Deep blue overlay — dark blue at top, deeper navy at bottom */}
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(8,14,50,0.75) 0%, rgba(5,10,35,0.82) 40%, rgba(3,6,20,0.94) 100%)' }} />
                         {graphicsConfig?.enableBackdropBlur && (
                             <div className="absolute inset-0 backdrop-blur-[1px]" />
                         )}
