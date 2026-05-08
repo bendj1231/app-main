@@ -85,6 +85,7 @@ import SpecializedOperationsIndex from '@/portal/pages/SpecializedOperationsInde
 import CareerPathwaysIndex from '@/portal/pages/CareerPathwaysIndex';
 import { AccessPortal2Page } from '@/components/website/components/AccessPortal2Page';
 import ExaminationPortal from '@/components/website/components/examinations/ExaminationPortal';
+import EnterpriseAccessPage from '@/app/enterprise-access/page';
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -252,6 +253,7 @@ export const AppRoutes = () => {
           <ExaminationPortal />
         </ProtectedRoute>
       } />
+      <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
