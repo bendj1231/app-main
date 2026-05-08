@@ -518,7 +518,7 @@ const EnterpriseAccessPage = () => {
                         <span className="text-red-600">to the Industry.</span>
                     </h1>
                     <p className="text-slate-600 text-xl max-w-3xl mb-10 leading-relaxed">
-                        Live pilot profiles. Veremark-verified. Type-rating filtered. Recognition-scored. The infrastructure that connects qualified pilots with airlines, operators, insurers, lenders, ATOs, and manufacturers.
+                        Live pilot profiles. Background-verified. Manufacturer Expectations and Aircraft type ratings. Recognition scored based on flight hours with potential logbook application partnerships for pilot data tracking & metrics. The infrastructure that connects qualified pilots with airlines, operators, insurers, lenders, ATOs, and manufacturers.
                     </p>
                     <div className="flex flex-wrap gap-3">
                         <button onClick={() => scrollTo('solutions')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-6 py-3 rounded-lg transition-colors">
