@@ -308,6 +308,78 @@ const SECTORS: Sector[] = [
         ],
         cta: 'Free developer API tier. Enterprise integration $2,000/mo + setup.',
     },
+    {
+        id: 'cargo',
+        icon: '📦',
+        label: 'Cargo & Freight Operators',
+        color: 'amber',
+        tagline: 'Find rated, current pilots for your freighter fleet.',
+        pain: 'Cargo operators — FedEx, UPS, DHL, Amazon Air, Atlas, Cargolux — operate on tight schedules with specific type ratings (B747F, B767F, MD-11F, A330F). Finding rated, current pilots with freight experience is harder than passenger recruitment. Traditional job boards don\'t filter by cargo-specific experience.',
+        solution: 'Cargo-focused pilot database with freighter type ratings, night flying recency, and cargo operations experience. Pull rated pilots with specific freighter endorsements and dangerous goods certification.',
+        benefits: [
+            'Freighter type rating filters — B747F, B767F, MD-11F, A330F, A350F',
+            'Cargo operations experience scoring',
+            'Night flying recency verification',
+            'Dangerous goods certification tracking',
+            'ICAO Level 4+ English verification for international ops',
+            'Long-haul and short-haul cargo route matching',
+            'Placement tracking for seasonal demand surges',
+        ],
+        pilots: [
+            'Discover cargo-specific pathways not listed on passenger airline boards',
+            'Match with operators by freighter type, not just generic jet ratings',
+            'Get recognised for cargo operations experience',
+        ],
+        cta: 'Enterprise pricing $1,000/mo. Volume discounts for fleet operators.',
+    },
+    {
+        id: 'drone',
+        icon: '🚁',
+        label: 'Commercial Drone & UAV Operators',
+        color: 'cyan',
+        tagline: 'Scale your drone fleet with verified remote pilots.',
+        pain: 'Commercial drone operations — delivery, surveying, inspection, agriculture, cinematography — need certified remote pilots (RPAS / Part 107 / A2 CofC). Finding rated pilots with specific aircraft type experience and BVLOS certification is fragmented across forums and agencies.',
+        solution: 'Verified remote pilot database with UAV-specific ratings, BVLOS certification, and aircraft type experience. Pull pilots by certification level, flight hours, and operational category (delivery, inspection, mapping, etc.).',
+        benefits: [
+            'RPAS / Part 107 / A2 CofC certification verification',
+            'BVLOS (Beyond Visual Line of Sight) certified pilot filter',
+            'Aircraft-specific experience — DJI Matrice, Wingtra, senseFly, etc.',
+            'Operational category tagging — delivery, survey, inspection, film',
+            'Insurance-ready pilot profiles for commercial coverage',
+            'Geographic availability mapping for field operations',
+            'Hourly or project-based engagement tracking',
+        ],
+        pilots: [
+            'Build a commercial UAV career beyond hobby flying',
+            'Get verified for BVLOS and advanced certifications',
+            'Connect with enterprise drone operators at scale',
+        ],
+        cta: 'Flexible pricing per pilot pulled. Enterprise plans for fleet operators.',
+    },
+    {
+        id: 'recruitment',
+        icon: '🤝',
+        label: 'Aviation Recruitment Agencies',
+        color: 'green',
+        tagline: 'White-label recognition scoring for your candidates.',
+        pain: 'Aviation recruitment agencies spend weeks verifying pilot credentials, calling references, and checking logbooks manually. Candidates look identical on paper — hours and type ratings don\'t tell the full story of competency and recency.',
+        solution: 'White-label partnership. Your candidates get PilotRecognition profiles with verified scores. You present ranked, scored candidates to clients — reducing verification time from weeks to hours and winning more placement deals.',
+        benefits: [
+            'White-label Recognition Score for your candidates',
+            'Background verification integration — reduce manual checks',
+            'Live logbook sync — no more "trust me" hour claims',
+            'Client-ready candidate reports with scoring breakdown',
+            'Priority API access for high-volume agencies',
+            'Revenue share on referred pilot subscriptions',
+            'ATS integration for candidate pipeline management',
+        ],
+        pilots: [
+            'Get scored and verified through your agency partner',
+            'Profile travels with you to every job opportunity',
+            'Faster placement — verified candidates get hired first',
+        ],
+        cta: 'Agency partnership program. Custom pricing based on volume.',
+    },
 ];
 
 // Static color map (Tailwind cannot resolve dynamic classnames)
@@ -512,7 +584,7 @@ const EnterpriseAccessPage = () => {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-100/50 blur-3xl rounded-full pointer-events-none" />
                 <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-red-100/30 blur-3xl rounded-full pointer-events-none" />
                 <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-20">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-5">Enterprise · Aviation Industry Infrastructure</p>
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-5">Enterprise · Global Aviation Network</p>
                     <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] mb-6 text-slate-900">
                         Connecting Pilots<br />
                         <span className="text-red-600">to the Industry.</span>
@@ -532,20 +604,20 @@ const EnterpriseAccessPage = () => {
                     {/* Stat strip */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-slate-200">
                         <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">10+</p>
-                            <p className="text-sm text-slate-500">Industry sectors served</p>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">15+</p>
+                            <p className="text-sm text-slate-500">Aviation sectors</p>
                         </div>
                         <div>
                             <p className="text-3xl font-bold text-slate-900 mb-1">90<span className="text-lg text-slate-500 font-normal">d</span></p>
-                            <p className="text-sm text-slate-500">Placement metric</p>
+                            <p className="text-sm text-slate-500">Average placement time</p>
                         </div>
                         <div>
                             <p className="text-3xl font-bold text-slate-900 mb-1">Live</p>
-                            <p className="text-sm text-slate-500">Real-time pilot profiles</p>
+                            <p className="text-sm text-slate-500">Real-time data sync</p>
                         </div>
                         <div>
                             <p className="text-3xl font-bold text-slate-900 mb-1">API</p>
-                            <p className="text-sm text-slate-500">First-class integration</p>
+                            <p className="text-sm text-slate-500">Enterprise integrations</p>
                         </div>
                     </div>
                 </div>
@@ -554,9 +626,9 @@ const EnterpriseAccessPage = () => {
             {/* ─── WHO WE SERVE / SOLUTIONS GRID ─── */}
             <section id="solutions" className="py-20 px-6 border-b border-slate-200 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Who We Connect</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Bridging Pilots & Industry.</h2>
-                    <p className="text-slate-600 text-lg max-w-2xl mb-12">From airline recruitment to pilot finance, insurance underwriting to eVTOL talent pipelines — we connect qualified pilots with the businesses that need them.</p>
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Solutions for Every Aviation Sector</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Connecting Aviation Ecosystems.</h2>
+                    <p className="text-slate-600 text-lg max-w-2xl mb-12">From commercial airlines to cargo operators, flight schools to finance, insurance to emerging air mobility — we connect qualified pilots with every corner of the aviation industry. Expanding to new sectors continuously.</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {SECTORS.map(s => (
