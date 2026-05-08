@@ -57,9 +57,9 @@ const navItems = [
 const AnimatedHeader: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const items = [
-        { text: 'Programs', color: 'text-white' },
-        { text: 'Recognition', color: 'text-[#DAA520]' },
-        { text: 'Pathways', color: 'text-white' }
+        { text: 'Programs', color: 'text-red-500' },
+        { text: 'Recognition', color: 'text-red-500' },
+        { text: 'Pathways', color: 'text-red-500' }
     ];
 
     useEffect(() => {
@@ -86,9 +86,7 @@ const AnimatedHeader: React.FC = () => {
                                 : 'opacity-0 transform -translate-y-4 absolute left-0 right-0'
                         }`}
                         style={{
-                            textShadow: index === activeIndex && item.color === 'text-[#DAA520]' 
-                                ? '0 0 30px rgba(218, 165, 32, 0.5)' 
-                                : 'none'
+                            textShadow: index === activeIndex ? '0 0 30px rgba(239,68,68,0.4)' : 'none'
                         }}
                     >
                         {item.text}
