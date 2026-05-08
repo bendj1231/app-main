@@ -5,31 +5,36 @@ interface StripePaymentSectionProps {
   onNavigate: (page: string) => void;
 }
 
+const PLUS_FEATURES = [
+  'Full profile comparison (unlimited)',
+  'Pathway recommendations based on profile',
+  'Priority matching',
+  'AI Career Strategist',
+  'EBT CBTA Interview Fast-Track',
+  'Recognition AI (OEM Aligned)',
+  'AI Medical Alerts (60-day warnings)',
+  'Priority Pipeline (Hiring Surges)',
+  'Zero-Fail Compliance Monitoring',
+  'Background Check Verification',
+];
+
 export default function StripePaymentSection({ onNavigate }: StripePaymentSectionProps) {
   const { currentUser } = useAuth();
   const [processing, setProcessing] = useState(false);
 
-  const handleCheckout = async (priceId: string, planName: string) => {
+  const handleCheckout = async (priceId: string) => {
     if (!currentUser) {
       onNavigate('recognition-plus');
       return;
     }
-
     setProcessing(true);
     try {
       const response = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          priceId, 
-          userId: currentUser.id 
-        }),
+        body: JSON.stringify({ priceId, userId: currentUser.id }),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
-
+      if (!response.ok) throw new Error('Failed to create checkout session');
       const { url: checkoutUrl } = await response.json();
       window.location.href = checkoutUrl;
     } catch (error) {
@@ -41,187 +46,167 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl">
-        <h2 className="text-2xl md:text-4xl font-serif text-slate-900 mb-8 leading-tight text-center">
-          Choose Your Plan
-        </h2>
-
-        {/* Free Account */}
-        <div className="bg-slate-200/50 backdrop-blur-md border border-slate-300/50 rounded-2xl p-6 mb-6 shadow-xl">
-          <div className="mb-4">
-            <h3 className="text-xl font-bold text-slate-900 mb-2">Free Account</h3>
-            <p className="text-3xl font-bold text-slate-900 mb-1">$0<span className="text-lg font-normal text-slate-600">/forever</span></p>
-            <p className="text-sm text-slate-600">Basic platform access</p>
-          </div>
-          
-          <ul className="space-y-3 mb-6 text-sm">
-            <li className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">✓</span>
-              <span className="text-slate-700">Platform access</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">✓</span>
-              <span className="text-slate-700">Basic profile matching (shows 3 comparisons)</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">✓</span>
-              <span className="text-slate-700">View career pathways</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">✓</span>
-              <span className="text-slate-700">Free Foundation Program enrollment</span>
-            </li>
-          </ul>
-
-          <button
-            onClick={() => {
-              onNavigate('become-member');
-              window.scrollTo(0, 0);
-            }}
-            disabled={processing}
-            className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition-all shadow-lg hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {processing ? 'Processing...' : 'CREATE FREE ACCOUNT'}
-          </button>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Recognition Plus - Annual */}
-          <div className="bg-gradient-to-br from-blue-50 to-slate-50 border-2 border-blue-200 rounded-2xl p-6 relative">
-            <div className="mb-4">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Recognition Plus</h3>
-              <p className="text-3xl font-bold text-slate-900 mb-1">$100<span className="text-lg font-normal text-slate-600">/year</span></p>
-              <p className="text-sm text-slate-600">Premium features & priority access</p>
-              <p className="text-xs text-blue-600 font-semibold mt-1">✓ 3-day free trial</p>
-            </div>
-            
-            <ul className="space-y-3 mb-6 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Full profile comparison (vs. basic 3 comparisons)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Pathway recommendations based on profile</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Priority matching</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">AI Career Strategist</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">EBT CBTA Interview Fast-Track (Foundation Program)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Recognition AI (OEM Aligned)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">AI Medical Alerts (60-day warnings)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Priority Pipeline (Hiring Surges)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Zero-Fail Compliance Monitoring</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span className="text-slate-700">Background Check Verification (Criminal Records)</span>
-              </li>
-            </ul>
-
-            <button
-              onClick={() => onNavigate('recognition-plus')}
-              disabled={processing}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition-all shadow-lg hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {processing ? 'Processing...' : 'Get Recognition Plus'}
-            </button>
-          </div>
-
-          {/* Recognition Plus - Semi-Annual */}
-          <div className="bg-gradient-to-br from-purple-50 to-slate-50 border-2 border-purple-200 rounded-2xl p-6 relative">
-            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-              Flexible
-            </div>
-            
-            <div className="mb-4 mt-2">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Recognition Plus</h3>
-              <p className="text-3xl font-bold text-slate-900 mb-1">$60<span className="text-lg font-normal text-slate-600">/6 months</span></p>
-              <p className="text-sm text-slate-600">Same features, flexible payment</p>
-              <p className="text-xs text-purple-600 font-semibold mt-1">✓ 3-day free trial</p>
-            </div>
-            
-            <ul className="space-y-3 mb-6 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Full profile comparison (vs. basic 3 comparisons)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Pathway recommendations based on profile</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Priority matching</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">AI Career Strategist</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">EBT CBTA Interview Fast-Track (Foundation Program)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Recognition AI (OEM Aligned)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">AI Medical Alerts (60-day warnings)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Priority Pipeline (Hiring Surges)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Zero-Fail Compliance Monitoring</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-600 font-bold">✓</span>
-                <span className="text-slate-700">Background Check Verification (Criminal Records)</span>
-              </li>
-            </ul>
-
-            <button
-              onClick={() => onNavigate('recognition-plus')}
-              disabled={processing}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition-all shadow-lg hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {processing ? 'Processing...' : 'Get Recognition Plus'}
-            </button>
-          </div>
-        </div>
-
-        {/* Enterprise CTA */}
-        <div className="mt-8 bg-slate-50 border-2 border-slate-200 rounded-xl p-6">
-          <p className="text-slate-900 text-sm mb-2 font-semibold text-center">
-            Are you an airline, operator, or training organization?
+    <div className="w-full">
+      {/* ── Hero Split: Copy left, Profile mockup right ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 px-2">
+        {/* Left copy */}
+        <div>
+          <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400 mb-4">Pilot Programs</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
+            <span className="text-red-500">Recognition+</span> Unlocks
+          </h2>
+          <p className="text-slate-300 text-base leading-relaxed mb-8 max-w-md">
+            Get the recognition you deserve. Background screened, prepared through programs, connected to pathways — giving your profile the edge that airlines notice.
           </p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => { onNavigate('become-member'); window.scrollTo(0, 0); }}
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-slate-900 font-semibold text-sm hover:bg-slate-100 transition-all"
+            >
+              Secure your Profile with <span className="text-red-500 font-bold">Recognition+</span>
+              <span className="w-5 h-5 rounded-full border border-slate-400 flex items-center justify-center text-xs">→</span>
+            </button>
+            <button
+              onClick={() => onNavigate('recognition-plus')}
+              className="px-6 py-3 rounded-full bg-slate-800 border border-slate-600 text-white font-semibold text-sm hover:bg-slate-700 transition-all"
+            >
+              Learn more about Recognition Profile
+            </button>
+          </div>
+        </div>
+
+        {/* Right — profile mockup card */}
+        <div className="relative">
+          <div className="rounded-2xl overflow-hidden border border-white/10 bg-slate-800/60 backdrop-blur-md shadow-2xl p-5">
+            {/* Top bar */}
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">Recognition Profile</p>
+              <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-wider border border-green-500/30">Active</span>
+            </div>
+            {/* Pilot info row */}
+            <div className="flex items-center gap-4 mb-5 pb-5 border-b border-white/10">
+              <div className="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center text-xl font-bold text-white flex-shrink-0">P</div>
+              <div>
+                <p className="text-white font-semibold text-sm">Pilot Profile</p>
+                <p className="text-slate-400 text-xs">Commercial Pilot · ATP Candidate</p>
+              </div>
+              <div className="ml-auto text-right">
+                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Recognition Score</p>
+                <p className="text-2xl font-bold text-white">985</p>
+              </div>
+            </div>
+            {/* Stats grid */}
+            <div className="grid grid-cols-3 gap-3 mb-5">
+              {[
+                { label: 'License Type', value: 'CPL (A)' },
+                { label: 'English Level', value: '6 (Native)' },
+                { label: 'Crew Category', value: 'Wide-body Captain' },
+              ].map((stat) => (
+                <div key={stat.label} className="bg-slate-700/50 rounded-xl p-3">
+                  <p className="text-[9px] uppercase tracking-wider text-slate-400 mb-1">{stat.label}</p>
+                  <p className="text-white text-xs font-semibold">{stat.value}</p>
+                </div>
+              ))}
+            </div>
+            {/* Foundation row */}
+            <div className="flex items-center justify-between bg-slate-700/40 rounded-xl px-4 py-3">
+              <div>
+                <p className="text-[9px] uppercase tracking-wider text-slate-400 mb-0.5">Foundation Program</p>
+                <div className="flex gap-4">
+                  <div><p className="text-[9px] text-slate-400">Knowledge Test</p><p className="text-white text-sm font-bold">99%</p></div>
+                  <div><p className="text-[9px] text-slate-400">Mentor Hours</p><p className="text-white text-sm font-bold">250</p></div>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-[9px] text-slate-400 uppercase tracking-wider">Recency</p>
+                <p className="text-green-400 text-sm font-bold">Pass</p>
+              </div>
+            </div>
+          </div>
+          {/* Decorative glow */}
+          <div className="absolute -inset-4 rounded-3xl bg-blue-600/10 blur-2xl -z-10 pointer-events-none" />
+        </div>
+      </div>
+
+      {/* ── Pricing Cards ── */}
+      <div className="px-2">
+        <p className="text-center text-[11px] uppercase tracking-[0.25em] text-slate-400 mb-2">Choose Your Plan</p>
+        <h3 className="text-center text-2xl md:text-3xl font-bold text-white mb-8">Simple, transparent pricing</h3>
+
+        {/* Free */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4 backdrop-blur-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Free Account</p>
+              <p className="text-3xl font-bold text-white">$0 <span className="text-base font-normal text-slate-400">/ forever</span></p>
+              <p className="text-slate-400 text-sm mt-1">Platform access, 3 profile comparisons, view pathways</p>
+            </div>
+            <button
+              onClick={() => { onNavigate('become-member'); window.scrollTo(0, 0); }}
+              disabled={processing}
+              className="flex-shrink-0 px-8 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold uppercase tracking-wider transition-all disabled:opacity-50"
+            >
+              Create Free Account
+            </button>
+          </div>
+        </div>
+
+        {/* Annual + Semi-annual side by side */}
+        <div className="grid md:grid-cols-2 gap-4 mb-8">
+          {/* Annual */}
+          <div className="relative bg-white/5 border border-blue-500/40 rounded-2xl p-6 backdrop-blur-sm overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-blue-400 to-transparent" />
+            <p className="text-[10px] uppercase tracking-widest text-blue-400 mb-1">Recognition Plus</p>
+            <p className="text-4xl font-bold text-white mb-0.5">$100 <span className="text-base font-normal text-slate-400">/ year</span></p>
+            <p className="text-slate-400 text-xs mb-1">Premium features & priority access</p>
+            <p className="text-blue-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
+            <ul className="space-y-2 mb-6">
+              {PLUS_FEATURES.map((f) => (
+                <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                  <span className="text-blue-400 mt-0.5 flex-shrink-0">✓</span>{f}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => onNavigate('recognition-plus')}
+              disabled={processing}
+              className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider transition-all disabled:opacity-50"
+            >
+              {processing ? 'Processing…' : 'Get Recognition Plus'}
+            </button>
+          </div>
+
+          {/* Semi-annual */}
+          <div className="relative bg-white/5 border border-violet-500/40 rounded-2xl p-6 backdrop-blur-sm overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-violet-600 via-violet-400 to-transparent" />
+            <div className="absolute top-4 right-4 px-2.5 py-0.5 rounded-full bg-violet-600/80 text-white text-[10px] font-bold uppercase tracking-wider">Flexible</div>
+            <p className="text-[10px] uppercase tracking-widest text-violet-400 mb-1">Recognition Plus</p>
+            <p className="text-4xl font-bold text-white mb-0.5">$60 <span className="text-base font-normal text-slate-400">/ 6 months</span></p>
+            <p className="text-slate-400 text-xs mb-1">Same features, flexible payment</p>
+            <p className="text-violet-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
+            <ul className="space-y-2 mb-6">
+              {PLUS_FEATURES.map((f) => (
+                <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                  <span className="text-violet-400 mt-0.5 flex-shrink-0">✓</span>{f}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => onNavigate('recognition-plus')}
+              disabled={processing}
+              className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-bold uppercase tracking-wider transition-all disabled:opacity-50"
+            >
+              {processing ? 'Processing…' : 'Get Recognition Plus'}
+            </button>
+          </div>
+        </div>
+
+        {/* Enterprise */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 pt-2 pb-4 border-t border-white/10">
+          <p className="text-slate-400 text-sm">Are you an airline, operator, or training organization?</p>
           <button
             onClick={() => window.location.href = '/enterprise-access'}
-            className="w-full text-blue-600 hover:text-blue-700 text-sm font-bold underline text-center"
+            className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors"
           >
             Click here for enterprise access →
           </button>

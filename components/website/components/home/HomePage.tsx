@@ -2534,7 +2534,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
 
                     <div className="max-w-7xl mx-auto relative z-10">
-                        <div className="text-center mb-8">
+                        <div className="text-center mb-12">
                                 <AnimatedHeader />
                         </div>
                         <StripePaymentSection onNavigate={onNavigate} />
