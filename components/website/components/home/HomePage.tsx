@@ -1371,61 +1371,71 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
 
-            {/* === WHY JOIN SECTION - Need-Based Messaging === */}
+            {/* === WHY JOIN SECTION - Refined Need-Based Messaging === */}
             <div className="relative z-30 w-full px-4 md:px-8 py-16 bg-slate-50">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
                         <p className="text-xs font-bold tracking-[0.3em] uppercase text-red-600 mb-4">Digital Professional Identity</p>
                         <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
-                            Don't Just Apply—Get Recognized
+                            Why Every Pilot Needs a Recognition Profile
                         </h2>
                         <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 leading-relaxed">
-                            In the past, you were just a name on a PDF. Today, you are a PR Score. Pilot Recognition is the global infrastructure for your career. If you aren't recognized, vetted, and scored, you aren't just behind—you're off the radar.
+                            In a rapidly evolving industry, a paper logbook and a standard CV are no longer enough. Pilot Recognition is the global infrastructure for your aviation identity. Whether you are flying for a career or for the love of the sky, being "Recognized" is the new industry standard.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Students - Unfair Advantage */}
+                        {/* Students - Start at the Finish Line */}
                         <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
                             <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                 <Zap className="w-6 h-6 text-red-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">The Unfair Advantage</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Start at the Finish Line</h3>
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                Don't graduate into a vacuum. The gap between flight school and a flight deck is huge. Our $50 Industry Experience Programs are the only way to put "Professional Alignment" on your resume before you even have your commercial license.
+                                Don't wait until you have 1,500 hours to enter the industry. Bridge the Gap: Our $50 Industry Experience Programs provide students with professional alignment and manufacturer-standard insights that usually take years to acquire.
                             </p>
                             <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                If you aren't on the registry, you're invisible to airlines scouting the next generation of cadets.
+                                Build Your Digital Footprint: Start your profile today so airlines can track your growth.
                             </p>
                         </div>
 
-                        {/* Hobbyists - Professional Grade */}
+                        {/* Hobbyists - Pro-Level Precision */}
                         <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
                             <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                 <Cpu className="w-6 h-6 text-red-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Professional Grade Knowledge</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">Pro-Level Precision</h3>
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                Fly with the data of a Captain. Aviation doesn't stand still. Whether you fly for fun or are working toward a goal, you need the W1000 application to master the glass cockpit standards of the pros.
+                                Even if you aren't flying for an airline, you should be flying by their standards. The W1000 Advantage: Master the glass cockpit with our W1000 application, designed to bring G1000-inspired precision to your flight prep.
                             </p>
                             <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                Stay "airline-ready"—the mark of a true aviator.
+                                Stay Industry-Current: Access real-time data on type rating requirements and global aviation shifts.
                             </p>
                         </div>
 
-                        {/* Veterans - Gold Standard */}
+                        {/* Active Pilots - Blue Checkmark */}
                         <div className="group relative p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-2xl transition-all">
                             <div className="absolute top-6 right-6 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                 <Award className="w-6 h-6 text-red-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">The Gold Standard of Proof</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 pr-12">The "Blue Checkmark" of Aviation</h3>
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                Don't just say you're good—prove it. In aviation, your network gets you the interview, but your Recognition Profile closes the deal. Even with a referral, airlines want to see you've been vetted and ranked.
+                                A referral might get you an interview, but a PR Score gets you the job. Verified Authority: In an industry built on trust, having a vetted and recognized profile is your ultimate badge of honor.
                             </p>
                             <p className="text-xs font-bold text-red-600 uppercase tracking-widest bg-red-50 inline-block px-3 py-1 rounded">
-                                A high PR Score is the "Blue Checkmark" of the aviation world.
+                                Global Bragging Rights: A top-tier PR Score is a signal that you are "Airline Ready."
                             </p>
                         </div>
+                    </div>
+
+                    {/* Bottom Line CTA */}
+                    <div className="mt-12 text-center">
+                        <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                            If you aren't on the Global Registry, you're flying off the radar. Pilot Recognition is where the world's pilots are vetted, ranked, and respected.
+                        </p>
+                        <p className="text-lg font-bold text-slate-900">
+                            Claim your identity. Get Recognized.
+                        </p>
                     </div>
                 </div>
             </div>
