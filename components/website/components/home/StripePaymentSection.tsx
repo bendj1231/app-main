@@ -6,6 +6,7 @@ interface StripePaymentSectionProps {
 }
 
 const FEATURES_60 = [
+  'Live real-time profile — not a PDF. When you fly and log hours, your profile updates. Airlines always see your current status.',
   'Recognition Score — scored on recency, hours flown, type rating & profile completeness',
   'Recognition+ badge — airlines see your score in their ranked shortlist bulletin',
   'Submit pathway interest — airlines pull a scored shortlist of interested pilots (no background check)',
@@ -21,6 +22,7 @@ const FEATURES_60 = [
 ];
 
 const FEATURES_100 = [
+  'Live real-time profile — not a PDF. When you fly and log hours, your profile updates instantly. Airlines pull your current data, not a snapshot from months ago.',
   'Veremark background screening — verified badge attached to your profile in the pulling system',
   'Recognition Score — scored on recency, hours flown, type rating, completeness & Veremark status',
   'Recognition+ Verified badge — airlines filter for this first: background checked, preferred tier',

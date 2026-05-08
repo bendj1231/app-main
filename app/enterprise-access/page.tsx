@@ -239,7 +239,11 @@ const EnterpriseAccessPage = () => {
                 >
                     <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400 font-semibold mb-2">Airlines · Operators · Training Organisations</p>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Simple pricing. <span className="text-blue-400">Pay when you place.</span></h2>
-                    <p className="text-slate-400 text-base mb-8 max-w-2xl">Access a verified, background-checked pilot database. Pull profiles, post pathway cards, and only pay a success fee when a pilot is placed through your pathway.</p>
+                    <p className="text-slate-400 text-base mb-4 max-w-2xl">Access a verified, background-checked pilot database. Pull profiles, post pathway cards, and only pay a success fee when a pilot is placed through your pathway.</p>
+                    <div className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-3.5 mb-8 max-w-2xl">
+                        <span className="text-blue-400 text-lg mt-0.5 flex-shrink-0">⚡</span>
+                        <p className="text-slate-300 text-sm"><span className="text-white font-semibold">A PDF is a dead CV.</span> For all you know, the pilot hasn't flown in 2 years. Every profile on PilotRecognition is live — when a pilot logs hours, their profile updates in real time. You always pull current data, not a snapshot.</p>
+                    </div>
 
                     {/* Pricing cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
