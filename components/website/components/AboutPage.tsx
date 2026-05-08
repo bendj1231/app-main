@@ -46,40 +46,73 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             Two programs build the verified competencies that improve your matching priority with operators. The Foundation Program establishes baseline competency across the nine EBT CBTA core areas through structured coursework, examination, and 50 hours of evidence-based mentorship. Foundation graduates unlock the Transition Program at graduate pricing ($99, a $50 discount from $149). The Transition Program is currently under development and will advance to full EBT CBTA assessment, ATLAS Aviation CV formatting, EBT video evaluation, and internship placement with pathway providers. Program completion generates verified competency data that feeds directly into the pilot profile and improves operator matching.
                         </p>
 
+                        {/* Programs */}
                         <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
                             <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Programs</h3>
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <p className="font-semibold text-slate-900 mb-1">Foundation Program — Free to Enter</p>
-                                    <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
-                                        <li>Competency development across 9 EBT CBTA core areas</li>
-                                        <li>50 hours evidence-based mentorship</li>
-                                        <li>Scholarship seats for verified low-income applicants</li>
+                                    <p className="font-semibold text-slate-900 mb-2">Foundation Program — <span className="text-slate-700">Free to Enter</span></p>
+                                    <ul className="text-sm text-slate-600 space-y-1.5">
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>Competency development across 9 EBT CBTA core areas</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>50 hours evidence-based mentorship</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>Scholarship seats for verified low-income applicants</span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <p className="font-semibold text-slate-900 mb-1">Transition Program — $149 <span className="text-slate-500 font-normal">($99 for Foundation graduates)</span> <span className="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded ml-2 align-middle">Under Development</span></p>
-                                    <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
-                                        <li>Full EBT CBTA assessment</li>
-                                        <li>EBT CBTA competency video assessment</li>
-                                        <li>ATLAS Aviation CV formatting</li>
-                                        <li>EBT video assessment</li>
-                                        <li>Internship placement with pathway providers</li>
-                                        <li>Competency verification</li>
+                                    <p className="font-semibold text-slate-900 mb-2">
+                                        Transition Program — <span className="text-slate-700">$149</span> 
+                                        <span className="text-slate-500 font-normal text-sm"> ($99 for Foundation graduates)</span>
+                                        <span className="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded ml-2 align-middle">Under Development</span>
+                                    </p>
+                                    <ul className="text-sm text-slate-600 space-y-1.5">
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>Full EBT CBTA assessment</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>EBT CBTA competency video assessment</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>ATLAS Aviation CV formatting</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>EBT video assessment</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>Internship placement with pathway providers</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-1">•</span>
+                                            <span>Competency verification</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
 
+                        {/* Recognition Profile & Pathways */}
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
                                 <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Recognition Profile</h3>
                                 <div className="space-y-3 text-sm">
-                                    <div className="flex justify-between items-baseline">
+                                    <div className="flex items-start gap-2">
                                         <span className="text-slate-900 font-medium">Free</span>
                                         <span className="text-slate-600">Platform access, basic matching, 3 pathways/month</span>
                                     </div>
-                                    <div className="flex justify-between items-baseline">
+                                    <div className="flex items-start gap-2">
                                         <span className="text-slate-900 font-medium">Plus</span>
                                         <span className="text-slate-600">$99/year — full comparison, unlimited pathways, priority matching</span>
                                     </div>
@@ -88,15 +121,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
                                 <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Pathways</h3>
                                 <div className="space-y-3 text-sm">
-                                    <div className="flex justify-between items-baseline">
+                                    <div className="flex items-start gap-2">
                                         <span className="text-slate-900 font-medium">Free</span>
                                         <span className="text-slate-600">Public pathway access</span>
                                     </div>
-                                    <div className="flex justify-between items-baseline">
+                                    <div className="flex items-start gap-2">
                                         <span className="text-slate-900 font-medium">Plus</span>
                                         <span className="text-slate-600">Full insights via Recognition Plus</span>
                                     </div>
-                                    <div className="flex justify-between items-baseline">
+                                    <div className="flex items-start gap-2">
                                         <span className="text-slate-900 font-medium">Premium</span>
                                         <span className="text-slate-600">$49 each — private sector and specialized pathways</span>
                                     </div>
