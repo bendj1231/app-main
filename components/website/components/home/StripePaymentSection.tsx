@@ -75,56 +75,46 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
           </div>
         </div>
 
-        {/* Right — profile mockup card */}
+        {/* Right — $100/year pricing card */}
         <div className="relative">
-          <div className="rounded-2xl overflow-hidden border border-white/10 bg-slate-800/60 backdrop-blur-md shadow-2xl p-5">
-            {/* Top bar */}
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">Recognition Profile</p>
-              <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-wider border border-green-500/30">Active</span>
-            </div>
-            {/* Pilot info row */}
-            <div className="flex items-center gap-4 mb-5 pb-5 border-b border-white/10">
-              <div className="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center text-xl font-bold text-white flex-shrink-0">P</div>
-              <div>
-                <p className="text-white font-semibold text-sm">Pilot Profile</p>
-                <p className="text-slate-400 text-xs">Commercial Pilot · ATP Candidate</p>
+          <div className="rounded-2xl border border-blue-500/40 bg-white/5 backdrop-blur-md shadow-2xl overflow-hidden">
+            {/* Top accent line */}
+            <div className="h-[3px] w-full bg-gradient-to-r from-blue-600 via-blue-400 to-transparent" />
+            <div className="p-7">
+              {/* Plan label */}
+              <p className="text-[10px] uppercase tracking-[0.25em] text-blue-400 font-semibold mb-1">Recognition Plus</p>
+              {/* Price */}
+              <div className="flex items-end gap-2 mb-1">
+                <span className="text-6xl font-bold text-white leading-none">$100</span>
+                <span className="text-slate-400 text-base mb-1">/ year</span>
               </div>
-              <div className="ml-auto text-right">
-                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Recognition Score</p>
-                <p className="text-2xl font-bold text-white">985</p>
-              </div>
-            </div>
-            {/* Stats grid */}
-            <div className="grid grid-cols-3 gap-3 mb-5">
-              {[
-                { label: 'License Type', value: 'CPL (A)' },
-                { label: 'English Level', value: '6 (Native)' },
-                { label: 'Crew Category', value: 'Wide-body Captain' },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-slate-700/50 rounded-xl p-3">
-                  <p className="text-[9px] uppercase tracking-wider text-slate-400 mb-1">{stat.label}</p>
-                  <p className="text-white text-xs font-semibold">{stat.value}</p>
-                </div>
-              ))}
-            </div>
-            {/* Foundation row */}
-            <div className="flex items-center justify-between bg-slate-700/40 rounded-xl px-4 py-3">
-              <div>
-                <p className="text-[9px] uppercase tracking-wider text-slate-400 mb-0.5">Foundation Program</p>
-                <div className="flex gap-4">
-                  <div><p className="text-[9px] text-slate-400">Knowledge Test</p><p className="text-white text-sm font-bold">99%</p></div>
-                  <div><p className="text-[9px] text-slate-400">Mentor Hours</p><p className="text-white text-sm font-bold">250</p></div>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-[9px] text-slate-400 uppercase tracking-wider">Recency</p>
-                <p className="text-green-400 text-sm font-bold">Pass</p>
-              </div>
+              <p className="text-slate-400 text-sm mb-1">Premium features & priority access</p>
+              <p className="text-blue-400 text-xs font-semibold mb-6">✓ 3-day free trial included</p>
+
+              {/* Feature list */}
+              <ul className="space-y-2.5 mb-7">
+                {PLUS_FEATURES.map((f) => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm text-slate-300">
+                    <span className="w-4 h-4 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center flex-shrink-0">
+                      <span className="text-blue-400 text-[10px]">✓</span>
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA */}
+              <button
+                onClick={() => onNavigate('recognition-plus')}
+                className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider transition-all shadow-lg shadow-blue-900/40"
+              >
+                Get Recognition Plus
+              </button>
+              <p className="text-center text-slate-500 text-xs mt-3">Cancel anytime · Secure checkout</p>
             </div>
           </div>
           {/* Decorative glow */}
-          <div className="absolute -inset-4 rounded-3xl bg-blue-600/10 blur-2xl -z-10 pointer-events-none" />
+          <div className="absolute -inset-4 rounded-3xl bg-blue-600/15 blur-2xl -z-10 pointer-events-none" />
         </div>
       </div>
 
