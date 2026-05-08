@@ -27,11 +27,13 @@ export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({
             {/* Header Section */}
             <div className="pt-32 pb-12 px-6">
                 <div className="max-w-6xl mx-auto text-center relative z-20">
-                    <img
-                        src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                        alt="PilotRecognition Logo"
-                        className="mx-auto w-64 h-auto object-contain mb-2"
-                    />
+                    <div className="flex items-baseline justify-center mb-2">
+                        <span style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif', fontSize: '2rem', lineHeight: 1, letterSpacing: '-0.02em' }}>
+                            <span className="text-slate-900">pilot</span>
+                            <span className="text-red-600">recognition</span>
+                            <span className="text-slate-900">.com</span>
+                        </span>
+                    </div>
                     <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
                         Professional Identity
                     </p>
