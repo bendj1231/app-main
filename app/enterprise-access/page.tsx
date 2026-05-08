@@ -221,13 +221,13 @@ const EnterpriseAccessPage = () => {
             <div className="max-w-4xl mx-auto">
                 {/* Back Button */}
                 <button
-                    onClick={() => window.history.back()}
+                    onClick={() => window.location.href = 'https://pilotrecognition.com'}
                     className="mb-6 flex items-center gap-2 text-white hover:text-blue-200 transition-colors"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span>Back</span>
+                    <span>← pilotrecognition.com</span>
                 </button>
 
                 {/* ── Airline / Operator Pricing Section ── */}
