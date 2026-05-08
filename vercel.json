@@ -5,6 +5,11 @@
       "destination": "/api/:path*"
     },
     {
+      "has": [{ "type": "host", "value": "enterprise.pilotrecognition.com" }],
+      "source": "/(.*)",
+      "destination": "/enterprise-access"
+    },
+    {
       "source": "/((?!api|assets|.*\\..*).*)",
       "destination": "/index.html"
     }

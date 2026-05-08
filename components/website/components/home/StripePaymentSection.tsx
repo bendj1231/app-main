@@ -216,7 +216,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 pt-2 pb-4 border-t border-white/10">
           <p className="text-slate-400 text-sm">Are you an airline, operator, or training organization?</p>
           <button
-            onClick={() => window.location.href = '/enterprise-access'}
+            onClick={() => window.location.href = 'https://enterprise.pilotrecognition.com'}
             className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors"
           >
             Click here for enterprise access →
