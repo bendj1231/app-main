@@ -943,11 +943,6 @@ const AirlinesOperatorsPage = () => {
 
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="bg-white border border-slate-200 rounded-2xl p-8">
-                            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
-                            </div>
                             <h3 className="text-lg font-bold text-slate-900 mb-3">For Chief Pilots</h3>
                             <p className="text-slate-600 text-sm mb-4">Technical competency verification and CRM assessment</p>
                             <ul className="space-y-2 text-xs text-slate-700">
@@ -971,11 +966,6 @@ const AirlinesOperatorsPage = () => {
                         </div>
 
                         <div className="bg-white border border-slate-200 rounded-2xl p-8">
-                            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-                                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 01212 5c-1.174-.252-2.455-.27-3.707-.118-1.364.165-2.724.576-4.01 1.22-2.34 1.185-4.2 3.19-5.28 5.58-1.08 2.39-1.39 5.1-.84 7.72.55 2.62 1.99 4.95 4.08 6.54C8.94 26.12 11.6 27 14.29 27c2.68 0 5.34-.88 7.47-2.54 2.09-1.59 3.53-3.92 4.08-6.54.55-2.62.24-5.33-.84-7.72-1.08-2.39-2.94-4.395-5.28-5.58" />
-                                </svg>
-                            </div>
                             <h3 className="text-lg font-bold text-slate-900 mb-3">For HR Managers</h3>
                             <p className="text-slate-600 text-sm mb-4">Efficiency, compliance, and reduced administrative burden</p>
                             <ul className="space-y-2 text-xs text-slate-700">
@@ -999,11 +989,6 @@ const AirlinesOperatorsPage = () => {
                         </div>
 
                         <div className="bg-white border border-slate-200 rounded-2xl p-8">
-                            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-4">
-                                <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
                             <h3 className="text-lg font-bold text-slate-900 mb-3">For CFOs</h3>
                             <p className="text-slate-600 text-sm mb-4">Predictable costs and measurable ROI</p>
                             <ul className="space-y-2 text-xs text-slate-700">
