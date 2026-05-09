@@ -542,8 +542,399 @@ const AirlinesOperatorsPage = () => {
                 </div>
             </section>
 
+            {/* DATA-DRIVEN PROOF POINTS */}
+            <section id="metrics" className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Workforce Analytics</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">From "Gut Feeling" to Data-Driven Recruitment</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Modern aviation recruitment demands metrics, not intuition. Our infrastructure delivers measurable ROI.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8 mb-12">
+                        <div className="bg-slate-900 text-white rounded-2xl p-8 text-center">
+                            <p className="text-5xl font-bold text-red-400 mb-2">30-45</p>
+                            <p className="text-sm font-semibold mb-1">Days Time-to-Fill</p>
+                            <p className="text-slate-400 text-xs">vs. 60-90 days with traditional agencies</p>
+                            <div className="mt-4 pt-4 border-t border-slate-700">
+                                <p className="text-emerald-400 text-xs font-semibold">50% faster placement</p>
+                            </div>
+                        </div>
+                        <div className="bg-slate-900 text-white rounded-2xl p-8 text-center">
+                            <p className="text-5xl font-bold text-red-400 mb-2">$3,500</p>
+                            <p className="text-sm font-semibold mb-1">Cost-per-Hire</p>
+                            <p className="text-slate-400 text-xs">vs. $50,000 average agency fee</p>
+                            <div className="mt-4 pt-4 border-t border-slate-700">
+                                <p className="text-emerald-400 text-xs font-semibold">93% cost reduction</p>
+                            </div>
+                        </div>
+                        <div className="bg-slate-900 text-white rounded-2xl p-8 text-center">
+                            <p className="text-5xl font-bold text-red-400 mb-2">80%</p>
+                            <p className="text-sm font-semibold mb-1">Inquiry Reduction</p>
+                            <p className="text-slate-400 text-xs">of "what do you require?" questions eliminated</p>
+                            <div className="mt-4 pt-4 border-t border-slate-700">
+                                <p className="text-emerald-400 text-xs font-semibold">Pathway Cards = clarity</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
+                        <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-slate-900 mb-2">The Pull Model Advantage</h3>
+                                <p className="text-slate-700 text-sm leading-relaxed">
+                                    Traditional recruitment is reactive: post a job, wait for applications, filter through hundreds of unqualified candidates. Our infrastructure is proactive: pilots see your Pathway Card, self-align their profiles, and express interest only when qualified. The result? <span className="font-semibold text-emerald-700">Pre-qualified candidates who meet your exact specifications before they ever contact you.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* DE-RISKING: COMPLIANCE & VERIFICATION */}
+            <section id="compliance" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Safety & Compliance</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">De-Risking Your Hiring Process</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Safety and compliance are non-negotiable. We verify what matters before pilots reach your inbox.
+                        </p>
+                    </div>
+
+                    <div className="grid lg:grid-cols-2 gap-8 mb-12">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                            <h3 className="text-lg font-bold text-slate-900 mb-6">Compliance Verification Pipeline</h3>
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <span className="text-red-600 text-xs font-bold">1</span>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-900 text-sm">TSA Background Checks</p>
+                                        <p className="text-slate-600 text-xs">Secure Flight and Known Crewmember status verification</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <span className="text-red-600 text-xs font-bold">2</span>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-900 text-sm">FAA Medical Certification</p>
+                                        <p className="text-slate-600 text-xs">Current Class 1 or 2 medical validation with expiration alerts</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <span className="text-red-600 text-xs font-bold">3</span>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-900 text-sm">Drug & Alcohol Testing</p>
+                                        <p className="text-slate-600 text-xs">DOT-compliant testing records and random program enrollment</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <span className="text-red-600 text-xs font-bold">4</span>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-900 text-sm">License & Rating Verification</p>
+                                        <p className="text-slate-600 text-xs">Direct integration with FAA Airmen Database for real-time validation</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                            <h3 className="text-lg font-bold text-slate-900 mb-6">The "Verified" Badge</h3>
+                            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 rounded-xl p-6 mb-6">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
+                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-slate-900">Verified Pilot</p>
+                                        <p className="text-slate-600 text-xs">All compliance checks complete</p>
+                                    </div>
+                                </div>
+                                <p className="text-slate-700 text-sm leading-relaxed">
+                                    When you see this badge, the pilot has completed background verification, medical certification validation, and document authentication. <span className="font-semibold text-emerald-700">You can bypass the risky initial vetting stage and move directly to technical evaluation.</span>
+                                </p>
+                            </div>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    <span>Reduce compliance verification time by 60%</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    <span>Eliminate document fraud risk</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    <span>Pre-validated candidates only</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ATS INTEGRATION */}
+            <section id="integrations" className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">HR Tech Stack</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Integrates With Your Existing Systems</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            No data silos. No manual exports. Connect PilotRecognition to your current ATS and HR infrastructure.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-center h-24">
+                            <span className="font-bold text-slate-700">Greenhouse</span>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-center h-24">
+                            <span className="font-bold text-slate-700">Lever</span>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-center h-24">
+                            <span className="font-bold text-slate-700">Workday</span>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-center h-24">
+                            <span className="font-bold text-slate-700">SAP SuccessFactors</span>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-center h-24">
+                            <span className="font-bold text-slate-700">BambooHR</span>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-center h-24">
+                            <span className="font-bold text-slate-700">iCIMS</span>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-center h-24">
+                            <span className="font-bold text-slate-700">Jobvite</span>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-center h-24">
+                            <span className="font-bold text-slate-700">+ Custom API</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-900 text-white rounded-2xl p-8">
+                        <div className="grid md:grid-cols-3 gap-8">
+                            <div className="text-center">
+                                <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                                    </svg>
+                                </div>
+                                <h3 className="font-bold mb-2">Pull API</h3>
+                                <p className="text-slate-400 text-xs">Sync qualified candidates directly into your ATS candidate pool</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <h3 className="font-bold mb-2">Webhook Events</h3>
+                                <p className="text-slate-400 text-xs">Real-time notifications when qualified pilots express interest</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <h3 className="font-bold mb-2">Single Source of Truth</h3>
+                                <p className="text-slate-400 text-xs">All pilot data, documents, and verification status in one connected system</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* STAKEHOLDER FOCUS */}
+            <section id="stakeholders" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">For Decision Makers</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Built for Every Stakeholder</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Different priorities. One platform that serves them all.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-3">For Chief Pilots</h3>
+                            <p className="text-slate-600 text-sm mb-4">Technical competency verification and CRM assessment</p>
+                            <ul className="space-y-2 text-xs text-slate-700">
+                                <li className="flex items-start gap-2">
+                                    <span className="text-blue-500">●</span>
+                                    Aircraft-specific type rating validation
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-blue-500">●</span>
+                                    EBT/CBTA behavioral assessment scores
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-blue-500">●</span>
+                                    CRM and teamwork profile evaluation
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-blue-500">●</span>
+                                    Recency and currency verification
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 01212 5c-1.174-.252-2.455-.27-3.707-.118-1.364.165-2.724.576-4.01 1.22-2.34 1.185-4.2 3.19-5.28 5.58-1.08 2.39-1.39 5.1-.84 7.72.55 2.62 1.99 4.95 4.08 6.54C8.94 26.12 11.6 27 14.29 27c2.68 0 5.34-.88 7.47-2.54 2.09-1.59 3.53-3.92 4.08-6.54.55-2.62.24-5.33-.84-7.72-1.08-2.39-2.94-4.395-5.28-5.58" />
+                                </svg>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-3">For HR Managers</h3>
+                            <p className="text-slate-600 text-sm mb-4">Efficiency, compliance, and reduced administrative burden</p>
+                            <ul className="space-y-2 text-xs text-slate-700">
+                                <li className="flex items-start gap-2">
+                                    <span className="text-emerald-500">●</span>
+                                    80% reduction in inquiry volume
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-emerald-500">●</span>
+                                    Pre-verified candidate pipeline
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-emerald-500">●</span>
+                                    Automated background check integration
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-emerald-500">●</span>
+                                    ATS sync eliminates double data entry
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+                                <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-3">For CFOs</h3>
+                            <p className="text-slate-600 text-sm mb-4">Predictable costs and measurable ROI</p>
+                            <ul className="space-y-2 text-xs text-slate-700">
+                                <li className="flex items-start gap-2">
+                                    <span className="text-amber-500">●</span>
+                                    $3,500 vs. $50,000 per placement
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-amber-500">●</span>
+                                    Fixed monthly + success fee model
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-amber-500">●</span>
+                                    93% cost reduction vs. agencies
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="text-amber-500">●</span>
+                                    No long-term contracts required
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* SUCCESS STORIES */}
+            <section id="cases" className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Results</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Proven Outcomes</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Real results from operators who shifted to the Pull model.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl p-8">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                                    <span className="text-red-600 font-bold text-lg">R</span>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-slate-900">Regional Airline</p>
+                                    <p className="text-slate-500 text-xs">12-aircraft fleet, Part 135</p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-4 mb-4">
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-red-600">-18%</p>
+                                    <p className="text-xs text-slate-600">Attrition</p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-emerald-600">-40%</p>
+                                    <p className="text-xs text-slate-600">Time-to-Fill</p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-blue-600">94%</p>
+                                    <p className="text-xs text-slate-600">Retention</p>
+                                </div>
+                            </div>
+                            <p className="text-slate-700 text-sm leading-relaxed">
+                                "Pathway Cards eliminated the 'what do you need?' phone calls. Pilots arrive pre-qualified and already understand our operation. First-year attrition dropped from 22% to 4%."
+                            </p>
+                        </div>
+
+                        <div className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl p-8">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                                    <span className="text-red-600 font-bold text-lg">P</span>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-slate-900">Private Jet Operator</p>
+                                    <p className="text-slate-500 text-xs">Gulfstream & Challenger fleet</p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-4 mb-4">
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-red-600">-45%</p>
+                                    <p className="text-xs text-slate-600">Hiring Cost</p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-emerald-600">22</p>
+                                    <p className="text-xs text-slate-600">Days to Hire</p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-blue-600">100%</p>
+                                    <p className="text-xs text-slate-600">Type Rated</p>
+                                </div>
+                            </div>
+                            <p className="text-slate-700 text-sm leading-relaxed">
+                                "The Recognition Score filtering is game-changing. Every candidate we've hired through the platform already had the type rating and 500+ hours in type. Zero training delays."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* 5. BENEFITS - What You Get */}
-            <section id="benefits" className="py-16 px-6 border-b border-slate-200 bg-white">
+            <section id="benefits" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
                         <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">05. Benefits</p>
