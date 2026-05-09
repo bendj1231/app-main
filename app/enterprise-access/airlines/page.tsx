@@ -258,6 +258,109 @@ const AirlinesOperatorsPage = () => {
                 </div>
             </section>
 
+            {/* PRICING - Moved to top */}
+            <section id="pricing" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+                <div className="max-w-5xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Pricing</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Simple, Transparent Pricing</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Infrastructure pricing—not headhunter fees. Predictable costs, better outcomes.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        {/* Free Tier */}
+                        <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                            <div className="text-center mb-6">
+                                <h3 className="text-xl font-bold text-slate-900 mb-2">Free</h3>
+                                <p className="text-slate-500 text-sm">For operators exploring the platform</p>
+                            </div>
+                            <div className="text-center mb-6">
+                                <span className="text-4xl font-bold text-slate-900">$0</span>
+                                <span className="text-slate-500 text-sm">/year</span>
+                            </div>
+                            <ul className="space-y-3 mb-8">
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Post public Pathway Cards
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    View pilot profiles
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Basic matching insights
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    See free member interest
+                                </li>
+                            </ul>
+                            <button onClick={() => scrollTo('contact')} className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 rounded-xl transition-colors">
+                                Get Started Free
+                            </button>
+                        </div>
+
+                        {/* Enterprise Tier */}
+                        <div className="bg-white border-2 border-red-200 rounded-2xl p-8 relative">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-wider">
+                                Recommended
+                            </div>
+                            <div className="text-center mb-6">
+                                <h3 className="text-xl font-bold text-slate-900 mb-2">Enterprise</h3>
+                                <p className="text-slate-500 text-sm">For active recruitment operations</p>
+                            </div>
+                            <div className="text-center mb-6">
+                                <span className="text-4xl font-bold text-red-600">$1,000</span>
+                                <span className="text-slate-500 text-sm">/year</span>
+                            </div>
+                            <ul className="space-y-3 mb-4">
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Everything in Free, plus:
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Pull API access
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Unlimited profile pulls
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Advanced filtering & analytics
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    EBT video access
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Priority support
+                                </li>
+                            </ul>
+                            <div className="bg-slate-50 rounded-lg p-3 mb-6">
+                                <p className="text-xs text-slate-600 text-center">
+                                    + <span className="font-semibold text-slate-900">$500</span> success fee per pilot placed within 90 days
+                                </p>
+                            </div>
+                            <button onClick={() => scrollTo('contact')} className="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-3 rounded-xl transition-colors">
+                                Request Enterprise Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="mt-8 bg-emerald-50 border border-emerald-200 rounded-xl p-6 max-w-4xl mx-auto">
+                        <p className="text-slate-800 text-sm text-center">
+                            <span className="font-semibold text-emerald-700">Cost Comparison:</span> Traditional agency placement for a G650 Captain averages <span className="font-semibold">$50,000</span>. With PilotRecognition Enterprise, your quarterly cost for the same placement is <span className="font-semibold text-red-600">$3,500</span>—a <span className="font-semibold">93% reduction</span>.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             {/* 1. THE PROBLEM */}
             <section id="problem" className="py-16 px-6 border-b border-slate-200 bg-white">
                 <div className="max-w-5xl mx-auto">
