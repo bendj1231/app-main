@@ -7,7 +7,7 @@
     {
       "has": [{ "type": "host", "value": "enterprise.pilotrecognition.com" }],
       "source": "/(.*)",
-      "destination": "/enterprise-access"
+      "destination": "/index.html"
     },
     {
       "source": "/((?!api|assets|.*\\..*).*)",
