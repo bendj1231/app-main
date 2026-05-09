@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY';
@@ -381,6 +382,7 @@ const TIER_CHECK: Record<string, string> = {
 
 // ─── Component ───────────────────────────────────────────────────
 const EnterpriseAccessPage = () => {
+    const navigate = useNavigate();
     const [openMenu, setOpenMenu] = useState<string | null>(null);
     const [mobileNav, setMobileNav] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -510,13 +512,13 @@ const EnterpriseAccessPage = () => {
                                             <div className="bg-white border border-slate-200 rounded-xl shadow-2xl py-2">
                                                 {group.items.map(item => (
                                                     item.href ? (
-                                                        <a
+                                                        <button
                                                             key={item.id}
-                                                            href={item.href}
+                                                            onClick={() => { setOpenMenu(null); navigate(item.href!); }}
                                                             className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors block"
                                                         >
                                                             {item.label}
-                                                        </a>
+                                                        </button>
                                                     ) : (
                                                         <button
                                                             key={item.id}
@@ -553,13 +555,13 @@ const EnterpriseAccessPage = () => {
                                     <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 mb-1.5">{group.label}</p>
                                     {group.items.map(item => (
                                         item.href ? (
-                                            <a
+                                            <button
                                                 key={item.id}
-                                                href={item.href}
+                                                onClick={() => { setMobileNav(false); navigate(item.href!); }}
                                                 className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900 block"
                                             >
                                                 {item.label}
-                                            </a>
+                                            </button>
                                         ) : (
                                             <button
                                                 key={item.id}
