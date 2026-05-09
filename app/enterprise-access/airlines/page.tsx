@@ -773,57 +773,83 @@ const AirlinesOperatorsPage = () => {
                     </div>
 
                     <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-8">
-                        <h3 className="text-lg font-bold text-slate-900 mb-8 text-center">How Verified Pilot Data Syncs to Your ATS</h3>
+                        <h3 className="text-lg font-bold text-slate-900 mb-8 text-center">Two Tiers, Your Choice: Free Members vs. Flight-Ready Professionals</h3>
                         
-                        <div className="grid md:grid-cols-4 gap-4">
-                            <div className="text-center">
-                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-red-600 font-bold text-xl">1</span>
+                        <div className="grid md:grid-cols-2 gap-8">
+                            {/* Free Tier Path */}
+                            <div className="border border-slate-200 rounded-xl p-6">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
+                                        <span className="text-slate-600 font-bold">F</span>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-900">Free Member Path</h4>
+                                        <p className="text-slate-500 text-xs">You control the vetting</p>
+                                    </div>
                                 </div>
-                                <h4 className="font-bold text-slate-900 mb-2 text-sm">Background Verification</h4>
-                                <p className="text-slate-600 text-xs">5-year employment history, identity, qualifications, and criminal background checks completed via our screening partner network</p>
+                                <div className="space-y-3">
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-slate-400 font-bold text-xs">1</span>
+                                        <p className="text-slate-600 text-xs">Pilot creates profile with self-reported hours, ratings, and experience</p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-slate-400 font-bold text-xs">2</span>
+                                        <p className="text-slate-600 text-xs">Expresses interest in your Pathway Card based on visible requirements</p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-slate-400 font-bold text-xs">3</span>
+                                        <p className="text-slate-600 text-xs">You receive interest notification with profile data (hours, ratings, recency)</p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-slate-400 font-bold text-xs">4</span>
+                                        <p className="text-slate-600 text-xs">Your team conducts background checks and verification (you control the process)</p>
+                                    </div>
+                                </div>
+                                <div className="mt-4 pt-4 border-t border-slate-200">
+                                    <p className="text-slate-500 text-xs italic">Best for: Operators with existing vetting infrastructure who want broader candidate reach</p>
+                                </div>
                             </div>
-                            <div className="text-center">
-                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-red-600 font-bold text-xl">2</span>
+
+                            {/* Flight-Ready Tier Path */}
+                            <div className="border-2 border-emerald-200 bg-emerald-50/30 rounded-xl p-6">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                                        <span className="text-emerald-600 font-bold">P</span>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-900">Flight-Ready Professional Path</h4>
+                                        <p className="text-emerald-600 text-xs">Pre-vetted, ready to onboard</p>
+                                    </div>
                                 </div>
-                                <h4 className="font-bold text-slate-900 mb-2 text-sm">Digital Credentialing</h4>
-                                <p className="text-slate-600 text-xs">FAA medical, type ratings, and TSA status converted to touchless-ready digital credentials</p>
-                            </div>
-                            <div className="text-center">
-                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-red-600 font-bold text-xl">3</span>
+                                <div className="space-y-3">
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-emerald-500 font-bold text-xs">1</span>
+                                        <p className="text-slate-700 text-xs">Pilot completes background verification via screening partner network (5-year employment, identity, criminal checks)</p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-emerald-500 font-bold text-xs">2</span>
+                                        <p className="text-slate-700 text-xs">Digital credentials created: FAA medical, type ratings, TSA status converted to touchless-ready format</p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-emerald-500 font-bold text-xs">3</span>
+                                        <p className="text-slate-700 text-xs">Verified data packet auto-syncs to your ATS (Workday, iCIMS, Greenhouse) via API</p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-emerald-500 font-bold text-xs">4</span>
+                                        <p className="text-slate-700 text-xs">HR receives pre-validated candidate—bypass initial vetting entirely, proceed to technical evaluation</p>
+                                    </div>
                                 </div>
-                                <h4 className="font-bold text-slate-900 mb-2 text-sm">ATS Sync</h4>
-                                <p className="text-slate-600 text-xs">Verified data packet auto-populates candidate profile in Workday, iCIMS, or Greenhouse via API</p>
-                            </div>
-                            <div className="text-center">
-                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-red-600 font-bold text-xl">4</span>
+                                <div className="mt-4 pt-4 border-t border-emerald-200">
+                                    <p className="text-emerald-700 text-xs italic">Best for: Operators who want to eliminate vetting overhead and accelerate time-to-fill</p>
                                 </div>
-                                <h4 className="font-bold text-slate-900 mb-2 text-sm">Ready to Onboard</h4>
-                                <p className="text-slate-600 text-xs">HR receives pre-validated candidate with all compliance docs—bypass initial vetting entirely</p>
                             </div>
                         </div>
 
                         <div className="mt-8 pt-8 border-t border-slate-200">
-                            <div className="flex items-center justify-center gap-8 flex-wrap">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                                    <span className="text-sm text-slate-700">Flight-Ready Tier</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                    <span className="text-sm text-slate-700">Background Verified</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
-                                    <span className="text-sm text-slate-700">Digital Credentials Ready</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                                    <span className="text-sm text-slate-700">ATS Auto-Sync</span>
-                                </div>
+                            <div className="bg-slate-100 rounded-xl p-4">
+                                <p className="text-slate-700 text-sm text-center">
+                                    <span className="font-semibold">You decide:</span> Access both tiers or filter to Flight-Ready only. Set your own risk tolerance—see all candidates or only pre-verified professionals.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -832,7 +858,7 @@ const AirlinesOperatorsPage = () => {
                         <div className="bg-slate-900 text-white rounded-2xl p-8">
                             <h3 className="text-lg font-bold mb-4">The "Flight-Ready Professional" Advantage</h3>
                             <p className="text-slate-300 text-sm mb-6">
-                                Candidates with this designation have completed the full verification stack before entering your funnel. For 2026's touchless airport environments, this means:
+                                Premium tier candidates have completed the full verification stack before entering your funnel. For 2026's touchless airport environments, this means:
                             </p>
                             <ul className="space-y-3 text-sm">
                                 <li className="flex items-start gap-3">
@@ -852,6 +878,11 @@ const AirlinesOperatorsPage = () => {
                                     <span>Zero manual vetting required by your HR team</span>
                                 </li>
                             </ul>
+                            <div className="mt-6 pt-6 border-t border-slate-700">
+                                <p className="text-slate-400 text-xs">
+                                    <span className="text-emerald-400">Free tier:</span> Pilots with live profiles but unverified backgrounds. You conduct your own checks.
+                                </p>
+                            </div>
                         </div>
 
                         <div className="bg-white border border-slate-200 rounded-2xl p-8">
