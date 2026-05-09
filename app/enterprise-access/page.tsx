@@ -12,7 +12,7 @@ const NAV_GROUPS = [
     {
         label: 'Solutions',
         items: [
-            { id: 'airlines', label: 'Airlines & Operators' },
+            { id: 'airlines', label: 'Airlines & Operators', href: '/enterprise-access/airlines' },
             { id: 'flightschools', label: 'Flight Schools & ATOs' },
             { id: 'privatejet', label: 'Private Jet & Charter' },
             { id: 'evtol', label: 'Air Taxi & eVTOL' },
@@ -47,6 +47,8 @@ const NAV_GROUPS = [
 ];
 
 // ─── Sector data ─────────────────────────────────────────────────
+type NavItem = { id: string; label: string; href?: string };
+
 type Sector = {
     id: string;
     icon: string;
@@ -55,45 +57,13 @@ type Sector = {
     tagline: string;
     pain: string;
     solution: string;
+    mission?: string;
     benefits: string[];
     pilots: string[];
     cta: string;
 };
 
 const SECTORS: Sector[] = [
-    {
-        id: 'airlines',
-        icon: '✈️',
-        label: 'Airlines & Operators',
-        color: 'blue',
-        tagline: 'Close the recognition gap. Surface your expectations. Pull aligned pilots.',
-        pain: 'The aviation industry suffers from a fundamental recognition problem. Pilots lack visibility into operator expectations — whether airlines, charter companies, private jet fleets, or corporate flight departments. Job boards list minimum requirements ("500 hours") but hide the hidden competencies operators actually value: specific jet type ratings, turbine experience, CRM skills for corporate flying, and the ability to operate with minimal additional training. This creates the "Pilot Paradox" — while there is a long-term pilot shortage, operators drown in high volumes of applicants yet face a scarcity of pilots who are fully qualified, type-rated where necessary, and ready to operate immediately. 80% of applications to general aviation and charter operators are not applications at all — they are inquiries about expectations, requirements, and pathway details. Part 135 charter operators need pilots yesterday, not time to mentor or answer career questions. Operators simply do not have time to respond to every single inquiry about what they are looking for. A charter operator with a specific aircraft type needs rated pilots immediately, not a pile of unqualified CVs. Meanwhile, pilots submit blind applications, hoping their profile matches, with no clear guidance on how to align their experience with specific operator needs or bridge the gap from instructing to charter roles. Traditional job boards list openings but hide the critical context: what competencies you actually value, what your pathway looks like, and how candidates should position themselves.',
-        solution: 'PilotRecognition solves this by giving all operators — commercial airlines, charter services, private aviation, and corporate flight departments — a platform to publish clear, structured pathways and expectations upfront. Instead of filtering through confused inquiries and mismatched applications, you define exactly what you are looking for — hours, type ratings, aircraft-specific competencies, behavioral profiles — and pilots align their profiles to match before they ever reach you. Whether you operate an A320 fleet, a Challenger 350 charter service, or a corporate Gulfstream, you get a pipeline of pilots who already understand your needs and have positioned themselves accordingly. No more answering the same requirement questions hundreds of times. No more mismatched applications. Just pilots who recognize what you need and have prepared accordingly. You save significant time and cost by accessing only pilots who have already submitted genuine interest in your specific pathway — not a random list of candidates.',
-        benefits: [
-            'Pathway Cards — publish detailed expectations, requirements, and competencies publicly for any operator type',
-            'Pre-qualified interest pool — access pilots who have already submitted interest in your pathway, not random candidates',
-            'Time and cost savings — eliminate hours spent sifting through mismatched applications and repetitive inquiries',
-            'Fair View System — free members can submit interest but are not background checked; you control the risk decision',
-            'Premium shortlisting — paid members provide detailed profiles with background verification from trusted screening partners like Veremark',
-            'Aircraft-specific matching — charter operators get type-rated pilots for their specific fleet (Gulfstream, Falcon, Challenger, Citation)',
-            'Immediate availability filters — find pilots who are current and available for ad-hoc charter demand',
-            'Transparent alignment — pilots see exactly what you need before applying',
-            'Profile-matched pipeline — only pilots who align with your criteria submit interest',
-            'Reduced inquiry volume — expectations are public, eliminating repetitive questions',
-            'Live profile data — current hours, ratings, and recency always visible',
-            'Recognition Score — objective readiness metric pilots can work toward',
-            'Pull-based system — you select from ranked, qualified, pre-aligned candidates',
-            'Risk control — you decide whether to proceed with free members or prioritize verified premium candidates',
-            'Outcome tracking — measure placement success and pathway effectiveness',
-        ],
-        pilots: [
-            'See exact operator expectations before investing time in applications — airlines, charter, or corporate',
-            'Align your profile toward specific operator needs with clear guidance',
-            'No more blind applications — know where you fit before you apply',
-            'Recognition Score gives you a target to work toward',
-        ],
-        cta: 'Pricing: $1,000/mo Enterprise + $500 success fee per pilot placed within 90 days.',
-    },
     {
         id: 'flightschools',
         icon: '🏫',
@@ -539,13 +509,23 @@ const EnterpriseAccessPage = () => {
                                         <div className="absolute top-full left-0 pt-2 min-w-[260px]">
                                             <div className="bg-white border border-slate-200 rounded-xl shadow-2xl py-2">
                                                 {group.items.map(item => (
-                                                    <button
-                                                        key={item.id}
-                                                        onClick={() => scrollTo(item.id)}
-                                                        className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
-                                                    >
-                                                        {item.label}
-                                                    </button>
+                                                    item.href ? (
+                                                        <a
+                                                            key={item.id}
+                                                            href={item.href}
+                                                            className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors block"
+                                                        >
+                                                            {item.label}
+                                                        </a>
+                                                    ) : (
+                                                        <button
+                                                            key={item.id}
+                                                            onClick={() => scrollTo(item.id)}
+                                                            className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                                                        >
+                                                            {item.label}
+                                                        </button>
+                                                    )
                                                 ))}
                                             </div>
                                         </div>
@@ -572,13 +552,23 @@ const EnterpriseAccessPage = () => {
                                 <div key={group.label} className="mb-4">
                                     <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 mb-1.5">{group.label}</p>
                                     {group.items.map(item => (
-                                        <button
-                                            key={item.id}
-                                            onClick={() => scrollTo(item.id)}
-                                            className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900"
-                                        >
-                                            {item.label}
-                                        </button>
+                                        item.href ? (
+                                            <a
+                                                key={item.id}
+                                                href={item.href}
+                                                className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900 block"
+                                            >
+                                                {item.label}
+                                            </a>
+                                        ) : (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => scrollTo(item.id)}
+                                                className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900"
+                                            >
+                                                {item.label}
+                                            </button>
+                                        )
                                     ))}
                                 </div>
                             ))}
@@ -662,9 +652,20 @@ const EnterpriseAccessPage = () => {
                         <div className="grid lg:grid-cols-12 gap-10">
                             {/* Left: intro */}
                             <div className="lg:col-span-5">
-                                <div className="text-5xl mb-4">{s.icon}</div>
                                 <p className={`text-[11px] uppercase tracking-[0.25em] font-semibold mb-3 ${COLOR_CLASSES[s.color]?.eyebrow ?? 'text-red-600'}`}>{s.label}</p>
-                                <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-5 text-slate-900">{s.tagline}</h2>
+                                <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-5 text-slate-900" dangerouslySetInnerHTML={{ __html: s.tagline }} />
+                                {s.id === 'airlines' && (
+                                    <div className="mb-5">
+                                        <img 
+                                            src="/recogntion.png" 
+                                            alt="The Recognition Gap: Qualified pilots stand unrecognized while operators search for talent" 
+                                            className="w-full rounded-xl shadow-md"
+                                        />
+                                        <p className="text-slate-500 text-xs mt-2">
+                                            The paradox of modern aviation recruitment: pilots with thousands of hours stand unrecognized outside, while operators inside struggle to find qualified candidates. The Recognition Gap costs the industry millions in lost talent and misplaced opportunities.
+                                        </p>
+                                    </div>
+                                )}
                                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-5">
                                     <p className="text-red-700 text-[10px] uppercase tracking-widest font-bold mb-2">The Problem</p>
                                     <p className="text-slate-700 text-sm leading-relaxed">{s.pain}</p>
@@ -673,10 +674,19 @@ const EnterpriseAccessPage = () => {
                                     <p className="text-emerald-700 text-[10px] uppercase tracking-widest font-bold mb-2">Our Solution</p>
                                     <p className="text-slate-700 text-sm leading-relaxed">{s.solution}</p>
                                 </div>
-                                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5">
                                     <p className="text-red-600 text-[10px] uppercase tracking-widest font-bold mb-2">Pricing & Engagement</p>
                                     <p className="text-slate-700 text-sm leading-relaxed">{s.cta}</p>
+                                    <a href="/enterprise-access/learn-more" className="inline-flex items-center gap-1 mt-3 text-sm text-red-600 hover:text-red-500 font-semibold">
+                                        See pricing comparison & example pathways →
+                                    </a>
                                 </div>
+                                {s.mission && (
+                                    <div className="bg-gradient-to-br from-red-50 to-white border border-red-200 rounded-xl p-4">
+                                        <p className="text-red-600 text-[10px] uppercase tracking-widest font-bold mb-2">Our Mission for {s.label}</p>
+                                        <p className="text-slate-700 text-sm leading-relaxed">{s.mission}</p>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Right: benefits + pilots */}
@@ -710,6 +720,7 @@ const EnterpriseAccessPage = () => {
                                 </button>
                             </div>
                         </div>
+
                     </div>
                 </section>
             ))}
@@ -824,7 +835,7 @@ const EnterpriseAccessPage = () => {
                     <div className="grid md:grid-cols-3 gap-5">
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
                             <p className="text-red-600 text-xs uppercase tracking-widest font-bold mb-2">Pull, don't push</p>
-                            <p className="text-slate-700 text-sm leading-relaxed">Airlines pull pilots from a ranked database. Pilots don't apply into a CV black-hole. The work flows the right direction.</p>
+                            <p className="text-slate-700 text-sm leading-relaxed">Airlines pull pilots from a ranked database. Pilots don't apply into an unresponsive system. The work flows the right direction.</p>
                         </div>
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
                             <p className="text-emerald-600 text-xs uppercase tracking-widest font-bold mb-2">Live, not snapshot</p>
@@ -832,7 +843,7 @@ const EnterpriseAccessPage = () => {
                         </div>
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
                             <p className="text-violet-600 text-xs uppercase tracking-widest font-bold mb-2">Verified, not declared</p>
-                            <p className="text-slate-700 text-sm leading-relaxed">Veremark-screened identity, criminal record, employment history. EBT/CBTA scoring on real video interviews. Not "trust me, bro".</p>
+                            <p className="text-slate-700 text-sm leading-relaxed">Background-screened identity, criminal record, employment history. EBT/CBTA scoring on real video interviews. Not "trust me, bro".</p>
                         </div>
                     </div>
                 </div>

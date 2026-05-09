@@ -86,6 +86,8 @@ import CareerPathwaysIndex from '@/portal/pages/CareerPathwaysIndex';
 import { AccessPortal2Page } from '@/components/website/components/AccessPortal2Page';
 import ExaminationPortal from '@/components/website/components/examinations/ExaminationPortal';
 import EnterpriseAccessPage from '@/app/enterprise-access/page';
+import EnterpriseAccessLearnMorePage from '@/app/enterprise-access/learn-more/page';
+import AirlinesOperatorsPage from '@/app/enterprise-access/airlines/page';
 import { PilotShortagePage } from '@/components/website/components/PilotShortagePage';
 import { WhyRecognitionPage } from '@/components/website/components/WhyRecognitionPage';
 
@@ -263,6 +265,8 @@ export const AppRoutes = () => {
         </ProtectedRoute>
       } />
       <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
+      <Route path="/enterprise-access/learn-more" element={<EnterpriseAccessLearnMorePage />} />
+      <Route path="/enterprise-access/airlines" element={<AirlinesOperatorsPage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />

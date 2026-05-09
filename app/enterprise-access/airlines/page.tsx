@@ -1,0 +1,877 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+
+const AirlinesOperatorsPage = () => {
+    const [openMenu, setOpenMenu] = useState<string | null>(null);
+    const [mobileNav, setMobileNav] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    const scrollTo = (id: string) => {
+        setOpenMenu(null);
+        setMobileNav(false);
+        const el = document.getElementById(id);
+        if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY - 80;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+    };
+
+    const NAV_GROUPS = [
+        {
+            label: 'Solutions',
+            items: [
+                { id: 'airlines', label: 'Airlines & Operators', href: '/enterprise-access/airlines' },
+                { id: 'flightschools', label: 'Flight Schools & ATOs', href: '/enterprise-access#flightschools' },
+                { id: 'privatejet', label: 'Private Jet & Charter', href: '/enterprise-access#privatejet' },
+                { id: 'evtol', label: 'Air Taxi & eVTOL', href: '/enterprise-access#evtol' },
+                { id: 'military', label: 'Military & Defence', href: '/enterprise-access#military' },
+                { id: 'manufacturers', label: 'Manufacturers & OEMs', href: '/enterprise-access#manufacturers' },
+            ],
+        },
+        {
+            label: 'Services',
+            items: [
+                { id: 'recruitment', label: 'Aviation Recruitment Agencies', href: '/enterprise-access#recruitment' },
+                { id: 'insurers', label: 'Insurers & Lenders', href: '/enterprise-access#insurers' },
+                { id: 'atc', label: 'ATC & ANSPs', href: '/enterprise-access#atc' },
+                { id: 'ground', label: 'Ground Handling & FBOs', href: '/enterprise-access#ground' },
+                { id: 'maintenance', label: 'MRO & Maintenance', href: '/enterprise-access#maintenance' },
+                { id: 'simulator', label: 'Simulator Training', href: '/enterprise-access#simulator' },
+                { id: 'drone', label: 'RPAS & Drone Ops', href: '/enterprise-access#drone' },
+            ],
+        },
+        {
+            label: 'About',
+            items: [
+                { id: 'why', label: 'Why PilotRecognition', href: '/enterprise-access#why' },
+                { id: 'metric', label: 'The 90-Day Metric', href: '/enterprise-access#metric' },
+                { id: 'contact', label: 'Request Access', href: '/enterprise-access#contact' },
+            ],
+        },
+    ];
+
+    const airlinesSector = {
+        id: 'airlines',
+        label: 'Airlines & Operators',
+        tagline: 'Close the <span class="text-red-600">recognition gap</span>.<br>Surface your <span class="text-red-600">expectations</span>. Pull <span class="text-red-600">aligned pilots</span>.',
+        pain: 'The aviation industry suffers from a fundamental recognition problem. Pilots lack visibility into operator expectations — whether airlines, charter companies, private jet fleets, or corporate flight departments. Job boards list minimum requirements ("500 hours") but hide the hidden competencies operators actually value: specific jet type ratings, turbine experience, CRM skills for corporate flying, and the ability to operate with minimal additional training. This creates the "Pilot Paradox" — while there is a long-term pilot shortage, operators drown in high volumes of applicants yet face a scarcity of pilots who are fully qualified, type-rated where necessary, and ready to operate immediately. 80% of applications to general aviation and charter operators are not applications at all — they are inquiries about expectations, requirements, and pathway details. Part 135 charter operators need pilots yesterday, not time to mentor or answer career questions. Operators simply do not have time to respond to every single inquiry about what they are looking for. A charter operator with a specific aircraft type needs rated pilots immediately, not a pile of unqualified CVs. Meanwhile, pilots submit blind applications, hoping their profile matches, with no clear guidance on how to align their experience with specific operator needs or bridge the gap from instructing to charter roles. Traditional job boards list openings but hide the critical context: what competencies you actually value, what your pathway looks like, and how candidates should position themselves.',
+        solution: 'PilotRecognition solves this by giving all operators — commercial airlines, charter services, private aviation, and corporate flight departments — a platform to publish clear, structured pathways and expectations upfront. Instead of filtering through confused inquiries and mismatched applications, you define exactly what you are looking for — hours, type ratings, aircraft-specific competencies, behavioral profiles — and pilots align their profiles to match before they ever reach you. Whether you operate an A320 fleet, a Challenger 350 charter service, or a corporate Gulfstream, you get a pipeline of pilots who already understand your needs and have positioned themselves accordingly. No more answering the same requirement questions hundreds of times. No more mismatched applications. Just pilots who recognize what you need and have prepared accordingly. You save significant time and cost by accessing only pilots who have already submitted genuine interest in your specific pathway — not a random list of candidates.',
+        benefits: [
+            'Pathway Cards — publish detailed expectations, requirements, and competencies publicly for any operator type',
+            'Pre-qualified interest pool — access pilots who have already submitted interest in your pathway, not random candidates',
+            'Time and cost savings — eliminate hours spent sifting through mismatched applications and repetitive inquiries',
+            'Fair View System — free members can submit interest but are not background checked; you control the risk decision',
+            'Premium shortlisting — paid members provide detailed profiles with background verification from trusted screening partners',
+            'Aircraft-specific matching — charter operators get type-rated pilots for their specific fleet',
+            'Immediate availability filters — find pilots who are current and available for ad-hoc charter demand',
+            'Transparent alignment — pilots see exactly what you need before applying',
+            'Profile-matched pipeline — only pilots who align with your criteria submit interest',
+            'Reduced inquiry volume — expectations are public, eliminating repetitive questions',
+            'Live profile data — current hours, ratings, and recency always visible',
+            'Recognition Score — objective readiness metric pilots can work toward',
+            'Pull-based system — you select from ranked, qualified, pre-aligned candidates',
+            'Risk control — you decide whether to proceed with free members or prioritize verified premium candidates',
+            'Outcome tracking — measure placement success and pathway effectiveness',
+        ],
+        pilots: [
+            'See exact operator expectations before investing time in applications — airlines, charter, or corporate',
+            'Align your profile toward specific operator needs with clear guidance',
+            'No more blind applications — know where you fit before you apply',
+            'Recognition Score gives you a target to work toward',
+        ],
+        cta: 'Pricing: $1,000/mo Enterprise + $500 success fee per pilot placed within 90 days.',
+        mission: 'For Airlines & Operators, our mission is to close the recognition gap between pilots and flight departments. We shift recruitment from a "push" model — where pilots submit applications without response or feedback — to a "pull" model where operators access pre-qualified interest. Pathway Cards force transparency, surfacing hidden competencies that generic job boards hide. The Fair View System gives you control: see broad interest from free members while prioritizing premium candidates with verified backgrounds. This is not a luxury job board — it is infrastructure. Credentials and needs are pre-aligned before the first conversation ever happens, eliminating the 80% of applications that are merely inquiries about expectations.',
+    };
+
+    return (
+        <>
+            <style jsx>{`
+                @media (max-width: 1024px) {
+                    html, body {
+                        zoom: 0.5;
+                        -moz-transform: scale(0.5);
+                        -moz-transform-origin: 0 0;
+                        -o-transform: scale(0.5);
+                        -o-transform-origin: 0 0;
+                        -webkit-transform: scale(0.5);
+                        -webkit-transform-origin: 0 0;
+                        transform: scale(0.5);
+                        transform-origin: 0 0;
+                        width: 200%;
+                        height: 200%;
+                        overflow-x: hidden;
+                    }
+                }
+            `}</style>
+            <div className="min-h-screen bg-white text-slate-900">
+            {/* ─── STICKY NAV ─── */}
+            <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm' : 'bg-white/80 backdrop-blur-sm'}`}>
+                <div className="max-w-7xl mx-auto px-4 lg:px-6">
+                    <div className="flex items-center justify-between h-16">
+                        {/* Logo */}
+                        <a href="https://pilotrecognition.com" className="flex items-center gap-3 group">
+                            <span className="text-xl font-bold tracking-tight">
+                                <span className="text-slate-900">Pilot</span><span className="text-red-600">Recognition</span>
+                            </span>
+                            <span className="text-base font-semibold text-slate-900 tracking-wide">Enterprise</span>
+                        </a>
+
+                        {/* Desktop dropdowns */}
+                        <nav className="hidden lg:flex items-center gap-1">
+                            {NAV_GROUPS.map(group => (
+                                <div
+                                    key={group.label}
+                                    className="relative"
+                                    onMouseEnter={() => setOpenMenu(group.label)}
+                                    onMouseLeave={() => setOpenMenu(null)}
+                                >
+                                    <button className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1">
+                                        {group.label}
+                                        <svg className={`w-3 h-3 transition-transform ${openMenu === group.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                    </button>
+                                    {openMenu === group.label && (
+                                        <div className="absolute top-full left-0 pt-2 min-w-[260px]">
+                                            <div className="bg-white border border-slate-200 rounded-xl shadow-2xl py-2">
+                                                {group.items.map(item => (
+                                                    item.href ? (
+                                                        <a
+                                                            key={item.id}
+                                                            href={item.href}
+                                                            className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors block"
+                                                        >
+                                                            {item.label}
+                                                        </a>
+                                                    ) : (
+                                                        <button
+                                                            key={item.id}
+                                                            onClick={() => scrollTo(item.id)}
+                                                            className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                                                        >
+                                                            {item.label}
+                                                        </button>
+                                                    )
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </nav>
+
+                        {/* CTA */}
+                        <div className="flex items-center gap-3">
+                            <a href="/enterprise-access" className="text-slate-600 hover:text-slate-900 text-sm font-medium">
+                                ← Back to Enterprise
+                            </a>
+                            <button onClick={() => window.open('https://pilotrecognition.com', '_blank')} className="bg-red-600 hover:bg-red-500 text-white font-semibold px-5 py-2 rounded-lg text-sm transition-colors">
+                                Request Access
+                            </button>
+                        </div>
+
+                        {/* Mobile menu toggle */}
+                        <button onClick={() => setMobileNav(!mobileNav)} className="lg:hidden p-2 rounded-lg hover:bg-slate-100">
+                            <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {/* Mobile nav */}
+                    {mobileNav && (
+                        <div className="lg:hidden border-t border-slate-200 py-4 max-h-[80vh] overflow-y-auto bg-white">
+                            {NAV_GROUPS.map(group => (
+                                <div key={group.label} className="mb-4">
+                                    <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 mb-1.5">{group.label}</p>
+                                    {group.items.map(item => (
+                                        item.href ? (
+                                            <a
+                                                key={item.id}
+                                                href={item.href}
+                                                className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900 block"
+                                            >
+                                                {item.label}
+                                            </a>
+                                        ) : (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => scrollTo(item.id)}
+                                                className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900"
+                                            >
+                                                {item.label}
+                                            </button>
+                                        )
+                                    ))}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </header>
+
+            {/* Hero - Clean and Focused */}
+            <section className="py-16 px-6 border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white">
+                <div className="max-w-4xl mx-auto text-center">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-4">{airlinesSector.label}</p>
+                    <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-6 text-slate-900" dangerouslySetInnerHTML={{ __html: airlinesSector.tagline }} />
+                    <p className="text-slate-600 text-base max-w-2xl mx-auto mb-8">
+                        Stop drowning in mismatched applications. Build a pipeline of pilots who already understand your needs and have positioned themselves accordingly.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <button onClick={() => scrollTo('problem')} className="bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+                            See the Problem →
+                        </button>
+                        <button onClick={() => scrollTo('contact')} className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+                            Request Access
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Stats Banner */}
+            <section className="py-8 px-6 bg-slate-900 text-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div>
+                            <p className="text-3xl font-bold text-red-400">80%</p>
+                            <p className="text-slate-400 text-xs mt-1">of applications are just inquiries about expectations</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-bold text-red-400">$50K</p>
+                            <p className="text-slate-400 text-xs mt-1">average pilot training investment sitting unused</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-bold text-red-400">2-3yr</p>
+                            <p className="text-slate-400 text-xs mt-1">instructor position backup — Batch of 2015 still waiting</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-bold text-red-400">90%</p>
+                            <p className="text-slate-400 text-xs mt-1">cost reduction with pre-aligned pilot pipeline</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 1. THE PROBLEM */}
+            <section id="problem" className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-5xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">01. The Problem</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">The Recognition Gap</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Pilots with thousands of hours stand unrecognized outside, while operators inside struggle to find qualified candidates.
+                        </p>
+                    </div>
+
+                    <div className="mb-10">
+                        <img 
+                            src="/recogntion.png" 
+                            alt="The Recognition Gap illustration" 
+                            className="w-full max-w-xl mx-auto rounded-xl shadow-lg"
+                        />
+                        <p className="text-slate-500 text-xs text-center mt-3">
+                            The paradox of modern aviation recruitment costs the industry millions in lost talent and misplaced opportunities.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-6">
+                        <div className="bg-red-50 border border-red-200 rounded-xl p-5">
+                            <p className="text-red-700 text-[10px] uppercase tracking-widest font-bold mb-2">The Pilot Paradox</p>
+                            <p className="text-slate-700 text-xs leading-relaxed">
+                                Job boards list "500 hours" but hide the real competencies you need: type ratings, turbine experience, CRM skills. Pilots apply blind, operators get mismatched candidates.
+                            </p>
+                        </div>
+                        <div className="bg-orange-50 border border-orange-200 rounded-xl p-5">
+                            <p className="text-orange-700 text-[10px] uppercase tracking-widest font-bold mb-2">The Time Drain</p>
+                            <p className="text-slate-700 text-xs leading-relaxed">
+                                80% of applications to charter operators aren't applications at all—they're questions about requirements. Part 135 operators need pilots yesterday, not time to mentor.
+                            </p>
+                        </div>
+                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                            <p className="text-amber-700 text-[10px] uppercase tracking-widest font-bold mb-2">The Hidden Cost</p>
+                            <p className="text-slate-700 text-xs leading-relaxed">
+                                Traditional agencies charge 15-25% of annual salary ($50K+ for a G650 Captain). You pay premium prices for a reactive, manual process that repeats every hire.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 2. COMPARISON: Traditional vs Current vs Our Approach */}
+            <section id="comparison" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">02. The Comparison</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Three Approaches to Pilot Recruitment</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Understanding how traditional methods, current job boards, and PilotRecognition differ in approach and outcomes.
+                        </p>
+                    </div>
+
+                    <div className="grid lg:grid-cols-3 gap-6">
+                        {/* Traditional Agencies */}
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6">
+                            <div className="flex items-center gap-2 mb-4">
+                                <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center text-slate-600 font-bold text-sm">1</div>
+                                <h3 className="text-lg font-bold text-slate-900">Traditional Agencies</h3>
+                            </div>
+                            <p className="text-slate-500 text-xs mb-4">Executive search for aviation</p>
+                            
+                            <div className="space-y-3 mb-6">
+                                <div className="flex items-start gap-2">
+                                    <span className="text-slate-400 text-xs">•</span>
+                                    <p className="text-slate-600 text-xs">15-25% of annual salary fee</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-slate-400 text-xs">•</span>
+                                    <p className="text-slate-600 text-xs">60-90 day reactive search</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-slate-400 text-xs">•</span>
+                                    <p className="text-slate-600 text-xs">Manual vetting, one-off process</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-slate-400 text-xs">•</span>
+                                    <p className="text-slate-600 text-xs">No pipeline between hires</p>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-slate-100 rounded-lg p-3">
+                                <p className="text-slate-700 text-xs font-semibold">Cost: $50,000+ per placement</p>
+                            </div>
+                        </div>
+
+                        {/* Job Boards */}
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6">
+                            <div className="flex items-center gap-2 mb-4">
+                                <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600 font-bold text-sm">2</div>
+                                <h3 className="text-lg font-bold text-slate-900">Job Boards</h3>
+                            </div>
+                            <p className="text-slate-500 text-xs mb-4">Post and pray model</p>
+                            
+                            <div className="space-y-3 mb-6">
+                                <div className="flex items-start gap-2">
+                                    <span className="text-orange-400 text-xs">•</span>
+                                    <p className="text-slate-600 text-xs">Generic "500 hours" listings</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-orange-400 text-xs">•</span>
+                                    <p className="text-slate-600 text-xs">High volume, low quality matches</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-orange-400 text-xs">•</span>
+                                    <p className="text-slate-600 text-xs">80% inquiries, not applications</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-orange-400 text-xs">•</span>
+                                    <p className="text-slate-600 text-xs">Hidden competencies remain hidden</p>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-orange-50 rounded-lg p-3">
+                                <p className="text-orange-700 text-xs font-semibold">Result: Time wasted on mismatches</p>
+                            </div>
+                        </div>
+
+                        {/* PilotRecognition */}
+                        <div className="bg-white border-2 border-red-200 rounded-2xl p-6 relative">
+                            <div className="absolute -top-3 left-6 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                Our Approach
+                            </div>
+                            <div className="flex items-center gap-2 mb-4 mt-2">
+                                <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center text-red-600 font-bold text-sm">3</div>
+                                <h3 className="text-lg font-bold text-slate-900">PilotRecognition</h3>
+                            </div>
+                            <p className="text-slate-500 text-xs mb-4">Permanent recruitment infrastructure</p>
+                            
+                            <div className="space-y-3 mb-6">
+                                <div className="flex items-start gap-2">
+                                    <span className="text-emerald-500 text-xs">✓</span>
+                                    <p className="text-slate-600 text-xs">$1,000/mo + $500 success fee</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-emerald-500 text-xs">✓</span>
+                                    <p className="text-slate-600 text-xs">30-45 day proactive pipeline</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-emerald-500 text-xs">✓</span>
+                                    <p className="text-slate-600 text-xs">Automated verification & matching</p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <span className="text-emerald-500 text-xs">✓</span>
+                                    <p className="text-slate-600 text-xs">Always-on pre-aligned interest pool</p>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-emerald-50 rounded-lg p-3">
+                                <p className="text-emerald-700 text-xs font-semibold">Cost: 90% reduction per placement</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 3. MODERN APPROACH - How We Solve It */}
+            <section id="approach" className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-5xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">03. The Modern Approach</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">How It Works</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            A neutral infrastructure that serves both sides of the aviation market—operators and pilots—with transparency and alignment.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8 mb-12">
+                        <div className="text-center">
+                            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <span className="text-2xl font-bold text-red-600">1</span>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Define Your Pathway</h3>
+                            <p className="text-slate-600 text-xs">
+                                Publish clear, structured expectations—hours, type ratings, competencies, behavioral profiles. No more hidden requirements.
+                            </p>
+                        </div>
+                        <div className="text-center">
+                            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <span className="text-2xl font-bold text-red-600">2</span>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Pilots Align Themselves</h3>
+                            <p className="text-slate-600 text-xs">
+                                Pilots see exactly what you need and position their profiles to match before they ever reach you. Self-selection reduces noise.
+                            </p>
+                        </div>
+                        <div className="text-center">
+                            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <span className="text-2xl font-bold text-red-600">3</span>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Pull Qualified Matches</h3>
+                            <p className="text-slate-600 text-xs">
+                                Access pre-qualified interest from pilots who already understand your needs. Ranked by Recognition Score—objective readiness metrics.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8">
+                        <h3 className="text-xl font-bold text-slate-900 mb-6 text-center">Example: Gulfstream G650 Pathway Card</h3>
+                        <div className="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-3">Hard Competencies</p>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between items-center py-2 border-b border-slate-200">
+                                        <span className="text-slate-700 text-sm">Total Time</span>
+                                        <span className="text-slate-900 font-semibold text-sm">3,500+ hrs | PIC: 3,000+</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-slate-200">
+                                        <span className="text-slate-700 text-sm">Type Rating</span>
+                                        <span className="text-slate-900 font-semibold text-sm">G650 Current, 200+ hrs</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-slate-200">
+                                        <span className="text-slate-700 text-sm">Tech Stack</span>
+                                        <span className="text-slate-900 font-semibold text-sm">EFVS, MATRIX Software</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2">
+                                        <span className="text-slate-700 text-sm">Compliance</span>
+                                        <span className="text-slate-900 font-semibold text-sm">90-day currency, Part 135</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-3">Soft Competencies</p>
+                                <div className="space-y-3">
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-red-500 text-xs mt-1">●</span>
+                                        <p className="text-slate-700 text-sm">UHNW Service: Polished, high-discretion communication</p>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-red-500 text-xs mt-1">●</span>
+                                        <p className="text-slate-700 text-sm">Global Reach: Oceanic crossings, ETOPS routing</p>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-red-500 text-xs mt-1">●</span>
+                                        <p className="text-slate-700 text-sm">Charter Agility: Ad-hoc, short-notice readiness</p>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-red-500 text-xs mt-1">●</span>
+                                        <p className="text-slate-700 text-sm">Immediate Availability: Ready to fly today</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 4. OUR MISSION */}
+            <section id="mission" className="py-16 px-6 border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white">
+                <div className="max-w-4xl mx-auto text-center">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">04. Our Mission</p>
+                    <h2 className="text-2xl md:text-3xl font-bold mb-6 text-slate-900">From Push to Pull</h2>
+                    <p className="text-slate-600 text-base leading-relaxed mb-8">
+                        {airlinesSector.mission}
+                    </p>
+                    <div className="grid md:grid-cols-3 gap-6">
+                        <div className="bg-white border border-slate-200 rounded-xl p-5 text-center">
+                            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span className="text-red-600 font-bold">1</span>
+                            </div>
+                            <h3 className="font-bold text-slate-900 mb-2">Close the Gap</h3>
+                            <p className="text-slate-600 text-xs">Eliminate the recognition gap between pilots and flight departments through transparency.</p>
+                        </div>
+                        <div className="bg-white border border-slate-200 rounded-xl p-5 text-center">
+                            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span className="text-red-600 font-bold">2</span>
+                            </div>
+                            <h3 className="font-bold text-slate-900 mb-2">Surface Expectations</h3>
+                            <p className="text-slate-600 text-xs">Force transparency with Pathway Cards that show exactly what operators value.</p>
+                        </div>
+                        <div className="bg-white border border-slate-200 rounded-xl p-5 text-center">
+                            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span className="text-red-600 font-bold">3</span>
+                            </div>
+                            <h3 className="font-bold text-slate-900 mb-2">Enable Pull</h3>
+                            <p className="text-slate-600 text-xs">Shift from blind applications to pre-qualified, aligned pilot interest.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 5. BENEFITS - What You Get */}
+            <section id="benefits" className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">05. Benefits</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">What You Get</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Four core capabilities that transform how you recruit pilots.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                            <p className="text-red-600 text-[10px] uppercase tracking-widest font-bold mb-3">Matching</p>
+                            <ul className="space-y-2">
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Aircraft-specific type rating matching
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Pre-qualified interest pool
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Recognition Score ranking
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Live profile data always current
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                            <p className="text-red-600 text-[10px] uppercase tracking-widest font-bold mb-3">Filtering</p>
+                            <ul className="space-y-2">
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Immediate availability filters
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Free vs verified member distinction
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Background check integration
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Risk control in your hands
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                            <p className="text-red-600 text-[10px] uppercase tracking-widest font-bold mb-3">Transparency</p>
+                            <ul className="space-y-2">
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Pathway Cards public expectations
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Reduced inquiry volume
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Clear pilot positioning guidance
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    No hidden requirements
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                            <p className="text-red-600 text-[10px] uppercase tracking-widest font-bold mb-3">Control</p>
+                            <ul className="space-y-2">
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    You decide free vs premium
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Weighted scoring customization
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Outcome tracking & analytics
+                                </li>
+                                <li className="flex items-start gap-2 text-xs text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    ATS integration ready
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Why Pilots Win Too */}
+                    <div className="bg-red-50 border border-red-200 rounded-2xl p-8">
+                        <h3 className="text-xl font-bold text-slate-900 mb-4 text-center">Why Pilots Win Too</h3>
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 className="font-semibold text-slate-900 mb-2 text-sm">For Pilots, This Means:</h4>
+                                <ul className="space-y-2">
+                                    {airlinesSector.pilots.map((p, i) => (
+                                        <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                                            <span className="text-red-500">●</span>
+                                            {p}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-slate-900 mb-2 text-sm">The Bottom Line</h4>
+                                <p className="text-slate-700 text-xs leading-relaxed">
+                                    When pilots know exactly what you need, they either align themselves to match—or self-select out. Either way, you waste less time on mismatches. The pilots who do reach out are already qualified, interested, and ready.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 6. PRICING */}
+            <section id="pricing" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+                <div className="max-w-5xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">06. Pricing</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Simple, Transparent Pricing</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            Infrastructure pricing—not headhunter fees. Predictable costs, better outcomes.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        {/* Free Tier */}
+                        <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                            <div className="text-center mb-6">
+                                <h3 className="text-xl font-bold text-slate-900 mb-2">Free</h3>
+                                <p className="text-slate-500 text-sm">For operators exploring the platform</p>
+                            </div>
+                            <div className="text-center mb-6">
+                                <span className="text-4xl font-bold text-slate-900">$0</span>
+                                <span className="text-slate-500 text-sm">/month</span>
+                            </div>
+                            <ul className="space-y-3 mb-8">
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Post public Pathway Cards
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    View pilot profiles
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Basic matching insights
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    See free member interest
+                                </li>
+                            </ul>
+                            <button onClick={() => scrollTo('contact')} className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 rounded-xl transition-colors">
+                                Get Started Free
+                            </button>
+                        </div>
+
+                        {/* Enterprise Tier */}
+                        <div className="bg-white border-2 border-red-200 rounded-2xl p-8 relative">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-wider">
+                                Recommended
+                            </div>
+                            <div className="text-center mb-6">
+                                <h3 className="text-xl font-bold text-slate-900 mb-2">Enterprise</h3>
+                                <p className="text-slate-500 text-sm">For active recruitment operations</p>
+                            </div>
+                            <div className="text-center mb-6">
+                                <span className="text-4xl font-bold text-red-600">$1,000</span>
+                                <span className="text-slate-500 text-sm">/month</span>
+                            </div>
+                            <ul className="space-y-3 mb-4">
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Everything in Free, plus:
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Pull API access
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Unlimited profile pulls
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Advanced filtering & analytics
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    EBT video access
+                                </li>
+                                <li className="flex items-start gap-2 text-sm text-slate-700">
+                                    <span className="text-emerald-500">✓</span>
+                                    Priority support
+                                </li>
+                            </ul>
+                            <div className="bg-slate-50 rounded-lg p-3 mb-6">
+                                <p className="text-xs text-slate-600 text-center">
+                                    + <span className="font-semibold text-slate-900">$500</span> success fee per pilot placed within 90 days
+                                </p>
+                            </div>
+                            <button onClick={() => scrollTo('contact')} className="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-3 rounded-xl transition-colors">
+                                Request Enterprise Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="mt-8 bg-emerald-50 border border-emerald-200 rounded-xl p-6 max-w-4xl mx-auto">
+                        <p className="text-slate-800 text-sm text-center">
+                            <span className="font-semibold text-emerald-700">Cost Comparison:</span> Traditional agency placement for a G650 Captain averages <span className="font-semibold">$50,000</span>. With PilotRecognition Enterprise, your quarterly cost for the same placement is <span className="font-semibold text-red-600">$3,500</span>—a <span className="font-semibold">93% reduction</span>.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* 7. CONTACT FORM */}
+            <section id="contact" className="py-16 px-6 bg-white">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-10">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">07. Get Started</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Request Enterprise Access</h2>
+                        <p className="text-slate-600 text-base max-w-xl mx-auto">
+                            Join the operators moving from "Push" to "Pull" recruitment. Build your Pathway Card today.
+                        </p>
+                    </div>
+
+                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8">
+                        <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert('Thank you for your interest. Our team will contact you shortly.'); }}>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Company Name</label>
+                                    <input type="text" className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all" placeholder="Your airline or operator name" />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Fleet Type</label>
+                                    <input type="text" className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all" placeholder="e.g., A320, G650, Challenger 350" />
+                                </div>
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Your Name</label>
+                                    <input type="text" className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all" placeholder="Full name" />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Work Email</label>
+                                    <input type="email" className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all" placeholder="you@company.com" />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-2">Message (Optional)</label>
+                                <textarea rows={4} className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all" placeholder="Tell us about your recruitment challenges or questions..."></textarea>
+                            </div>
+                            <button type="submit" className="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-4 rounded-xl transition-colors text-base">
+                                Submit Request →
+                            </button>
+                            <p className="text-slate-500 text-xs text-center">
+                                Our team will respond within 24 hours. Syncs with your existing ATS and recruitment workflow.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── FOOTER ─── */}
+            <footer className="bg-slate-900 text-white py-12 px-6">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid md:grid-cols-4 gap-8 mb-8">
+                        <div>
+                            <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-4">Enterprise</p>
+                            <ul className="space-y-2">
+                                <li><a href="/enterprise-access#solutions" className="text-slate-400 hover:text-white text-sm transition-colors">Solutions Overview</a></li>
+                                <li><a href="/enterprise-access#partners" className="text-slate-400 hover:text-white text-sm transition-colors">Partnership Tiers</a></li>
+                                <li><a href="/enterprise-access#why" className="text-slate-400 hover:text-white text-sm transition-colors">Why PilotRecognition</a></li>
+                                <li><a href="/enterprise-access#contact" className="text-slate-400 hover:text-white text-sm transition-colors">Request Access</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-4">Solutions</p>
+                            <ul className="space-y-2">
+                                <li><a href="/enterprise-access/airlines" className="text-slate-400 hover:text-white text-sm transition-colors">Airlines & Operators</a></li>
+                                <li><a href="/enterprise-access#flightschools" className="text-slate-400 hover:text-white text-sm transition-colors">Flight Schools & ATOs</a></li>
+                                <li><a href="/enterprise-access#privatejet" className="text-slate-400 hover:text-white text-sm transition-colors">Private Jet & Charter</a></li>
+                                <li><a href="/enterprise-access#evtol" className="text-slate-400 hover:text-white text-sm transition-colors">Air Taxi & eVTOL</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-4">Resources</p>
+                            <ul className="space-y-2">
+                                <li><a href="https://pilotrecognition.com" className="text-slate-400 hover:text-white text-sm transition-colors">Main Platform</a></li>
+                                <li><a href="/enterprise-access/learn-more" className="text-slate-400 hover:text-white text-sm transition-colors">Learn More</a></li>
+                                <li><a href="mailto:enterprise@pilotrecognition.com" className="text-slate-400 hover:text-white text-sm transition-colors">Contact Partnerships</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-4">PilotRecognition</p>
+                            <p className="text-slate-400 text-sm mb-4">Connecting Pilots to the Industry. Enterprise solutions for aviation recruitment and talent management.</p>
+                            <div className="flex gap-4">
+                                <a href="https://pilotrecognition.com" className="text-slate-400 hover:text-white transition-colors">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <span className="font-bold text-white">
+                                <span className="text-slate-300">Pilot</span><span className="text-red-400">Recognition</span>
+                            </span>
+                            <span className="text-[10px] uppercase tracking-widest border border-slate-600 px-1.5 py-0.5 rounded text-slate-400">Enterprise</span>
+                        </div>
+                        <p className="text-slate-400 text-sm">© 2024 PilotRecognition. All rights reserved.</p>
+                        <a href="https://pilotrecognition.com" className="text-red-400 hover:text-red-300 text-sm transition-colors">← pilotrecognition.com</a>
+                    </div>
+                </div>
+            </footer>
+            </div>
+        </>
+    );
+};
+
+export default AirlinesOperatorsPage;
