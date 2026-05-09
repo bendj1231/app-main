@@ -86,7 +86,7 @@ const AirlinesOperatorsPage = () => {
             'No more blind applications — know where you fit before you apply',
             'Recognition Score gives you a target to work toward',
         ],
-        cta: 'Pricing: $1,000/mo Enterprise + $500 success fee per pilot placed within 90 days.',
+        cta: 'Pricing: $1,000/year Enterprise + $500 success fee per pilot placed within 90 days.',
         mission: 'For Airlines & Operators, our mission is to close the recognition gap between pilots and flight departments. We shift recruitment from a "push" model — where pilots submit applications without response or feedback — to a "pull" model where operators access pre-qualified interest. Pathway Cards force transparency, surfacing hidden competencies that generic job boards hide. The Fair View System gives you control: see broad interest from free members while prioritizing premium candidates with verified backgrounds. This is not a luxury job board — it is infrastructure. Credentials and needs are pre-aligned before the first conversation ever happens, eliminating the 80% of applications that are merely inquiries about expectations.',
     };
 
@@ -393,7 +393,7 @@ const AirlinesOperatorsPage = () => {
                             <div className="space-y-3 mb-6">
                                 <div className="flex items-start gap-2">
                                     <span className="text-emerald-500 text-xs">✓</span>
-                                    <p className="text-slate-600 text-xs">$1,000/mo + $500 success fee</p>
+                                    <p className="text-slate-600 text-xs">$1,000/year + $500 success fee</p>
                                 </div>
                                 <div className="flex items-start gap-2">
                                     <span className="text-emerald-500 text-xs">✓</span>
@@ -998,7 +998,7 @@ const AirlinesOperatorsPage = () => {
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="text-amber-500">●</span>
-                                    Fixed monthly + success fee model
+                                    Fixed annual + success fee model
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="text-amber-500">●</span>
@@ -1231,7 +1231,7 @@ const AirlinesOperatorsPage = () => {
                             </div>
                             <div className="text-center mb-6">
                                 <span className="text-4xl font-bold text-slate-900">$0</span>
-                                <span className="text-slate-500 text-sm">/month</span>
+                                <span className="text-slate-500 text-sm">/year</span>
                             </div>
                             <ul className="space-y-3 mb-8">
                                 <li className="flex items-start gap-2 text-sm text-slate-700">
@@ -1267,7 +1267,7 @@ const AirlinesOperatorsPage = () => {
                             </div>
                             <div className="text-center mb-6">
                                 <span className="text-4xl font-bold text-red-600">$1,000</span>
-                                <span className="text-slate-500 text-sm">/month</span>
+                                <span className="text-slate-500 text-sm">/year</span>
                             </div>
                             <ul className="space-y-3 mb-4">
                                 <li className="flex items-start gap-2 text-sm text-slate-700">
