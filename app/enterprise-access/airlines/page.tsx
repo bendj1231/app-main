@@ -261,12 +261,43 @@ const AirlinesOperatorsPage = () => {
             {/* PRICING - Moved to top */}
             <section id="pricing" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
                 <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-12">
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Pricing</p>
-                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Simple, Transparent Pricing</h2>
-                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
-                            Infrastructure pricing—not headhunter fees. Predictable costs, better outcomes.
+                    <div className="text-center mb-8">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Enterprise Access</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Post Pathways. Gain Interest Insights. Pull <span className="text-red-600">PilotRecognition</span><span className="text-red-600">+</span> Profiles.</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto mb-8">
+                            Transform how you recruit. Publish your expectations once. Receive aligned, pre-qualified pilot interest continuously.
                         </p>
+                    </div>
+
+                    {/* Value Props */}
+                    <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+                        <div className="bg-white border border-slate-200 rounded-xl p-5 text-center">
+                            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <h3 className="font-bold text-slate-900 text-sm mb-1">Post Pathway Cards</h3>
+                            <p className="text-slate-600 text-xs">Publish detailed expectations, requirements, and competencies for pilots to self-align</p>
+                        </div>
+                        <div className="bg-white border border-slate-200 rounded-xl p-5 text-center">
+                            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                            <h3 className="font-bold text-slate-900 text-sm mb-1">Gain Interest Insights</h3>
+                            <p className="text-slate-600 text-xs">See which pilots have expressed interest, their Recognition Score, and alignment metrics</p>
+                        </div>
+                        <div className="bg-white border border-slate-200 rounded-xl p-5 text-center">
+                            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                                </svg>
+                            </div>
+                            <h3 className="font-bold text-slate-900 text-sm mb-1">Pull Verified Profiles</h3>
+                            <p className="text-slate-600 text-xs">Access <span className="text-red-600 font-semibold">PilotRecognition</span><span className="text-red-600 font-semibold">+</span> users with background verification already complete</p>
+                        </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
