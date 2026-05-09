@@ -68,7 +68,7 @@ const AirlinesOperatorsPage = () => {
             'Pre-qualified interest pool — access pilots who have already submitted interest in your pathway, not random candidates',
             'Time and cost savings — eliminate hours spent sifting through mismatched applications and repetitive inquiries',
             'Fair View System — free members can submit interest but are not background checked; you control the risk decision',
-            'Premium shortlisting — paid members provide detailed profiles with background verification from trusted screening partners',
+            'PilotRecognition+ shortlisting — paid members provide detailed profiles with background verification from trusted screening partners',
             'Aircraft-specific matching — charter operators get type-rated pilots for their specific fleet',
             'Immediate availability filters — find pilots who are current and available for ad-hoc charter demand',
             'Transparent alignment — pilots see exactly what you need before applying',
@@ -77,7 +77,7 @@ const AirlinesOperatorsPage = () => {
             'Live profile data — current hours, ratings, and recency always visible',
             'Recognition Score — objective readiness metric pilots can work toward',
             'Pull-based system — you select from ranked, qualified, pre-aligned candidates',
-            'Risk control — you decide whether to proceed with free members or prioritize verified premium candidates',
+            'Risk control — you decide whether to proceed with free members or prioritize verified PilotRecognition+ users',
             'Outcome tracking — measure placement success and pathway effectiveness',
         ],
         pilots: [
@@ -773,7 +773,7 @@ const AirlinesOperatorsPage = () => {
                     </div>
 
                     <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-8">
-                        <h3 className="text-lg font-bold text-slate-900 mb-8 text-center">Two Tiers, Your Choice: Free Members vs. Flight-Ready Professionals</h3>
+                        <h3 className="text-lg font-bold text-slate-900 mb-8 text-center">Two Tiers, Your Choice: Free Members vs. <span className="text-red-600">PilotRecognition</span><span className="text-emerald-600">+</span> Users</h3>
                         
                         <div className="grid md:grid-cols-2 gap-8">
                             {/* Free Tier Path */}
@@ -810,15 +810,15 @@ const AirlinesOperatorsPage = () => {
                                 </div>
                             </div>
 
-                            {/* Flight-Ready Tier Path */}
+                            {/* PilotRecognition+ Tier Path */}
                             <div className="border-2 border-emerald-200 bg-emerald-50/30 rounded-xl p-6">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
-                                        <span className="text-emerald-600 font-bold">P</span>
+                                        <span className="text-emerald-600 font-bold text-xs">PR+</span>
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-slate-900">Flight-Ready Professional Path</h4>
-                                        <p className="text-emerald-600 text-xs">Pre-vetted, ready to onboard</p>
+                                        <h4 className="font-bold text-slate-900"><span className="text-red-600">PilotRecognition</span><span className="text-emerald-600">+</span> User Path</h4>
+                                        <p className="text-emerald-600 text-xs">Pre-vetted, verified, ready to onboard</p>
                                     </div>
                                 </div>
                                 <div className="space-y-3">
@@ -848,7 +848,7 @@ const AirlinesOperatorsPage = () => {
                         <div className="mt-8 pt-8 border-t border-slate-200">
                             <div className="bg-slate-100 rounded-xl p-4">
                                 <p className="text-slate-700 text-sm text-center">
-                                    <span className="font-semibold">You decide:</span> Access both tiers or filter to Flight-Ready only. Set your own risk tolerance—see all candidates or only pre-verified professionals.
+                                    <span className="font-semibold">You decide:</span> Access both tiers or filter to <span className="text-red-600">PilotRecognition</span><span className="text-emerald-600">+</span> only. Set your own risk tolerance—see all candidates or only pre-verified professionals.
                                 </p>
                             </div>
                         </div>
@@ -856,9 +856,9 @@ const AirlinesOperatorsPage = () => {
 
                     <div className="grid md:grid-cols-2 gap-8">
                         <div className="bg-slate-900 text-white rounded-2xl p-8">
-                            <h3 className="text-lg font-bold mb-4">The "Flight-Ready Professional" Advantage</h3>
+                            <h3 className="text-lg font-bold mb-4">The <span className="text-red-400">PilotRecognition</span><span className="text-emerald-400">+</span> Advantage</h3>
                             <p className="text-slate-300 text-sm mb-6">
-                                Premium tier candidates have completed the full verification stack before entering your funnel. For 2026's touchless airport environments, this means:
+                                <span className="text-red-400">PilotRecognition</span><span className="text-emerald-400">+</span> users have completed the full verification stack before entering your funnel. For 2026's touchless airport environments, this means:
                             </p>
                             <ul className="space-y-3 text-sm">
                                 <li className="flex items-start gap-3">
@@ -880,7 +880,7 @@ const AirlinesOperatorsPage = () => {
                             </ul>
                             <div className="mt-6 pt-6 border-t border-slate-700">
                                 <p className="text-slate-400 text-xs">
-                                    <span className="text-emerald-400">Free tier:</span> Pilots with live profiles but unverified backgrounds. You conduct your own checks.
+                                    <span className="text-slate-400">Free tier:</span> Pilots with live profiles but unverified backgrounds. You conduct your own checks.
                                 </p>
                             </div>
                         </div>
@@ -1182,7 +1182,7 @@ const AirlinesOperatorsPage = () => {
                             <ul className="space-y-2">
                                 <li className="flex items-start gap-2 text-xs text-slate-700">
                                     <span className="text-emerald-500">✓</span>
-                                    You decide free vs premium
+                                    You decide free vs <span className="text-red-600">PilotRecognition</span><span className="text-emerald-600">+</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-xs text-slate-700">
                                     <span className="text-emerald-500">✓</span>
