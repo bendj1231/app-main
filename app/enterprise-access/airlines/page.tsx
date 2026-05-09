@@ -780,8 +780,8 @@ const AirlinesOperatorsPage = () => {
                                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <span className="text-red-600 font-bold text-xl">1</span>
                                 </div>
-                                <h4 className="font-bold text-slate-900 mb-2 text-sm">Veremark Verification</h4>
-                                <p className="text-slate-600 text-xs">5-year employment history, identity, qualifications, and background checks completed via Veremark API</p>
+                                <h4 className="font-bold text-slate-900 mb-2 text-sm">Background Verification</h4>
+                                <p className="text-slate-600 text-xs">5-year employment history, identity, qualifications, and criminal background checks completed via our screening partner network</p>
                             </div>
                             <div className="text-center">
                                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -814,7 +814,7 @@ const AirlinesOperatorsPage = () => {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                    <span className="text-sm text-slate-700">Veremark Verified</span>
+                                    <span className="text-sm text-slate-700">Background Verified</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
@@ -845,7 +845,7 @@ const AirlinesOperatorsPage = () => {
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-emerald-400">✓</span>
-                                    <span>5-year employment history verified via Veremark</span>
+                                    <span>5-year employment history verified via screening partner</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-emerald-400">✓</span>
