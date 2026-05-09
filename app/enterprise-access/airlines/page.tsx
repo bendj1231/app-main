@@ -811,36 +811,36 @@ const AirlinesOperatorsPage = () => {
                             </div>
 
                             {/* PilotRecognition+ Tier Path */}
-                            <div className="border-2 border-blue-800 bg-slate-900 rounded-xl p-6">
+                            <div className="border-2 border-red-600 bg-slate-900 rounded-xl p-6">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center border border-amber-500">
-                                        <span className="text-amber-400 font-bold text-xs">PR+</span>
+                                    <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                                        <span className="text-white font-bold text-xs">PR+</span>
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-white"><span className="text-red-500">PilotRecognition</span><span className="text-red-500">+</span> User Path</h4>
-                                        <p className="text-amber-400 text-xs">Pre-vetted, verified, ready to onboard</p>
+                                        <p className="text-red-400 text-xs">Pre-vetted, verified, ready to onboard</p>
                                     </div>
                                 </div>
                                 <div className="space-y-3">
                                     <div className="flex items-start gap-3">
-                                        <span className="text-amber-400 font-bold text-xs">1</span>
-                                        <p className="text-slate-300 text-xs">Pilot completes background verification via screening partner network (5-year employment, identity, criminal checks)</p>
+                                        <span className="text-red-500 font-bold text-xs">1</span>
+                                        <p className="text-white text-xs">Pilot completes background verification via screening partner network (5-year employment, identity, criminal checks)</p>
                                     </div>
                                     <div className="flex items-start gap-3">
-                                        <span className="text-amber-400 font-bold text-xs">2</span>
-                                        <p className="text-slate-300 text-xs">Digital credentials created: FAA medical, type ratings, TSA status converted to touchless-ready format</p>
+                                        <span className="text-red-500 font-bold text-xs">2</span>
+                                        <p className="text-white text-xs">Digital credentials created: FAA medical, type ratings, TSA status converted to touchless-ready format</p>
                                     </div>
                                     <div className="flex items-start gap-3">
-                                        <span className="text-amber-400 font-bold text-xs">3</span>
-                                        <p className="text-slate-300 text-xs">Verified data packet auto-syncs to your ATS (Workday, iCIMS, Greenhouse) via API</p>
+                                        <span className="text-red-500 font-bold text-xs">3</span>
+                                        <p className="text-white text-xs">Verified data packet auto-syncs to your ATS (Workday, iCIMS, Greenhouse) via API</p>
                                     </div>
                                     <div className="flex items-start gap-3">
-                                        <span className="text-amber-400 font-bold text-xs">4</span>
-                                        <p className="text-slate-300 text-xs">HR receives pre-validated candidate—bypass initial vetting entirely, proceed to technical evaluation</p>
+                                        <span className="text-red-500 font-bold text-xs">4</span>
+                                        <p className="text-white text-xs">HR receives pre-validated candidate—bypass initial vetting entirely, proceed to technical evaluation</p>
                                     </div>
                                 </div>
-                                <div className="mt-4 pt-4 border-t border-blue-800">
-                                    <p className="text-amber-400 text-xs italic">Best for: Operators who want to eliminate vetting overhead and accelerate time-to-fill</p>
+                                <div className="mt-4 pt-4 border-t border-red-600">
+                                    <p className="text-red-400 text-xs italic">Best for: Operators who want to eliminate vetting overhead and accelerate time-to-fill</p>
                                 </div>
                             </div>
                         </div>
