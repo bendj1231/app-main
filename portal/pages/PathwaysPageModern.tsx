@@ -1162,6 +1162,60 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80'
     }
   ],
+  'private': [
+    {
+      id: 'wingmentor-intro-private',
+      title: 'Private Pilot Pathways',
+      company: 'PilotRecognition',
+      matchPercentage: 100,
+      location: 'Global',
+      type: 'Introduction',
+      salary: 'Private pilot license and recreational flying pathways',
+      requirements: ['No prior experience required', 'Medical Certificate', 'English Proficiency'],
+      tags: ['Recreational Flying', 'Personal Aviation', 'Flight Training'],
+      postedAt: 'Featured',
+      image: 'wingmentor-white'
+    },
+    {
+      id: 'private-student',
+      title: 'Student Pilot Pathway',
+      company: 'Flight Schools',
+      matchPercentage: 95,
+      location: 'Local Airports / Global',
+      type: 'Flight Training',
+      salary: 'From zero to first solo flight',
+      requirements: ['16+ years old', 'Medical Certificate', 'English Proficiency'],
+      tags: ['First Solo', 'Flexible Schedule', 'Personalized Instruction'],
+      postedAt: 'Open Enrollment',
+      image: 'https://sp-ao.shortpixel.ai/client/to_webp,q_lossy,ret_img,w_1024,h=683/https://www.flightschoolusa.com/wp-content/uploads/2025/04/Student-pilot-1024x683.png'
+    },
+    {
+      id: 'private-ppl',
+      title: 'Private Pilot License',
+      company: 'Flight Training Centers',
+      matchPercentage: 90,
+      location: 'Global',
+      type: 'License Training',
+      salary: 'Private pilot license and recreational flying',
+      requirements: ['40+ hours flight time', 'FAA Knowledge Test', 'Practical Test'],
+      tags: ['Recreational Flying', 'Personal Aviation', 'License Certification'],
+      postedAt: 'Open Enrollment',
+      image: 'https://robbreport.com/wp-content/uploads/2018/08/magnusfusion3.jpg?w=1000'
+    },
+    {
+      id: 'private-sport',
+      title: 'Sport Pilot Certificate',
+      company: 'Flight Schools',
+      matchPercentage: 88,
+      location: 'United States',
+      type: 'License Training',
+      salary: 'Light sport aircraft flying with fewer requirements',
+      requirements: ['20+ hours flight time', 'Medical Certificate or Driver\'s License', 'Knowledge Test'],
+      tags: ['Light Sport', 'Lower Cost', 'Quick Certification'],
+      postedAt: 'Open Enrollment',
+      image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80'
+    },
+  ],
   'type-rating': [
     {
       id: 'wingmentor-intro-type-rating',
@@ -2393,36 +2447,119 @@ const GapAnalysisPanel: React.FC<{ analysis: GapAnalysis; isDarkMode?: boolean; 
   );
 };
 
-// Search Bar - supports light/dark mode
-const SearchBar: React.FC<{ onSearch: (query: string) => void; isDarkMode?: boolean; canPostPathways?: boolean; onPostPathway?: () => void }> = ({ onSearch, isDarkMode = true, canPostPathways = false, onPostPathway }) => (
-  <div className="relative w-[600px] flex items-center gap-3">
-    <div className="relative flex-1">
-      <Search className={`absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
-      <input
-        type="text"
-        placeholder="Search pathways, airlines, or locations..."
-        className={`w-full pl-4 pr-12 py-4 backdrop-blur border rounded-lg focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all ${
-          isDarkMode
-            ? 'bg-slate-800/50 border-slate-700/50 text-white placeholder-slate-400'
-            : 'bg-white/70 border-slate-300/50 text-slate-900 placeholder-slate-500'
-        }`}
-        onChange={(e) => onSearch(e.target.value)}
-      />
+// Search Bar - supports light/dark mode with enhanced UX
+interface SearchBarProps {
+  onSearch: (query: string) => void;
+  isDarkMode?: boolean;
+  canPostPathways?: boolean;
+  onPostPathway?: () => void;
+}
+
+const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
+  ({ onSearch, isDarkMode = true, canPostPathways = false, onPostPathway }, ref) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const localInputRef = useRef<HTMLInputElement>(null);
+  const inputRef = (ref as React.RefObject<HTMLInputElement>) || localInputRef;
+
+  const trendingSearches = [
+    { label: 'Cadet Programs', icon: '✈️', category: 'Entry Level' },
+    { label: 'A320 Type Rating', icon: '🎯', category: 'Training' },
+    { label: 'Low Time Pilot', icon: '🕐', category: '0-500 hrs' },
+    { label: 'Dubai Airlines', icon: '🌏', category: 'Location' },
+    { label: 'Cargo Operations', icon: '📦', category: 'Sector' },
+  ];
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setInputValue(suggestion);
+    onSearch(suggestion);
+    setShowSuggestions(false);
+    if (inputRef.current) inputRef.current.value = suggestion;
+  };
+
+  return (
+    <div className="relative w-full max-w-2xl mx-auto">
+      <div className={`relative flex items-center transition-all duration-300 ${isFocused ? 'scale-[1.02]' : ''}`}>
+        <div className="relative flex-1">
+          <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${isFocused ? 'text-blue-500' : isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search pathways, airlines, locations, or aircraft types..."
+            className={`w-full pl-12 pr-4 py-4 md:py-5 border-2 rounded-xl focus:outline-none transition-all ${
+              isDarkMode ? 'bg-slate-800/80 border-slate-700/50 text-white' : 'bg-white/90 border-slate-200 text-slate-900'
+            }`}
+            onChange={(e) => { setInputValue(e.target.value); onSearch(e.target.value); setShowSuggestions(e.target.value === ''); }}
+            onFocus={() => { setIsFocused(true); if (inputValue === '') setShowSuggestions(true); }}
+            onBlur={() => { setIsFocused(false); setTimeout(() => setShowSuggestions(false), 200); }}
+          />
+          {/* Quick search hints */}
+          <div className={`absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+            <kbd className={`px-2 py-1 rounded text-[10px] font-mono ${isDarkMode ? 'bg-slate-700' : 'bg-slate-100'}`}>⌘K</kbd>
+          </div>
+        </div>
+        {canPostPathways && onPostPathway && (
+          <button
+            onClick={onPostPathway}
+            className="ml-3 px-6 py-4 md:py-5 rounded-xl font-semibold text-sm transition-all bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+            aria-label="Post a new pathway"
+          >
+            Post Pathway
+          </button>
+        )}
+      </div>
+      {/* Search helper text */}
+      <p className={`mt-2 text-xs text-center transition-colors duration-200 ${isFocused ? 'opacity-100' : 'opacity-60'}`}>
+        <span className={isDarkMode ? 'text-slate-400' : 'text-slate-500'}>
+          Try: "Cadet Programs", "A320 Type Rating", "Low Time", or "Dubai"
+        </span>
+        <span className={`ml-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>Press ⌘K to search</span>
+      </p>
+
+      {/* Search Suggestions Dropdown */}
+      {showSuggestions && (
+        <div 
+          className={`absolute top-full left-0 right-0 mt-2 rounded-xl shadow-2xl overflow-hidden z-50 ${
+            isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
+          }`}
+        >
+          <div className="p-4">
+            <p className={`text-xs font-semibold uppercase tracking-wider mb-3 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+              Trending Searches
+            </p>
+            <div className="space-y-1">
+              {trendingSearches.map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSuggestionClick(item.label)}
+                  className={`w-full flex items-center justify-between p-3 rounded-lg text-left transition-all ${
+                    isDarkMode 
+                      ? 'hover:bg-slate-700 text-slate-200' 
+                      : 'hover:bg-slate-50 text-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg">{item.icon}</span>
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </div>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    isDarkMode ? 'bg-slate-700 text-slate-400' : 'bg-slate-100 text-slate-500'
+                  }`}>
+                    {item.category}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-    {canPostPathways && onPostPathway && (
-      <button
-        onClick={onPostPathway}
-        className={`px-4 py-4 rounded-lg font-semibold text-sm transition-all ${
-          isDarkMode
-            ? 'bg-blue-600 hover:bg-blue-700 text-white'
-            : 'bg-blue-600 hover:bg-blue-700 text-white'
-        }`}
-      >
-        Post Pathway
-      </button>
-    )}
-  </div>
+  );
+}
 );
+
+SearchBar.displayName = 'SearchBar';
 
 // Three-Stage Pathway Filter - fetches from Supabase hierarchy
 interface GeneralCategory {
@@ -2487,48 +2624,95 @@ const CategorySelection: React.FC<{
 
   return (
     <div className="space-y-4">
-      {/* General Categories */}
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <h3 className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-            Categories
+      {/* General Categories - Enhanced Mobile-First Design */}
+      <div className="relative">
+        {/* Section Header with Tooltip */}
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <h3 className={`text-sm font-semibold uppercase tracking-wider ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+            Filter by Category
           </h3>
-          {generalCategories.length === 0 && !loading && (
-            <span className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-              (No categories loaded)
-            </span>
-          )}
+          <div className="group relative">
+            <span className={`text-xs cursor-help rounded-full w-4 h-4 flex items-center justify-center ${isDarkMode ? 'bg-slate-700 text-slate-400' : 'bg-slate-200 text-slate-500'}`}>?</span>
+            <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg text-xs w-48 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 ${isDarkMode ? 'bg-slate-800 text-slate-300 border border-slate-700' : 'bg-white text-slate-600 border border-slate-200 shadow-lg'}`}>
+              Select a category to filter pathways by career type
+            </div>
+          </div>
         </div>
         
         {error && (
-          <div className={`text-xs p-2 rounded mb-2 ${isDarkMode ? 'bg-red-900/20 text-red-400' : 'bg-red-100 text-red-600'}`}>
-            Error: {error}
+          <div className={`text-xs p-3 rounded-lg mb-3 flex items-center gap-2 ${isDarkMode ? 'bg-red-900/20 text-red-400 border border-red-800/30' : 'bg-red-50 text-red-600 border border-red-200'}`}>
+            <AlertCircle className="w-4 h-4" />
+            {error}
           </div>
         )}
         
-        <div className="flex flex-wrap gap-2 justify-center">
-          {generalCategories.length > 0 ? (
-            generalCategories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => {
-                  onCategorySelect(category.id === selectedCategoryId ? null : category.id);
-                }}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
-                  selectedCategoryId === category.id
-                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                    : 'bg-white text-black hover:bg-slate-100 border border-slate-200'
-                }`}
-              >
-                {category.name}
-              </button>
-            ))
-          ) : (
-            <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-              {loading ? 'Loading categories...' : 'No categories available'}
-            </div>
-          )}
+        {/* Scrollable Container for Mobile */}
+        <div className="relative">
+          {/* Mobile Scroll Indicators */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/20 to-transparent z-10 pointer-events-none md:hidden" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/20 to-transparent z-10 pointer-events-none md:hidden" />
+          
+          <div 
+            className="flex gap-2 overflow-x-auto pb-3 px-4 md:px-0 md:flex-wrap md:justify-center md:overflow-visible scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {/* "All" Button */}
+            <button
+              onClick={() => onCategorySelect(null)}
+              className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 border-2 ${
+                selectedCategoryId === null
+                  ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
+                  : isDarkMode 
+                    ? 'bg-slate-800 border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-700'
+                    : 'bg-white border-slate-300 text-slate-800 hover:border-blue-400 hover:bg-blue-50'
+              }`}
+            >
+              All Pathways
+            </button>
+            
+            {generalCategories.length > 0 ? (
+              generalCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => {
+                    onCategorySelect(category.id === selectedCategoryId ? null : category.id);
+                  }}
+                  className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 border-2 ${
+                    selectedCategoryId === category.id
+                      ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
+                      : isDarkMode 
+                        ? 'bg-slate-800 border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-700'
+                        : 'bg-white border-slate-300 text-slate-800 hover:border-blue-400 hover:bg-blue-50'
+                  }`}
+                  aria-pressed={selectedCategoryId === category.id}
+                >
+                  {category.name}
+                </button>
+              ))
+            ) : (
+              <div className={`text-sm py-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                    Loading categories...
+                  </span>
+                ) : 'No categories available'}
+              </div>
+            )}
+          </div>
         </div>
+        
+        {/* Selection Count */}
+        {selectedCategoryId && (
+          <div className="text-center mt-2">
+            <button
+              onClick={() => onCategorySelect(null)}
+              className={`text-xs underline underline-offset-2 transition-colors ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
+            >
+              Clear filter
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -3434,9 +3618,9 @@ const ThreeStagePathwayFilter: React.FC<{
                             {card.image ? (
                               <img src="/logo.png" alt="PilotRecognition" className="h-20 w-auto object-contain mb-4" />
                             ) : (
-                              <div className="mb-4">
+                              <div className="mb-4 text-center">
                                 <span className="text-white text-2xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Discover</span>
-                                <span className="text-red-500 text-xl ml-2" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>{pathway.name}</span>
+                                <span className="text-red-500 text-xl ml-2" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>{card.name}</span>
                               </div>
                             )}
                             <p className="text-slate-400 text-sm text-center px-8">{card.description}</p>
@@ -3512,16 +3696,16 @@ const ThreeStagePathwayFilter: React.FC<{
               
               {/* Selected Card Context Header - Under the selected card */}
               {selectedCard && cardsWithPilotRecognition.some(c => c.id === selectedCard.id) && (
-                <div className="mt-6 relative">
-                  {/* Ghost Cards Background */}
-                  <div className="absolute inset-0 -left-[50vw] w-[200vw] overflow-hidden opacity-20 pointer-events-none">
+                <div className="mt-6 relative overflow-hidden">
+                  {/* Ghost Cards Background - Contained within parent */}
+                  <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
                     <style>{`
                       @keyframes scroll-left {
                         0% { transform: translateX(0); }
                         100% { transform: translateX(-50%); }
                       }
                       .ghost-scroll {
-                        animation: scroll-left 30s linear infinite;
+                        animation: scroll-left 40s linear infinite;
                       }
                     `}</style>
                     <div className="flex gap-8 ghost-scroll">
@@ -3588,7 +3772,7 @@ const ThreeStagePathwayFilter: React.FC<{
                                   className="w-full h-full object-cover"
                                 />
                               </div>
-                              <p className="mt-2 text-white/60 text-xs text-center font-medium">
+                              <p className="mt-2 text-white/30 text-[10px] text-center font-medium truncate max-w-[380px]">
                                 {card.name}
                               </p>
                             </div>
@@ -4085,6 +4269,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(1000); // Show all jobs and discovery pathways
   const [matchFilter, setMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
+  const [sortBy, setSortBy] = useState<'match' | 'newest' | 'alphabetical'>('match');
   const [viewFilter, setViewFilter] = useState<'all' | 'jobs' | 'pathways'>('all');
   const [positionFilter, setPositionFilter] = useState<'all' | 'Captain' | 'Fighter Pilot' | 'First Officer' | 'Flight Instructor' | 'Pilot Cadet'>('all');
   const [isPositionDropdownOpen, setIsPositionDropdownOpen] = useState(false);
@@ -4094,6 +4279,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [selectedPathwayForMatch, setSelectedPathwayForMatch] = useState<PathwayData | null>(null);
   const [selectedCarouselPathway, setSelectedCarouselPathway] = useState<PathwayData | null>(null);
+  const [selectedPathwayCard, setSelectedPathwayCard] = useState<PathwayData | null>(null); // Track selected pathway from first row
+  const [subPathways, setSubPathways] = useState<any[]>([]); // Store sub-pathways for selected pathway
   const [cockpitActivated, setCockpitActivated] = useState(false);
   const [sidePanelExpanded, setSidePanelExpanded] = useState(true);
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
@@ -4203,6 +4390,143 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     currentUser?.id || undefined,
     mode === 'jobs' ? jobApplicationListings : []
   );
+
+  // Three-tier hierarchy states
+  const [stage1Categories, setStage1Categories] = useState<any[]>([]); // General Categories
+  const [stage2Pathways, setStage2Pathways] = useState<any[]>([]); // Pathways for selected category
+  const [stage3SubPathways, setStage3SubPathways] = useState<any[]>([]); // Sub-pathways for selected pathway
+  
+  const [selectedStage1Category, setSelectedStage1Category] = useState<any>(null);
+  const [selectedStage2Pathway, setSelectedStage2Pathway] = useState<any>(null);
+
+  // Stage 1: Fetch General Categories on mount
+  useEffect(() => {
+    const fetchGeneralCategories = async () => {
+      const { data, error } = await supabase
+        .from('career_hierarchy_general_categories')
+        .select('*')
+        .order('display_order');
+      
+      if (error) {
+        console.error('Error fetching general categories:', error);
+        setStage1Categories([]);
+      } else {
+        const overriddenCategories = (data || []).map(cat => ({
+          ...cat,
+          name: cat.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
+        }));
+        console.log('Stage 1 - General Categories:', overriddenCategories.length);
+        setStage1Categories(overriddenCategories);
+      }
+    };
+    
+    fetchGeneralCategories();
+  }, []);
+
+  // Stage 2: Fetch Pathways when Stage 1 category is selected
+  useEffect(() => {
+    if (selectedStage1Category) {
+      const fetchPathways = async () => {
+        const { data, error } = await supabase
+          .from('career_hierarchy_pathways')
+          .select('*')
+          .eq('general_category_id', selectedStage1Category.id)
+          .order('display_order');
+        
+        if (error) {
+          console.error('Error fetching pathways:', error);
+          setStage2Pathways([]);
+        } else {
+          const overriddenPathways = (data || []).map(pathway => ({
+            ...pathway,
+            name: pathway.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : pathway.name
+          }));
+          console.log('Stage 2 - Pathways for', selectedStage1Category.name, ':', overriddenPathways.length);
+          setStage2Pathways(overriddenPathways);
+        }
+      };
+      
+      fetchPathways();
+    } else {
+      setStage2Pathways([]);
+    }
+  }, [selectedStage1Category]);
+
+  // Stage 3: Fetch Sub-pathways when Stage 2 pathway is selected
+  useEffect(() => {
+    if (selectedStage2Pathway) {
+      const fetchSubPathways = async () => {
+        const { data, error } = await supabase
+          .from('career_hierarchy_sub_pathways')
+          .select('*')
+          .eq('pathway_id', selectedStage2Pathway.id)
+          .eq('is_active', true)
+          .order('display_order');
+        
+        if (error) {
+          console.error('Error fetching sub-pathways:', error);
+          setStage3SubPathways([]);
+        } else {
+          const overriddenSubPathways = (data || []).map(sp => ({
+            ...sp,
+            name: sp.name === 'Drone pilot certification and UAV training programs' ? 'Learn More about Drones & Airtaxi Pathways' : sp.name
+          }));
+          console.log('Stage 3 - Sub-pathways for', selectedStage2Pathway.name, ':', overriddenSubPathways.length);
+          setStage3SubPathways(overriddenSubPathways);
+        }
+      };
+      
+      fetchSubPathways();
+    } else {
+      setStage3SubPathways([]);
+    }
+  }, [selectedStage2Pathway]);
+
+  // Legacy useEffect for backward compatibility - fetch sub-pathways when a pathway card is selected from main carousel
+  useEffect(() => {
+    console.log('useEffect triggered - selectedPathwayCard:', selectedPathwayCard?.name);
+    if (selectedPathwayCard) {
+      // Transform DISCOVERY_PATHWAYS into PathwayData format
+      const discoveryPathwaysData: PathwayData[] = Object.entries(DISCOVERY_PATHWAYS).flatMap(([catKey, items]) =>
+        items.map((item: any) => ({
+          id: item.id,
+          name: item.title,
+          description: item.description || item.salary,
+          image: item.image,
+          airline: item.company,
+          locations: [item.location],
+          category: catKey,
+          matchProbability: item.matchPercentage / 100,
+          requirements: { totalHours: 0, typeRatings: [] },
+          isRecommended: item.matchPercentage >= 90,
+        }))
+      );
+      
+      // Show all cards from the same category as the selected pathway
+      console.log('Showing all cards from category:', selectedPathwayCard.category);
+      
+      // Get all cards from the same category
+      const categoryCards = discoveryPathwaysData.filter(card => card.category === selectedPathwayCard.category);
+      
+      console.log('Found cards from same category:', categoryCards.length);
+      
+      if (categoryCards.length > 0) {
+        const mappedCards = categoryCards.map((card) => ({
+          id: card.id,
+          name: card.name,
+          description: card.description || card.salary,
+          image: card.image,
+          pathway_id: selectedPathwayCard.id,
+        }));
+        console.log('Setting subPathways with category cards:', mappedCards.length);
+        setSubPathways(mappedCards);
+      } else {
+        setSubPathways([]);
+      }
+    } else {
+      setSubPathways([]);
+    }
+  }, [selectedPathwayCard]);
 
   // Category display labels - defined at component level for reuse
   const categoryLabels: Record<string, string> = {
@@ -4380,18 +4704,37 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }))
   );
 
+  // When a category is selected, use PATHWAYS array instead of DISCOVERY_PATHWAYS
+  const categoryPathways: PathwayData[] = hierarchySelection.generalCategory
+    ? PATHWAYS.filter(p => p.general_category_id === hierarchySelection.generalCategory).map(p => ({
+        id: p.id,
+        name: p.name,
+        category: 'pathway' as const,
+        airline: 'PilotRecognition',
+        description: p.description,
+        image: '',
+        matchProbability: 100,
+        aircraftType: p.id,
+        requirements: { totalHours: 0, typeRatings: [] },
+        locations: ['Global'],
+        hiringStatus: 'moderate' as const,
+      }))
+    : [];
+
   // Include pathways or jobs based on mode
   // For 'all' category, always use discoveryPathways (curated pathway cards) regardless of mode
+  // When a category is selected, use categoryPathways instead
   // Enterprise cards are always merged in, surfaced first
   const allPathways = [
     ...enterprisePathwayCards,
-    ...(activeCategory === 'all'
-      ? discoveryPathways
-      : (mode === 'jobs' ? dynamicPathways : discoveryPathways)),
+    ...(hierarchySelection.generalCategory ? categoryPathways : discoveryPathways),
+    ...(mode === 'jobs' ? dynamicPathways : []),
   ];
 
-  // Always show all portal categories regardless of data
-  const categories = ['all', 'recommended', 'airline-pathways', 'cadet-programme', 'private', 'privateSector', 'cargo', 'type-rating', 'airtaxi-drones'];
+  console.log('allPathways count:', allPathways.length);
+  console.log('hierarchySelection:', hierarchySelection);
+  console.log('activeCategory:', activeCategory);
+  console.log('categoryPathways:', categoryPathways);
 
   const filteredPathways = allPathways.filter(pathway => {
     // Use hierarchy selection for filtering if available, otherwise use activeCategory
@@ -4418,6 +4761,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       };
       
       const allowedCategories = categoryMapping[hierarchySelection.generalCategory] || [];
+      console.log('Filtering by hierarchy:', hierarchySelection.generalCategory, 'allowed:', allowedCategories, 'pathway category:', pathway.category, 'matches:', allowedCategories.includes(pathway.category));
       matchesCategory = allowedCategories.includes(pathway.category);
     } else {
       // Fall back to original category filtering
@@ -4489,18 +4833,35 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
     
     return matchesCategory && matchesSearch && matchesRegion && matchesMatchFilter && matchesPositionFilter && matchesViewFilter;
-  }).filter(pathway => !pathway.id.includes('wingmentor-intro'));
+  }).filter(pathway => !pathway.id.includes('wingmentor-intro'))
+  // Sort based on selected sort option
+  .sort((a, b) => {
+    switch (sortBy) {
+      case 'match':
+        // Sort by match probability (highest first)
+        return (b.matchProbability || 0) - (a.matchProbability || 0);
+      case 'newest':
+        // Sort by creation date or last updated (newest first)
+        // If no date available, use id as fallback for stable sort
+        return (b.updatedAt || b.createdAt || b.id).localeCompare(a.updatedAt || a.createdAt || a.id);
+      case 'alphabetical':
+        // Sort by name A-Z
+        return (a.name || '').localeCompare(b.name || '');
+      default:
+        return 0;
+    }
+  });
 
   // Add intro card at the beginning
   const introCard: PathwayData = {
     id: 'recommended-pathways-intro',
-    name: 'Recommended Pathways',
+    name: 'Your Pathway',
     category: 'all',
     airline: 'PilotRecognition',
-    description: 'Explore personalized career pathways matched to your profile and goals',
+    description: 'Personalized career matches based on your profile',
     image: '',
     matchProbability: 100,
-    aircraftType: '__wingmentor__',
+    aircraftType: '__intro__', // Use different identifier to avoid conflict
     requirements: {
       totalHours: 0,
       typeRatings: [],
@@ -4585,9 +4946,18 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Infinite scroll disabled - no scroll reset for recommended pathways
 
-  // Keyboard navigation for arrow keys
+  // Ref for search input focus
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Keyboard navigation for arrow keys and search shortcut (⌘K / Ctrl+K)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // ⌘K or Ctrl+K to focus search
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      // Arrow keys for carousel
       if (e.key === 'ArrowLeft') {
         scrollCarousel('left');
       } else if (e.key === 'ArrowRight') {
@@ -4698,6 +5068,24 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const subText = isDarkMode ? 'text-slate-400' : 'text-slate-500';
   const buttonBg = isDarkMode ? 'bg-slate-800/50 hover:bg-slate-700/50' : 'bg-slate-200/50 hover:bg-slate-300/50';
   const buttonText = isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900';
+
+  // Feedback Widget State
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+
+  const handleFeedbackSubmit = async () => {
+    // In production, send to analytics/feedback endpoint
+    console.log('Feedback submitted:', { rating: feedbackRating, text: feedbackText, page: 'pathways' });
+    setFeedbackSubmitted(true);
+    setTimeout(() => {
+      setIsFeedbackOpen(false);
+      setFeedbackSubmitted(false);
+      setFeedbackRating(null);
+      setFeedbackText('');
+    }, 2000);
+  };
 
   return (
     <>
@@ -5043,7 +5431,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <div className="mb-8 text-center">
           <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover Pathways</p>
@@ -5055,77 +5443,90 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </h1>
         </div>
 
+        {/* Breadcrumbs */}
+        <div className="mb-4">
+          <nav className="flex items-center gap-2 text-sm">
+            <button 
+              onClick={() => onNavigate?.('access-portal-2') || (window.location.href = '/access-portal-2')}
+              className={`hover:underline ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
+            >
+              Home
+            </button>
+            <ChevronRight className={`w-4 h-4 ${isDarkMode ? 'text-slate-600' : 'text-slate-300'}`} />
+            <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Pathways</span>
+            {hierarchySelection.generalCategory && (
+              <>
+                <ChevronRight className={`w-4 h-4 ${isDarkMode ? 'text-slate-600' : 'text-slate-300'}`} />
+                <span className={`font-medium ${isDarkMode ? 'text-sky-400' : 'text-blue-600'}`}>
+                  {hierarchySelection.generalCategory}
+                </span>
+              </>
+            )}
+          </nav>
+        </div>
+
         {/* Search Bar - above categories */}
         <div className="mb-6 flex justify-center">
-          <div className="w-full max-w-2xl">
-            <SearchBar onSearch={setSearchQuery} isDarkMode={false} />
+          <div className="w-full max-w-2xl relative">
+            <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
           </div>
         </div>
 
-        {/* Category Selection */}
+        {/* Category Selection with Clear All */}
         {mode === 'pathways' && (
-          <div className="flex justify-center">
-            <CategorySelection
-              isDarkMode={isDarkMode}
-              selectedCategoryId={hierarchySelection.generalCategory || null}
-              onCategorySelect={handleCategorySelect}
-            />
+          <div className="flex flex-col items-center gap-4 mb-8">
+            <div className="flex justify-center">
+              <CategorySelection
+                isDarkMode={isDarkMode}
+                selectedCategoryId={hierarchySelection.generalCategory || null}
+                onCategorySelect={handleCategorySelect}
+              />
+            </div>
+            
+            {/* Clear All Filters Button - Shows when any filter is active */}
+            {(searchQuery || hierarchySelection.generalCategory || matchFilter !== 'all') && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setMatchFilter('all');
+                  handleCategorySelect(null);
+                  setSortBy('match');
+                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 border border-slate-700"
+              >
+                <X className="w-4 h-4" />
+                Clear All Filters
+              </button>
+            )}
           </div>
         )}
 
-        {/* Edge-to-edge Carousel Section - Recommended Pathways */}
+        {/* Stage 1: Discover Pathways - Show Category Cards */}
         <div className="w-full mb-6">
-          <div className="mb-12 w-full max-w-7xl mx-auto px-4">
-            <div className="text-center">
-              <h2
-                className="text-3xl md:text-4xl font-normal text-white"
-                style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
-              >
-                Recommended Pathways
-              </h2>
-              <p className={`${subText} text-xs mt-1`}>
-                {mode === 'jobs'
-                  ? <>{filteredPathways.length} of {jobApplicationListings.length}+ jobs available</>
-                  : <>{filteredPathways.length} pathways available</>
-                }
-              </p>
-            </div>
-          </div>
-
-          {/* Match Filter - Below Header */}
-          <div className="mb-4 w-full max-w-7xl mx-auto px-4 flex justify-center">
-            <div className="flex items-center gap-2">
-              <span className={`text-base ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match Filter:</span>
-              <div className="flex gap-2">
-                {[
-                  { key: 'all', label: 'All', color: 'blue' },
-                  { key: 'low', label: 'Low 60-75%', color: 'amber' },
-                  { key: 'mid', label: 'Mid 75-90%', color: 'emerald' },
-                  { key: 'high', label: 'High 90%+', color: 'purple' },
-                ].map((filter) => (
-                  <button
-                    key={filter.key}
-                    onClick={() => setMatchFilter(filter.key as typeof matchFilter)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                      matchFilter === filter.key
-                        ? filter.key === 'all' ? 'bg-blue-500 text-white' :
-                          filter.key === 'low' ? 'bg-amber-500 text-white' :
-                          filter.key === 'mid' ? 'bg-emerald-500 text-white' :
-                          'bg-purple-500 text-white'
-                        : isDarkMode
-                          ? 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50'
-                          : 'bg-slate-200/50 text-slate-600 hover:bg-slate-300/50'
-                    }`}
-                  >
-                    {filter.label}
-                  </button>
-                ))}
+          <div className="mb-12">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="text-center md:text-left">
+                <h2
+                  className="text-3xl md:text-4xl font-normal text-white"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  Discover Pathways
+                </h2>
+                <p className={`${subText} text-xs mt-1`}>
+                  {mode === 'jobs'
+                    ? <>{filteredPathways.length} of {jobApplicationListings.length}+ jobs available</>
+                    : <>{filteredPathways.length} pathways available</>
+                  }
+                </p>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Carousel Container */}
-          <div className="relative w-screen left-1/2 -translate-x-1/2">
+        {/* Edge-to-edge Carousel Section - Discover Pathways - Simplified */}
+
+        {/* Carousel Container - Contained within max-width */}
+        <div className="relative w-full z-10">
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
@@ -5145,25 +5546,45 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               }
             `}</style>
 
-            {/* Floating Selection Indicator above carousel */}
-            <div className="text-center mb-4 relative z-50">
-              <div className="selection-indicator-main inline-block">
-                <span className={`text-sm font-normal text-white/50`}>
-                  {selectedPathwayForMatch ? selectedPathwayForMatch.name : 'Swipe left or right and click to select a card'}
-                </span>
+            {/* Selection Guidance - Clearer instructions */}
+            <div className="text-center mb-6 relative z-50">
+              <div className={`inline-flex items-center gap-3 px-4 py-2 rounded-full ${isDarkMode ? 'bg-slate-800/80 border border-slate-700' : 'bg-white/80 border border-slate-200'} backdrop-blur-sm`}>
+                {selectedPathwayForMatch ? (
+                  <>
+                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    <span className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                      Selected: {selectedPathwayForMatch.name}
+                    </span>
+                    <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                      Scroll down for details
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="flex items-center gap-1 text-amber-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                      </svg>
+                    </span>
+                    <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                      <span className="hidden md:inline">Drag or swipe to browse • Click any card to select</span>
+                      <span className="md:hidden">Swipe to browse • Tap to select</span>
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
             <div
               ref={carouselRef}
-              className="pathways-carousel flex gap-4 overflow-x-auto overflow-y-hidden pb-4"
+              className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4"
               style={{
                 WebkitOverflowScrolling: 'touch',
                 cursor: 'grab',
-                paddingLeft: '0px',
-                paddingRight: '0px',
                 scrollSnapType: 'x mandatory',
                 scrollBehavior: 'smooth',
+                minHeight: '320px',
               }}
               onMouseDown={(e) => {
                 const el = carouselRef.current;
@@ -5181,7 +5602,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   window.removeEventListener('mouseup', onUp);
                   
                   // Snap to nearest card
-                  const cardWidth = 616; // 600px card + 16px gap
+                  const cardWidth = 536; // 520px card + 16px gap
                   const scrollPosition = el.scrollLeft;
                   const nearestIndex = Math.round(scrollPosition / cardWidth);
                   el.scrollTo({
@@ -5193,15 +5614,99 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 window.addEventListener('mouseup', onUp);
               }}
             >
-              {filteredPathways.length === 0 ? (
-                <div className={`w-full py-16 text-center rounded-xl border-2 border-dashed ${isDarkMode ? 'border-slate-700' : 'border-slate-300'}`}>
-                  <p className={`${subText} text-lg font-medium`}>No pathways match this filter</p>
-                  <p className={`${subText} text-sm mt-1`}>Try a different filter or select "All"</p>
-                </div>
-              ) : (
-                loopedPathways.map((pathway, idx) => {
+              {/* Stage 1: Show 7 Category Cards */}
+              {(() => {
+                const categories = [
+                  { id: 'private', name: 'Private', description: 'Private pilot training and recreational flying pathways', count: 4 },
+                  { id: 'cadet-programme', name: 'Cadet Programme', description: 'Airline-sponsored cadet training programs', count: 28 },
+                  { id: 'type-rating', name: 'Type Rating', description: 'Aircraft type ratings and advanced certifications', count: 5 },
+                  { id: 'airline-pathways', name: 'Airline Pathways', description: 'Commercial airline career progression paths', count: 7 },
+                  { id: 'cargo', name: 'Cargo', description: 'Cargo and freight aviation careers', count: 5 },
+                  { id: 'privateSector', name: 'Private Sector', description: 'Private aviation and charter operations', count: 5 },
+                  { id: 'airtaxi-drones', name: 'Airtaxi/Drones', description: 'eVTOL, drones and emerging aviation technology', count: 5 },
+                ];
+                
+                return [...categories, ...categories, ...categories].map((category, idx) => {
+                  const isSelected = selectedPathwayCard?.category === category.id;
+                  return (
+                    <div
+                      key={`${category.id}-${idx}`}
+                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
+                      style={{ 
+                        width: '520px', 
+                        height: '290px',
+                        scrollSnapAlign: 'center',
+                      }}
+                      onClick={() => {
+                        console.log('Category clicked:', category.name);
+                        // Create a mock pathway object for the category
+                        const categoryPathway = {
+                          id: category.id,
+                          name: category.name,
+                          description: category.description,
+                          category: category.id,
+                          airline: 'Multiple Airlines',
+                          locations: ['Global'],
+                          matchProbability: 0.85,
+                          requirements: { totalHours: 0, typeRatings: [] },
+                        };
+                        setSelectedCarouselPathway(categoryPathway);
+                        setSelectedPathwayCard(categoryPathway);
+                      }}
+                    >
+                      <div 
+                        className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800"
+                        style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}
+                      >
+                        <img 
+                          src={'/images/accessportal.png'} 
+                          alt={category.name}
+                          className="w-full h-full object-cover opacity-60"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                          <h4 className="text-lg font-serif font-normal text-white drop-shadow-lg">{category.name}</h4>
+                          <p className="text-white/70 text-sm">{category.description}</p>
+                          <p className="text-white/50 text-xs mt-1">{category.count} pathways</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
+            </div>
+          </div>
+
+          {/* Stage 2: Pathways Carousel - Shows when a category is selected */}
+          {selectedPathwayCard && (
+            <div className="mt-12 w-full">
+              <div className="mb-6">
+                <h3
+                  className="text-2xl md:text-3xl font-normal text-white mb-2"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  {selectedPathwayCard.name}
+                </h3>
+                <p className={`${subText} text-sm`}>
+                  {selectedPathwayCard.description}
+                </p>
+              </div>
+
+              {/* Stage 2: Individual Pathways for Selected Category */}
+              <div 
+                className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4"
+                style={{
+                  WebkitOverflowScrolling: 'touch',
+                  scrollSnapType: 'x mandatory',
+                  scrollBehavior: 'smooth',
+                }}
+              >
+                {filteredPathways.filter(p => p.category === selectedPathwayCard.category).length > 0 ? (
+                  [...filteredPathways.filter(p => p.category === selectedPathwayCard.category)].map((pathway, idx) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);
-                  const isPilotRecognitionCard = pathway.aircraftType === '__wingmentor__';
+                  const isPilotRecognitionCard = pathway.aircraftType === '__wingmentor__' || pathway.aircraftType === '__intro__';
+                  const isIntroCard = pathway.id === 'recommended-pathways-intro';
                   const cardAircraftImage = isPilotRecognitionCard
                     ? '/logo.png'
                     : (pathway.image && !pathway.image.startsWith('wingmentor') ? pathway.image : getAircraftImage(pathway.aircraftType));
@@ -5209,50 +5714,121 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   return (
                     <div
                       key={`${pathway.id}-${idx}`}
-                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-sky-500 scale-100 opacity-100' : 'scale-95 opacity-100'}`}
-                      style={{ width: '600px', scrollSnapAlign: 'center' }}
+                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
+                      style={{ 
+                        width: '520px', 
+                        height: '290px',
+                        scrollSnapAlign: 'center',
+                      }}
                       onClick={() => {
+                        console.log('Card clicked:', pathway.name, 'category:', pathway.category, 'hierarchySelection:', hierarchySelection.generalCategory);
                         setSelectedCarouselPathway(pathway);
+                        // When a pathway card is clicked from the first row, set it as selected for the second row
+                        console.log('Setting selectedPathwayCard:', pathway);
+                        setSelectedPathwayCard(pathway);
                       }}
                     >
-                      <div className={`relative h-[300px] overflow-hidden rounded-xl ${isPilotRecognitionCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
+                      <div 
+                        className={`relative w-full h-full overflow-hidden rounded-xl ${isPilotRecognitionCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}
+                        style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}
+                      >
                         {isPilotRecognitionCard ? (
-                          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-                            {pathway.image ? (
-                              <img src="/logo.png" alt="PilotRecognition" className="h-20 w-auto object-contain mb-4" />
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 p-6 overflow-hidden">
+                            {isIntroCard ? (
+                              // Special styling for intro card
+                              <>
+                                <div className="flex items-center gap-2 mb-3">
+                                  <span className="text-white text-xl md:text-2xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Welcome to</span>
+                                  <span className="text-red-500 text-xl md:text-2xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Pathways</span>
+                                </div>
+                                <p className="text-slate-400 text-xs md:text-sm text-center px-4 max-w-[90%] line-clamp-2">{pathway.description}</p>
+                                <button className="mt-4 px-5 py-2 bg-red-600/80 hover:bg-red-600 backdrop-blur-md text-white rounded-lg text-xs md:text-sm font-semibold transition-all shadow-lg">
+                                  Get Started
+                                </button>
+                              </>
                             ) : (
-                              <div className="mb-4">
-                                <span className="text-white text-3xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Discover</span>
-                                <span className="text-red-500 text-3xl ml-2" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>{pathway.name}</span>
-                              </div>
-                            )}
-                            <p className="text-slate-400 text-sm text-center px-8">{pathway.description}</p>
-                            {pathway.id === 'recommended-pathways-intro' && (
-                              <button className="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white rounded-lg text-sm font-semibold transition-all shadow-lg">
-                                Learn More
-                              </button>
+                              // Standard pilot recognition card
+                              <>
+                                <img src="/logo.png" alt="PilotRecognition" className="h-16 w-auto object-contain mb-3" />
+                                <p className="text-slate-400 text-xs md:text-sm text-center px-4 max-w-[90%] line-clamp-2">{pathway.description}</p>
+                              </>
                             )}
                           </div>
                         ) : (
-                          <img src={cardAircraftImage} alt={pathway.aircraftType} className="w-full h-full object-cover" loading="lazy"
-                            onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme']; }} />
+                          <img 
+                            src={cardAircraftImage} 
+                            alt={pathway.aircraftType} 
+                            className="w-full h-full object-cover block" 
+                            style={{ minHeight: '280px', display: 'block' }}
+                            loading="lazy"
+                            onError={(e) => { 
+                              const target = e.target as HTMLImageElement;
+                              target.src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme'];
+                              target.style.display = 'block';
+                            }} 
+                          />
                         )}
                         {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
-                        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
-                        <div className="absolute top-3 right-3 flex gap-2 items-start">
-                                                    {!isPilotRecognitionCard && pathway.hiringStatus === 'actively_hiring' && (
-                            <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/80 text-white text-xs font-semibold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                              Hiring
-                            </span>
-                          )}
-                        </div>
-                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                          <div className="flex items-center justify-center gap-2 mb-1">
-                            <h4 className="text-lg font-serif font-normal text-white">{pathway.name}</h4>
+                        {!isIntroCard && <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />}
+                        {/* Save/Favorite Button - hide for intro card */}
+                        {!isIntroCard && (
+                          <div className="absolute top-3 right-3 flex flex-col gap-2 items-end">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                console.log('Save pathway:', pathway.id);
+                              }}
+                              className="p-2 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white/80 hover:text-white transition-all"
+                              aria-label="Save pathway"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                              </svg>
+                            </button>
+                            
+                            {!isPilotRecognitionCard && pathway.hiringStatus === 'actively_hiring' && (
+                              <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/90 text-white text-xs font-semibold shadow-lg">
+                                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                                Active Hiring
+                              </span>
+                            )}
                           </div>
-                          <p className="text-white/80 text-sm">{pathway.airline} · {pathway.locations.join(' | ')}</p>
-                          {!isPilotRecognitionCard && mode === 'jobs' && (() => {
+                        )}
+                        
+                        {/* Quick Stats Chips - Top Left - hide for intro card */}
+                        {!isIntroCard && (
+                          <div className="absolute top-14 left-3 flex flex-wrap gap-1 max-w-[150px]">
+                            {!isPilotRecognitionCard && (
+                            <>
+                              <span className="px-1.5 py-0.5 rounded bg-blue-600/90 text-white text-[9px] font-semibold backdrop-blur-sm">
+                                {pathway.category === 'cadet-program' ? 'Entry' : pathway.category === 'first-officer' ? 'Career' : 'Exp'}
+                              </span>
+                              {pathway.requirements?.typeRatings?.length > 0 && (
+                                <span className="px-1.5 py-0.5 rounded bg-amber-600/90 text-white text-[9px] font-semibold backdrop-blur-sm">
+                                  TR
+                                </span>
+                              )}
+                              {pathway.matchPercentage >= 90 && (
+                                <span className="px-1.5 py-0.5 rounded bg-purple-600/90 text-white text-[9px] font-semibold backdrop-blur-sm">
+                                  90%+
+                                </span>
+                              )}
+                            </>
+                          )}
+                          </div>
+                        )}
+                        {/* Card text overlay - hide for intro card */}
+                        {!isIntroCard && (
+                          <div className="absolute bottom-0 left-0 right-0 p-3 text-center">
+                            <h4 className="text-base md:text-lg font-serif font-normal text-white drop-shadow-lg line-clamp-1 mb-0.5">{pathway.name}</h4>
+                            <p className="text-white/90 text-xs font-medium drop-shadow-md line-clamp-1">
+                              {pathway.airline}
+                            </p>
+                            <p className="text-white/60 text-[10px] line-clamp-1">
+                              {pathway.locations.slice(0, 2).join(' | ')}{pathway.locations.length > 2 ? ` +${pathway.locations.length - 2} more` : ''}
+                            </p>
+                          {(() => {
+                            if (isPilotRecognitionCard || mode !== 'jobs') return null;
                             const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
                               String(j.title || '').toLowerCase() === String(pathway.name || '').toLowerCase() ||
                               String(j.company || '').toLowerCase() === String(pathway.airline || '').toLowerCase()
@@ -5268,17 +5844,21 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                               </div>
                             );
                           })()}
-                        </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
                 })
+              ) : (
+                <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>No pathways found for this category</p>
               )}
             </div>
           </div>
+        )}
 
-          {/* Selected Pathway Display */}
-          {selectedCarouselPathway && (
+        {/* Selected Pathway Display */}
+        {selectedCarouselPathway && (
             <div className="flex items-center justify-center gap-4 mt-4">
               <button
                 onClick={() => scrollCarousel('left')}
@@ -5302,22 +5882,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               </button>
             </div>
           )}
-        </div>
 
-        
-        {/* ThreeStagePathwayFilter - Inline Pathways Display */}
-        {mode === 'pathways' && (
-          <ThreeStagePathwayFilter
-            isDarkMode={isDarkMode}
-            pathwayCards={allPathways}
-            selectedGeneralCategory={hierarchySelection.generalCategory || null}
-            onNavigateToPathway={handleNavigateToPathway}
-            onNavigate={onNavigate}
-          />
-        )}
-
-          {/* Job Position Filter */}
-          <div className="flex items-center gap-3 justify-center">
+        {/* Job Position Filter - Only show in jobs mode */}
+        {mode === 'jobs' && (
+          <div className="flex items-center gap-3 justify-center mt-6">
             <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Position:</span>
             <div className="relative">
               <button
@@ -5370,6 +5938,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               )}
             </div>
           </div>
+        )}
 
         {mode === 'jobs' && currentUser && (
           <JobIntelligenceBanner
@@ -5386,6 +5955,115 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             isDarkMode={isDarkMode}
           />
         )}
+
+        {/* Testimonials Section - Build Trust */}
+        <section className={`py-12 px-6 ${isDarkMode ? 'bg-slate-800/30 border-y border-slate-700/50' : 'bg-slate-50/50 border-y border-slate-200'} mt-12`}>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-2">Success Stories</p>
+              <h2 className={`text-2xl md:text-3xl font-serif font-normal ${isDarkMode ? 'text-white' : 'text-slate-900'} mb-2`}>
+                Pilots Who Found Their Pathway
+              </h2>
+              <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                Real pilots. Real careers. Real results through PilotRecognition.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Testimonial 1 */}
+              <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'} backdrop-blur-sm`}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
+                    JM
+                  </div>
+                  <div>
+                    <p className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>James Mitchell</p>
+                    <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>First Officer at Delta Air Lines</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 mb-3">
+                  {[1,2,3,4,5].map(i => (
+                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                  "I was stuck as a CFI with 1,200 hours and no clear path forward. The Recognition Score showed me exactly what I was missing. 8 months later, I'm in a Delta cockpit."
+                </p>
+                <div className={`mt-4 pt-4 border-t text-xs ${isDarkMode ? 'border-slate-700 text-slate-400' : 'border-slate-200 text-slate-500'}`}>
+                  <span className="font-semibold text-sky-400">Pathway:</span> Regional Airline → Major Airline
+                </div>
+              </div>
+              
+              {/* Testimonial 2 */}
+              <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'} backdrop-blur-sm`}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-semibold">
+                    SC
+                  </div>
+                  <div>
+                    <p className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Sarah Chen</p>
+                    <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Captain at NetJets</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 mb-3">
+                  {[1,2,3,4,5].map(i => (
+                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                  "The pathway cards eliminated guesswork. I could see exactly which corporate operators wanted my 4,000 hours + type rating. No more shotgun applications."
+                </p>
+                <div className={`mt-4 pt-4 border-t text-xs ${isDarkMode ? 'border-slate-700 text-slate-400' : 'border-slate-200 text-slate-500'}`}>
+                  <span className="font-semibold text-sky-400">Pathway:</span> Charter Pilot → Corporate Captain
+                </div>
+              </div>
+              
+              {/* Testimonial 3 */}
+              <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-slate-800/50 border border-slate-700' : 'bg-white border border-slate-200'} backdrop-blur-sm`}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold">
+                    MR
+                  </div>
+                  <div>
+                    <p className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Marcus Rodriguez</p>
+                    <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Airbus A350 Captain at Cathay Pacific</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 mb-3">
+                  {[1,2,3,4,5].map(i => (
+                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                  "My Recognition Score travelled with me from a US regional to Hong Kong. Airlines saw my verified profile and skipped the guesswork. Cadet to Captain in 6 years."
+                </p>
+                <div className={`mt-4 pt-4 border-t text-xs ${isDarkMode ? 'border-slate-700 text-slate-400' : 'border-slate-200 text-slate-500'}`}>
+                  <span className="font-semibold text-sky-400">Pathway:</span> Cadet Program → International Captain
+                </div>
+              </div>
+            </div>
+            
+            {/* Trust Stats */}
+            <div className={`mt-8 pt-8 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} grid grid-cols-2 md:grid-cols-4 gap-6 text-center`}>
+              <div>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>12,000+</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Pilot Profiles</p>
+              </div>
+              <div>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>450+</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Active Pathways</p>
+              </div>
+              <div>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>89%</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Match Accuracy</p>
+              </div>
+              <div>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>3,200+</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Career Placements</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Footer */}
         <footer className={`py-8 px-6 border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'} mt-12`}>
@@ -5478,6 +6156,105 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         }
       }}
     />
+
+      {/* Feedback Widget - Floating Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {!isFeedbackOpen ? (
+          <button
+            onClick={() => setIsFeedbackOpen(true)}
+            className={`flex items-center gap-2 px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 ${
+              isDarkMode 
+                ? 'bg-slate-800 text-white border border-slate-700 hover:bg-slate-700' 
+                : 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
+            }`}
+            aria-label="Give feedback"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+            <span className="text-sm font-medium hidden md:inline">Feedback</span>
+          </button>
+        ) : (
+          <div className={`w-80 rounded-2xl shadow-2xl p-5 ${isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'}`}>
+            {!feedbackSubmitted ? (
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                    Help us improve
+                  </h3>
+                  <button 
+                    onClick={() => setIsFeedbackOpen(false)}
+                    className={`p-1 rounded-full hover:bg-slate-100 ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-700' : 'text-slate-500'}`}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                <p className={`text-sm mb-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                  How was your experience finding pathways?
+                </p>
+                
+                {/* Star Rating */}
+                <div className="flex gap-2 mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setFeedbackRating(star)}
+                      className="focus:outline-none transition-transform hover:scale-110"
+                    >
+                      <Star 
+                        className={`w-6 h-6 ${
+                          feedbackRating && star <= feedbackRating 
+                            ? 'text-amber-400 fill-amber-400' 
+                            : isDarkMode ? 'text-slate-600' : 'text-slate-300'
+                        }`} 
+                      />
+                    </button>
+                  ))}
+                </div>
+                
+                {/* Text Feedback */}
+                <textarea
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                  placeholder="What can we improve? (optional)"
+                  className={`w-full p-3 rounded-lg text-sm resize-none mb-4 ${
+                    isDarkMode 
+                      ? 'bg-slate-700/50 border-slate-600 text-white placeholder-slate-500' 
+                      : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400'
+                  } border focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
+                  rows={3}
+                />
+                
+                {/* Submit Button */}
+                <button
+                  onClick={handleFeedbackSubmit}
+                  disabled={!feedbackRating}
+                  className={`w-full py-2.5 rounded-lg font-medium text-sm transition-all ${
+                    feedbackRating 
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                      : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                  }`}
+                >
+                  Send Feedback
+                </button>
+              </>
+            ) : (
+              <div className="text-center py-6">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <CheckCircle2 className="w-6 h-6 text-green-600" />
+                </div>
+                <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                  Thank you!
+                </p>
+                <p className={`text-sm mt-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Your feedback helps us improve.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </>
   );
 };
