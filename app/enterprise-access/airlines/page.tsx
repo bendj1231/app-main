@@ -773,7 +773,7 @@ const AirlinesOperatorsPage = () => {
                     </div>
 
                     <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-8">
-                        <h3 className="text-lg font-bold text-slate-900 mb-8 text-center">Two Tiers, Your Choice: Free Members vs. <span className="text-red-600">PilotRecognition</span><span className="text-emerald-600">+</span> Users</h3>
+                        <h3 className="text-lg font-bold text-slate-900 mb-8 text-center">Two Tiers, Your Choice: Free Members vs. <span className="text-red-600">PilotRecognition</span><span className="text-red-600">+</span> Users</h3>
                         
                         <div className="grid md:grid-cols-2 gap-8">
                             {/* Free Tier Path */}
@@ -814,10 +814,10 @@ const AirlinesOperatorsPage = () => {
                             <div className="border-2 border-emerald-200 bg-emerald-50/30 rounded-xl p-6">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
-                                        <span className="text-emerald-600 font-bold text-xs">PR+</span>
+                                        <span className="text-red-600 font-bold text-xs">PR+</span>
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-slate-900"><span className="text-red-600">PilotRecognition</span><span className="text-emerald-600">+</span> User Path</h4>
+                                        <h4 className="font-bold text-slate-900"><span className="text-red-600">PilotRecognition</span><span className="text-red-600">+</span> User Path</h4>
                                         <p className="text-emerald-600 text-xs">Pre-vetted, verified, ready to onboard</p>
                                     </div>
                                 </div>
@@ -848,7 +848,7 @@ const AirlinesOperatorsPage = () => {
                         <div className="mt-8 pt-8 border-t border-slate-200">
                             <div className="bg-slate-100 rounded-xl p-4">
                                 <p className="text-slate-700 text-sm text-center">
-                                    <span className="font-semibold">You decide:</span> Access both tiers or filter to <span className="text-red-600">PilotRecognition</span><span className="text-emerald-600">+</span> only. Set your own risk tolerance—see all candidates or only pre-verified professionals.
+                                    <span className="font-semibold">You decide:</span> Access both tiers or filter to <span className="text-red-600">PilotRecognition</span><span className="text-red-600">+</span> only. Set your own risk tolerance—see all candidates or only pre-verified professionals.
                                 </p>
                             </div>
                         </div>
@@ -856,9 +856,9 @@ const AirlinesOperatorsPage = () => {
 
                     <div className="grid md:grid-cols-2 gap-8">
                         <div className="bg-slate-900 text-white rounded-2xl p-8">
-                            <h3 className="text-lg font-bold mb-4">The <span className="text-red-400">PilotRecognition</span><span className="text-emerald-400">+</span> Advantage</h3>
+                            <h3 className="text-lg font-bold mb-4">The <span className="text-red-400">PilotRecognition</span><span className="text-red-400">+</span> Advantage</h3>
                             <p className="text-slate-300 text-sm mb-6">
-                                <span className="text-red-400">PilotRecognition</span><span className="text-emerald-400">+</span> users have completed the full verification stack before entering your funnel. For 2026's touchless airport environments, this means:
+                                <span className="text-red-400">PilotRecognition</span><span className="text-red-400">+</span> users have completed the full verification stack before entering your funnel. For 2026's touchless airport environments, this means:
                             </p>
                             <ul className="space-y-3 text-sm">
                                 <li className="flex items-start gap-3">
@@ -1182,7 +1182,7 @@ const AirlinesOperatorsPage = () => {
                             <ul className="space-y-2">
                                 <li className="flex items-start gap-2 text-xs text-slate-700">
                                     <span className="text-emerald-500">✓</span>
-                                    You decide free vs <span className="text-red-600">PilotRecognition</span><span className="text-emerald-600">+</span>
+                                    You decide free vs <span className="text-red-600">PilotRecognition</span><span className="text-red-600">+</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-xs text-slate-700">
                                     <span className="text-emerald-500">✓</span>
