@@ -810,7 +810,7 @@ const AirlinesOperatorsPage = () => {
                             <div className="flex items-center justify-center gap-8 flex-wrap">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                                    <span className="text-sm text-slate-700">Airside Professional Tier</span>
+                                    <span className="text-sm text-slate-700">Flight-Ready Tier</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
@@ -830,14 +830,14 @@ const AirlinesOperatorsPage = () => {
 
                     <div className="grid md:grid-cols-2 gap-8">
                         <div className="bg-slate-900 text-white rounded-2xl p-8">
-                            <h3 className="text-lg font-bold mb-4">The "Airside Professional" Advantage</h3>
+                            <h3 className="text-lg font-bold mb-4">The "Flight-Ready Professional" Advantage</h3>
                             <p className="text-slate-300 text-sm mb-6">
                                 Candidates with this designation have completed the full verification stack before entering your funnel. For 2026's touchless airport environments, this means:
                             </p>
                             <ul className="space-y-3 text-sm">
                                 <li className="flex items-start gap-3">
                                     <span className="text-emerald-400">✓</span>
-                                    <span>Pre-cleared for airside access on day one</span>
+                                    <span>Pre-cleared for secure airport access on day one</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-emerald-400">✓</span>
