@@ -761,8 +761,146 @@ const AirlinesOperatorsPage = () => {
                 </div>
             </section>
 
+            {/* COMPLIANCE & DATA FLOW */}
+            <section id="dataflow" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Interoperability</p>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Verified Data Flows Directly to Your HR Systems</h2>
+                        <p className="text-slate-600 text-base max-w-2xl mx-auto">
+                            In 2026, digital identity and touchless credentials are the standard. PilotRecognition data integrates seamlessly with your existing infrastructure—no manual exports, no data re-entry, no compliance gaps.
+                        </p>
+                    </div>
+
+                    <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-8">
+                        <h3 className="text-lg font-bold text-slate-900 mb-8 text-center">How Verified Pilot Data Syncs to Your ATS</h3>
+                        
+                        <div className="grid md:grid-cols-4 gap-4">
+                            <div className="text-center">
+                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="text-red-600 font-bold text-xl">1</span>
+                                </div>
+                                <h4 className="font-bold text-slate-900 mb-2 text-sm">Veremark Verification</h4>
+                                <p className="text-slate-600 text-xs">5-year employment history, identity, qualifications, and background checks completed via Veremark API</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="text-red-600 font-bold text-xl">2</span>
+                                </div>
+                                <h4 className="font-bold text-slate-900 mb-2 text-sm">Digital Credentialing</h4>
+                                <p className="text-slate-600 text-xs">FAA medical, type ratings, and TSA status converted to touchless-ready digital credentials</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="text-red-600 font-bold text-xl">3</span>
+                                </div>
+                                <h4 className="font-bold text-slate-900 mb-2 text-sm">ATS Sync</h4>
+                                <p className="text-slate-600 text-xs">Verified data packet auto-populates candidate profile in Workday, iCIMS, or Greenhouse via API</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="text-red-600 font-bold text-xl">4</span>
+                                </div>
+                                <h4 className="font-bold text-slate-900 mb-2 text-sm">Ready to Onboard</h4>
+                                <p className="text-slate-600 text-xs">HR receives pre-validated candidate with all compliance docs—bypass initial vetting entirely</p>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 pt-8 border-t border-slate-200">
+                            <div className="flex items-center justify-center gap-8 flex-wrap">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                                    <span className="text-sm text-slate-700">Airside Professional Tier</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                    <span className="text-sm text-slate-700">Veremark Verified</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                                    <span className="text-sm text-slate-700">Digital Credentials Ready</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                                    <span className="text-sm text-slate-700">ATS Auto-Sync</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div className="bg-slate-900 text-white rounded-2xl p-8">
+                            <h3 className="text-lg font-bold mb-4">The "Airside Professional" Advantage</h3>
+                            <p className="text-slate-300 text-sm mb-6">
+                                Candidates with this designation have completed the full verification stack before entering your funnel. For 2026's touchless airport environments, this means:
+                            </p>
+                            <ul className="space-y-3 text-sm">
+                                <li className="flex items-start gap-3">
+                                    <span className="text-emerald-400">✓</span>
+                                    <span>Pre-cleared for airside access on day one</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-emerald-400">✓</span>
+                                    <span>Digital ID credentials compatible with biometric gates</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-emerald-400">✓</span>
+                                    <span>5-year employment history verified via Veremark</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-emerald-400">✓</span>
+                                    <span>Zero manual vetting required by your HR team</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                            <h3 className="text-lg font-bold text-slate-900 mb-4">Interoperability for 2026</h3>
+                            <p className="text-slate-600 text-sm mb-6">
+                                As airlines adopt touchless identity and digital credentials, PilotRecognition ensures your recruitment infrastructure stays ahead:
+                            </p>
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-900 text-sm">Biometric-Ready Profiles</p>
+                                        <p className="text-slate-600 text-xs">Pilot data formatted for touchless ID systems and biometric access control</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-900 text-sm">Real-Time Compliance Sync</p>
+                                        <p className="text-slate-600 text-xs">Medical expiry, recency, and rating changes update automatically in your HR system</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-900 text-sm">API-First Architecture</p>
+                                        <p className="text-slate-600 text-xs">Native integrations with Workday, iCIMS, SAP—no middleware required</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* STAKEHOLDER FOCUS */}
-            <section id="stakeholders" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+            <section id="stakeholders" className="py-16 px-6 border-b border-slate-200 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
                         <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">For Decision Makers</p>
