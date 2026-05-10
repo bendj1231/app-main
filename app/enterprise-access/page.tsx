@@ -267,10 +267,10 @@ const SECTORS: Sector[] = [
         label: 'Software & API Integrations',
         color: 'fuchsia',
         tagline: 'Plug PilotRecognition into your stack.',
-        pain: 'Aviation tech is fragmented: Veremark for screening, Crew Lounge for logbook, AeroCRS for ops, Sabre / Amadeus for crewing, Vistair for documents. Pilot data sits in silos and never speaks across systems.',
-        solution: 'Open API + verified integration partners. Plug PilotRecognition into your existing tools. Veremark for background screening, logbook software for hours sync, ATS for crewing, LMS for training delivery — pilot data flows once, recognised everywhere.',
+        pain: 'Aviation tech is fragmented: background screening tools, logbook apps, ops systems, crewing platforms, and document managers all operate separately. Pilot data sits in silos and never speaks across systems.',
+        solution: 'Open API + verified integration partners. Plug PilotRecognition into your existing tools. Background screening integration, logbook software for hours sync, ATS for crewing, LMS for training delivery — pilot data flows once, recognised everywhere.',
         benefits: [
-            'Veremark — background-screening integration (live)',
+            'Background screening integrations — live verification status',
             'Logbook integrations — Crew Lounge, Logten Pro, MCC Pilot Log, ForeFlight',
             'ATS / HRIS integrations — Workday, BambooHR, Greenhouse',
             'LMS integrations — for training delivery and CBTA scoring',
