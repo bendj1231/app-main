@@ -9,6 +9,13 @@ export interface FlightSchool {
   price: string;
   image: string;
   region: Region;
+  claimed?: boolean;
+  fleet?: string[];
+  offerings?: string[];
+  pilotsTrained?: number;
+  established?: number;
+  website?: string;
+  pathwayScore?: number;
 }
 
 // Dummy flight school cards - CAAP Approved Philippine Schools
@@ -27,42 +34,94 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
   {
     id: 'flight-school-1',
     name: 'Alpha Aviation Group (AAG)',
-    description: 'Specializes in "Airline-Ready" cadet programs with advanced A320 simulators. Premier center for airline-affiliated and advanced glass-cockpit training.',
-    location: 'Clark Freeport Zone, Philippines',
+    description: 'One of the largest independent MPL training providers in the region. CAAP-certified ATO and TRTO, EASA-accredited for specific simulator levels. Airline-ready CBTA philosophy with high placement rates into Cebu Pacific, Philippine Airlines, and AirAsia. APP graduates since 2011: 1,800+.',
+    location: 'Jose Abad Santos Avenue, Clark Freeport Zone, Pampanga, Philippines',
     rating: 4.9,
-    price: '$16,000 - $25,000',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv7LKWKHRjos2ghlBs8xA1mJ_t_JwFpD_7fg&s',
-    region: 'Asia' as Region
+    price: '~$60,000–$62,000 (Full CPL/APP) / $25,000–$35,000 (A320 Type Rating/FOT)',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404520/flight-schools/aag.jpg',
+    region: 'Asia' as Region,
+    fleet: [
+      'Cessna 172 (G1000 equipped) — up to 32 aircraft region-wide',
+      'Piper PA-44 Seminole',
+      'Airbus A320 Full Flight Simulator (Level D) ×2',
+      'Airbus A330/A340 Full Flight Simulator (Level D) ×1',
+      'MPS A320 Fixed Base Simulator',
+      'Alsim FNPT II',
+    ],
+    offerings: [
+      'Airline Pilot Program (APP) — 18-month ab-initio to FO',
+      'First Officer Transition (FOT) — A320 Type Rating',
+      'Multi-Crew Pilot License (MPL)',
+      'CPL (Single & Multi-Engine)',
+      'Instrument Rating (IR)',
+      'CBTA / Competency-Based Training',
+      'Recurrent Training',
+    ],
+    pilotsTrained: 1800,
+    established: 1999,
+    website: 'https://aag.aero',
+    pathwayScore: 94,
   },
   {
     id: 'flight-school-2',
     name: 'Omni Aviation Corporation',
-    description: 'A major IATA-authorized center offering a full range of pilot and cabin crew courses. Leading aviation school in Clark.',
-    location: 'Clark Freeport Zone, Philippines',
+    description: 'The only IATA-authorized training center in the Philippines. CAAP-certified ATO operating a 32-hectare complex with a private 640-meter asphalt runway at Clark. Four specialized schools: Pilot Training, Cabin Crew, Maintenance, and Airline Services. Founded 1993 by Capt. Ben Hur Gomez. Hosts CAAP Off-site Examinations.',
+    location: 'Manuel A. Roxas Highway, Clark Freeport Zone, Pampanga, Philippines',
     rating: 4.8,
-    price: '$15,000 - $22,000',
+    price: '~$8,000–$10,000 (PPL) / $48,000–$52,000 (ACTP 200-hr incl. JOC & IR)',
     image: 'https://omni-aviation.digiteer.dev/bg-about.jpg',
-    region: 'Asia' as Region
+    region: 'Asia' as Region,
+    fleet: [
+      'Cessna 152 (primary trainer) ×15+',
+      'Cessna 172 (incl. G1000 equipped)',
+      'Piper Seneca PA-34-200 (multi-engine)',
+      'Flight Training Devices (FTD) — instrument & procedural',
+    ],
+    offerings: [
+      'PPL (Private Pilot License)',
+      'CPL (Commercial Pilot License)',
+      'Instrument Rating (IR)',
+      'Multi-Engine Rating (MER)',
+      'Jet Orientation Course (JOC)',
+      'Airline Cabin Crew Training (DPR partnership)',
+      'Aircraft Maintenance Technology (CAAP TLP)',
+      'Dangerous Goods Regulations (IATA DGR)',
+      'Airline Services / Ground Crew Training',
+    ],
+    pilotsTrained: 2400,
+    established: 1993,
+    website: 'https://omniaviation.com',
+    pathwayScore: 89,
   },
   {
     id: 'flight-school-3',
-    name: 'Philippine Academy for Aviation Training (PAAT)',
-    description: 'A joint venture between CAE and Cebu Pacific, focusing on type rating and cadet pilot training.',
+    name: 'CAE Philippines (PAAT)',
+    description: 'Joint venture between CAE and Cebu Pacific Air. Premier Level D simulator center in the Philippines, offering A320 and ATR 72-600 type ratings. Official training partner for Cebu Pacific Air and AirAsia Philippines. CAAP-approved ATO.',
     location: 'Clark Freeport Zone, Philippines',
     rating: 4.9,
-    price: '$18,000 - $28,000',
+    price: '$24,000 – $40,000 (Type Rating) / ~$77,000 (Full Cadet Programme)',
     image: 'https://aviationnewsphilippines.wordpress.com/wp-content/uploads/2014/01/paat.jpg',
-    region: 'Asia' as Region
+    region: 'Asia' as Region,
+    fleet: ['Airbus A320 Full Flight Simulator (Level D) ×3', 'ATR 72-600 Full Flight Simulator (Level D) ×1'],
+    offerings: ['A320 Type Rating', 'ATR 72-600 Type Rating', 'Cebu Pacific Cadet Pilot Programme', 'AirAsia Philippines Cadet Programme', 'ATPL Ground School', 'Recurrent Training'],
+    pilotsTrained: 1200,
+    established: 2013,
+    website: 'https://www.cae.com/civil-aviation/locations/asia-pacific/cae-philippines/',
+    pathwayScore: 97,
   },
   {
     id: 'flight-school-4',
-    name: 'Delta Air International Aviation Academy',
-    description: 'Operates from Clark and Bulacan, offering flexible commercial pilot programs.',
-    location: 'Clark Freeport Zone / Plaridel, Bulacan, Philippines',
+    name: 'Delta Air International Aviation Academy (DAIAA)',
+    description: 'CAAP-approved ATO (licensed through March 2027), subsidiary of the AMA Education System. Full-suite pilot and maintenance training from PPL through FIL. Operates a private 525 m² hangar at Plaridel Airport. Blended learning via AMAES.',
+    location: 'Plaridel, Bulacan, Philippines',
     rating: 4.6,
-    price: '$13,000 - $20,000',
-    image: 'https://scontent.fcrk2-4.fna.fbcdn.net/v/t39.30808-6/496131912_1080891020736183_5817780301479090649_n.jpg?stp=cp6_dst-jpg_p960x960_tt6&_nc_cat=105&ccb=1-7&_nc_sid=7b2446&_nc_eui2=AeGyFOEA0UP2_NP5Yoy9BSfsssh424-CkZ-yyHjbj4KRn6MHSIIjVz4HIwAM6mVtWgu7eXZvpDDihmzpo1iXmOdY&_nc_ohc=Bc5pj7GdgWUQ7kNvwFvrEW5&_nc_oc=AdrChyg4KLKKyPLNYENCzCORMu4A2mSAzWHqDNz2YTiOL8dbPF8dgp2YTBAnQqAn6F0&_nc_zt=23&_nc_ht=scontent.fcrk2-4.fna&_nc_gid=aQnuEgQCBCdk6n0eXxUryA&_nc_ss=7b2a8&oh=00_Af2ZqB0vlZsLQmpanEbePAN0Ie7-LhWuRdimJYghJOsZpA&oe=69F52744',
-    region: 'Asia' as Region
+    price: '~$8,000–$10,000 (PPL) / $53,000–$57,000 (Full CPL/IR International)',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404520/flight-schools/aag.jpg',
+    region: 'Asia' as Region,
+    fleet: ['Cessna 152 ×5', 'Cessna 172 ×2', 'Piper Seneca PA-34-200 ×2', 'Redbird MCX Full Motion Simulator'],
+    offerings: ['PPL (Single & Multi-Engine Land)', 'CPL (Single & Multi-Engine Land)', 'Instrument Rating (IR)', 'Flight Instructor License (FIL)', 'Crew Resource Management (CRM)', 'Aircraft Maintenance Technology', 'Aviation Electronics Technology'],
+    website: 'https://daiaa.com.ph',
+    pathwayScore: 72,
   },
   {
     id: 'flight-school-5',
@@ -77,33 +136,88 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
   {
     id: 'flight-school-6',
     name: 'FDSA Aviation College',
-    description: 'Formerly Flight Dynamics School, based in Mabalacat with modern training facilities.',
-    location: 'Mabalacat City, Pampanga, Philippines',
+    description: 'CAAP ATOC renewed December 2024 (5-year term). Comprehensive aviation college offering both flight training and degree programs. Located beside St. Raphael Hospital, Mabalacat City, with access to Clark International Airport for flight phases. Active participant in the CAAP ATO Summit.',
+    location: 'BKN Bldg., McArthur Hi-way, Dau, Mabalacat City, Pampanga, Philippines',
     rating: 4.5,
-    price: '$12,000 - $18,000',
+    price: '~$45,000–$55,000 (Full CPL/IR — approx. ₱2.5M–₱3M)',
     image: 'https://upload.wikimedia.org/wikipedia/commons/0/06/FDSA航空科学技術大学.jpg',
-    region: 'Asia' as Region
+    region: 'Asia' as Region,
+    fleet: [
+      'Cessna 152 (multiple units)',
+      'Cessna 172 (multiple units)',
+      'Piper Seneca PA-34 (multi-engine)',
+    ],
+    offerings: [
+      'PPL (Private Pilot License)',
+      'CPL (Commercial Pilot License)',
+      'Instrument Rating (IR)',
+      'Multi-Engine Rating (MER)',
+      'BS Aeronautical Engineering',
+      'BS Aircraft Maintenance Technology',
+      'BS Aviation Electronics Technology',
+    ],
+    website: 'https://fdsaaviation.com',
+    pathwayScore: 82,
   },
   // Subic & Zambales Hub
   {
     id: 'flight-school-7',
-    name: 'All Asia Aviation Academy',
-    description: 'Follows Japanese management standards; offers a popular First Officer Airline program. Ideal for uncongested airspace training.',
-    location: 'Iba, Zambales, Philippines',
+    name: 'All Asia Aviation Academy (AAA)',
+    description: 'The only Philippine flight school following Japanese management and safety standards. Operates its own Aircraft Maintenance Organization (AMO) ensuring all trainers are maintained on-site. Based at Iba Airport — uncontrolled airspace enabling high-frequency training without commercial traffic delays. CAAP ATOC valid through Aug 16, 2026.',
+    location: 'Iba Airport, Iba, Zambales, Philippines',
     rating: 4.5,
-    price: '$13,500 - $19,500',
+    price: '~$48,000–$58,000 (Full CPL/IR/ME "zero-to-hero" — approx. ₱2.7M–₱3.2M)',
     image: 'https://aaa-central.com/wp-content/uploads/2022/04/Aerial172_trainingfleets.jpg',
-    region: 'Asia' as Region
+    region: 'Asia' as Region,
+    fleet: [
+      'Cessna 152 ×13 (primary trainer)',
+      'Cessna 172 ×3 (incl. G1000 equipped — RP-C 1767)',
+      'Tecnam P2006T (multi-engine)',
+      'Piper Seneca PA-34-200 (multi-engine)',
+      'Redbird MCX Full Motion Simulator',
+    ],
+    offerings: [
+      'Airline Assessment Qualification (AAQ) — flagship airline-readiness programme',
+      'PPL (Private Pilot License)',
+      'CPL (Commercial Pilot License)',
+      'Instrument Rating (IR)',
+      'Multi-Engine Rating (MER)',
+      'Flight Instructor (FI) Course',
+      'In-house Aircraft Maintenance (AMO)',
+    ],
+    website: 'https://aaa-central.com',
+    pathwayScore: 88,
   },
   {
     id: 'flight-school-8',
-    name: 'Leading Edge International Aviation Academy',
-    description: 'Known for high-quality instruction and airline-standard curricula in Subic Bay Freeport Zone.',
-    location: 'Subic Bay Freeport Zone, Zambales, Philippines',
+    name: 'Leading Edge International Aviation Academy (LEIAAI)',
+    description: 'CAAP ATOC active for pilot and maintenance training. Unique "Summer Pilot Pass" programme and integrated AMT school. Main base at San Fernando Airport (Poro Point), La Union — low commercial traffic for high training efficiency. Satellite offices in Cebu and Taguig. 650+ pilots trained.',
+    location: 'San Fernando Airport (Poro Point), La Union, Philippines (+ Cebu & Taguig satellites)',
     rating: 4.9,
-    price: '$14,000 - $20,000',
+    price: '~$38,000–$48,000 (Full PPL-CPL-IR — approx. ₱2.2M–₱2.8M)',
     image: 'https://cdn.flightsim.to/images/26/tecnam-p2006t---leading-edge-international-aviation-academy-321711-1695483794-YDehO.jpg',
-    region: 'Asia' as Region
+    region: 'Asia' as Region,
+    fleet: [
+      'Cessna 172 ×23 (core fleet)',
+      'Cessna 152 (aerobatic/upset recovery)',
+      'Tecnam P2006T (multi-engine)',
+      'Redbird Flight Simulators',
+      'Computer-Based Training (CBT) systems',
+    ],
+    offerings: [
+      'PPL (Private Pilot License)',
+      'CPL (Commercial Pilot License)',
+      'Instrument Rating (IR)',
+      'Multi-Engine Rating (MER)',
+      'Flight Instructor (FI) Course',
+      'ATPL Ground School',
+      'Aircraft Maintenance Technician (AMT) — 2-year diploma',
+      'Summer Pilot Pass Programme',
+    ],
+    pilotsTrained: 650,
+    established: 2008,
+    website: 'https://leadingedge.com.ph',
+    pathwayScore: 91,
   },
   {
     id: 'flight-school-9',
@@ -112,7 +226,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Subic Bay Freeport Zone, Zambales, Philippines',
     rating: 4.9,
     price: '$15,000 - $22,000',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmaP25JHAtQK4DWTSRBSiMkCnpUlhEIcUqgw&s',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404524/flight-schools/laminar.jpg',
     region: 'Asia' as Region
   },
   {
@@ -122,7 +236,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Olongapo City, Zambales, Philippines',
     rating: 4.7,
     price: '$12,500 - $18,500',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBSDGuQtiAdIZcgc4DXTZPaUYeQu_Pv5rwoA&s',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404525/flight-schools/aero-equipt.jpg',
     region: 'Asia' as Region
   },
   // Bulacan (Plaridel) Hub
@@ -153,7 +267,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Plaridel, Bulacan, Philippines',
     rating: 4.5,
     price: '$13,000 - $19,000',
-    image: 'https://lh5.googleusercontent.com/proxy/k1zgkepKBAvOEp_pBC0VzSo-7edGvQ2j4aJDa6RgktVM7fo8Lb4oSuFW3klotriJMqVDYFGoZWMhgCNq4fzx3teFhnkClfdDRjSgiBN43w3nxxF8u89vK2rFpeYpXPdpytyqONVyHkAhnFE5',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404534/flight-schools/precision-flight.jpg',
     region: 'Asia' as Region
   },
   {
@@ -224,7 +338,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Bacolod City, Philippines',
     rating: 4.5,
     price: '$13,500 - $19,500',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-RRN2DRaEJ1NrlUypB7fczYeJy7sCXqur0w&s',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404527/flight-schools/aeronavigation.jpg',
     region: 'Asia' as Region
   },
   {
@@ -275,7 +389,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Calapan, Philippines',
     rating: 4.5,
     price: '$13,000 - $19,000',
-    image: 'https://media.licdn.com/dms/image/v2/C511BAQFOrsd3ai-Z1Q/company-background_10000/company-background_10000/0/1584483184299/sapphire_international_aviation_academy_cover?e=2147483647&v=beta&t=Aqf-KitwRAivzSjBllie107hKT1n237HlDFiBcwDRjU',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404543/flight-schools/sapphire.jpg',
     region: 'Asia' as Region
   },
   {
@@ -316,7 +430,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Davao City, Philippines',
     rating: 4.5,
     price: '$12,500 - $18,500',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIckZgmh25I9UrgEfsMv5-GLLHPD2IxHxlzA&s',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404528/flight-schools/mats.jpg',
     region: 'Asia' as Region
   },
   {
@@ -326,7 +440,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Albay, Philippines',
     rating: 4.4,
     price: '$12,000 - $18,000',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiOFBxq_3MhWv4qJzcOE_QWQPMoikg1SZrcg&s',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404529/flight-schools/topflite.jpg',
     region: 'Asia' as Region
   },
   {
@@ -417,7 +531,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Manila, Philippines',
     rating: 4.5,
     price: '$20,000 - $35,000',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoeyZuLb_aVS9GeKlORPolYhyhm420V0-7Dg&s',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404531/flight-schools/feati.jpg',
     region: 'Asia' as Region
   },
   {
@@ -427,7 +541,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Angeles City, Pampanga, Philippines',
     rating: 4.6,
     price: '$22,000 - $38,000',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBsVrTdC2aMqjJIBSvyPxEdSX7jDOm3Ya2MA&s',
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404532/flight-schools/holy-angel.jpg',
     region: 'Asia' as Region
   },
   // International schools for other regions

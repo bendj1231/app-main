@@ -167,6 +167,23 @@ const PATHWAYS = [
     icon: null,
     display_order: 3
   },
+  {
+    id: 'flight-schools-category',
+    general_category_id: 'da486dd1-8832-4ec3-843b-1cbd3c9b8718',
+    name: 'Flight Schools',
+    description: 'Approved flight training academies and aviation universities worldwide',
+    icon: null,
+    display_order: 4
+  },
+  // Military & Government
+  {
+    id: 'military-pathways-category',
+    general_category_id: 'c76a0f63-734c-4d1d-8cf4-b7ad3bdeed0b',
+    name: 'Military Pathways',
+    description: 'Air Force, Navy, Army, Marine Corps and government aviation programs',
+    icon: null,
+    display_order: 1
+  },
   // Career Progression
   {
     id: '48dabe06-87f2-4227-98ed-78e8d96b2d8b',
@@ -446,6 +463,8 @@ const FALLBACK_IMAGES: Record<string, string> = {
   'cadet-programme': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
   'cargo': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
   'private': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'flight-schools': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+  'military': 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80',
   'privateSector': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
   'airtaxi-drones': 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
 };
@@ -664,17 +683,19 @@ interface PathwayJob {
   isLive?: boolean;
   isHot?: boolean;
   image: string;
+  claimed?: boolean;
 }
 
 interface PathwayData {
   id: string;
   name: string;
-  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'type-rating' | 'airtaxi-drones';
+  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'type-rating' | 'airtaxi-drones' | 'flight-schools' | 'military';
   airline: string;
   description?: string;
   image: string;
   matchProbability: number;
   aircraftType: string; // X-Plane 3D model identifier
+  claimed?: boolean;
   region?: Region;
   requirements: {
     totalHours: number;
@@ -1163,60 +1184,6 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80'
     }
   ],
-  'private': [
-    {
-      id: 'wingmentor-intro-private',
-      title: 'Private Pilot Pathways',
-      company: 'PilotRecognition',
-      matchPercentage: 100,
-      location: 'Global',
-      type: 'Introduction',
-      salary: 'Private pilot license and recreational flying pathways',
-      requirements: ['No prior experience required', 'Medical Certificate', 'English Proficiency'],
-      tags: ['Recreational Flying', 'Personal Aviation', 'Flight Training'],
-      postedAt: 'Featured',
-      image: 'wingmentor-white'
-    },
-    {
-      id: 'private-student',
-      title: 'Student Pilot Pathway',
-      company: 'Flight Schools',
-      matchPercentage: 95,
-      location: 'Local Airports / Global',
-      type: 'Flight Training',
-      salary: 'From zero to first solo flight',
-      requirements: ['16+ years old', 'Medical Certificate', 'English Proficiency'],
-      tags: ['First Solo', 'Flexible Schedule', 'Personalized Instruction'],
-      postedAt: 'Open Enrollment',
-      image: 'https://sp-ao.shortpixel.ai/client/to_webp,q_lossy,ret_img,w_1024,h=683/https://www.flightschoolusa.com/wp-content/uploads/2025/04/Student-pilot-1024x683.png'
-    },
-    {
-      id: 'private-ppl',
-      title: 'Private Pilot License',
-      company: 'Flight Training Centers',
-      matchPercentage: 90,
-      location: 'Global',
-      type: 'License Training',
-      salary: 'Private pilot license and recreational flying',
-      requirements: ['40+ hours flight time', 'FAA Knowledge Test', 'Practical Test'],
-      tags: ['Recreational Flying', 'Personal Aviation', 'License Certification'],
-      postedAt: 'Open Enrollment',
-      image: 'https://robbreport.com/wp-content/uploads/2018/08/magnusfusion3.jpg?w=1000'
-    },
-    {
-      id: 'private-sport',
-      title: 'Sport Pilot Certificate',
-      company: 'Flight Schools',
-      matchPercentage: 88,
-      location: 'United States',
-      type: 'License Training',
-      salary: 'Light sport aircraft flying with fewer requirements',
-      requirements: ['20+ hours flight time', 'Medical Certificate or Driver\'s License', 'Knowledge Test'],
-      tags: ['Light Sport', 'Lower Cost', 'Quick Certification'],
-      postedAt: 'Open Enrollment',
-      image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80'
-    },
-  ],
   'type-rating': [
     {
       id: 'wingmentor-intro-type-rating',
@@ -1363,7 +1330,34 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       postedAt: 'Growing Field',
       image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80'
     }
-  ]
+  ],
+  'flight-schools': DUMMY_FLIGHT_SCHOOLS.filter(s => s.id !== 'wingmentor-intro').map(s => ({
+    id: s.id,
+    title: s.name,
+    company: s.location,
+    matchPercentage: Math.round(s.rating * 20),
+    location: s.location,
+    type: 'Flight School',
+    salary: s.price,
+    requirements: ['Medical Certificate', 'English Proficiency'],
+    tags: [s.region, 'Flight Training', 'CAAP Approved'],
+    postedAt: 'Open Enrollment',
+    image: s.image || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    claimed: s.claimed ?? false,
+  })),
+  'military': DUMMY_MILITARY_PATHWAYS.filter(m => m.id !== 'military-intro').map(m => ({
+    id: m.id,
+    title: m.name,
+    company: m.branch,
+    matchPercentage: Math.round(m.rating * 20),
+    location: m.location,
+    type: 'Military',
+    salary: `Service commitment: ${m.serviceCommitment}`,
+    requirements: ['Physical Fitness', 'Security Clearance', 'Citizenship'],
+    tags: [m.branch, 'Military Aviation', 'Service'],
+    postedAt: 'Ongoing Recruitment',
+    image: m.image || 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80',
+  })),
 };
 
 // Transform real job data to PathwayData format
@@ -2592,35 +2586,36 @@ const CategorySelection: React.FC<{
   onCategorySelect: (categoryId: string | null) => void;
   selectedCategoryId: string | null;
 }> = ({ isDarkMode = true, onCategorySelect, selectedCategoryId }) => {
-  const [generalCategories, setGeneralCategories] = useState<GeneralCategory[]>([]);
+  const [generalCategories, setGeneralCategories] = useState<GeneralCategory[]>(GENERAL_CATEGORIES);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetch general categories on mount
+  // Pre-populate with hardcoded fallback so pills render immediately
+  // Supabase fetch runs in background to pick up any DB overrides
   useEffect(() => {
+    let cancelled = false;
     const fetchGeneralCategories = async () => {
-      setLoading(true);
-      setError(null);
-      const { data, error } = await supabase
-        .from('career_hierarchy_general_categories')
-        .select('*')
-        .order('display_order');
-      
-      if (error) {
-        console.error('Error fetching general categories:', error);
-        setError(error.message);
-      } else {
-        // Override category names for specific categories
-        const overriddenCategories = (data || []).map(cat => ({
-          ...cat,
-          name: cat.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
-        }));
-        setGeneralCategories(overriddenCategories);
+      try {
+        const { data, error } = await supabase
+          .from('career_hierarchy_general_categories')
+          .select('*')
+          .order('display_order');
+
+        if (cancelled) return;
+        if (!error && data && data.length > 0) {
+          const overriddenCategories = data.map(cat => ({
+            ...cat,
+            name: cat.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
+          }));
+          setGeneralCategories(overriddenCategories);
+        }
+        // If error or empty — silently keep the hardcoded fallback already in state
+      } catch (e) {
+        // silently keep hardcoded fallback
       }
-      setLoading(false);
     };
-    
+
     fetchGeneralCategories();
+    return () => { cancelled = true; };
   }, []);
 
   return (
@@ -2640,12 +2635,6 @@ const CategorySelection: React.FC<{
           </div>
         </div>
         
-        {error && (
-          <div className={`text-xs p-3 rounded-lg mb-3 flex items-center gap-2 ${isDarkMode ? 'bg-red-900/20 text-red-400 border border-red-800/30' : 'bg-red-50 text-red-600 border border-red-200'}`}>
-            <AlertCircle className="w-4 h-4" />
-            {error}
-          </div>
-        )}
         
         {/* Scrollable Container for Mobile */}
         <div className="relative">
@@ -2654,13 +2643,12 @@ const CategorySelection: React.FC<{
           <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/20 to-transparent z-10 pointer-events-none md:hidden" />
           
           <div 
-            className="flex gap-2 overflow-x-auto pb-3 px-4 md:px-0 md:flex-wrap md:justify-center md:overflow-visible scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="flex flex-wrap gap-2 justify-center pb-3 px-4"
           >
             {/* "All" Button */}
             <button
               onClick={() => onCategorySelect(null)}
-              className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 border-2 ${
+              className={`px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 border-2 ${
                 selectedCategoryId === null
                   ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
                   : isDarkMode 
@@ -2678,7 +2666,7 @@ const CategorySelection: React.FC<{
                   onClick={() => {
                     onCategorySelect(category.id === selectedCategoryId ? null : category.id);
                   }}
-                  className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 border-2 ${
+                  className={`px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 border-2 ${
                     selectedCategoryId === category.id
                       ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
                       : isDarkMode 
@@ -2703,17 +2691,6 @@ const CategorySelection: React.FC<{
           </div>
         </div>
         
-        {/* Selection Count */}
-        {selectedCategoryId && (
-          <div className="text-center mt-2">
-            <button
-              onClick={() => onCategorySelect(null)}
-              className={`text-xs underline underline-offset-2 transition-colors ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
-            >
-              Clear filter
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -4326,6 +4303,66 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [popoverJobId, setPopoverJobId] = useState<string | null>(null);
   const [canPostPathways, setCanPostPathways] = useState(false);
   const [enterprisePathwayCards, setEnterprisePathwayCards] = useState<PathwayData[]>([]);
+  const [selectedStage1PathwayId, setSelectedStage1PathwayId] = useState<string | null>(null);
+  const [stage1Index, setStage1Index] = useState(0);
+
+  // Maps PATHWAYS[] UUID → DISCOVERY_PATHWAYS short-string key
+  const PATHWAY_UUID_TO_DISCOVERY_KEY: Record<string, string> = {
+    // Pilot Training & Certification → private / type-rating
+    'c39c880b-dce1-4c6a-88b6-c5bf19eb07d0': 'private',       // Student Pilot
+    '83806ec2-6376-4b65-bcd8-4fc25391cc71': 'private',       // Private Pilot
+    '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1': 'type-rating',   // Commercial Pilot
+    'flight-schools-category': 'flight-schools',             // Flight Schools
+    // Military & Government
+    'military-pathways-category': 'military',                  // Military Pathways
+    // Career Progression → airline-pathways / cadet-programme
+    '48dabe06-87f2-4227-98ed-78e8d96b2d8b': 'airline-pathways', // ATP
+    'da3b7514-925d-4024-9341-08248d52cdb9': 'airline-pathways', // Flight Instructor
+    'a7dfe793-df6f-4286-8bd2-afa0653a608d': 'cadet-programme',  // Cadet Pilot
+    'c18c5eb8-5b0a-4ba1-ac17-fe0e658f1dd7': 'airline-pathways', // Low Timer
+    '4f160ab4-d94f-496a-9099-5386ffa456ec': 'airline-pathways', // High Timer
+    '8d3faf3f-a892-4902-b82c-93980080dac9': 'airline-pathways', // Regional
+    'fbb3a1be-432e-4c85-b23b-c1cce9d32913': 'airline-pathways', // Major Airline
+    // Commercial Operations
+    '9145209b-d0de-4b43-a2bd-d7f523f8f230': 'privateSector',   // Charter
+    'e11079f9-3506-4543-b273-a8410464b396': 'privateSector',   // Corporate
+    '9aab7b85-3f81-43ca-8d8b-421ee658ecaf': 'cargo',           // Cargo
+    'acdea7e3-fdfb-4d2e-a711-c653bd6e38ab': 'privateSector',   // Private Sector
+    // Specialized / Humanitarian / Remote / Military → airtaxi-drones or airline-pathways
+    '1c04e201-07f8-49f5-a899-b80742281ed8': 'privateSector',
+    'c311583f-a6c1-4c38-b33f-ec1ff091501d': 'airline-pathways',
+    '519a5814-a26d-431b-838f-d09dbf62586c': 'privateSector',
+    '8a2ccd30-b6dd-49a8-a451-8d32ce42bf22': 'airtaxi-drones', // Air Taxi
+    '3a9e3d74-5937-4a68-ab0c-c11f8524c8ef': 'airtaxi-drones', // Drones
+    '18a40676-b17d-400e-9449-4b65c4c44e38': 'airtaxi-drones', // Aviation Tech
+    '5b6097c0-edef-4d89-90bc-9a0fa46aba84': 'airline-pathways',
+    'e9877f93-5972-45a7-a635-e6fbf42b43c5': 'airline-pathways',
+  };
+
+  // Per-pathway card images for Stage 1
+  const PATHWAY_IMAGES: Record<string, string> = {
+    'c39c880b-dce1-4c6a-88b6-c5bf19eb07d0': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+    '83806ec2-6376-4b65-bcd8-4fc25391cc71': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+    '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    '48dabe06-87f2-4227-98ed-78e8d96b2d8b': CLOUDINARY_AIRLINES['emirates'] || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    'da3b7514-925d-4024-9341-08248d52cdb9': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    'a7dfe793-df6f-4286-8bd2-afa0653a608d': CLOUDINARY_AIRLINES['qatar'] || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    'c18c5eb8-5b0a-4ba1-ac17-fe0e658f1dd7': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    '4f160ab4-d94f-496a-9099-5386ffa456ec': CLOUDINARY_AIRLINES['singapore'] || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    '8d3faf3f-a892-4902-b82c-93980080dac9': CLOUDINARY_AIRLINES['cathay'] || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    'fbb3a1be-432e-4c85-b23b-c1cce9d32913': CLOUDINARY_AIRLINES['lufthansa'] || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    '9145209b-d0de-4b43-a2bd-d7f523f8f230': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
+    'e11079f9-3506-4543-b273-a8410464b396': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
+    '9aab7b85-3f81-43ca-8d8b-421ee658ecaf': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
+    'acdea7e3-fdfb-4d2e-a711-c653bd6e38ab': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+    '8a2ccd30-b6dd-49a8-a451-8d32ce42bf22': 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
+    '3a9e3d74-5937-4a68-ab0c-c11f8524c8ef': 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
+    '18a40676-b17d-400e-9449-4b65c4c44e38': 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
+    '5b6097c0-edef-4d89-90bc-9a0fa46aba84': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    'e9877f93-5972-45a7-a635-e6fbf42b43c5': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    'flight-schools-category': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+    'military-pathways-category': 'https://www.airandspaceforces.com/app/uploads/2020/07/6255683-scaled.jpg',
+  };
   const [regionFilter, setRegionFilter] = useState<Region>('All');
   const [showMilitaryPathwaysPage, setShowMilitaryPathwaysPage] = useState(false);
   const [showSpecialPathwaysPage, setShowSpecialPathwaysPage] = useState(false);
@@ -4362,8 +4399,82 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
   }, [showMilitaryPathwaysPage]);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const stage2Ref = useRef<HTMLDivElement>(null);
+  const stage2CardsRef = useRef<PathwayData[]>([]);
+  const [stage2Index, setStage2Index] = useState(0);
+  const [stage2RegionFilter, setStage2RegionFilter] = useState<string>('All');
+  const [stage2CountryFilter, setStage2CountryFilter] = useState<string>('All');
+  const [userCountryCode, setUserCountryCode] = useState<string>('');
+  const [flightSchoolCardData, setFlightSchoolCardData] = useState<Record<string, any>>({});
+  const [flightSchoolEngagement, setFlightSchoolEngagement] = useState<Record<string, any>>({});
   const dropdownRef = React.useRef<HTMLDivElement>(null);
-  
+
+  // Read IP-detected country code from localStorage (written by TopNavbar)
+  const COUNTRY_TO_REGION: Record<string, { region: string; country: string }> = {
+    'PH': { region: 'Asia', country: 'Philippines' },
+    'SG': { region: 'Asia', country: 'Singapore' },
+    'DE': { region: 'Europe', country: 'Germany' },
+    'GB': { region: 'Europe', country: 'UK' },
+    'FR': { region: 'Europe', country: 'France' },
+    'NL': { region: 'Europe', country: 'Netherlands' },
+    'ES': { region: 'Europe', country: 'Spain' },
+    'US': { region: 'Americas', country: 'USA' },
+    'CA': { region: 'Americas', country: 'Canada' },
+    'AU': { region: 'Oceania', country: 'Australia' },
+    'NZ': { region: 'Oceania', country: 'New Zealand' },
+    'AE': { region: 'Middle East', country: 'UAE' },
+    'SA': { region: 'Middle East', country: 'Saudi Arabia' },
+    'QA': { region: 'Middle East', country: 'Qatar' },
+    'ZA': { region: 'Africa', country: 'South Africa' },
+    'NG': { region: 'Africa', country: 'Nigeria' },
+    'KE': { region: 'Africa', country: 'Kenya' },
+  };
+  useEffect(() => {
+    const cached = localStorage.getItem('cachedCountryCode');
+    if (cached) setUserCountryCode(cached);
+    else {
+      fetch('https://ipapi.co/json/')
+        .then(r => r.ok ? r.json() : null)
+        .then(d => { if (d?.country_code) { setUserCountryCode(d.country_code); localStorage.setItem('cachedCountryCode', d.country_code); localStorage.setItem('cachedCountryTime', Date.now().toString()); } })
+        .catch(() => {});
+    }
+  }, []);
+
+  // Auto-set region/country filter to user's location when flight-schools Stage 2 opens
+  useEffect(() => {
+    if (selectedPathwayCard?.category === 'flight-schools' && userCountryCode) {
+      const match = COUNTRY_TO_REGION[userCountryCode];
+      if (match) {
+        setStage2RegionFilter(match.region);
+        // Only set country sub-filter if that country actually has schools listed
+        const LISTED_COUNTRIES = ['Philippines', 'Singapore', 'Germany', 'USA', 'Australia', 'UAE', 'South Africa'];
+        if (LISTED_COUNTRIES.includes(match.country)) {
+          setStage2CountryFilter(match.country);
+        } else {
+          setStage2CountryFilter('All'); // show all schools in that region
+        }
+        setStage2Index(0);
+      }
+    }
+  }, [selectedPathwayCard?.category, userCountryCode]);
+
+  // Fetch flight school card data from Supabase when a card is selected
+  useEffect(() => {
+    if (!selectedCarouselPathway?.id || selectedPathwayCard?.category !== 'flight-schools') return;
+    const cardId = selectedCarouselPathway.id;
+    // Skip if already cached
+    if (flightSchoolCardData[cardId]) return;
+    const fetchCard = async () => {
+      const [{ data: card }, { data: totals }] = await Promise.all([
+        supabase.from('flight_school_cards').select('*').eq('id', cardId).single(),
+        supabase.from('pathway_card_engagement_totals').select('*').eq('card_id', cardId).eq('card_type', 'flight_school').single(),
+      ]);
+      if (card) setFlightSchoolCardData(prev => ({ ...prev, [cardId]: card }));
+      if (totals) setFlightSchoolEngagement(prev => ({ ...prev, [cardId]: totals }));
+    };
+    fetchCard();
+  }, [selectedCarouselPathway?.id, selectedPathwayCard?.category]);
+
   // 3-stage hierarchy selection state
   const [hierarchySelection, setHierarchySelection] = useState<{
     generalCategory?: string;
@@ -4386,6 +4497,13 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       pathway: undefined,
       subPathway: undefined,
     }));
+    setSelectedStage1PathwayId(null);
+    setStage1Index(0);
+    setStage2Index(0);
+    setStage2RegionFilter('All');
+    setStage2CountryFilter('All');
+    setSelectedPathwayCard(null);
+    setSelectedCarouselPathway(null);
   }, []);
 
   const { userProfile, currentUser } = useAuth();
@@ -4608,7 +4726,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           return {
             id: `enterprise-${c.id}`,
             name: c.title,
-            category: (c.category as PathwayData['category']) || 'airline-pathways',
+            category: (['airline-pathways','cadet-programme','private','privateSector','cargo','type-rating','airtaxi-drones','flight-schools','military'].includes(c.category) ? c.category : 'airline-pathways') as PathwayData['category'],
             airline: airlineName,
             description: c.subtitle || c.benefits_summary || '',
             image: logoUrl,
@@ -4772,10 +4890,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     ...(mode === 'jobs' ? dynamicPathways : []),
   ];
 
-  console.log('allPathways count:', allPathways.length);
-  console.log('hierarchySelection:', hierarchySelection);
-  console.log('activeCategory:', activeCategory);
-  console.log('categoryPathways:', categoryPathways);
+  console.log('[Stage1] allPathways count:', allPathways.length, '| enterprise:', enterprisePathwayCards.length, '| discovery:', discoveryPathways.length);
+  console.log('[Stage1] hierarchySelection generalCategory:', hierarchySelection.generalCategory);
+  console.log('[Stage1] activeCategory:', activeCategory);
+  console.log('[Stage1] categoryPathways count:', categoryPathways.length);
+  console.log('[Stage1] allPathways categories:', allPathways.map(p => p.category));
 
   const filteredPathways = allPathways.filter(pathway => {
     // Use hierarchy selection for filtering if available, otherwise use activeCategory
@@ -4786,7 +4905,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       // Map general category to pathway category
       const categoryMapping: Record<string, string[]> = {
         // Pilot Training & Certification
-        'da486dd1-8832-4ec3-843b-1cbd3c9b8718': ['cadet-programme', 'private', 'type-rating'],
+        'da486dd1-8832-4ec3-843b-1cbd3c9b8718': ['cadet-programme', 'private', 'type-rating', 'flight-schools'],
         // Career Progression
         '9c6dc768-ecac-408f-b62c-d3f72ae8e509': ['airline-pathways'],
         // Commercial Operations
@@ -5169,7 +5288,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 {/* PilotRecognition.com Logo */}
                 <div className="flex flex-col">
                   <span style={{ fontFamily: 'Georgia, serif' }} className="text-black text-2xl font-normal">
-                    Discover <span className="text-red-600">Pathways</span>
+                    Discover <span className="text-red-600">Pathways</span>{userCountryCode && <span className="text-slate-400 text-base font-normal"> — {userCountryCode}</span>}
                   </span>
                   <span className="text-xs text-slate-600 font-normal">
                     pilotrecognition.com
@@ -5475,7 +5594,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <div className="mb-8 text-center">
-          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover Pathways</p>
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover Pathways{userCountryCode ? ` — ${userCountryCode}` : ''}</p>
           <h1 className={`text-4xl md:text-5xl font-serif font-normal ${headerText} mb-2`}>
             {Object.keys(hierarchySelection).length > 0
               ? <><span style={{ color: '#ffffff' }}>Pilot Recognition</span> <span style={{ color: '#dc2626' }}>Pathways</span></>
@@ -5485,21 +5604,21 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         </div>
 
         {/* Breadcrumbs */}
-        <div className="mb-4">
+        <div className="mb-4 flex justify-start">
           <nav className="flex items-center gap-2 text-sm">
             <button 
               onClick={() => onNavigate?.('access-portal-2') || (window.location.href = '/access-portal-2')}
-              className={`hover:underline ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
+              className="text-white/60 hover:text-white hover:underline"
             >
               Home
             </button>
-            <ChevronRight className={`w-4 h-4 ${isDarkMode ? 'text-slate-600' : 'text-slate-300'}`} />
-            <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Pathways</span>
+            <ChevronRight className="w-4 h-4 text-white/40" />
+            <span className="font-medium text-white">Pathways</span>
             {hierarchySelection.generalCategory && (
               <>
-                <ChevronRight className={`w-4 h-4 ${isDarkMode ? 'text-slate-600' : 'text-slate-300'}`} />
-                <span className={`font-medium ${isDarkMode ? 'text-sky-400' : 'text-blue-600'}`}>
-                  {hierarchySelection.generalCategory}
+                <ChevronRight className="w-4 h-4 text-white/40" />
+                <span className="font-medium text-white">
+                  {GENERAL_CATEGORIES.find(c => c.id === hierarchySelection.generalCategory)?.name ?? hierarchySelection.generalCategory}
                 </span>
               </>
             )}
@@ -5551,7 +5670,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   className="text-3xl md:text-4xl font-normal text-white"
                   style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
                 >
-                  Discover Pathways
+                  Discover Pathways{userCountryCode ? <span className="text-white/40 text-2xl"> — {userCountryCode}</span> : ''}
                 </h2>
                 <p className={`${subText} text-xs mt-1`}>
                   {mode === 'jobs'
@@ -5564,185 +5683,300 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
         </div>
 
-        {/* Edge-to-edge Carousel Section - Discover Pathways - Simplified */}
-
-        {/* Carousel Container - Contained within max-width */}
+        {/* Stage 1: Pathway Cards — filtered by selected pill */}
         <div className="relative w-full z-10">
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
-              .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; }
-              .pathways-carousel {
-                scroll-snap-type: x mandatory;
-                scroll-behavior: smooth;
-              }
-              .pathways-carousel > div {
-                scroll-snap-align: center;
-              }
-              @keyframes blink-fade-main {
-                0%, 100% { opacity: 0.5; }
-                50% { opacity: 1; }
-              }
-              .selection-indicator-main {
-                animation: blink-fade-main 2s ease-in-out infinite;
-              }
+              .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-snap-align: center; scroll-behavior: smooth; }
+              .pathways-carousel > div { scroll-snap-align: center; }
             `}</style>
 
-            {/* Selection Guidance - Clearer instructions */}
-            <div className="text-center mb-6 relative z-50">
-              <div className={`inline-flex items-center gap-3 px-4 py-2 rounded-full ${isDarkMode ? 'bg-slate-800/80 border border-slate-700' : 'bg-white/80 border border-slate-200'} backdrop-blur-sm`}>
-                {selectedPathwayForMatch ? (
-                  <>
-                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    <span className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                      Selected: {selectedPathwayForMatch.name}
-                    </span>
-                    <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                      Scroll down for details
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span className="flex items-center gap-1 text-amber-400">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
-                      </svg>
-                    </span>
-                    <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                      <span className="hidden md:inline">Drag or swipe to browse • Click any card to select</span>
-                      <span className="md:hidden">Swipe to browse • Tap to select</span>
-                    </span>
-                  </>
-                )}
-              </div>
+            {/* Instruction hint */}
+            <div className="text-center mb-5">
+              <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs ${isDarkMode ? 'bg-slate-800/70 text-slate-400 border border-slate-700' : 'bg-white/80 text-slate-500 border border-slate-200'} backdrop-blur-sm`}>
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                Swipe to browse · Click a card to explore
+              </span>
             </div>
 
+            {/* Stage 1 Carousel */}
             <div
               ref={carouselRef}
               className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4"
-              style={{
-                WebkitOverflowScrolling: 'touch',
-                cursor: 'grab',
-                scrollSnapType: 'x mandatory',
-                scrollBehavior: 'smooth',
-                minHeight: '320px',
-              }}
+              style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', minHeight: '300px', scrollSnapType: 'x mandatory' }}
               onMouseDown={(e) => {
                 const el = carouselRef.current;
                 if (!el) return;
                 el.style.cursor = 'grabbing';
                 const startX = e.pageX - el.offsetLeft;
                 const scrollLeft = el.scrollLeft;
-                const onMove = (me: MouseEvent) => {
-                  const x = me.pageX - el.offsetLeft;
-                  el.scrollLeft = scrollLeft - (x - startX);
-                };
+                const onMove = (me: MouseEvent) => { el.scrollLeft = scrollLeft - (me.pageX - el.offsetLeft - startX); };
                 const onUp = () => {
                   el.style.cursor = 'grab';
                   window.removeEventListener('mousemove', onMove);
                   window.removeEventListener('mouseup', onUp);
-                  
-                  // Snap to nearest card
-                  const cardWidth = 536; // 520px card + 16px gap
-                  const scrollPosition = el.scrollLeft;
-                  const nearestIndex = Math.round(scrollPosition / cardWidth);
-                  el.scrollTo({
-                    left: nearestIndex * cardWidth,
-                    behavior: 'smooth'
-                  });
                 };
                 window.addEventListener('mousemove', onMove);
                 window.addEventListener('mouseup', onUp);
               }}
             >
-              {/* Stage 1: Show 7 Category Cards */}
               {(() => {
-                const categories = [
-                  { id: 'private', name: 'Private', description: 'Private pilot training and recreational flying pathways', count: 4 },
-                  { id: 'cadet-programme', name: 'Cadet Programme', description: 'Airline-sponsored cadet training programs', count: 28 },
-                  { id: 'type-rating', name: 'Type Rating', description: 'Aircraft type ratings and advanced certifications', count: 5 },
-                  { id: 'airline-pathways', name: 'Airline Pathways', description: 'Commercial airline career progression paths', count: 7 },
-                  { id: 'cargo', name: 'Cargo', description: 'Cargo and freight aviation careers', count: 5 },
-                  { id: 'privateSector', name: 'Private Sector', description: 'Private aviation and charter operations', count: 5 },
-                  { id: 'airtaxi-drones', name: 'Airtaxi/Drones', description: 'eVTOL, drones and emerging aviation technology', count: 5 },
+                const selectedUUID = hierarchySelection.generalCategory;
+
+                // When no pill selected: show a curated recommended mix from all buckets
+                type RecommendedCard = { id: string; name: string; description: string; image: string; discoveryKey: string; tag: string; tagColor: string; };
+                const RECOMMENDED_MIX: RecommendedCard[] = [
+                  {
+                    id: 'rec-cadet',
+                    name: 'Cathay Pacific Cadet Programme',
+                    description: 'Airline-sponsored pathway from zero hours — full training covered',
+                    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
+                    discoveryKey: 'cadet-programme',
+                    tag: 'Cadet', tagColor: 'bg-blue-600',
+                  },
+                  {
+                    id: 'rec-cargo',
+                    name: 'FedEx Express Pilot',
+                    description: 'Heavy cargo operations — $250K-$350K/year, global network',
+                    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+                    discoveryKey: 'cargo',
+                    tag: 'Cargo', tagColor: 'bg-emerald-600',
+                  },
+                  {
+                    id: 'rec-private-sector',
+                    name: 'NetJets Pilot Career',
+                    description: 'Fractional ownership — home basing, premium pay, largest private fleet',
+                    image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+                    discoveryKey: 'privateSector',
+                    tag: 'Private Sector', tagColor: 'bg-amber-600',
+                  },
+                  {
+                    id: 'rec-type-rating',
+                    name: 'Type Rating Pathways',
+                    description: 'A320, B737, B777 type rating routes and approved training centres',
+                    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+                    discoveryKey: 'type-rating',
+                    tag: 'Type Rating', tagColor: 'bg-pink-600',
+                  },
+                  {
+                    id: 'rec-flydubai',
+                    name: 'FlyDubai Cadet Programme',
+                    description: 'Full sponsorship, B737 MAX fleet, Dubai base, career progression',
+                    image: 'https://cdn.uc.assets.prezly.com/5f1fd10f-a9bc-4bf0-aa29-b9a26dc42407/-/crop/1952x1066/0,272/-/preview/-/resize/1108x/-/quality/best/-/format/auto/',
+                    discoveryKey: 'cadet-programme',
+                    tag: 'Cadet', tagColor: 'bg-blue-600',
+                  },
+                  {
+                    id: 'rec-airtaxi',
+                    name: 'eVTOL & Air Taxi Pathways',
+                    description: 'Emerging urban air mobility — Joby, Archer, Wisk and more',
+                    image: 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
+                    discoveryKey: 'airtaxi-drones',
+                    tag: 'Emerging', tagColor: 'bg-purple-600',
+                  },
+                  {
+                    id: 'rec-private',
+                    name: 'Private Pilot Pathway',
+                    description: 'From recreational flying to CPL — structured certification route',
+                    image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+                    discoveryKey: 'private',
+                    tag: 'Training', tagColor: 'bg-orange-600',
+                  },
+                  {
+                    id: 'rec-ups',
+                    name: 'UPS Airlines Captain',
+                    description: 'Heavy cargo, Teamsters union, $240K-$320K/year — Louisville hub',
+                    image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
+                    discoveryKey: 'cargo',
+                    tag: 'Cargo', tagColor: 'bg-emerald-600',
+                  },
                 ];
-                
-                return [...categories, ...categories, ...categories].map((category, idx) => {
-                  const isSelected = selectedPathwayCard?.category === category.id;
+
+                // ── Recommended mix (no pill selected) ──────────────────────
+                if (!selectedUUID) {
+                  return RECOMMENDED_MIX.map((rec, recIdx) => {
+                    const isSelected = selectedStage1PathwayId === rec.id;
+                    return (
+                      <div
+                        key={rec.id}
+                        className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
+                        style={{ width: '520px', height: '290px', scrollSnapAlign: 'center', flexShrink: 0 }}
+                        onClick={() => {
+                          setStage1Index(recIdx);
+                          setStage2Index(0);
+                          setSelectedStage1PathwayId(rec.id);
+                          setSelectedPathwayCard({
+                            id: rec.id,
+                            name: rec.name,
+                            description: rec.description,
+                            category: rec.discoveryKey as PathwayData['category'],
+                            airline: 'Multiple Airlines',
+                            locations: ['Global'],
+                            matchProbability: 0.85,
+                            image: rec.image,
+                            aircraftType: '',
+                            hiringStatus: 'moderate' as const,
+                            requirements: { totalHours: 0, typeRatings: [] },
+                          });
+                          setSelectedCarouselPathway(null);
+                        }}
+                      >
+                        <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                          <img src={rec.image} alt={rec.name} className="w-full h-full object-cover block" loading="lazy"
+                            onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }} />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                          <div className="absolute top-3 left-3">
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold text-white ${rec.tagColor}`}>{rec.tag}</span>
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 p-5">
+                            <h4 className="text-xl font-serif font-normal text-white leading-tight mb-1">{rec.name}</h4>
+                            <p className="text-white/60 text-sm leading-snug line-clamp-2">{rec.description}</p>
+                          </div>
+                          {isSelected && (
+                            <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center">
+                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  });
+                }
+
+                // ── Pill selected: show PATHWAYS[] for that category UUID ────
+                return PATHWAYS.filter(p => p.general_category_id === selectedUUID).map((item, itemIdx) => {
+                  const imgSrc = PATHWAY_IMAGES[item.id] || FALLBACK_IMAGES['airline-pathways'] || '/images/accessportal.png';
+                  const isSelected = selectedStage1PathwayId === item.id;
+                  const discoveryKey = PATHWAY_UUID_TO_DISCOVERY_KEY[item.id];
+                  const stage2Count = discoveryKey ? (DISCOVERY_PATHWAYS[discoveryKey]?.length ?? 0) : 0;
+
                   return (
                     <div
-                      key={`${category.id}-${idx}`}
-                      id={`category-card-${category.id}`}
+                      key={item.id}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
-                      style={{ 
-                        width: '520px', 
-                        height: '290px',
-                        scrollSnapAlign: 'center',
-                      }}
+                      style={{ width: '520px', height: '290px', scrollSnapAlign: 'center', flexShrink: 0 }}
                       onClick={() => {
-                        console.log('Category clicked:', category.name);
-                        // Create a mock pathway object for the category
-                        const categoryPathway = {
-                          id: category.id,
-                          name: category.name,
-                          description: category.description,
-                          category: category.id,
-                          airline: 'Multiple Airlines',
-                          locations: ['Global'],
-                          matchProbability: 0.85,
-                          requirements: { totalHours: 0, typeRatings: [] },
-                        };
-                        setSelectedCarouselPathway(categoryPathway);
-                        setSelectedPathwayCard(categoryPathway);
-                      }}
-                      onContextMenu={(e) => {
-                        e.preventDefault();
-                        const cardId = `category-card-${category.id}`;
-                        navigator.clipboard.writeText(cardId);
-                        addToast('success', 'Card ID Copied!', cardId);
+                        if (discoveryKey) {
+                          setStage1Index(itemIdx);
+                          setStage2Index(0);
+                          setSelectedStage1PathwayId(item.id);
+                          setSelectedPathwayCard({
+                            id: item.id,
+                            name: item.name,
+                            description: item.description,
+                            category: discoveryKey as PathwayData['category'],
+                            airline: 'Multiple Airlines',
+                            locations: ['Global'],
+                            matchProbability: 0.85,
+                            image: imgSrc,
+                            aircraftType: '',
+                            hiringStatus: 'moderate' as const,
+                            requirements: { totalHours: 0, typeRatings: [] },
+                          });
+                          setSelectedCarouselPathway(null);
+                        }
                       }}
                     >
-                      <div 
-                        className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800"
-                        style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}
-                      >
-                        <img 
-                          src={'/images/accessportal.png'} 
-                          alt={category.name}
-                          className="w-full h-full object-cover opacity-60"
-                          loading="lazy"
-                        />
+                      <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                        <img src={imgSrc} alt={item.name} className="w-full h-full object-cover block" loading="lazy"
+                          onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }} />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                          <h4 className="text-lg font-serif font-normal text-white drop-shadow-lg">{category.name}</h4>
-                          <p className="text-white/70 text-sm">{category.description}</p>
-                          <p className="text-white/50 text-xs mt-1">{category.count} pathways</p>
+                        <div className="absolute bottom-0 left-0 right-0 p-5">
+                          <h4 className="text-xl font-serif font-normal text-white leading-tight mb-1">{item.name}</h4>
+                          <p className="text-white/60 text-sm leading-snug line-clamp-2">{item.description}</p>
+                          {stage2Count > 0 && (
+                            <p className="text-sky-400 text-xs mt-1.5 font-semibold">{stage2Count} pathways →</p>
+                          )}
                         </div>
-                        {/* Card ID Badge - Click to copy */}
-                        <div 
-                          className="absolute top-2 left-2 px-2 py-1 rounded bg-black/50 backdrop-blur-sm z-20 cursor-pointer hover:bg-black/70 transition-colors"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            const cardId = `category-card-${category.id}`;
-                            console.log('Category ID badge clicked:', cardId);
-                            navigator.clipboard.writeText(cardId).then(() => {
-                              console.log('Clipboard write successful');
-                              addToast('success', 'Card ID Copied!', cardId);
-                            }).catch(err => {
-                              console.error('Clipboard write failed:', err);
-                            });
-                          }}
-                          title="Click to copy card ID"
-                        >
-                          <span className="text-[10px] text-white/60 font-mono">ID: {category.id}</span>
-                        </div>
+                        {isSelected && (
+                          <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center">
+                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
                 });
               })()}
             </div>
+
+            {/* Stage 1 Navigation Arrows */}
+            {(() => {
+              const selectedUUID = hierarchySelection.generalCategory;
+              // Build the same ordered list the carousel renders
+              type S1Card = { id: string; name: string; description: string; image: string; discoveryKey: string };
+              const stage1Cards: S1Card[] = selectedUUID
+                ? PATHWAYS.filter(p => p.general_category_id === selectedUUID).map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    image: PATHWAY_IMAGES[item.id] || FALLBACK_IMAGES['airline-pathways'] || '/images/accessportal.png',
+                    discoveryKey: PATHWAY_UUID_TO_DISCOVERY_KEY[item.id] || '',
+                  }))
+                : [
+                    { id: 'rec-cadet', name: 'Cathay Pacific Cadet Programme', description: 'Airline-sponsored pathway from zero hours — full training covered', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg', discoveryKey: 'cadet-programme' },
+                    { id: 'rec-cargo', name: 'FedEx Express Pilot', description: 'Heavy cargo operations — $250K-$350K/year, global network', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80', discoveryKey: 'cargo' },
+                    { id: 'rec-airline', name: 'Emirates First Officer', description: 'Long-haul widebody — direct entry, competitive pay package', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.jpg', discoveryKey: 'airline-pathways' },
+                    { id: 'rec-private', name: 'Private Pilot Pathway', description: 'From recreational flying to CPL — structured certification route', image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80', discoveryKey: 'private' },
+                    { id: 'rec-ups', name: 'UPS Airlines Captain', description: 'Heavy cargo, Teamsters union, $240K-$320K/year — Louisville hub', image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80', discoveryKey: 'cargo' },
+                  ];
+
+              const selectCardAtIndex = (index: number) => {
+                const card = stage1Cards[index];
+                if (!card || !card.discoveryKey) return;
+                setSelectedStage1PathwayId(card.id);
+                setStage2Index(0);
+                setSelectedPathwayCard({
+                  id: card.id,
+                  name: card.name,
+                  description: card.description,
+                  category: card.discoveryKey as PathwayData['category'],
+                  airline: 'Multiple Airlines',
+                  locations: ['Global'],
+                  matchProbability: 0.85,
+                  image: card.image,
+                  aircraftType: '',
+                  hiringStatus: 'moderate' as const,
+                  requirements: { totalHours: 0, typeRatings: [] },
+                });
+                setSelectedCarouselPathway(null);
+              };
+
+              const navigate = (dir: 1 | -1) => {
+                const el = carouselRef.current;
+                if (!el) return;
+                const targetIndex = Math.max(0, Math.min(stage1Cards.length - 1, stage1Index + dir));
+                const firstCard = el.querySelector<HTMLElement>(':scope > div');
+                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 540;
+                // Center the target card in the viewport
+                const scrollTarget = targetIndex * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
+                el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
+                setStage1Index(targetIndex);
+                // Select after scroll animation (~400ms)
+                setTimeout(() => selectCardAtIndex(targetIndex), 420);
+              };
+
+              return (
+                <div className="flex items-center justify-center gap-4 mt-4">
+                  <button
+                    onClick={() => navigate(-1)}
+                    className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => navigate(1)}
+                    className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              );
+            })()}
           </div>
 
           {/* Stage 2: Pathways Carousel - Shows when a category is selected */}
@@ -5760,8 +5994,53 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 </p>
               </div>
 
+              {/* Region + Country filter — only for flight-schools */}
+              {selectedPathwayCard.category === 'flight-schools' && (() => {
+                const REGION_COUNTRIES: Record<string, string[]> = {
+                  'Asia': ['All Countries', 'Philippines', 'Singapore'],
+                  'Europe': ['All Countries', 'Germany'],
+                  'Americas': ['All Countries', 'USA'],
+                  'Oceania': ['All Countries', 'Australia'],
+                  'Middle East': ['All Countries', 'UAE'],
+                  'Africa': ['All Countries', 'South Africa'],
+                };
+                const regions = ['All', ...Object.keys(REGION_COUNTRIES)];
+                const countries = stage2RegionFilter !== 'All' ? REGION_COUNTRIES[stage2RegionFilter] || [] : [];
+                return (
+                  <div className="flex flex-wrap items-center gap-3 mb-6">
+                    {/* Region pills */}
+                    <div className="flex flex-wrap gap-2">
+                      {regions.map(r => (
+                        <button
+                          key={r}
+                          onClick={() => { setStage2RegionFilter(r); setStage2CountryFilter('All'); setStage2Index(0); }}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${stage2RegionFilter === r ? 'bg-sky-500 border-sky-500 text-white' : 'border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'}`}
+                        >
+                          {r}
+                        </button>
+                      ))}
+                    </div>
+                    {/* Country sub-filter */}
+                    {stage2RegionFilter !== 'All' && countries.length > 1 && (
+                      <div className="flex flex-wrap gap-2 pl-2 border-l border-white/10">
+                        {countries.map(c => (
+                          <button
+                            key={c}
+                            onClick={() => { setStage2CountryFilter(c === 'All Countries' ? 'All' : c); setStage2Index(0); }}
+                            className={`px-3 py-1.5 rounded-full text-xs transition-all border ${(c === 'All Countries' ? stage2CountryFilter === 'All' : stage2CountryFilter === c) ? 'bg-white/20 border-white/30 text-white' : 'border-white/10 bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'}`}
+                          >
+                            {c}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
               {/* Stage 2: Individual Pathways for Selected Category */}
               <div 
+                ref={stage2Ref}
                 className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4"
                 style={{
                   WebkitOverflowScrolling: 'touch',
@@ -5769,31 +6048,70 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   scrollBehavior: 'smooth',
                 }}
               >
-                {filteredPathways.filter(p => p.category === selectedPathwayCard.category).length > 0 ? (
-                  [...filteredPathways.filter(p => p.category === selectedPathwayCard.category)].map((pathway, idx) => {
+                {(() => {
+                  // Pull Stage 2 cards directly from DISCOVERY_PATHWAYS — bypasses the filteredPathways
+                  // pipeline which breaks when a hierarchy pill is selected (allPathways uses categoryPathways then)
+                  const discoveryKey = selectedPathwayCard.category;
+                  let rawCards: PathwayJob[] = DISCOVERY_PATHWAYS[discoveryKey] || [];
+                  // Apply region/country filter for flight-schools at source
+                  if (discoveryKey === 'flight-schools') {
+                    if (stage2RegionFilter !== 'All') {
+                      rawCards = rawCards.filter(j => j.tags?.[0] === stage2RegionFilter);
+                    }
+                    if (stage2CountryFilter !== 'All') {
+                      rawCards = rawCards.filter(j => j.location?.includes(stage2CountryFilter));
+                    }
+                  }
+                  // Convert PathwayJob → PathwayData shape for rendering
+                  const stage2Cards: PathwayData[] = rawCards.map(j => ({
+                    id: j.id,
+                    name: j.title,
+                    airline: j.company,
+                    description: j.salary || '',
+                    image: (j.image && !j.image.startsWith('wingmentor')) ? j.image : '',
+                    category: discoveryKey as PathwayData['category'],
+                    matchProbability: j.matchPercentage,
+                    aircraftType: j.image?.startsWith('wingmentor') ? '__wingmentor__' : 'generic',
+                    hiringStatus: j.postedAt === 'Hiring Now' ? 'actively_hiring' : j.postedAt === 'Limited Slots' ? 'limited' : 'moderate',
+                    locations: [j.location],
+                    requirements: { totalHours: 0, typeRatings: [] },
+                    claimed: (j as any).claimed ?? false,
+                  }));
+                  // Also include any live enterprise cards matching this category
+                  const enterpriseForCategory = enterprisePathwayCards.filter(p => p.category === discoveryKey);
+                  const allStage2 = [...enterpriseForCategory, ...stage2Cards];
+                  stage2CardsRef.current = allStage2;
+                  console.log('[Stage2] discoveryKey:', discoveryKey, 'cards:', allStage2.length);
+                  return allStage2.length > 0 ? (
+                  allStage2.map((pathway, idx) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);
                   const isPilotRecognitionCard = pathway.aircraftType === '__wingmentor__' || pathway.aircraftType === '__intro__';
                   const isIntroCard = pathway.id === 'recommended-pathways-intro';
                   const cardAircraftImage = isPilotRecognitionCard
                     ? '/logo.png'
-                    : (pathway.image && !pathway.image.startsWith('wingmentor') ? pathway.image : getAircraftImage(pathway.aircraftType));
+                    : (pathway.image && !pathway.image.startsWith('wingmentor') ? pathway.image : (FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme']));
                   const isSelected = selectedCarouselPathway?.id === pathway.id;
                   return (
                     <div
                       key={`${pathway.id}-${idx}`}
                       id={`pathway-card-${pathway.id}`}
-                      className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
+                      className={`flex-shrink-0 cursor-pointer rounded-2xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500 scale-[1.02]' : 'hover:scale-[1.01]'}`}
                       style={{ 
-                        width: '520px', 
-                        height: '290px',
+                        width: '600px', 
+                        height: '340px',
                         scrollSnapAlign: 'center',
                       }}
                       onClick={() => {
-                        console.log('Card clicked:', pathway.name, 'category:', pathway.category, 'hierarchySelection:', hierarchySelection.generalCategory);
                         setSelectedCarouselPathway(pathway);
-                        // When a pathway card is clicked from the first row, set it as selected for the second row
-                        console.log('Setting selectedPathwayCard:', pathway);
-                        setSelectedPathwayCard(pathway);
+                        // Center this card in the viewport
+                        const el = stage2Ref.current;
+                        if (el) {
+                          const firstCard = el.querySelector<HTMLElement>(':scope > div');
+                          const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 616;
+                          const scrollTarget = idx * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
+                          el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
+                        }
+                        setStage2Index(idx);
                       }}
                       onContextMenu={(e) => {
                         e.preventDefault();
@@ -5802,142 +6120,59 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         addToast('success', 'Card ID Copied!', cardId);
                       }}
                     >
-                      <div 
-                        className={`relative w-full h-full overflow-hidden rounded-xl ${isPilotRecognitionCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}
-                        style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}
-                      >
-                        {isPilotRecognitionCard ? (
-                          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 p-6 overflow-hidden">
-                            {isIntroCard ? (
-                              // Special styling for intro card
-                              <>
-                                <div className="flex items-center gap-2 mb-3">
-                                  <span className="text-white text-xl md:text-2xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Welcome to</span>
-                                  <span className="text-red-500 text-xl md:text-2xl font-normal" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>Pathways</span>
-                                </div>
-                                <p className="text-slate-400 text-xs md:text-sm text-center px-4 max-w-[90%] line-clamp-2">{pathway.description}</p>
-                                <button className="mt-4 px-5 py-2 bg-red-600/80 hover:bg-red-600 backdrop-blur-md text-white rounded-lg text-xs md:text-sm font-semibold transition-all shadow-lg">
-                                  Get Started
-                                </button>
-                              </>
-                            ) : (
-                              // Standard pilot recognition card
-                              <>
-                                <img src="/logo.png" alt="PilotRecognition" className="h-16 w-auto object-contain mb-3" />
-                                <p className="text-slate-400 text-xs md:text-sm text-center px-4 max-w-[90%] line-clamp-2">{pathway.description}</p>
-                              </>
-                            )}
-                          </div>
-                        ) : (
-                          <img 
-                            src={cardAircraftImage} 
-                            alt={pathway.aircraftType} 
-                            className="w-full h-full object-cover block" 
-                            style={{ minHeight: '280px', display: 'block' }}
-                            loading="lazy"
-                            onError={(e) => { 
-                              const target = e.target as HTMLImageElement;
-                              target.src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme'];
-                              target.style.display = 'block';
-                            }} 
-                          />
-                        )}
-                        {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
-                        {!isIntroCard && <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />}
-                        {/* Save/Favorite Button - hide for intro card */}
-                        {!isIntroCard && (
-                          <div className="absolute top-3 right-3 flex flex-col gap-2 items-end">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                console.log('Save pathway:', pathway.id);
-                              }}
-                              className="p-2 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white/80 hover:text-white transition-all"
-                              aria-label="Save pathway"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                              </svg>
-                            </button>
-                            
-                            {!isPilotRecognitionCard && pathway.hiringStatus === 'actively_hiring' && (
-                              <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/90 text-white text-xs font-semibold shadow-lg">
-                                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                                Active Hiring
-                              </span>
-                            )}
-                          </div>
-                        )}
-                        
-                        {/* Card ID Badge - Click to copy */}
-                        <div 
-                          className="absolute top-2 left-2 px-2 py-1 rounded bg-black/50 backdrop-blur-sm z-20 cursor-pointer hover:bg-black/70 transition-colors"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            const cardId = `pathway-card-${pathway.id}`;
-                            console.log('Pathway ID badge clicked:', cardId);
-                            navigator.clipboard.writeText(cardId).then(() => {
-                              console.log('Clipboard write successful');
-                              addToast('success', 'Card ID Copied!', cardId);
-                            }).catch(err => {
-                              console.error('Clipboard write failed:', err);
-                            });
+                      <div className="relative w-full h-full overflow-hidden rounded-2xl bg-slate-800" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.4)' }}>
+                        <img
+                          src={cardAircraftImage}
+                          alt={pathway.name}
+                          className="w-full h-full object-cover block"
+                          loading="lazy"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.onerror = null;
+                            target.src = FALLBACK_IMAGES[pathway.category] || FALLBACK_IMAGES['cadet-programme'];
                           }}
-                          title="Click to copy card ID"
-                        >
-                          <span className="text-[9px] text-white/60 font-mono">ID: {pathway.id?.slice(0, 8)}...</span>
-                        </div>
-
-                        {/* Quick Stats Chips - Top Left - hide for intro card */}
-                        {!isIntroCard && (
-                          <div className="absolute top-10 left-3 flex flex-wrap gap-1 max-w-[150px]">
-                            {!isPilotRecognitionCard && (
-                            <>
-                              <span className="px-1.5 py-0.5 rounded bg-blue-600/90 text-white text-[9px] font-semibold backdrop-blur-sm">
-                                {pathway.category === 'cadet-program' ? 'Entry' : pathway.category === 'first-officer' ? 'Career' : 'Exp'}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                        {/* Claimed / Unclaimed badge */}
+                        {discoveryKey === 'flight-schools' && (
+                          <div className="absolute top-3 left-3 flex flex-col gap-1">
+                            {pathway.claimed ? (
+                              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white bg-sky-600/90 backdrop-blur-sm">
+                                <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                                Claimed
                               </span>
-                              {pathway.requirements?.typeRatings?.length > 0 && (
-                                <span className="px-1.5 py-0.5 rounded bg-amber-600/90 text-white text-[9px] font-semibold backdrop-blur-sm">
-                                  TR
-                                </span>
-                              )}
-                              {pathway.matchPercentage >= 90 && (
-                                <span className="px-1.5 py-0.5 rounded bg-purple-600/90 text-white text-[9px] font-semibold backdrop-blur-sm">
-                                  90%+
-                                </span>
-                              )}
-                            </>
-                          )}
+                            ) : (
+                              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white/80 bg-black/40 backdrop-blur-sm border border-white/10">
+                                <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeLinecap="round" strokeWidth="2" d="M12 8v4m0 4h.01"/></svg>
+                                Unverified
+                              </span>
+                            )}
+                            {pathway.hiringStatus === 'actively_hiring' && (
+                              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white bg-green-600">
+                                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                                Hiring
+                              </span>
+                            )}
                           </div>
                         )}
-                        {/* Card text overlay - hide for intro card */}
-                        {!isIntroCard && (
-                          <div className="absolute bottom-0 left-0 right-0 p-3 text-center">
-                            <h4 className="text-base md:text-lg font-serif font-normal text-white drop-shadow-lg line-clamp-1 mb-0.5">{pathway.name}</h4>
-                            <p className="text-white/90 text-xs font-medium drop-shadow-md line-clamp-1">
-                              {pathway.airline}
-                            </p>
-                            <p className="text-white/60 text-[10px] line-clamp-1">
-                              {pathway.locations.slice(0, 2).join(' | ')}{pathway.locations.length > 2 ? ` +${pathway.locations.length - 2} more` : ''}
-                            </p>
-                          {(() => {
-                            if (isPilotRecognitionCard || mode !== 'jobs') return null;
-                            const fbJob = intelligence.jobMatches?.scoredJobs?.find(j =>
-                              String(j.title || '').toLowerCase() === String(pathway.name || '').toLowerCase() ||
-                              String(j.company || '').toLowerCase() === String(pathway.airline || '').toLowerCase()
-                            );
-                            if (!fbJob || !pathway.requirements?.totalHours) return null;
-                            return (
-                              <div className="mt-2 px-2">
-                                <JobGapBar
-                                  hoursGap={fbJob.hoursGap}
-                                  reqHours={pathway.requirements.totalHours}
-                                  isDarkMode={true}
-                                />
-                              </div>
-                            );
-                          })()}
+                        {discoveryKey !== 'flight-schools' && pathway.hiringStatus === 'actively_hiring' && (
+                          <div className="absolute top-3 left-3">
+                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white bg-green-600">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                              Hiring
+                            </span>
+                          </div>
+                        )}
+                        <div className="absolute bottom-0 left-0 right-0 p-3">
+                          <h4 className="text-sm font-serif font-normal text-white leading-tight mb-0.5 line-clamp-1">{pathway.name}</h4>
+                          <p className="text-white/70 text-xs line-clamp-1">{pathway.airline}</p>
+                          <p className="text-white/50 text-[10px] line-clamp-1">{pathway.locations?.[0]}</p>
+                        </div>
+                        {isSelected && (
+                          <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center">
+                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
                           </div>
                         )}
                       </div>
@@ -5946,36 +6181,217 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 })
               ) : (
                 <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>No pathways found for this category</p>
-              )}
+              );
+                })()}
             </div>
+
+            {/* Stage 2 navigation arrows */}
+            {(() => {
+              const totalCards = stage2CardsRef.current.length;
+              if (totalCards <= 1) return null;
+              const navigateStage2 = (dir: 1 | -1) => {
+                const el = stage2Ref.current;
+                if (!el) return;
+                const targetIndex = Math.max(0, Math.min(totalCards - 1, stage2Index + dir));
+                const firstCard = el.querySelector<HTMLElement>(':scope > div');
+                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 616;
+                const scrollTarget = targetIndex * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
+                el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
+                setStage2Index(targetIndex);
+                // Also select the card
+                const card = stage2CardsRef.current[targetIndex];
+                if (card) setSelectedCarouselPathway(card);
+              };
+              return (
+                <div className="flex items-center justify-center gap-4 mt-4">
+                  <button
+                    onClick={() => navigateStage2(-1)}
+                    disabled={stage2Index === 0}
+                    className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <span className="text-white/40 text-xs tabular-nums">{stage2Index + 1} / {totalCards}</span>
+                  <button
+                    onClick={() => navigateStage2(1)}
+                    disabled={stage2Index === totalCards - 1}
+                    className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              );
+            })()}
+
+            {/* Flight School Detail Panel — appears when a Stage 2 card is selected */}
+            {selectedCarouselPathway && selectedPathwayCard?.category === 'flight-schools' && (() => {
+              const cardId = selectedCarouselPathway.id;
+              // Supabase data takes priority; static DUMMY data is fallback while loading
+              const sb = flightSchoolCardData[cardId];
+              const staticFallback = DUMMY_FLIGHT_SCHOOLS.find(s => s.id === cardId);
+              const eng = flightSchoolEngagement[cardId];
+              const isLoading = !sb;
+
+              const name = selectedCarouselPathway.name;
+              const location = sb?.location || selectedCarouselPathway.locations?.[0] || staticFallback?.location || '';
+              const price = sb?.price || staticFallback?.price || selectedCarouselPathway.description || '—';
+              const rating: number = sb?.rating ?? staticFallback?.rating ?? (selectedCarouselPathway.matchProbability * 5);
+              const fleet: string[] = sb?.fleet || staticFallback?.fleet || [];
+              const offerings: string[] = sb?.offerings || staticFallback?.offerings || [];
+              const pilotsTrained: number | undefined = sb?.pilots_trained ?? staticFallback?.pilotsTrained;
+              const established: number | undefined = sb?.established ?? staticFallback?.established;
+              const website: string | undefined = sb?.website || staticFallback?.website;
+              const pathwayScore: number = sb?.pathway_score ?? staticFallback?.pathwayScore ?? Math.round(selectedCarouselPathway.matchProbability * 100);
+              const claimed: boolean = sb?.claimed ?? selectedCarouselPathway.claimed ?? false;
+              const description: string = sb?.description || staticFallback?.description || '';
+              // Engagement from DB totals, fallback to score-derived estimates
+              const likeCount: number = eng?.like_count ?? Math.round(pathwayScore * 3.2);
+              const favoriteCount: number = eng?.favorite_count ?? Math.round(pathwayScore * 0.9);
+              const bookmarkCount: number = eng?.bookmark_count ?? Math.round(pathwayScore * 1.8);
+
+              return (
+                <div className={`mt-8 mx-4 rounded-2xl overflow-hidden border border-white/8 bg-white/4 backdrop-blur-sm transition-opacity duration-300 ${isLoading ? 'opacity-70' : 'opacity-100'}`}>
+                  {/* Header strip */}
+                  <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-white/8">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <h3 className="text-lg font-serif font-normal text-white leading-tight">{name}</h3>
+                        {claimed ? (
+                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white bg-sky-600/80">
+                            <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                            Claimed
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded-full text-[9px] font-bold text-white/50 bg-white/8 border border-white/10">Unverified</span>
+                        )}
+                      </div>
+                      <p className="text-white/50 text-xs flex items-center gap-1">
+                        <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        {location}
+                        {established && <><span className="mx-1 opacity-30">·</span>Est. {established}</>}
+                      </p>
+                      {description && <p className="text-white/40 text-xs mt-2 leading-relaxed line-clamp-2">{description}</p>}
+                    </div>
+                    {/* Pathway Score */}
+                    <div className="flex flex-col items-center flex-shrink-0">
+                      <div className="relative w-14 h-14">
+                        <svg className="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
+                          <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="4"/>
+                          <circle cx="28" cy="28" r="22" fill="none" stroke={pathwayScore >= 90 ? '#22d3ee' : pathwayScore >= 75 ? '#60a5fa' : '#94a3b8'} strokeWidth="4"
+                            strokeDasharray={`${(pathwayScore / 100) * 138.2} 138.2`} strokeLinecap="round"/>
+                        </svg>
+                        <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white">{pathwayScore}</span>
+                      </div>
+                      <span className="text-[9px] text-white/40 uppercase tracking-wider mt-1">Pathway Score</span>
+                    </div>
+                  </div>
+
+                  {/* Body grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/8">
+
+                    {/* Location & Meta */}
+                    <div className="px-5 py-4">
+                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Overview</p>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-white/40">Rating</span>
+                          <span className="text-white flex items-center gap-1">
+                            {'★'.repeat(Math.floor(rating))}<span className="text-white/30">{'★'.repeat(5 - Math.floor(rating))}</span>
+                            <span className="text-white/60 ml-1">{rating.toFixed(1)}</span>
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-white/40">Tuition</span>
+                          <span className="text-white/80 text-right max-w-[120px] leading-tight">{price}</span>
+                        </div>
+                        {pilotsTrained && (
+                          <div className="flex justify-between text-xs">
+                            <span className="text-white/40">Pilots Trained</span>
+                            <span className="text-white/80">{pilotsTrained.toLocaleString()}+</span>
+                          </div>
+                        )}
+                        {established && (
+                          <div className="flex justify-between text-xs">
+                            <span className="text-white/40">Established</span>
+                            <span className="text-white/80">{established}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Training Offerings */}
+                    <div className="px-5 py-4">
+                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Training Offerings</p>
+                      {offerings.length > 0 ? (
+                        <div className="flex flex-wrap gap-1.5">
+                          {offerings.map(o => (
+                            <span key={o} className="px-2 py-0.5 rounded-full text-[10px] bg-sky-500/15 text-sky-300 border border-sky-500/20">{o}</span>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-white/30 text-xs italic">Data pending verification</p>
+                      )}
+                    </div>
+
+                    {/* Fleet */}
+                    <div className="px-5 py-4">
+                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Fleet</p>
+                      {fleet.length > 0 ? (
+                        <ul className="space-y-1.5">
+                          {fleet.map(f => (
+                            <li key={f} className="flex items-center gap-2 text-xs text-white/70">
+                              <svg className="w-3 h-3 text-white/20 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+                              {f}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-white/30 text-xs italic">Data pending verification</p>
+                      )}
+                    </div>
+
+                    {/* Pathway Score breakdown + engagement */}
+                    <div className="px-5 py-4">
+                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Community Signal</p>
+                      <div className="space-y-2">
+                        {[
+                          { label: 'Liked by pilots', value: likeCount, icon: '♥' },
+                          { label: 'Bookmarked', value: bookmarkCount, icon: '⊞' },
+                          { label: 'Favorited', value: favoriteCount, icon: '★' },
+                        ].map(({ label, value, icon }) => (
+                          <div key={label} className="flex items-center justify-between text-xs">
+                            <span className="text-white/40 flex items-center gap-1.5"><span className="text-white/20">{icon}</span>{label}</span>
+                            <span className="text-white/70 tabular-nums">{value}</span>
+                          </div>
+                        ))}
+                        <div className="mt-3 pt-3 border-t border-white/8">
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-white/40">Pathway Score</span>
+                            <span className={`font-bold ${pathwayScore >= 90 ? 'text-cyan-400' : pathwayScore >= 75 ? 'text-blue-400' : 'text-slate-400'}`}>{pathwayScore}/100</span>
+                          </div>
+                          <div className="h-1.5 rounded-full bg-white/8 overflow-hidden">
+                            <div className={`h-full rounded-full ${pathwayScore >= 90 ? 'bg-cyan-400' : pathwayScore >= 75 ? 'bg-blue-400' : 'bg-slate-400'}`} style={{ width: `${pathwayScore}%` }} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  {website && (
+                    <div className="px-6 py-3 border-t border-white/8 flex items-center justify-between">
+                      <span className="text-white/30 text-xs">{claimed ? 'Official information provided by the school' : 'Data sourced by PilotRecognition — unverified'}</span>
+                      <a href={website} target="_blank" rel="noopener noreferrer" className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1 transition-colors">
+                        Visit Website
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         )}
-
-        {/* Selected Pathway Display */}
-        {selectedCarouselPathway && (
-            <div className="flex items-center justify-center gap-4 mt-4">
-              <button
-                onClick={() => scrollCarousel('left')}
-                className={`p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md ${isDarkMode ? 'border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white' : 'border-black/10 bg-white/30 text-slate-600 hover:bg-white/40 hover:text-slate-900'}`}
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <div className="text-center max-w-xl">
-                <p className="text-xs uppercase tracking-widest text-white/70 mb-1">Selected Pathway</p>
-                <h3 className="text-xl font-serif font-normal text-white mb-1">{selectedCarouselPathway.name}</h3>
-                <p className="text-sm text-white/70 mb-2">
-                  {selectedCarouselPathway.airline} · {selectedCarouselPathway.locations.join(' | ')}
-                </p>
-                <p className="text-sm leading-relaxed text-white/70">{selectedCarouselPathway.description}</p>
-              </div>
-              <button
-                onClick={() => scrollCarousel('right')}
-                className={`p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md ${isDarkMode ? 'border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white' : 'border-black/10 bg-white/30 text-slate-600 hover:bg-white/40 hover:text-slate-900'}`}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          )}
 
         {/* Job Position Filter - Only show in jobs mode */}
         {mode === 'jobs' && (
