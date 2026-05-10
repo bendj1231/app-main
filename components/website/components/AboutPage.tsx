@@ -362,8 +362,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                                 <Shield className="w-10 h-10 text-blue-700" />
                             </div>
                             <div className="text-4xl font-bold text-slate-900 mb-2">03</div>
-                            <h3 className="text-lg font-bold text-slate-900 mb-2">Access Pathways & Get Hired</h3>
-                            <p className="text-slate-600">When operators join, they pull verified profiles based on competency alignment. Match with airlines, cargo, and specialized pathways as the operator network grows.</p>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Access Pathways & Get Recognized</h3>
+                            <p className="text-slate-600">When operators join, they pull verified profiles based on competency alignment. Your Recognition Score makes you visible to airlines, cargo operators, and specialized pathways as the network grows.</p>
                         </div>
                     </div>
 

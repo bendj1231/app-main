@@ -967,7 +967,7 @@ export const MembershipDirectoryPage: React.FC<MembershipDirectoryPageProps> = (
                         </div>
                         <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
                             <h3 className="text-lg font-bold text-slate-900 mb-2">What is the Priority Pipeline?</h3>
-                            <p className="text-slate-700">When operators review pathway pools, Recognition Plus members appear first due to AI-ranked priority. During partner hiring surges, you receive interview fast-track access, skipping initial screening stages. This time advantage can be the difference between landing your dream job and missing the opportunity.</p>
+                            <p className="text-slate-700">When operators review pathway pools, Recognition Plus members appear first due to AI-ranked priority. During partner hiring surges, you receive interview fast-track access, skipping initial screening stages. This visibility advantage puts you in front of decision-makers when pathways open.</p>
                         </div>
                         <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
                             <h3 className="text-lg font-bold text-slate-900 mb-2">Can I cancel anytime?</h3>
