@@ -5404,10 +5404,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 { label: 'Airline Expectations', page: currentUser ? 'portal-airline-expectations' : 'airline-expectations' },
                 { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
                 { label: 'Pilot Pathways', page: 'pathways-modern' },
-                { label: 'Job Listings', page: 'job-listings' },
                 { label: 'Global Aviation Authorities', page: 'global-aviation-authorities' },
               ].map(({ label, page }) => {
-                const isActive = (page === 'pathways-modern' && mode === 'pathways') || (page === 'job-listings' && mode === 'jobs');
+                const isActive = page === 'pathways-modern' && mode === 'pathways';
                 return (
                 <button
                   key={page}
