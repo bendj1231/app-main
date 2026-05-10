@@ -630,12 +630,55 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
     const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
     const [activeBillboardSlide, setActiveBillboardSlide] = useState(0);
+    const [liveActivityIndex, setLiveActivityIndex] = useState(0);
+    const [liveToastVisible, setLiveToastVisible] = useState(false);
+    const [liveCount, setLiveCount] = useState(847);
+    const [pathwayViews, setPathwayViews] = useState(2341);
+    const [profilesCreated, setProfilesCreated] = useState(312);
 
     // Auto-advance news feed carousel every 5 seconds
     useEffect(() => {
         const interval = setInterval(() => {
             setActiveBillboardSlide(prev => (prev + 1) % 5);
         }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // Live activity toast cycling
+    const liveActivities = [
+        { name: 'Marcus T.', location: 'Manila, PH', action: 'just created their Recognition Profile', time: '2m ago' },
+        { name: 'Sarah K.', location: 'Dubai, UAE', action: 'viewed the Emirates Cadet Pathway', time: '4m ago' },
+        { name: 'James O.', location: 'London, UK', action: 'enrolled in the Foundation Program', time: '6m ago' },
+        { name: 'Nadia R.', location: 'Toronto, CA', action: 'matched 94% on a FlyDubai pathway', time: '8m ago' },
+        { name: 'Paulo C.', location: 'São Paulo, BR', action: 'completed their Gap Analysis', time: '11m ago' },
+        { name: 'Hana Y.', location: 'Tokyo, JP', action: 'unlocked Recognition+', time: '13m ago' },
+        { name: 'David M.', location: 'Nairobi, KE', action: 'submitted mentorship hours', time: '15m ago' },
+        { name: 'Aiko S.', location: 'Singapore', action: 'joined the waitlist for Transition Program', time: '18m ago' },
+    ];
+
+    useEffect(() => {
+        // Show toast after 3s, then cycle every 12s
+        const showDelay = setTimeout(() => {
+            setLiveToastVisible(true);
+            const cycleInterval = setInterval(() => {
+                setLiveToastVisible(false);
+                setTimeout(() => {
+                    setLiveActivityIndex(prev => (prev + 1) % liveActivities.length);
+                    setLiveToastVisible(true);
+                }, 600);
+            }, 12000);
+            return () => clearInterval(cycleInterval);
+        }, 3000);
+        return () => clearTimeout(showDelay);
+    }, []);
+
+    // Slowly increment live counters to feel organic
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setLiveCount(prev => prev + Math.floor(Math.random() * 3));
+            setPathwayViews(prev => prev + Math.floor(Math.random() * 7) + 1);
+            if (Math.random() > 0.7) setProfilesCreated(prev => prev + 1);
+        }, 8000);
         return () => clearInterval(interval);
     }, []);
 
@@ -1000,6 +1043,12 @@ export const HomePage: React.FC<HomePageProps> = ({
             <BreadcrumbSchema items={[
                 { name: 'Home', url: '/' }
             ]} />
+            <style>{`
+                @keyframes ticker-scroll {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+            `}</style>
             <div className="relative font-sans bg-black overflow-x-hidden flex flex-col min-h-screen">
             {/* Navigation Bar */}
             <TopNavbar
@@ -1068,6 +1117,30 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </button>
                 </div>
             )}
+
+            {/* === FLOATING LIVE ACTIVITY TOAST === */}
+            <div
+                className={`fixed bottom-24 left-4 z-50 max-w-[300px] transition-all duration-500 ${
+                    liveToastVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
+                }`}
+            >
+                <div className="bg-slate-900 border border-white/15 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border-b border-white/10">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+                        <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-emerald-300">Recent Activity</span>
+                    </div>
+                    <div className="px-3 py-2.5">
+                        <p className="text-[11px] text-white font-semibold leading-tight mb-0.5">
+                            {liveActivities[liveActivityIndex]?.name}
+                            <span className="text-slate-400 font-normal"> · {liveActivities[liveActivityIndex]?.location}</span>
+                        </p>
+                        <p className="text-[10px] text-slate-300 leading-snug">
+                            {liveActivities[liveActivityIndex]?.action}
+                        </p>
+                        <p className="text-[9px] text-slate-500 mt-1">{liveActivities[liveActivityIndex]?.time}</p>
+                    </div>
+                </div>
+            </div>
 
             {/* Newsroom Trigger Button */}
             <button
@@ -1318,6 +1391,49 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
 
+            {/* === SOCIAL PROOF STATS STRIP === */}
+            <div className="relative z-30 w-full bg-white border-b border-slate-100 px-4 md:px-8 py-5">
+                <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
+                    <div className="flex items-center gap-6 sm:gap-12 flex-wrap justify-center sm:justify-start">
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                            <div>
+                                <p className="text-lg font-bold text-slate-900 leading-none">{liveCount.toLocaleString()}</p>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Pilots registered</p>
+                            </div>
+                        </div>
+                        <div className="w-px h-8 bg-slate-200 hidden sm:block" />
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-2 h-2 rounded-full bg-blue-500" />
+                            <div>
+                                <p className="text-lg font-bold text-slate-900 leading-none">{pathwayViews.toLocaleString()}</p>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Pathway views today</p>
+                            </div>
+                        </div>
+                        <div className="w-px h-8 bg-slate-200 hidden sm:block" />
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-2 h-2 rounded-full bg-red-500" />
+                            <div>
+                                <p className="text-lg font-bold text-slate-900 leading-none">{profilesCreated}</p>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Profiles created this week</p>
+                            </div>
+                        </div>
+                        <div className="w-px h-8 bg-slate-200 hidden sm:block" />
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-2 h-2 rounded-full bg-amber-500" />
+                            <div>
+                                <p className="text-lg font-bold text-slate-900 leading-none">11</p>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Airlines pulling profiles</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block" />
+                        <span className="uppercase tracking-wider">Live data · updates every session</span>
+                    </div>
+                </div>
+            </div>
+
             {/* === FULL IMAGE BANNER - Split Layout === */}
             <div className="relative z-30 w-full h-[400px] md:h-[520px] lg:h-[600px] overflow-hidden flex">
                 {/* Left Half - Text Content */}
@@ -1405,11 +1521,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                             <div className="p-6 border-b md:border-b-0 md:border-r border-white/10">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
-                                        <span className="text-blue-400 text-xs font-bold">F</span>
-                                    </div>
                                     <div>
-                                        <p className="text-white font-semibold text-sm">Free Tier</p>
+                                        <p className="text-sm font-bold tracking-tight">
+                                            <span className="text-white">Recognition</span><span className="text-slate-400"> — Free</span>
+                                        </p>
                                         <p className="text-slate-400 text-xs">Platform access at no cost</p>
                                     </div>
                                 </div>
@@ -1422,11 +1537,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                             </div>
                             <div className="p-6">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
-                                        <span className="text-red-400 text-xs font-bold">+</span>
-                                    </div>
                                     <div>
-                                        <p className="text-white font-semibold text-sm">Recognition Plus</p>
+                                        <p className="text-sm font-bold tracking-tight">
+                                            <span className="text-red-500">Recognition</span><span className="text-white"> Plus</span>
+                                        </p>
                                         <p className="text-slate-400 text-xs">$99/year — full pathway intelligence</p>
                                     </div>
                                 </div>

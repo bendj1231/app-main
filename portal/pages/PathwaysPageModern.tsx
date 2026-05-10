@@ -175,6 +175,14 @@ const PATHWAYS = [
     icon: null,
     display_order: 4
   },
+  {
+    id: 'type-rating-category',
+    general_category_id: 'da486dd1-8832-4ec3-843b-1cbd3c9b8718',
+    name: 'Licensure & Type Rating Pathways',
+    description: 'IR, ME, ATPL, A320, B737, B777, ATR and more — approved type rating centres worldwide',
+    icon: null,
+    display_order: 5
+  },
   // Military & Government
   {
     id: 'military-pathways-category',
@@ -1199,69 +1207,121 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       image: 'wingmentor-white'
     },
     {
-      id: 'disc-type-1',
-      title: 'CAE Philippines Type Rating Center',
-      company: 'CAE',
-      matchPercentage: 93,
-      location: 'Manila, Philippines',
-      type: 'Type Rating Center',
-      salary: 'Contact for pricing',
-      requirements: ['CPL + IR', 'Medical Class 1', 'English Proficient'],
-      tags: ['A320/B737 Simulators', 'EASA/CAA Approved', 'Modern Facility'],
+      id: 'tr-a320',
+      title: 'Airbus A320 Type Rating',
+      company: 'CAE / FlightSafety / Approved ATOs',
+      matchPercentage: 97,
+      location: 'Clark, Philippines · Dubai, UAE · London, UK · Melbourne, AU',
+      type: 'Narrowbody Type Rating',
+      salary: '$18,000 – $35,000',
+      requirements: ['CPL + IR + ME', 'Class 1 Medical', '200+ hrs TT', 'English ICAO Level 4+'],
+      tags: ['Asia', 'Type Rating', 'Most In-Demand'],
       postedAt: 'Open Enrollment',
       image: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp'
     },
     {
-      id: 'disc-type-2',
-      title: 'ATPL Pathway',
-      company: 'Various ATOs',
-      matchPercentage: 90,
-      location: 'Global',
-      type: 'License Pathway',
-      salary: 'Contact for pricing',
-      requirements: ['CPL + ME/IR', '1,500+ hrs TT', 'ATPL Theory Pass'],
-      tags: ['Airline Transport License', 'Career Progression', 'Command Prep'],
-      postedAt: 'Always Available',
-      image: 'https://www.flightdeckfriend.com/wp-content/uploads/2021/01/Pilot-Assessment-Example-Technical-Exam-710x375.jpeg'
-    },
-    {
-      id: 'disc-type-3',
-      title: 'Multi Engine Rating Pathway',
-      company: 'Flight Training Organizations',
+      id: 'tr-b737',
+      title: 'Boeing 737 Type Rating',
+      company: 'CAE / FlightSafety / Boeing Training',
       matchPercentage: 95,
-      location: 'Global',
-      type: 'Rating Pathway',
-      salary: '$8,000 - $15,000',
-      requirements: ['PPL or CPL', 'Single Engine Experience', 'Class 2 Medical'],
-      tags: ['ME Rating', 'Multi-Engine Command', 'Career Step'],
-      postedAt: 'Always Available',
-      image: 'https://cdn.prod.website-files.com/67b7f6762c0ae79aa3b1f3b0/6813ec96ef44eea3df482f3d_N53TW%203.jpg'
-    },
-    {
-      id: 'disc-type-4',
-      title: 'Instrument Rating Pathway',
-      company: 'IFR Training Centers',
-      matchPercentage: 97,
-      location: 'Global',
-      type: 'Rating Pathway',
-      salary: '$10,000 - $18,000',
-      requirements: ['PPL or CPL', '50+ hrs Cross-Country', 'Class 2 Medical'],
-      tags: ['IFR Operations', 'All Weather Flying', 'Essential Rating'],
-      postedAt: 'Always Available',
-      image: 'https://media.pea.com/wp-content/uploads/2023/06/altfull-view-of-G1000-Avionics-of-Cessna-172-1024x607.jpeg'
-    },
-    {
-      id: 'disc-type-5',
-      title: 'UPRT Rating Pathway',
-      company: 'UPRT Training Providers',
-      matchPercentage: 88,
-      location: 'Various Locations',
-      type: 'Training Pathway',
-      salary: '$3,000 - $5,000',
-      requirements: ['CPL or ATPL', 'Spin Awareness', 'EASA/FAA Compliant'],
-      tags: ['Upset Recovery', 'Loss of Control', 'Safety Critical'],
+      location: 'Seattle, USA · Amsterdam, NL · Singapore · Manila, PH',
+      type: 'Narrowbody Type Rating',
+      salary: '$16,000 – $30,000',
+      requirements: ['CPL + IR + ME', 'Class 1 Medical', '200+ hrs TT', 'English ICAO Level 4+'],
+      tags: ['Americas', 'Type Rating', 'High Demand'],
       postedAt: 'Open Enrollment',
-      image: 'https://i.vimeocdn.com/video/1769783286-138fb27314025852ea22110de052d224665fcb0d82fad22a16f48a77d0001cc7-d?f=webp'
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Southwest_Airlines_Boeing_737-700_N278WN.jpg/1280px-Southwest_Airlines_Boeing_737-700_N278WN.jpg'
+    },
+    {
+      id: 'tr-atr72',
+      title: 'ATR 72-600 Type Rating',
+      company: 'CAE Philippines / ATR Training Centre',
+      matchPercentage: 92,
+      location: 'Clark, Philippines · Toulouse, France',
+      type: 'Turboprop Type Rating',
+      salary: '$12,000 – $20,000',
+      requirements: ['CPL + IR', 'Class 1 Medical', 'ME Rating Preferred', 'CAAP/EASA Licence'],
+      tags: ['Asia', 'Type Rating', 'Regional Airlines'],
+      postedAt: 'Open Enrollment',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Philippine_Airlines_ATR_72-600_RP-C7282_LAX_%2814264556285%29.jpg/1280px-Philippine_Airlines_ATR_72-600_RP-C7282_LAX_%2814264556285%29.jpg'
+    },
+    {
+      id: 'tr-b777',
+      title: 'Boeing 777 Type Rating',
+      company: 'CAE / Emirates Aviation / FlightSafety',
+      matchPercentage: 88,
+      location: 'Dubai, UAE · London, UK · Dallas, USA',
+      type: 'Widebody Type Rating',
+      salary: '$25,000 – $45,000',
+      requirements: ['ATPL or CPL+IR', '1,500+ hrs TT', 'Class 1 Medical', 'Airline FO Experience Preferred'],
+      tags: ['Middle East', 'Type Rating', 'Widebody'],
+      postedAt: 'Open Enrollment',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Emirates_B777-300ER_%28A6-EGH%29_arrives_at_London_Heathrow_2.jpg/1280px-Emirates_B777-300ER_%28A6-EGH%29_arrives_at_London_Heathrow_2.jpg'
+    },
+    {
+      id: 'tr-a330',
+      title: 'Airbus A330 Type Rating',
+      company: 'CAE / Airbus Training Centre',
+      matchPercentage: 85,
+      location: 'Toulouse, France · Singapore · Sydney, AU',
+      type: 'Widebody Type Rating',
+      salary: '$22,000 – $40,000',
+      requirements: ['ATPL or CPL+IR', '1,000+ hrs TT', 'Class 1 Medical', 'A320 Rating Preferred'],
+      tags: ['Europe', 'Type Rating', 'Widebody'],
+      postedAt: 'Open Enrollment',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Philippine_Airlines_A330-300_RP-C8782_MNL_2013-4-29.png/1280px-Philippine_Airlines_A330-300_RP-C8782_MNL_2013-4-29.png'
+    },
+    {
+      id: 'tr-b787',
+      title: 'Boeing 787 Dreamliner Type Rating',
+      company: 'CAE / United Airlines Training / Boeing',
+      matchPercentage: 82,
+      location: 'Denver, USA · London, UK · Tokyo, JP',
+      type: 'Widebody Type Rating',
+      salary: '$28,000 – $50,000',
+      requirements: ['ATPL', '2,000+ hrs TT', 'Widebody Experience Preferred', 'Class 1 Medical'],
+      tags: ['Americas', 'Type Rating', 'Widebody'],
+      postedAt: 'Open Enrollment',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Air_New_Zealand_787-9_Dreamliner_ZK-NZE_%2820841177593%29.jpg/1280px-Air_New_Zealand_787-9_Dreamliner_ZK-NZE_%2820841177593%29.jpg'
+    },
+    {
+      id: 'tr-dhc8',
+      title: 'De Havilland Q400 Type Rating',
+      company: 'CAE / Regional Airline ATOs',
+      matchPercentage: 90,
+      location: 'Manila, PH · Toronto, CA · Amsterdam, NL',
+      type: 'Turboprop Type Rating',
+      salary: '$10,000 – $18,000',
+      requirements: ['CPL + IR', 'Class 1 Medical', 'ME Rating Preferred'],
+      tags: ['Asia', 'Type Rating', 'Regional Airlines'],
+      postedAt: 'Open Enrollment',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Philippine_Airlines_Q400_RP-C5001_MNL.jpg/1280px-Philippine_Airlines_Q400_RP-C5001_MNL.jpg'
+    },
+    {
+      id: 'tr-mcc-joc',
+      title: 'MCC / Jet Orientation Course',
+      company: 'Multiple Approved ATOs',
+      matchPercentage: 98,
+      location: 'Clark, PH · London, UK · Amsterdam, NL · Dubai, UAE',
+      type: 'Pre-Type Rating Course',
+      salary: '$3,000 – $8,000',
+      requirements: ['CPL + IR + ME', 'Class 1 Medical', 'Airline Interview Stage'],
+      tags: ['Asia', 'Type Rating', 'Pre-TR Essential'],
+      postedAt: 'Open Enrollment',
+      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404520/flight-schools/aag.jpg'
+    },
+    {
+      id: 'tr-uprt',
+      title: 'UPRT — Upset Prevention & Recovery',
+      company: 'Camiguin Aviation / Approved UPRT Providers',
+      matchPercentage: 88,
+      location: 'Camiguin, PH · Various Locations',
+      type: 'Mandatory Safety Rating',
+      salary: '$2,500 – $5,000',
+      requirements: ['CPL or ATPL', 'EASA/CAAP Compliant', 'Any Stage of Training'],
+      tags: ['Asia', 'Safety', 'ICAO Mandated'],
+      postedAt: 'Open Enrollment',
+      image: 'https://www.camiguinaviation.com/images/our-aircraft-compressed.png'
     }
   ],
   'airtaxi-drones': [
@@ -4313,6 +4373,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     '83806ec2-6376-4b65-bcd8-4fc25391cc71': 'private',       // Private Pilot
     '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1': 'type-rating',   // Commercial Pilot
     'flight-schools-category': 'flight-schools',             // Flight Schools
+    'type-rating-category': 'type-rating',                   // Type Rating Pathways
     // Military & Government
     'military-pathways-category': 'military',                  // Military Pathways
     // Career Progression → airline-pathways / cadet-programme
@@ -4361,6 +4422,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     '5b6097c0-edef-4d89-90bc-9a0fa46aba84': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
     'e9877f93-5972-45a7-a635-e6fbf42b43c5': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
     'flight-schools-category': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+    'type-rating-category': 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp',
     'military-pathways-category': 'https://www.airandspaceforces.com/app/uploads/2020/07/6255683-scaled.jpg',
   };
   const [regionFilter, setRegionFilter] = useState<Region>('All');
@@ -4405,9 +4467,34 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [stage2RegionFilter, setStage2RegionFilter] = useState<string>('All');
   const [stage2CountryFilter, setStage2CountryFilter] = useState<string>('All');
   const [userCountryCode, setUserCountryCode] = useState<string>('');
+  const [userLatLng, setUserLatLng] = useState<{ lat: number; lng: number } | null>(null);
+  const [stage2NearestSort, setStage2NearestSort] = useState<boolean>(false);
+  const [stage2TypeRatingFilter, setStage2TypeRatingFilter] = useState<string>('All');
+  const [stage2ViewFilter, setStage2ViewFilter] = useState<'All' | 'Type Rating Centers' | 'Flight School (ATO)' | 'Special Ratings'>('All');
+  const [trSchoolTab, setTrSchoolTab] = useState<'about' | 'expectations' | 'requirements' | 'access'>('about');
+  const [flightSchoolCardImgIdx, setFlightSchoolCardImgIdx] = useState<number>(0);
   const [flightSchoolCardData, setFlightSchoolCardData] = useState<Record<string, any>>({});
   const [flightSchoolEngagement, setFlightSchoolEngagement] = useState<Record<string, any>>({});
   const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Cycle flight school images on the Stage 1 card based on IP region
+  useEffect(() => {
+    const regionSchools = DUMMY_FLIGHT_SCHOOLS.filter(s =>
+      s.id !== 'wingmentor-intro' &&
+      s.image &&
+      !s.image.startsWith('https://images.unsplash') &&
+      (userCountryCode
+        ? (COUNTRY_TO_REGION[userCountryCode]?.region
+            ? s.region === COUNTRY_TO_REGION[userCountryCode].region
+            : true)
+        : true)
+    );
+    if (regionSchools.length < 2) return;
+    const interval = setInterval(() => {
+      setFlightSchoolCardImgIdx(i => (i + 1) % regionSchools.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [userCountryCode]);
 
   // Read IP-detected country code from localStorage (written by TopNavbar)
   const COUNTRY_TO_REGION: Record<string, { region: string; country: string }> = {
@@ -4431,11 +4518,25 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   };
   useEffect(() => {
     const cached = localStorage.getItem('cachedCountryCode');
+    const cachedLat = localStorage.getItem('cachedLat');
+    const cachedLng = localStorage.getItem('cachedLng');
     if (cached) setUserCountryCode(cached);
-    else {
+    if (cachedLat && cachedLng) setUserLatLng({ lat: parseFloat(cachedLat), lng: parseFloat(cachedLng) });
+    if (!cached || !cachedLat) {
       fetch('https://ipapi.co/json/')
         .then(r => r.ok ? r.json() : null)
-        .then(d => { if (d?.country_code) { setUserCountryCode(d.country_code); localStorage.setItem('cachedCountryCode', d.country_code); localStorage.setItem('cachedCountryTime', Date.now().toString()); } })
+        .then(d => {
+          if (d?.country_code) {
+            setUserCountryCode(d.country_code);
+            localStorage.setItem('cachedCountryCode', d.country_code);
+            localStorage.setItem('cachedCountryTime', Date.now().toString());
+          }
+          if (d?.latitude && d?.longitude) {
+            setUserLatLng({ lat: d.latitude, lng: d.longitude });
+            localStorage.setItem('cachedLat', String(d.latitude));
+            localStorage.setItem('cachedLng', String(d.longitude));
+          }
+        })
         .catch(() => {});
     }
   }, []);
@@ -5689,6 +5790,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-snap-align: center; scroll-behavior: smooth; }
               .pathways-carousel > div { scroll-snap-align: center; }
+              @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
             `}</style>
 
             {/* Instruction hint */}
@@ -5846,8 +5948,26 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 }
 
                 // ── Pill selected: show PATHWAYS[] for that category UUID ────
+                // Pre-compute the cycling image pool for flight-schools once per render
+                const fsRegionSchools = DUMMY_FLIGHT_SCHOOLS.filter(s =>
+                  s.id !== 'wingmentor-intro' &&
+                  s.image &&
+                  !s.image.startsWith('https://images.unsplash') &&
+                  (userCountryCode
+                    ? (COUNTRY_TO_REGION[userCountryCode]?.region
+                        ? s.region === COUNTRY_TO_REGION[userCountryCode].region
+                        : true)
+                    : true)
+                );
+                const fsCycleImg = fsRegionSchools.length > 0
+                  ? fsRegionSchools[flightSchoolCardImgIdx % fsRegionSchools.length].image
+                  : PATHWAY_IMAGES['flight-schools-category'];
+
                 return PATHWAYS.filter(p => p.general_category_id === selectedUUID).map((item, itemIdx) => {
-                  const imgSrc = PATHWAY_IMAGES[item.id] || FALLBACK_IMAGES['airline-pathways'] || '/images/accessportal.png';
+                  const isFlightSchools = item.id === 'flight-schools-category';
+                  const imgSrc = isFlightSchools
+                    ? (fsCycleImg || PATHWAY_IMAGES[item.id] || FALLBACK_IMAGES['flight-schools'])
+                    : (PATHWAY_IMAGES[item.id] || FALLBACK_IMAGES['airline-pathways'] || '/images/accessportal.png');
                   const isSelected = selectedStage1PathwayId === item.id;
                   const discoveryKey = PATHWAY_UUID_TO_DISCOVERY_KEY[item.id];
                   const stage2Count = discoveryKey ? (DISCOVERY_PATHWAYS[discoveryKey]?.length ?? 0) : 0;
@@ -5880,8 +6000,15 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       }}
                     >
                       <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
-                        <img src={imgSrc} alt={item.name} className="w-full h-full object-cover block" loading="lazy"
-                          onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }} />
+                        <img
+                          key={imgSrc}
+                          src={imgSrc}
+                          alt={item.name}
+                          className="w-full h-full object-cover block"
+                          loading="lazy"
+                          style={{ transition: 'opacity 0.6s ease', animation: isFlightSchools ? 'fadeIn 0.6s ease' : undefined }}
+                          onError={(e) => { (e.target as HTMLImageElement).src = '/images/accessportal.png'; }}
+                        />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-5">
                           <h4 className="text-xl font-serif font-normal text-white leading-tight mb-1">{item.name}</h4>
@@ -5930,6 +6057,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 if (!card || !card.discoveryKey) return;
                 setSelectedStage1PathwayId(card.id);
                 setStage2Index(0);
+                setStage2ViewFilter('All' as 'All');
+                setStage2TypeRatingFilter('All');
                 setSelectedPathwayCard({
                   id: card.id,
                   name: card.name,
@@ -5994,8 +6123,78 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 </p>
               </div>
 
-              {/* Region + Country filter — only for flight-schools */}
-              {selectedPathwayCard.category === 'flight-schools' && (() => {
+              {/* Type Rating filter pills */}
+              {selectedPathwayCard.category === 'type-rating' && (() => {
+                const TR_FILTERS = [
+                  { label: 'All', group: null },
+                  { label: 'Instrument Rating (IR)', group: 'Licensure' },
+                  { label: 'Multi-Engine (ME)', group: 'Licensure' },
+                  { label: 'ATPL', group: 'Licensure' },
+                  { label: 'MCC / JOC', group: 'Licensure' },
+                  { label: 'UPRT', group: 'Licensure' },
+                  { label: 'Airbus Rating', group: 'Type Rating' },
+                  { label: 'ATR Rating', group: 'Type Rating' },
+                  { label: 'Boeing Rating', group: 'Type Rating' },
+                  { label: 'Widebody', group: 'Type Rating' },
+                  { label: 'Narrowbody', group: 'Type Rating' },
+                ];
+                const licensureFilters = TR_FILTERS.filter(f => f.group === 'Licensure' || f.label === 'All');
+                const typeRatingFilters = TR_FILTERS.filter(f => f.group === 'Type Rating');
+                return (
+                  <div className="flex flex-col gap-3 mb-6">
+                    {/* View toggle — separate pathways from flight schools */}
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Show</span>
+                      {(['All', 'Type Rating Centers', 'Flight School (ATO)', 'Special Ratings'] as const).map(v => (
+                        <button
+                          key={v}
+                          onClick={() => { setStage2ViewFilter(v); setStage2Index(0); }}
+                          className={`px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
+                            stage2ViewFilter === v
+                              ? 'bg-white text-slate-900 border-white'
+                              : 'border-white/15 bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'
+                          }`}
+                        >
+                          {v}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {licensureFilters.map(f => (
+                        <button
+                          key={f.label}
+                          onClick={() => { setStage2TypeRatingFilter(f.label); setStage2Index(0); }}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                            stage2TypeRatingFilter === f.label
+                              ? 'bg-pink-500 border-pink-500 text-white'
+                              : 'border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
+                          }`}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-2 pl-2 border-l border-pink-500/30">
+                      {typeRatingFilters.map(f => (
+                        <button
+                          key={f.label}
+                          onClick={() => { setStage2TypeRatingFilter(f.label); setStage2Index(0); }}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                            stage2TypeRatingFilter === f.label
+                              ? 'bg-pink-500 border-pink-500 text-white'
+                              : 'border-pink-500/20 bg-pink-500/5 text-pink-300/70 hover:bg-pink-500/10 hover:text-pink-200'
+                          }`}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Region + Country filter — all Stage 2 categories except military */}
+              {selectedPathwayCard.category !== 'military' && (() => {
                 const REGION_COUNTRIES: Record<string, string[]> = {
                   'Asia': ['All Countries', 'Philippines', 'Singapore'],
                   'Europe': ['All Countries', 'Germany'],
@@ -6006,14 +6205,33 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 };
                 const regions = ['All', ...Object.keys(REGION_COUNTRIES)];
                 const countries = stage2RegionFilter !== 'All' ? REGION_COUNTRIES[stage2RegionFilter] || [] : [];
+                const nearestMatch = userCountryCode ? COUNTRY_TO_REGION[userCountryCode] : null;
+                const LISTED_COUNTRIES = ['Philippines', 'Singapore', 'Germany', 'USA', 'Australia', 'UAE', 'South Africa'];
+                const isNearestActive = stage2NearestSort;
                 return (
                   <div className="flex flex-wrap items-center gap-3 mb-6">
+                    {/* Nearest to You pill — only shown when IP lat/lng is known */}
+                    {userLatLng && (
+                      <button
+                        onClick={() => {
+                          setStage2NearestSort(true);
+                          const match = userCountryCode ? COUNTRY_TO_REGION[userCountryCode] : null;
+                          const LISTED = ['Philippines', 'Singapore', 'Germany', 'USA', 'Australia', 'UAE', 'South Africa'];
+                          setStage2RegionFilter(match?.region || 'All');
+                          setStage2CountryFilter(match && LISTED.includes(match.country) ? match.country : 'All');
+                          setStage2Index(0);
+                        }}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${isNearestActive ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300'}`}
+                      >
+                        <span>📍</span> Nearest to You
+                      </button>
+                    )}
                     {/* Region pills */}
                     <div className="flex flex-wrap gap-2">
                       {regions.map(r => (
                         <button
                           key={r}
-                          onClick={() => { setStage2RegionFilter(r); setStage2CountryFilter('All'); setStage2Index(0); }}
+                          onClick={() => { setStage2RegionFilter(r); setStage2CountryFilter('All'); setStage2NearestSort(false); setStage2Index(0); }}
                           className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${stage2RegionFilter === r ? 'bg-sky-500 border-sky-500 text-white' : 'border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'}`}
                         >
                           {r}
@@ -6026,7 +6244,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         {countries.map(c => (
                           <button
                             key={c}
-                            onClick={() => { setStage2CountryFilter(c === 'All Countries' ? 'All' : c); setStage2Index(0); }}
+                            onClick={() => { setStage2CountryFilter(c === 'All Countries' ? 'All' : c); setStage2NearestSort(false); setStage2Index(0); }}
                             className={`px-3 py-1.5 rounded-full text-xs transition-all border ${(c === 'All Countries' ? stage2CountryFilter === 'All' : stage2CountryFilter === c) ? 'bg-white/20 border-white/30 text-white' : 'border-white/10 bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'}`}
                           >
                             {c}
@@ -6053,13 +6271,127 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   // pipeline which breaks when a hierarchy pill is selected (allPathways uses categoryPathways then)
                   const discoveryKey = selectedPathwayCard.category;
                   let rawCards: PathwayJob[] = DISCOVERY_PATHWAYS[discoveryKey] || [];
-                  // Apply region/country filter for flight-schools at source
-                  if (discoveryKey === 'flight-schools') {
-                    if (stage2RegionFilter !== 'All') {
-                      rawCards = rawCards.filter(j => j.tags?.[0] === stage2RegionFilter);
+                  // Apply type-rating filter + inject matching flight schools
+                  if (discoveryKey === 'type-rating') {
+                    // Inject UUID licensure sub-pathway cards (they are not in DISCOVERY_PATHWAYS)
+                    const LICENSURE_SUB_PATHWAY_CARDS: PathwayJob[] = [
+                      { id: 'a02f4e29-e165-415f-a3b3-669edbd7deb1', title: 'Type Rating Centers', company: 'CAE / FlightSafety / Approved ATOs', matchPercentage: 95, location: 'Clark, Philippines · Dubai, UAE · London, UK', type: 'Type Rating Centers', salary: '$18,000 – $50,000', requirements: ['CPL + IR + ME', 'Class 1 Medical'], tags: ['A320', 'B737', 'A330', 'B777', 'ATR'], postedAt: 'Open Enrollment', image: 'https://www.caepacific.com/wp-content/uploads/2021/03/CAE-Philippines-Training-Center.jpg' },
+                      { id: 'cc996aa7-a075-4be7-beef-f917dd1f41db', title: 'Instrument Rating Pathway', company: 'CAAP-Approved Flight Schools', matchPercentage: 92, location: 'Philippines · USA · Europe', type: 'Licensure', salary: '$10,000 – $18,000', requirements: ['PPL or CPL', 'Class 1 Medical'], tags: ['Instrument Rating', 'IFR', 'IR'], postedAt: 'Open Enrollment', image: 'https://media.pea.com/wp-content/uploads/2023/06/altfull-view-of-G1000-Avionics-of-Cessna-172-1024x607.jpeg' },
+                      { id: '54655935-92de-4aad-b82b-703152ffce25', title: 'ATPL Pathway', company: 'Various ATOs', matchPercentage: 90, location: 'Philippines · Australia · USA', type: 'Licensure', salary: 'ATPL Theory: $3,000–$8,000', requirements: ['CPL + IR + ME', 'Class 1 Medical'], tags: ['ATPL', 'Hour Building', 'Airline'], postedAt: 'Open Enrollment', image: 'https://www.wingpath.in/blog_images/what-is-atpl-in-india-6ihgy-1000x700.png' },
+                      { id: 'e94ba893-fa83-47b1-90f9-98905dc6685a', title: 'Multi-Engine Rating', company: 'CAAP-Approved Flight Schools', matchPercentage: 91, location: 'Philippines · USA · Australia', type: 'Licensure', salary: '$8,000 – $15,000', requirements: ['PPL or CPL', 'Class 1 Medical'], tags: ['Multi-Engine', 'MER', 'ME'], postedAt: 'Open Enrollment', image: 'https://cdn.prod.website-files.com/67b7f6762c0ae79aa3b1f3b0/6813ec96ef44eea3df482f3d_N53TW%203.jpg' },
+                      { id: '4d4b6568-3759-432e-9193-e0dba88425aa', title: 'CFI Rating Pathway', company: 'CAAP-Approved Flight Schools', matchPercentage: 88, location: 'Philippines · USA · Australia', type: 'Licensure', salary: 'Training: $5,000–$10,000', requirements: ['CPL + IR', 'Class 1 Medical'], tags: ['CFI', 'Instructor', 'Hour Building'], postedAt: 'Open Enrollment', image: 'https://media.pea.com/wp-content/uploads/2023/06/flight-instructor-training-1024x607.jpeg' },
+                      { id: '078eea1a-271f-4392-a802-9a2ea4c36da0', title: 'UPRT Rating', company: 'CAAP-Approved ATOs', matchPercentage: 86, location: 'Philippines · USA · Europe', type: 'Special Rating', salary: '$2,500 – $5,000', requirements: ['CPL or ATPL', 'Class 1 Medical'], tags: ['UPRT', 'Upset Recovery', 'Safety'], postedAt: 'Open Enrollment', image: 'https://www.flight-safety.com/wp-content/uploads/2021/06/uprt-training.jpg' },
+                      { id: 'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8', title: 'Seaplane Rating', company: 'CAAP-Approved Seaplane Operators', matchPercentage: 82, location: 'Philippines · Canada · USA', type: 'Special Rating', salary: '$3,000 – $8,000', requirements: ['PPL or higher', 'Class 2 Medical'], tags: ['Seaplane', 'Floatplane', 'Water Ops'], postedAt: 'Open Enrollment', image: 'https://images.unsplash.com/photo-1507199129876-44d2b3190c1a?w=800&q=80' },
+                    ];
+                    rawCards = [...rawCards, ...LICENSURE_SUB_PATHWAY_CARDS];
+                    const f = stage2TypeRatingFilter;
+
+                    // Helper: does an offering string match the active filter?
+                    const offeringMatches = (o: string) => {
+                      const ol = o.toLowerCase();
+                      if (f === 'All') return true;
+                      if (f === 'Instrument Rating (IR)') return ol.includes('instrument') || ol.includes(' ir)') || ol.includes('(ir)');
+                      if (f === 'Multi-Engine (ME)') return ol.includes('multi-engine') || ol.includes('multi engine') || ol.includes('mer') || ol.includes('(me)');
+                      if (f === 'ATPL') return ol.includes('atpl');
+                      if (f === 'MCC / JOC') return ol.includes('mcc') || ol.includes('joc') || ol.includes('jet orientation');
+                      if (f === 'UPRT') return ol.includes('uprt') || ol.includes('upset');
+                      if (f === 'Airbus Rating') return ol.includes('a320') || ol.includes('a330') || ol.includes('airbus');
+                      if (f === 'ATR Rating') return ol.includes('atr');
+                      if (f === 'Boeing Rating') return ol.includes('b737') || ol.includes('b777') || ol.includes('b787') || ol.includes('boeing');
+                      if (f === 'Widebody') return ol.includes('b777') || ol.includes('b787') || ol.includes('a330') || ol.includes('widebody');
+                      if (f === 'Narrowbody') return ol.includes('a320') || ol.includes('b737') || ol.includes('narrowbody');
+                      return false;
+                    };
+
+                    // Filter the dedicated type-rating cards
+                    if (f !== 'All') {
+                      rawCards = rawCards.filter(j => {
+                        const allText = j.title.toLowerCase() + ' ' + (j.tags || []).join(' ').toLowerCase();
+                        if (f === 'Instrument Rating (IR)') return allText.includes('instrument') || allText.includes(' ir ');
+                        if (f === 'Multi-Engine (ME)') return allText.includes('multi') || allText.includes('multi-engine') || allText.includes('me rating');
+                        if (f === 'ATPL') return allText.includes('atpl');
+                        if (f === 'MCC / JOC') return allText.includes('mcc') || allText.includes('joc') || allText.includes('jet orientation');
+                        if (f === 'UPRT') return allText.includes('uprt') || allText.includes('upset');
+                        if (f === 'Airbus Rating') return allText.includes('airbus') || allText.includes('a320') || allText.includes('a330');
+                        if (f === 'ATR Rating') return allText.includes('atr');
+                        if (f === 'Boeing Rating') return allText.includes('boeing') || allText.includes('b737') || allText.includes('b777') || allText.includes('b787');
+                        if (f === 'Widebody') return allText.includes('widebody') || allText.includes('b777') || allText.includes('b787') || allText.includes('a330');
+                        if (f === 'Narrowbody') return allText.includes('narrowbody') || allText.includes('a320') || allText.includes('b737');
+                        return true;
+                      });
                     }
-                    if (stage2CountryFilter !== 'All') {
-                      rawCards = rawCards.filter(j => j.location?.includes(stage2CountryFilter));
+
+                    // Inject flight schools that offer this rating
+                    const matchingSchools = DUMMY_FLIGHT_SCHOOLS.filter(s =>
+                      s.id !== 'wingmentor-intro' &&
+                      (s.offerings || []).some(o => offeringMatches(o))
+                    );
+                    const schoolCards: PathwayJob[] = matchingSchools.map(s => ({
+                      id: s.id,
+                      title: s.name,
+                      company: s.location,
+                      matchPercentage: Math.round(s.rating * 20),
+                      location: s.location,
+                      type: 'Flight School',
+                      salary: s.price,
+                      requirements: ['Medical Certificate', 'English Proficiency'],
+                      tags: [s.region, f === 'All' ? 'Offers Training' : `Offers ${f}`, 'CAAP Approved'],
+                      postedAt: 'Open Enrollment',
+                      image: s.image || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+                      claimed: s.claimed ?? false,
+                    }));
+                    rawCards = [...rawCards, ...schoolCards];
+
+                    // Apply view filter — separate sub-pathway cards from flight school cards
+                    const TYPE_RATING_CENTER_UUIDS = new Set([
+                      'a02f4e29-e165-415f-a3b3-669edbd7deb1', // Type Rating Centers
+                      'cc996aa7-a075-4be7-beef-f917dd1f41db', // Instrument Rating
+                      '54655935-92de-4aad-b82b-703152ffce25', // ATPL Pathway
+                      'e94ba893-fa83-47b1-90f9-98905dc6685a', // Multi-Engine Rating
+                      '4d4b6568-3759-432e-9193-e0dba88425aa', // CFI Rating
+                    ]);
+                    const SPECIAL_RATING_UUIDS = new Set([
+                      '078eea1a-271f-4392-a802-9a2ea4c36da0', // UPRT
+                      'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8', // Seaplane Rating
+                    ]);
+                    const SPECIAL_RATING_SCHOOL_IDS = new Set([
+                      'flight-school-33', // Camiguin Aviation — UPRT/aerobatics specialist
+                    ]);
+                    const ALL_PATHWAY_UUIDS = new Set([...TYPE_RATING_CENTER_UUIDS, ...SPECIAL_RATING_UUIDS]);
+                    if (stage2ViewFilter === 'Type Rating Centers') {
+                      rawCards = rawCards.filter(j => TYPE_RATING_CENTER_UUIDS.has(j.id));
+                    } else if (stage2ViewFilter === 'Special Ratings') {
+                      rawCards = rawCards.filter(j => SPECIAL_RATING_UUIDS.has(j.id) || SPECIAL_RATING_SCHOOL_IDS.has(j.id));
+                    } else if (stage2ViewFilter === 'Flight School (ATO)') {
+                      rawCards = rawCards.filter(j => !ALL_PATHWAY_UUIDS.has(j.id) && !SPECIAL_RATING_SCHOOL_IDS.has(j.id));
+                    }
+                  }
+                  // Apply region/country/nearest filter for all non-military categories
+                  if (discoveryKey !== 'military') {
+                    if (stage2NearestSort && userLatLng) {
+                      // Haversine distance sort — school cards get real distance, dedicated TR cards (no lat/lng) pushed to end
+                      const haversine = (lat1: number, lng1: number, lat2: number, lng2: number) => {
+                        const R = 6371;
+                        const dLat = (lat2 - lat1) * Math.PI / 180;
+                        const dLng = (lng2 - lng1) * Math.PI / 180;
+                        const a = Math.sin(dLat/2) ** 2 + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLng/2) ** 2;
+                        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                      };
+                      const schoolWithCoords = DUMMY_FLIGHT_SCHOOLS.filter(s => s.id !== 'wingmentor-intro' && s.lat && s.lng);
+                      rawCards = rawCards
+                        .map(j => {
+                          const school = schoolWithCoords.find(s => s.id === j.id);
+                          const dist = school ? haversine(userLatLng.lat, userLatLng.lng, school.lat!, school.lng!) : 99999;
+                          return { ...j, _dist: dist };
+                        })
+                        .sort((a, b) => (a as any)._dist - (b as any)._dist);
+                    } else {
+                      if (stage2RegionFilter !== 'All') {
+                        rawCards = rawCards.filter(j => j.tags?.[0] === stage2RegionFilter);
+                      }
+                      if (stage2CountryFilter !== 'All') {
+                        rawCards = rawCards.filter(j => j.location?.includes(stage2CountryFilter));
+                      }
                     }
                   }
                   // Convert PathwayJob → PathwayData shape for rendering
@@ -6134,7 +6466,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                         {/* Claimed / Unclaimed badge */}
-                        {discoveryKey === 'flight-schools' && (
+                        {(discoveryKey === 'flight-schools' || discoveryKey === 'type-rating') && (
                           <div className="absolute top-3 left-3 flex flex-col gap-1">
                             {pathway.claimed ? (
                               <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white bg-sky-600/90 backdrop-blur-sm">
@@ -6155,7 +6487,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                             )}
                           </div>
                         )}
-                        {discoveryKey !== 'flight-schools' && pathway.hiringStatus === 'actively_hiring' && (
+                        {discoveryKey !== 'flight-schools' && discoveryKey !== 'type-rating' && pathway.hiringStatus === 'actively_hiring' && (
                           <div className="absolute top-3 left-3">
                             <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white bg-green-600">
                               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
@@ -6219,6 +6551,1013 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
+                </div>
+              );
+            })()}
+
+            {/* Type Rating / Licensure Detail Panel — appears when a Stage 2 card is selected under type-rating */}
+            {selectedCarouselPathway && selectedPathwayCard?.category === 'type-rating' && (() => {
+              const cardId = selectedCarouselPathway.id;
+              const isSchoolCard = DUMMY_FLIGHT_SCHOOLS.some(s => s.id === cardId);
+              const school = DUMMY_FLIGHT_SCHOOLS.find(s => s.id === cardId);
+
+              // For school cards shown in type-rating context — show what offering matched
+              if (isSchoolCard && school) {
+                const matchedOfferings = (school.offerings || []).filter(o => {
+                  const f = stage2TypeRatingFilter;
+                  const ol = o.toLowerCase();
+                  if (f === 'All') return true;
+                  if (f === 'Instrument Rating (IR)') return ol.includes('instrument') || ol.includes('(ir)');
+                  if (f === 'Multi-Engine (ME)') return ol.includes('multi-engine') || ol.includes('(me)') || ol.includes('mer');
+                  if (f === 'ATPL') return ol.includes('atpl');
+                  if (f === 'MCC / JOC') return ol.includes('mcc') || ol.includes('joc');
+                  if (f === 'UPRT') return ol.includes('uprt') || ol.includes('upset');
+                  if (f === 'Airbus Rating') return ol.includes('a320') || ol.includes('a330') || ol.includes('airbus');
+                  if (f === 'ATR Rating') return ol.includes('atr');
+                  if (f === 'Boeing Rating') return ol.includes('b737') || ol.includes('b777') || ol.includes('b787') || ol.includes('boeing');
+                  if (f === 'Widebody') return ol.includes('b777') || ol.includes('b787') || ol.includes('a330') || ol.includes('widebody');
+                  if (f === 'Narrowbody') return ol.includes('a320') || ol.includes('b737') || ol.includes('narrowbody');
+                  return false;
+                });
+                const hasMultiEngine = (school.fleet || []).some(f => f.toLowerCase().includes('multi') || f.toLowerCase().includes('twin') || f.toLowerCase().includes('seneca') || f.toLowerCase().includes('baron') || f.toLowerCase().includes('aztec') || f.toLowerCase().includes('navajo'));
+                const activeTab = trSchoolTab;
+                const tf = stage2TypeRatingFilter;
+                const isIR = tf.includes('Instrument');
+                const isME = tf.includes('Multi-Engine') || tf.includes('(ME)');
+                const isATR = tf.includes('ATR');
+                const isAirbus = tf.includes('Airbus') || tf.includes('A320');
+                const isBoeing = tf.includes('Boeing') || tf.includes('B737');
+                const isWidebody = tf.includes('Widebody');
+                const isNarrowbody = tf.includes('Narrowbody');
+                const isTypeRating = isAirbus || isBoeing || isATR || isWidebody || isNarrowbody;
+                const isMCC = tf.includes('MCC') || tf.includes('JOC');
+                const isUPRT = tf.includes('UPRT');
+                const isATRL = tf === 'ATPL';
+                const ratingLabel = tf === 'All' ? 'this rating' : tf;
+                const demandDataComputed = isTypeRating ? [
+                  { label: 'Airline Demand', value: 'Type-rated pilots hired 2–3× faster than non-rated', icon: '📈' },
+                  { label: 'Global Shortage', value: 'Boeing forecasts 674,000 new pilots needed by 2042', icon: '🌏' },
+                  { label: `${tf} Demand`, value: 'Narrowbody & widebody demand remains highest in ASEAN', icon: '✈️' },
+                ] : isIR ? [
+                  { label: 'IR Demand', value: 'IR is the gateway to CPL and all IFR operations', icon: '📡' },
+                  { label: 'Career Gate', value: 'Required for all airline and charter employment', icon: '🎯' },
+                  { label: 'Regional Growth', value: 'Instrument-rated pilots preferred by regional operators', icon: '📈' },
+                ] : isME ? [
+                  { label: 'MER Demand', value: 'Multi-engine rating unlocks turboprop & jet pathways', icon: '✈️' },
+                  { label: 'Airline Requirement', value: 'Most Philippine airlines require MER before type rating', icon: '🎯' },
+                  { label: 'Career Step', value: 'Bridges CPL to first officer assessment eligibility', icon: '📈' },
+                ] : isMCC ? [
+                  { label: 'MCC / JOC Demand', value: 'Required by most airlines before type rating assessment', icon: '🎯' },
+                  { label: 'CRM Focus', value: 'Evaluates crew resource management in multi-crew ops', icon: '👥' },
+                  { label: 'Airline Prerequisite', value: 'Most cadet and ab-initio pathways require MCC completion', icon: '📈' },
+                ] : isUPRT ? [
+                  { label: 'UPRT Mandate', value: 'ICAO mandated UPRT for all CPL holders globally', icon: '⚠️' },
+                  { label: 'Safety Critical', value: 'LOC-I is #1 cause of fatal accidents — UPRT addresses this', icon: '🛡️' },
+                  { label: 'Regulatory', value: 'CAAP requires UPRT endorsement for CPL renewal in some categories', icon: '📋' },
+                ] : isATRL ? [
+                  { label: 'ATPL Demand', value: 'ATPL is the pinnacle — required for Airline Captain command', icon: '🏅' },
+                  { label: 'Frozen ATPL', value: 'Airlines hire FO candidates with "Frozen ATPL" while building hours', icon: '❄️' },
+                  { label: 'Philippine Requirement', value: 'CAAP ATPL requires 1,500 hrs total time including 500 hrs PIC', icon: '📋' },
+                ] : [
+                  { label: 'ASEAN Pilot Shortage', value: '~22,000 pilots needed across ASEAN by 2033', icon: '📈' },
+                  { label: 'Philippines Growth', value: 'CAAP targeting 3× pilot output by 2028', icon: '🇵🇭' },
+                  { label: 'Rating Demand', value: `${ratingLabel} holders are in active demand by regional carriers`, icon: '✈️' },
+                ];
+                const demandData = school.aboutDemandData && school.aboutDemandData.length > 0 ? school.aboutDemandData : demandDataComputed;
+                const schoolStatementComputed = isTypeRating
+                  ? `This school offers ${ratingLabel} training aligned with CAAP and ICAO simulator standards. Type rating completions here are recognised by Philippine and regional airlines for direct entry assessment.`
+                  : isME
+                  ? `This school's multi-engine programme uses CAAP-approved aircraft. Completion of MER here directly supports your eligibility for turboprop and jet type rating assessments.`
+                  : isIR
+                  ? `Instrument Rating training at this school prepares candidates for IFR operations on single and multi-engine aircraft. Essential step before any commercial airline pathway.`
+                  : isMCC
+                  ? `MCC/JOC courses here simulate real airline multi-crew operations. Completing MCC is typically a requirement before attending airline type rating assessment centres.`
+                  : isUPRT
+                  ? `UPRT training addresses Loss of Control In-flight — the leading cause of fatal accidents. ICAO-aligned programme that satisfies CAAP endorsement requirements.`
+                  : isATRL
+                  ? `ATPL ground school and flight training at this facility prepares candidates for the CAAP ATPL written exams and flight tests. Required for airline command authority.`
+                  : `Training the next generation of Filipino aviators — from first solo to airline-ready. Transparency in progress, commitment to standards.`;
+                const schoolStatement = school.aboutStatement || schoolStatementComputed;
+                const expectationsTitle = isTypeRating ? `For ${tf} Training` : isME ? 'For Multi-Engine Rating' : isIR ? 'For Instrument Rating' : isMCC ? 'For MCC / JOC Course' : isUPRT ? 'For UPRT Training' : isATRL ? 'For ATPL Training' : `For ${ratingLabel}`;
+                const pilotLabelsComputed = isTypeRating ? [
+                  { label: 'CPL + MER + IR', hrs: 'Pre-requisite', desc: 'You must hold a CPL with Multi-Engine and Instrument Rating before type rating entry.', accent: 'border-red-500/40 bg-red-500/20', badge: 'bg-red-500/30 text-red-200' },
+                  { label: 'Low-Hour FO', hrs: '200–500 hrs', desc: 'Freshly type-rated FO candidates. Most airlines accept directly into assessment.', accent: 'border-sky-500/40 bg-sky-500/15', badge: 'bg-sky-500/30 text-sky-200' },
+                  { label: 'Experienced FO', hrs: '500–1500 hrs', desc: 'Stronger assessment position. Some airlines require 500 hrs before type rating entry.', accent: 'border-emerald-500/40 bg-emerald-500/15', badge: 'bg-emerald-500/30 text-emerald-200' },
+                ] : isME ? [
+                  { label: 'Low Timer', hrs: '< 200 hrs', desc: 'Too early for MER. Complete CPL + IR first before enrolling.', accent: 'border-red-500/40 bg-red-500/20', badge: 'bg-red-500/30 text-red-200' },
+                  { label: 'CPL Holder', hrs: '200+ hrs', desc: 'Prime candidate for MER. Should hold valid CPL + IR before starting.', accent: 'border-amber-500/40 bg-amber-500/15', badge: 'bg-amber-500/30 text-amber-200' },
+                  { label: 'CPL + IR', hrs: '250+ hrs', desc: 'Ideal entry point. Can proceed directly to MER and then type rating pathway.', accent: 'border-emerald-500/40 bg-emerald-500/15', badge: 'bg-emerald-500/30 text-emerald-200' },
+                ] : isIR ? [
+                  { label: 'PPL Holder', hrs: '50+ hrs', desc: 'Minimum stage to begin IR training. Requires additional instrument ground hours.', accent: 'border-sky-500/40 bg-sky-500/15', badge: 'bg-sky-500/30 text-sky-200' },
+                  { label: 'CPL Student', hrs: '100+ hrs', desc: 'Typical stage for IR integration into CPL training programme.', accent: 'border-amber-500/40 bg-amber-500/15', badge: 'bg-amber-500/30 text-amber-200' },
+                  { label: 'CPL Holder', hrs: '200+ hrs', desc: 'Adding standalone IR — required for all IFR and airline operations.', accent: 'border-emerald-500/40 bg-emerald-500/15', badge: 'bg-emerald-500/30 text-emerald-200' },
+                ] : [
+                  { label: 'Low Timer', hrs: '< 250 hrs', desc: 'Ab-initio or PPL stage. Best suited for full CPL programme entry.', accent: 'border-sky-500/40 bg-sky-500/15', badge: 'bg-sky-500/30 text-sky-200' },
+                  { label: 'Mid Timer', hrs: '250–500 hrs', desc: 'CPL/IR training stage. Can enter rating courses.', accent: 'border-amber-500/40 bg-amber-500/15', badge: 'bg-amber-500/30 text-amber-200' },
+                  { label: 'High Timer', hrs: '500+ hrs', desc: 'Rating complete or ATPL eligible. Competitive for airline pathway.', accent: 'border-emerald-500/40 bg-emerald-500/15', badge: 'bg-emerald-500/30 text-emerald-200' },
+                ];
+                const accentMap = ['border-sky-500/40 bg-sky-500/15', 'border-amber-500/40 bg-amber-500/15', 'border-emerald-500/40 bg-emerald-500/15'];
+                const badgeMap = ['bg-sky-500/30 text-sky-200', 'bg-amber-500/30 text-amber-200', 'bg-emerald-500/30 text-emerald-200'];
+                const pilotLabels = school.pilotLabels && school.pilotLabels.length > 0
+                  ? school.pilotLabels.map((p, i) => ({ ...p, accent: accentMap[i % 3], badge: badgeMap[i % 3] }))
+                  : pilotLabelsComputed;
+                return (
+                  <div className="mt-8 mx-4 rounded-2xl overflow-hidden shadow-2xl" style={{ backdropFilter: 'blur(32px)', WebkitBackdropFilter: 'blur(32px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                    {/* Dark navy headline bar */}
+                    <div className="px-6 py-4 flex items-center justify-between gap-4" style={{ background: 'linear-gradient(90deg, #0f1e3d 0%, #1a2f5a 100%)' }}>
+                      <div className="flex items-center gap-3 flex-wrap min-w-0">
+                        <h3 className="text-xl font-serif font-semibold text-white leading-tight truncate">{school.name}</h3>
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold text-blue-200 bg-white/10 border border-white/20 flex-shrink-0">Flight School</span>
+                        {stage2TypeRatingFilter !== 'All' && (
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold text-red-900 bg-red-300 border border-red-200 flex-shrink-0">Offers {stage2TypeRatingFilter}</span>
+                        )}
+                      </div>
+                      <div className="flex-shrink-0 text-right">
+                        <p className="text-blue-300/70 text-[9px] uppercase tracking-widest mb-0.5">Tuition</p>
+                        <p className="text-white text-base font-bold leading-tight">{school.price}</p>
+                      </div>
+                    </div>
+                    {/* Tab bar */}
+                    <div className="flex border-b border-white/10" style={{ background: 'rgba(15,30,61,0.60)' }}>
+                      {(['about', 'expectations', 'requirements', 'access'] as const).map(tab => (
+                        <button
+                          key={tab}
+                          onClick={() => setTrSchoolTab(tab)}
+                          className={`px-5 py-3 text-xs font-semibold uppercase tracking-wider transition-all border-b-2 ${activeTab === tab ? 'border-red-400 text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
+                        >
+                          {tab === 'about' ? 'About' : tab === 'expectations' ? 'Expectations' : tab === 'requirements' ? 'Requirements' : 'Access'}
+                        </button>
+                      ))}
+                    </div>
+                    {/* Tab content — glassy body */}
+                    <div style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+
+                      {/* ── ABOUT ── */}
+                      {activeTab === 'about' && (
+                        <div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                            {/* Col 1 — Offerings + location */}
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Matched Offerings</p>
+                              <div className="flex flex-wrap gap-2 mb-6">
+                                {(matchedOfferings.length > 0 ? matchedOfferings : school.offerings || []).map(o => (
+                                  <span key={o} className="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 text-white border border-white/20">{o}</span>
+                                ))}
+                              </div>
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-2">Location</p>
+                              <p className="text-sm text-white flex items-center gap-1.5">
+                                <svg className="w-3.5 h-3.5 text-white/50 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                {school.location}
+                              </p>
+                            </div>
+                            {/* Col 2 — Fleet */}
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-4">Training Fleet</p>
+                              <ul className="space-y-2">
+                                {(school.fleet || []).map(f => (
+                                  <li key={f} className="flex items-center gap-2 text-sm text-white">
+                                    <svg className="w-3.5 h-3.5 text-red-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+                                    {f}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            {/* Col 3 — Future demand + school statement */}
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Why {ratingLabel === 'this rating' ? 'This Rating' : ratingLabel} Matters</p>
+                              <div className="space-y-2 mb-5">
+                                {demandData.map(d => (
+                                  <div key={d.label} className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                                    <span className="text-base leading-none mt-0.5">{d.icon}</span>
+                                    <div>
+                                      <p className="text-[10px] text-white/60 uppercase font-bold">{d.label}</p>
+                                      <p className="text-sm text-white/90">{d.value}</p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-2">About this Offering</p>
+                              <p className="text-xs text-white/80 leading-relaxed italic">
+                                "{schoolStatement}"
+                              </p>
+                              {school.aboutProTip && (
+                                <div className="mt-3 px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
+                                  <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip — The Clark Advantage</p>
+                                  <p className="text-xs text-white/85 leading-relaxed">{school.aboutProTip}</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          {/* Full-width notice banner */}
+                          <div className="mx-6 mb-5 mt-1 px-4 py-3 rounded-lg border border-amber-500/20 bg-amber-500/8 flex items-start gap-3">
+                            <svg className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <p className="text-xs text-amber-200/80 leading-relaxed">
+                              <span className="font-bold text-amber-300">Data Notice:</span> This information is sourced from public records and may not reflect the latest intake or pricing. Always verify directly with the school before committing to enrolment.
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ── EXPECTATIONS ── */}
+                      {activeTab === 'expectations' && (
+                        <div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">What They Expect — {expectationsTitle}</p>
+                              <ul className="space-y-2.5">
+                                {(school.expectations && school.expectations.length > 0 ? school.expectations : [
+                                  'Self-funded training — no sponsorship implied',
+                                  'Consistent flight progress, no extended gaps',
+                                  'Professional conduct at all times on campus',
+                                  'English proficiency to ATC communication standard',
+                                  'Valid CAAP Student Pilot / CPL at the time of enrolment',
+                                  'Punctuality and accountability on all flight bookings',
+                                ]).map(e => (
+                                  <li key={e} className="flex items-start gap-2 text-sm text-white">
+                                    <svg className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                                    {e}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Pilot Profile — Who Is This For</p>
+                              <div className="space-y-2.5">
+                                {pilotLabels.map(p => (
+                                  <div key={p.label} className={`px-3 py-2.5 rounded-lg border ${p.accent}`} style={{ color: 'white' }}>
+                                    <div className="flex items-center justify-between mb-1">
+                                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${p.badge}`} style={{ color: 'inherit' }}>{p.label}</span>
+                                      <span className="text-[10px] font-mono" style={{ color: 'rgba(255,255,255,0.65)' }}>{p.hrs}</span>
+                                    </div>
+                                    <p className="text-[11px] leading-snug" style={{ color: 'rgba(255,255,255,0.9)' }}>{p.desc}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Assessment Criteria — {ratingLabel === 'this rating' ? 'General' : ratingLabel}</p>
+                              <ul className="space-y-2.5 mb-5">
+                                {(school.assessmentCriteria && school.assessmentCriteria.length > 0 ? school.assessmentCriteria : isTypeRating ? [
+                                  { item: 'Simulator type rating exam (SIM check)', weight: 'Critical' },
+                                  { item: 'Aircraft systems oral examination', weight: 'Critical' },
+                                  { item: 'CRM & crew coordination scores', weight: 'High' },
+                                  { item: 'Ground school written exam results', weight: 'High' },
+                                  { item: 'Attendance and logbook consistency', weight: 'Medium' },
+                                ] : isME ? [
+                                  { item: 'Multi-engine flight test (CAAP examiner)', weight: 'Critical' },
+                                  { item: 'Engine failure handling & OEI ops', weight: 'Critical' },
+                                  { item: 'Ground school written exam results', weight: 'High' },
+                                  { item: 'Cross-country navigation performance', weight: 'High' },
+                                  { item: 'Attendance and logbook consistency', weight: 'Medium' },
+                                ] : isIR ? [
+                                  { item: 'IFR flight test under hood conditions', weight: 'Critical' },
+                                  { item: 'Instrument approach procedures (ILS, VOR)', weight: 'Critical' },
+                                  { item: 'Ground school written exam results', weight: 'High' },
+                                  { item: 'Holding patterns & missed approach', weight: 'High' },
+                                  { item: 'Situational awareness & scan technique', weight: 'Medium' },
+                                ] : [
+                                  { item: 'Ground school written exam results', weight: 'High' },
+                                  { item: 'Simulator performance & CRM scores', weight: 'High' },
+                                  { item: 'Flight test proficiency grades', weight: 'Critical' },
+                                  { item: 'Attendance and logbook consistency', weight: 'Medium' },
+                                  { item: 'Safety culture attitude & discipline', weight: 'Medium' },
+                                ]).map(s => (
+                                  <li key={s.item} className="flex items-start justify-between gap-2 text-sm text-white/90">
+                                    <span className="flex-1">{s.item}</span>
+                                    <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded flex-shrink-0 ${s.weight === 'Critical' ? 'bg-red-500/40 text-red-200' : s.weight === 'High' ? 'bg-amber-500/30 text-amber-200' : 'bg-white/15 text-white/70'}`}>{s.weight}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                              <div className="px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
+                                <p className="text-[10px] uppercase text-red-400 font-bold mb-1">Pilot Warning</p>
+                                <p className="text-xs text-white/85 leading-relaxed">{school.pilotWarning || (isTypeRating ? `Failing the ${ratingLabel} sim check requires re-booking and additional fees. Ensure you have completed the full ground school before entering the simulator.` : isME ? 'Failing the multi-engine flight test requires re-testing fees and delays your CAAP endorsement. Confirm aircraft availability before committing to a test date.' : isIR ? 'Failing the IFR flight test delays your CPL/ATPL progression. Ensure you have met minimum instrument hours before booking the CAAP examiner.' : 'Failing a flight test at this school may require re-testing fees and delay your CAAP submission. Plan training hours conservatively.')}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ── REQUIREMENTS ── */}
+                      {activeTab === 'requirements' && (
+                        <div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">
+                                {tf !== 'All' ? `${tf} — Entry Requirements` : 'General Entry Requirements'}
+                              </p>
+                              <ul className="space-y-2.5">
+                                {(school.requirements && school.requirements.length > 0 ? school.requirements : isTypeRating ? [
+                                  'Valid CAAP Class 1 Medical Certificate',
+                                  'CPL with valid Instrument Rating (IR)',
+                                  'Multi-Engine Rating (MER) completed',
+                                  'Minimum 200 hrs total flight time',
+                                  'MCC completion recommended (some airlines require)',
+                                  'ICAO English Proficiency — Level 4 minimum',
+                                  'No active licence suspension or infringement',
+                                ] : isME ? [
+                                  'Valid CAAP Class 1 Medical Certificate',
+                                  'CPL or CPL Student (advanced stage)',
+                                  'Valid Instrument Rating (IR) strongly recommended',
+                                  'Minimum 50 hrs PIC cross-country time',
+                                  'ICAO English Proficiency — Level 4 minimum',
+                                  'Passing score on multi-engine ground school exam',
+                                  'Satisfactory pre-solo dual check with instructor',
+                                ] : isIR ? [
+                                  'Valid CAAP Class 1 Medical Certificate',
+                                  'PPL or CPL student with 50+ total hours',
+                                  'ICAO English Proficiency — Level 4 minimum',
+                                  'Completion of instrument ground school module',
+                                  'Satisfactory instrument proficiency check',
+                                  'Minimum instrument flight hours as per CAAP',
+                                ] : isMCC ? [
+                                  'Valid CAAP Class 1 Medical Certificate',
+                                  'CPL with valid Instrument Rating (IR)',
+                                  'Multi-Engine Rating (MER) completed',
+                                  'ICAO English Proficiency — Level 4 minimum',
+                                  'Minimum 70 hrs flight time recommended',
+                                ] : isUPRT ? [
+                                  'Valid CAAP Class 1 Medical Certificate',
+                                  'PPL or CPL holder — any hours',
+                                  'ICAO English Proficiency — Level 4 minimum',
+                                  'No minimum flight hours required for ground UPRT',
+                                  'Flight UPRT requires valid licence + medical',
+                                ] : isATRL ? [
+                                  'Valid CAAP Class 1 Medical Certificate',
+                                  'CPL with valid IR and MER',
+                                  '1,500 total flight hours (ICAO ATPL standard)',
+                                  '500 hrs PIC time minimum',
+                                  '100 hrs night time minimum',
+                                  '75 hrs instrument time minimum',
+                                  'ICAO English Proficiency — Level 4 minimum',
+                                ] : [
+                                  'Valid CAAP Class 1 Medical Certificate',
+                                  'PPL or CPL as applicable to programme',
+                                  'Minimum flight hours per programme requirements',
+                                  'ICAO English Proficiency — Level 4 minimum',
+                                  'Passing written ground school exam',
+                                  'Satisfactory simulator competency assessment',
+                                  'No active suspension of any aviation licence',
+                                ]).map(r => (
+                                  <li key={r} className="flex items-start gap-2 text-sm text-white">
+                                    <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                                    {r}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">
+                                {hasMultiEngine ? 'Multi-Engine Rating Details' : 'All Programme Offerings'}
+                              </p>
+                              {hasMultiEngine ? (
+                                <div className="space-y-3">
+                                  <div className="px-3 py-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                                    <p className="text-[10px] uppercase text-red-400 font-bold mb-1">ME Aircraft Available</p>
+                                    <p className="text-sm text-white/80">{(school.fleet || []).filter(f => f.toLowerCase().includes('seneca') || f.toLowerCase().includes('baron') || f.toLowerCase().includes('aztec') || f.toLowerCase().includes('navajo') || f.toLowerCase().includes('twin') || f.toLowerCase().includes('multi')).join(', ') || 'Multi-engine aircraft — contact school'}</p>
+                                  </div>
+                                  <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
+                                    <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Estimated Training Duration</p>
+                                    <p className="text-sm text-white">10–15 hrs dual + solo · Written exam + CAAP flight test</p>
+                                  </div>
+                                  <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
+                                    <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Minimum Pre-Requisites</p>
+                                    <p className="text-sm text-white">CPL + valid IR strongly recommended · Night rating is an advantage</p>
+                                  </div>
+                                  <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
+                                    <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Outcome</p>
+                                    <p className="text-sm text-white">CAAP Multi-Engine Rating endorsement on CPL · Qualifies for MER-required airline positions</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="space-y-2">
+                                  {(school.offerings || []).map(o => (
+                                    <div key={o} className="px-3 py-2.5 rounded-lg bg-white/8 border border-white/15 text-sm text-white/90 flex items-center gap-2">
+                                      <svg className="w-3 h-3 text-red-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+                                      {o}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Documents to Prepare</p>
+                              <ul className="space-y-2 mb-5">
+                                {(school.documents && school.documents.length > 0 ? school.documents : [
+                                  'Valid government-issued ID',
+                                  'CAAP licence or student pilot certificate',
+                                  'Class 1 medical certificate (original)',
+                                  'Certified true copy of logbook pages',
+                                  'NBI clearance (some schools require)',
+                                  'Recent 2×2 photos (4 copies)',
+                                  'Proof of payment / tuition arrangement',
+                                ]).map(d => (
+                                  <li key={d} className="flex items-center gap-2 text-sm text-white/90">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-white/50 flex-shrink-0" />
+                                    {d}
+                                  </li>
+                                ))}
+                              </ul>
+                              <div className="px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
+                                <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip</p>
+                                <p className="text-xs text-white/85 leading-relaxed">{school.proTip || 'Call the school before showing up. Confirm aircraft availability for the rating you need — some schools have 1–2 multi-engine aircraft shared across all students.'}</p>
+                              </div>
+                              {school.requirementsWarning && (
+                                <div className="mt-2 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
+                                  <p className="text-[10px] uppercase text-red-400 font-bold mb-1">Document Warning</p>
+                                  <p className="text-xs text-white/85 leading-relaxed">{school.requirementsWarning}</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ── ACCESS ── */}
+                      {activeTab === 'access' && (
+                        <div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Who Can Apply</p>
+                              <div className="space-y-2.5">
+                                {(school.accessEligibility && school.accessEligibility.length > 0 ? school.accessEligibility : [
+                                  { label: 'Open to Outside Applicants', value: 'Yes — not exclusive to own graduates', ok: true },
+                                  { label: 'College Degree Required', value: 'No — aviation licence is sufficient', ok: true },
+                                  { label: 'Foreign Nationals', value: 'Permitted with valid Philippine visa + CAAP validation', ok: true },
+                                  ...(school.contact ? [{ label: 'Contact', value: school.contact, ok: true }] : []),
+                                  ...(school.email ? [{ label: 'Email', value: school.email, ok: true }] : []),
+                                  { label: 'Affiliated Cadet Programme', value: (school.offerings || []).some(o => o.toLowerCase().includes('cadet')) ? 'Cadet pathway available — enquire directly' : 'No affiliated cadet sponsorship programme', ok: (school.offerings || []).some(o => o.toLowerCase().includes('cadet')) },
+                                ]).map(a => (
+                                  <div key={a.label} className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                                    <p className="text-[10px] text-white/60 font-bold uppercase tracking-wider mb-0.5">{a.label}</p>
+                                    <p className="text-sm font-semibold text-white">{a.value}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Enrolment & Process</p>
+                              <div className="space-y-2.5">
+                                <div className="px-3 py-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                                  <p className="text-[10px] uppercase text-emerald-400 font-bold mb-0.5">Intake Status</p>
+                                  {school.intakeNote ? (
+                                    <>
+                                      <p className="text-sm text-white/85 font-semibold">{school.intakeNote.split('.')[0]}</p>
+                                      <p className="text-xs text-white/70 mt-1">{school.intakeNote.split('.').slice(1).join('.').trim()}</p>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <p className="text-sm text-white/85 font-semibold">Open Enrolment — Rolling Intake</p>
+                                      <p className="text-xs text-white/70 mt-1">No fixed semester cutoff. Apply any time subject to aircraft availability.</p>
+                                    </>
+                                  )}
+                                </div>
+                                <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
+                                  <p className="text-[10px] uppercase text-white/60 font-bold mb-1">How to Start</p>
+                                  <ol className="text-xs text-white/85 space-y-1 leading-relaxed list-decimal list-inside">
+                                    {(school.enrollmentSteps && school.enrollmentSteps.length > 0 ? school.enrollmentSteps : [
+                                      'Contact school to confirm slot availability',
+                                      'Submit documents + complete assessment',
+                                      'Pay initial fees / training deposit',
+                                      'Receive training schedule from chief instructor',
+                                    ]).map(s => <li key={s}>{s}</li>)}
+                                  </ol>
+                                </div>
+                                <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                                  <p className="text-[10px] uppercase text-white/60 font-bold mb-0.5">Tuition Range</p>
+                                  <p className="text-sm text-red-300 font-semibold">{school.price}</p>
+                                </div>
+                                {school.technology && school.technology.length > 0 && (
+                                  <div className="px-3 py-2.5 rounded-lg bg-violet-500/10 border border-violet-500/20">
+                                    <p className="text-[10px] uppercase text-violet-400 font-bold mb-1">Technology</p>
+                                    {school.technology.map(t => (
+                                      <p key={t} className="text-xs text-white/85 leading-relaxed">{t}</p>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <div className="px-6 py-6">
+                              <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">School Credibility</p>
+                              <div className="space-y-2.5">
+                                <div className={`px-3 py-2.5 rounded-lg border ${school.claimed ? 'bg-sky-500/10 border-sky-500/20' : 'bg-white/5 border-white/10'}`}>
+                                  <p className="text-[10px] uppercase font-bold mb-0.5 text-white/60">Platform Verification</p>
+                                  <p className={`text-sm font-semibold ${school.claimed ? 'text-sky-200' : 'text-white/80'}`}>{school.claimed ? '✓ Claimed & Verified by School' : 'Unverified — sourced from public records'}</p>
+                                </div>
+                                {school.pilotsTrained && (
+                                  <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                                    <p className="text-[10px] uppercase text-white/40 font-bold mb-0.5">Total Pilots Trained</p>
+                                    <p className="text-2xl font-bold text-white">{school.pilotsTrained.toLocaleString()}<span className="text-sm text-white/60 font-normal ml-1">pilots</span></p>
+                                  </div>
+                                )}
+                                <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                                  <p className="text-[10px] uppercase text-white/60 font-bold mb-0.5">CAAP Accreditation</p>
+                                  <p className="text-sm text-emerald-300 font-semibold">✓ CAAP-Accredited Flight Training Organisation</p>
+                                </div>
+                                {school.website && (
+                                  <a href={school.website} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-300 hover:text-red-200 font-semibold transition-colors">
+                                    Visit Official Website
+                                    <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                    </div>
+                  </div>
+                );
+              }
+
+              // For licensure sub-pathway cards — show rich tabbed panel like flight schools
+              const LICENSURE_CARD_DATA: Record<string, { name: string; image: string; description: string; price: string; offerings: string[]; requirements: string[]; documents: string[]; proTip: string; expectations: string[]; pilotLabels: { label: string; hrs: string; desc: string }[]; assessmentCriteria: { item: string; weight: 'Critical' | 'High' | 'Medium' }[]; pilotWarning: string; aboutStatement: string; location: string; website?: string; }> = {
+                'a02f4e29-e165-415f-a3b3-669edbd7deb1': {
+                  name: 'Type Rating Centers',
+                  image: 'https://www.caepacific.com/wp-content/uploads/2021/03/CAE-Philippines-Training-Center.jpg',
+                  description: 'World-class type rating training centers with Level D Full-Flight Simulators for Airbus (A320, A330) and Boeing (B737, B777) aircraft. CAAP-approved for Philippine operators. CAE Rise™ data analytics used for objective performance tracking.',
+                  price: '$18,000 – $50,000 depending on aircraft type and center',
+                  location: 'Clark, Philippines · Dubai, UAE · London, UK · Melbourne, AU',
+                  website: 'https://www.cae.com/civil-aviation/locations/asia-pacific/cae-philippines/',
+                  offerings: ['A320 Type Rating', 'B737 Type Rating', 'A330 Type Rating', 'B777 Type Rating', 'ATR 72-600 Type Rating', 'Jet Orientation Course (JOC)', 'MCC — Multi-Crew Cooperation'],
+                  requirements: ['Valid CAAP Class 1 Medical Certificate', 'CPL with IR + Multi-Engine (ME) endorsement', 'Minimum 200 hrs total flight time', 'ICAO English Proficiency — Level 4 minimum', 'No active licence suspension'],
+                  documents: ['Valid Passport or Government-issued ID', 'CAAP License (CPL/ATPL)', 'Current Class 1 Medical Certificate', 'Certified True Copy of Pilot Logbook', 'NTC Radio Telephony License'],
+                  proTip: 'Book simulator slots at least 4–6 weeks in advance. Airline recurrent training takes priority at most centers — self-funded candidates should confirm slot availability before paying deposits.',
+                  expectations: ['Airline-standard discipline from day one.', 'Ground school exams must be passed before sim access.', 'CRM and SOP adherence are assessed throughout — not just during checkrides.', 'Simulator sessions are expensive; missed slots are typically forfeited without refund.'],
+                  pilotLabels: [
+                    { label: 'Fresh CPL', hrs: '200–500 hrs', desc: 'Completing first type rating to enter the airline market as First Officer.' },
+                    { label: 'Mid Timer', hrs: '500–1,500 hrs', desc: 'Transitioning from regional/turboprop to narrowbody jet operations.' },
+                    { label: 'High Timer', hrs: '1,500+ hrs', desc: 'Adding widebody or additional type rating for career advancement.' },
+                  ],
+                  assessmentCriteria: [
+                    { item: 'Ground School Exam — systems & limitations', weight: 'High' },
+                    { item: 'Simulator Performance — normal & abnormal procedures', weight: 'Critical' },
+                    { item: 'CRM & Multi-crew coordination', weight: 'High' },
+                    { item: 'SOP Adherence', weight: 'Critical' },
+                  ],
+                  pilotWarning: 'Airline partners have priority scheduling at most Type Rating Centers. Self-funded pilots should budget 1–2 weeks of buffer beyond the expected completion date for delays.',
+                  aboutStatement: 'Type Rating Centers provide the bridge between your CPL and an airline cockpit. Completion of a type rating at a CAAP/EASA-approved center is the most direct route to First Officer employment at Philippine and regional airlines.',
+                },
+                'cc996aa7-a075-4be7-beef-f917dd1f41db': {
+                  name: 'Instrument Rating Pathway',
+                  image: 'https://media.pea.com/wp-content/uploads/2023/06/altfull-view-of-G1000-Avionics-of-Cessna-172-1024x607.jpeg',
+                  description: 'Earn your Instrument Rating to operate legally under IFR in all weather conditions and controlled airspace. Master NDB/VOR/ILS approaches, holding patterns, and ATC communication. Essential gateway for all commercial airline pathways.',
+                  price: '$10,000 – $18,000',
+                  location: 'Philippines · USA · Europe · Australia',
+                  offerings: ['IFR Ground School', 'Instrument Approaches — ILS/VOR/NDB', 'Holding Patterns & Missed Approaches', 'Cross-Country IFR Navigation', 'CAAP Instrument Rating Skill Test'],
+                  requirements: ['Valid PPL or CPL (Student or Full)', 'CAAP Class 1 or Class 2 Medical', '50+ hours cross-country time as PIC', 'ICAO English Proficiency — Level 4 minimum', 'Completion of instrument ground school module'],
+                  documents: ['Valid ID or Passport', 'CAAP Pilot License', 'Medical Certificate', 'Logbook (certified copy)', 'Ground school completion certificate'],
+                  proTip: 'Train IFR in actual IMC when possible — sim-only training leaves gaps in scan technique. Ask the school how many actual cloud hours are included in the programme.',
+                  expectations: ['Disciplined instrument scan from the first lesson.', 'Expect to fly partial-panel approaches early.', 'Ground knowledge of met, navigation, and regulations is tested rigorously.', 'Achieving the rating takes most students 6–8 weeks of focused effort.'],
+                  pilotLabels: [
+                    { label: 'PPL Holder', hrs: '50+ hrs', desc: 'Adding IR to expand weather capabilities and progress toward CPL.' },
+                    { label: 'CPL Student', hrs: '150+ hrs', desc: 'Completing IR as part of the integrated CPL pathway.' },
+                    { label: 'License Upgrade', hrs: 'Any', desc: 'Existing CPL holders adding IR for commercial employment eligibility.' },
+                  ],
+                  assessmentCriteria: [
+                    { item: 'Instrument Approaches — ILS, VOR, NDB', weight: 'Critical' },
+                    { item: 'Partial Panel Flying', weight: 'High' },
+                    { item: 'ATC Communication — IFR clearances', weight: 'High' },
+                    { item: 'Meteorology & Weather Decision-Making', weight: 'Medium' },
+                  ],
+                  pilotWarning: 'IR training is sequential — rushing instrument scan development leads to checkride failures. Do not compress the programme below the minimum hours. Quality of training matters more than speed.',
+                  aboutStatement: 'The Instrument Rating is the most critical gateway licence in commercial aviation. Without it, no airline pathway is accessible. Train at a school with actual IMC flight time in the programme, not simulation-only.',
+                },
+                '54655935-92de-4aad-b82b-703152ffce25': {
+                  name: 'ATPL Pathway',
+                  image: 'https://www.wingpath.in/blog_images/what-is-atpl-in-india-6ihgy-1000x700.png',
+                  description: 'Structured hour-building programme to meet the 1,500-hour ATPL requirement. Build hours through instruction, charter, ferry flights, and regional turboprop operations. Frozen ATPL holders can apply to airline FO positions while building toward full ATPL.',
+                  price: 'Hour Building: Variable | ATPL Theory: $3,000–$8,000',
+                  location: 'Philippines · Australia · USA · Europe',
+                  offerings: ['ATPL Theory Ground School (14 subjects)', 'Flight Instruction Hour Building', 'Charter & Regional Turboprop Hour Building', 'Frozen ATPL Application Support', 'Airline Interview Preparation'],
+                  requirements: ['CPL with IR and Multi-Engine Rating', 'CAAP Class 1 Medical', '500 hrs total time minimum to begin ATPL theory', 'ICAO English Proficiency — Level 4 minimum', '100 hrs night time (for full ATPL)'],
+                  documents: ['Valid Passport or ID', 'CAAP CPL License', 'Class 1 Medical Certificate', 'Certified logbook pages', 'ATPL Theory exam results'],
+                  proTip: 'Do not wait for 1,500 hours to apply to airlines — most Philippine carriers hire First Officers with Frozen ATPL (CPL + IR + ME) from 200 hours, especially cadet programme graduates.',
+                  expectations: ['ATPL theory covers 14 subjects — treat it like a degree programme, not a test to pass.', 'Hour building quality matters: diverse aircraft types and conditions.', 'The path to command authority is long — plan financially for 3–5 years.', 'Network with line captains during hour building; referrals matter.'],
+                  pilotLabels: [
+                    { label: 'Frozen ATPL', hrs: '200–750 hrs', desc: 'CPL+IR+ME holder applying to airline FO positions while building hours.' },
+                    { label: 'Hour Builder', hrs: '750–1,200 hrs', desc: 'Flight instructor or charter pilot progressing toward full ATPL minimums.' },
+                    { label: 'ATPL Ready', hrs: '1,500+ hrs', desc: 'Applying for CAAP ATPL including 500 PIC and 100 night hours.' },
+                  ],
+                  assessmentCriteria: [
+                    { item: 'ATPL Theory — 14 written exams (75% pass mark each)', weight: 'Critical' },
+                    { item: 'Flight Hours — quality and diversity of experience', weight: 'High' },
+                    { item: 'Night & IFR Time — CAAP minimums', weight: 'High' },
+                    { item: 'CRM History — airline assessment readiness', weight: 'Medium' },
+                  ],
+                  pilotWarning: 'ATPL theory is valid for 7 years after passing all 14 subjects. If you do not complete flight hour requirements within this period, you must re-sit failed or expired subjects. Plan your timeline carefully.',
+                  aboutStatement: 'The ATPL is the pinnacle pilot certificate — required for Airline Captain command. The journey from CPL to ATPL typically takes 3–6 years in the Philippines. Every hour logged is progress. The Frozen ATPL (CPL+IR+ME with passed theory) is your airline entry ticket.',
+                },
+                'c89c9f97-b3f6-4955-9c34-3ae266a6ffc8': {
+                  name: 'Seaplane Rating',
+                  image: 'https://images.unsplash.com/photo-1507199129876-44d2b3190c1a?w=800&q=80',
+                  description: 'Add a seaplane (floatplane) rating to your existing pilot licence. Learn water takeoffs and landings, step taxi, dock approaches, and amphibious aircraft handling. Opens access to island-hopping tourism routes and remote area operations across the Philippines.',
+                  price: '$3,000 – $8,000',
+                  location: 'Philippines · Canada · USA · Caribbean',
+                  offerings: ['Water Takeoffs & Landings', 'Step Taxi & Glassy Water Technique', 'Dock & Beach Approaches', 'Seaplane Emergency Procedures', 'CAAP Seaplane Rating Skill Test'],
+                  requirements: ['Valid PPL or higher', 'CAAP Class 2 Medical minimum', '25+ hours total flight time', 'ICAO English Proficiency — Level 4', 'No seaplane-specific hours required prior'],
+                  documents: ['Valid ID or Passport', 'CAAP Pilot License', 'Medical Certificate', 'Logbook (certified copy)'],
+                  proTip: 'Seaplane ratings are rare in the Philippines — only a handful of CAAP-approved instructors exist. This niche rating commands premium pay in island tourism and NGO/humanitarian operations.',
+                  expectations: ['Expect entirely new handling techniques — water is not a runway.', 'Glassy water approaches require specific altitude judgment; this takes time to learn.', 'Small class sizes mean highly personalized instruction.', 'Typically completed in 1–2 weeks of intensive flying.'],
+                  pilotLabels: [
+                    { label: 'PPL Holder', hrs: '25+ hrs', desc: 'Adding seaplane rating for island tourism or personal aviation diversity.' },
+                    { label: 'CPL/ATPL', hrs: 'Any', desc: 'Professional pilot adding niche rating for specialized operator employment.' },
+                  ],
+                  assessmentCriteria: [
+                    { item: 'Water Takeoff & Landing — normal and crosswind', weight: 'Critical' },
+                    { item: 'Glassy Water Approach', weight: 'Critical' },
+                    { item: 'Emergency Procedures — water-specific', weight: 'High' },
+                    { item: 'Dock Approach & Mooring', weight: 'Medium' },
+                  ],
+                  pilotWarning: 'Seaplane operations carry unique hazards — submerged debris, boat traffic, and weather-driven wave heights can change rapidly. This is a niche rating; ensure your school has recent, relevant instruction experience.',
+                  aboutStatement: 'The Seaplane Rating opens access to a unique aviation niche. In the Philippines, island-hopping seaplane services serve destinations unreachable by conventional aircraft. A rare, premium credential for pilots seeking differentiation.',
+                },
+                'e94ba893-fa83-47b1-90f9-98905dc6685a': {
+                  name: 'Multi-Engine Rating',
+                  image: 'https://cdn.prod.website-files.com/67b7f6762c0ae79aa3b1f3b0/6813ec96ef44eea3df482f3d_N53TW%203.jpg',
+                  description: 'Earn your Multi-Engine Rating (MER) to legally operate aircraft with two or more engines. Master Vmc demonstrations, engine-out procedures, asymmetric thrust management, and multi-engine performance planning. Mandatory prerequisite before most Type Rating programmes.',
+                  price: '$8,000 – $15,000',
+                  location: 'Philippines · USA · Australia · Europe',
+                  offerings: ['Multi-Engine Ground School', 'Vmc Demonstrations & Engine-Out Drills', 'Asymmetric Approach & Landing', 'Multi-Engine Performance Planning', 'CAAP Multi-Engine Rating Skill Test'],
+                  requirements: ['Valid PPL or CPL', 'CAAP Class 1 Medical', 'Single-engine flight experience (50+ hrs recommended)', 'ICAO English Proficiency — Level 4', 'IR strongly recommended prior to MER'],
+                  documents: ['Valid ID or Passport', 'CAAP Pilot License', 'Class 1 Medical Certificate', 'Certified Logbook Pages'],
+                  proTip: 'Pair the MER with your IR in the same training block if possible — most Philippine airlines require CPL + IR + MER as the complete package for type rating eligibility.',
+                  expectations: ['Engine-failure at Vr is the defining maneuver — practice until it is instinctive.', 'Ground school covers engine-failure aerodynamics and Vmc physics in detail.', 'Programme typically 4–6 weeks.', 'Expect checkride to include a simulated single-engine ILS approach.'],
+                  pilotLabels: [
+                    { label: 'PPL to MER', hrs: '50–150 hrs', desc: 'Building multi-engine experience on the path to CPL + IR + MER package.' },
+                    { label: 'CPL Student', hrs: '150–200 hrs', desc: 'Completing MER as the final block before type rating eligibility.' },
+                    { label: 'License Upgrade', hrs: 'Any', desc: 'Adding MER to existing CPL+IR for airline entry assessment.' },
+                  ],
+                  assessmentCriteria: [
+                    { item: 'Engine Failure at V1/Vr — directional control', weight: 'Critical' },
+                    { item: 'Single-Engine ILS Approach', weight: 'Critical' },
+                    { item: 'Multi-Engine Performance Planning', weight: 'High' },
+                    { item: 'Emergency Procedures — engine fire, feathering', weight: 'High' },
+                  ],
+                  pilotWarning: 'Multi-engine training on under-powered twins can create bad habits. Train on a modern aircraft (Piper Seminole or equivalent) with well-maintained engines. Verify the school\'s aircraft is airworthy and legally maintained before committing.',
+                  aboutStatement: 'The Multi-Engine Rating is the final prerequisite before accessing type rating programmes. Combined with CPL and IR, it forms the complete entry package for every Philippine airline\'s First Officer assessment process.',
+                },
+                '078eea1a-271f-4392-a802-9a2ea4c36da0': {
+                  name: 'UPRT Rating',
+                  image: 'https://www.flight-safety.com/wp-content/uploads/2021/06/uprt-training.jpg',
+                  description: 'Upset Prevention and Recovery Training (UPRT) addresses Loss of Control In-flight (LOC-I) — the single leading cause of fatal aviation accidents worldwide. ICAO-aligned programme required for many airline type rating programmes and CAAP CPL renewal endorsements.',
+                  price: '$2,500 – $5,000',
+                  location: 'Philippines · USA · Europe · Australia',
+                  offerings: ['Unusual Attitude Recognition & Recovery', 'Stall Awareness & Prevention', 'Spin Recovery Training', 'Aerobatic-Based Recovery Maneuvers', 'CAAP UPRT Endorsement'],
+                  requirements: ['CPL or ATPL (or advanced CPL student)', 'CAAP Class 1 Medical', 'Spin Awareness endorsement (or completed during UPRT)', 'EASA/ICAO-compliant programme recognition'],
+                  documents: ['Valid ID or Passport', 'CAAP Pilot License', 'Class 1 Medical Certificate', 'Logbook (certified copy)'],
+                  proTip: 'UPRT is not just a box-ticking exercise — LOC-I kills more pilots than any other accident category. Approach this training with genuine intent to internalize the skills. It could save your life.',
+                  expectations: ['Expect to be uncomfortable — that is the point.', 'Aerobatic maneuvers are used as a training tool, not for spectacle.', 'Both theoretical (ground school) and practical (airborne) components are mandatory.', 'Programme typically 1–2 weeks intensive.'],
+                  pilotLabels: [
+                    { label: 'CPL Candidate', hrs: 'Any', desc: 'Completing UPRT as part of integrated CPL or standalone endorsement.' },
+                    { label: 'Airline Applicant', hrs: '200+ hrs', desc: 'Meeting type rating or airline assessment UPRT prerequisite requirements.' },
+                    { label: 'Active Pilot', hrs: 'Any', desc: 'Recurrent UPRT for enhanced flight safety awareness and skill currency.' },
+                  ],
+                  assessmentCriteria: [
+                    { item: 'Unusual Attitude Recovery — nose high & nose low', weight: 'Critical' },
+                    { item: 'Incipient Spin Entry & Recovery', weight: 'Critical' },
+                    { item: 'Stall Recognition & Prevention', weight: 'High' },
+                    { item: 'Theoretical LOC-I Awareness', weight: 'High' },
+                  ],
+                  pilotWarning: 'UPRT must be conducted in aerobatic-capable aircraft with full-authority dual controls. Do not accept a programme conducted only in a non-aerobatic trainer or simulator. Verify the aircraft\'s aerobatic certification before enrolling.',
+                  aboutStatement: 'LOC-I is the #1 cause of fatal accidents. UPRT is not optional for serious pilots — ICAO, EASA, and CAAP all mandate or strongly recommend it. One well-trained recovery response at altitude could be the difference between a statistic and a survivor.',
+                },
+                '4d4b6568-3759-432e-9193-e0dba88425aa': {
+                  name: 'CFI Rating Pathway',
+                  image: 'https://media.pea.com/wp-content/uploads/2023/06/flight-instructor-training-1024x607.jpeg',
+                  description: 'Certified Flight Instructor (CFI) rating — earn while you build hours toward ATPL minimums. Learn instructional techniques, lesson plan development, student evaluation, and CAAP flight training regulations. Includes CFI (single), CFII (instrument), and MEI (multi-engine) tracks.',
+                  price: 'Training: $5,000 – $10,000 | Earning: PHP 25,000–60,000/month',
+                  location: 'Philippines · USA · Australia',
+                  website: undefined,
+                  offerings: ['CFI — Certified Flight Instructor (Single Engine)', 'CFII — Instrument Flight Instructor', 'MEI — Multi-Engine Instructor', 'CAAP Flight Instructor License (FIL)', 'Ground Instructor Certification'],
+                  requirements: ['Valid CPL with IR (CFII requires IR proficiency)', 'CAAP Class 1 Medical', '250+ hours total flight time', 'Written exam pass — Fundamentals of Instruction (FOI)', 'ICAO English Proficiency — Level 4+'],
+                  documents: ['Valid ID or Passport', 'CAAP CPL License', 'Class 1 Medical Certificate', 'Logbook (certified copy)', 'FOI written exam result'],
+                  proTip: 'Choose your flight school carefully — instructing at a busy ATO with structured syllabi teaches you more than a quiet school with minimal students. Productivity and quality of instruction experience matters for your airline assessment.',
+                  expectations: ['Teaching requires deeper knowledge than flying — you must be able to explain every concept.', 'Student management and lesson preparation are as important as flight skills.', 'High-performing CFIs get airline referrals; complacent ones get overlooked.', 'Plan for at least 12–18 months of instructing before reaching competitive airline hours.'],
+                  pilotLabels: [
+                    { label: 'New CFI', hrs: '250–500 hrs', desc: 'Freshly rated instructor building hours on the path to Frozen ATPL airline entry.' },
+                    { label: 'Experienced CFI', hrs: '500–1,200 hrs', desc: 'Building toward ATPL minimums while developing leadership and mentorship skills.' },
+                    { label: 'Senior Instructor', hrs: '1,200+ hrs', desc: 'Transitioning to airline career with rich instructional background valued by recruiters.' },
+                  ],
+                  assessmentCriteria: [
+                    { item: 'Fundamentals of Instruction (FOI) — teaching theory', weight: 'High' },
+                    { item: 'Flight Demonstration Standards — precision & explanation', weight: 'Critical' },
+                    { item: 'Student Evaluation — identifying & correcting errors', weight: 'High' },
+                    { item: 'Ground Lesson Delivery — met, nav, regulations', weight: 'Medium' },
+                  ],
+                  pilotWarning: 'Instructing at an underfunded school with poorly maintained aircraft builds bad habits and creates safety risks. Verify the school\'s CAAP ATO certification and aircraft maintenance records before accepting an instructing position.',
+                  aboutStatement: 'The CFI rating is the most efficient hour-building pathway in Philippine aviation. You earn a salary while progressing toward ATPL minimums, and you develop the communication, discipline, and leadership skills that airline recruiters actively look for.',
+                },
+              };
+
+              const licensureData = LICENSURE_CARD_DATA[cardId];
+              if (licensureData) {
+                const school = {
+                  id: cardId,
+                  name: licensureData.name,
+                  description: licensureData.description,
+                  location: licensureData.location,
+                  rating: 4.7,
+                  price: licensureData.price,
+                  image: licensureData.image,
+                  region: 'Asia' as const,
+                  fleet: [] as string[],
+                  offerings: licensureData.offerings,
+                  pilotsTrained: undefined as number | undefined,
+                  established: undefined as number | undefined,
+                  website: licensureData.website,
+                  pathwayScore: undefined as number | undefined,
+                  claimed: false,
+                  requirements: licensureData.requirements,
+                  documents: licensureData.documents,
+                  proTip: licensureData.proTip,
+                  technology: [] as string[],
+                  expectations: licensureData.expectations,
+                  pilotLabels: licensureData.pilotLabels,
+                  assessmentCriteria: licensureData.assessmentCriteria,
+                  pilotWarning: licensureData.pilotWarning,
+                  aboutStatement: licensureData.aboutStatement,
+                };
+                const fsName = school.name;
+                const fsLocation = school.location;
+                const fsPrice = school.price;
+                const fsOfferings = school.offerings;
+                const fsWebsite = school.website;
+                const fsDescription = school.description;
+
+                return (
+                  <div className="mt-8 mx-4 rounded-2xl overflow-hidden border border-white/8 bg-white/4 backdrop-blur-sm opacity-100">
+                    {/* Header strip */}
+                    <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-white/8">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h3 className="text-lg font-serif font-normal text-white leading-tight">{fsName}</h3>
+                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold text-white bg-sky-700/80">Training Pathway</span>
+                        </div>
+                        <div className="flex items-center gap-3 flex-wrap mt-1">
+                          <span className="flex items-center gap-1 text-white/55 text-xs">
+                            <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            {fsLocation}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <p className="text-white/40 text-[9px] uppercase tracking-widest mb-0.5">Estimated Cost</p>
+                        <p className="text-white text-sm font-bold leading-tight max-w-[200px] text-right">{fsPrice}</p>
+                      </div>
+                    </div>
+
+                    {/* Tab bar */}
+                    <div className="flex border-b border-white/8" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                      {(['about', 'expectations', 'requirements', 'access'] as const).map(t => (
+                        <button key={t} onClick={() => setTrSchoolTab(t)} className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-widest transition-colors ${trSchoolTab === t ? 'text-white border-b-2 border-white' : 'text-white/40 hover:text-white/70'}`}>
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* ABOUT tab */}
+                    {trSchoolTab === 'about' && (
+                      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Offerings</p>
+                          <ul className="space-y-1.5">
+                            {fsOfferings.map(o => (
+                              <li key={o} className="flex items-start gap-2 text-sm text-white/85">
+                                <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0 mt-1.5" />
+                                {o}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">About</p>
+                          <p className="text-xs text-white/70 leading-relaxed">{fsDescription}</p>
+                        </div>
+                        <div className="px-6 py-6 space-y-3">
+                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Why This Rating Matters</p>
+                          <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                            <p className="text-[10px] uppercase text-white/60 font-bold mb-1">About this Pathway</p>
+                            <p className="text-xs text-white/80 leading-relaxed italic">"{school.aboutStatement}"</p>
+                          </div>
+                          {school.proTip && (
+                            <div className="mt-3 px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
+                              <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip</p>
+                              <p className="text-xs text-white/85 leading-relaxed">{school.proTip}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* EXPECTATIONS tab */}
+                    {trSchoolTab === 'expectations' && (
+                      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">What They Expect</p>
+                          <ul className="space-y-2">
+                            {school.expectations.map(e => (
+                              <li key={e} className="text-xs text-white/85 leading-relaxed border-l-2 border-red-500/40 pl-3">{e}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Pilot Profile — Who Is This For</p>
+                          <div className="space-y-2.5">
+                            {school.pilotLabels.map(p => (
+                              <div key={p.label} className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                                <div className="flex items-center justify-between mb-1">
+                                  <p className="text-[11px] font-bold text-white">{p.label}</p>
+                                  <span className="text-[10px] text-white/60 font-mono">{p.hrs}</span>
+                                </div>
+                                <p className="text-xs text-white/70">{p.desc}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Assessment Criteria</p>
+                          <div className="space-y-2 mb-4">
+                            {school.assessmentCriteria.map(a => (
+                              <div key={a.item} className="flex items-start gap-2">
+                                <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold flex-shrink-0 mt-0.5 ${a.weight === 'Critical' ? 'bg-red-500/20 text-red-300' : a.weight === 'High' ? 'bg-amber-500/20 text-amber-300' : 'bg-white/10 text-white/50'}`}>{a.weight}</span>
+                                <p className="text-xs text-white/85">{a.item}</p>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="mt-3 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
+                            <p className="text-[10px] uppercase text-red-400 font-bold mb-1">Pilot Warning</p>
+                            <p className="text-xs text-white/85 leading-relaxed">{school.pilotWarning}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* REQUIREMENTS tab */}
+                    {trSchoolTab === 'requirements' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Entry Requirements</p>
+                          <ul className="space-y-2.5">
+                            {school.requirements.map(r => (
+                              <li key={r} className="flex items-start gap-2 text-sm text-white/90">
+                                <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                                {r}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Documents to Prepare</p>
+                          <ul className="space-y-2.5">
+                            {school.documents.map(d => (
+                              <li key={d} className="flex items-center gap-2 text-sm text-white/90">
+                                <span className="w-1.5 h-1.5 rounded-full bg-white/50 flex-shrink-0" />
+                                {d}
+                              </li>
+                            ))}
+                          </ul>
+                          <div className="mt-4 px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
+                            <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip</p>
+                            <p className="text-xs text-white/85 leading-relaxed">{school.proTip}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ACCESS tab */}
+                    {trSchoolTab === 'access' && (
+                      <div className="px-6 py-6 space-y-3">
+                        <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-3">Enrollment & Access</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="px-3 py-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                            <p className="text-[10px] uppercase text-emerald-400 font-bold mb-0.5">Intake Status</p>
+                            <p className="text-sm text-white/85 font-semibold">Open Enrolment — Rolling Intake</p>
+                            <p className="text-xs text-white/70 mt-1">Training programmes are offered year-round. Contact training centres directly to confirm slot availability.</p>
+                          </div>
+                          <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10">
+                            <p className="text-[10px] uppercase text-white/60 font-bold mb-0.5">Estimated Cost</p>
+                            <p className="text-sm text-red-300 font-semibold">{fsPrice}</p>
+                          </div>
+                          <div className="px-3 py-3 rounded-lg bg-white/5 border border-white/10 md:col-span-2">
+                            <p className="text-[10px] uppercase text-white/60 font-bold mb-1">How to Start</p>
+                            <ol className="text-xs text-white/85 space-y-1 leading-relaxed list-decimal list-inside">
+                              <li>Confirm you meet the entry requirements listed above</li>
+                              <li>Contact 2–3 CAAP-approved training centres to compare slot availability and pricing</li>
+                              <li>Submit documents (licence, medical, logbook) and complete any required pre-entry assessment</li>
+                              <li>Pay training fees and receive your training schedule</li>
+                              <li>Complete ground school before gaining simulator/aircraft access</li>
+                            </ol>
+                          </div>
+                          {fsWebsite && (
+                            <a href={fsWebsite} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-300 hover:text-red-200 font-semibold transition-colors md:col-span-2">
+                              Visit Official Website
+                              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // For dedicated type-rating cards (A320, B737, etc.)
+              const trCard = (DISCOVERY_PATHWAYS['type-rating'] || []).find((j: PathwayJob) => j.id === cardId);
+              if (!trCard) return null;
+              const reqs: string[] = trCard.requirements || [];
+              const tags: string[] = trCard.tags || [];
+              const CATEGORY_COLOR: Record<string, string> = {
+                'Narrowbody Type Rating': 'sky',
+                'Widebody Type Rating': 'violet',
+                'Turboprop Type Rating': 'amber',
+                'Pre-Type Rating Course': 'emerald',
+                'Mandatory Safety Rating': 'orange',
+              };
+              const color = CATEGORY_COLOR[trCard.type] || 'sky';
+              const colorMap: Record<string, string> = {
+                sky: 'bg-sky-500/15 text-sky-300 border-sky-500/20',
+                violet: 'bg-violet-500/15 text-violet-300 border-violet-500/20',
+                amber: 'bg-amber-500/15 text-amber-300 border-amber-500/20',
+                emerald: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/20',
+                orange: 'bg-orange-500/15 text-orange-300 border-orange-500/20',
+              };
+              const chipClass = colorMap[color] || colorMap.sky;
+              const colorBarMap: Record<string, string> = {
+                sky: 'linear-gradient(90deg, #0369a1 0%, #075985 100%)',
+                violet: 'linear-gradient(90deg, #6d28d9 0%, #4c1d95 100%)',
+                amber: 'linear-gradient(90deg, #b45309 0%, #92400e 100%)',
+                emerald: 'linear-gradient(90deg, #047857 0%, #065f46 100%)',
+                orange: 'linear-gradient(90deg, #c2410c 0%, #9a3412 100%)',
+              };
+              const barGradient = colorBarMap[color] || colorBarMap.sky;
+              const chipTextColorMap: Record<string, string> = {
+                sky: 'text-sky-900 bg-sky-200',
+                violet: 'text-violet-900 bg-violet-200',
+                amber: 'text-amber-900 bg-yellow-200',
+                emerald: 'text-emerald-900 bg-emerald-200',
+                orange: 'text-orange-900 bg-orange-200',
+              };
+              const badgeClass = chipTextColorMap[color] || chipTextColorMap.sky;
+              return (
+                <div className="mt-8 mx-4 rounded-2xl overflow-hidden shadow-2xl" style={{ backdropFilter: 'blur(32px)', WebkitBackdropFilter: 'blur(32px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                  {/* Dark navy headline bar */}
+                  <div className="px-6 py-4 flex items-center justify-between gap-4" style={{ background: 'linear-gradient(90deg, #0f1e3d 0%, #1a2f5a 100%)' }}>
+                    <div className="flex items-center gap-3 flex-wrap min-w-0">
+                      <h3 className="text-xl font-serif font-semibold text-white leading-tight">{trCard.title}</h3>
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold flex-shrink-0 ${badgeClass}`}>{trCard.type}</span>
+                    </div>
+                    <div className="flex-shrink-0 text-right">
+                      <p className="text-blue-300/70 text-[9px] uppercase tracking-widest mb-0.5">Estimated Cost</p>
+                      <p className="text-white text-base font-bold leading-tight">{trCard.salary}</p>
+                    </div>
+                  </div>
+                  {/* Sub-header: provider + location — slightly lighter navy */}
+                  <div className="px-6 py-3 flex items-center gap-4 border-b border-white/10" style={{ background: 'rgba(15,30,61,0.60)' }}>
+                    <p className="text-white font-semibold text-sm">{trCard.company}</p>
+                    <span className="w-1 h-1 rounded-full bg-white/30" />
+                    <p className="text-white/60 text-sm flex items-center gap-1">
+                      <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      {trCard.location}
+                    </p>
+                  </div>
+                  {/* Glassy body */}
+                  <div className="grid grid-cols-1 md:grid-cols-3" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+                    <div className="px-6 py-5 border-b md:border-b-0 md:border-r border-white/10">
+                      <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Entry Requirements</p>
+                      <ul className="space-y-2">
+                        {reqs.map(r => (
+                          <li key={r} className="flex items-start gap-2 text-sm text-white/85">
+                            <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                            {r}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="px-6 py-5 border-b md:border-b-0 md:border-r border-white/10">
+                      <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold mb-3">Training Locations</p>
+                      <ul className="space-y-2">
+                        {trCard.location.split(' · ').map((loc: string) => (
+                          <li key={loc} className="flex items-center gap-2 text-sm text-white/85">
+                            <svg className="w-3.5 h-3.5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            {loc.trim()}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="px-6 py-5">
+                      <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold mb-3">Tags</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {tags.map(t => (
+                          <span key={t} className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/10 text-white/80 border border-white/15">{t}</span>
+                        ))}
+                      </div>
+                      <div className="mt-4 pt-3 border-t border-white/10">
+                        <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold mb-2">Enrollment</p>
+                        <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">{trCard.postedAt}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
             })()}

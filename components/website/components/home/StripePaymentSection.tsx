@@ -23,16 +23,16 @@ const FEATURES_60 = [
 
 const FEATURES_100 = [
   'Live real-time profile — not a PDF. When you fly and log hours, your profile updates instantly. Airlines pull your current data, not a snapshot from months ago.',
-  'Veremark background screening — verified badge attached to your profile in the pulling system',
-  'Recognition Score — scored on recency, hours flown, type rating, completeness & Veremark status',
+  'Background screening — verified badge attached to your profile in the pulling system',
+  'Recognition Score — scored on recency, hours flown, type rating, completeness & background check status',
   'Recognition+ Verified badge — airlines filter for this first: background checked, preferred tier',
   'Submit pathway interest — your profile enters the airline\'s ranked bulletin with background check attached',
   'Airlines don\'t get random CVs — they pull a scored shortlist of interested pilots. You rank highest.',
-  'Airlines filter by: Veremark status, recency, type rating, hours, score — you appear at the top',
+  'Airlines filter by: background check status, recency, type rating, hours, score — you appear at the top',
   'Priority position in shortlist — not buried in a general pool',
   'Direct feedback on profile gaps from match engine & score',
   'Recognition AI — extended use, pulls from latest type rating / airline / pathway changes and tells you exactly how to align your profile',
-  'Atlas CV — upload & Veremark-screened documents (licenses, medical, ratings)',
+  'Atlas CV — upload & screened documents (licenses, medical, ratings)',
   'Screened documents visible to airlines & operators in the pull',
   'Unlimited profile comparisons (pathway / airline / type rating)',
   'EBT CBTA interview fast-track — priority access after Foundation Program (skip the queue)',
@@ -180,7 +180,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-blue-400 to-transparent" />
             <p className="text-[10px] uppercase tracking-widest text-blue-400 mb-1">Recognition Plus</p>
             <p className="text-4xl font-bold text-white mb-0.5">$100 <span className="text-base font-normal text-slate-400">/ year</span></p>
-            <p className="text-slate-400 text-xs mb-1">Verified by Veremark · Preferred by airlines & operators</p>
+            <p className="text-slate-400 text-xs mb-1">Background verified · Preferred by airlines & operators</p>
             <p className="text-blue-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
             <ul className="space-y-2 mb-2">
               {(showAll100 ? FEATURES_100 : FEATURES_100.slice(0, HERO_FEATURES_PREVIEW)).map((f) => (
