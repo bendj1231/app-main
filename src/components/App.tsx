@@ -5,6 +5,7 @@ import { HomePage } from '@/routes';
 import { LoginModal } from '@/components/website/components/LoginModal';
 import { CookieConsent } from '@/components/CookieConsent';
 import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
+import ChatWidget from '@/portal/components/w1000/ChatWidget';
 
 const LOGO_URL = "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png";
 const ACCREDITATION_URL = "/images/accreditation.png";
@@ -18,6 +19,7 @@ const safeRedirect = (path: string) => {
 };
 
 const navigateTo = (page: string, data?: any) => {
+  setCurrentPage(page);
   if (page === 'recognition-plus') {
     safeRedirect('/recognition-plus');
     return;
@@ -39,6 +41,7 @@ initializeAnalyticsServices();
 export const App = () => {
   const [loading, setLoading] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
   const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState(false);
   const [pilotId, setPilotId] = useState('');
   const [totalHours, setTotalHours] = useState(0);
@@ -194,6 +197,9 @@ export const App = () => {
 
       {/* Cookie Consent */}
       <CookieConsent />
+
+      {/* Chat Bot - Only on Home Page */}
+      {currentPage === 'home' && <ChatWidget />}
     </>
   );
 };

@@ -12,7 +12,6 @@ import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier, getHomepageGraphicsConfig, setGraphicsOverride, type HomepageGraphicsConfig } from '@/src/lib/device-detection';
 import StripePaymentSection from './StripePaymentSection';
-import { NewsroomModal } from '../NewsroomModal';
 
 interface HomePageProps {
     onJoinUs: () => void;
@@ -332,6 +331,7 @@ const tabsData = [
     }
 ];
 
+/* Newsroom removed - commented out
 const newsroomHighlights = [
     {
         id: 'recognition-profiles',
@@ -402,26 +402,6 @@ const newsroomHighlights = [
             'Real-time competency verification for EBT CBTA standards',
             'Streamlined pathway matching for Airbus operator requirements'
         ],
-        ctaTarget: 'pathways-modern',
-        category: 'industry' as const
-    },
-    {
-        id: 'airline-update',
-        tag: 'Airline Partnerships',
-        title: 'Major Airlines Join PilotRecognition Platform',
-        description: 'Leading airlines including Emirates, Qatar Airways, and Etihad have joined the PilotRecognition platform to directly recruit verified pilots through the pull system. No more applications — operators pull based on verified competencies.',
-        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777590647/newsroom/tws5xzryqjepzxoyc94d.png',
-        metrics: [
-            { label: 'Partner Airlines', value: '15 carriers' },
-            { label: 'Active Pulls', value: '2,400+ monthly' }
-        ],
-        bullets: [
-            'Direct recruitment through verified profile matching system',
-            'Elimination of application black holes — operators pull qualified pilots',
-            'Real-time pathway matching with airline-specific requirements'
-        ],
-        ctaTarget: 'pathways-modern',
-        category: 'airlines' as const
     }
 ];
 
@@ -450,7 +430,6 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = React.memo(({ onJoinUs }
 
     return (
         <div className="w-full mt-4 relative">
-            {/* Glassy UI Navigation Arrows */}
             <button
                 onClick={goToPrevious}
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-8 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
@@ -465,10 +444,8 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = React.memo(({ onJoinUs }
                 <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </button>
 
-            {/* Card Container - Static */}
             <div className="bg-white/70 backdrop-blur-md border border-slate-200 rounded-2xl overflow-hidden shadow-xl">
                 <div className="p-4 md:p-6 relative overflow-hidden h-[600px] md:h-[650px]">
-                    {/* Content - Auto-shuffles */}
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={currentIndex}
@@ -484,7 +461,6 @@ const AutoCyclingTabs: React.FC<AutoCyclingTabsProps> = React.memo(({ onJoinUs }
                 </div>
             </div>
 
-            {/* Become a Member Button */}
             {onJoinUs && (
                 <div className="flex justify-center mt-4">
                     <button
@@ -623,7 +599,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [enableShader, setEnableShader] = useState(false); // Disabled to fix WebGL context leaks
     const [graphicsConfig, setGraphicsConfig] = useState<HomepageGraphicsConfig | null>(null);
     const [showGraphicsToast, setShowGraphicsToast] = useState(false);
-    const [isNewsroomModalOpen, setIsNewsroomModalOpen] = useState(false);
+    // Newsroom removed - const [isNewsroomModalOpen, setIsNewsroomModalOpen] = useState(false);
     const [activeMatchFilter, setActiveMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
     const [activeCarouselCategory, setActiveCarouselCategory] = useState<string>('All');
     const [showAllCategories, setShowAllCategories] = useState(false);
@@ -682,17 +658,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         return () => clearInterval(interval);
     }, []);
 
-    // Auto-open newsroom modal on first visit of the session
-    useEffect(() => {
-        const hasSeenNewsroom = sessionStorage.getItem('hasSeenNewsroom');
-        if (!hasSeenNewsroom) {
-            // Small delay to allow the page to render first
-            setTimeout(() => {
-                setIsNewsroomModalOpen(true);
-                sessionStorage.setItem('hasSeenNewsroom', 'true');
-            }, 500);
-        }
-    }, []);
+    // Newsroom auto-open removed
 
     // Check for enrollment success and show confirmation modal
     useEffect(() => {
@@ -1061,103 +1027,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 currentPage="home"
             />
 
-            {/* Graphics Settings Button + Toast */}
-            {graphicsConfig && (
-                <div className="fixed bottom-6 left-6 z-50">
-                    {showGraphicsToast && (
-                        <div className="mb-2 bg-slate-900/95 border border-white/20 rounded-xl shadow-2xl p-4 w-64 backdrop-blur-md">
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Graphics Quality</span>
-                                <button onClick={() => setShowGraphicsToast(false)} className="text-slate-400 hover:text-white">
-                                    <X className="w-3.5 h-3.5" />
-                                </button>
-                            </div>
-                            <p className="text-[10px] text-slate-400 mb-3 leading-relaxed">
-                                <span className="text-white font-medium">{graphicsConfig.deviceLabel}</span><br />
-                                {graphicsConfig.reason}
-                            </p>
-                            <div className="flex gap-2">
-                                {(['low', 'medium', 'high'] as const).map((q) => (
-                                    <button
-                                        key={q}
-                                        onClick={() => {
-                                            setGraphicsOverride(q);
-                                            setGraphicsConfig(getHomepageGraphicsConfig());
-                                            setShowGraphicsToast(false);
-                                        }}
-                                        className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${
-                                            graphicsConfig.tier === q
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-white/10 text-slate-300 hover:bg-white/20'
-                                        }`}
-                                    >
-                                        {q}
-                                    </button>
-                                ))}
-                            </div>
-                            <button
-                                onClick={() => {
-                                    setGraphicsOverride('auto');
-                                    setGraphicsConfig(getHomepageGraphicsConfig());
-                                    setShowGraphicsToast(false);
-                                }}
-                                className="mt-2 w-full py-1 text-[10px] text-slate-400 hover:text-white transition-colors"
-                            >
-                                Reset to auto-detect
-                            </button>
-                        </div>
-                    )}
-                    <button
-                        onClick={() => setShowGraphicsToast(v => !v)}
-                        className="bg-slate-900/90 hover:bg-slate-800 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-sm transition-all hover:scale-105"
-                        title={`Graphics: ${graphicsConfig.tier} · ${graphicsConfig.deviceLabel}`}
-                    >
-                        <Cpu className="w-4 h-4" />
-                        <span className={`w-2 h-2 rounded-full ${graphicsConfig.tier === 'high' ? 'bg-green-400' : graphicsConfig.tier === 'medium' ? 'bg-yellow-400' : 'bg-red-400'}`} />
-                    </button>
-                </div>
-            )}
 
-            {/* === FLOATING LIVE ACTIVITY TOAST === */}
-            <div
-                className={`fixed bottom-24 left-4 z-50 max-w-[300px] transition-all duration-500 ${
-                    liveToastVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
-                }`}
-            >
-                <div className="bg-slate-900 border border-white/15 rounded-xl shadow-2xl overflow-hidden">
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border-b border-white/10">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
-                        <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-emerald-300">Recent Activity</span>
-                    </div>
-                    <div className="px-3 py-2.5">
-                        <p className="text-[11px] text-white font-semibold leading-tight mb-0.5">
-                            {liveActivities[liveActivityIndex]?.name}
-                            <span className="text-slate-400 font-normal"> · {liveActivities[liveActivityIndex]?.location}</span>
-                        </p>
-                        <p className="text-[10px] text-slate-300 leading-snug">
-                            {liveActivities[liveActivityIndex]?.action}
-                        </p>
-                        <p className="text-[9px] text-slate-500 mt-1">{liveActivities[liveActivityIndex]?.time}</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Newsroom Trigger Button */}
-            <button
-                onClick={() => setIsNewsroomModalOpen(true)}
-                className="fixed bottom-6 right-6 z-50 bg-slate-900/90 hover:bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-sm transition-all hover:scale-105"
-            >
-                <Zap className="w-4 h-4" />
-                Newsroom
-            </button>
-
-            {/* Newsroom Modal */}
-            <NewsroomModal
-                isOpen={isNewsroomModalOpen}
-                onClose={() => setIsNewsroomModalOpen(false)}
-                onNavigate={onNavigate}
-                newsroomHighlights={newsroomHighlights}
-            />
 
             {/* Enrollment Confirmation Modal */}
             <AnimatePresence>

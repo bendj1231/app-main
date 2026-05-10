@@ -1046,6 +1046,51 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     website: 'https://camiguinaviation.com',
     pathwayScore: 92,
     lat: 9.1741, lng: 124.7264,
+    // UPRT-specific entry requirements
+    requirements: [
+      'Valid CAAP Class 1 Medical Certificate',
+      'PPL (Private Pilot License) or CPL (Commercial Pilot License)',
+      'ICAO English Proficiency — Level 4 minimum',
+      'High professional standards & discipline',
+    ],
+    // Mandatory documents for UPRT application
+    documents: [
+      'Licensed Pilot Certificate (PPL or CPL)',
+      'Certified True Copies of Pilot Logbook',
+      'NBI Clearance (National Bureau of Investigation)',
+      'Valid CAAP Class 1 Medical Certificate',
+      'Valid ID or Passport',
+    ],
+    // Pro tip for applicants
+    proTip: 'Call schools directly to confirm aircraft availability before enrolling. Aerobatic trainers (Super Decathlon, Cessna Aerobat) have limited slots and high demand during peak season.',
+    // Access & eligibility for UPRT
+    accessEligibility: [
+      { label: 'Open to Outside Applicants', value: 'Yes — no college degree required, aviation license sufficient', ok: true },
+      { label: 'Foreign Nationals', value: 'Permitted with valid Philippine visa + CAAP validation', ok: true },
+      { label: 'Training Funding', value: 'Self-funded — no cadet sponsorship available', ok: true },
+    ],
+    enrollmentSteps: [
+      'Confirm aircraft/slot availability via phone or website inquiry',
+      'Submit PPL/CPL license, Class 1 Medical, and NBI clearance',
+      'Complete CAAP validation (foreign nationals)',
+      'Pay course deposit to secure training slot',
+      'Attend ground school briefing before first flight',
+    ],
+    intakeNote: 'Rolling admissions — Open enrollment year-round. Contact school directly to confirm Super Decathlon or Cessna Aerobat availability.',
+    // Assessment criteria for UPRT
+    assessmentCriteria: [
+      { item: 'Flight Test Proficiency — unusual attitude recovery', weight: 'Critical' },
+      { item: 'Simulator/CRM Performance (if applicable)', weight: 'High' },
+      { item: 'Academic Standing — ground school theory', weight: 'High' },
+      { item: 'Spin Entry & Recovery Technique', weight: 'Critical' },
+    ],
+    // Pilot categories by hours
+    pilotLabels: [
+      { label: 'Ab-initio', hrs: '0–50 hrs', desc: 'Early-stage pilots building foundational skills before UPRT.' },
+      { label: 'Developing Pilot', hrs: '50–200 hrs', desc: 'Building hours toward CPL with UPRT as safety enhancement.' },
+      { label: 'Advanced Pilot', hrs: '200–500 hrs', desc: 'CPL holders completing UPRT for airline prerequisites.' },
+      { label: 'Experienced Pilot', hrs: '500+ hrs', desc: 'Senior pilots adding UPRT endorsement for career advancement.' },
+    ],
   },
   {
     id: 'flight-school-34',

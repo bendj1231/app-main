@@ -7307,11 +7307,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       </div>
                     </div>
 
-                    {/* Tab bar */}
+                    {/* Tab bar — add comparison tab for UPRT card */}
                     <div className="flex border-b border-white/8" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                      {(['about', 'expectations', 'requirements', 'access'] as const).map(t => (
+                      {(['about', 'expectations', 'requirements', 'access', ...(cardId === '078eea1a-271f-4392-a802-9a2ea4c36da0' ? ['comparison'] as const : [])] as const).map(t => (
                         <button key={t} onClick={() => setTrSchoolTab(t)} className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-widest transition-colors ${trSchoolTab === t ? 'text-white border-b-2 border-white' : 'text-white/40 hover:text-white/70'}`}>
-                          {t}
+                          {t === 'comparison' ? 'Comparison' : t}
                         </button>
                       ))}
                     </div>
@@ -7421,6 +7421,66 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                             <p className="text-[10px] uppercase text-sky-400 font-bold mb-1">Pro Tip</p>
                             <p className="text-xs text-white/85 leading-relaxed">{school.proTip}</p>
                           </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* COMPARISON tab — UPRT vs Standard Type Rating */}
+                    {trSchoolTab === 'comparison' && cardId === '078eea1a-271f-4392-a802-9a2ea4c36da0' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-violet-400 font-bold mb-3">UPRT — Special Rating</p>
+                          <div className="space-y-3">
+                            <div className="px-3 py-2.5 rounded-lg bg-violet-500/10 border border-violet-500/20">
+                              <p className="text-[10px] uppercase text-violet-300 font-bold mb-1">Purpose</p>
+                              <p className="text-xs text-white/85">Upset Prevention & Recovery Training — addresses LOC-I (Loss of Control In-flight), the #1 cause of fatal aviation accidents.</p>
+                            </div>
+                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Duration</p>
+                              <p className="text-sm text-white font-semibold">1–2 weeks intensive</p>
+                            </div>
+                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Cost</p>
+                              <p className="text-sm text-white font-semibold">₱36,000–₱120,000 ($2,500–$5,000)</p>
+                            </div>
+                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Training Method</p>
+                              <p className="text-xs text-white/85">• Aerobatic-capable aircraft (Super Decathlon, Cessna Aerobat)<br/>• Real-world unusual attitude recovery<br/>• Spin entry & recovery (actual spins, not sim)</p>
+                            </div>
+                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Outcome</p>
+                              <p className="text-xs text-white/85">CAAP UPRT endorsement required for CPL renewal and many airline type ratings.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="px-6 py-6">
+                          <p className="text-[10px] uppercase tracking-widest text-sky-400 font-bold mb-3">Standard Type Rating — A320/B737/etc.</p>
+                          <div className="space-y-3">
+                            <div className="px-3 py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20">
+                              <p className="text-[10px] uppercase text-sky-300 font-bold mb-1">Purpose</p>
+                              <p className="text-xs text-white/85">Qualification to operate specific aircraft type (A320, B737, A330, B777, ATR) as First Officer.</p>
+                            </div>
+                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Duration</p>
+                              <p className="text-sm text-white font-semibold">4–12 weeks (ground + sim + line training)</p>
+                            </div>
+                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Cost</p>
+                              <p className="text-sm text-white font-semibold">$18,000–$50,000+ depending on type</p>
+                            </div>
+                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Training Method</p>
+                              <p className="text-xs text-white/85">• Level D Full-Flight Simulators (FFFS)<br/>• Systems & procedures training<br/>• Multi-crew cooperation (MCC)<br/>• Line Oriented Flight Training (LOFT)</p>
+                            </div>
+                            <div className="px-3 py-2.5 rounded-lg bg-white/5 border border-white/10">
+                              <p className="text-[10px] uppercase text-white/60 font-bold mb-1">Outcome</p>
+                              <p className="text-xs text-white/85">Type Rating Certificate — airline entry ticket. No manual handling in actual aircraft.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-2 px-6 py-4 border-t border-white/10 bg-white/5">
+                          <p className="text-[10px] uppercase text-white/60 font-bold mb-2">Key Insight — Why Both Matter</p>
+                          <p className="text-xs text-white/85 leading-relaxed">Standard type ratings teach you to operate an airline jet. UPRT teaches you to survive when automation fails and the aircraft enters an unusual attitude. ASEAN needs <strong>22,000 pilots by 2033</strong>; CAAP targets <strong>3x pilot output by 2028</strong>. Airlines want both qualifications — the type rating for the job, UPRT for the survival skills that prevent becoming a statistic.</p>
                         </div>
                       </div>
                     )}

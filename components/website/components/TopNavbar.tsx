@@ -29,6 +29,7 @@ interface NavItem {
     name: string;
     target: string;
     subItems?: NavSubItem[];
+    isBlue?: boolean;
 }
 
 import { useAuth } from '@/src/contexts/AuthContext';
@@ -456,6 +457,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'For Pilots', name: 'Flight Schools & ATOs', target: '/pathways-modern?section=flight-schools', bullets: ['Instructor pathways', 'Examiner routes', 'Training careers'] },
                 { category: 'For Pilots', name: 'Type Rating Search', target: '/type-rating-search', bullets: ['Aircraft manufacturers', 'Training centers', 'Licensing requirements'] },
                 { category: 'For Pilots', name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry requirements', 'Operator standards', 'Application insights'] },
+                { category: 'For Pilots', name: 'Global Aviation Authorities', target: '/global-aviation-authorities', bullets: ['FAA database', 'CAAP compliance', 'EASA integration', 'Regulatory sync'], isYellow: true },
                 // For Industry - Enterprise Access & Services
                 { category: 'For Industry', name: 'Enterprise Access', target: '/enterprise-access/airlines', bullets: ['Pull-based recruitment', 'Verified candidates', 'Pathway publishing'] },
                 { category: 'For Industry', name: 'Aviation Recruitment', target: '/enterprise-access#recruitment', bullets: ['Agency partnerships', 'Talent pipeline', 'Career brokers'] },
@@ -528,6 +530,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         { name: 'Contact', target: 'contact-support' },
+        { name: 'Enterprise', target: '/enterprise-access', isBlue: true },
     ];
 
     // Filter out Home nav item when on home page
@@ -725,9 +728,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
                                             ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
                                             : 'text-blue-400 border-b-2 border-blue-400 pb-1 font-black'
-                                        : isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
-                                            ? 'text-slate-900'
-                                            : 'text-white/80'
+                                        : item.isBlue
+                                            ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
+                                                ? 'text-blue-600 font-black'
+                                                : 'text-blue-400 font-black'
+                                            : isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
+                                                ? 'text-slate-900'
+                                                : 'text-white/80'
                                         }`}
                                 >
                                     {item.name}

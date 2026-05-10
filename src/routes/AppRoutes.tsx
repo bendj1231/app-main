@@ -97,6 +97,7 @@ import EnterpriseAccessLearnMorePage from '@/app/enterprise-access/learn-more/pa
 import AirlinesOperatorsPage from '@/app/enterprise-access/airlines/page';
 import { PilotShortagePage } from '@/components/website/components/PilotShortagePage';
 import { WhyRecognitionPage } from '@/components/website/components/WhyRecognitionPage';
+import GlobalAviationAuthoritiesPage from '@/pages/GlobalAviationAuthoritiesPage';
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -270,6 +271,7 @@ export const AppRoutes = () => {
       <Route path="/airline-expectations" element={<PortalAirlineExpectationsPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/portal-airline-expectations" element={<PortalAirlineExpectationsPage onBack={() => handleBack('/pathways-modern')} onNavigate={handleNavigate} />} />
       <Route path="/type-rating-search" element={<TypeRatingSearchPage onNavigate={handleNavigate} onBack={() => handleBack()} />} />
+      <Route path="/global-aviation-authorities" element={<GlobalAviationAuthoritiesPage />} />
       <Route path="/job-listings" element={<JobListingsPage onNavigate={handleNavigate} />} />
       <Route path="/download" element={<DownloadPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/settings" element={<SettingsDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
