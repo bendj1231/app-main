@@ -411,6 +411,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             target: '/'
         },
         {
+            name: 'Blog',
+            target: '/blog'
+        },
+        {
             name: 'About',
             target: '/about',
             subItems: [
