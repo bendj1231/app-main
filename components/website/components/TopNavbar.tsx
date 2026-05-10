@@ -521,12 +521,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'General', name: 'Career Pathway Planner', target: '/career-tools?section=career-pathway-planner', bullets: ['Visual roadmaps', 'Hour requirements', 'Stage-by-stage guide'] },
                 { category: 'General', name: 'Type Rating Advisor', target: '/career-tools?section=type-rating-advisor', bullets: ['Market demand analysis', 'ROI calculator', 'Provider comparisons'] },
                 // Banking & Finance (BLUE headers)
-                { category: 'Banking & Finance', name: 'Benefits of Membership', target: '/membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
-                { category: 'Banking & Finance', name: 'Recognition Plus', target: '/recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
-                { category: 'Banking & Finance', name: 'Become a Member', target: '/become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] },
-                { category: 'Banking & Finance', name: 'PilotRecognition W1000 Suite', target: '/w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
-                { category: 'Banking & Finance', name: 'Hinfact AIRBUS', target: '/hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
-                { category: 'Banking & Finance', name: 'ATLAS Aviation CV', target: '/atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
+                { category: 'Banking & Finance', name: 'Pilot Loans', target: '/banking-finance?section=pilot-loans', bullets: ['Type rating financing', 'Career-based lending', 'Lower rates for high scorers'] },
+                { category: 'Banking & Finance', name: 'Mortgage Services', target: '/banking-finance?section=mortgage-services', bullets: ['Airline staff rates', 'Expat mortgages', 'Relocation loans'] },
+                { category: 'Banking & Finance', name: 'Credit & Cards', target: '/banking-finance?section=credit-cards', bullets: ['Air miles programs', 'Travel benefits', 'Pilot perks'] },
+                { category: 'Banking & Finance', name: 'Investment Planning', target: '/banking-finance?section=investment-planning', bullets: ['Retirement planning', 'Wealth management', 'Tax optimization'] },
             ]
         },
         { name: 'Contact', target: 'contact-support' },
