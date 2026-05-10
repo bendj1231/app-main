@@ -427,19 +427,42 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'Programs',
             target: '/programs',
             subItems: [
+                // Core Programs
                 { category: 'Core Programs', name: 'Foundational Program', target: '/foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
-                { name: 'What is the pilot gap?', target: '/pilot-gap-about', isYellow: true },
-                { name: 'Transition Program', target: '/transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
-                { name: 'EBT CBTA Familiarization', target: '/ebt-cbta', isYellow: true }
+                { category: 'Core Programs', name: 'Transition Program', target: '/transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
+                { category: 'Core Programs', name: 'EBT CBTA Fast-Track', target: '/ebt-cbta', bullets: ['Competency-based training', 'Evidence-based assessment', 'Interview priority'] },
+                // Training & Development
+                { category: 'Training', name: 'Pilot Gap Training', target: '/pilot-gap-module', bullets: ['Bridge knowledge gaps', 'Industry alignment', 'Career readiness'] },
+                { category: 'Training', name: 'Mentorship Program', target: '/mentorship', bullets: ['Captain mentors', 'Career guidance', '1-on-1 coaching'] },
+                { category: 'Training', name: 'Examination Portal', target: '/examination-portal', bullets: ['Skill assessments', 'Progress tracking', 'Certification prep'] },
+                // Resources
+                { category: 'Resources', name: 'Program Benefits', target: '/program-benefits', bullets: ['Member advantages', 'Career tools', 'Network access'] },
+                { category: 'Resources', name: 'Program Pathways', target: '/programs-pathways', bullets: ['Stage progression', 'Milestone tracking', 'Next steps'] },
+                { category: 'Resources', name: 'News & Updates', target: '/news-updates', bullets: ['Latest announcements', 'Program changes', 'Industry news'] },
+                // Special Programs (highlighted)
+                { category: 'Special Programs', name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Industry disconnect', 'Career transition', 'Our solution'], isYellow: true },
             ]
         },
         {
             name: 'Pathways',
             target: '/pathways-modern',
             subItems: [
-                { name: 'Type Rating Search', target: '/type-rating-search', bullets: ['Aircraft Manufacturers', 'Training Centers', 'Licensing Requirements'] },
-                { name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry Requirements', 'Operator Standards', 'Application Insights'] },
-                { name: 'Pilot Career Pathways', target: '/pathways-modern', bullets: ['Cadet Programs', 'Cargo & Charter', 'eVTOL & Drones'] }
+                // For Pilots - Career Pathways to View & Access
+                { category: 'For Pilots', name: 'Airlines & Operators', target: '/pathways-modern?section=airlines', bullets: ['Commercial carriers', 'Regional airlines', 'Flagship operators'] },
+                { category: 'For Pilots', name: 'Private Jet & Charter', target: '/pathways-modern?section=private-jet', bullets: ['Corporate aviation', 'VIP charter', 'Fractional ownership'] },
+                { category: 'For Pilots', name: 'Air Taxi & eVTOL', target: '/pathways-modern?section=evtol', bullets: ['Urban air mobility', 'Electric aircraft', 'Next-gen aviation'] },
+                { category: 'For Pilots', name: 'Cargo & Logistics', target: '/pathways-modern?section=cargo', bullets: ['Freight operators', 'Express delivery', 'Long-haul cargo'] },
+                { category: 'For Pilots', name: 'Military & Defence', target: '/pathways-modern?section=military', bullets: ['Armed forces', 'Defence contractors', 'Government aviation'] },
+                { category: 'For Pilots', name: 'Flight Schools & ATOs', target: '/pathways-modern?section=flight-schools', bullets: ['Instructor pathways', 'Examiner routes', 'Training careers'] },
+                { category: 'For Pilots', name: 'Type Rating Search', target: '/type-rating-search', bullets: ['Aircraft manufacturers', 'Training centers', 'Licensing requirements'] },
+                { category: 'For Pilots', name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry requirements', 'Operator standards', 'Application insights'] },
+                // For Industry - Enterprise Access & Services
+                { category: 'For Industry', name: 'Enterprise Access', target: '/enterprise-access/airlines', bullets: ['Pull-based recruitment', 'Verified candidates', 'Pathway publishing'] },
+                { category: 'For Industry', name: 'Aviation Recruitment', target: '/enterprise-access#recruitment', bullets: ['Agency partnerships', 'Talent pipeline', 'Career brokers'] },
+                { category: 'For Industry', name: 'Simulator Training', target: '/enterprise-access#simulator', bullets: ['Type rating centers', 'Training partnerships', 'Facility network'] },
+                { category: 'For Industry', name: 'MRO & Maintenance', target: '/enterprise-access#maintenance', bullets: ['Engineering tracks', 'Maintenance ops', 'Technical services'] },
+                { category: 'For Industry', name: 'RPAS & Drone Ops', target: '/enterprise-access#drone', bullets: ['UAV training', 'Commercial drones', 'Remote pilot programs'] },
+                { category: 'For Industry', name: 'OEM Partnerships', target: '/enterprise-access#manufacturers', bullets: ['Manufacturer programs', 'Factory training', 'Technical pathways'] },
             ]
         },
         {
@@ -496,19 +519,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'General', name: 'Career Pathway Planner', target: '/career-tools?section=career-pathway-planner', bullets: ['Visual roadmaps', 'Hour requirements', 'Stage-by-stage guide'] },
                 { category: 'General', name: 'Type Rating Advisor', target: '/career-tools?section=type-rating-advisor', bullets: ['Market demand analysis', 'ROI calculator', 'Provider comparisons'] },
                 // Banking & Finance (BLUE headers)
-            ]
-        },
-        {
-            name: 'Banking & Finance',
-            target: '/banking-finance',
-            subItems: [
-                { category: 'The Network', name: 'Benefits of Membership', target: '/membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
-                { category: 'Premium Tier', name: 'Recognition Plus', target: '/recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
-                { name: 'Become a Member', target: '/become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] },
-                { category: 'The Digital Ecosystem', name: 'PilotRecognition W1000 Suite', target: '/w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
-                { name: 'Hinfact AIRBUS integrated applications', target: '/hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
-                { category: 'Recognition Systems', name: 'ATLAS Aviation CV Recognition Systems', target: '/atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Pilot Recognition Systems', target: '/recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
+                { category: 'Banking & Finance', name: 'Benefits of Membership', target: '/membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
+                { category: 'Banking & Finance', name: 'Recognition Plus', target: '/recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
+                { category: 'Banking & Finance', name: 'Become a Member', target: '/become-member', bullets: ['Free Forever Tier', 'Start Your Profile', 'Enter Global Registry'] },
+                { category: 'Banking & Finance', name: 'PilotRecognition W1000 Suite', target: '/w1000-suite', bullets: ['Examination Terminal', 'The Black Box', 'IFR Simulator', 'Program Handbook', 'Pilot Masterclass'] },
+                { category: 'Banking & Finance', name: 'Hinfact AIRBUS', target: '/hinfact', bullets: ['Human Factors Analytics', 'Performance Monitoring', 'Safety Culture'] },
+                { category: 'Banking & Finance', name: 'ATLAS Aviation CV', target: '/atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
             ]
         },
         { name: 'Contact', target: 'contact-support' },
@@ -609,7 +625,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             }, {} as Record<string, NavSubItem[]>);
             
             // Sort categories
-            const order = ['Learn About', 'Recognition+', 'General', 'Recognition Profiling', 'Background Check', 'Pilot Insurance', 'Career Tools'];
+            const order = ['Learn About', 'Recognition+', 'General', 'Recognition Profiling', 'Background Check', 'Pilot Insurance', 'Banking & Finance', 'For Pilots', 'For Industry', 'Core Programs', 'Training', 'Resources', 'Special Programs'];
             const sortedEntries = Object.entries(groupedItems).sort(([a], [b]) => {
                 const aIndex = order.indexOf(a);
                 const bIndex = order.indexOf(b);
