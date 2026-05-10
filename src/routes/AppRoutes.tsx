@@ -98,6 +98,8 @@ import AirlinesOperatorsPage from '@/app/enterprise-access/airlines/page';
 import { PilotShortagePage } from '@/components/website/components/PilotShortagePage';
 import { WhyRecognitionPage } from '@/components/website/components/WhyRecognitionPage';
 import GlobalAviationAuthoritiesPage from '@/pages/GlobalAviationAuthoritiesPage';
+import BlogPage from '@/app/blog/page';
+import StorePage from '@/app/store/page';
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -304,6 +306,10 @@ export const AppRoutes = () => {
       <Route path="/pilot-insurance" element={<PilotInsurancePage />} />
       <Route path="/banking-finance" element={<BankingFinancePage />} />
       <Route path="/career-tools" element={<CareerToolsPage />} />
+
+      {/* Blog & Store */}
+      <Route path="/blog" element={<BlogPage />} />
+      <Route path="/store" element={<StorePage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
