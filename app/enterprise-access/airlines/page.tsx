@@ -639,6 +639,412 @@ const AirlinesOperatorsPage = () => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Airline X Cadet Program Pathway Card Example */}
+                    <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 border border-blue-900/30 rounded-2xl p-8 mt-8 shadow-2xl">
+                        <h3 className="text-xl font-bold text-white mb-6 text-center">Example: Airline X Cadet Program <span className="text-red-500">Pathway Card</span></h3>
+                        
+                        {/* Card Header with Image and Basic Info */}
+                        <div className="flex flex-col md:flex-row gap-6 mb-8">
+                            <div className="w-full md:w-1/3">
+                                <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl h-48 flex items-center justify-center shadow-lg shadow-blue-900/40 border border-blue-500/30">
+                                    <span className="text-white text-6xl">✈️</span>
+                                </div>
+                            </div>
+                            <div className="w-full md:w-2/3">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <span className="bg-blue-500/20 border border-blue-400/30 text-blue-300 px-3 py-1 rounded-full text-xs font-semibold">92% Match</span>
+                                    <span className="bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">PR Score: 78/100</span>
+                                </div>
+                                <h4 className="text-2xl font-bold text-white mb-2">Airline X <span className="text-blue-400">Cadet Program</span></h4>
+                                <p className="text-slate-300 text-sm mb-4">
+                                    Structured cadet pathway from zero experience to First Officer. <span className="text-red-400 font-medium">Sponsored type rating training</span>, guaranteed interview upon completion, and direct employment track to the flight deck.
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="bg-white/5 border border-white/10 text-slate-300 px-3 py-1 rounded-full text-xs backdrop-blur-sm">0-250 Hours</span>
+                                    <span className="bg-white/5 border border-white/10 text-slate-300 px-3 py-1 rounded-full text-xs backdrop-blur-sm">PPL Accepted</span>
+                                    <span className="bg-red-500/20 border border-red-400/30 text-red-400 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">Sponsored TR</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ───────────────────────────────────────────────────────────────
+                            AIRLINE INPUT: What pilots need to align to
+                        ─────────────────────────────────────────────────────────────── */}
+                        <div className="mt-6 bg-blue-950/80 border border-blue-800/30 rounded-xl p-6 backdrop-blur-lg">
+                            <div className="flex items-center gap-2 mb-4">
+                                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-900/40">
+                                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                    </svg>
+                                </div>
+                                <p className="text-[10px] uppercase tracking-widest text-blue-300 font-bold">How to Align Your Profile — What Airline X is Looking For</p>
+                            </div>
+
+                            <p className="text-slate-300 text-sm mb-6 bg-slate-900/60 border border-slate-700 rounded-lg p-3 backdrop-blur-sm">
+                                <strong className="text-white">Pilots:</strong> Use this section to understand exactly what Airline X requires and how to position your profile for success. Meet these requirements to maximize your Recognition Score and application priority.
+                            </p>
+
+                            {/* Step 1: Meet Hard Requirements */}
+                            <div className="bg-white border border-slate-200 rounded-lg p-5 mb-4 shadow-lg">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="w-6 h-6 bg-slate-900 text-white rounded-full text-xs font-bold flex items-center justify-center">1</span>
+                                    <p className="text-sm font-bold text-slate-900">Meet These Hard Requirements First</p>
+                                </div>
+                                <p className="text-xs text-slate-500 mb-4">These are non-negotiable minimums. Your application will be automatically filtered if you don't meet these.</p>
+                                <div className="grid md:grid-cols-2 gap-3">
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                                        <span className="text-slate-700 text-sm">Flight Hours</span>
+                                        <span className="text-slate-900 font-semibold text-sm">0-250 hrs</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                                        <span className="text-slate-700 text-sm">License</span>
+                                        <span className="text-slate-900 font-semibold text-sm">PPL Minimum</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                                        <span className="text-slate-700 text-sm">Medical</span>
+                                        <span className="text-slate-900 font-semibold text-sm">Class 1</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                                        <span className="text-slate-700 text-sm">Age</span>
+                                        <span className="text-slate-900 font-semibold text-sm">18-35 Years</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                                        <span className="text-slate-700 text-sm">Education</span>
+                                        <span className="text-slate-900 font-semibold text-sm">High School</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2">
+                                        <span className="text-slate-700 text-sm">Commitment</span>
+                                        <span className="text-slate-900 font-semibold text-sm">18-24 Months</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Step 2: Build Hard Competencies */}
+                            <div className="bg-white border border-slate-200 rounded-lg p-5 mb-4 shadow-lg">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="w-6 h-6 bg-slate-900 text-white rounded-full text-xs font-bold flex items-center justify-center">2</span>
+                                    <p className="text-sm font-bold text-slate-900">Build These Hard Competencies to Boost Your Score</p>
+                                </div>
+                                <p className="text-xs text-slate-500 mb-4">Each competency you add increases your Recognition Score. Log these in your profile to stand out.</p>
+                                <div className="grid md:grid-cols-3 gap-3">
+                                    <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                                        <p className="text-xs font-bold text-slate-900 mb-1">High Value (+5-8 Points)</p>
+                                        <ul className="text-xs text-slate-700 space-y-1">
+                                            <li>• Multi-Engine Rating</li>
+                                            <li>• Instrument Rating (IR)</li>
+                                            <li>• CPL Complete</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-100 rounded-lg p-3 border border-slate-200">
+                                        <p className="text-xs font-bold text-slate-800 mb-1">Medium Value (+3-5 Points)</p>
+                                        <ul className="text-xs text-slate-600 space-y-1">
+                                            <li>• Night Flying 10+ hrs</li>
+                                            <li>• Cross-Country Experience</li>
+                                            <li>• ICAO Level 5+ English</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-200 rounded-lg p-3 border border-slate-300">
+                                        <p className="text-xs font-bold text-slate-700 mb-1">Required Base (+0, Must Have)</p>
+                                        <ul className="text-xs text-slate-600 space-y-1">
+                                            <li>• ICAO Level 4 English</li>
+                                            <li>• Current Medical</li>
+                                            <li>• PPL License</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Step 3: Demonstrate Soft Competencies */}
+                            <div className="bg-white border border-slate-200 rounded-lg p-5 mb-4 shadow-lg">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="w-6 h-6 bg-slate-900 text-white rounded-full text-xs font-bold flex items-center justify-center">3</span>
+                                    <p className="text-sm font-bold text-slate-900">Demonstrate These Soft Competencies</p>
+                                </div>
+                                <p className="text-xs text-slate-500 mb-4">These appear in your EBT video interview and mentor evaluations. Develop these traits to score higher.</p>
+                                <div className="grid md:grid-cols-3 gap-4">
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-slate-900 text-xs mt-1">●</span>
+                                        <div>
+                                            <p className="text-slate-900 text-sm font-semibold">Learning Agility</p>
+                                            <p className="text-xs text-slate-500">Show rapid absorption of complex systems during training</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-slate-900 text-xs mt-1">●</span>
+                                        <div>
+                                            <p className="text-slate-900 text-sm font-semibold">CRM Skills</p>
+                                            <p className="text-xs text-slate-500">Collaborative communication, receptive to feedback</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-slate-900 text-xs mt-1">●</span>
+                                        <div>
+                                            <p className="text-slate-900 text-sm font-semibold">Resilience</p>
+                                            <p className="text-xs text-slate-500">Handle setbacks constructively during intensive phases</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Step 4: Hit The Profile Requirements */}
+                            <div className="bg-white border border-slate-200 rounded-lg p-5 mb-4 shadow-lg">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="w-6 h-6 bg-slate-900 text-white rounded-full text-xs font-bold flex items-center justify-center">4</span>
+                                    <p className="text-sm font-bold text-slate-900">Hit These Profile Requirements to Get Interviewed</p>
+                                </div>
+                                <p className="text-xs text-slate-500 mb-4">Your Recognition Profile must meet these thresholds to advance. Here's what to aim for:</p>
+                                <div className="grid md:grid-cols-3 gap-4">
+                                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-center">
+                                        <p className="text-xs font-bold text-slate-900 mb-2">Minimum PR Score</p>
+                                        <p className="text-3xl font-bold text-slate-900">72+</p>
+                                        <p className="text-xs text-slate-500 mt-2">Below 72 = Waitlisted</p>
+                                        <p className="text-xs text-red-600 font-semibold">Target: 75+ for priority</p>
+                                    </div>
+                                    <div className="bg-slate-100 border border-slate-200 rounded-lg p-4 text-center">
+                                        <p className="text-xs font-bold text-slate-800 mb-2">Profile Recency</p>
+                                        <p className="text-3xl font-bold text-slate-900">90 Days</p>
+                                        <p className="text-xs text-slate-500 mt-2">Update hours monthly</p>
+                                        <p className="text-xs text-slate-400">Stale profiles deprioritized</p>
+                                    </div>
+                                    <div className="bg-slate-50 border-2 border-red-300 rounded-lg p-4 text-center">
+                                        <p className="text-xs font-bold text-slate-900 mb-2">Recognition+ Status</p>
+                                        <p className="text-3xl font-bold text-red-600">✓ VERIFIED</p>
+                                        <p className="text-xs text-slate-500 mt-2">Background check complete</p>
+                                        <p className="text-xs text-slate-600 font-semibold">78% of successful cadets</p>
+                                    </div>
+                                </div>
+                                <div className="mt-4 bg-slate-50 border border-slate-200 rounded-lg p-4">
+                                    <p className="text-xs font-bold text-slate-900 mb-3">How Your Profile Score Determines Your Queue:</p>
+                                    <div className="space-y-2 text-sm">
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-green-600 mt-0.5">✓</span>
+                                            <div>
+                                                <p className="text-slate-900 font-semibold">Recognition+ Users with PR Score 75+</p>
+                                                <p className="text-xs text-slate-500"><strong className="text-slate-900">Immediate interview scheduling.</strong> Background verified via Veremark. No additional screening. 60% faster onboarding.</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-amber-500 mt-0.5">~</span>
+                                            <div>
+                                                <p className="text-slate-900 font-semibold">Free Members with PR Score 72-74</p>
+                                                <p className="text-xs text-slate-500"><strong className="text-slate-700">Standard queue.</strong> Background check required before interview. 2-3 week additional processing.</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-slate-400 mt-0.5">○</span>
+                                            <div>
+                                                <p className="text-slate-900 font-semibold">Below PR Score 72</p>
+                                                <p className="text-xs text-slate-500"><strong className="text-slate-400">Waitlisted.</strong> Re-apply after profile improvement or upgrade to Recognition+.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Step 5: The Expectations */}
+                            <div className="bg-slate-100 border border-slate-200 rounded-lg p-5">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="w-6 h-6 bg-slate-900 text-white rounded-full text-xs font-bold flex items-center justify-center">5</span>
+                                    <p className="text-sm font-bold text-slate-900">Understand The Airline's Mindset</p>
+                                </div>
+                                <p className="text-slate-700 text-sm leading-relaxed">
+                                    Airline X seeks cadets who demonstrate <strong className="text-slate-900">unwavering commitment to professional aviation standards</strong>. Show exceptional discipline, adaptability to high-tempo operations, and a collaborative mindset. Demonstrate consistent flight progression, strong academic aptitude, and resilience. If you embody these traits — and your profile reflects them — you'll transition directly to First Officer on modern narrow-body aircraft.
+                                </p>
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    <span className="bg-white border border-slate-200 text-slate-700 px-3 py-1 rounded-full text-xs font-semibold shadow-sm">Show discipline in logbook consistency</span>
+                                    <span className="bg-white border border-slate-200 text-slate-700 px-3 py-1 rounded-full text-xs font-semibold shadow-sm">Demonstrate progression month-over-month</span>
+                                    <span className="bg-red-50 border border-red-200 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">Complete profile verification (Recognition+)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ───────────────────────────────────────────────────────────────
+                            PILOT EXPECTATIONS: What pilots want to know
+                        ─────────────────────────────────────────────────────────────── */}
+                        <div className="mt-6 bg-blue-950/80 border border-blue-800/30 rounded-xl p-6 backdrop-blur-lg">
+                            <div className="flex items-center gap-2 mb-6">
+                                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-900/40">
+                                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <p className="text-[10px] uppercase tracking-widest text-blue-300 font-bold">Pilot Expectations — What You Want to Know</p>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {/* Career Outcomes */}
+                                <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-lg">
+                                    <p className="text-xs font-bold text-slate-900 mb-4 uppercase tracking-wide">Career Outcomes</p>
+                                    <div className="space-y-3">
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-slate-900 text-xs mt-1">●</span>
+                                            <p className="text-slate-600 text-sm"><strong className="text-slate-900">Trajectory:</strong> Cadet → First Officer → Captain (6-8 year track)</p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-slate-900 text-xs mt-1">●</span>
+                                            <p className="text-slate-600 text-sm"><strong className="text-slate-900">Captain Upgrade:</strong> Command at 4,000+ hours with airline</p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-slate-900 text-xs mt-1">●</span>
+                                            <p className="text-slate-600 text-sm"><strong className="text-slate-900">Employment Rate:</strong> 90% hired upon TR completion</p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-slate-900 text-xs mt-1">●</span>
+                                            <p className="text-slate-600 text-sm"><strong className="text-slate-900">Airline Type:</strong> Narrow-body fleet (A320/B737)</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* What's Included */}
+                                <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-lg">
+                                    <p className="text-xs font-bold text-slate-900 mb-4 uppercase tracking-wide">What's Included</p>
+                                    <div className="space-y-2">
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-green-600 mt-0.5">✓</span>
+                                            <p className="text-slate-600 text-sm"><strong className="text-slate-900">Sponsored Type Rating</strong> ($35K value)</p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-green-600 mt-0.5">✓</span>
+                                            <p className="text-slate-600 text-sm">Guaranteed First Officer interview</p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-green-600 mt-0.5">✓</span>
+                                            <p className="text-slate-600 text-sm">ATP-CTP course included</p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-green-600 mt-0.5">✓</span>
+                                            <p className="text-slate-600 text-sm">Medical insurance during training</p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="text-green-600 mt-0.5">✓</span>
+                                            <p className="text-slate-600 text-sm">Accommodation assistance provided</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Your Recognition Score Target */}
+                            <div className="mt-4 bg-white border border-slate-200 rounded-lg p-5 shadow-lg">
+                                <p className="text-xs font-bold text-slate-900 mb-4 uppercase tracking-wide">Your Recognition Score — Where Do You Stand?</p>
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-24 bg-slate-200 rounded-full h-2">
+                                                <div className="bg-slate-400 h-2 rounded-full" style={{ width: '35%' }}></div>
+                                            </div>
+                                            <span className="text-sm text-slate-600">0-100 Hours (Ab Initio)</span>
+                                        </div>
+                                        <span className="bg-slate-100 border border-slate-200 text-slate-600 px-2 py-1 rounded text-xs font-semibold">PR Score: 70-75</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-24 bg-slate-200 rounded-full h-2">
+                                                <div className="bg-slate-500 h-2 rounded-full" style={{ width: '52%' }}></div>
+                                            </div>
+                                            <span className="text-sm text-slate-600">100-200 Hours (PPL Holder)</span>
+                                        </div>
+                                        <span className="bg-slate-100 border border-slate-200 text-slate-600 px-2 py-1 rounded text-xs font-semibold">PR Score: 75-78</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100 bg-slate-50 rounded px-2 -mx-2">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-24 bg-slate-200 rounded-full h-2">
+                                                <div className="bg-blue-500 h-2 rounded-full" style={{ width: '70%' }}></div>
+                                            </div>
+                                            <span className="text-sm text-slate-900 font-medium">200-250 Hours (CPL Ready) ← Target Zone</span>
+                                        </div>
+                                        <span className="bg-blue-50 border border-blue-200 text-blue-700 px-2 py-1 rounded text-xs font-semibold">PR Score: 78-82</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-24 bg-slate-200 rounded-full h-2">
+                                                <div className="bg-slate-600 h-2 rounded-full" style={{ width: '85%' }}></div>
+                                            </div>
+                                            <span className="text-sm text-slate-600">250+ Hours (Multi/Instrument)</span>
+                                        </div>
+                                        <span className="bg-slate-100 border border-slate-200 text-slate-600 px-2 py-1 rounded text-xs font-semibold">PR Score: 82-88</span>
+                                    </div>
+                                    <div className="flex items-center justify-between py-2">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-24 bg-slate-200 rounded-full h-2">
+                                                <div className="bg-green-500 h-2 rounded-full" style={{ width: '95%' }}></div>
+                                            </div>
+                                            <span className="text-sm text-slate-600">Instructor Rating (CFI/CFII)</span>
+                                        </div>
+                                        <span className="bg-green-50 border border-green-200 text-green-700 px-2 py-1 rounded text-xs font-semibold">PR Score: 85-92</span>
+                                    </div>
+                                </div>
+                                <p className="text-xs text-slate-400 mt-4 italic">
+                                    Higher PR Scores = Priority interview scheduling + stronger candidacy
+                                </p>
+                            </div>
+
+                            {/* Questions Pilots Ask */}
+                            <div className="mt-4 bg-white border border-slate-200 rounded-lg p-5 shadow-lg">
+                                <p className="text-xs font-bold text-slate-900 mb-3 uppercase tracking-wide">Common Pilot Questions — Answered</p>
+                                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <p className="font-semibold text-slate-700 text-xs mb-1">Q: Is the type rating sponsored or bonded?</p>
+                                        <p className="text-slate-500">A: Fully sponsored. 3-year service commitment after line assignment.</p>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-700 text-xs mb-1">Q: Can I choose my base?</p>
+                                        <p className="text-slate-500">A: Bases assigned by operational need. Preferences considered.</p>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-700 text-xs mb-1">Q: What if I fail a training phase?</p>
+                                        <p className="text-slate-500">A: One remediation allowed per phase. 94% completion rate.</p>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-slate-700 text-xs mb-1">Q: Is salary during training?</p>
+                                        <p className="text-slate-500">A: Training stipend $2,500/month. Full FO salary upon completion.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Salary Progression */}
+                        <div className="mt-8 pt-8 border-t border-slate-700">
+                            <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-4 text-center">Salary Progression (USD)</p>
+                            <div className="grid grid-cols-5 gap-4 text-center">
+                                <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 backdrop-blur-sm">
+                                    <p className="text-xs text-slate-400 mb-1">Year 1</p>
+                                    <p className="text-lg font-bold text-white">$45K</p>
+                                    <p className="text-[10px] text-slate-500">Trainee/Instructor</p>
+                                </div>
+                                <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 backdrop-blur-sm">
+                                    <p className="text-xs text-slate-400 mb-1">Year 3</p>
+                                    <p className="text-lg font-bold text-white">$65K</p>
+                                    <p className="text-[10px] text-slate-500">First Officer</p>
+                                </div>
+                                <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 backdrop-blur-sm">
+                                    <p className="text-xs text-slate-400 mb-1">Year 5</p>
+                                    <p className="text-lg font-bold text-slate-300">$95K</p>
+                                    <p className="text-[10px] text-slate-500">Senior FO</p>
+                                </div>
+                                <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-4 backdrop-blur-sm">
+                                    <p className="text-xs text-blue-300 mb-1">Year 7</p>
+                                    <p className="text-lg font-bold text-blue-400">$140K</p>
+                                    <p className="text-[10px] text-blue-300">Captain Upgrade</p>
+                                </div>
+                                <div className="bg-green-500/20 border border-green-400/30 rounded-lg p-4 backdrop-blur-sm">
+                                    <p className="text-xs text-green-300 mb-1">Year 10</p>
+                                    <p className="text-lg font-bold text-green-400">$200K+</p>
+                                    <p className="text-[10px] text-green-300">Senior Captain</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* CTA */}
+                        <div className="mt-8 text-center">
+                            <p className="text-slate-400 text-sm mb-4">
+                                Pilots see this complete breakdown before expressing interest. <span className="text-white font-semibold">No more "what do you require?" inquiries.</span>
+                            </p>
+                            <button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-blue-900/40">
+                                View Full Pathway Template →
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </section>
 

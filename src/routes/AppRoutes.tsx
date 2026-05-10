@@ -30,6 +30,13 @@ import { ProgramsPage } from '@/components/website/components/programs/ProgramsP
 import { PlatformFoundationalProgramPage } from '@/components/website/components/programs/PlatformFoundationalProgramPage';
 import RecognitionPlusPage from '@/app/recognition-plus/page';
 import RecognitionPlusComparisonPage from '@/app/recognition-plus-comparison/page';
+import LearnAboutPage from '@/app/learn-about/page';
+import GeneralPage from '@/app/general/page';
+import ProfessionalProfilePage from '@/app/professional-profile/page';
+import BackgroundCheckPage from '@/app/background-check/page';
+import PilotInsurancePage from '@/app/pilot-insurance/page';
+import BankingFinancePage from '@/app/banking-finance/page';
+import CareerToolsPage from '@/app/career-tools/page';
 import { EnrolledFoundationalPage } from '@/components/website/components/programs/EnrolledFoundationalPage';
 import { FoundationalModulesPage } from '@/components/website/components/programs/FoundationalModulesPage';
 import { FoundationalProgressPage } from '@/components/website/components/programs/FoundationalProgressPage';
@@ -287,11 +294,26 @@ export const AppRoutes = () => {
       <Route path="/enterprise-access/learn-more" element={<EnterpriseAccessLearnMorePage />} />
       <Route path="/enterprise-access/airlines" element={<AirlinesOperatorsPage />} />
 
+      {/* New category pages */}
+      <Route path="/learn-about" element={<LearnAboutPage />} />
+      <Route path="/general" element={<GeneralPage />} />
+      <Route path="/professional-profile" element={<ProfessionalProfilePage />} />
+      <Route path="/background-check" element={<BackgroundCheckPage />} />
+      <Route path="/pilot-insurance" element={<PilotInsurancePage />} />
+      <Route path="/banking-finance" element={<BankingFinancePage />} />
+      <Route path="/career-tools" element={<CareerToolsPage />} />
+
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
         <Route path="/committees" element={<Navigate to="/about" replace />} />
         <Route path="/governance" element={<Navigate to="/about" replace />} />
         <Route path="/core-values" element={<Navigate to="/mission-vision" replace />} />
+        <Route path="/recognition-profile-live" element={<Navigate to="/recognition-plus?section=live-profile" replace />} />
+        <Route path="/recognition-ai" element={<Navigate to="/recognition-plus?section=ai-features" replace />} />
+        <Route path="/priority-matching" element={<Navigate to="/recognition-plus?section=priority-matching" replace />} />
+        <Route path="/ebt-fast-track" element={<Navigate to="/recognition-plus?section=ebt-cbta" replace />} />
+        <Route path="/medical-alerts" element={<Navigate to="/recognition-plus?section=medical-alerts" replace />} />
+        <Route path="/program-discounts" element={<Navigate to="/recognition-plus?section=program-discounts" replace />} />
       </Routes>
 
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} onNavigate={handleNavigate} />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useToast } from '@/src/components/ui/toast';
 import { 
   TrendingUp, 
   ChevronLeft,
@@ -2725,6 +2726,7 @@ const ThreeStagePathwayFilter: React.FC<{
   onNavigateToPathway?: (pathwayId: string) => void;
   onNavigate?: (page: string) => void;
 }> = ({ isDarkMode = true, pathwayCards = [], selectedGeneralCategory, onNavigateToPathway, onNavigate }) => {
+  const { addToast } = useToast();
   const [pathways, setPathways] = useState<Pathway[]>([]);
   const [subPathways, setSubPathways] = useState<SubPathway[]>([]);
 
@@ -3607,12 +3609,31 @@ const ThreeStagePathwayFilter: React.FC<{
                     return (
                     <div
                       key={`${card.id}-${idx}`}
+                      id={`subpathway-card-${card.id}`}
                       data-card-id={card.id}
                       onClick={handleCardClick}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        const cardId = `subpathway-card-${card.id}`;
+                        navigator.clipboard.writeText(cardId);
+                        addToast('success', 'Card ID Copied!', cardId);
+                      }}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 p-[3px] ${isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-transparent' : ''}`}
                       style={{ width: '600px' }}
                     >
                       <div className={`relative h-[300px] overflow-hidden rounded-xl ${isPilotRecognitionCard ? 'bg-slate-950' : isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
+                        {/* Card ID Badge - Click to copy */}
+                        <div 
+                          className="absolute top-2 left-2 px-2 py-1 rounded bg-black/50 backdrop-blur-sm z-20 cursor-pointer hover:bg-black/70 transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigator.clipboard.writeText(`subpathway-card-${card.id}`);
+                            addToast('success', 'Card ID Copied!', `subpathway-card-${card.id}`);
+                          }}
+                          title="Click to copy card ID"
+                        >
+                          <span className="text-[9px] text-white/60 font-mono">ID: {card.id?.slice(0, 8)}...</span>
+                        </div>
                         {isPilotRecognitionCard ? (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
                             {card.image ? (
@@ -3760,12 +3781,31 @@ const ThreeStagePathwayFilter: React.FC<{
                           return (
                             <div
                               key={`ghost-${card.id}-${idx}`}
+                              id={`ghost-card-${card.id}`}
                               className="flex flex-col items-center"
+                              onContextMenu={(e) => {
+                                e.preventDefault();
+                                const cardId = `ghost-card-${card.id}`;
+                                navigator.clipboard.writeText(cardId);
+                                addToast('success', 'Card ID Copied!', cardId);
+                              }}
                             >
                               <div
-                                className="flex-shrink-0 rounded-xl overflow-hidden"
+                                className="relative flex-shrink-0 rounded-xl overflow-hidden"
                                 style={{ width: '400px', height: '200px' }}
                               >
+                                {/* Card ID Badge - Click to copy */}
+                                <div 
+                                  className="absolute top-2 left-2 px-2 py-1 rounded bg-black/50 backdrop-blur-sm z-20 cursor-pointer hover:bg-black/70 transition-colors"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigator.clipboard.writeText(`ghost-card-${card.id}`);
+                                    addToast('success', 'Card ID Copied!', `ghost-card-${card.id}`);
+                                  }}
+                                  title="Click to copy card ID"
+                                >
+                                  <span className="text-[8px] text-white/60 font-mono">ID: {card.id?.slice(0, 6)}...</span>
+                                </div>
                                 <img 
                                   src={cardAircraftImage} 
                                   alt={card.name} 
@@ -4292,6 +4332,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [showLicensureTypeRatingPage, setShowLicensureTypeRatingPage] = useState(false);
   const [showCommercialPilotPathwayPage, setShowCommercialPilotPathwayPage] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const { addToast } = useToast();
 
   // Debug: Log when showSpecialPathwaysPage changes
   useEffect(() => {
@@ -5631,6 +5672,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   return (
                     <div
                       key={`${category.id}-${idx}`}
+                      id={`category-card-${category.id}`}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
                       style={{ 
                         width: '520px', 
@@ -5653,6 +5695,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         setSelectedCarouselPathway(categoryPathway);
                         setSelectedPathwayCard(categoryPathway);
                       }}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        const cardId = `category-card-${category.id}`;
+                        navigator.clipboard.writeText(cardId);
+                        addToast('success', 'Card ID Copied!', cardId);
+                      }}
                     >
                       <div 
                         className="relative w-full h-full overflow-hidden rounded-xl bg-slate-800"
@@ -5669,6 +5717,25 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                           <h4 className="text-lg font-serif font-normal text-white drop-shadow-lg">{category.name}</h4>
                           <p className="text-white/70 text-sm">{category.description}</p>
                           <p className="text-white/50 text-xs mt-1">{category.count} pathways</p>
+                        </div>
+                        {/* Card ID Badge - Click to copy */}
+                        <div 
+                          className="absolute top-2 left-2 px-2 py-1 rounded bg-black/50 backdrop-blur-sm z-20 cursor-pointer hover:bg-black/70 transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            const cardId = `category-card-${category.id}`;
+                            console.log('Category ID badge clicked:', cardId);
+                            navigator.clipboard.writeText(cardId).then(() => {
+                              console.log('Clipboard write successful');
+                              addToast('success', 'Card ID Copied!', cardId);
+                            }).catch(err => {
+                              console.error('Clipboard write failed:', err);
+                            });
+                          }}
+                          title="Click to copy card ID"
+                        >
+                          <span className="text-[10px] text-white/60 font-mono">ID: {category.id}</span>
                         </div>
                       </div>
                     </div>
@@ -5714,6 +5781,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   return (
                     <div
                       key={`${pathway.id}-${idx}`}
+                      id={`pathway-card-${pathway.id}`}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
                       style={{ 
                         width: '520px', 
@@ -5726,6 +5794,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         // When a pathway card is clicked from the first row, set it as selected for the second row
                         console.log('Setting selectedPathwayCard:', pathway);
                         setSelectedPathwayCard(pathway);
+                      }}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        const cardId = `pathway-card-${pathway.id}`;
+                        navigator.clipboard.writeText(cardId);
+                        addToast('success', 'Card ID Copied!', cardId);
                       }}
                     >
                       <div 
@@ -5795,9 +5869,29 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                           </div>
                         )}
                         
+                        {/* Card ID Badge - Click to copy */}
+                        <div 
+                          className="absolute top-2 left-2 px-2 py-1 rounded bg-black/50 backdrop-blur-sm z-20 cursor-pointer hover:bg-black/70 transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            const cardId = `pathway-card-${pathway.id}`;
+                            console.log('Pathway ID badge clicked:', cardId);
+                            navigator.clipboard.writeText(cardId).then(() => {
+                              console.log('Clipboard write successful');
+                              addToast('success', 'Card ID Copied!', cardId);
+                            }).catch(err => {
+                              console.error('Clipboard write failed:', err);
+                            });
+                          }}
+                          title="Click to copy card ID"
+                        >
+                          <span className="text-[9px] text-white/60 font-mono">ID: {pathway.id?.slice(0, 8)}...</span>
+                        </div>
+
                         {/* Quick Stats Chips - Top Left - hide for intro card */}
                         {!isIntroCard && (
-                          <div className="absolute top-14 left-3 flex flex-wrap gap-1 max-w-[150px]">
+                          <div className="absolute top-10 left-3 flex flex-wrap gap-1 max-w-[150px]">
                             {!isPilotRecognitionCard && (
                             <>
                               <span className="px-1.5 py-0.5 rounded bg-blue-600/90 text-white text-[9px] font-semibold backdrop-blur-sm">

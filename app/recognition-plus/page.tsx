@@ -1,718 +1,800 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { ChevronDown, ChevronRight, X, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ChevronRight, X } from 'lucide-react';
+
+const FEATURES = [
+    {
+        id: 'live-profile',
+        icon: '🔄',
+        label: 'Live Real-Time Profile',
+        color: 'blue',
+        tagline: 'Auto-updating profile that evolves with your career.',
+        pain: 'Traditional pilot CVs are static documents that become outdated the moment you save them. Hours flown, new type ratings, and recent experience aren\'t reflected in real-time, causing missed opportunities when airlines search for candidates.',
+        solution: 'Your Recognition Profile automatically syncs with your logbook and updates in real-time. As you log hours, earn new ratings, or complete training, your profile instantly reflects these achievements — making you discoverable to airlines with current, verified data.',
+        benefits: [
+            'Automatic logbook synchronization',
+            'Real-time hours and experience updates',
+            'Instant type rating verification',
+            'Live career progression tracking',
+            'Airline-facing profile visibility',
+            'Zero manual profile maintenance',
+            'Historical career data preservation',
+            'Integration with major logbook apps',
+        ],
+        pilots: [
+            'Never miss an opportunity due to outdated profile information',
+            'Let airlines see your current experience instantly',
+            'Eliminate manual CV updates and data entry',
+        ],
+    },
+    {
+        id: 'ai-features',
+        icon: '🤖',
+        label: 'Recognition AI',
+        color: 'violet',
+        tagline: 'AI-powered career guidance and pathway optimization.',
+        pain: 'Pilots navigate their careers blindly, unsure which type ratings to pursue, which airlines are hiring, or how their profile compares to successful candidates. Career decisions are based on hearsay rather than data.',
+        solution: 'Our AI analyzes your profile against real-time industry data from airlines and manufacturers. It provides personalized pathway recommendations, alerts you when you\'re close to qualifying for specific roles, and suggests optimal career moves based on market demand.',
+        benefits: [
+            'Personalized pathway recommendations',
+            'Airline-specific qualification alerts',
+            'OEM-aligned competency analysis (Airbus/Boeing)',
+            'Market demand forecasting',
+            'Competitive profile benchmarking',
+            'Career move optimization',
+            'Type rating ROI analysis',
+            'Hiring surge predictions',
+        ],
+        pilots: [
+            'Make career decisions based on data, not guesswork',
+            'Know exactly what qualifications you need for target airlines',
+            'Stay ahead of hiring trends and market demands',
+        ],
+    },
+    {
+        id: 'priority-matching',
+        icon: '⭐',
+        label: 'Priority Matching',
+        color: 'amber',
+        tagline: 'First in line when airlines search for talent.',
+        pain: 'When airlines search pilot databases, free profiles are buried under hundreds of applicants. Without priority ranking, qualified pilots get overlooked simply because they\'re not at the top of the list.',
+        solution: 'Recognition Plus members receive AI-ranked priority placement in airline search results. When operators review pathway pools, your profile appears first based on your Recognition Score, verified competencies, and subscription status.',
+        benefits: [
+            'AI-ranked priority in search results',
+            'First visibility in airline pulling system',
+            'Hiring surge priority access',
+            'Profile highlighting to recruiters',
+            'Top placement in ranked shortlists',
+            'Operator notification when you match',
+            'Fast-track interview scheduling',
+            'Priority pathway submission',
+        ],
+        pilots: [
+            'Be seen first when airlines search for pilots',
+            'Skip the queue during urgent hiring surges',
+            'Get noticed by recruiters before free-tier pilots',
+        ],
+    },
+    {
+        id: 'ebt-cbta',
+        icon: '🚀',
+        label: 'EBT CBTA Fast-Track',
+        color: 'emerald',
+        tagline: 'Skip the queue for EBT/CBTA interviews.',
+        pain: 'Foundation Program graduates often wait 1-2 months for EBT/CBTA interview slots. During this time, hiring opportunities pass by and candidates lose momentum in their job search.',
+        solution: 'Recognition Plus members receive fast-track access to EBT/CBTA interviews, skipping initial screening stages. This time advantage can be the difference between landing your dream job and missing the opportunity entirely.',
+        benefits: [
+            'Skip initial screening queues',
+            'Priority interview scheduling',
+            'Foundation Program fast-track',
+            'Reduced waiting time for assessments',
+            'Direct pathway to airline interviews',
+            'Expedited competency evaluations',
+            'Preferential assessment center slots',
+            'Accelerated hiring pipeline',
+        ],
+        pilots: [
+            'Get assessed faster after Foundation training',
+            'Reduce time between training and employment',
+            'Capitalize on urgent hiring opportunities',
+        ],
+    },
+    {
+        id: 'medical-alerts',
+        icon: '🏥',
+        label: 'AI Medical Alerts',
+        color: 'rose',
+        tagline: 'Never miss a medical renewal with automated monitoring.',
+        pain: 'Medical certificate expiration can ground a pilot unexpectedly. With 60/90-day validity windows and complex renewal requirements, it\'s easy to miss deadlines — especially when managing multiple certificates across jurisdictions.',
+        solution: '24/7 automated monitoring tracks all your medical certificates and licenses with AI-powered alerts. Get warned 60 days before expiration with suggested Aviation Medical Examiners and open appointment slots.',
+        benefits: [
+            '60-day expiration warnings',
+            'AME appointment suggestions',
+            'Multi-jurisdiction tracking',
+            'License renewal reminders',
+            'Type rating recency alerts',
+            'Recency requirement monitoring',
+            'Auto-renewal documentation',
+            'Compliance status dashboard',
+        ],
+        pilots: [
+            'Never face unexpected grounding due to expired certificates',
+            'Stay ahead of renewal deadlines with early warnings',
+            'Manage multiple licenses across different authorities',
+        ],
+    },
+    {
+        id: 'program-discounts',
+        icon: '💰',
+        label: 'Program Discounts',
+        color: 'teal',
+        tagline: 'Save 25-50% on Foundation and Transition programs.',
+        pain: 'Quality flight training programs cost $30,000-$100,000+. These expenses are significant barriers for pilots advancing their careers, especially when transitioning between aircraft types or upgrading to command.',
+        solution: 'Recognition Plus members receive exclusive discounts on partner training programs: 25% off Foundation and Transition programs, with savings increasing to 50% for Recognition+ Verified members. These discounts alone can offset your annual subscription cost.',
+        benefits: [
+            '25% off Foundation Program (Regular)',
+            '25% off Transition Program (Regular)',
+            '50% off Foundation Program (Verified)',
+            '50% off Transition Program (Verified)',
+            'Member-only training rates',
+            'Partner ATO preferential pricing',
+            'Type rating cost reductions',
+            'Simulator session discounts',
+        ],
+        pilots: [
+            'Save thousands on essential training programs',
+            'Invest in career advancement at reduced costs',
+            'Subscription pays for itself through training savings',
+        ],
+    },
+];
+
+const COLOR_CLASSES: Record<string, { eyebrow: string; badge: string; border: string; bg: string }> = {
+    blue: { eyebrow: 'text-blue-600', badge: 'bg-blue-100 text-blue-700 border-blue-200', border: 'border-blue-200', bg: 'bg-blue-50' },
+    violet: { eyebrow: 'text-violet-600', badge: 'bg-violet-100 text-violet-700 border-violet-200', border: 'border-violet-200', bg: 'bg-violet-50' },
+    amber: { eyebrow: 'text-amber-600', badge: 'bg-amber-100 text-amber-700 border-amber-200', border: 'border-amber-200', bg: 'bg-amber-50' },
+    emerald: { eyebrow: 'text-emerald-600', badge: 'bg-emerald-100 text-emerald-700 border-emerald-200', border: 'border-emerald-200', bg: 'bg-emerald-50' },
+    rose: { eyebrow: 'text-rose-600', badge: 'bg-rose-100 text-rose-700 border-rose-200', border: 'border-rose-200', bg: 'bg-rose-50' },
+    teal: { eyebrow: 'text-teal-600', badge: 'bg-teal-100 text-teal-700 border-teal-200', border: 'border-teal-200', bg: 'bg-teal-50' },
+};
 
 export default function RecognitionPlusPage() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [isFeaturesExpanded, setIsFeaturesExpanded] = useState(false);
-  const [processing, setProcessing] = useState(false);
-  const [showSuccessBanner, setShowSuccessBanner] = useState(false);
-  const [showCancelledBanner, setShowCancelledBanner] = useState(false);
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const [isFeaturesExpanded, setIsFeaturesExpanded] = useState(false);
+    const [processing, setProcessing] = useState(false);
+    const [showSuccessBanner, setShowSuccessBanner] = useState(false);
+    const [showCancelledBanner, setShowCancelledBanner] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileNav, setMobileNav] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    if (searchParams.get('success') === 'true') {
-      setShowSuccessBanner(true);
-    }
-    if (searchParams.get('cancelled') === 'true') {
-      setShowCancelledBanner(true);
-    }
-  }, [searchParams]);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (searchParams.get('success') === 'true') {
+            setShowSuccessBanner(true);
+        }
+        if (searchParams.get('cancelled') === 'true') {
+            setShowCancelledBanner(true);
+        }
+        // Handle section anchors for dropdown navigation
+        const section = searchParams.get('section');
+        if (section) {
+            const element = document.getElementById(section);
+            if (element) {
+                setTimeout(() => element.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+            }
+        }
+    }, [searchParams]);
 
-  const handleCheckout = async (priceId: string, planName: string, trialPeriodDays?: number) => {
-    setProcessing(true);
-    try {
-      const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
-      const response = await fetch(`${supabaseUrl}/functions/v1/stripe-checkout`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY`
-        },
-        body: JSON.stringify({ 
-          priceId,
-          trialPeriodDays
-        }),
-      });
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.details || errorData.error || 'Failed to create checkout session');
-      }
+    const scrollTo = (id: string) => {
+        setMobileNav(false);
+        const el = document.getElementById(id);
+        if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY - 80;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+    };
 
-      const { url: checkoutUrl } = await response.json();
-      window.location.href = checkoutUrl;
-    } catch (error) {
-      console.error('Checkout error:', error);
-      alert(`Failed to start checkout: ${error.message}`);
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-white">
-      {/* Success Banner */}
-      {showSuccessBanner && (
-        <div className="bg-green-50 border-b-2 border-green-200 px-6 py-4">
-          <div className="max-w-6xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-lg">✓</span>
-              </div>
-              <div>
-                <p className="font-bold text-green-900">Payment Successful!</p>
-                <p className="text-sm text-green-700">Your Recognition Plus subscription is now active. Welcome aboard!</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowSuccessBanner(false)}
-              className="text-green-600 hover:text-green-800 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Cancelled Banner */}
-      {showCancelledBanner && (
-        <div className="bg-amber-50 border-b-2 border-amber-200 px-6 py-4">
-          <div className="max-w-6xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-lg">!</span>
-              </div>
-              <div>
-                <p className="font-bold text-amber-900">Payment Cancelled</p>
-                <p className="text-sm text-amber-700">You cancelled the checkout. No charges were made. Feel free to try again anytime.</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowCancelledBanner(false)}
-              className="text-amber-600 hover:text-amber-800 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Header */}
-      <div className="bg-white border-b border-slate-200 px-4 md:px-6 py-6 md:py-8">
-        <div className="max-w-6xl mx-auto">
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors mb-4"
-          >
-            <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
-            <span className="text-xs md:text-sm font-medium">Back to Home</span>
-          </button>
-          <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
-              <span className="text-black">Pilot</span>{' '}
-              <span className="text-red-600 relative inline-block">
-                Recognition
-                <span className="absolute -top-2 md:-top-3 -right-2 md:-right-3 text-red-600 text-xl md:text-3xl font-bold">+</span>
-              </span>
-            </h1>
-            <p className="text-slate-600 mt-4 text-sm md:text-base lg:text-lg">Unlock premium features, priority matching, and AI-powered career tools for your aviation journey</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-16">
-        <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-4 md:p-8 mb-8 md:mb-16 overflow-x-auto shadow-2xl border border-white/20">
-          <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2 text-center">Compare All Tiers</h3>
-          <p className="text-slate-500 text-sm text-center mb-6 md:mb-8">See exactly what changes at each level</p>
-          <table className="w-full text-xs md:text-sm">
-            <thead>
-              <tr>
-                <th className="text-left py-3 md:py-4 px-2 md:px-4 font-bold text-slate-900 bg-white/50 rounded-tl-lg border-b border-slate-200 w-2/5">Feature</th>
-                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-slate-600 bg-slate-50/80 border-b border-slate-200">
-                  <div>Free</div>
-                  <div className="text-slate-400 font-normal text-[10px] mt-0.5">$0</div>
-                </th>
-                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-violet-700 bg-violet-50/80 border-b border-violet-200">
-                  <div>Recognition+</div>
-                  <div className="text-violet-500 font-normal text-[10px] mt-0.5">$60 / 6 months</div>
-                </th>
-                <th className="text-center py-3 md:py-4 px-2 md:px-4 font-bold text-red-600 bg-red-50/80 rounded-tr-lg border-b border-red-200">
-                  <div>Recognition+ Verified</div>
-                  <div className="text-red-400 font-normal text-[10px] mt-0.5">$100 / year</div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                {
-                  feature: 'Live real-time profile',
-                  free: '—',
-                  s60: '✓ Updates when you log hours',
-                  s100: '✓ Updates when you log hours',
+    const handleCheckout = async (priceId: string, planName: string, trialPeriodDays?: number) => {
+        setProcessing(true);
+        try {
+            const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+            const response = await fetch(`${supabaseUrl}/functions/v1/stripe-checkout`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY`
                 },
-                {
-                  feature: 'Recognition Score',
-                  free: 'Visible, no badge',
-                  s60: '✓ Recognition+ badge',
-                  s100: '✓ Recognition+ Verified badge',
-                },
-                {
-                  feature: 'Veremark background check',
-                  free: '—',
-                  s60: '—',
-                  s100: '✓ Screened & verified',
-                },
-                {
-                  feature: 'Profile in airline pulling system',
-                  free: 'General pool',
-                  s60: 'Ranked shortlist (no background check)',
-                  s100: 'Top of ranked shortlist (background checked)',
-                },
-                {
-                  feature: 'Airline filters you by',
-                  free: '—',
-                  s60: 'Score, recency, type rating, hours',
-                  s100: 'Veremark status, score, recency, type rating, hours',
-                },
-                {
-                  feature: 'Pathway interest submissions',
-                  free: '2 / month',
-                  s60: 'Unlimited',
-                  s100: 'Unlimited',
-                },
-                {
-                  feature: 'Profile comparisons',
-                  free: '3 / month',
-                  s60: 'Unlimited',
-                  s100: 'Unlimited',
-                },
-                {
-                  feature: 'Recognition AI',
-                  free: '5 chats / month (basic)',
-                  s60: '✓ Extended — live type rating, airline & pathway data',
-                  s100: '✓ Extended — live type rating, airline & pathway data',
-                },
-                {
-                  feature: 'Atlas CV',
-                  free: 'Standard (no screening)',
-                  s60: 'Upload documents (not screened)',
-                  s100: 'Upload + Veremark screened, visible to airlines',
-                },
-                {
-                  feature: 'EBT CBTA Interview',
-                  free: '1–2 months after Foundation',
-                  s60: '✓ Fast-track (skip the queue)',
-                  s100: '✓ Fast-track (skip the queue)',
-                },
-                {
-                  feature: 'Program discounts',
-                  free: '—',
-                  s60: '25% off Foundation & Transition',
-                  s100: '50% off Foundation & Transition',
-                },
-                {
-                  feature: 'If placed through a pathway',
-                  free: '—',
-                  s60: 'Profile marked as successful placement',
-                  s100: 'Profile marked as successful placement',
-                },
-                {
-                  feature: 'Price',
-                  free: 'Free',
-                  s60: '$60 / 6 months',
-                  s100: '$100 / year',
-                  isPrice: true,
-                },
-              ].map((row, i) => (
-                <tr key={i} className={`border-b border-slate-100 hover:bg-slate-50/60 transition-colors ${row.isPrice ? 'bg-slate-50 font-bold' : ''}`}>
-                  <td className="py-3 px-2 md:px-4 text-slate-800 font-semibold text-xs md:text-sm">{row.feature}</td>
-                  <td className="py-3 px-2 md:px-4 text-center text-slate-500 text-xs md:text-sm">{row.free}</td>
-                  <td className="py-3 px-2 md:px-4 text-center text-violet-700 text-xs md:text-sm font-medium bg-violet-50/30">{row.s60}</td>
-                  <td className="py-3 px-2 md:px-4 text-center text-red-600 text-xs md:text-sm font-medium bg-red-50/30">{row.s100}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Link
-            to="/recognition-plus-comparison"
-            className="block text-center text-blue-600 hover:text-blue-700 text-xs md:text-sm font-bold underline mt-4 md:mt-6"
-          >
-            View full comparison →
-          </Link>
-        </div>
+                body: JSON.stringify({
+                    priceId,
+                    trialPeriodDays
+                }),
+            });
 
-        {/* Pricing CTA */}
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-6 md:p-12 text-center mb-8 md:mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Choose Your Plan</h2>
-          <p className="text-slate-300 text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">
-            Start your journey with a free trial. Upgrade to Recognition Plus for priority matching, AI-powered career tools, and industry-standard compliance monitoring.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
-            {/* Monthly Plan */}
-            <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl p-4 md:p-8 text-center">
-              <h3 className="text-lg md:text-xl font-bold text-white mb-2">Monthly</h3>
-              <p className="text-3xl md:text-4xl font-bold text-white mb-1">$12<span className="text-base md:text-lg font-normal text-teal-200">/month</span></p>
-              <p className="text-xs md:text-sm text-teal-200 mb-2">Cancel anytime</p>
-              <p className="text-xs text-teal-300 mb-4 md:mb-6 font-semibold">✓ 7-day free trial</p>
-              <ul className="space-y-1 md:space-y-2 mb-4 md:mb-6 text-left text-xs md:text-sm text-white">
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>Full profile comparison</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>Pathway recommendations based on profile</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>Priority matching</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>AI career strategist</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>EBT CBTA Interview Fast-Track (Foundation Program)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>Recognition AI (OEM Aligned)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>AI medical alerts (60-day warnings)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>Priority pipeline (hiring surges)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>Zero-Fail compliance monitoring</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-200 font-bold">✓</span>
-                  <span>Background check verification (criminal records)</span>
-                </li>
-              </ul>
-              <button 
-                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_MONTHLY_PRICE_ID || '', 'Recognition Plus Monthly', 7)}
-                disabled={processing}
-                className="w-full bg-white hover:bg-teal-50 text-teal-700 font-bold py-2 md:py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm"
-              >
-                {processing ? 'Processing...' : 'Get Monthly Plan'}
-              </button>
-            </div>
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.details || errorData.error || 'Failed to create checkout session');
+            }
 
-            {/* Annual Plan */}
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-4 md:p-8 text-center transform md:scale-105 scale-100">
-              <div className="text-blue-200 text-xs font-bold uppercase mb-2">Best Value</div>
-              <h3 className="text-lg md:text-xl font-bold text-white mb-2">Annual</h3>
-              <p className="text-3xl md:text-4xl font-bold text-white mb-1">$99<span className="text-base md:text-lg font-normal text-blue-200">/year</span></p>
-              <p className="text-xs md:text-sm text-blue-200 mb-2">Save $45/year</p>
-              <p className="text-xs text-blue-300 mb-4 md:mb-6 font-semibold">✓ 3-day free trial</p>
-              <ul className="space-y-1 md:space-y-2 mb-4 md:mb-6 text-left text-xs md:text-sm text-white">
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>Full profile comparison</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>Pathway recommendations based on profile</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>Priority matching</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>AI career strategist</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>EBT CBTA Interview Fast-Track (Foundation Program)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>Recognition AI (OEM Aligned)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>AI medical alerts (60-day warnings)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>Priority pipeline (hiring surges)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>Zero-Fail compliance monitoring</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-200 font-bold">✓</span>
-                  <span>Background check verification (criminal records)</span>
-                </li>
-              </ul>
-              <button 
-                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_ANNUAL_PRICE_ID || '', 'Recognition Plus Annual', 3)}
-                disabled={processing}
-                className="w-full bg-white hover:bg-blue-50 text-blue-700 font-bold py-2 md:py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm"
-              >
-                {processing ? 'Processing...' : 'Get Annual Plan'}
-              </button>
-            </div>
+            const { url: checkoutUrl } = await response.json();
+            window.location.href = checkoutUrl;
+        } catch (error: any) {
+            console.error('Checkout error:', error);
+            alert(`Failed to start checkout: ${error.message}`);
+        } finally {
+            setProcessing(false);
+        }
+    };
 
-            {/* Semi-Annual Plan */}
-            <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-4 md:p-8 text-center">
-              <h3 className="text-lg md:text-xl font-bold text-white mb-2">Semi-Annual</h3>
-              <p className="text-3xl md:text-4xl font-bold text-white mb-1">$60<span className="text-base md:text-lg font-normal text-purple-200">/6 months</span></p>
-              <p className="text-xs md:text-sm text-purple-200 mb-2">Flexible payment</p>
-              <p className="text-xs text-purple-300 mb-4 md:mb-6 font-semibold">✓ 3-day free trial</p>
-              <ul className="space-y-1 md:space-y-2 mb-4 md:mb-6 text-left text-xs md:text-sm text-white">
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>Full profile comparison</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>Pathway recommendations based on profile</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>Priority matching</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>AI career strategist</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>EBT CBTA Interview Fast-Track (Foundation Program)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>Recognition AI (OEM Aligned)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>AI medical alerts (60-day warnings)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>Priority pipeline (hiring surges)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>Zero-Fail compliance monitoring</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-200 font-bold">✓</span>
-                  <span>Background check verification (criminal records)</span>
-                </li>
-              </ul>
-              <button 
-                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_SEMI_ANNUAL_PRICE_ID || '', 'Recognition Plus Semi-Annual', 3)}
-                disabled={processing}
-                className="w-full bg-white hover:bg-purple-50 text-purple-700 font-bold py-2 md:py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm"
-              >
-                {processing ? 'Processing...' : 'Get Semi-Annual Plan'}
-              </button>
-            </div>
-          </div>
-          <p className="text-slate-400 text-sm mt-8">Cancel anytime. No hidden fees. 3-day free trial included.</p>
-        </div>
-
-        {/* Feature Breakdown */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          <div className="bg-slate-50 rounded-xl p-8 border-2 border-slate-200">
-            <h3 className="text-2xl font-bold text-slate-900 mb-6">Free Tier</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
+    return (
+        <div className="min-h-screen bg-white text-slate-900">
+            {/* Success Banner */}
+            {showSuccessBanner && (
+                <div className="bg-green-50 border-b-2 border-green-200 px-6 py-4">
+                    <div className="max-w-6xl mx-auto flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-lg">✓</span>
+                            </div>
+                            <div>
+                                <p className="font-bold text-green-900">Payment Successful!</p>
+                                <p className="text-sm text-green-700">Your Recognition Plus subscription is now active. Welcome aboard!</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setShowSuccessBanner(false)}
+                            className="text-green-600 hover:text-green-800 transition-colors"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
                 </div>
-                <p className="text-slate-700">Create your Pilot Recognition Profile</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Basic profile matching (shows 3 comparisons)</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">View career pathways</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Recognition Score calculation</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Foundation Program (Free)</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Static medical certificate display</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Auto Logbook Sync</p>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl p-8 border-2 border-amber-300">
-            <h3 className="text-2xl font-bold text-amber-900 mb-6">Recognition Plus</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700 font-semibold">Everything in Free, plus:</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Full profile comparison (vs. basic 3 comparisons)</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Pathway recommendations based on profile</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Priority matching</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">AI Career Strategist - pathway recommendations</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">EBT CBTA Interview Fast-Track (Foundation Program) - skip initial screening</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Recognition AI - OEM aligned (Airbus/Boeing)</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">AI Medical Alerts - 60-day expiration warnings</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Priority Pipeline - first in hiring surge pools</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Zero-Fail Compliance - 24/7 automated monitoring</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <p className="text-slate-700">Background Check Verification - criminal records aligned with aviation regulatory standards</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Is Recognition Plus worth the investment?</h3>
-              <p className="text-slate-700">Absolutely. Professional pilots value these features at over $100 annually. For $99/year, you get AI-powered career guidance, priority access to hiring surges, interview fast-track, OEM-aligned profiles, and 24/7 compliance monitoring. The faster hiring and better opportunities alone can save you months of job searching and thousands in lost income.</p>
-            </div>
-            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-              <h3 className="text-lg font-bold text-slate-900 mb-2">How does the AI Career Strategist work?</h3>
-              <p className="text-slate-700">Our AI continuously analyzes your profile against real-time industry data from airlines and manufacturers. It alerts you when you're close to qualifying for specific roles and provides exact requirements. For example: "You need 12 more flight hours on A320 to qualify for Emirates First Officer." It recommends optimal pathways based on your career goals.</p>
-            </div>
-            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-              <h3 className="text-lg font-bold text-slate-900 mb-2">What is the Priority Pipeline?</h3>
-              <p className="text-slate-700">When operators review pathway pools, Recognition Plus members appear first due to AI-ranked priority. During partner hiring surges, you receive interview fast-track access, skipping initial screening stages. This time advantage can be the difference between landing your dream job and missing the opportunity.</p>
-            </div>
-            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Can I cancel anytime?</h3>
-              <p className="text-slate-700">Yes. You can cancel your Recognition Plus subscription at any time with no penalties. Your profile and data will be preserved, and you can continue using the free tier features. Many pilots find the value so compelling they never cancel.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Strategic Partnerships & Growth Section */}
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-12 border-2 border-blue-200">
-            <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">Growth & Investor Readiness</h2>
-            <p className="text-slate-700 text-center max-w-4xl mx-auto mb-12">
-              PilotRecognition is building relationships across the aviation ecosystem to create a comprehensive platform that benefits pilots, flight schools, airlines, and investors alike. Our growth strategy focuses on three key pillars that drive value for all stakeholders.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Investor Readiness */}
-              <div className="bg-white rounded-xl p-6 border-2 border-slate-200 shadow-lg">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-4 mx-auto">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3 text-center">Investor Readiness Traction</h3>
-                <p className="text-slate-600 text-sm text-center mb-4">
-                  Target: 100-500 pilot subscribers
-                </p>
-                <p className="text-slate-700 text-sm leading-relaxed">
-                  We are building investor readiness traction through organic growth and strategic marketing. Our goal is to achieve 100-500 pilot subscribers to demonstrate market validation and revenue potential. This subscriber base provides the foundation for scaling our platform and attracting strategic investment. Recognition Plus subscriptions at $99/year create a sustainable recurring revenue model that scales with our user base.
-                </p>
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <p className="text-xs text-slate-500 text-center">
-                    <span className="font-semibold text-blue-600">Revenue Potential:</span> 500 subscribers × $99/year = $49,500 MRR
-                  </p>
-                </div>
-              </div>
-
-              {/* Flight School Partnerships */}
-              <div className="bg-white rounded-xl p-6 border-2 border-slate-200 shadow-lg">
-                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4 mx-auto">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3 text-center">Flight School Partnerships</h3>
-                <p className="text-slate-600 text-sm text-center mb-4">
-                  Target: 2-3 flight schools for referrals
-                </p>
-                <p className="text-slate-700 text-sm leading-relaxed">
-                  We are establishing partnerships with leading flight schools to create a seamless pathway from training to career. Flight schools refer graduating students to PilotRecognition, where they build their professional profiles and access career pathways. In return, flight schools receive data on student placement success and can offer enhanced career services. This partnership model creates value for both parties while supporting the next generation of pilots.
-                </p>
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <p className="text-xs text-slate-500 text-center">
-                    <span className="font-semibold text-green-600">Partnership Benefits:</span> Student placement tracking, career services enhancement, referral revenue
-                  </p>
-                </div>
-              </div>
-
-              {/* Airline Partnership */}
-              <div className="bg-white rounded-xl p-6 border-2 border-slate-200 shadow-lg">
-                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mb-4 mx-auto">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3 text-center">Airline Partnership</h3>
-                <p className="text-slate-600 text-sm text-center mb-4">
-                  Target: 1 airline pilot program
-                </p>
-                <p className="text-slate-700 text-sm leading-relaxed">
-                  Our flagship airline partnership establishes a pilot program where Recognition Plus members receive priority consideration for hiring opportunities. The airline gains access to a pre-vetted pool of qualified pilots with verified competencies and OEM-aligned profiles. This reduces recruitment costs while improving hiring quality. The pilot program serves as a proof-of-concept for scaling partnerships across multiple airlines and aviation sectors.
-                </p>
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <p className="text-xs text-slate-500 text-center">
-                    <span className="font-semibold text-amber-600">Program Benefits:</span> Pre-vetted talent pool, reduced recruitment costs, faster hiring cycles
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-12 bg-white rounded-xl p-6 border-2 border-slate-200">
-              <h3 className="text-lg font-bold text-slate-900 mb-4 text-center">Why These Partnerships Matter</h3>
-              <p className="text-slate-700 text-sm leading-relaxed text-center max-w-4xl mx-auto">
-                These strategic initiatives create a self-reinforcing ecosystem: flight schools feed talent into the platform, airlines hire from our verified pool, and investors see a scalable business model with clear revenue streams. For pilots, this means better career opportunities and a more transparent hiring process. For the industry, it addresses the critical talent shortage with data-driven solutions that connect the right pilots to the right opportunities at the right time.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Header - Moved to Bottom */}
-      <div className="relative bg-white pt-24 pb-12 px-6">
-        <div className="max-w-6xl mx-auto text-center relative z-20">
-          <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-slate-400 mb-2">
-            PILOTRECOGNITION.COM
-          </p>
-          <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-4">
-            RECOGNITION PLUS
-          </p>
-          <h2 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
-            AI-Powered Career Acceleration: Your Competitive Edge in Aviation
-          </h2>
-          <p className="text-xl font-medium tracking-wide text-slate-700 italic mb-10">
-            Premium Recognition for Professional Pilots Worth $100/Year
-          </p>
-
-          <div className="max-w-4xl mx-auto space-y-8 mb-12">
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-              Recognition Plus is the premium subscription that transforms your pilot career from reactive to proactive. In an industry where timing is everything and opportunities are scarce, Recognition Plus gives you the AI-powered insights, verified credentials, and priority access that put you at the front of the line when airlines hire. Our proprietary Recognition AI analyzes your profile against manufacturer standards and airline requirements, providing personalized pathway recommendations that eliminate guesswork and accelerate your journey to the cockpit.
-            </p>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-              For just $99 per year—less than $8.33 per month—you gain access to features that professional pilots value at over $100 annually. This isn't just a subscription; it's an investment in your career that pays dividends through faster hiring, better opportunities, and continuous professional development. Our OEM-aligned profiles verify your competencies against Airbus and Boeing standards, giving airlines the confidence they need to fast-track your application. When hiring surges occur, Recognition Plus members are automatically prioritized in operator selection pools, giving you a significant advantage over free-tier applicants.
-            </p>
-
-            {!isFeaturesExpanded && (
-              <button
-                onClick={() => setIsFeaturesExpanded(true)}
-                className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group px-4 py-2 bg-white border-2 border-blue-600 rounded-lg"
-              >
-                READ MORE <ChevronDown className="w-4 h-4" />
-              </button>
             )}
 
-            {isFeaturesExpanded && (
-              <>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                  Our Recognition AI system is the cornerstone of the subscription. It continuously monitors your profile, flight hours, type ratings, and certifications against real-time industry data from airlines and manufacturers. When you're 12 flight hours away from qualifying for a specific airline role, the AI alerts you with exact requirements and actionable steps. It recommends optimal pathways based on your career goals—whether that's cargo operations, corporate aviation, or major airlines—and provides experience advice that helps you make informed decisions about your next career move.
-                </p>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                  The Priority Access feature ensures that when operators review pathway pools, your profile appears first. This AI-ranked priority system considers multiple factors including your Recognition Score, verified competencies, and subscription status. During partner hiring surges—when airlines urgently need qualified pilots—Recognition Plus members receive interview fast-track access, skipping initial screening stages that can take weeks. This time advantage can mean the difference between landing your dream job and missing the opportunity entirely.
-                </p>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                  Compliance management is another critical benefit. Our 24/7 automated monitoring system tracks all your licenses, medical certificates, and type ratings with AI-automated alerts that warn you 60 days before expiration. It even suggests local Aviation Medical Examiners with open slots, ensuring you never face a grounding situation due to missed renewals. The auto-logbook sync feature automatically updates your Recognition Score as you fly, keeping your profile current without manual data entry. Zero-fail compliance means you can focus on flying while we handle the administrative burden.
-                </p>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-sans text-center">
-                  Full database job matching goes beyond the basic profile score available to free users. Recognition Plus includes interview performance data, complete profile analysis, and AI-ranked recommendations for partner airline hiring surges. This comprehensive matching system identifies opportunities that free-tier users miss, connecting you with roles that align perfectly with your experience and career aspirations. The investment of $99 per year provides access to a career acceleration platform that delivers measurable ROI through faster hiring, better positions, and continuous professional growth.
-                </p>
-              </>
+            {/* Cancelled Banner */}
+            {showCancelledBanner && (
+                <div className="bg-amber-50 border-b-2 border-amber-200 px-6 py-4">
+                    <div className="max-w-6xl mx-auto flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-lg">!</span>
+                            </div>
+                            <div>
+                                <p className="font-bold text-amber-900">Payment Cancelled</p>
+                                <p className="text-sm text-amber-700">You cancelled the checkout. No charges were made. Feel free to try again anytime.</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setShowCancelledBanner(false)}
+                            className="text-amber-600 hover:text-amber-800 transition-colors"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
             )}
-          </div>
 
-          <Link
-            to="/recognition-plus-comparison"
-            className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-700 hover:text-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto group"
-          >
-            VIEW FULL COMPARISON TABLE <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+            {/* ─── STICKY NAV ─── */}
+            <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm' : 'bg-white/80 backdrop-blur-sm'}`}>
+                <div className="max-w-7xl mx-auto px-4 lg:px-6">
+                    <div className="flex items-center justify-between h-16">
+                        {/* Logo */}
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={() => navigate('/')}
+                                className="flex items-center gap-2 text-slate-600 hover:text-red-600 transition-colors"
+                            >
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                                <span className="text-sm font-medium">Home</span>
+                            </button>
+                            <button onClick={() => navigate('/')} className="flex items-center gap-3 group">
+                                <span className="text-xl font-bold tracking-tight">
+                                    <span className="text-slate-900">Pilot</span><span className="text-red-600">Recognition</span>
+                                </span>
+                                <span className="text-sm font-semibold text-slate-900 tracking-wide">Plus</span>
+                            </button>
+                        </div>
+
+                        {/* Desktop nav */}
+                        <nav className="hidden lg:flex items-center gap-1">
+                            {FEATURES.map(feat => (
+                                <button
+                                    key={feat.id}
+                                    onClick={() => scrollTo(feat.id)}
+                                    className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-red-600 hover:bg-slate-50 rounded-lg transition-colors"
+                                >
+                                    {feat.label}
+                                </button>
+                            ))}
+                        </nav>
+
+                        {/* CTA */}
+                        <div className="hidden lg:flex items-center gap-3">
+                            <button
+                                onClick={() => navigate('/become-member')}
+                                className="bg-red-600 hover:bg-red-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                            >
+                                Get Recognition+
+                            </button>
+                        </div>
+
+                        {/* Mobile menu button */}
+                        <button
+                            className="lg:hidden p-2 text-slate-600 hover:text-slate-900"
+                            onClick={() => setMobileNav(!mobileNav)}
+                        >
+                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                {mobileNav ? (
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                ) : (
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                                )}
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Mobile nav */}
+                {mobileNav && (
+                    <div className="lg:hidden border-t border-slate-200 bg-white">
+                        <div className="px-4 py-3 space-y-1">
+                            {FEATURES.map(feat => (
+                                <button
+                                    key={feat.id}
+                                    onClick={() => scrollTo(feat.id)}
+                                    className="block w-full text-left px-3 py-2 text-sm font-medium text-slate-600 hover:text-red-600 hover:bg-slate-50 rounded-lg"
+                                >
+                                    {feat.icon} {feat.label}
+                                </button>
+                            ))}
+                            <div className="pt-2 border-t border-slate-100 mt-2">
+                                <button
+                                    onClick={() => navigate('/become-member')}
+                                    className="w-full bg-red-600 hover:bg-red-500 text-white text-sm font-semibold px-4 py-2 rounded-lg"
+                                >
+                                    Get Recognition+
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </header>
+
+            {/* ─── HERO ─── */}
+            <section className="relative bg-slate-50 border-b border-slate-200">
+                <div className="max-w-6xl mx-auto px-6 pt-16 pb-12">
+                    <div className="max-w-3xl">
+                        <button
+                            onClick={() => navigate('/')}
+                            className="flex items-center gap-2 text-slate-500 hover:text-red-600 transition-colors mb-4"
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            <span className="text-sm font-medium">Back to Home</span>
+                        </button>
+                        <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Premium Membership</p>
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-5 leading-tight">
+                            Pilot
+                            <span className="text-red-600 relative inline-block ml-2">
+                                Recognition
+                                <span className="absolute -top-2 md:-top-3 -right-2 md:-right-3 text-red-600 text-xl md:text-3xl font-bold">+</span>
+                            </span>
+                        </h1>
+                        <p className="text-slate-600 text-lg md:text-xl leading-relaxed mb-6 max-w-2xl">
+                            Unlock premium features, priority matching, and AI-powered career tools for your aviation journey. Join thousands of pilots accelerating their careers.
+                        </p>
+                        <div className="flex flex-wrap gap-3">
+                            <button
+                                onClick={() => scrollTo('pricing')}
+                                className="bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-xl transition-all"
+                            >
+                                View Plans
+                            </button>
+                            <button
+                                onClick={() => scrollTo('features')}
+                                className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-semibold px-6 py-3 rounded-xl transition-all"
+                            >
+                                Explore Features
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Stat strip */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-8 border-t border-slate-200">
+                        <div>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">$99</p>
+                            <p className="text-sm text-slate-500">Per year</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">AI</p>
+                            <p className="text-sm text-slate-500">Career strategist</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">Priority</p>
+                            <p className="text-sm text-slate-500">Airline matching</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">50%</p>
+                            <p className="text-sm text-slate-500">Training discounts</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── FEATURE COMPARISON TABLE ─── */}
+            <section id="features" className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Compare Plans</p>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">Choose Your Tier.</h2>
+                    <p className="text-slate-600 text-lg max-w-2xl mb-10">See exactly what you get at each level — from free essentials to premium career acceleration.</p>
+
+                    <div className="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-xs md:text-sm">
+                                <thead>
+                                    <tr>
+                                        <th className="text-left py-4 px-4 font-bold text-slate-900 bg-slate-50 border-b border-slate-200 w-2/5">Feature</th>
+                                        <th className="text-center py-4 px-4 font-bold text-slate-600 bg-slate-50 border-b border-slate-200">
+                                            <div>Free</div>
+                                            <div className="text-slate-400 font-normal text-[10px] mt-0.5">$0</div>
+                                        </th>
+                                        <th className="text-center py-4 px-4 font-bold text-violet-700 bg-violet-50 border-b border-violet-200">
+                                            <div>Recognition+</div>
+                                            <div className="text-violet-500 font-normal text-[10px] mt-0.5">$60 / 6 months</div>
+                                        </th>
+                                        <th className="text-center py-4 px-4 font-bold text-red-600 bg-red-50 border-b border-red-200">
+                                            <div>Recognition+ Verified</div>
+                                            <div className="text-red-400 font-normal text-[10px] mt-0.5">$100 / year</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        { feature: 'Live real-time profile', free: '—', s60: '✓ Updates when you log hours', s100: '✓ Updates when you log hours' },
+                                        { feature: 'Recognition Score', free: 'Visible, no badge', s60: '✓ Recognition+ badge', s100: '✓ Recognition+ Verified badge' },
+                                        { feature: 'Veremark background check', free: '—', s60: '—', s100: '✓ Screened & verified' },
+                                        { feature: 'Profile in airline pulling system', free: 'General pool', s60: 'Ranked shortlist (no background check)', s100: 'Top of ranked shortlist (background checked)' },
+                                        { feature: 'Airline filters you by', free: '—', s60: 'Score, recency, type rating, hours', s100: 'Veremark status, score, recency, type rating, hours' },
+                                        { feature: 'Pathway interest submissions', free: '2 / month', s60: 'Unlimited', s100: 'Unlimited' },
+                                        { feature: 'Profile comparisons', free: '3 / month', s60: 'Unlimited', s100: 'Unlimited' },
+                                        { feature: 'Recognition AI', free: '5 chats / month (basic)', s60: '✓ Extended — live type rating, airline & pathway data', s100: '✓ Extended — live type rating, airline & pathway data' },
+                                        { feature: 'Atlas CV', free: 'Standard (no screening)', s60: 'Upload documents (not screened)', s100: 'Upload + Veremark screened, visible to airlines' },
+                                        { feature: 'EBT CBTA Interview', free: '1–2 months after Foundation', s60: '✓ Fast-track (skip the queue)', s100: '✓ Fast-track (skip the queue)' },
+                                        { feature: 'Program discounts', free: '—', s60: '25% off Foundation & Transition', s100: '50% off Foundation & Transition' },
+                                        { feature: 'Price', free: 'Free', s60: '$60 / 6 months', s100: '$100 / year', isPrice: true },
+                                    ].map((row, i) => (
+                                        <tr key={i} className={`border-b border-slate-100 hover:bg-slate-50/60 transition-colors ${row.isPrice ? 'bg-slate-50 font-bold' : ''}`}>
+                                            <td className="py-3 px-4 text-slate-800 font-semibold">{row.feature}</td>
+                                            <td className="py-3 px-4 text-center text-slate-500">{row.free}</td>
+                                            <td className="py-3 px-4 text-center text-violet-700 font-medium bg-violet-50/30">{row.s60}</td>
+                                            <td className="py-3 px-4 text-center text-red-600 font-medium bg-red-50/30">{row.s100}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <Link
+                            to="/recognition-plus-comparison"
+                            className="block text-center text-blue-600 hover:text-blue-700 text-sm font-bold underline py-4 bg-slate-50"
+                        >
+                            View full comparison →
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── PRICING CARDS ─── */}
+            <section id="pricing" className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Pricing</p>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">Choose Your Plan.</h2>
+                    <p className="text-slate-600 text-lg max-w-2xl mb-10">Start with a free trial. Upgrade to Recognition Plus for priority matching and AI-powered career tools.</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                        {/* Monthly Plan */}
+                        <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl p-8 text-center">
+                            <h3 className="text-xl font-bold text-white mb-2">Monthly</h3>
+                            <p className="text-4xl font-bold text-white mb-1">$12<span className="text-lg font-normal text-teal-200">/month</span></p>
+                            <p className="text-sm text-teal-200 mb-2">Cancel anytime</p>
+                            <p className="text-xs text-teal-300 mb-6 font-semibold">✓ 7-day free trial</p>
+                            <ul className="space-y-2 mb-6 text-left text-sm text-white">
+                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Full profile comparison</span></li>
+                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Pathway recommendations</span></li>
+                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Priority matching</span></li>
+                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>AI career strategist</span></li>
+                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>EBT CBTA Fast-Track</span></li>
+                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Recognition AI</span></li>
+                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>AI medical alerts</span></li>
+                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Priority pipeline</span></li>
+                            </ul>
+                            <button
+                                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_MONTHLY_PRICE_ID || '', 'Recognition Plus Monthly', 7)}
+                                disabled={processing}
+                                className="w-full bg-white hover:bg-teal-50 text-teal-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {processing ? 'Processing...' : 'Get Monthly Plan'}
+                            </button>
+                        </div>
+
+                        {/* Annual Plan - Best Value */}
+                        <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-8 text-center transform md:scale-105 scale-100 relative">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1 rounded-full">Best Value</div>
+                            <h3 className="text-xl font-bold text-white mb-2 mt-2">Annual</h3>
+                            <p className="text-4xl font-bold text-white mb-1">$99<span className="text-lg font-normal text-blue-200">/year</span></p>
+                            <p className="text-sm text-blue-200 mb-2">Save $45/year</p>
+                            <p className="text-xs text-blue-300 mb-6 font-semibold">✓ 3-day free trial</p>
+                            <ul className="space-y-2 mb-6 text-left text-sm text-white">
+                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Full profile comparison</span></li>
+                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Pathway recommendations</span></li>
+                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Priority matching</span></li>
+                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>AI career strategist</span></li>
+                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>EBT CBTA Fast-Track</span></li>
+                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Recognition AI</span></li>
+                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>AI medical alerts</span></li>
+                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Priority pipeline</span></li>
+                            </ul>
+                            <button
+                                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_ANNUAL_PRICE_ID || '', 'Recognition Plus Annual', 3)}
+                                disabled={processing}
+                                className="w-full bg-white hover:bg-blue-50 text-blue-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {processing ? 'Processing...' : 'Get Annual Plan'}
+                            </button>
+                        </div>
+
+                        {/* Semi-Annual Plan */}
+                        <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-8 text-center">
+                            <h3 className="text-xl font-bold text-white mb-2">Semi-Annual</h3>
+                            <p className="text-4xl font-bold text-white mb-1">$60<span className="text-lg font-normal text-purple-200">/6 months</span></p>
+                            <p className="text-sm text-purple-200 mb-2">Flexible payment</p>
+                            <p className="text-xs text-purple-300 mb-6 font-semibold">✓ 3-day free trial</p>
+                            <ul className="space-y-2 mb-6 text-left text-sm text-white">
+                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Full profile comparison</span></li>
+                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Pathway recommendations</span></li>
+                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Priority matching</span></li>
+                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>AI career strategist</span></li>
+                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>EBT CBTA Fast-Track</span></li>
+                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Recognition AI</span></li>
+                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>AI medical alerts</span></li>
+                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Priority pipeline</span></li>
+                            </ul>
+                            <button
+                                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_SEMI_ANNUAL_PRICE_ID || '', 'Recognition Plus Semi-Annual', 3)}
+                                disabled={processing}
+                                className="w-full bg-white hover:bg-purple-50 text-purple-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {processing ? 'Processing...' : 'Get Semi-Annual Plan'}
+                            </button>
+                        </div>
+                    </div>
+                    <p className="text-center text-slate-500 text-sm mt-8">Cancel anytime. No hidden fees. Free trial included.</p>
+                </div>
+            </section>
+
+            {/* ─── FEATURES GRID ─── */}
+            <section className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Features</p>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">Everything Included.</h2>
+                    <p className="text-slate-600 text-lg max-w-2xl mb-10">Explore the premium features that accelerate your aviation career.</p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {FEATURES.map(feat => (
+                            <button
+                                key={feat.id}
+                                onClick={() => scrollTo(feat.id)}
+                                className="group text-left bg-slate-50 hover:bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-6 transition-all shadow-sm hover:shadow-md"
+                            >
+                                <div className="text-3xl mb-3">{feat.icon}</div>
+                                <h3 className="text-slate-900 font-semibold text-lg mb-1.5 group-hover:text-red-600 transition-colors">{feat.label}</h3>
+                                <p className="text-slate-600 text-sm leading-relaxed">{feat.tagline}</p>
+                                <p className="mt-4 text-red-600 text-xs font-semibold flex items-center gap-1">Learn more <span className="group-hover:translate-x-1 transition-transform">→</span></p>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── FEATURE DEEP-DIVES ─── */}
+            {FEATURES.map((feat, idx) => (
+                <section key={feat.id} id={feat.id} className={`py-16 px-6 border-b border-slate-200 ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
+                    <div className="max-w-6xl mx-auto">
+                        <div className="grid lg:grid-cols-12 gap-10">
+                            {/* Left: intro */}
+                            <div className="lg:col-span-5">
+                                <p className={`text-[11px] uppercase tracking-[0.25em] font-semibold mb-3 ${COLOR_CLASSES[feat.color]?.eyebrow ?? 'text-red-600'}`}>{feat.label}</p>
+                                <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-5 text-slate-900">{feat.tagline}</h2>
+
+                                <div className={`${COLOR_CLASSES[feat.color]?.bg ?? 'bg-red-50'} border ${COLOR_CLASSES[feat.color]?.border ?? 'border-red-200'} rounded-xl p-4 mb-5`}>
+                                    <p className={`${COLOR_CLASSES[feat.color]?.eyebrow ?? 'text-red-600'} text-[10px] uppercase tracking-widest font-bold mb-2`}>The Problem</p>
+                                    <p className="text-slate-700 text-sm leading-relaxed">{feat.pain}</p>
+                                </div>
+
+                                <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-5">
+                                    <p className="text-emerald-700 text-[10px] uppercase tracking-widest font-bold mb-2">Our Solution</p>
+                                    <p className="text-slate-700 text-sm leading-relaxed">{feat.solution}</p>
+                                </div>
+                            </div>
+
+                            {/* Right: benefits + pilots */}
+                            <div className="lg:col-span-7 space-y-6">
+                                <div>
+                                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-500 font-semibold mb-4">What you get</p>
+                                    <ul className="grid sm:grid-cols-2 gap-3">
+                                        {feat.benefits.map((b, i) => (
+                                            <li key={i} className="flex items-start gap-3 bg-white border border-slate-200 rounded-xl p-3">
+                                                <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${COLOR_CLASSES[feat.color]?.badge ?? 'bg-red-100 text-red-700'}`}>
+                                                    <span className="text-xs">✓</span>
+                                                </div>
+                                                <p className="text-slate-700 text-sm leading-relaxed">{b}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6">
+                                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-500 font-semibold mb-4">For Pilots</p>
+                                    <ul className="space-y-3">
+                                        {feat.pilots.map((p, i) => (
+                                            <li key={i} className="flex items-start gap-3">
+                                                <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                                                    <span className="text-white text-xs">✓</span>
+                                                </div>
+                                                <p className="text-slate-700 leading-relaxed">{p}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            ))}
+
+            {/* ─── FAQ SECTION ─── */}
+            <section className="py-16 px-6 border-b border-slate-200 bg-white">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">FAQ</p>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-8 text-slate-900 text-center">Frequently Asked Questions.</h2>
+
+                    <div className="space-y-6">
+                        <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Is Recognition Plus worth the investment?</h3>
+                            <p className="text-slate-700">Absolutely. Professional pilots value these features at over $100 annually. For $99/year, you get AI-powered career guidance, priority access to hiring surges, interview fast-track, OEM-aligned profiles, and 24/7 compliance monitoring. The faster hiring and better opportunities alone can save you months of job searching and thousands in lost income.</p>
+                        </div>
+                        <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">How does the AI Career Strategist work?</h3>
+                            <p className="text-slate-700">Our AI continuously analyzes your profile against real-time industry data from airlines and manufacturers. It alerts you when you're close to qualifying for specific roles and provides exact requirements. For example: "You need 12 more flight hours on A320 to qualify for Emirates First Officer." It recommends optimal pathways based on your career goals.</p>
+                        </div>
+                        <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">What is the Priority Pipeline?</h3>
+                            <p className="text-slate-700">When operators review pathway pools, Recognition Plus members appear first due to AI-ranked priority. During partner hiring surges, you receive interview fast-track access, skipping initial screening stages. This time advantage can be the difference between landing your dream job and missing the opportunity.</p>
+                        </div>
+                        <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Can I cancel anytime?</h3>
+                            <p className="text-slate-700">Yes. You can cancel your Recognition Plus subscription at any time with no penalties. Your profile and data will be preserved, and you can continue using the free tier features. Many pilots find the value so compelling they never cancel.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── STRATEGIC PARTNERSHIPS ─── */}
+            <section className="py-16 px-6 border-b border-slate-200 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Growth</p>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">Strategic Partnerships.</h2>
+                    <p className="text-slate-600 text-lg max-w-2xl mb-10">Building relationships across the aviation ecosystem to create comprehensive value for pilots, schools, airlines, and investors.</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="bg-white rounded-xl p-6 border-2 border-slate-200 shadow-lg">
+                            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-4 mx-auto">
+                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 text-center">Investor Readiness</h3>
+                            <p className="text-slate-600 text-sm text-center mb-4">Target: 100-500 pilot subscribers</p>
+                            <p className="text-slate-700 text-sm leading-relaxed">Building investor readiness traction through organic growth. Recognition Plus subscriptions at $99/year create sustainable recurring revenue that scales with our user base.</p>
+                        </div>
+
+                        <div className="bg-white rounded-xl p-6 border-2 border-slate-200 shadow-lg">
+                            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4 mx-auto">
+                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 text-center">Flight School Partnerships</h3>
+                            <p className="text-slate-600 text-sm text-center mb-4">Target: 2-3 flight schools</p>
+                            <p className="text-slate-700 text-sm leading-relaxed">Partner flight schools refer graduating students to PilotRecognition, where they build professional profiles and access career pathways. Schools receive placement tracking and career services enhancement.</p>
+                        </div>
+
+                        <div className="bg-white rounded-xl p-6 border-2 border-slate-200 shadow-lg">
+                            <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mb-4 mx-auto">
+                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 text-center">Airline Partnerships</h3>
+                            <p className="text-slate-600 text-sm text-center mb-4">Target: 1 airline pilot program</p>
+                            <p className="text-slate-700 text-sm leading-relaxed">Recognition Plus members receive priority consideration for hiring opportunities. Airlines gain access to pre-vetted pilots with verified competencies and OEM-aligned profiles.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── BOTTOM SECTION ─── */}
+            <section className="py-16 px-6 bg-white">
+                <div className="max-w-4xl mx-auto text-center">
+                    <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-slate-400 mb-2">PILOTRECOGNITION.COM</p>
+                    <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-red-600 mb-4">RECOGNITION PLUS</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-4">
+                        AI-Powered Career Acceleration: Your Competitive Edge in Aviation
+                    </h2>
+                    <p className="text-xl font-medium text-slate-700 italic mb-10">
+                        Premium Recognition for Professional Pilots Worth $100/Year
+                    </p>
+
+                    <div className="space-y-6 mb-10">
+                        <p className="text-slate-600 leading-relaxed">
+                            Recognition Plus transforms your pilot career from reactive to proactive. In an industry where timing is everything and opportunities are scarce, Recognition Plus gives you the AI-powered insights, verified credentials, and priority access that put you at the front of the line when airlines hire.
+                        </p>
+                        {!isFeaturesExpanded && (
+                            <button
+                                onClick={() => setIsFeaturesExpanded(true)}
+                                className="text-sm font-bold tracking-wide uppercase text-red-600 hover:text-red-700 transition-colors flex items-center justify-center gap-2 mx-auto px-4 py-2 bg-white border-2 border-red-600 rounded-lg"
+                            >
+                                READ MORE <ChevronDown className="w-4 h-4" />
+                            </button>
+                        )}
+                        {isFeaturesExpanded && (
+                            <>
+                                <p className="text-slate-600 leading-relaxed">
+                                    Our Recognition AI system continuously monitors your profile, flight hours, type ratings, and certifications against real-time industry data. When you're 12 flight hours away from qualifying for a specific airline role, the AI alerts you with exact requirements and actionable steps.
+                                </p>
+                                <p className="text-slate-600 leading-relaxed">
+                                    The Priority Access feature ensures that when operators review pathway pools, your profile appears first. During partner hiring surges, Recognition Plus members receive interview fast-track access, skipping initial screening stages that can take weeks.
+                                </p>
+                                <button
+                                    onClick={() => setIsFeaturesExpanded(false)}
+                                    className="text-sm font-bold tracking-wide uppercase text-slate-500 hover:text-slate-700 transition-colors flex items-center justify-center gap-2 mx-auto"
+                                >
+                                    SHOW LESS <ChevronDown className="w-4 h-4 rotate-180" />
+                                </button>
+                            </>
+                        )}
+                    </div>
+
+                    <Link
+                        to="/recognition-plus-comparison"
+                        className="text-sm font-bold tracking-wide uppercase text-red-600 hover:text-red-700 transition-colors flex items-center justify-center gap-2 group"
+                    >
+                        VIEW FULL COMPARISON <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                </div>
+            </section>
+
+            {/* ─── FOOTER ─── */}
+            <footer className="bg-white border-t border-slate-200 py-8 px-6">
+                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold">
+                            <span className="text-slate-900">Pilot</span><span className="text-red-600">Recognition</span>
+                        </span>
+                    </div>
+                    <p className="text-slate-500 text-sm">&copy; 2024 PilotRecognition. All rights reserved.</p>
+                </div>
+            </footer>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

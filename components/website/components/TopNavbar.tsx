@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { supabase } from '@/src/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info } from 'lucide-react';
 import { Skeleton } from '@/src/components/ui/skeleton';
@@ -446,24 +446,61 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'Pilot Recognition',
             target: pilotRecognitionTarget,
             subItems: [
-                { category: 'Professional Credentials', name: 'Pilot Recognition Profile', target: '/recognition-plus', bullets: ['Credibility Scoring', 'Verified Background', 'Industry Endorsement'] },
-                { name: 'Digital Logbook', target: '/digital-logbook-directory', bullets: ['Flight Records', 'Verified Hours', 'Professional Milestones'] },
-                { name: 'Examination Results', target: '/examination-results-directory', bullets: ['Verified Scores', 'Mentorship Assessments', 'Knowledge Recency'] },
-                { category: 'Background Screening', name: 'Passport & Visa Status', target: '/passport-visa', bullets: ['Valid Passport', 'Work Visas', 'Travel Documents'] },
-                { name: 'Background Check Documents', target: '/background-checks', bullets: ['Criminal Record Check', 'Employment History', 'Reference Verification'] },
-                { name: 'Drug & Alcohol Testing Records', target: '/drug-alcohol-testing', bullets: ['Test Results', 'Compliance History', 'Medical Clearance'] },
-                { name: 'Security Clearances', target: '/security-clearances', bullets: ['Airport Security Pass', 'Federal Clearances', 'Facility Access'] },
-                { category: 'Health & Insurance', name: 'Medical Certificates', target: '/medical-certificates', bullets: ['Class 1 Medical', 'Class 2 Medical', 'Medical Exam Locations'] },
-                { name: 'Health Resources', target: '/health-resources', bullets: ['Mental Health Support', 'Fitness for Duty', 'Wellness Programs'] },
-                { name: 'Pilot Insurance', target: '/pilot-insurance', bullets: ['Loss of License', 'Life Insurance', 'Disability Coverage'] },
-                { name: 'Operator Insurance', target: '/operator-insurance', bullets: ['Aircraft Insurance', 'Liability Coverage', 'Risk Management'] },
-                { category: 'Career Data & Matching', name: 'ATLAS Formatted CV', target: '/atlas-cv', bullets: ['AI Data Extraction', 'Global Standards', 'Airline Visibility'] },
-                { name: 'Recognition Career Matches', target: '/recognition-career-matches', bullets: ['AI-Powered Matching', 'Career Pathways', 'Match Percentage'] }
+                // Learn About - Educational content (BLUE headers)
+                { category: 'Learn About', name: 'What is Pilot Recognition?', target: '/learn-about?section=what-is-recognition', bullets: ['Platform overview', 'How it works', 'Why pilots need it'] },
+                { category: 'Learn About', name: 'Recognition Score Explained', target: '/learn-about?section=recognition-score-guide', bullets: ['What is your score', 'How it is calculated', 'Why airlines care'] },
+                { category: 'Learn About', name: 'The Pulling System', target: '/learn-about?section=pulling-system', bullets: ['No more applications', 'How airlines find you', 'Live profile benefits'] },
+                { category: 'Learn About', name: 'Recognition vs Traditional', target: '/learn-about?section=recognition-vs-traditional', bullets: ['CVs vs Live profiles', 'Apply vs Get pulled', 'Static vs Verified data'] },
+                { category: 'Learn About', name: 'Why Resumes Are Dead Data', target: '/learn-about?section=dead-data-resumes', bullets: ['Static PDFs are outdated', 'Live profiles update auto', 'Verified vs claimed data'] },
+                { category: 'Learn About', name: 'For Airlines & Operators', target: '/learn-about?section=for-airlines', bullets: ['Verified candidates', 'Ranked shortlists', 'Compliance ready'] },
+                // Recognition+ Premium Features (RED header)
+                { category: 'Recognition+', name: 'Recognition Plus Membership', target: '/recognition-plus', bullets: ['Priority Pipeline Access', 'Recognition+ Badge', 'AI Career Strategist'], isYellow: true },
+                { category: 'Recognition+', name: 'Live Real-Time Profile', target: '/recognition-plus?section=live-profile', bullets: ['Auto-updates on hours logged', 'Airline pulling system', 'Ranked shortlist placement'] },
+                { category: 'Recognition+', name: 'Recognition AI', target: '/recognition-plus?section=ai-features', bullets: ['Extended AI access', 'Live type rating data', 'Airline & pathway insights'] },
+                { category: 'Recognition+', name: 'Priority Matching', target: '/recognition-plus?section=priority-matching', bullets: ['Unlimited pathway submissions', 'Unlimited profile comparisons', 'Hiring surge priority'] },
+                { category: 'Recognition+', name: 'EBT CBTA Fast-Track', target: '/recognition-plus?section=ebt-cbta', bullets: ['Skip the queue', 'Foundation Program', 'Interview priority'] },
+                { category: 'Recognition+', name: 'ATLAS Formatted CV', target: '/atlas-cv', bullets: ['AI data extraction', 'Global standards', 'Airline visibility'] },
+                { category: 'Recognition+', name: 'AI Medical Alerts', target: '/recognition-plus?section=medical-alerts', bullets: ['60-day expiry warnings', 'Zero-Fail compliance', 'Auto-reminders'] },
+                { category: 'Recognition+', name: 'Program Discounts', target: '/recognition-plus?section=program-discounts', bullets: ['25-50% off Foundation', '25-50% off Transition', 'Member-only rates'] },
+                // General - Core platform features (BLUE headers)
+                { category: 'General', name: 'Free Tier Access', target: '/general?section=free-tier', bullets: ['Create basic profile', '3 pathways per month', 'Public registry listing'] },
+                { category: 'General', name: 'Priority Listings', target: '/general?section=priority-listings', bullets: ['How ranking works', 'Visibility tiers', 'Airline filters'] },
+                { category: 'General', name: 'Verification Levels', target: '/general?section=verification-levels', bullets: ['Basic profile', 'Recognition+', 'Recognition+ Verified'] },
+                { category: 'General', name: 'Career Pathway Access', target: '/general?section=career-pathway-access', bullets: ['View public pathways', 'Submit interest', 'Match with operators'] },
+                { category: 'General', name: 'Membership Benefits', target: '/general?section=membership-benefits', bullets: ['Free forever tier', 'Upgrade anytime', 'Cancel anytime'] },
+                // Recognition Profiling (BLUE headers)
+                { category: 'Recognition Profiling', name: 'Digital Logbook', target: '/professional-profile?section=digital-logbook', bullets: ['Flight records', 'Verified hours', 'Professional milestones'] },
+                { category: 'Recognition Profiling', name: 'Flight Hours Verification', target: '/professional-profile?section=flight-hours-verification', bullets: ['Airline system integration', 'Third-party badges', 'PIC/SIC breakdown'] },
+                { category: 'Recognition Profiling', name: 'Examination Results', target: '/professional-profile?section=examination-results', bullets: ['Verified scores', 'Mentorship assessments', 'Knowledge recency'] },
+                { category: 'Recognition Profiling', name: 'Pilot Recognition Profile', target: '/professional-profile?section=pilot-recognition-profile', bullets: ['Digital identity', 'Verified credentials', 'Public registry'] },
+                { category: 'Recognition Profiling', name: 'Type Ratings & Endorsements', target: '/professional-profile?section=type-ratings', bullets: ['Complete inventory', 'Expiration tracking', 'Recency monitoring'] },
+                { category: 'Recognition Profiling', name: 'Training Records', target: '/professional-profile?section=training-records', bullets: ['Complete history', 'Provider sync', 'Check ride docs'] },
+                { category: 'Recognition Profiling', name: 'Career Timeline', target: '/professional-profile?section=career-timeline', bullets: ['Visual journey', 'Milestone tracking', 'Command upgrades'] },
+                { category: 'Recognition Profiling', name: 'Document Vault', target: '/professional-profile?section=document-vault', bullets: ['Secure storage', 'Instant access', 'License archive'] },
+                { category: 'Recognition Profiling', name: 'Skills & Competencies', target: '/professional-profile?section=skills-competencies', bullets: ['Skill breakdown', 'Instructor validation', 'Proficiency ratings'] },
+                // Background & Compliance (BLUE headers) - includes Medical
+                { category: 'Background Check', name: 'Background Checking', target: '/background-check?section=background-checking', bullets: ['Criminal record check', 'Employment verification', 'Reference validation'] },
+                { category: 'Background Check', name: 'Medical Certificates', target: '/background-check?section=medical-certificates', bullets: ['Class 1 Medical', 'Class 2 Medical', 'Exam locations'] },
+                { category: 'Background Check', name: 'Health Resources', target: '/background-check?section=health-resources', bullets: ['Mental health support', 'Fitness for duty', 'Wellness programs'] },
+                { category: 'Background Check', name: 'Air Law & Legal Protection', target: '/background-check?section=air-law-legal', bullets: ['Insurance disputes', 'Contract review', 'License defense'] },
+                // Pilot Insurance (BLUE headers)
+                { category: 'Pilot Insurance', name: 'Loss of License Cover', target: '/pilot-insurance?section=loss-of-license', bullets: ['Income protection', 'Medical grounding', 'Career transition'] },
+                { category: 'Pilot Insurance', name: 'Life Insurance', target: '/pilot-insurance?section=life-insurance', bullets: ['Term life', 'Family protection', 'Pilot-specific rates'] },
+                { category: 'Pilot Insurance', name: 'Disability Coverage', target: '/pilot-insurance?section=disability-coverage', bullets: ['Short-term disability', 'Long-term protection', 'Occupational coverage'] },
+                { category: 'Pilot Insurance', name: 'Professional Liability', target: '/pilot-insurance?section=professional-liability', bullets: ['Legal protection', 'Regulatory defense', 'Incident coverage'] },
+                { category: 'Pilot Insurance', name: 'Pilot Insurance Providers', target: '/pilot-insurance?section=insurance-providers', bullets: ['Aviation specialists', 'Member discounts', 'Verified partners'] },
+                // Career Tools now under General category
+                { category: 'General', name: 'Recognition Career Matches', target: '/career-tools?section=recognition-career-matches', bullets: ['AI-powered matching', 'Career pathways', 'Match percentage'] },
+                { category: 'General', name: 'ATLAS CV Builder', target: '/career-tools?section=atlas-cv-builder', bullets: ['ATS optimization', 'Auto-import profile', 'Airline templates'] },
+                { category: 'General', name: 'Interview Preparation', target: '/career-tools?section=interview-preparation', bullets: ['Airline question banks', 'Video practice', 'Simulator prep'] },
+                { category: 'General', name: 'Career Pathway Planner', target: '/career-tools?section=career-pathway-planner', bullets: ['Visual roadmaps', 'Hour requirements', 'Stage-by-stage guide'] },
+                { category: 'General', name: 'Type Rating Advisor', target: '/career-tools?section=type-rating-advisor', bullets: ['Market demand analysis', 'ROI calculator', 'Provider comparisons'] },
+                // Banking & Finance (BLUE headers)
             ]
         },
         {
-            name: 'Membership',
-            target: '/membership',
+            name: 'Banking & Finance',
+            target: '/banking-finance',
             subItems: [
                 { category: 'The Network', name: 'Benefits of Membership', target: '/membership-benefits', bullets: ['Unlock Ecosystem Tools', 'Verified Pilot Badge', 'Broker Network Access'] },
                 { category: 'Premium Tier', name: 'Recognition Plus', target: '/recognition-plus', bullets: ['Verified Priority Pipeline', 'AI Career Strategist', 'Interview Fast-Track'] },
@@ -502,6 +539,107 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             onNavigate(target);
         }
     };
+
+    // Memoized dropdown item component for performance
+    const DropdownItem = memo(({ subItem, isActive, onNavigate: nav, setDropdown, onHover }: { 
+        subItem: NavSubItem; 
+        isActive: boolean; 
+        onNavigate: (target: string) => void;
+        setDropdown: (val: string | null) => void;
+        onHover?: (name: string | null) => void;
+    }) => (
+        <button
+            onClick={(e) => {
+                e.stopPropagation();
+                nav(subItem.target);
+                setDropdown(null);
+            }}
+            onMouseEnter={() => onHover?.(subItem.name)}
+            onMouseLeave={() => onHover?.(null)}
+            className={`w-full text-left px-3 py-2 rounded transition-all flex flex-col gap-0.5 ${isActive
+                ? subItem.isYellow ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-700'
+                : subItem.isYellow ? 'text-red-600 hover:text-red-700 hover:bg-red-50/50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+        >
+            <div className="flex items-center gap-1.5">
+                {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-red-500 animate-pulse"></div>}
+                <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-red-600' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
+                </span>
+            </div>
+
+            {subItem.bullets && (
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isActive ? 'max-h-32 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+                    <ul className="space-y-0.5">
+                        {subItem.bullets.map((bullet, bIdx) => (
+                            <li key={bIdx} className="flex items-center gap-1.5 text-[0.6rem] text-slate-500 font-medium tracking-wide">
+                                <div className="w-0.5 h-0.5 rounded-full bg-blue-500"></div>
+                                {bullet}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </button>
+    ));
+
+    // Pre-calculate dropdown layouts for performance
+    const dropdownLayouts = useMemo(() => {
+        const layouts: Record<string, { cols: number; widthClass: string; gridClass: string; grouped: [string, NavSubItem[]][] }> = {};
+        
+        navItems.forEach(item => {
+            if (!item.subItems) return;
+            
+            // Calculate columns
+            const categories = item.subItems.reduce((acc, subItem) => {
+                const category = subItem.category || 'Other';
+                if (!acc.includes(category)) acc.push(category);
+                return acc;
+            }, [] as string[]);
+            
+            const cols = Math.min(categories.length, 4);
+            const widthClass = cols === 1 ? 'min-w-[220px]' : cols === 2 ? 'w-[480px]' : cols === 3 ? 'w-[720px]' : 'w-[960px]';
+            const gridClass = cols === 1 ? '' : `grid grid-cols-${cols} gap-4`;
+            
+            // Group items
+            const groupedItems = item.subItems.reduce((acc, subItem) => {
+                const category = subItem.category || 'Other';
+                if (!acc[category]) acc[category] = [];
+                acc[category].push(subItem);
+                return acc;
+            }, {} as Record<string, NavSubItem[]>);
+            
+            // Sort categories
+            const order = ['Learn About', 'Recognition+', 'General', 'Recognition Profiling', 'Background Check', 'Pilot Insurance', 'Career Tools'];
+            const sortedEntries = Object.entries(groupedItems).sort(([a], [b]) => {
+                const aIndex = order.indexOf(a);
+                const bIndex = order.indexOf(b);
+                if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+                if (aIndex !== -1) return -1;
+                if (bIndex !== -1) return 1;
+                return a.localeCompare(b);
+            });
+            
+            layouts[item.name] = { cols, widthClass, gridClass, grouped: sortedEntries };
+        });
+        
+        return layouts;
+    }, []); // navItems is constant, so this only runs once
+
+    // Debounced mouse handlers for performance
+    const handleMouseEnterDebounced = useCallback((name: string) => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+            setActiveDropdown(name);
+        }, 50); // Small delay to prevent rapid toggling
+    }, []);
+
+    const handleMouseLeaveDebounced = useCallback(() => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+            setActiveDropdown(null);
+            setActiveSubItem(null);
+        }, 100);
+    }, []);
 
     return (
         <>
@@ -562,8 +700,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             <div
                                 key={item.name}
                                 className="relative group/dropdown"
-                                onMouseEnter={() => item.subItems && handleMouseEnter(item.name)}
-                                onMouseLeave={handleMouseLeave}
+                                onMouseEnter={() => item.subItems && handleMouseEnterDebounced(item.name)}
+                                onMouseLeave={handleMouseLeaveDebounced}
                             >
                                 <button
                                     onClick={() => handleNavClick(item.target)}
@@ -580,117 +718,39 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     {item.subItems && <ChevronDown className="w-3 h-3" />}
                                 </button>
 
-                                {/* Dropdown Menu */}
-                                {item.subItems && (
-                                    <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-300 ${activeDropdown === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
-                                        <div className={`bg-white backdrop-blur-xl border border-slate-200 rounded-lg p-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden ${item.name === 'Pathways' ? 'w-[600px] grid grid-cols-3 gap-4' : 'min-w-[200px] flex flex-col gap-0.5'}`}>
-                                            {item.name === 'Pathways' ? (
-                                                // Horizontal square layout for Pathways
-                                                (() => {
-                                                    const categories = item.subItems?.reduce((acc, subItem) => {
-                                                        const category = subItem.category || 'Other';
-                                                        if (!acc[category]) acc[category] = [];
-                                                        acc[category].push(subItem);
-                                                        return acc;
-                                                    }, {} as Record<string, typeof item.subItems>) || {};
-
-                                                    return Object.entries(categories).map(([category, items]) => (
-                                                        <div key={category} className="space-y-2">
-                                                            <h4 className={`text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-500' : 'text-blue-600'} border-b border-slate-200 pb-2`}>
-                                                                {category}
-                                                            </h4>
-                                                            <div className="space-y-1">
-                                                                {items.map((subItem, idx) => (
-                                                                    <button
-                                                                        key={idx}
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            onNavigate(subItem.target);
-                                                                            setActiveDropdown(null);
-                                                                        }}
-                                                                        className={`w-full text-left px-3 py-2 rounded transition-all flex flex-col gap-0.5 ${activeSubItem === subItem.name
-                                                                            ? subItem.isYellow ? 'bg-yellow-50 text-yellow-600' : 'bg-blue-50 text-blue-700'
-                                                                            : subItem.isYellow ? 'text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50/50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                                                                            }`}
-                                                                        onMouseEnter={() => setActiveSubItem(subItem.name)}
-                                                                        onMouseLeave={() => setActiveSubItem(null)}
-                                                                    >
-                                                                        <div className="flex items-center gap-1.5">
-                                                                            {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
-                                                                            <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-600' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
-                                                                            </span>
-                                                                        </div>
-
-                                                                        {subItem.bullets && (
-                                                                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeSubItem === subItem.name ? 'max-h-32 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                                                                                <ul className="space-y-0.5">
-                                                                                    {subItem.bullets.map((bullet, bIdx) => (
-                                                                                        <li key={bIdx} className="flex items-center gap-1.5 text-[0.6rem] text-slate-500 font-medium tracking-wide">
-                                                                                            <div className="w-0.5 h-0.5 rounded-full bg-blue-500"></div>
-                                                                                            {bullet}
-                                                                                        </li>
-                                                                                    ))}
-                                                                                </ul>
-                                                                            </div>
-                                                                        )}
-                                                                    </button>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    ));
-                                                })()
-                                            ) : (
-                                                // Vertical layout for other dropdowns
-                                                item.subItems.map((subItem, idx) => (
-                                                    <React.Fragment key={`${item.name}-${subItem.name}-${idx}`}>
-                                                        {subItem.category && (
-                                                            <div className={`px-3 pt-2 pb-1 text-[0.65rem] font-black uppercase tracking-[0.2em] ${isLight ? 'text-slate-500' : 'text-blue-600'} border-b border-slate-100 mb-0.5 mt-0.5 first:mt-0`}>
-                                                                {subItem.category}
-                                                            </div>
-                                                        )}
-                                                        <div
-                                                            onMouseEnter={() => setActiveSubItem(subItem.name)}
-                                                            onMouseLeave={() => setActiveSubItem(null)}
-                                                            className="relative"
-                                                        >
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    onNavigate(subItem.target);
-                                                                    setActiveDropdown(null);
-                                                                }}
-                                                                className={`w-full text-left px-3 py-1.5 rounded transition-all flex flex-col gap-0.5 ${activeSubItem === subItem.name
-                                                                    ? subItem.isYellow ? 'bg-yellow-50 text-yellow-600 translate-x-1' : 'bg-blue-50 text-blue-700 translate-x-1'
-                                                                    : subItem.isYellow ? 'text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50/50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                                                                    }`}
-                                                            >
-                                                                <div className="flex items-center gap-1.5">
-                                                                    {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
-                                                                    <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${subItem.name.includes('<br') ? '' : 'whitespace-nowrap'} ${subItem.isYellow ? 'text-yellow-600' : ''}`} dangerouslySetInnerHTML={{ __html: sanitizeHtml(subItem.name) }}>
-                                                                    </span>
-                                                                </div>
-
-                                                                {/* Expanded Core Components */}
-                                                                {subItem.bullets && (
-                                                                    <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeSubItem === subItem.name ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                                                                        <ul className="space-y-0.5">
-                                                                            {subItem.bullets.map((bullet, idx) => (
-                                                                                <li key={idx} className="flex items-center gap-1.5 text-[0.6rem] text-slate-500 font-medium tracking-wide">
-                                                                                    <div className="w-0.5 h-0.5 rounded-full bg-blue-500"></div>
-                                                                                    {bullet}
-                                                                                </li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    </div>
-                                                                )}
-                                                            </button>
-                                                        </div>
-                                                    </React.Fragment>
-                                                ))
-                                            )}
-                                            {/* Bottom message for Pathways dropdown */}
+                                {/* Dropdown Menu - Optimized with pre-calculated layouts */}
+                                {item.subItems && dropdownLayouts[item.name] && (
+                                    <div 
+                                        className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 will-change-transform ${activeDropdown === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2 pointer-events-none'}`}
+                                        style={{ transition: 'opacity 200ms ease, transform 200ms ease, visibility 200ms' }}
+                                    >
+                                        <div className={`bg-white/95 backdrop-blur-md border border-slate-200 rounded-lg p-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden ${dropdownLayouts[item.name].widthClass} ${dropdownLayouts[item.name].gridClass}`}>
+                                            {dropdownLayouts[item.name].grouped.map(([category, items]) => (
+                                                <div key={category} className="space-y-2">
+                                                    <h4 className={`text-[0.65rem] font-black uppercase tracking-[0.2em] border-b border-slate-200 pb-2 ${
+                                                        category === 'Recognition+' 
+                                                            ? 'text-red-600' 
+                                                            : isLight ? 'text-slate-500' : 'text-blue-600'
+                                                    }`}>
+                                                        {category}
+                                                    </h4>
+                                                    <div className="space-y-1">
+                                                        {items.map((subItem, idx) => (
+                                                            <DropdownItem
+                                                                key={`${category}-${idx}`}
+                                                                subItem={subItem}
+                                                                isActive={activeSubItem === subItem.name}
+                                                                onNavigate={onNavigate}
+                                                                setDropdown={setActiveDropdown}
+                                                                onHover={setActiveSubItem}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {/* Bottom message for dropdowns with many items */}
                                             {item.name === 'Pathways' && (
-                                                <div className="col-span-3 mt-4 pt-4 border-t border-slate-200 text-center">
+                                                <div className="col-span-full mt-4 pt-4 border-t border-slate-200 text-center">
                                                     <p className="text-[0.6rem] text-slate-400 font-medium tracking-wide">
                                                         Access the pilot portal to view more pathways
                                                     </p>
