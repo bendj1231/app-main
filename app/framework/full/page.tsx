@@ -416,6 +416,9 @@ export default function FullFrameworkPage() {
           nav.sticky {
             position: static !important;
           }
+          @page {
+            margin: 0.5in;
+          }
         }
       `}</style>
       {/* Navigation */}
