@@ -59,8 +59,8 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
   };
 
   const renderSubRow = (tLine: string, idx: number) => {
-    const cells = tLine.split('|').filter(c => c.trim());
-    const rawLabel = cells[0]?.trim() || '';
+    const rc = tLine.split('|').slice(1, -1);
+    const rawLabel = rc[0]?.trim() || '';
     const isKeynote = rawLabel.includes('KEYNOTE');
     const isSubSection = rawLabel.startsWith('—') || rawLabel.startsWith('**—') || rawLabel.startsWith('* ');
     if (isKeynote) {
@@ -125,8 +125,8 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
       {activeGroup && (
         <div>
           {activeGroup.rows.map((tl, ri) => {
-            const cells = tl.split('|').filter(c => c.trim());
-            const isSubOrKeynote = cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === '';
+            const rc = tl.split('|').slice(1, -1);
+            const isSubOrKeynote = rc.length >= 2 && rc[0].trim() !== '' && rc.slice(1).every(c => c.trim() === '');
             if (isSubOrKeynote) return renderSubRow(tl, ri);
             return renderDataRow(tl, ri);
           })}
@@ -549,16 +549,22 @@ export default function FullFrameworkPage() {
           }
 
           // Parse table into: header row, then pillar groups
-          // A pillar group starts with a row that has PILLAR in cell[0] and empty cells[1..2]
-          const isPillarHeader = (tLine: string) => {
-            const cells = tLine.split('|').filter(c => c.trim());
-            const raw = cells[0]?.trim() || '';
-            return cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === ''
-              && !raw.includes('KEYNOTE') && !raw.startsWith('—') && !raw.startsWith('**—') && !raw.startsWith('* ');
-          };
-
+          // Use raw split (keep empty cells) to detect section rows properly
+          const rawCells = (tLine: string) => tLine.split('|').slice(1, -1); // remove first/last empty from leading/trailing |
           const isSeparator = (tLine: string) => tLine.replace(/[\|\-\s:]/g, '').length === 0;
           const isHeaderRow = (tLine: string, nextLine?: string) => nextLine ? isSeparator(nextLine) : false;
+          // A section row: first cell has content, all others are empty
+          const isSectionRow = (tLine: string) => {
+            const rc = rawCells(tLine);
+            if (rc.length < 2) return false;
+            return rc[0].trim() !== '' && rc.slice(1).every(c => c.trim() === '');
+          };
+          // A pillar header: section row but NOT a sub-section (no leading — or *)
+          const isPillarHeader = (tLine: string) => {
+            if (!isSectionRow(tLine)) return false;
+            const raw = rawCells(tLine)[0]?.trim() || '';
+            return !raw.includes('KEYNOTE') && !raw.startsWith('—') && !raw.startsWith('**—') && !raw.startsWith('* ');
+          };
 
           // Group lines into sections
           interface PillarGroup { label: string; rows: string[] }
@@ -571,14 +577,12 @@ export default function FullFrameworkPage() {
             if (isSeparator(tl)) continue;
             if (isHeaderRow(tl, tableLines[k + 1])) {
               headerLine = tl;
-              const cells = tl.split('|').filter(c => c.trim());
-              colCount = cells.length;
+              colCount = rawCells(tl).length;
               continue;
             }
             if (isPillarHeader(tl)) {
               if (currentGroup) groups.push(currentGroup);
-              const cells = tl.split('|').filter(c => c.trim());
-              currentGroup = { label: cells[0]?.trim() || '', rows: [] };
+              currentGroup = { label: rawCells(tl)[0]?.trim() || '', rows: [] };
             } else if (currentGroup) {
               currentGroup.rows.push(tl);
             }
