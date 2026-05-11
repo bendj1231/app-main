@@ -820,29 +820,114 @@ When the bored captain gets recognized and moves to cargo/BizAv:
 
 ## PILLAR 1: COMMERCIAL AIRLINES (Detailed)
 
-### What We Require:
-**Compliance Standards:**
-- Pathway Publishing: Post all hiring requirements with exact prerequisites within 30 days
-- Fleet Data: Provide 12-month fleet transition plans quarterly
-- EBT Benchmarks: Define minimum cognitive competency scores by position
-- API Integration: Connect ATS systems within 60 days
+### Platform Architecture for Commercial Airlines: Two Distinct Pages
 
-**Financial Commitments:**
-- Basic Tier: $500/month, 10 profile pulls
-- Professional: $1,000/month, 50 pulls
-- Enterprise: $2,500/month, unlimited pulls + dedicated support
-- Success Fee: $500 per hire (waived for first 10)
+Pillar 1 operates across two separate but connected platform pages. Each serves a distinct purpose for pilots and airlines.
 
-### Preferred Contributions:
-- Essential: Quarterly pathway updates, ATS integration, designated liaison
-- Preferred: Co-branded marketing, beta testing participation
-- Strategic: Exclusive pathway windows, custom EBT development
+---
+
+#### PAGE 1: PILOT CAREER PATHWAYS
+
+This page is for **pilots** — a browsable directory of career routes across all aviation sectors. Commercial airlines are one category within a broader ecosystem of pathways.
+
+**Pathway Categories Available to Pilots:**
+- Commercial Airline Pathways (First Officer, Captain, Direct Entry, Cadet)
+- Cargo & Freight Pathways
+- Charter & Business Aviation Pathways
+- Military Transition Pathways
+- eVTOL & Emerging Sector Pathways
+- Flight Instructor Pathways
+- Type Rating & Conversion Pathways
+- Cadet Program Entry Pathways
+
+**What a Pilot Sees on Each Pathway Card:**
+- Minimum flight hours required (total, PIC, multi-engine, instrument)
+- Aircraft type ratings required or preferred
+- Medical certificate class required
+- Minimum age and nationality/residency eligibility
+- Language proficiency requirements (ICAO level, preferred language)
+- Recognition Score minimum threshold to submit interest
+- Whether the pathway accepts low-timers, high-timers, or both
+- Whether type rating is sponsored or self-funded
+- Current intake status: Open / Closed / Upcoming (with cycle dates)
+- Last updated timestamp — pilots always know if requirements are current
+
+**Pilot Alignment Tool:**
+- Pilots compare their live profile directly against any pathway card
+- Platform shows exact gaps: what they have, what they are missing
+- Pilots receive alerts when a saved pathway updates its requirements
+- Pilots investing in a type rating can check fleet demand before committing
+
+---
+
+#### PAGE 2: AIRLINE EXPECTATION PAGE
+
+This page is the **airline's verified presence on the platform** — a structured, living profile that replaces uncoordinated job postings on Facebook, LinkedIn, or generic recruitment boards. Every field is maintained by the airline and timestamped.
+
+**Airline Profile Fields (Required):**
+
+**Identity & Operations:**
+- Airline name, ICAO/IATA code, country of domicile
+- Operating bases and hub locations
+- Operational type: full-service, low-cost, regional, wet lease
+
+**Current Fleet Information:**
+- Active aircraft types in operation
+- Fleet size per type
+- Planned fleet additions or phase-outs (12-month outlook)
+- New type rating demand: if an Airbus A321 is being phased in, pilots see this before committing to a rating
+
+**Pilot Intake Preferences — What They Are Actually Looking For:**
+- Position type: Second Officer, First Officer, Captain, Direct Entry Captain
+- Preferred experience level: low-timer (below 500 hours), mid-timer, high-timer (1,500+)
+- Type rating preference: with rating, without rating (training provided), specific type required
+- Background preference: ATO graduate, military transition, ex-commercial, cadet program graduate
+- Foreign pilot policy: open to all nationalities / regional pilots only / specific nationalities
+- Language requirement: English proficiency (ICAO Level 4/5/6), additional language preferred
+- Preferred Recognition Score range on the platform
+
+**Background Check Configuration:**
+- Required verification depth per role (standard, enhanced, full)
+- Whether verified Recognition+ users receive expedited processing
+- Third-party verification provider preference (e.g., Veremark, HireRight)
+
+**Cadet Program Details (if applicable):**
+- Cadet program name and structure
+- Entry requirements: minimum hours, academic qualifications, age range
+- Bond or service obligation period
+- Intake cycle: intakes per year, next intake date
+- Sponsorship model: full-sponsor, partial, self-fund with employment guarantee
+
+**Hiring Signal (Public, Live):**
+- Open / Closed / Paused hiring status — visible to all pilots on the platform
+- Estimated next opening window
+- Future demand forecast: planned headcount for next 12-24 months by role
+
+**ATS & Compliance Integration:**
+- Airline connects their ATS system via API
+- Pilot interest data flows directly in GDPR/PDPA-compliant format
+- No manual exports, no data re-entry
+
+---
+
+### What We Require from Airlines:
+- Publish and maintain their Airline Expectation Page within 30 days of onboarding
+- Update all requirements fields within 7 days of any internal change
+- Define minimum Recognition Score thresholds per role
+- Connect ATS integration within 60 days
+- Respond to verified pilot interests within a defined SLA window
+
+### Commercial Tiers:
+- **Basic:** $500/month — pathway card listing, 10 profile pulls/month
+- **Professional:** $1,000/month — 50 profile pulls, aptitude test access, ATS integration
+- **Enterprise:** $2,500/month — unlimited pulls, custom EBT development, dedicated support
+- **Success Fee:** $500 per confirmed hire (waived for first 10 hires)
 
 ### Benefits:
 - Time-to-hire: 70% reduction (6 months → 6-8 weeks)
 - Washout rate: 57% reduction (35% → 15%)
-- Annual ROI: $1.2-2.4M for 100-pilot hiring target
-- Pre-cleared pipeline, compliance automation, risk mitigation
+- Annual ROI: $1.2-2.4M for a 100-pilot hiring target
+- Pre-cleared verified pipeline, compliance automation, no more random CVs
 
 ---
 
