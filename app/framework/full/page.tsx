@@ -275,6 +275,7 @@ export default function FullFrameworkPage() {
             counter++;
           }
           seenIds.add(id);
+          console.log(`✓ H2 ID generated: "${id}" from "${headingText.substring(0, 50)}"`);
           return <h2 key={i} id={id} className="text-2xl font-bold text-slate-800 mt-8 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">{headingText}</h2>;
         }
         if (line.startsWith('### ')) {
