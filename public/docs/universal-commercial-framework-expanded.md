@@ -163,9 +163,25 @@ This document is the complete operational blueprint for that system. It defines 
 | Scheduling & Recency Compliance Tracking | Manual records, delayed | Real-time automated compliance feed — night recency, instrument currency tracked | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
 | Pilot Self-Selection Accuracy | High mismatch — wrong candidates apply | Pilots pre-screened by pathway alignment before submitting interest | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
 | **PILLAR 3 — CHARTER & BUSINESS AVIATION** | | | |
-| On-Demand Pilot Verification Speed | 5-10 days | 2-4 hours | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
-| Qualified Charter Pilot Pool Visibility | Fragmented (broker-dependent) | Unified vetted pool | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
-| Recency & Currency Tracking | Manual logbook checks | Live telemetry verified | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| **— WHAT PILOTS NEED TO KNOW ABOUT CHARTER & BIZ AV PATHWAYS** | | | |
+| Charter vs Airline — Lifestyle Difference | Rarely explained before entry | Published: on-demand scheduling, irregular hours, VIP service expectations, no union protection | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Aircraft Types Operated | Unknown per operator | Each operator publishes fleet: Citation, Challenger, Gulfstream, King Air, PC-12 etc. | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Type Rating Requirements | Opaque — varies per charter company | Minimum ratings per role listed; operators indicate if they sponsor type rating or require self-funded | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Minimum Hours for Charter Entry | Unknown — wide variance | Platform publishes TT, PIC hours, multi-engine, and IFR minimums per operator | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| VIP & Private Client Expectations | Not communicated | Operators publish soft skill requirements: discretion, service mindset, appearance standards | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Salary & Compensation Model | Opaque — day rates vs salary varies | Pay structure published: salary, day rate, positioning allowance, overnight rates | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Roster & Availability Model | Discovered after joining | Published: on-call model, trip pairing length, minimum notice period, home base flexibility | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Foreign License Acceptance | Unknown per operator | Clearly stated: ICAO-valid / local validation required / specific authority only | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Multinational Pilot Welcoming Policy | Undisclosed | Operators state: globally open / regional / nationals only | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Profile Gap Analysis for Charter | Pilots guess requirements | Live comparison: exact gaps in hours, ratings, and soft competencies shown per operator | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Command Upgrade Speed in Charter | Varies — no benchmarks | Platform publishes average time-to-command per operator; charter often faster than airlines | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Why Choose Charter Over Airline | Not communicated | Operators publish advantages: aircraft variety, faster command, international exposure, flexibility | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Benefits & Perks | Hidden until offer stage | Published: travel benefits, accommodation on layovers, lifestyle flexibility, bonus structure | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| **— OPERATIONAL OUTCOMES (Benefits to Charter Operators)** | | | |
+| On-Demand Pilot Verification Speed | 5-10 days | 2-4 hours — live verified profiles, no document chasing | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Qualified Charter Pilot Pool Visibility | Fragmented (broker-dependent) | Unified vetted pool with recency, type ratings, and soft skills verified | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Recency & Currency Tracking | Manual logbook checks | Live telemetry-verified — IFR, multi-engine, and type recency tracked automatically | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Pilot Self-Selection for Charter Roles | Random applicants, wrong fit | Only pilots aligned to VIP/charter expectations and meeting hours minimums submit interest | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
 | **PILLAR 4 — eVTOL & EMERGING SECTORS** | | | |
 | Type-Specific Credential Standardization | None (sector is unregulated) | Framework-defined profiles | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
 | Operator-to-Pilot Matching for New Types | 0% (no infrastructure) | Active pathway matching | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
