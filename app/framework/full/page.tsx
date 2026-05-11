@@ -171,9 +171,37 @@ export default function FullFrameworkPage() {
           return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{bulletText}</li>;
         }
         
-        // Numbered lists
+        // Numbered lists - make clickable if in TOC section
         if (/^\d+\.\s/.test(line)) {
-          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{line.replace(/^\d+\.\s/, '')}</li>;
+          const itemText = line.replace(/^\d+\.\s/, '');
+          
+          // In TOC section - try to find matching header
+          if (inTocSection && tocItems.length > 0) {
+            const matchingItem = tocItems.find(item => {
+              const itemLower = item.text.toLowerCase();
+              const textLower = itemText.toLowerCase();
+              // Check multiple matching strategies
+              return textLower.includes(itemLower) || 
+                     itemLower.includes(textLower) ||
+                     (textLower.substring(0, 30).trim() === itemLower.substring(0, 30).trim()) ||
+                     textLower.replace(/[^a-z0-9]/g, '').includes(itemLower.replace(/[^a-z0-9]/g, '').substring(0, 20));
+            });
+            
+            if (matchingItem) {
+              return (
+                <li key={i} className="ml-6 leading-relaxed">
+                  <button 
+                    onClick={() => scrollToSection(matchingItem.id)}
+                    className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
+                  >
+                    {itemText}
+                  </button>
+                </li>
+              );
+            }
+          }
+          
+          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{itemText}</li>;
         }
         
         // Bold text
