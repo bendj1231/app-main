@@ -3,14 +3,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-// Pillar Tab Table Component
+// Pillar Accordion Table Component
 function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
   headerLine: string | null;
   groups: Array<{ label: string; rows: string[] }>;
   colCount: number;
   scrollToSection: (id: string) => void;
 }) {
-  const [activeTab, setActiveTab] = useState(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
 
   const processCellText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -82,57 +82,54 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
     return null;
   };
 
-  const activeGroup = groups[activeTab];
-
   return (
-    <div className="my-6 border border-slate-200 rounded-lg overflow-hidden shadow-sm flex">
-      {/* Vertical tab sidebar */}
-      <div className="flex flex-col bg-slate-900 min-w-[180px] w-[180px] flex-shrink-0 border-r border-slate-700">
-        {groups.map((group, gi) => {
-          const label = cleanLabel(group.label);
-          const pillarNum = label.match(/PILLAR\s+(\d+)/i)?.[1];
-          const pillarName = label.split('—')[1]?.trim() || label;
-          const isActive = gi === activeTab;
-          return (
+    <div className="my-6 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+      {groups.map((group, gi) => {
+        const label = cleanLabel(group.label);
+        const pillarNum = label.match(/PILLAR\s+(\d+)/i)?.[1];
+        const pillarName = label.split('—')[1]?.trim() || label;
+        const isOpen = openIndex === gi;
+        return (
+          <div key={gi} className="border-b border-slate-200 last:border-b-0">
+            {/* Accordion trigger */}
             <button
-              key={gi}
-              onClick={() => setActiveTab(gi)}
-              className={`w-full flex items-center gap-2 px-3 py-2.5 text-left transition-colors border-b border-slate-800 ${
-                isActive
-                  ? 'bg-white text-slate-900 border-l-4 border-l-red-500'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-l-transparent'
+              onClick={() => setOpenIndex(isOpen ? null : gi)}
+              className={`w-full flex items-center justify-between px-4 py-3 text-left transition-colors ${
+                isOpen ? 'bg-slate-800 text-white' : 'bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white'
               }`}
             >
-              <span className={`text-xs font-black tracking-widest flex-shrink-0 w-7 ${isActive ? 'text-red-600' : 'text-slate-500'}`}>
-                {pillarNum ? `P${pillarNum}` : ''}
-              </span>
-              <span className="text-[11px] leading-tight font-medium">{pillarName}</span>
+              <div className="flex items-center gap-3">
+                {pillarNum && (
+                  <span className={`text-xs font-black tracking-widest px-2 py-0.5 rounded ${isOpen ? 'bg-red-600 text-white' : 'bg-slate-700 text-slate-400'}`}>
+                    P{pillarNum}
+                  </span>
+                )}
+                <span className="text-sm font-semibold">{pillarName}</span>
+              </div>
+              <span className={`text-lg transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>▾</span>
             </button>
-          );
-        })}
-      </div>
-      {/* Content panel */}
-      <div className="flex-1 overflow-auto">
-        {/* Table column header */}
-        {headerLine && (
-          <div className={`grid ${gridClass} bg-slate-100 border-b-2 border-slate-300 sticky top-0`}>
-            {headerLine.split('|').filter(c => c.trim()).map((cell, j) => (
-              <span key={j} className="text-sm px-3 py-2 font-semibold text-slate-800">{cell.trim()}</span>
-            ))}
+            {/* Expanded content */}
+            {isOpen && (
+              <div>
+                {/* Column headers */}
+                {headerLine && (
+                  <div className={`grid ${gridClass} bg-slate-100 border-b-2 border-slate-300`}>
+                    {headerLine.split('|').filter(c => c.trim()).map((cell, j) => (
+                      <span key={j} className="text-sm px-3 py-2 font-semibold text-slate-800">{cell.trim()}</span>
+                    ))}
+                  </div>
+                )}
+                {group.rows.map((tl, ri) => {
+                  const rc = tl.split('|').slice(1, -1);
+                  const isSubOrKeynote = rc.length >= 2 && rc[0].trim() !== '' && rc.slice(1).every(c => c.trim() === '');
+                  if (isSubOrKeynote) return renderSubRow(tl, ri);
+                  return renderDataRow(tl, ri);
+                })}
+              </div>
+            )}
           </div>
-        )}
-        {/* Active pillar rows */}
-        {activeGroup && (
-          <div>
-            {activeGroup.rows.map((tl, ri) => {
-              const rc = tl.split('|').slice(1, -1);
-              const isSubOrKeynote = rc.length >= 2 && rc[0].trim() !== '' && rc.slice(1).every(c => c.trim() === '');
-              if (isSubOrKeynote) return renderSubRow(tl, ri);
-              return renderDataRow(tl, ri);
-            })}
-          </div>
-        )}
-      </div>
+        );
+      })}
     </div>
   );
 }
