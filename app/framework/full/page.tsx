@@ -431,7 +431,7 @@ export default function FullFrameworkPage() {
       </nav>
 
       {/* Main Layout with Left Sidebar */}
-      <div className="max-w-[1400px] mx-auto flex gap-6 pl-4 pr-6 py-8">
+      <div className="w-full flex gap-6 pl-4 pr-6 py-8 justify-center">
         {/* Left Sidebar Navigation */}
         <aside className="w-64 flex-shrink-0 h-fit">
           <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto">
