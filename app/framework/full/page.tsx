@@ -138,15 +138,24 @@ export default function FullFrameworkPage() {
         
         // Track if we're in the TOC section
         // Start when we see "Table of Contents", end when we see "# PART" (main content starts)
-        if (line.toLowerCase().includes('table of contents')) {
+        const lineLower = line.toLowerCase();
+        const hasTocText = lineLower.includes('table of contents');
+        const isPartHeader = line.startsWith('# PART');
+        
+        if (hasTocText) {
           inTocSection = true;
           debugTocFound = true;
-          console.log('✓ Found Table of Contents, inToc = true');
+          console.log(`✓ Line ${i}: Found "table of contents", SETTING inToc = true`);
         }
-        if (inTocSection && line.startsWith('# PART')) {
+        if (inTocSection && isPartHeader) {
           inTocSection = false;
           tocSectionEnd = true;
-          console.log('✓ Reached PART I, TOC section ended');
+          console.log(`✓ Line ${i}: Found "# PART", SETTING inToc = false`);
+        }
+        
+        // Debug every line in TOC range
+        if (i >= 20 && i <= 80) {
+          console.log(`  Line ${i}: hasToc=${hasTocText}, isPart=${isPartHeader}, inToc=${inTocSection}, text="${line.substring(0, 40)}"`);
         }
         
         // Bullet points
