@@ -81,9 +81,17 @@
 
 ### The Aviation Industry Operating System
 
-The global aviation industry currently operates within isolated, opaque silos. Airlines, flight training organizations, financial institutions, insurance underwriters, and compliance bodies possess deeply fragmented data. This profound disconnect has triggered a cascading systemic failure: crippling operational bottlenecks for airlines, unquantifiable risk for insurers, and devastating, unrecoverable financial ruin for the next generation of aviators.
+Across every sector of aviation — commercial airlines, cargo operators, charter and private jet companies, flight training organizations, eVTOL and emerging air mobility ventures, military transition pathways, financial institutions, insurance underwriters, and regulatory bodies — a single crisis runs silently beneath the surface: **pilots are not being recognized.**
 
-**This Platform** represents the Aviation Industry Operating System—a neutral, centralized digital infrastructure where credential verification, daily flight telemetry, career progression, and operator demand intersect. This document provides an exhaustive operational blueprint detailing exactly what is required from every stakeholder to unify the global aviation economy.
+Credentials sit frozen in outdated systems. Hours accumulate but go unseen. Experience decays in value not because it is absent, but because no unified infrastructure exists to surface, verify, and communicate it across the industry. The pilot who has invested $80,000 in training, built 3,000 hours of genuine expertise, and demonstrated exceptional behavioral competencies is indistinguishable — on paper — from someone who simply meets the minimum threshold. The industry has no language for excellence. It only speaks in minimums.
+
+This recognition gap does not only harm pilots. Airlines miss qualified candidates because discovery is broken. Flight schools cannot demonstrate placement ROI to prospective students. Banks and lenders cannot price aviation loans accurately because career trajectory data does not exist. Insurance underwriters operate on estimates. Regulatory bodies rely on fragmented, manually submitted records. The entire ecosystem is flying without instruments.
+
+**PilotRecognition** is the Aviation Industry Operating System — a neutral, centralized digital infrastructure built for every sector that touches a pilot's career and life. This is not a job board. This is not a resume platform. This is the connective tissue the aviation industry has never had: a live, verified, portable system where credential validation, flight telemetry, career progression, operator demand, training outcomes, financial eligibility, and industry recognition all intersect in one place.
+
+We are not building for airlines alone. We are building for the entire ecosystem — commercial operators, cargo fleets, business aviation, cadet programs, flight academies, type rating centers, manufacturers, banks, insurers, regulators, unions, and the pilots themselves. Every factor that shapes a pilot's career — from hour-building to type rating to airline transition to captaincy — lives within this framework.
+
+This document provides the exhaustive operational blueprint for that system: what is required from every stakeholder, how data flows, how value is shared, and how the global aviation economy becomes unified for the first time.
 
 ### The Universal Framework in Numbers
 
