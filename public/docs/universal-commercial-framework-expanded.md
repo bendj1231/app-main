@@ -201,10 +201,25 @@ This document is the complete operational blueprint for that system. It defines 
 | Operator-to-Pilot Matching for New Types | 0% (no infrastructure) | Active pathway matching — pilots with transferable skills surfaced automatically | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
 | Pilot Pipeline for New Sector | Zero structured pipeline | Platform builds early-adopter pilot database as sector scales toward certification | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
 | **PILLAR 5 — FLIGHT TRAINING ORGANIZATIONS** | | | |
-| Pilot Training ROI Failure Rate | 65% | <15% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
-| Time from Graduation to Employment | 2-5 years | 6-18 months | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
-| Flight School Placement Visibility | 0% (no tracking) | 100% verified | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
-| Student Default Rate on Aviation Loans | 28% | <8% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| **— WHAT PILOTS NEED TO KNOW BEFORE CHOOSING A FLIGHT SCHOOL** | | | |
+| How to Choose the Right Flight School | No comparison tool exists | Platform lists accredited ATOs with completion rates, employment outcomes, and graduate reviews | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Cost of Training vs Career Outcome | No data — students invest blind | Published: full cost breakdown per school vs average time-to-employment of its graduates | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Graduate Employment Rate per School | Hidden — schools don't disclose | Verified employment placement rate per ATO tracked on platform — not self-reported | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Which Airlines Recruit from This School | Unknown to students | Airlines publish which ATOs they recruit from — students choose school strategically | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Integrated vs Modular — Which Path Is Right | Confusing for new entrants | Side-by-side comparison: cost, duration, flexibility, airline acceptance rate per path type | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| ATPL Frozen vs Full — What Airlines Accept | Misunderstood by students | Platform publishes per airline: frozen ATPL accepted / hours required to unfreeze / exceptions | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Time from Zero to Airline-Ready | No benchmark exists | Published average: 2–5 years depending on school, country, and self-funding pace | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Country of Training — Does It Matter? | Unknown to students | Platform shows which countries' licenses are most widely accepted by airlines globally | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Instructor Quality & Student-to-Aircraft Ratio | Not disclosed | Published per school: instructor-to-student ratio, aircraft fleet age, simulator availability | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Scholarship & Cadet Program Availability | Scattered, hard to find | Centralized: airlines and schools publishing active cadet programs, bonds, and scholarship criteria | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Financial Planning for Training | No guidance | Platform links to aviation loan calculators and partner banks with pilot loan products | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Profile Starts at Day One of Training | Profile only created after graduation | Students begin building their live Recognition Profile from day one of ground school | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| **— WHAT FLIGHT SCHOOLS GAIN FROM THE PLATFORM** | | | |
+| Pilot Training ROI Failure Rate | 65% drop-out or non-employment | <15% — better candidate self-selection reduces washout and unemployed graduates | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Time from Graduation to Employment | 2-5 years idle post-graduation | 6–18 months — graduates enter verified pipeline immediately | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Flight School Placement Visibility | 0% tracked, unverified | 100% verified placement data — schools use outcomes as marketing proof | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Student Default Rate on Aviation Loans | 28% | <8% — better career alignment reduces financial dropout | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Airline Feeder Relationships | Informal, relationship-dependent | Formal airline-ATO feeder agreements published on platform — schools attract better students | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
 | **PILLAR 6 — TYPE RATING & SIMULATOR CENTERS** | | | |
 | Type Rating Availability Discovery | Manual search, broker-dependent | Live directory with availability & pricing | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
 | Simulator Hour Verification | Paper logbook, unverified | Digitally verified simulator records | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
