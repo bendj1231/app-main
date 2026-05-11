@@ -183,8 +183,23 @@ This document is the complete operational blueprint for that system. It defines 
 | Recency & Currency Tracking | Manual logbook checks | Live telemetry-verified — IFR, multi-engine, and type recency tracked automatically | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
 | Pilot Self-Selection for Charter Roles | Random applicants, wrong fit | Only pilots aligned to VIP/charter expectations and meeting hours minimums submit interest | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
 | **PILLAR 4 — eVTOL & EMERGING SECTORS** | | | |
-| Type-Specific Credential Standardization | None (sector is unregulated) | Framework-defined profiles | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
-| Operator-to-Pilot Matching for New Types | 0% (no infrastructure) | Active pathway matching | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| **— WHAT PILOTS NEED TO KNOW ABOUT eVTOL & EMERGING PATHWAYS** | | | |
+| What Is eVTOL & Why It Matters for Pilots | Unknown to most pilots outside tech hubs | Electric Vertical Takeoff & Landing — the next generation of urban air mobility, already hiring | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Which Companies Are Hiring | No central directory | Published: Joby, Archer, Lilium, Wisk, Beta, Overair, Volocopter — roles and locations listed | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Minimum Hours & Background Required | Unclear — varies per operator | Platform publishes: most eVTOL operators require 500–1500 TT, fixed-wing background, tech adaptability | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Type Ratings & Certifications Needed | No standardisation exists yet | Regulatory framework per country published — FAA, EASA, CAAP eVTOL certification pathways tracked | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Salary & Compensation in eVTOL | Unknown — early stage | Published ranges: $80K–$200K USD depending on phase; equity compensation common in startup operators | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Career Risk — Is the Sector Stable? | Pilots fear early-stage risk | Platform publishes funding stage, fleet progress, and regulatory certification milestone per company | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Transferable Skills from Traditional Aviation | Not communicated | Platform shows which existing ratings and hours count — fixed-wing CPL holders are priority targets | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Air Taxi Pathway vs Drone Sector | Confused by pilots | Clearly separated: crewed eVTOL (pilot required) vs BVLOS drone (remote pilot certificate) | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Foreign Pilot Acceptance | Unknown | Each operator's visa sponsorship and nationality requirements stated per role | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Profile Gap Analysis for eVTOL | No tool exists | Live comparison: gaps in TT, tech background, medical class, and adaptability score shown | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Why Enter eVTOL Now — First Mover Advantage | Not explained | Operators publish: ground floor opportunity, equity upside, shaping the future of aviation | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Agricultural, Seaplane & Specialty Sectors | Completely invisible to pilots | Pathway cards for agricultural aviation, float plane, banner tow, firefighting — all listed | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| **— OPERATIONAL OUTCOMES (Benefits to eVTOL & Emerging Operators)** | | | |
+| Type-Specific Credential Standardization | None (sector is unregulated) | Framework-defined credential profiles per aircraft type and regulatory jurisdiction | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Operator-to-Pilot Matching for New Types | 0% (no infrastructure) | Active pathway matching — pilots with transferable skills surfaced automatically | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Pilot Pipeline for New Sector | Zero structured pipeline | Platform builds early-adopter pilot database as sector scales toward certification | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
 | **PILLAR 5 — FLIGHT TRAINING ORGANIZATIONS** | | | |
 | Pilot Training ROI Failure Rate | 65% | <15% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
 | Time from Graduation to Employment | 2-5 years | 6-18 months | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
