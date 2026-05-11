@@ -10,13 +10,18 @@ function NavSection({ section, scrollToSection }: {
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   
+  console.log('NavSection rendering:', section.label, 'has children:', !!section.children, 'id:', section.id);
+  
   return (
     <div className="mb-1">
       <button
         onClick={() => {
+          console.log('Sidebar CLICK:', section.label, 'id:', section.id, 'has children:', !!section.children);
           if (section.children) {
+            console.log('→ Toggling expand');
             setIsExpanded(!isExpanded);
           } else {
+            console.log('→ Scrolling to section');
             scrollToSection(section.id);
           }
         }}
@@ -37,7 +42,10 @@ function NavSection({ section, scrollToSection }: {
           {section.children.map((child) => (
             <button
               key={child.id}
-              onClick={() => scrollToSection(child.id)}
+              onClick={() => {
+                console.log('Child CLICK:', child.label, 'id:', child.id);
+                scrollToSection(child.id);
+              }}
               className="w-full text-left px-2 py-1 rounded-md text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-start gap-1.5"
             >
               <span className="text-blue-500 mt-0.5 flex-shrink-0">→</span>
@@ -99,9 +107,17 @@ export default function FullFrameworkPage() {
   }, []);
 
   const scrollToSection = (id: string) => {
+    console.log('scrollToSection called with id:', id);
     const element = document.getElementById(id);
+    console.log('Found element:', element ? 'YES' : 'NO', 'for id:', id);
     if (element) {
+      console.log('Scrolling to element:', element.tagName, element.textContent?.substring(0, 50));
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      console.error('❌ Element not found for id:', id);
+      // Try to find all IDs in the document for debugging
+      const allIds = Array.from(document.querySelectorAll('[id]')).map(el => el.id);
+      console.log('Available IDs in document:', allIds.slice(0, 20), '...');
     }
   };
 
