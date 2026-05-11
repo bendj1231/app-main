@@ -279,9 +279,21 @@ This document is the complete operational blueprint for that system. It defines 
 | Premium Pricing Accuracy for Pilots | Blunt rate cards | Dynamic profile-based pricing | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
 | Incident History Verification Speed | 30-90 days | Real-time API | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
 | **PILLAR 10 — LEGAL & REGULATORY BODIES** | | | |
-| Cross-Border License Verification | 7-21 days | 24 hours | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
-| Audit Trail Integrity | Manual submissions | Immutable digital records | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
-| Regulatory Reporting Automation | 0% | 100% | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| **— WHAT PILOTS NEED TO KNOW ABOUT REGULATORY REQUIREMENTS** | | | |
+| Which Authority Governs Your License | Confusing for multinational pilots | Platform maps your license to its issuing authority — CAAP, FAA, EASA, CASA, GCAA clearly identified | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| License Conversion — How to Fly in Another Country | Complex, undocumented process | Step-by-step conversion pathway per country pair — CAAP to EASA, FAA to ICAO, etc. | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Which Authorities Accept Your ICAO License | Assumed — rarely verified | Platform shows per authority: direct acceptance / validation required / full conversion needed | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Recency & Currency Rules Per Authority | Each authority has different rules | Published per authority: 90-day rule, IFR recency, night recency, medical renewal windows | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| What Happens if Your License Lapses | Pilots discover this too late | Platform sends automated alerts before expiry — revalidation steps published per authority | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Regulatory Changes That Affect Your Career | Pilots hear about it second-hand | Live regulatory feed — authority rule changes pushed to affected pilot profiles automatically | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Hours Logging Requirements Per Authority | Varies — pilots log incorrectly | Published: what counts as PIC, co-pilot, SIC time per authority — platform flags discrepancies | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Enforcement Actions & Incident Reporting | Unknown how it affects career | Platform educates: what must be declared, what stays private, how ASR/MOR affects profile | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Foreign Pilot Work Permit Requirements | Unknown per country | Platform shows per country: visa, work permit, and residency requirements for pilot employment | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| **— WHAT REGULATORY BODIES GAIN FROM THE PLATFORM** | | | |
+| Cross-Border License Verification | 7–21 days manual lookup | 24-hour real-time API — platform queries authority databases directly for live status | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Audit Trail Integrity | Manual submissions, paper-based | Immutable digital records — every credential event timestamped and tamper-proof | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Regulatory Reporting Automation | 0% — all manual submissions | 100% automated — platform generates authority-ready reports on demand | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Industry Compliance Monitoring | Snapshot-based, delayed | Live compliance dashboard — regulators see current license, medical, recency status across pilot base | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
 | **PILLAR 11 — BACKGROUND CHECKS & VERIFICATION** | | | |
 | **— WHAT PILOTS NEED TO KNOW ABOUT BACKGROUND CHECKS** | | | |
 | What Do Airlines Check Before Hiring You | Unknown to most pilots | Published: each airline's background check scope — employment history, criminal, license, medical, references | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
