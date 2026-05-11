@@ -409,8 +409,9 @@ export default function FullFrameworkPage() {
         // Table rows — pre-grouped into collapsible pillar sections
         if (line.startsWith('|')) {
           // Only process the FIRST table line to trigger full table pre-processing
-          // Check if previous line was also a table line — if so, skip (already handled)
-          if (lines[i - 1]?.startsWith('|')) return null;
+          // Skip all subsequent table lines — they are consumed by the first line's processor
+          const prevNonEmpty = lines.slice(0, i).reverse().find(l => l.trim() !== '');
+          if (prevNonEmpty?.startsWith('|')) return null;
 
           // Collect all consecutive table lines starting from i
           const tableLines: string[] = [];
