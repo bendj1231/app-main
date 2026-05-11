@@ -275,9 +275,22 @@ This document is the complete operational blueprint for that system. It defines 
 | Student Default Rate on Aviation Loans | 28% industry average | <8% — better-aligned pilots with clear pathways are lower-risk borrowers | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
 | New Aviation Loan Product Market | Underserved — banks don't know where to start | Platform provides the borrower data, risk framework, and distribution channel to launch products | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
 | **PILLAR 9 — AVIATION INSURANCE** | | | |
-| Insurance Underwriting Accuracy | 40% (estimated) | 90%+ | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
-| Premium Pricing Accuracy for Pilots | Blunt rate cards | Dynamic profile-based pricing | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
-| Incident History Verification Speed | 30-90 days | Real-time API | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| **— WHAT PILOTS NEED TO KNOW ABOUT AVIATION INSURANCE** | | | |
+| What Insurance Does a Pilot Actually Need | Most pilots don't know | Published: license defense insurance, loss of license, liability, hull — explained per career stage | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Loss of License Insurance — Why It Matters | Pilots discover this after an incident | Platform explains: if your Class 1 medical is revoked, your income stops — this is your safety net | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Which Insurers Offer Pilot-Specific Products | Unknown — pilots use generic brokers | Platform lists aviation-specialist insurers: AVPAC, Hayward, USAIG, specialist brokers per region | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Premium Cost at Each Career Stage | No transparency | Published: typical premium ranges for student pilot, CPL, ATPL, command — by insurer | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Does My Recognition Score Affect My Premium | No connection exists today | Higher Recognition Score = lower risk profile = reduced premiums with partner insurers | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| What Is Covered in License Defense Insurance | Fine print, rarely read | Platform summarises per product: what events trigger a claim — FAA/EASA/CAAP enforcement coverage | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Medical Condition Impact on Coverage | Pilots find out at claim time | Published per insurer: pre-existing condition policies, HIMS evaluation coverage, exclusions | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| When Does Airline Insurance Cover You vs Personal | Misunderstood | Platform clarifies: what airline employer insurance covers vs what pilot personally needs | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Incident & Claim History — How It Affects Future Cover | Not explained | Published: how ASR/MOR reports affect insurability and how to mitigate risk to profile | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| **— WHAT INSURERS GAIN FROM THE PLATFORM** | | | |
+| Insurance Underwriting Accuracy | 40% estimated risk — blunt rate cards | 90%+ — live Recognition Score, recency, medical status, and incident history feed underwriting | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Premium Pricing Accuracy for Pilots | One-size rate cards, inaccurate | Dynamic profile-based pricing — lower risk pilots pay less, higher risk priced accurately | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Incident History Verification Speed | 30–90 days manual investigation | Real-time API — platform serves verified incident and enforcement history on demand | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Pilot Medical Status Verification | Manual certificate check | Live AME-linked medical status — insurers see Class 1 validity and renewal date in real time | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| New Pilot Insurance Market Access | Underserved — no distribution channel | Platform connects insurers directly to 100,000+ verified pilots at every career stage | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
 | **PILLAR 10 — LEGAL & REGULATORY BODIES** | | | |
 | **— WHAT PILOTS NEED TO KNOW ABOUT REGULATORY REQUIREMENTS** | | | |
 | Which Authority Governs Your License | Confusing for multinational pilots | Platform maps your license to its issuing authority — CAAP, FAA, EASA, CASA, GCAA clearly identified | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
