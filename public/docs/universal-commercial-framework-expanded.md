@@ -111,6 +111,8 @@ This document is the complete operational blueprint for that system. It defines 
 
 | Metric | Current State | Framework Target | Discover How |
 |--------|---------------|------------------|-------------|
+| **KEYNOTE — PILLAR 1** | | | |
+| *Without pilots, what are you?* Airports, runways, air traffic control, terminals, aircraft — every piece of infrastructure in aviation exists for one purpose: to support the person in the left seat. Pilots are not a resource in the system. **They are the system.** Every billion-dollar aircraft sits grounded without a qualified pilot to fly it. Every route, every schedule, every revenue flight depends on one professional at the center of it all. Yet this same professional — the most critical operational asset in aviation — is the least recognized, the least informed, and the most underserved by the industry they hold together. That is what Pillar 1 addresses. | | | |
 | **PILLAR 1 — COMMERCIAL AIRLINES** — Two Separate Infrastructures: Pathways Page (for Pilots) + Airline Expectations Page (for Airlines & Operators) | | | |
 | **— PAGE A: AIRLINE EXPECTATION PAGE (For Airlines & Operators)** | | | |
 | Airline Verified Presence on Platform | Job posts on Facebook, generic boards | Structured, timestamped airline profile — verified aviation-only presence | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
@@ -840,6 +842,18 @@ When the bored captain gets recognized and moves to cargo/BizAv:
 ---
 
 ## PILLAR 1: COMMERCIAL AIRLINES (Detailed)
+
+> **Without pilots, what are you?**
+>
+> Airports are built for them. Runways are built for them. Air traffic control exists to guide them. Terminals are designed around their schedules. Every aircraft — from a single-engine Cessna to an Airbus A380 — is engineered to be operated by one person at the center of it all: the pilot.
+>
+> Aviation is not built around airlines. It is not built around manufacturers. It is not built around regulators or banks or insurance companies. Every single piece of infrastructure in this industry — every billion dollars of capital investment, every international agreement, every safety standard — ultimately exists to support the moment a qualified pilot takes command of an aircraft and moves people and cargo from one place to another.
+>
+> **Pilots are not a resource in the aviation system. They are the system.**
+>
+> And yet — this same professional, the most operationally critical individual in the entire industry, is the least recognised, the least informed, and the most underserved by the very industry they hold together. They invest tens of thousands of dollars in training with no guarantee of where it leads. They align themselves to requirements that no one publishes clearly. They apply to airlines through Facebook posts and generic job boards. They build careers of extraordinary skill and discipline that are invisible on paper.
+>
+> That ends here. Pillar 1 is the framework that gives pilots the information, recognition, and infrastructure they have always deserved — and gives airlines the quality, transparency, and efficiency they have never been able to access.
 
 ### Platform Architecture for Commercial Airlines: Two Distinct Pages
 

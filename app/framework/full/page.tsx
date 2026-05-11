@@ -395,8 +395,19 @@ export default function FullFrameworkPage() {
             const processCellText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             if (isSectionRow) {
               const rawLabel = cells[0]?.trim() || '';
-              const isSubSection = rawLabel.startsWith('—') || rawLabel.startsWith('-—') || rawLabel.startsWith('**—');
+              const isKeynote = rawLabel.includes('KEYNOTE');
+              const isSubSection = !isKeynote && (rawLabel.startsWith('—') || rawLabel.startsWith('-—') || rawLabel.startsWith('**—') || rawLabel.startsWith('*'));
               const sectionLabel = processCellText(rawLabel);
+              if (isKeynote) {
+                // Keynote rows: full-width italic callout box — text is in cell 0
+                const keynoteText = processCellText(rawLabel.replace(/\*\*KEYNOTE[^*]*\*\*\s*—?\s*/i, '').replace(/^\*/, '').replace(/\*$/, ''));
+                return (
+                  <div key={i} className="col-span-full my-4 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
+                    <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Keynote — Pillar 1</p>
+                    <p className="text-sm text-slate-700 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: keynoteText }} />
+                  </div>
+                );
+              }
               return (
                 <div key={i} className={`col-span-full grid ${gridClass} border-y-2 ${isSubSection ? 'py-2 mt-1 border-slate-200 bg-slate-600' : 'py-3 mt-3 border-slate-300 bg-slate-800'}`}>
                   <span className={`col-span-full px-3 font-bold text-white tracking-wide ${isSubSection ? 'text-xs' : 'text-sm uppercase'}`} dangerouslySetInnerHTML={{ __html: sectionLabel }} />
