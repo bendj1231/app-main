@@ -100,6 +100,8 @@ import { WhyRecognitionPage } from '@/components/website/components/WhyRecogniti
 import GlobalAviationAuthoritiesPage from '@/pages/GlobalAviationAuthoritiesPage';
 import BlogPage from '@/app/blog/page';
 import StorePage from '@/app/store/page';
+import FrameworkPage from '@/app/framework/page';
+import FullFrameworkPage from '@/app/framework/full/page';
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -310,6 +312,10 @@ export const AppRoutes = () => {
       {/* Blog & Store */}
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/store" element={<StorePage />} />
+
+      {/* Framework routes */}
+      <Route path="/framework" element={<FrameworkPage />} />
+      <Route path="/framework/full" element={<FullFrameworkPage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
