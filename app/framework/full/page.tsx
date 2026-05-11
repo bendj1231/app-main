@@ -401,6 +401,23 @@ export default function FullFrameworkPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Print Styles */}
+      <style>{`
+        @media print {
+          .print\\:hidden {
+            display: none !important;
+          }
+          .print\\:max-w-none {
+            max-width: none !important;
+          }
+          .print\\:w-full {
+            width: 100% !important;
+          }
+          nav.sticky {
+            position: static !important;
+          }
+        }
+      `}</style>
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
