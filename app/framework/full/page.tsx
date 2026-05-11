@@ -384,9 +384,9 @@ export default function FullFrameworkPage() {
       </nav>
 
       {/* Main Layout with Left Sidebar */}
-      <div className="max-w-7xl mx-auto flex gap-8 px-6 py-8">
+      <div className="max-w-7xl mx-auto flex gap-8 px-6 py-8 justify-center">
         {/* Left Sidebar Navigation */}
-        <aside className="w-72 flex-shrink-0 hidden lg:block">
+        <aside className="w-72 flex-shrink-0">
           <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-8rem)] overflow-y-auto">
             <div className="p-4 border-b border-slate-200 bg-white rounded-t-xl">
               <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
