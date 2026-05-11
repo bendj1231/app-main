@@ -111,6 +111,8 @@ This document is the complete operational blueprint for that system. It defines 
 
 | Metric | Current State | Framework Target | Discover How |
 |--------|---------------|------------------|-------------|
+| **KEYNOTE — PILLAR 1** | | | |
+| *Without pilots, what are you?* Airports, runways, air traffic control, terminals, aircraft — every piece of infrastructure in aviation exists for one purpose: to support the person in the left seat. Pilots are not a resource in the system. **They are the system.** Every billion-dollar aircraft sits grounded without a qualified pilot to fly it. Every route, every schedule, every revenue flight depends on one professional at the center of it all. Yet this same professional — the most critical operational asset in aviation — is the least recognized, the least informed, and the most underserved by the industry they hold together. That is what Pillar 1 addresses. | | | |
 | **PILLAR 1 — COMMERCIAL AIRLINES** — Two Separate Infrastructures: Pathways Page (for Pilots) + Airline Expectations Page (for Airlines & Operators) | | | |
 | **— PAGE A: AIRLINE EXPECTATION PAGE (For Airlines & Operators)** | | | |
 | Airline Verified Presence on Platform | Job posts on Facebook, generic boards | Structured, timestamped airline profile — verified aviation-only presence | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
