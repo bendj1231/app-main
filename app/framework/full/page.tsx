@@ -1,17 +1,48 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+
+// Generate ID from text
+const generateId = (text: string) => {
+  return text.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .substring(0, 50);
+};
 
 export default function FullFrameworkPage() {
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [tocItems, setTocItems] = useState<Array<{level: number; text: string; id: string}>>([]);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch('/docs/universal-commercial-framework-expanded.md')
       .then(res => res.text())
       .then(text => {
         setContent(text);
+        // Extract TOC items
+        const items: Array<{level: number; text: string; id: string}> = [];
+        const seenIds = new Set<string>();
+        
+        text.split('\n').forEach(line => {
+          if (line.startsWith('# ') || line.startsWith('## ') || line.startsWith('### ')) {
+            const level = line.startsWith('### ') ? 3 : line.startsWith('## ') ? 2 : 1;
+            const text = line.replace(/^#+\s/, '');
+            let id = generateId(text);
+            // Ensure unique IDs
+            let counter = 1;
+            const baseId = id;
+            while (seenIds.has(id)) {
+              id = `${baseId}-${counter}`;
+              counter++;
+            }
+            seenIds.add(id);
+            items.push({ level, text, id });
+          }
+        });
+        setTocItems(items);
         setLoading(false);
       })
       .catch(() => {
@@ -20,23 +51,68 @@ export default function FullFrameworkPage() {
       });
   }, []);
 
-  // Simple markdown renderer
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Simple markdown renderer with anchor IDs
   const renderMarkdown = (text: string) => {
+    const seenIds = new Set<string>();
+    
     return text
       .split('\n')
       .map((line, i) => {
-        // Headers
+        // Headers with IDs
         if (line.startsWith('# ')) {
-          return <h1 key={i} className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900">{line.replace('# ', '')}</h1>;
+          const headingText = line.replace('# ', '');
+          let id = generateId(headingText);
+          let counter = 1;
+          const baseId = id;
+          while (seenIds.has(id)) {
+            id = `${baseId}-${counter}`;
+            counter++;
+          }
+          seenIds.add(id);
+          return <h1 key={i} id={id} className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">{headingText}</h1>;
         }
         if (line.startsWith('## ')) {
-          return <h2 key={i} className="text-2xl font-bold text-slate-800 mt-8 mb-4 pb-2 border-b border-slate-300">{line.replace('## ', '')}</h2>;
+          const headingText = line.replace('## ', '');
+          let id = generateId(headingText);
+          let counter = 1;
+          const baseId = id;
+          while (seenIds.has(id)) {
+            id = `${baseId}-${counter}`;
+            counter++;
+          }
+          seenIds.add(id);
+          return <h2 key={i} id={id} className="text-2xl font-bold text-slate-800 mt-8 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">{headingText}</h2>;
         }
         if (line.startsWith('### ')) {
-          return <h3 key={i} className="text-xl font-bold text-slate-800 mt-6 mb-3">{line.replace('### ', '')}</h3>;
+          const headingText = line.replace('### ', '');
+          let id = generateId(headingText);
+          let counter = 1;
+          const baseId = id;
+          while (seenIds.has(id)) {
+            id = `${baseId}-${counter}`;
+            counter++;
+          }
+          seenIds.add(id);
+          return <h3 key={i} id={id} className="text-xl font-bold text-slate-800 mt-6 mb-3 scroll-mt-24">{headingText}</h3>;
         }
         if (line.startsWith('#### ')) {
-          return <h4 key={i} className="text-lg font-bold text-slate-800 mt-4 mb-2">{line.replace('#### ', '')}</h4>;
+          const headingText = line.replace('#### ', '');
+          let id = generateId(headingText);
+          let counter = 1;
+          const baseId = id;
+          while (seenIds.has(id)) {
+            id = `${baseId}-${counter}`;
+            counter++;
+          }
+          seenIds.add(id);
+          return <h4 key={i} id={id} className="text-lg font-bold text-slate-800 mt-4 mb-2 scroll-mt-24">{headingText}</h4>;
         }
         
         // Empty line
@@ -137,8 +213,31 @@ export default function FullFrameworkPage() {
           <p className="text-sm text-slate-500">Document Revision: 10.0-Expanded | 90+ Pages | May 2026</p>
         </header>
 
+        {/* Table of Contents */}
+        {tocItems.length > 0 && (
+          <nav className="mb-12 p-6 bg-slate-50 rounded-xl border border-slate-200">
+            <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-300">Table of Contents</h2>
+            <div className="grid md:grid-cols-2 gap-x-8 gap-y-1 max-h-96 overflow-y-auto pr-2">
+              {tocItems.map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-left hover:text-red-600 transition-colors py-1 ${
+                    item.level === 1 ? 'font-semibold text-slate-900' : 
+                    item.level === 2 ? 'text-slate-700 pl-4' : 
+                    'text-slate-600 pl-8 text-sm'
+                  }`}
+                >
+                  {item.level === 1 && <span className="text-red-600 mr-2">▸</span>}
+                  {item.text}
+                </button>
+              ))}
+            </div>
+          </nav>
+        )}
+
         {/* Content */}
-        <div className="prose prose-slate max-w-none">
+        <div ref={contentRef} className="prose prose-slate max-w-none">
           {renderMarkdown(content)}
         </div>
 
