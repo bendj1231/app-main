@@ -85,9 +85,9 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
   const activeGroup = groups[activeTab];
 
   return (
-    <div className="my-6 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
-      {/* Tab bar */}
-      <div className="flex flex-wrap bg-slate-900 border-b border-slate-700 gap-px">
+    <div className="my-6 border border-slate-200 rounded-lg overflow-hidden shadow-sm flex">
+      {/* Vertical tab sidebar */}
+      <div className="flex flex-col bg-slate-900 min-w-[180px] w-[180px] flex-shrink-0 border-r border-slate-700">
         {groups.map((group, gi) => {
           const label = cleanLabel(group.label);
           const pillarNum = label.match(/PILLAR\s+(\d+)/i)?.[1];
@@ -97,41 +97,42 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
             <button
               key={gi}
               onClick={() => setActiveTab(gi)}
-              className={`flex flex-col items-center px-3 py-2 text-center transition-colors min-w-[80px] flex-1 ${
+              className={`w-full flex items-center gap-2 px-3 py-2.5 text-left transition-colors border-b border-slate-800 ${
                 isActive
-                  ? 'bg-white text-slate-900 border-b-2 border-red-500'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? 'bg-white text-slate-900 border-l-4 border-l-red-500'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-l-transparent'
               }`}
             >
-              {pillarNum && (
-                <span className={`text-xs font-black tracking-widest ${isActive ? 'text-red-600' : 'text-slate-500'}`}>
-                  P{pillarNum}
-                </span>
-              )}
-              <span className="text-[10px] leading-tight font-medium mt-0.5 line-clamp-2">{pillarName}</span>
+              <span className={`text-xs font-black tracking-widest flex-shrink-0 w-7 ${isActive ? 'text-red-600' : 'text-slate-500'}`}>
+                {pillarNum ? `P${pillarNum}` : ''}
+              </span>
+              <span className="text-[11px] leading-tight font-medium">{pillarName}</span>
             </button>
           );
         })}
       </div>
-      {/* Table column header */}
-      {headerLine && (
-        <div className={`grid ${gridClass} bg-slate-100 border-b-2 border-slate-300`}>
-          {headerLine.split('|').filter(c => c.trim()).map((cell, j) => (
-            <span key={j} className="text-sm px-3 py-2 font-semibold text-slate-800">{cell.trim()}</span>
-          ))}
-        </div>
-      )}
-      {/* Active pillar rows */}
-      {activeGroup && (
-        <div>
-          {activeGroup.rows.map((tl, ri) => {
-            const rc = tl.split('|').slice(1, -1);
-            const isSubOrKeynote = rc.length >= 2 && rc[0].trim() !== '' && rc.slice(1).every(c => c.trim() === '');
-            if (isSubOrKeynote) return renderSubRow(tl, ri);
-            return renderDataRow(tl, ri);
-          })}
-        </div>
-      )}
+      {/* Content panel */}
+      <div className="flex-1 overflow-auto">
+        {/* Table column header */}
+        {headerLine && (
+          <div className={`grid ${gridClass} bg-slate-100 border-b-2 border-slate-300 sticky top-0`}>
+            {headerLine.split('|').filter(c => c.trim()).map((cell, j) => (
+              <span key={j} className="text-sm px-3 py-2 font-semibold text-slate-800">{cell.trim()}</span>
+            ))}
+          </div>
+        )}
+        {/* Active pillar rows */}
+        {activeGroup && (
+          <div>
+            {activeGroup.rows.map((tl, ri) => {
+              const rc = tl.split('|').slice(1, -1);
+              const isSubOrKeynote = rc.length >= 2 && rc[0].trim() !== '' && rc.slice(1).every(c => c.trim() === '');
+              if (isSubOrKeynote) return renderSubRow(tl, ri);
+              return renderDataRow(tl, ri);
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
