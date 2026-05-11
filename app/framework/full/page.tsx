@@ -3,26 +3,133 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-// Collapsible Pillar Table Section Component
-function CollapsiblePillarSection({ pillarLabel, children, defaultOpen = false }: {
-  pillarLabel: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
+// Pillar Tab Table Component
+function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
+  headerLine: string | null;
+  groups: Array<{ label: string; rows: string[] }>;
+  colCount: number;
+  scrollToSection: (id: string) => void;
 }) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-  const cleanLabel = pillarLabel.replace(/\*\*(.*?)\*\*/g, '$1');
+  const [activeTab, setActiveTab] = useState(0);
+  const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
+
+  const processCellText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  const cleanLabel = (label: string) => {
+    // Shorten: "PILLAR 1 — COMMERCIAL AIRLINES — Two Separate..." → "PILLAR 1 — COMMERCIAL AIRLINES"
+    const stripped = label.replace(/\*\*(.*?)\*\*/g, '$1');
+    const parts = stripped.split('—');
+    if (parts.length >= 2) return `${parts[0].trim()} — ${parts[1].trim()}`;
+    return stripped;
+  };
+
+  const renderDataRow = (tLine: string, idx: number) => {
+    const cells = tLine.split('|').filter(c => c.trim());
+    return (
+      <div key={idx} className={`grid py-2 border-b border-slate-200 ${gridClass}`}>
+        {cells.map((cell, j) => {
+          const cellText = processCellText(cell.trim());
+          const isCurrentState = j === 1;
+          const isDiscoverCol = j === 3;
+          if (isDiscoverCol && cellText) {
+            const linkMatch = cell.trim().match(/\[(.+?)\]\(#(.+?)\)/);
+            if (linkMatch) {
+              return (
+                <div key={j} className="px-3 py-1">
+                  <button
+                    onClick={() => scrollToSection(linkMatch[2])}
+                    className="text-xs text-blue-600 hover:text-red-600 hover:underline font-medium transition-colors text-left"
+                  >
+                    {linkMatch[1]}
+                  </button>
+                </div>
+              );
+            }
+          }
+          return (
+            <span
+              key={j}
+              className={`text-sm px-3 py-1 ${isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
+              dangerouslySetInnerHTML={{ __html: cellText }}
+            />
+          );
+        })}
+      </div>
+    );
+  };
+
+  const renderSubRow = (tLine: string, idx: number) => {
+    const cells = tLine.split('|').filter(c => c.trim());
+    const rawLabel = cells[0]?.trim() || '';
+    const isKeynote = rawLabel.includes('KEYNOTE');
+    const isSubSection = rawLabel.startsWith('—') || rawLabel.startsWith('**—') || rawLabel.startsWith('* ');
+    if (isKeynote) {
+      const keynoteText = processCellText(rawLabel.replace(/\*\*KEYNOTE[^*]*\*\*\s*—?\s*/i, ''));
+      return (
+        <div key={idx} className="my-3 mx-2 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
+          <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Keynote</p>
+          <p className="text-sm text-slate-700 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: keynoteText }} />
+        </div>
+      );
+    }
+    if (isSubSection) {
+      return (
+        <div key={idx} className={`grid ${gridClass} py-2 border-y border-slate-400 bg-slate-600`}>
+          <span className="col-span-full px-3 text-xs font-bold text-white tracking-wide" dangerouslySetInnerHTML={{ __html: processCellText(rawLabel) }} />
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const activeGroup = groups[activeTab];
+
   return (
-    <div className="border-b-2 border-slate-300">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-slate-800 hover:bg-slate-700 transition-colors text-left group"
-      >
-        <span className="text-sm font-bold text-white tracking-wide uppercase pr-4">{cleanLabel}</span>
-        <span className={`text-white text-lg transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>▾</span>
-      </button>
-      {isOpen && (
-        <div className="border-t border-slate-600">
-          {children}
+    <div className="my-6 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+      {/* Tab bar */}
+      <div className="flex flex-wrap bg-slate-900 border-b border-slate-700 gap-px">
+        {groups.map((group, gi) => {
+          const label = cleanLabel(group.label);
+          const pillarNum = label.match(/PILLAR\s+(\d+)/i)?.[1];
+          const pillarName = label.split('—')[1]?.trim() || label;
+          const isActive = gi === activeTab;
+          return (
+            <button
+              key={gi}
+              onClick={() => setActiveTab(gi)}
+              className={`flex flex-col items-center px-3 py-2 text-center transition-colors min-w-[80px] flex-1 ${
+                isActive
+                  ? 'bg-white text-slate-900 border-b-2 border-red-500'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              {pillarNum && (
+                <span className={`text-xs font-black tracking-widest ${isActive ? 'text-red-600' : 'text-slate-500'}`}>
+                  P{pillarNum}
+                </span>
+              )}
+              <span className="text-[10px] leading-tight font-medium mt-0.5 line-clamp-2">{pillarName}</span>
+            </button>
+          );
+        })}
+      </div>
+      {/* Table column header */}
+      {headerLine && (
+        <div className={`grid ${gridClass} bg-slate-100 border-b-2 border-slate-300`}>
+          {headerLine.split('|').filter(c => c.trim()).map((cell, j) => (
+            <span key={j} className="text-sm px-3 py-2 font-semibold text-slate-800">{cell.trim()}</span>
+          ))}
+        </div>
+      )}
+      {/* Active pillar rows */}
+      {activeGroup && (
+        <div>
+          {activeGroup.rows.map((tl, ri) => {
+            const cells = tl.split('|').filter(c => c.trim());
+            const isSubOrKeynote = cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === '';
+            if (isSubOrKeynote) return renderSubRow(tl, ri);
+            return renderDataRow(tl, ri);
+          })}
         </div>
       )}
     </div>
@@ -441,71 +548,6 @@ export default function FullFrameworkPage() {
             j2++;
           }
 
-          const processCellText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-          const renderDataRow = (tLine: string, idx: number, colCount: number) => {
-            const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
-            const cells = tLine.split('|').filter(c => c.trim());
-            return (
-              <div key={idx} className={`grid py-2 border-b border-slate-200 ${gridClass}`}>
-                {cells.map((cell, j) => {
-                  const cellText = processCellText(cell.trim());
-                  const isCurrentState = j === 1;
-                  const isDiscoverCol = j === 3;
-                  if (isDiscoverCol && cellText) {
-                    const linkMatch = cell.trim().match(/\[(.+?)\]\(#(.+?)\)/);
-                    if (linkMatch) {
-                      return (
-                        <div key={j} className="px-3 py-1">
-                          <button
-                            onClick={() => scrollToSection(linkMatch[2])}
-                            className="text-xs text-blue-600 hover:text-red-600 hover:underline font-medium transition-colors text-left"
-                          >
-                            {linkMatch[1]}
-                          </button>
-                        </div>
-                      );
-                    }
-                  }
-                  return (
-                    <span
-                      key={j}
-                      className={`text-sm px-3 py-1 ${isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
-                      dangerouslySetInnerHTML={{ __html: cellText }}
-                    />
-                  );
-                })}
-              </div>
-            );
-          };
-
-          const renderSubRow = (tLine: string, idx: number, colCount: number) => {
-            const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
-            const cells = tLine.split('|').filter(c => c.trim());
-            const rawLabel = cells[0]?.trim() || '';
-            const isKeynote = rawLabel.includes('KEYNOTE');
-            const isSubSection = rawLabel.startsWith('—') || rawLabel.startsWith('**—') || rawLabel.startsWith('* ');
-
-            if (isKeynote) {
-              const keynoteText = processCellText(rawLabel.replace(/\*\*KEYNOTE[^*]*\*\*\s*—?\s*/i, ''));
-              return (
-                <div key={idx} className="my-3 mx-2 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
-                  <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Keynote</p>
-                  <p className="text-sm text-slate-700 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: keynoteText }} />
-                </div>
-              );
-            }
-            if (isSubSection) {
-              const label = processCellText(rawLabel);
-              return (
-                <div key={idx} className={`grid ${gridClass} py-2 border-y border-slate-400 bg-slate-600`}>
-                  <span className="col-span-full px-3 text-xs font-bold text-white tracking-wide" dangerouslySetInnerHTML={{ __html: label }} />
-                </div>
-              );
-            }
-            return null;
-          };
-
           // Parse table into: header row, then pillar groups
           // A pillar group starts with a row that has PILLAR in cell[0] and empty cells[1..2]
           const isPillarHeader = (tLine: string) => {
@@ -524,8 +566,6 @@ export default function FullFrameworkPage() {
           let headerLine: string | null = null;
           let colCount = 4;
           let currentGroup: PillarGroup | null = null;
-          let preGroupRows: string[] = []; // rows before first pillar header
-
           for (let k = 0; k < tableLines.length; k++) {
             const tl = tableLines[k];
             if (isSeparator(tl)) continue;
@@ -541,39 +581,18 @@ export default function FullFrameworkPage() {
               currentGroup = { label: cells[0]?.trim() || '', rows: [] };
             } else if (currentGroup) {
               currentGroup.rows.push(tl);
-            } else {
-              preGroupRows.push(tl);
             }
           }
           if (currentGroup) groups.push(currentGroup);
 
-          const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
-
           return (
-            <div key={i} className="my-6 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
-              {/* Table header */}
-              {headerLine && (
-                <div className={`grid ${gridClass} bg-slate-100 border-b-2 border-slate-300`}>
-                  {headerLine.split('|').filter(c => c.trim()).map((cell, j) => (
-                    <span key={j} className="text-sm px-3 py-2 font-semibold text-slate-800">{cell.trim()}</span>
-                  ))}
-                </div>
-              )}
-              {/* Pre-group rows (before any pillar header) */}
-              {preGroupRows.map((tl, idx) => renderDataRow(tl, idx, colCount))}
-              {/* Collapsible pillar groups */}
-              {groups.map((group, gi) => (
-                <CollapsiblePillarSection key={gi} pillarLabel={group.label}>
-                  {group.rows.map((tl, ri) => {
-                    const cells = tl.split('|').filter(c => c.trim());
-                    const rawFirst = cells[0]?.trim() || '';
-                    const isSubOrKeynote = cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === '';
-                    if (isSubOrKeynote) return renderSubRow(tl, ri, colCount);
-                    return renderDataRow(tl, ri, colCount);
-                  })}
-                </CollapsiblePillarSection>
-              ))}
-            </div>
+            <PillarTabTable
+              key={i}
+              headerLine={headerLine}
+              groups={groups}
+              colCount={colCount}
+              scrollToSection={scrollToSection}
+            />
           );
         }
         
