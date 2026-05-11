@@ -112,6 +112,15 @@ This document provides the exhaustive operational blueprint for that system: wha
 | Pilot Profile Data Freshness | Static CV, months or years old | Live real-time profile — hours, ratings, medicals update continuously | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Airline Hiring Status Visibility to Pilots | Closed/opaque — no signal | Open/Closed hiring signal displayed publicly like a stock market indicator | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Airline Future Demand Forecasting | Internal only, not shared | Published future demand list — pilots plan transitions months ahead | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Airline Fleet Information Visibility | Not published, pilots uninformed | Current fleet, aircraft types, and expansion plans visible on pathway card | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Foreign Pilot Acceptance Policy | Undisclosed, discovered after applying | Clearly stated on pathway: open to foreign, regional only, or both | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Preferred Language Requirements | Buried in job ads or unknown | Explicitly listed on pathway card per role and base | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Cadet Program Intake Status | No public signal | Live intake status: open, closed, upcoming — with cycle dates | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Cadet Program Entry Requirements | Inconsistent, outdated postings | Real-time updated requirements linked directly to pathway card | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Minimum Hour & Rating Requirements Currency | Static job posts, often 1-3 years old | Requirements versioned and timestamped — pilots always see latest | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Pathway Alignment Accuracy | Pilots align to outdated requirements | Platform flags when pathway requirements are updated vs pilot's last view | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Professionalism of Hiring Channel | Jobs posted on Facebook, generic boards | Verified aviation-only platform — airlines maintain professional presence | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Airline Preferred Pilot Profile Type | Undisclosed hiring preferences | Airlines publish preferred profile: ex-military, ATO graduate, direct entry | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | **PILLAR 2 — CARGO & FREIGHT** | | | |
 | Cargo Operator Pilot Pool Visibility | Isolated per carrier | Unified verified cargo pilot database | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
 | Scheduling & Recency Compliance Tracking | Manual records, delayed | Real-time automated compliance feed | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
