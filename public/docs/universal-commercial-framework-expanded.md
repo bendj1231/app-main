@@ -97,7 +97,7 @@ This document provides the exhaustive operational blueprint for that system: wha
 
 | Metric | Current State | Framework Target | Discover How |
 |--------|---------------|------------------|-------------|
-| **PILLAR 1 — COMMERCIAL AIRLINES** | | | |
+| **PILLAR 1 — COMMERCIAL AIRLINES** — Two Separate Infrastructures: Pathways Page (for Pilots) + Airline Expectations Page (for Airlines & Operators) | | | |
 | **— PAGE A: AIRLINE EXPECTATION PAGE (For Airlines & Operators)** | | | |
 | Airline Verified Presence on Platform | Job posts on Facebook, generic boards | Structured, timestamped airline profile — verified aviation-only presence | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Current Fleet & Type Demand Visibility | Not published — pilots invest blindly | Active fleet, planned additions, and new type rating demand published live | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
