@@ -283,11 +283,24 @@ This document is the complete operational blueprint for that system. It defines 
 | Audit Trail Integrity | Manual submissions | Immutable digital records | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
 | Regulatory Reporting Automation | 0% | 100% | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
 | **PILLAR 11 — BACKGROUND CHECKS & VERIFICATION** | | | |
-| Employment History Verification Speed | 14-30 days (manual) | 24-48 hours via API | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| License & Medical Certificate Validation | Manual CAA/FAA lookups | Real-time authority API integration | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Criminal & Background Check Turnaround | 7-21 days | 24-72 hours automated | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Reference & Incident Record Accuracy | Self-reported, unverifiable | Third-party verified, blockchain-backed | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Pilot Identity Fraud Risk | High (paper-based records) | Near-zero (digital credential wallet) | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| **— WHAT PILOTS NEED TO KNOW ABOUT BACKGROUND CHECKS** | | | |
+| What Do Airlines Check Before Hiring You | Unknown to most pilots | Published: each airline's background check scope — employment history, criminal, license, medical, references | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| How Long Does a Background Check Take | Opaque — pilots wait in silence | Platform shows per airline: average check turnaround — 24hrs to 3 weeks depending on depth | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| What Can Fail a Background Check | Not communicated until rejected | Published: common failure triggers — gap explanations, license discrepancies, criminal records policy | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Pre-Verification — Clear Before You Apply | No option exists | Pilots complete verified background check upfront — arrive at any airline pre-cleared | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Employment Gap Explanation Policy | Each airline has different rules | Platform shows per operator: gap tolerance, required documentation, acceptable explanations | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| License Verification — Is Your License Valid Globally | Pilots assume yes | Platform runs real-time authority lookup — flags issues before airline sees them | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Medical Certificate Status Communicated to Airlines | Manual, delayed | Medical status linked live — airlines see valid/expired/renewed status without asking | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Criminal Record — What Disqualifies You Per Country | Unknown — varies widely | Per country and operator: what offences are disqualifying vs declarable vs irrelevant | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Reference Checks — Who Will Be Called | Surprise at end of process | Airlines publish reference requirements upfront — pilots prepare correctly from the start | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Pilot-Owned Verification Wallet | No portable credential exists | Verepass-backed digital wallet — pilot owns their verified data, shares with any operator instantly | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| **— WHAT AIRLINES & OPERATORS GAIN** | | | |
+| Employment History Verification Speed | 14–30 days manual | 24–48 hours via API — Veremark integration pulls verified employment records automatically | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| License & Medical Certificate Validation | Manual CAA/FAA lookups | Real-time authority API integration — no manual document chase | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Criminal & Background Check Turnaround | 7–21 days | 24–72 hours automated — NBI, DBS, FBI checks via regional API partners | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Reference & Incident Record Accuracy | Self-reported, unverifiable | Third-party verified, blockchain-backed — tamper-proof record of service | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Pilot Identity Fraud Risk | High — paper-based records easily forged | Near-zero — digital credential wallet with biometric-linked verification | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Multi-Airline Check Duplication | Each airline runs the same check | Pilot pre-verified once — all airlines access the same verified record, no duplication | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
 | **PILLAR 12 — FLIGHT DATA & NAVIGATION** | | | |
 | Flight Data Portability Across Operators | Locked per operator | Pilot-owned portable telemetry record | [→ Pillar 12: Flight Data & Navigation](#pillar-12-flight-data-navigation-apps-navigraph-fo) |
 | Recency & Currency Verification | Manual logbook checks | Live telemetry-verified records | [→ Pillar 12: Flight Data & Navigation](#pillar-12-flight-data-navigation-apps-navigraph-fo) |
