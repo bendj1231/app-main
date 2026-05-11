@@ -263,6 +263,7 @@ export default function FullFrameworkPage() {
       level: 1,
       children: [
         { id: 'page-1-executive-summary', label: 'Executive Summary', level: 2 },
+        { id: 'the-universal-framework-in-numbers', label: '📊 Framework in Numbers', level: 2 },
         { id: 'page-2-the-founders-narrative---why-this-platform-', label: "Founder's Narrative", level: 2 },
         { id: 'page-3-4-the-universal-ecosystem-philosophy', label: 'Universal Ecosystem Philosophy', level: 2 },
         { id: 'page-4-6-the-12-core-industry-failures-we-solve', label: '12 Core Industry Failures', level: 2 },
