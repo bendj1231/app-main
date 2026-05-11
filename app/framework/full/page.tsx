@@ -438,10 +438,10 @@ export default function FullFrameworkPage() {
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            {/* Mobile Sidebar Toggle */}
+            {/* Sidebar Toggle */}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+              className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {sidebarOpen ? (
@@ -481,12 +481,22 @@ export default function FullFrameworkPage() {
           />
         )}
         
-        {/* Left Sidebar Navigation - Hidden on mobile, toggleable */}
-        <aside className={`${sidebarOpen ? 'fixed left-0 top-0 z-50 h-full w-64 pt-20 px-4' : 'hidden'} md:block md:static md:w-64 md:flex-shrink-0 md:h-fit md:print:hidden`}>
+        {/* Left Sidebar Navigation - Hidden on mobile, toggleable on both */}
+        <aside className={`${sidebarOpen ? 'fixed left-0 top-0 z-50 h-full w-64 pt-20 px-4' : 'hidden'} ${!sidebarOpen ? 'md:block md:static md:w-64 md:flex-shrink-0 md:h-fit' : ''} md:print:hidden`}>
           <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto shadow-lg md:shadow-none">
-            <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl">
-              <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
-              <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
+            <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl flex items-center justify-between">
+              <div>
+                <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
+                <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
+              </div>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
             <nav className="p-2">
               {navSections.map((section) => (
