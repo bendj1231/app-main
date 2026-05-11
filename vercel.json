@@ -10,7 +10,7 @@
       "destination": "/api/:path*"
     },
     {
-      "source": "/((?!api|assets|.*\\..*).*)",
+      "source": "/((?!api|assets|docs|.*\\..*).*)",
       "destination": "/index.html"
     }
   ],
