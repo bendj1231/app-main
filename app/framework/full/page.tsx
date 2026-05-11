@@ -249,6 +249,26 @@ export default function FullFrameworkPage() {
     
     const lines = text.split('\n');
     
+    // Pre-compute: which line indices are the START of a table block (vs inside one)
+    const tableStartIndices = new Set<number>();
+    const tableConsumedIndices = new Set<number>();
+    {
+      let k = 0;
+      while (k < lines.length) {
+        if (lines[k].startsWith('|')) {
+          tableStartIndices.add(k);
+          let k2 = k;
+          while (k2 < lines.length && lines[k2].startsWith('|')) {
+            if (k2 !== k) tableConsumedIndices.add(k2);
+            k2++;
+          }
+          k = k2;
+        } else {
+          k++;
+        }
+      }
+    }
+
     console.log('TOC Items loaded:', tocItems.length);
     console.log('First few TOC items:', tocItems.slice(0, 5).map(i => i.text));
     
@@ -408,10 +428,10 @@ export default function FullFrameworkPage() {
         
         // Table rows — pre-grouped into collapsible pillar sections
         if (line.startsWith('|')) {
-          // Only process the FIRST table line to trigger full table pre-processing
-          // Skip all subsequent table lines — they are consumed by the first line's processor
-          const prevNonEmpty = lines.slice(0, i).reverse().find(l => l.trim() !== '');
-          if (prevNonEmpty?.startsWith('|')) return null;
+          // Skip lines that are inside a table block (not the start)
+          if (tableConsumedIndices.has(i)) return null;
+          // Only render if this is the START of a table block
+          if (!tableStartIndices.has(i)) return null;
 
           // Collect all consecutive table lines starting from i
           const tableLines: string[] = [];
