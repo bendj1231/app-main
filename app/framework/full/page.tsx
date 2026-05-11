@@ -156,7 +156,8 @@ export default function FullFrameworkPage() {
             
             if (matchingItem) {
               return (
-                <li key={i} className="ml-6 leading-relaxed">
+                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">→</span>
                   <button 
                     onClick={() => scrollToSection(matchingItem.id)}
                     className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
@@ -189,7 +190,8 @@ export default function FullFrameworkPage() {
             
             if (matchingItem) {
               return (
-                <li key={i} className="ml-6 leading-relaxed">
+                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">→</span>
                   <button 
                     onClick={() => scrollToSection(matchingItem.id)}
                     className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
