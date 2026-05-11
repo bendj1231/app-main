@@ -391,16 +391,26 @@ export default function FullFrameworkPage() {
             const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
             // Check if it's a section header row (all cols after first are empty)
             const isSectionRow = !isHeader && cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === '';
+            // Process bold markdown in cell text
+            const processCellText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            if (isSectionRow) {
+              const sectionLabel = processCellText(cells[0]?.trim() || '');
+              return (
+                <div key={i} className={`col-span-full grid ${gridClass} py-3 mt-2 border-y-2 border-slate-300 bg-slate-800`}>
+                  <span className="col-span-full px-3 text-sm font-bold text-white tracking-wide uppercase" dangerouslySetInnerHTML={{ __html: sectionLabel }} />
+                </div>
+              );
+            }
             return (
-              <div key={i} className={`grid py-2 border-b border-slate-200 ${gridClass} ${isHeader ? 'bg-slate-100' : isSectionRow ? 'bg-slate-50' : ''}`}>
+              <div key={i} className={`grid py-2 border-b border-slate-200 ${gridClass} ${isHeader ? 'bg-slate-100' : ''}`}>
                 {cells.map((cell, j) => {
-                  const cellText = cell.trim();
-                  const isCurrentState = !isHeader && !isSectionRow && j === 1;
-                  const isDiscoverCol = !isHeader && !isSectionRow && j === 3;
+                  const cellText = processCellText(cell.trim());
+                  const isCurrentState = !isHeader && j === 1;
+                  const isDiscoverCol = !isHeader && j === 3;
 
                   // Parse discover link: [→ Label](#id)
                   if (isDiscoverCol && cellText) {
-                    const linkMatch = cellText.match(/\[(.+?)\]\(#(.+?)\)/);
+                    const linkMatch = cell.trim().match(/\[(.+?)\]\(#(.+?)\)/);
                     if (linkMatch) {
                       return (
                         <div key={j} className="px-3 py-1">
@@ -418,7 +428,7 @@ export default function FullFrameworkPage() {
                   return (
                     <span
                       key={j}
-                      className={`text-sm px-3 py-1 ${isHeader ? 'text-slate-800 font-semibold' : isSectionRow ? 'text-slate-700 font-bold' : isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
+                      className={`text-sm px-3 py-1 ${isHeader ? 'text-slate-800 font-semibold' : isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
                       dangerouslySetInnerHTML={{ __html: cellText }}
                     />
                   );
