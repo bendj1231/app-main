@@ -99,10 +99,19 @@ This document provides the exhaustive operational blueprint for that system: wha
 |--------|---------------|------------------|-------------|
 | **PILLAR 1 — COMMERCIAL AIRLINES** | | | |
 | Average Time-to-Hire | 6-12 months | 2-4 weeks | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
-| Pilot Candidate Discovery Method | Manual CV screening | Live verified profile pull | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
-| Airline Competency Requirements Visibility | Hidden (undisclosed internally) | Published pathway cards per airline | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
-| Cadet & Direct Entry Program Transparency | Fragmented, airline-by-airline | Unified pathway cards for all programs | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Candidate Discovery Method | Random CVs, mass applications | Direct-interest pulls from verified profiles only | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Airline Competency & Expectation Visibility | Hidden internally, pilots fly blind | Published pathway cards: exact requirements per airline | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Self-Alignment to Airline Standards | No tool exists | Pilots compare their profile against airline pathway gaps | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Cadet & Direct Entry Program Transparency | Fragmented, airline-by-airline | Unified pathway cards for all programs, all airlines | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Candidate Washout Rate Post-Hire | 35-45% | <10% | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Background Check Preference Setting | No preference system exists | Airlines configure required check depth per role | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Background Check Access for Verified Users vs General | Same process for all | Tiered: Recognition+ users pre-cleared, general users standard | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Recruitment Data Compliance & ATS Integration | Manual exports, incompatible formats | GDPR/PDPA-compliant API feed direct to airline ATS systems | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Aptitude Assessment Before Pathway Interest | None — unfiltered applications | Aptitude test gate required before interest submission | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Interest Quality (Targeted vs Random) | 500 random CVs per opening | Only pilots who pass aptitude + meet pathway criteria submit interest | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Profile Data Freshness | Static CV, months or years old | Live real-time profile — hours, ratings, medicals update continuously | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Airline Hiring Status Visibility to Pilots | Closed/opaque — no signal | Open/Closed hiring signal displayed publicly like a stock market indicator | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Airline Future Demand Forecasting | Internal only, not shared | Published future demand list — pilots plan transitions months ahead | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | **PILLAR 2 — CARGO & FREIGHT** | | | |
 | Cargo Operator Pilot Pool Visibility | Isolated per carrier | Unified verified cargo pilot database | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
 | Scheduling & Recency Compliance Tracking | Manual records, delayed | Real-time automated compliance feed | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
