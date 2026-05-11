@@ -71,9 +71,25 @@ export default function FullFrameworkPage() {
     console.log('First few TOC items:', tocItems.slice(0, 5).map(i => i.text));
     
     return lines.map((line, i) => {
-        // Debug: Log TOC-related lines
-        if (i < 100 || line.toLowerCase().includes('table of contents') || line.startsWith('# PART')) {
-          console.log(`Line ${i}:`, line.substring(0, 60), '| inToc before:', inTocSection);
+        // IMPORTANT: Track TOC section FIRST (before any early returns)
+        const lineLower = line.toLowerCase();
+        const hasTocText = lineLower.includes('table of contents');
+        const isPartHeader = line.startsWith('# PART');
+        
+        if (hasTocText) {
+          inTocSection = true;
+          debugTocFound = true;
+          console.log(`✓ Line ${i}: Found "table of contents", SETTING inToc = true`);
+        }
+        if (inTocSection && isPartHeader) {
+          inTocSection = false;
+          tocSectionEnd = true;
+          console.log(`✓ Line ${i}: Found "# PART", SETTING inToc = false`);
+        }
+        
+        // Debug log
+        if (i < 100 || hasTocText || isPartHeader) {
+          console.log(`Line ${i}:`, line.substring(0, 60), '| inToc:', inTocSection);
         }
         
         // Headers with IDs
@@ -134,28 +150,6 @@ export default function FullFrameworkPage() {
         // Horizontal rule
         if (line.startsWith('---')) {
           return <hr key={i} className="my-8 border-slate-300" />;
-        }
-        
-        // Track if we're in the TOC section
-        // Start when we see "Table of Contents", end when we see "# PART" (main content starts)
-        const lineLower = line.toLowerCase();
-        const hasTocText = lineLower.includes('table of contents');
-        const isPartHeader = line.startsWith('# PART');
-        
-        if (hasTocText) {
-          inTocSection = true;
-          debugTocFound = true;
-          console.log(`✓ Line ${i}: Found "table of contents", SETTING inToc = true`);
-        }
-        if (inTocSection && isPartHeader) {
-          inTocSection = false;
-          tocSectionEnd = true;
-          console.log(`✓ Line ${i}: Found "# PART", SETTING inToc = false`);
-        }
-        
-        // Debug every line in TOC range
-        if (i >= 20 && i <= 80) {
-          console.log(`  Line ${i}: hasToc=${hasTocText}, isPart=${isPartHeader}, inToc=${inTocSection}, text="${line.substring(0, 40)}"`);
         }
         
         // Bullet points
