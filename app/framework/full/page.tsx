@@ -384,47 +384,61 @@ export default function FullFrameworkPage() {
       </nav>
 
       {/* Main Layout with Left Sidebar */}
-      <div className="max-w-7xl mx-auto flex gap-8 px-6 py-8 justify-center">
+      <div className="max-w-[1400px] mx-auto flex gap-6 pl-4 pr-6 py-8">
         {/* Left Sidebar Navigation */}
-        <aside className="w-72 flex-shrink-0">
+        <aside className="w-64 flex-shrink-0">
           <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-8rem)] overflow-y-auto">
-            <div className="p-4 border-b border-slate-200 bg-white rounded-t-xl">
+            <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl">
               <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
               <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
             </div>
             <nav className="p-2">
-              {navSections.map((section) => (
-                <div key={section.id} className="mb-1">
-                  <button
-                    onClick={() => scrollToSection(section.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-slate-200 ${
-                      section.level === 1 ? 'text-slate-900 bg-slate-100' : 'text-slate-600 pl-6'
-                    }`}
-                  >
-                    {section.level === 1 && <span className="text-red-600 mr-2">▸</span>}
-                    {section.label}
-                  </button>
-                  {section.children && (
-                    <div className="ml-2 mt-1 space-y-0.5">
-                      {section.children.map((child) => (
-                        <button
-                          key={child.id}
-                          onClick={() => scrollToSection(child.id)}
-                          className="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-center gap-1.5"
-                        >
-                          <span className="text-blue-400">→</span>
-                          {child.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+              {navSections.map((section) => {
+                const [isExpanded, setIsExpanded] = React.useState(false);
+                return (
+                  <div key={section.id} className="mb-1">
+                    <button
+                      onClick={() => {
+                        if (section.children) {
+                          setIsExpanded(!isExpanded);
+                        } else {
+                          scrollToSection(section.id);
+                        }
+                      }}
+                      className={`w-full text-left px-2 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-slate-200 flex items-center justify-between ${
+                        section.level === 1 ? 'text-slate-900' : 'text-slate-600 pl-4'
+                      }`}
+                    >
+                      <span className="flex items-center">
+                        {section.children && (
+                          <span className={`text-red-600 mr-1.5 transition-transform ${isExpanded ? 'rotate-90' : ''}`}>▸</span>
+                        )}
+                        {!section.children && <span className="text-slate-400 mr-1.5">•</span>}
+                        {section.label}
+                      </span>
+                    </button>
+                    {section.children && isExpanded && (
+                      <div className="ml-2 mt-1 space-y-0.5 border-l-2 border-slate-200 pl-2">
+                        {section.children.map((child) => (
+                          <button
+                            key={child.id}
+                            onClick={() => scrollToSection(child.id)}
+                            className="w-full text-left px-2 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-center gap-1.5"
+                          >
+                            <span className="text-blue-400">→</span>
+                            {child.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </nav>
             <div className="p-3 border-t border-slate-200">
               <button
                 onClick={() => scrollToSection('conclusion')}
-                className="w-full text-center py-2 px-4 bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium rounded-lg transition-colors"
+                className="w-full text-center py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium rounded-lg transition-colors"
               >
                 Jump to Conclusion
               </button>
