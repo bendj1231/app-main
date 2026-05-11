@@ -382,13 +382,24 @@ export default function FullFrameworkPage() {
         
         // Table rows
         if (line.startsWith('|')) {
+          // Skip separator rows like |---|---|---|
+          if (line.replace(/[\|\-\s:]/g, '').length === 0) return null;
           const cells = line.split('|').filter(c => c.trim());
-          if (cells.length > 0 && !line.includes('---')) {
+          if (cells.length > 0) {
+            const isHeader = lines[i + 1]?.replace(/[\|\-\s:]/g, '').length === 0;
             return (
-              <div key={i} className="grid grid-cols-2 gap-4 py-2 border-b border-slate-100">
-                {cells.map((cell, j) => (
-                  <span key={j} className="text-sm text-slate-700" dangerouslySetInnerHTML={{ __html: cell.trim() }} />
-                ))}
+              <div key={i} className={`grid py-2 border-b border-slate-200 ${cells.length === 3 ? 'grid-cols-3' : 'grid-cols-2'} ${isHeader ? 'bg-slate-100 font-semibold' : ''}`}>
+                {cells.map((cell, j) => {
+                  // Highlight "Current State" column (index 1 in data rows) in red
+                  const isCurrentState = !isHeader && j === 1;
+                  return (
+                    <span
+                      key={j}
+                      className={`text-sm px-3 py-1 ${isHeader ? 'text-slate-800 font-semibold' : isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
+                      dangerouslySetInnerHTML={{ __html: cell.trim() }}
+                    />
+                  );
+                })}
               </div>
             );
           }
