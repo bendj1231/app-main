@@ -71,6 +71,7 @@ export default function FullFrameworkPage() {
   const [loading, setLoading] = useState(true);
   const [tocItems, setTocItems] = useState<Array<{level: number; text: string; id: string}>>([]);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetch('/docs/universal-commercial-framework-expanded.md')
@@ -437,11 +438,24 @@ export default function FullFrameworkPage() {
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
+            {/* Mobile Sidebar Toggle */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {sidebarOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
             <Link to="/framework" className="text-slate-900 font-semibold hover:text-red-600 transition-colors">
               ← Back to Summary
             </Link>
-            <span className="text-slate-300">|</span>
-            <span className="text-slate-600 text-sm">90+ Pages</span>
+            <span className="hidden sm:inline text-slate-300">|</span>
+            <span className="hidden sm:inline text-slate-600 text-sm">90+ Pages</span>
           </div>
           <div className="flex gap-3">
             <button
@@ -451,17 +465,25 @@ export default function FullFrameworkPage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
-              Print Document
+              <span className="hidden sm:inline">Print Document</span>
             </button>
           </div>
         </div>
       </nav>
 
       {/* Main Layout with Left Sidebar */}
-      <div className="w-full flex gap-6 pl-4 pr-6 py-8">
-        {/* Left Sidebar Navigation - Hidden when printing */}
-        <aside className="w-64 flex-shrink-0 h-fit print:hidden">
-          <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto">
+      <div className="w-full flex gap-6 pl-4 pr-6 py-8 relative">
+        {/* Mobile Sidebar Overlay */}
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+        
+        {/* Left Sidebar Navigation - Hidden on mobile, toggleable */}
+        <aside className={`${sidebarOpen ? 'fixed left-0 top-0 z-50 h-full w-64 pt-20 px-4' : 'hidden'} md:block md:static md:w-64 md:flex-shrink-0 md:h-fit md:print:hidden`}>
+          <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto shadow-lg md:shadow-none">
             <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl">
               <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
               <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
