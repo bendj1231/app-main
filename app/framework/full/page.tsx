@@ -63,8 +63,12 @@ export default function FullFrameworkPage() {
     const seenIds = new Set<string>();
     let inTocSection = false;
     let tocSectionEnd = false;
+    let debugTocFound = false;
     
     const lines = text.split('\n');
+    
+    console.log('TOC Items loaded:', tocItems.length);
+    console.log('First few TOC items:', tocItems.slice(0, 5).map(i => i.text));
     
     return lines.map((line, i) => {
         // Headers with IDs
@@ -133,31 +137,32 @@ export default function FullFrameworkPage() {
         }
         if (line.toLowerCase().includes('table of contents')) {
           inTocSection = true;
+          debugTocFound = true;
+          console.log('✓ Found Table of Contents');
         }
         
-        // Bullet points - make clickable if in TOC section
+        // Bullet points - DEBUG: always show arrow for visibility testing
         if (line.startsWith('- ') || line.startsWith('• ')) {
           const bulletText = line.replace(/^- /, '').replace(/^• /, '');
           
+          console.log(`Bullet ${i}:`, bulletText.substring(0, 50), '| inToc:', inTocSection);
+          
           // In TOC section - try to find matching header
           if (inTocSection && tocItems.length > 0) {
-            // Find matching header by comparing text (case insensitive, partial match)
             const matchingItem = tocItems.find(item => {
               const itemLower = item.text.toLowerCase();
               const bulletLower = bulletText.toLowerCase();
-              // Check if bullet contains item text or vice versa
               return bulletLower.includes(itemLower) || 
                      itemLower.includes(bulletLower) ||
-                     // Also check first 30 chars for partial match
                      (bulletLower.substring(0, 30).trim() === itemLower.substring(0, 30).trim()) ||
-                     // Check without spaces/punctuation
                      bulletLower.replace(/[^a-z0-9]/g, '').includes(itemLower.replace(/[^a-z0-9]/g, '').substring(0, 20));
             });
             
             if (matchingItem) {
+              console.log('✓ Match found:', bulletText.substring(0, 30), '->', matchingItem.text.substring(0, 30));
               return (
-                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
-                  <span className="text-blue-500 mt-1">→</span>
+                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2 bg-green-50">
+                  <span className="text-blue-500 font-bold">→</span>
                   <button 
                     onClick={() => scrollToSection(matchingItem.id)}
                     className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
@@ -167,21 +172,29 @@ export default function FullFrameworkPage() {
                 </li>
               );
             }
+            console.log('✗ No match for:', bulletText.substring(0, 30));
           }
           
-          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{bulletText}</li>;
+          // DEBUG: Show all bullets with arrow to verify rendering
+          return (
+            <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">{bulletText}</span>
+            </li>
+          );
         }
         
-        // Numbered lists - make clickable if in TOC section
+        // Numbered lists - DEBUG: always show arrow
         if (/^\d+\.\s/.test(line)) {
           const itemText = line.replace(/^\d+\.\s/, '');
+          
+          console.log(`Numbered ${i}:`, itemText.substring(0, 50), '| inToc:', inTocSection);
           
           // In TOC section - try to find matching header
           if (inTocSection && tocItems.length > 0) {
             const matchingItem = tocItems.find(item => {
               const itemLower = item.text.toLowerCase();
               const textLower = itemText.toLowerCase();
-              // Check multiple matching strategies
               return textLower.includes(itemLower) || 
                      itemLower.includes(textLower) ||
                      (textLower.substring(0, 30).trim() === itemLower.substring(0, 30).trim()) ||
@@ -189,9 +202,10 @@ export default function FullFrameworkPage() {
             });
             
             if (matchingItem) {
+              console.log('✓ Match found:', itemText.substring(0, 30), '->', matchingItem.text.substring(0, 30));
               return (
-                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
-                  <span className="text-blue-500 mt-1">→</span>
+                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2 bg-green-50">
+                  <span className="text-blue-500 font-bold">→</span>
                   <button 
                     onClick={() => scrollToSection(matchingItem.id)}
                     className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
@@ -201,9 +215,16 @@ export default function FullFrameworkPage() {
                 </li>
               );
             }
+            console.log('✗ No match for:', itemText.substring(0, 30));
           }
           
-          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{itemText}</li>;
+          // DEBUG: Show all numbered items with arrow
+          return (
+            <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
+              <span className="text-slate-300">#</span>
+              <span className="text-slate-700">{itemText}</span>
+            </li>
+          );
         }
         
         // Bold text
