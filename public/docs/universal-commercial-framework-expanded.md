@@ -257,9 +257,23 @@ This document is the complete operational blueprint for that system. It defines 
 | Access to Disciplined High-Hour Pilots | No structured pipeline from military | Platform surfaces military transition pilots filtered by aircraft type, hours, and clearance level | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
 | Reduced Training Cost for Airlines | Military pilots need significant retraining | Pre-mapped competencies reduce simulator hours and onboarding time — lower cost-per-hire | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
 | **PILLAR 8 — BANKING & FINANCIAL INSTITUTIONS** | | | |
-| Aviation Loan Default Risk Assessment | Estimated (no live data) | Predictive score-based | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
-| Career Trajectory Data for Lenders | Unavailable | Live pathway progress feed | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
-| Loan Pricing Adjustment Triggers | None | Automated milestone events | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| **— WHAT PILOTS NEED TO KNOW ABOUT AVIATION FINANCING** | | | |
+| Which Banks Offer Aviation Training Loans | Unknown — pilots ask around | Platform lists partner banks and lenders offering pilot training loans per country | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| What Loan Amount Can I Realistically Get | No benchmark | Published: typical loan ranges per training path — PPL, CPL, ATPL integrated, type ratings | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Interest Rates & Repayment Terms | Hidden until application | Partner banks publish rates, grace periods, and repayment structures specific to aviation loans | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Does My Recognition Score Affect Loan Terms | No connection exists today | Recognition Score used as career risk indicator — higher score = better loan terms with partners | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Airline Sponsorship vs Bank Loan — Which Is Better | No comparison guide | Platform publishes side-by-side: bond period cost vs loan interest vs pure self-fund analysis | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| What Happens If I Fail Training — Loan Liability | Not communicated | Partner banks publish their training interruption and partial completion policies upfront | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Can I Get a Loan Without Collateral | Unknown | Platform shows which lenders offer income-based aviation loans without asset collateral | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Loan Eligibility Based on Career Stage | No guidance | Lenders publish eligibility by stage: student, CPL holder, type-rated, employed pilot refinancing | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Financial Planning Tool | Pilots plan blindly | ROI calculator: training cost vs projected salary timeline vs loan repayment schedule | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| **— WHAT BANKS & LENDERS GAIN FROM THE PLATFORM** | | | |
+| Aviation Loan Default Risk Assessment | Estimated — no live career data | Predictive score-based — Recognition Score and pathway progress used as live risk indicators | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Career Trajectory Data for Lenders | Unavailable — black box after disbursement | Live pathway progress feed — lenders see if pilot is on track, stalled, or employed | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Loan Pricing Adjustment Triggers | None — flat rate for duration of loan | Automated milestone events: employment, type rating completion, airline placement = rate reduction | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Borrower Verification | Manual document collection | Verified pilot profile — license, hours, school enrollment all confirmed before disbursement | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Student Default Rate on Aviation Loans | 28% industry average | <8% — better-aligned pilots with clear pathways are lower-risk borrowers | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| New Aviation Loan Product Market | Underserved — banks don't know where to start | Platform provides the borrower data, risk framework, and distribution channel to launch products | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
 | **PILLAR 9 — AVIATION INSURANCE** | | | |
 | Insurance Underwriting Accuracy | 40% (estimated) | 90%+ | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
 | Premium Pricing Accuracy for Pilots | Blunt rate cards | Dynamic profile-based pricing | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
