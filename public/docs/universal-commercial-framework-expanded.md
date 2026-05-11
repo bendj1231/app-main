@@ -99,7 +99,7 @@ This document provides the exhaustive operational blueprint for that system: wha
 |--------|---------------|------------------|-------------|
 | **PILLAR 1 — COMMERCIAL AIRLINES** | | | |
 | Average Time-to-Hire | 6-12 months | 2-4 weeks | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
-| Pilot Candidate Discovery Method | Random CVs, mass applications | Direct-interest pulls from verified profiles only | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Candidate Discovery Method | Random CVs, mass applications | Verified pilots: direct-interest pulls with pre-cleared status. Non-verified pilots: interest submission visible but flagged as unverified — airline decides | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Airline Competency & Expectation Visibility | Hidden internally, pilots fly blind | Published pathway cards: exact requirements per airline | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Pilot Self-Alignment to Airline Standards | No tool exists | Pilots compare their profile against airline pathway gaps | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Cadet & Direct Entry Program Transparency | Fragmented, airline-by-airline | Unified pathway cards for all programs, all airlines | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
