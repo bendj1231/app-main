@@ -97,11 +97,42 @@ This document provides the exhaustive operational blueprint for that system: wha
 
 | Metric | Current State | Framework Target |
 |--------|---------------|------------------|
-| Average Time-to-Hire | 6-12 months | 2-4 weeks |
+| **HIRING & RECRUITMENT** | | |
+| Average Time-to-Hire (Commercial Airlines) | 6-12 months | 2-4 weeks |
+| Pilot Candidate Discovery Method | Manual CV screening | Live verified profile pull |
+| Candidate Washout Rate Post-Hire | 35-45% | <10% |
+| Compliance Check Turnaround | 14-30 days | 24-48 hours |
+| **TRAINING & FLIGHT SCHOOLS** | | |
 | Pilot Training ROI Failure Rate | 65% | <15% |
+| Time from Graduation to Employment | 2-5 years | 6-18 months |
+| Flight School Placement Visibility | 0% (no tracking) | 100% verified |
+| Student Default Rate on Aviation Loans | 28% | <8% |
+| **CHARTER & BUSINESS AVIATION** | | |
+| On-Demand Pilot Verification Speed | 5-10 days | 2-4 hours |
+| Qualified Charter Pilot Pool Visibility | Fragmented (broker-dependent) | Unified vetted pool |
+| Recency & Currency Tracking | Manual logbook checks | Live telemetry verified |
+| **eVTOL & EMERGING SECTORS** | | |
+| Type-Specific Credential Standardization | None (sector is unregulated) | Framework-defined profiles |
+| Operator-to-Pilot Matching for New Types | 0% (no infrastructure) | Active pathway matching |
+| **MILITARY TRANSITION** | | |
+| Civilian Credential Translation Accuracy | 40% (manual, inconsistent) | 95%+ automated mapping |
+| Time to First Civilian Operator Offer | 12-24 months | 2-4 months |
+| **INSURANCE & RISK** | | |
 | Insurance Underwriting Accuracy | 40% (estimated) | 90%+ |
-| Data Verification Speed | 14-30 days | 24-48 hours |
-| Industry Data Fragmentation | 100% (isolated) | Unified Platform |
+| Premium Pricing Accuracy for Pilots | Blunt rate cards | Dynamic profile-based pricing |
+| Incident History Verification Speed | 30-90 days | Real-time API |
+| **BANKING & FINANCE** | | |
+| Aviation Loan Default Risk Assessment | Estimated (no live data) | Predictive score-based |
+| Career Trajectory Data for Lenders | Unavailable | Live pathway progress |
+| Loan Pricing Adjustment Triggers | None | Automated milestone events |
+| **REGULATORS & COMPLIANCE** | | |
+| Cross-Border License Verification | 7-21 days | 24 hours |
+| Audit Trail Integrity | Manual submissions | Immutable digital records |
+| Regulatory Reporting Automation | 0% | 100% |
+| **PLATFORM INFRASTRUCTURE** | | |
+| Industry Data Fragmentation | 100% (isolated silos) | Unified Platform |
+| Pilot Recognition Score Portability | Does not exist | Portable across all sectors |
+| Stakeholders Connected | 0 (no unified system) | 20+ industry bodies |
 
 ### Key Stakeholder Value Propositions
 
