@@ -61,10 +61,12 @@ export default function FullFrameworkPage() {
   // Simple markdown renderer with anchor IDs
   const renderMarkdown = (text: string) => {
     const seenIds = new Set<string>();
+    let inTocSection = false;
+    let tocSectionEnd = false;
     
-    return text
-      .split('\n')
-      .map((line, i) => {
+    const lines = text.split('\n');
+    
+    return lines.map((line, i) => {
         // Headers with IDs
         if (line.startsWith('# ')) {
           const headingText = line.replace('# ', '');
@@ -125,35 +127,48 @@ export default function FullFrameworkPage() {
           return <hr key={i} className="my-8 border-slate-300" />;
         }
         
-        // Bullet points - check if it's a TOC entry (contains page numbers or pillar references)
+        // Track if we're in the TOC section (before first main heading)
+        if (line.startsWith('# ') && !tocSectionEnd) {
+          tocSectionEnd = true;
+        }
+        if (line.toLowerCase().includes('table of contents')) {
+          inTocSection = true;
+        }
+        
+        // Bullet points - make clickable if in TOC section
         if (line.startsWith('- ') || line.startsWith('• ')) {
-          const text = line.replace(/^- /, '').replace(/^• /, '');
+          const bulletText = line.replace(/^- /, '').replace(/^• /, '');
           
-          // Check if this looks like a TOC entry (has "Pillar", "Part", "Pages", or common section keywords)
-          const isTocEntry = /^(Part\s+|Pillar\s+|Executive|Genesis|Universal|12\s+Core|Infrastructure|Hub\s+[A-F]|Commercial|Cargo|Charter|Flight|Type|Military|Banking|Insurance|VEREMARK|Recruitment|Media|Events)/i.test(text);
-          
-          if (isTocEntry && tocItems.length > 0) {
-            // Find matching TOC item
-            const matchingItem = tocItems.find(item => 
-              text.toLowerCase().includes(item.text.toLowerCase().substring(0, 20)) ||
-              item.text.toLowerCase().includes(text.toLowerCase().substring(0, 20))
-            );
+          // In TOC section - try to find matching header
+          if (inTocSection && tocItems.length > 0) {
+            // Find matching header by comparing text (case insensitive, partial match)
+            const matchingItem = tocItems.find(item => {
+              const itemLower = item.text.toLowerCase();
+              const bulletLower = bulletText.toLowerCase();
+              // Check if bullet contains item text or vice versa
+              return bulletLower.includes(itemLower) || 
+                     itemLower.includes(bulletLower) ||
+                     // Also check first 30 chars for partial match
+                     (bulletLower.substring(0, 30).trim() === itemLower.substring(0, 30).trim()) ||
+                     // Check without spaces/punctuation
+                     bulletLower.replace(/[^a-z0-9]/g, '').includes(itemLower.replace(/[^a-z0-9]/g, '').substring(0, 20));
+            });
             
             if (matchingItem) {
               return (
                 <li key={i} className="ml-6 leading-relaxed">
                   <button 
                     onClick={() => scrollToSection(matchingItem.id)}
-                    className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left"
+                    className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
                   >
-                    {text}
+                    {bulletText}
                   </button>
                 </li>
               );
             }
           }
           
-          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{text}</li>;
+          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{bulletText}</li>;
         }
         
         // Numbered lists
