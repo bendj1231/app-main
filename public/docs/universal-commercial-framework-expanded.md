@@ -221,11 +221,23 @@ This document is the complete operational blueprint for that system. It defines 
 | Student Default Rate on Aviation Loans | 28% | <8% — better career alignment reduces financial dropout | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
 | Airline Feeder Relationships | Informal, relationship-dependent | Formal airline-ATO feeder agreements published on platform — schools attract better students | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
 | **PILLAR 6 — TYPE RATING & SIMULATOR CENTERS** | | | |
-| Type Rating Availability Discovery | Manual search, broker-dependent | Live directory with availability & pricing | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
-| Simulator Hour Verification | Paper logbook, unverified | Digitally verified simulator records | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
-| Type Rating ROI Visibility for Pilots | Unknown pre-enrollment | Pathway-linked ROI calculator | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
-| EBT (Evidence-Based Training) Alignment | Inconsistent across operators | Standardized EBT scoring & video record | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
-| Aircraft Type Endorsement Portability | Locked to one operator | Visible and portable across all operators | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| **— WHAT PILOTS NEED TO KNOW BEFORE INVESTING IN A TYPE RATING** | | | |
+| Is There Actual Demand for This Type Rating? | Pilots invest $20K–$60K blind | Platform shows live fleet demand per type — airlines publish which types they're actively recruiting | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Which Airlines Accept This Rating | Unknown before purchase | Per type rating: list of airlines and operators who accept it — verified and updated live | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Cost of Type Rating vs Career ROI | No benchmark | Published: average cost per type vs average salary increase and time-to-recoupment | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Which Training Centers Offer This Type | Manual search, broker-dependent | Live directory: CAE, FlightSafety, SimuFlite, L3Harris, local ATOs — with pricing & availability | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Sponsor vs Self-Fund — Which Airlines Sponsor | Unknown — discovered late | Platform shows per airline: self-fund required / bond-back scheme / full sponsor / partial sponsor | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Type Rating Validity & Renewal Requirements | Misunderstood | Published per type: proficiency check intervals, recency requirements, currency rules per authority | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| EBT vs Traditional Training — What Applies | Confusing for pilots | Published per center: which centers offer EBT, how it maps to airline competency frameworks | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Simulator Hour Credit Toward Type Rating | Not understood | Platform shows which sim hours count toward type rating credit per authority (FAA/EASA/CAAP) | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Cross-Credit Between Similar Aircraft Types | Pilots don't know what applies | Published: A320 to A220 cross-credit, B737 to B737MAX differences, authority-specific rules | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Profile Shows Verified Type Ratings | Paper certificate, no verification | Type rating added to live profile after completion — airlines see it instantly, no document chase | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Type Endorsement Portability Across Operators | Locked to one operator record | Visible and portable — every airline can verify your type rating status live | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| **— WHAT TYPE RATING CENTERS GAIN FROM THE PLATFORM** | | | |
+| Simulator Hour Verification | Paper logbook, manually checked | Digitally verified simulator records — tamper-proof, authority-ready | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| EBT Score Standardization | Inconsistent across operators | Standardized EBT scoring and video record — sharable with airlines directly | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Demand Signal for Course Planning | Centers schedule blind | Platform demand data shows which types are trending — centers plan capacity accordingly | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Student Pipeline Quality | Random enrollment | Pilots enrolling are pre-validated against demand — fewer low-ROI enrollments | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
 | **PILLAR 7 — MILITARY TRANSITION** | | | |
 | Civilian Credential Translation Accuracy | 40% (manual, inconsistent) | 95%+ automated mapping | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
 | Time to First Civilian Operator Offer | 12-24 months | 2-4 months | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
