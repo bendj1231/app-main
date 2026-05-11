@@ -394,10 +394,12 @@ export default function FullFrameworkPage() {
             // Process bold markdown in cell text
             const processCellText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             if (isSectionRow) {
-              const sectionLabel = processCellText(cells[0]?.trim() || '');
+              const rawLabel = cells[0]?.trim() || '';
+              const isSubSection = rawLabel.startsWith('—') || rawLabel.startsWith('-—') || rawLabel.startsWith('**—');
+              const sectionLabel = processCellText(rawLabel);
               return (
-                <div key={i} className={`col-span-full grid ${gridClass} py-3 mt-2 border-y-2 border-slate-300 bg-slate-800`}>
-                  <span className="col-span-full px-3 text-sm font-bold text-white tracking-wide uppercase" dangerouslySetInnerHTML={{ __html: sectionLabel }} />
+                <div key={i} className={`col-span-full grid ${gridClass} border-y-2 ${isSubSection ? 'py-2 mt-1 border-slate-200 bg-slate-600' : 'py-3 mt-3 border-slate-300 bg-slate-800'}`}>
+                  <span className={`col-span-full px-3 font-bold text-white tracking-wide ${isSubSection ? 'text-xs' : 'text-sm uppercase'}`} dangerouslySetInnerHTML={{ __html: sectionLabel }} />
                 </div>
               );
             }
