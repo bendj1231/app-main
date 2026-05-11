@@ -145,8 +145,23 @@ This document is the complete operational blueprint for that system. It defines 
 | Candidate Washout Rate Post-Hire | 35-45% | <10% — pre-aligned candidates reduce post-hire failures | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Average Time-to-Hire | 6-12 months | 2-4 weeks with pre-cleared pipeline | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | **PILLAR 2 — CARGO & FREIGHT** | | | |
-| Cargo Operator Pilot Pool Visibility | Isolated per carrier | Unified verified cargo pilot database | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
-| Scheduling & Recency Compliance Tracking | Manual records, delayed | Real-time automated compliance feed | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| **— WHAT PILOTS NEED TO KNOW ABOUT CARGO PATHWAYS** | | | |
+| Cargo vs Passenger — Key Differences | Pilots discover this after joining | Night-heavy ops, autonomous decision-making, less cabin crew interaction — all published upfront | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Night Operations Requirement | Unknown until briefed | Cargo roles average 60–80% night operations — platform flags this per operator | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Type Ratings in Demand for Cargo | No visibility | B737F, B767F, B747F, ATR72F — demand by operator published and updated live | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Minimum Hours to Enter Cargo | Varies — no standard published | Platform shows minimum TT, command hours, and night hours per cargo operator | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Salary & Roster Transparency | Never disclosed before applying | Cargo operators publish pay bands, layover allowances, roster patterns (e.g. 5 on / 3 off) | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Cargo Cadet & Direct Entry Programs | Rarely advertised publicly | Published: DHL, FedEx, Cathay Cargo, and regional carriers — cadet eligibility criteria listed | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Foreign License Acceptance in Cargo | Unknown per operator | Each operator's license validation policy published — ICAO equivalency and conversion steps | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Multinational Hiring in Cargo | Undisclosed | Operators state: open globally / regional preference / nationals only | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Profile Gap Analysis for Cargo | Pilots apply blind | Compare live profile to cargo pathway — exact gaps in hours, ratings, and night time shown | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Cargo Growth Trajectory | No data available | Platform publishes cargo fleet growth, new route demand, and upcoming type rating needs | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Why Choose Cargo Over Passenger | Not communicated | Operators publish: career advantages, schedule flexibility, faster command opportunities | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Command Upgrade Timeline in Cargo | Opaque | Average time-to-command by operator published — cargo often faster than major airline | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| **— OPERATIONAL OUTCOMES (Benefits to Cargo Operators)** | | | |
+| Cargo Operator Pilot Pool Visibility | Isolated per carrier | Unified verified cargo pilot database with night hours and recency data | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Scheduling & Recency Compliance Tracking | Manual records, delayed | Real-time automated compliance feed — night recency, instrument currency tracked | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Pilot Self-Selection Accuracy | High mismatch — wrong candidates apply | Pilots pre-screened by pathway alignment before submitting interest | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
 | **PILLAR 3 — CHARTER & BUSINESS AVIATION** | | | |
 | On-Demand Pilot Verification Speed | 5-10 days | 2-4 hours | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
 | Qualified Charter Pilot Pool Visibility | Fragmented (broker-dependent) | Unified vetted pool | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
