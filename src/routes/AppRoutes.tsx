@@ -102,7 +102,6 @@ import BlogPage from '@/app/blog/page';
 import StorePage from '@/app/store/page';
 import FrameworkPage from '@/app/framework/page';
 import FullFrameworkPage from '@/app/framework/full/page';
-import ModuleFrameworkPage from '@/app/framework/module/page';
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -317,7 +316,6 @@ export const AppRoutes = () => {
       {/* Framework routes */}
       <Route path="/framework" element={<FrameworkPage />} />
       <Route path="/framework/full" element={<FullFrameworkPage />} />
-      <Route path="/framework/module" element={<ModuleFrameworkPage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
