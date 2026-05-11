@@ -121,12 +121,12 @@ export default function FullFrameworkPage() {
     }
   };
 
-  // Left navigation sections structure
+  // Left navigation sections structure - IDs must match actual document heading IDs
   const navSections = [
-    { id: 'document-info', label: 'Document Info', level: 1 },
+    { id: 'document-information', label: 'Document Info', level: 1 },
     { id: 'table-of-contents', label: 'Table of Contents', level: 1 },
     { 
-      id: 'part-i-foundation-vision', 
+      id: 'part-i-foundation-vision-pages-1-15', 
       label: 'Part I: Foundation & Vision', 
       level: 1,
       children: [
@@ -138,81 +138,81 @@ export default function FullFrameworkPage() {
       ]
     },
     { 
-      id: 'part-ii-hub-a-operations-recruitment', 
+      id: 'part-ii-hub-a---operations-recruitment-pages-16-35', 
       label: 'Part II: Hub A - Operations & Recruitment', 
       level: 1,
       children: [
         { id: 'pillar-1-commercial-airlines', label: 'Pillar 1: Commercial Airlines', level: 2 },
         { id: 'pillar-2-cargo-freight', label: 'Pillar 2: Cargo & Freight', level: 2 },
-        { id: 'pillar-3-charter-business', label: 'Pillar 3: Charter & Business Aviation', level: 2 },
-        { id: 'pillar-4-emerging-sectors', label: 'Pillar 4: Emerging Sectors', level: 2 },
-        { id: 'pillar-5-recruitment-agencies', label: 'Pillar 5: Recruitment Agencies', level: 2 },
+        { id: 'pillar-3-charter-business-aviation', label: 'Pillar 3: Charter & Business Aviation', level: 2 },
+        { id: 'pillar-4-emerging-aviation-sectors', label: 'Pillar 4: Emerging Sectors', level: 2 },
+        { id: 'pillar-5-aviation-recruitment-agencies', label: 'Pillar 5: Recruitment Agencies', level: 2 },
       ]
     },
     { 
-      id: 'part-iii-hub-b-training-transition', 
+      id: 'part-iii-hub-b---training-transition-pages-36-50', 
       label: 'Part III: Hub B - Training & Transition', 
       level: 1,
       children: [
-        { id: 'pillar-6-atos', label: 'Pillar 6: Flight Training (ATOs)', level: 2 },
-        { id: 'pillar-7-type-rating', label: 'Pillar 7: Type Rating Centers', level: 2 },
-        { id: 'pillar-8-military-defense', label: 'Pillar 8: Military & Defense', level: 2 },
-        { id: 'pillar-9-aviation-universities', label: 'Pillar 9: Aviation Universities', level: 2 },
+        { id: 'pillar-6-flight-training-organizations-atos', label: 'Pillar 6: Flight Training (ATOs)', level: 2 },
+        { id: 'pillar-7-type-rating-simulator-centers', label: 'Pillar 7: Type Rating Centers', level: 2 },
+        { id: 'pillar-8-military-defense-commands', label: 'Pillar 8: Military & Defense', level: 2 },
+        { id: 'pillar-9-aviation-universities-academies', label: 'Pillar 9: Aviation Universities', level: 2 },
       ]
     },
     { 
-      id: 'part-iv-hub-c-capital-risk-compliance', 
+      id: 'part-iv-hub-c---capital-risk-compliance-pages-51-6', 
       label: 'Part IV: Hub C - Capital, Risk & Compliance', 
       level: 1,
       children: [
-        { id: 'pillar-10-banking', label: 'Pillar 10: Banking & Financial', level: 2 },
-        { id: 'pillar-11-insurance', label: 'Pillar 11: Aviation Insurance', level: 2 },
-        { id: 'pillar-12-legal-regulatory', label: 'Pillar 12: Legal & Regulatory', level: 2 },
-        { id: 'pillar-13-credit-rating', label: 'Pillar 13: Credit Rating', level: 2 },
+        { id: 'pillar-10-banking-financial-institutions', label: 'Pillar 10: Banking & Financial', level: 2 },
+        { id: 'pillar-11-aviation-insurance-providers', label: 'Pillar 11: Aviation Insurance', level: 2 },
+        { id: 'pillar-12-legal-regulatory-bodies', label: 'Pillar 12: Legal & Regulatory', level: 2 },
+        { id: 'pillar-13-credit-rating-agencies', label: 'Pillar 13: Credit Rating', level: 2 },
       ]
     },
     { 
-      id: 'part-v-hub-d-infrastructure-data', 
+      id: 'part-v-hub-d---infrastructure-data-pages-66-80', 
       label: 'Part V: Hub D - Infrastructure & Data', 
       level: 1,
       children: [
-        { id: 'pillar-14-verification-apis', label: 'Pillar 14: Verification APIs', level: 2 },
-        { id: 'pillar-15-flight-data', label: 'Pillar 15: Flight Data & Navigation', level: 2 },
-        { id: 'pillar-16-ames', label: 'Pillar 16: Aeromedical (AMEs)', level: 2 },
-        { id: 'pillar-17-telemetry', label: 'Pillar 17: Telemetry & Simulators', level: 2 },
+        { id: 'pillar-14-verification-apis-background-check-providers', label: 'Pillar 14: Verification APIs', level: 2 },
+        { id: 'pillar-15-flight-data-navigation-applications', label: 'Pillar 15: Flight Data & Navigation', level: 2 },
+        { id: 'pillar-16-aeromedical-examiners-ames', label: 'Pillar 16: Aeromedical (AMEs)', level: 2 },
+        { id: 'pillar-17-telemetry-simulator-data-providers', label: 'Pillar 17: Telemetry & Simulators', level: 2 },
       ]
     },
     { 
-      id: 'part-vi-hub-e-community-culture', 
+      id: 'part-vi-hub-e---community-culture-pages-81-90', 
       label: 'Part VI: Hub E - Community & Culture', 
       level: 1,
       children: [
-        { id: 'pillar-18-pilot-contributors', label: 'Pillar 18: Pilot Contributors', level: 2 },
-        { id: 'pillar-19-manufacturers', label: 'Pillar 19: Manufacturers & OEMs', level: 2 },
-        { id: 'pillar-20-media', label: 'Pillar 20: Aviation Media', level: 2 },
+        { id: 'pillar-18-pilot-contributors-mentors-unions', label: 'Pillar 18: Pilot Contributors', level: 2 },
+        { id: 'pillar-19-aircraft-manufacturers-oems', label: 'Pillar 19: Manufacturers & OEMs', level: 2 },
+        { id: 'pillar-20-aviation-media-publications', label: 'Pillar 20: Aviation Media', level: 2 },
       ]
     },
     { 
-      id: 'part-vii-hub-f-growth-expansion', 
+      id: 'part-vii-hub-f---growth-expansion-pages-91-95', 
       label: 'Part VII: Hub F - Growth & Expansion', 
       level: 1,
       children: [
-        { id: 'pillar-21-events-fairs', label: 'Pillar 21: Events & Career Fairs', level: 2 },
-        { id: 'pillar-22-government-authorities', label: 'Pillar 22: Government Authorities', level: 2 },
-        { id: 'pillar-23-international-orgs', label: 'Pillar 23: International Organizations', level: 2 },
+        { id: 'pillar-21-aviation-events-career-fairs', label: 'Pillar 21: Events & Career Fairs', level: 2 },
+        { id: 'pillar-22-government-aviation-authorities', label: 'Pillar 22: Government Authorities', level: 2 },
+        { id: 'pillar-23-international-aviation-organizations-iata-i', label: 'Pillar 23: International Organizations', level: 2 },
       ]
     },
     { 
-      id: 'part-viii-appendices', 
+      id: 'part-viii-technical-commercial-appendices-pages-96-1', 
       label: 'Part VIII: Appendices', 
       level: 1,
       children: [
-        { id: 'appendix-a-technical', label: 'Appendix A: Technical Integration', level: 2 },
-        { id: 'appendix-b-data-governance', label: 'Appendix B: Data Governance', level: 2 },
-        { id: 'appendix-c-commercial', label: 'Appendix C: Commercial Framework', level: 2 },
-        { id: 'appendix-d-timeline', label: 'Appendix D: Implementation', level: 2 },
-        { id: 'appendix-e-roi', label: 'Appendix E: ROI Case Studies', level: 2 },
-        { id: 'appendix-f-glossary', label: 'Appendix F: Glossary', level: 2 },
+        { id: 'appendix-a-technical-integration-specifications', label: 'Appendix A: Technical Integration', level: 2 },
+        { id: 'appendix-b-data-governance-compliance-framework', label: 'Appendix B: Data Governance', level: 2 },
+        { id: 'appendix-c-commercial-framework-pricing', label: 'Appendix C: Commercial Framework', level: 2 },
+        { id: 'appendix-d-implementation-timeline-milestones', label: 'Appendix D: Implementation', level: 2 },
+        { id: 'appendix-e-roi-case-studies-success-metrics', label: 'Appendix E: ROI Case Studies', level: 2 },
+        { id: 'appendix-f-glossary-industry-definitions', label: 'Appendix F: Glossary', level: 2 },
       ]
     },
     { id: 'conclusion', label: 'Conclusion', level: 1 },
