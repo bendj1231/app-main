@@ -131,7 +131,7 @@ export default function FullFrameworkPage() {
       level: 1,
       children: [
         { id: 'page-1-executive-summary', label: 'Executive Summary', level: 2 },
-        { id: 'page-2-the-founders-narrative---why-this-platform-exists', label: "Founder's Narrative", level: 2 },
+        { id: 'page-2-the-founders-narrative---why-this-platform-', label: "Founder's Narrative", level: 2 },
         { id: 'page-3-4-the-universal-ecosystem-philosophy', label: 'Universal Ecosystem Philosophy', level: 2 },
         { id: 'page-4-6-the-12-core-industry-failures-we-solve', label: '12 Core Industry Failures', level: 2 },
         { id: 'page-7-10-infrastructure-architecture-overview', label: 'Infrastructure Architecture', level: 2 },
@@ -143,9 +143,9 @@ export default function FullFrameworkPage() {
       level: 1,
       children: [
         { id: 'pillar-1-commercial-airlines-detailed', label: 'Pillar 1: Commercial Airlines', level: 2 },
-        { id: 'pillar-2-cargo--freight-operators', label: 'Pillar 2: Cargo & Freight', level: 2 },
-        { id: 'pillar-3-charter--business-aviation', label: 'Pillar 3: Charter & Business Aviation', level: 2 },
-        { id: 'pillar-4-emerging-aviation-sectors-evtol-air-taxi-agriculture', label: 'Pillar 4: Emerging Sectors', level: 2 },
+        { id: 'pillar-2-cargo-freight-operators', label: 'Pillar 2: Cargo & Freight', level: 2 },
+        { id: 'pillar-3-charter-business-aviation', label: 'Pillar 3: Charter & Business Aviation', level: 2 },
+        { id: 'pillar-4-emerging-aviation-sectors-evtol-air-taxi-', label: 'Pillar 4: Emerging Sectors', level: 2 },
         { id: 'pillar-5-flight-training-organizations-atos', label: 'Pillar 5: Flight Training (ATOs)', level: 2 },
       ]
     },
@@ -154,9 +154,9 @@ export default function FullFrameworkPage() {
       label: 'Part III: Hub B - Training & Transition', 
       level: 1,
       children: [
-        { id: 'pillar-6-type-rating--simulator-centers', label: 'Pillar 6: Type Rating Centers', level: 2 },
-        { id: 'pillar-7-military--defense-commands', label: 'Pillar 7: Military & Defense', level: 2 },
-        { id: 'pillar-8-banking--financial-institutions', label: 'Pillar 8: Banking & Financial', level: 2 },
+        { id: 'pillar-6-type-rating-simulator-centers', label: 'Pillar 6: Type Rating Centers', level: 2 },
+        { id: 'pillar-7-military-defense-commands', label: 'Pillar 7: Military & Defense', level: 2 },
+        { id: 'pillar-8-banking-financial-institutions', label: 'Pillar 8: Banking & Financial', level: 2 },
         { id: 'pillar-9-aviation-insurance-providers', label: 'Pillar 9: Aviation Insurance', level: 2 },
       ]
     },
@@ -165,9 +165,9 @@ export default function FullFrameworkPage() {
       label: 'Part IV: Hub C - Capital, Risk & Compliance', 
       level: 1,
       children: [
-        { id: 'pillar-10-legal--regulatory-bodies-caap-faa-easa', label: 'Pillar 10: Legal & Regulatory', level: 2 },
-        { id: 'pillar-11-verification-apis-veremark--background-check-providers', label: 'Pillar 11: Verification APIs', level: 2 },
-        { id: 'pillar-12-flight-data--navigation-apps-navigraph-foreflight-etc', label: 'Pillar 12: Flight Data & Navigation', level: 2 },
+        { id: 'pillar-10-legal-regulatory-bodies-caap-faa-easa', label: 'Pillar 10: Legal & Regulatory', level: 2 },
+        { id: 'pillar-11-verification-apis-veremark-background-ch', label: 'Pillar 11: Verification APIs', level: 2 },
+        { id: 'pillar-12-flight-data-navigation-apps-navigraph-fo', label: 'Pillar 12: Flight Data & Navigation', level: 2 },
         { id: 'pillar-13-aeromedical-examiners-ames', label: 'Pillar 13: Aeromedical (AMEs)', level: 2 },
       ]
     },
@@ -176,10 +176,10 @@ export default function FullFrameworkPage() {
       label: 'Part V: Hub D - Infrastructure & Data', 
       level: 1,
       children: [
-        { id: 'pillar-14-pilot-contributors-mentors--unions', label: 'Pillar 14: Pilot Contributors', level: 2 },
-        { id: 'pillar-15-aircraft-manufacturers--oems-airbus-boeing-cessna-etc', label: 'Pillar 15: Manufacturers & OEMs', level: 2 },
+        { id: 'pillar-14-pilot-contributors-mentors-unions', label: 'Pillar 14: Pilot Contributors', level: 2 },
+        { id: 'pillar-15-aircraft-manufacturers-oems-airbus-boein', label: 'Pillar 15: Manufacturers & OEMs', level: 2 },
         { id: 'pillar-16-aviation-recruitment-agencies', label: 'Pillar 16: Recruitment Agencies', level: 2 },
-        { id: 'pillar-17-aviation-universities--academies', label: 'Pillar 17: Aviation Universities', level: 2 },
+        { id: 'pillar-17-aviation-universities-academies', label: 'Pillar 17: Aviation Universities', level: 2 },
       ]
     },
     { 
@@ -187,9 +187,9 @@ export default function FullFrameworkPage() {
       label: 'Part VI: Hub E - Community & Culture', 
       level: 1,
       children: [
-        { id: 'pillar-18-aviation-media--publications', label: 'Pillar 18: Aviation Media', level: 2 },
-        { id: 'pillar-19-aviation-events--career-fairs', label: 'Pillar 19: Events & Career Fairs', level: 2 },
-        { id: 'pillar-20-government-aviation-authorities-caap-faa-easa-etc', label: 'Pillar 20: Government Authorities', level: 2 },
+        { id: 'pillar-18-aviation-media-publications', label: 'Pillar 18: Aviation Media', level: 2 },
+        { id: 'pillar-19-aviation-events-career-fairs', label: 'Pillar 19: Events & Career Fairs', level: 2 },
+        { id: 'pillar-20-government-aviation-authorities-caap-faa', label: 'Pillar 20: Government Authorities', level: 2 },
       ]
     },
     { 
@@ -198,8 +198,8 @@ export default function FullFrameworkPage() {
       level: 1,
       children: [
         { id: 'pillar-21-international-aviation-organizations-iata-icao-etc', label: 'Pillar 21: International Organizations', level: 2 },
-        { id: 'pillar-22-credit-rating--risk-assessment-agencies', label: 'Pillar 22: Credit Rating', level: 2 },
-        { id: 'pillar-23-telemetry--simulator-data-providers', label: 'Pillar 23: Telemetry & Simulators', level: 2 },
+        { id: 'pillar-22-credit-rating-risk-assessment-agencies', label: 'Pillar 22: Credit Rating', level: 2 },
+        { id: 'pillar-23-telemetry-simulator-data-providers', label: 'Pillar 23: Telemetry & Simulators', level: 2 },
       ]
     },
     { 
