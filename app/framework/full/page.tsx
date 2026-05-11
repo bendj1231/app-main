@@ -131,21 +131,22 @@ export default function FullFrameworkPage() {
           return <hr key={i} className="my-8 border-slate-300" />;
         }
         
-        // Track if we're in the TOC section (before first main heading)
-        if (line.startsWith('# ') && !tocSectionEnd) {
-          tocSectionEnd = true;
-        }
+        // Track if we're in the TOC section
+        // Start when we see "Table of Contents", end when we see "# PART" (main content starts)
         if (line.toLowerCase().includes('table of contents')) {
           inTocSection = true;
           debugTocFound = true;
-          console.log('✓ Found Table of Contents');
+          console.log('✓ Found Table of Contents, inToc = true');
+        }
+        if (inTocSection && line.startsWith('# PART')) {
+          inTocSection = false;
+          tocSectionEnd = true;
+          console.log('✓ Reached PART I, TOC section ended');
         }
         
-        // Bullet points - DEBUG: always show arrow for visibility testing
+        // Bullet points
         if (line.startsWith('- ') || line.startsWith('• ')) {
           const bulletText = line.replace(/^- /, '').replace(/^• /, '');
-          
-          console.log(`Bullet ${i}:`, bulletText.substring(0, 50), '| inToc:', inTocSection);
           
           // In TOC section - try to find matching header
           if (inTocSection && tocItems.length > 0) {
@@ -159,10 +160,9 @@ export default function FullFrameworkPage() {
             });
             
             if (matchingItem) {
-              console.log('✓ Match found:', bulletText.substring(0, 30), '->', matchingItem.text.substring(0, 30));
               return (
-                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2 bg-green-50">
-                  <span className="text-blue-500 font-bold">→</span>
+                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">→</span>
                   <button 
                     onClick={() => scrollToSection(matchingItem.id)}
                     className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
@@ -172,23 +172,14 @@ export default function FullFrameworkPage() {
                 </li>
               );
             }
-            console.log('✗ No match for:', bulletText.substring(0, 30));
           }
           
-          // DEBUG: Show all bullets with arrow to verify rendering
-          return (
-            <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
-              <span className="text-slate-300">•</span>
-              <span className="text-slate-700">{bulletText}</span>
-            </li>
-          );
+          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{bulletText}</li>;
         }
         
-        // Numbered lists - DEBUG: always show arrow
+        // Numbered lists - make clickable if in TOC section
         if (/^\d+\.\s/.test(line)) {
           const itemText = line.replace(/^\d+\.\s/, '');
-          
-          console.log(`Numbered ${i}:`, itemText.substring(0, 50), '| inToc:', inTocSection);
           
           // In TOC section - try to find matching header
           if (inTocSection && tocItems.length > 0) {
@@ -202,10 +193,9 @@ export default function FullFrameworkPage() {
             });
             
             if (matchingItem) {
-              console.log('✓ Match found:', itemText.substring(0, 30), '->', matchingItem.text.substring(0, 30));
               return (
-                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2 bg-green-50">
-                  <span className="text-blue-500 font-bold">→</span>
+                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">→</span>
                   <button 
                     onClick={() => scrollToSection(matchingItem.id)}
                     className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
@@ -215,16 +205,9 @@ export default function FullFrameworkPage() {
                 </li>
               );
             }
-            console.log('✗ No match for:', itemText.substring(0, 30));
           }
           
-          // DEBUG: Show all numbered items with arrow
-          return (
-            <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
-              <span className="text-slate-300">#</span>
-              <span className="text-slate-700">{itemText}</span>
-            </li>
-          );
+          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{itemText}</li>;
         }
         
         // Bold text
