@@ -490,11 +490,15 @@ export default function FullFrameworkPage() {
                 <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
               </div>
               <button
-                onClick={() => setSidebarOpen(false)}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
                 className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  {sidebarOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                  )}
                 </svg>
               </button>
             </div>
