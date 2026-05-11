@@ -427,8 +427,8 @@ export default function FullFrameworkPage() {
 
       {/* Main Layout with Left Sidebar */}
       <div className="w-full flex gap-6 pl-4 pr-6 py-8">
-        {/* Left Sidebar Navigation */}
-        <aside className="w-64 flex-shrink-0 h-fit">
+        {/* Left Sidebar Navigation - Hidden when printing */}
+        <aside className="w-64 flex-shrink-0 h-fit print:hidden">
           <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto">
             <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl">
               <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
@@ -450,8 +450,8 @@ export default function FullFrameworkPage() {
           </div>
         </aside>
 
-        {/* Document */}
-        <article className="max-w-4xl mx-auto">
+        {/* Document - Full width when printing */}
+        <article className="max-w-4xl mx-auto print:max-w-none print:w-full">
         {/* Header */}
         <header className="text-center mb-12 pb-8 border-b-2 border-slate-900">
           <p className="text-sm text-slate-500 font-mono mb-2">Aviation Industry Operating System</p>
