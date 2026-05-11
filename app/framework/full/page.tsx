@@ -204,12 +204,10 @@ export default function FullFrameworkPage() {
       label: 'Part VIII: Appendices', 
       level: 1,
       children: [
-        { id: 'appendix-a-technical-integration-specifications', label: 'Appendix A: Technical Integration', level: 2 },
-        { id: 'appendix-b-data-governance-compliance-framework', label: 'Appendix B: Data Governance', level: 2 },
-        { id: 'appendix-c-commercial-framework-pricing', label: 'Appendix C: Commercial Framework', level: 2 },
-        { id: 'appendix-d-implementation-timeline-milestones', label: 'Appendix D: Implementation', level: 2 },
-        { id: 'appendix-e-roi-case-studies-success-metrics', label: 'Appendix E: ROI Case Studies', level: 2 },
-        { id: 'appendix-f-glossary-industry-definitions', label: 'Appendix F: Glossary', level: 2 },
+        { id: 'appendix-a-technical-integration', label: 'Appendix A: Technical Integration', level: 2 },
+        { id: 'appendix-b-data-governance', label: 'Appendix B: Data Governance', level: 2 },
+        { id: 'appendix-c-commercial-framework', label: 'Appendix C: Commercial Framework', level: 2 },
+        { id: 'appendix-d-implementation-timeline', label: 'Appendix D: Implementation', level: 2 },
       ]
     },
     { id: 'conclusion', label: 'Conclusion', level: 1 },
