@@ -58,6 +58,103 @@ export default function FullFrameworkPage() {
     }
   };
 
+  // Left navigation sections structure
+  const navSections = [
+    { id: 'document-info', label: 'Document Info', level: 1 },
+    { id: 'table-of-contents', label: 'Table of Contents', level: 1 },
+    { 
+      id: 'part-i-foundation-vision', 
+      label: 'Part I: Foundation & Vision', 
+      level: 1,
+      children: [
+        { id: 'executive-summary', label: 'Executive Summary', level: 2 },
+        { id: 'universal-ecosystem-philosophy', label: 'Universal Ecosystem Philosophy', level: 2 },
+        { id: '12-core-industry-failures', label: '12 Core Industry Failures', level: 2 },
+        { id: 'genesis-case-studies', label: 'Genesis: Case Studies', level: 2 },
+        { id: 'infrastructure-architecture', label: 'Infrastructure Architecture', level: 2 },
+      ]
+    },
+    { 
+      id: 'part-ii-hub-a-operations-recruitment', 
+      label: 'Part II: Hub A - Operations & Recruitment', 
+      level: 1,
+      children: [
+        { id: 'pillar-1-commercial-airlines', label: 'Pillar 1: Commercial Airlines', level: 2 },
+        { id: 'pillar-2-cargo-freight', label: 'Pillar 2: Cargo & Freight', level: 2 },
+        { id: 'pillar-3-charter-business', label: 'Pillar 3: Charter & Business Aviation', level: 2 },
+        { id: 'pillar-4-emerging-sectors', label: 'Pillar 4: Emerging Sectors', level: 2 },
+        { id: 'pillar-5-recruitment-agencies', label: 'Pillar 5: Recruitment Agencies', level: 2 },
+      ]
+    },
+    { 
+      id: 'part-iii-hub-b-training-transition', 
+      label: 'Part III: Hub B - Training & Transition', 
+      level: 1,
+      children: [
+        { id: 'pillar-6-atos', label: 'Pillar 6: Flight Training (ATOs)', level: 2 },
+        { id: 'pillar-7-type-rating', label: 'Pillar 7: Type Rating Centers', level: 2 },
+        { id: 'pillar-8-military-defense', label: 'Pillar 8: Military & Defense', level: 2 },
+        { id: 'pillar-9-aviation-universities', label: 'Pillar 9: Aviation Universities', level: 2 },
+      ]
+    },
+    { 
+      id: 'part-iv-hub-c-capital-risk-compliance', 
+      label: 'Part IV: Hub C - Capital, Risk & Compliance', 
+      level: 1,
+      children: [
+        { id: 'pillar-10-banking', label: 'Pillar 10: Banking & Financial', level: 2 },
+        { id: 'pillar-11-insurance', label: 'Pillar 11: Aviation Insurance', level: 2 },
+        { id: 'pillar-12-legal-regulatory', label: 'Pillar 12: Legal & Regulatory', level: 2 },
+        { id: 'pillar-13-credit-rating', label: 'Pillar 13: Credit Rating', level: 2 },
+      ]
+    },
+    { 
+      id: 'part-v-hub-d-infrastructure-data', 
+      label: 'Part V: Hub D - Infrastructure & Data', 
+      level: 1,
+      children: [
+        { id: 'pillar-14-verification-apis', label: 'Pillar 14: Verification APIs', level: 2 },
+        { id: 'pillar-15-flight-data', label: 'Pillar 15: Flight Data & Navigation', level: 2 },
+        { id: 'pillar-16-ames', label: 'Pillar 16: Aeromedical (AMEs)', level: 2 },
+        { id: 'pillar-17-telemetry', label: 'Pillar 17: Telemetry & Simulators', level: 2 },
+      ]
+    },
+    { 
+      id: 'part-vi-hub-e-community-culture', 
+      label: 'Part VI: Hub E - Community & Culture', 
+      level: 1,
+      children: [
+        { id: 'pillar-18-pilot-contributors', label: 'Pillar 18: Pilot Contributors', level: 2 },
+        { id: 'pillar-19-manufacturers', label: 'Pillar 19: Manufacturers & OEMs', level: 2 },
+        { id: 'pillar-20-media', label: 'Pillar 20: Aviation Media', level: 2 },
+      ]
+    },
+    { 
+      id: 'part-vii-hub-f-growth-expansion', 
+      label: 'Part VII: Hub F - Growth & Expansion', 
+      level: 1,
+      children: [
+        { id: 'pillar-21-events-fairs', label: 'Pillar 21: Events & Career Fairs', level: 2 },
+        { id: 'pillar-22-government-authorities', label: 'Pillar 22: Government Authorities', level: 2 },
+        { id: 'pillar-23-international-orgs', label: 'Pillar 23: International Organizations', level: 2 },
+      ]
+    },
+    { 
+      id: 'part-viii-appendices', 
+      label: 'Part VIII: Appendices', 
+      level: 1,
+      children: [
+        { id: 'appendix-a-technical', label: 'Appendix A: Technical Integration', level: 2 },
+        { id: 'appendix-b-data-governance', label: 'Appendix B: Data Governance', level: 2 },
+        { id: 'appendix-c-commercial', label: 'Appendix C: Commercial Framework', level: 2 },
+        { id: 'appendix-d-timeline', label: 'Appendix D: Implementation', level: 2 },
+        { id: 'appendix-e-roi', label: 'Appendix E: ROI Case Studies', level: 2 },
+        { id: 'appendix-f-glossary', label: 'Appendix F: Glossary', level: 2 },
+      ]
+    },
+    { id: 'conclusion', label: 'Conclusion', level: 1 },
+  ];
+
   // Simple markdown renderer with anchor IDs
   const renderMarkdown = (text: string) => {
     const seenIds = new Set<string>();
@@ -259,7 +356,7 @@ export default function FullFrameworkPage() {
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link to="/framework" className="text-slate-900 font-semibold hover:text-red-600 transition-colors">
               ← Back to Summary
@@ -286,8 +383,57 @@ export default function FullFrameworkPage() {
         </div>
       </nav>
 
-      {/* Document */}
-      <article className="max-w-4xl mx-auto px-6 py-12">
+      {/* Main Layout with Left Sidebar */}
+      <div className="max-w-7xl mx-auto flex gap-8 px-6 py-8">
+        {/* Left Sidebar Navigation */}
+        <aside className="w-72 flex-shrink-0 hidden lg:block">
+          <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-8rem)] overflow-y-auto">
+            <div className="p-4 border-b border-slate-200 bg-white rounded-t-xl">
+              <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
+              <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
+            </div>
+            <nav className="p-2">
+              {navSections.map((section) => (
+                <div key={section.id} className="mb-1">
+                  <button
+                    onClick={() => scrollToSection(section.id)}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-slate-200 ${
+                      section.level === 1 ? 'text-slate-900 bg-slate-100' : 'text-slate-600 pl-6'
+                    }`}
+                  >
+                    {section.level === 1 && <span className="text-red-600 mr-2">▸</span>}
+                    {section.label}
+                  </button>
+                  {section.children && (
+                    <div className="ml-2 mt-1 space-y-0.5">
+                      {section.children.map((child) => (
+                        <button
+                          key={child.id}
+                          onClick={() => scrollToSection(child.id)}
+                          className="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-center gap-1.5"
+                        >
+                          <span className="text-blue-400">→</span>
+                          {child.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </nav>
+            <div className="p-3 border-t border-slate-200">
+              <button
+                onClick={() => scrollToSection('conclusion')}
+                className="w-full text-center py-2 px-4 bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium rounded-lg transition-colors"
+              >
+                Jump to Conclusion
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        {/* Document */}
+        <article className="flex-1 max-w-4xl">
         {/* Header */}
         <header className="text-center mb-12 pb-8 border-b-2 border-slate-900">
           <p className="text-sm text-slate-500 font-mono mb-2">Aviation Industry Operating System</p>
@@ -320,5 +466,6 @@ export default function FullFrameworkPage() {
         </footer>
       </article>
     </div>
+  </div>
   );
 }
