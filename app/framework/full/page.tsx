@@ -71,7 +71,7 @@ export default function FullFrameworkPage() {
   const [loading, setLoading] = useState(true);
   const [tocItems, setTocItems] = useState<Array<{level: number; text: string; id: string}>>([]);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetch('/docs/universal-commercial-framework-expanded.md')
@@ -438,16 +438,16 @@ export default function FullFrameworkPage() {
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            {/* Sidebar Toggle */}
+            {/* Mobile Sidebar Toggle */}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+              className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {sidebarOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 )}
               </svg>
             </button>
@@ -473,7 +473,7 @@ export default function FullFrameworkPage() {
 
       {/* Main Layout with Left Sidebar */}
       <div className="w-full flex gap-6 pl-4 pr-6 py-8 relative">
-        {/* Mobile Sidebar Overlay - only on mobile */}
+        {/* Mobile Sidebar Overlay */}
         {sidebarOpen && (
           <div 
             className="fixed inset-0 bg-black/50 z-40 md:hidden"
@@ -481,40 +481,28 @@ export default function FullFrameworkPage() {
           />
         )}
         
-        {/* Left Sidebar Navigation - toggleable on all screens */}
-        {sidebarOpen ? (
-          <aside className="fixed left-0 top-0 z-50 h-full w-64 pt-20 px-4 md:static md:w-64 md:flex-shrink-0 md:h-fit md:pt-0 md:px-0 md:print:hidden">
-            <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto shadow-lg md:shadow-none">
-              <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl flex items-center justify-between">
-                <div>
-                  <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
-                  <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
-                </div>
-                <button
-                  onClick={() => setSidebarOpen(false)}
-                  className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-                  </svg>
-                </button>
-              </div>
-              <nav className="p-2">
-                {navSections.map((section) => (
-                  <NavSection key={section.id} section={section} scrollToSection={scrollToSection} />
-                ))}
-              </nav>
-              <div className="p-3 border-t border-slate-200">
-                <button
-                  onClick={() => scrollToSection('conclusion')}
-                  className="w-full text-center py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium rounded-lg transition-colors"
-                >
-                  Jump to Conclusion
-                </button>
-              </div>
+        {/* Left Sidebar Navigation - Hidden on mobile, toggleable */}
+        <aside className={`${sidebarOpen ? 'fixed left-0 top-0 z-50 h-full w-64 pt-20 px-4' : 'hidden'} md:block md:static md:w-64 md:flex-shrink-0 md:h-fit md:print:hidden`}>
+          <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto shadow-lg md:shadow-none">
+            <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl">
+              <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
+              <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
             </div>
-          </aside>
-        ) : null}
+            <nav className="p-2">
+              {navSections.map((section) => (
+                <NavSection key={section.id} section={section} scrollToSection={scrollToSection} />
+              ))}
+            </nav>
+            <div className="p-3 border-t border-slate-200">
+              <button
+                onClick={() => scrollToSection('conclusion')}
+                className="w-full text-center py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium rounded-lg transition-colors"
+              >
+                Jump to Conclusion
+              </button>
+            </div>
+          </div>
+        </aside>
 
         {/* Document - Full width when printing */}
         <article className="max-w-4xl mx-auto print:max-w-none print:w-full">
