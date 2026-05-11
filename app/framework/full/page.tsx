@@ -71,6 +71,11 @@ export default function FullFrameworkPage() {
     console.log('First few TOC items:', tocItems.slice(0, 5).map(i => i.text));
     
     return lines.map((line, i) => {
+        // Debug: Log TOC-related lines
+        if (i < 100 || line.toLowerCase().includes('table of contents') || line.startsWith('# PART')) {
+          console.log(`Line ${i}:`, line.substring(0, 60), '| inToc before:', inTocSection);
+        }
+        
         // Headers with IDs
         if (line.startsWith('# ')) {
           const headingText = line.replace('# ', '');
