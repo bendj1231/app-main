@@ -431,7 +431,7 @@ export default function FullFrameworkPage() {
       </nav>
 
       {/* Main Layout with Left Sidebar */}
-      <div className="w-full flex gap-6 pl-4 pr-6 py-8 justify-center">
+      <div className="w-full flex gap-6 pl-4 pr-6 py-8">
         {/* Left Sidebar Navigation */}
         <aside className="w-64 flex-shrink-0 h-fit">
           <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto">
@@ -456,7 +456,7 @@ export default function FullFrameworkPage() {
         </aside>
 
         {/* Document */}
-        <article className="flex-1 max-w-4xl">
+        <article className="max-w-4xl mx-auto">
         {/* Header */}
         <header className="text-center mb-12 pb-8 border-b-2 border-slate-900">
           <p className="text-sm text-slate-500 font-mono mb-2">Aviation Industry Operating System</p>
