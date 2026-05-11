@@ -3,6 +3,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+// Collapsible Pillar Table Section Component
+function CollapsiblePillarSection({ pillarLabel, children, defaultOpen = false }: {
+  pillarLabel: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const cleanLabel = pillarLabel.replace(/\*\*(.*?)\*\*/g, '$1');
+  return (
+    <div className="border-b-2 border-slate-300">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between px-4 py-3 bg-slate-800 hover:bg-slate-700 transition-colors text-left group"
+      >
+        <span className="text-sm font-bold text-white tracking-wide uppercase pr-4">{cleanLabel}</span>
+        <span className={`text-white text-lg transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>▾</span>
+      </button>
+      {isOpen && (
+        <div className="border-t border-slate-600">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Navigation Section Component (separate to avoid hooks in map)
 function NavSection({ section, scrollToSection }: { 
   section: { id: string; label: string; level: number; children?: Array<{id: string; label: string; level: number}> },
@@ -380,48 +406,31 @@ export default function FullFrameworkPage() {
         processedLine = processedLine.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         processedLine = processedLine.replace(/\*(.*?)\*/g, '<em>$1</em>');
         
-        // Table rows
+        // Table rows — pre-grouped into collapsible pillar sections
         if (line.startsWith('|')) {
-          // Skip separator rows like |---|---|---|
-          if (line.replace(/[\|\-\s:]/g, '').length === 0) return null;
-          const cells = line.split('|').filter(c => c.trim());
-          if (cells.length > 0) {
-            const isHeader = lines[i + 1]?.replace(/[\|\-\s:]/g, '').length === 0;
-            const colCount = cells.length;
+          // Only process the FIRST table line to trigger full table pre-processing
+          // Check if previous line was also a table line — if so, skip (already handled)
+          if (lines[i - 1]?.startsWith('|')) return null;
+
+          // Collect all consecutive table lines starting from i
+          const tableLines: string[] = [];
+          let j2 = i;
+          while (j2 < lines.length && lines[j2].startsWith('|')) {
+            tableLines.push(lines[j2]);
+            j2++;
+          }
+
+          const processCellText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+          const renderDataRow = (tLine: string, idx: number, colCount: number) => {
             const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
-            // Check if it's a section header row (all cols after first are empty)
-            const isSectionRow = !isHeader && cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === '';
-            // Process bold markdown in cell text
-            const processCellText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            if (isSectionRow) {
-              const rawLabel = cells[0]?.trim() || '';
-              const isKeynote = rawLabel.includes('KEYNOTE');
-              const isSubSection = !isKeynote && (rawLabel.startsWith('—') || rawLabel.startsWith('-—') || rawLabel.startsWith('**—') || rawLabel.startsWith('*'));
-              const sectionLabel = processCellText(rawLabel);
-              if (isKeynote) {
-                // Keynote rows: full-width italic callout box — text is in cell 0
-                const keynoteText = processCellText(rawLabel.replace(/\*\*KEYNOTE[^*]*\*\*\s*—?\s*/i, '').replace(/^\*/, '').replace(/\*$/, ''));
-                return (
-                  <div key={i} className="col-span-full my-4 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
-                    <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Keynote — Pillar 1</p>
-                    <p className="text-sm text-slate-700 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: keynoteText }} />
-                  </div>
-                );
-              }
-              return (
-                <div key={i} className={`col-span-full grid ${gridClass} border-y-2 ${isSubSection ? 'py-2 mt-1 border-slate-200 bg-slate-600' : 'py-3 mt-3 border-slate-300 bg-slate-800'}`}>
-                  <span className={`col-span-full px-3 font-bold text-white tracking-wide ${isSubSection ? 'text-xs' : 'text-sm uppercase'}`} dangerouslySetInnerHTML={{ __html: sectionLabel }} />
-                </div>
-              );
-            }
+            const cells = tLine.split('|').filter(c => c.trim());
             return (
-              <div key={i} className={`grid py-2 border-b border-slate-200 ${gridClass} ${isHeader ? 'bg-slate-100' : ''}`}>
+              <div key={idx} className={`grid py-2 border-b border-slate-200 ${gridClass}`}>
                 {cells.map((cell, j) => {
                   const cellText = processCellText(cell.trim());
-                  const isCurrentState = !isHeader && j === 1;
-                  const isDiscoverCol = !isHeader && j === 3;
-
-                  // Parse discover link: [→ Label](#id)
+                  const isCurrentState = j === 1;
+                  const isDiscoverCol = j === 3;
                   if (isDiscoverCol && cellText) {
                     const linkMatch = cell.trim().match(/\[(.+?)\]\(#(.+?)\)/);
                     if (linkMatch) {
@@ -437,19 +446,114 @@ export default function FullFrameworkPage() {
                       );
                     }
                   }
-
                   return (
                     <span
                       key={j}
-                      className={`text-sm px-3 py-1 ${isHeader ? 'text-slate-800 font-semibold' : isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
+                      className={`text-sm px-3 py-1 ${isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
                       dangerouslySetInnerHTML={{ __html: cellText }}
                     />
                   );
                 })}
               </div>
             );
+          };
+
+          const renderSubRow = (tLine: string, idx: number, colCount: number) => {
+            const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
+            const cells = tLine.split('|').filter(c => c.trim());
+            const rawLabel = cells[0]?.trim() || '';
+            const isKeynote = rawLabel.includes('KEYNOTE');
+            const isSubSection = rawLabel.startsWith('—') || rawLabel.startsWith('**—') || rawLabel.startsWith('* ');
+
+            if (isKeynote) {
+              const keynoteText = processCellText(rawLabel.replace(/\*\*KEYNOTE[^*]*\*\*\s*—?\s*/i, ''));
+              return (
+                <div key={idx} className="my-3 mx-2 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
+                  <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Keynote</p>
+                  <p className="text-sm text-slate-700 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: keynoteText }} />
+                </div>
+              );
+            }
+            if (isSubSection) {
+              const label = processCellText(rawLabel);
+              return (
+                <div key={idx} className={`grid ${gridClass} py-2 border-y border-slate-400 bg-slate-600`}>
+                  <span className="col-span-full px-3 text-xs font-bold text-white tracking-wide" dangerouslySetInnerHTML={{ __html: label }} />
+                </div>
+              );
+            }
+            return null;
+          };
+
+          // Parse table into: header row, then pillar groups
+          // A pillar group starts with a row that has PILLAR in cell[0] and empty cells[1..2]
+          const isPillarHeader = (tLine: string) => {
+            const cells = tLine.split('|').filter(c => c.trim());
+            const raw = cells[0]?.trim() || '';
+            return cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === ''
+              && !raw.includes('KEYNOTE') && !raw.startsWith('—') && !raw.startsWith('**—') && !raw.startsWith('* ');
+          };
+
+          const isSeparator = (tLine: string) => tLine.replace(/[\|\-\s:]/g, '').length === 0;
+          const isHeaderRow = (tLine: string, nextLine?: string) => nextLine ? isSeparator(nextLine) : false;
+
+          // Group lines into sections
+          interface PillarGroup { label: string; rows: string[] }
+          const groups: PillarGroup[] = [];
+          let headerLine: string | null = null;
+          let colCount = 4;
+          let currentGroup: PillarGroup | null = null;
+          let preGroupRows: string[] = []; // rows before first pillar header
+
+          for (let k = 0; k < tableLines.length; k++) {
+            const tl = tableLines[k];
+            if (isSeparator(tl)) continue;
+            if (isHeaderRow(tl, tableLines[k + 1])) {
+              headerLine = tl;
+              const cells = tl.split('|').filter(c => c.trim());
+              colCount = cells.length;
+              continue;
+            }
+            if (isPillarHeader(tl)) {
+              if (currentGroup) groups.push(currentGroup);
+              const cells = tl.split('|').filter(c => c.trim());
+              currentGroup = { label: cells[0]?.trim() || '', rows: [] };
+            } else if (currentGroup) {
+              currentGroup.rows.push(tl);
+            } else {
+              preGroupRows.push(tl);
+            }
           }
-          return null;
+          if (currentGroup) groups.push(currentGroup);
+
+          const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
+
+          return (
+            <div key={i} className="my-6 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+              {/* Table header */}
+              {headerLine && (
+                <div className={`grid ${gridClass} bg-slate-100 border-b-2 border-slate-300`}>
+                  {headerLine.split('|').filter(c => c.trim()).map((cell, j) => (
+                    <span key={j} className="text-sm px-3 py-2 font-semibold text-slate-800">{cell.trim()}</span>
+                  ))}
+                </div>
+              )}
+              {/* Pre-group rows (before any pillar header) */}
+              {preGroupRows.map((tl, idx) => renderDataRow(tl, idx, colCount))}
+              {/* Collapsible pillar groups */}
+              {groups.map((group, gi) => (
+                <CollapsiblePillarSection key={gi} pillarLabel={group.label}>
+                  {group.rows.map((tl, ri) => {
+                    const cells = tl.split('|').filter(c => c.trim());
+                    const rawFirst = cells[0]?.trim() || '';
+                    const isSubOrKeynote = cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === '';
+                    if (isSubOrKeynote) return renderSubRow(tl, ri, colCount);
+                    return renderDataRow(tl, ri, colCount);
+                  })}
+                </CollapsiblePillarSection>
+              ))}
+            </div>
+          );
         }
         
         // Regular paragraph
