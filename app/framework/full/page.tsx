@@ -125,9 +125,35 @@ export default function FullFrameworkPage() {
           return <hr key={i} className="my-8 border-slate-300" />;
         }
         
-        // Bullet points
+        // Bullet points - check if it's a TOC entry (contains page numbers or pillar references)
         if (line.startsWith('- ') || line.startsWith('• ')) {
-          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{line.replace(/^- /, '').replace(/^• /, '')}</li>;
+          const text = line.replace(/^- /, '').replace(/^• /, '');
+          
+          // Check if this looks like a TOC entry (has "Pillar", "Part", "Pages", or common section keywords)
+          const isTocEntry = /^(Part\s+|Pillar\s+|Executive|Genesis|Universal|12\s+Core|Infrastructure|Hub\s+[A-F]|Commercial|Cargo|Charter|Flight|Type|Military|Banking|Insurance|VEREMARK|Recruitment|Media|Events)/i.test(text);
+          
+          if (isTocEntry && tocItems.length > 0) {
+            // Find matching TOC item
+            const matchingItem = tocItems.find(item => 
+              text.toLowerCase().includes(item.text.toLowerCase().substring(0, 20)) ||
+              item.text.toLowerCase().includes(text.toLowerCase().substring(0, 20))
+            );
+            
+            if (matchingItem) {
+              return (
+                <li key={i} className="ml-6 leading-relaxed">
+                  <button 
+                    onClick={() => scrollToSection(matchingItem.id)}
+                    className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left"
+                  >
+                    {text}
+                  </button>
+                </li>
+              );
+            }
+          }
+          
+          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{text}</li>;
         }
         
         // Numbered lists
@@ -213,28 +239,12 @@ export default function FullFrameworkPage() {
           <p className="text-sm text-slate-500">Document Revision: 10.0-Expanded | 90+ Pages | May 2026</p>
         </header>
 
-        {/* Table of Contents */}
-        {tocItems.length > 0 && (
-          <nav className="mb-12 p-6 bg-slate-50 rounded-xl border border-slate-200">
-            <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-300">Table of Contents</h2>
-            <div className="grid md:grid-cols-2 gap-x-8 gap-y-1 max-h-96 overflow-y-auto pr-2">
-              {tocItems.map((item, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-left hover:text-red-600 transition-colors py-1 ${
-                    item.level === 1 ? 'font-semibold text-slate-900' : 
-                    item.level === 2 ? 'text-slate-700 pl-4' : 
-                    'text-slate-600 pl-8 text-sm'
-                  }`}
-                >
-                  {item.level === 1 && <span className="text-red-600 mr-2">▸</span>}
-                  {item.text}
-                </button>
-              ))}
-            </div>
-          </nav>
-        )}
+        {/* TOC Instruction */}
+        <div className="mb-8 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-r-lg">
+          <p className="text-amber-800 text-sm">
+            <strong>📖 Navigation Tip:</strong> Click any item in the Table of Contents below to jump directly to that section.
+          </p>
+        </div>
 
         {/* Content */}
         <div ref={contentRef} className="prose prose-slate max-w-none">
