@@ -474,6 +474,11 @@ export default function FullFrameworkPage() {
         <article className="max-w-4xl mx-auto print:max-w-none print:w-full">
         {/* Header */}
         <header className="text-center mb-12 pb-8 border-b-2 border-slate-900">
+          <div className="mb-6">
+            <span className="text-2xl font-bold text-red-600">Pilot</span>
+            <span className="text-2xl font-bold text-slate-900">Recognition</span>
+            <span className="text-lg text-slate-500">.com</span>
+          </div>
           <p className="text-sm text-slate-500 font-mono mb-2">Aviation Industry Operating System</p>
           <h1 className="text-5xl font-bold text-slate-900 mb-4">Universal Commercial Framework</h1>
           <p className="text-xl text-slate-600 italic mb-4">The Master Blueprint for the Aviation Industry Operating System</p>
