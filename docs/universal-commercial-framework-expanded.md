@@ -95,44 +95,44 @@ This document provides the exhaustive operational blueprint for that system: wha
 
 ### The Universal Framework in Numbers
 
-| Metric | Current State | Framework Target |
-|--------|---------------|------------------|
-| **HIRING & RECRUITMENT** | | |
-| Average Time-to-Hire (Commercial Airlines) | 6-12 months | 2-4 weeks |
-| Pilot Candidate Discovery Method | Manual CV screening | Live verified profile pull |
-| Candidate Washout Rate Post-Hire | 35-45% | <10% |
-| Compliance Check Turnaround | 14-30 days | 24-48 hours |
-| **TRAINING & FLIGHT SCHOOLS** | | |
-| Pilot Training ROI Failure Rate | 65% | <15% |
-| Time from Graduation to Employment | 2-5 years | 6-18 months |
-| Flight School Placement Visibility | 0% (no tracking) | 100% verified |
-| Student Default Rate on Aviation Loans | 28% | <8% |
-| **CHARTER & BUSINESS AVIATION** | | |
-| On-Demand Pilot Verification Speed | 5-10 days | 2-4 hours |
-| Qualified Charter Pilot Pool Visibility | Fragmented (broker-dependent) | Unified vetted pool |
-| Recency & Currency Tracking | Manual logbook checks | Live telemetry verified |
-| **eVTOL & EMERGING SECTORS** | | |
-| Type-Specific Credential Standardization | None (sector is unregulated) | Framework-defined profiles |
-| Operator-to-Pilot Matching for New Types | 0% (no infrastructure) | Active pathway matching |
-| **MILITARY TRANSITION** | | |
-| Civilian Credential Translation Accuracy | 40% (manual, inconsistent) | 95%+ automated mapping |
-| Time to First Civilian Operator Offer | 12-24 months | 2-4 months |
-| **INSURANCE & RISK** | | |
-| Insurance Underwriting Accuracy | 40% (estimated) | 90%+ |
-| Premium Pricing Accuracy for Pilots | Blunt rate cards | Dynamic profile-based pricing |
-| Incident History Verification Speed | 30-90 days | Real-time API |
-| **BANKING & FINANCE** | | |
-| Aviation Loan Default Risk Assessment | Estimated (no live data) | Predictive score-based |
-| Career Trajectory Data for Lenders | Unavailable | Live pathway progress |
-| Loan Pricing Adjustment Triggers | None | Automated milestone events |
-| **REGULATORS & COMPLIANCE** | | |
-| Cross-Border License Verification | 7-21 days | 24 hours |
-| Audit Trail Integrity | Manual submissions | Immutable digital records |
-| Regulatory Reporting Automation | 0% | 100% |
-| **PLATFORM INFRASTRUCTURE** | | |
-| Industry Data Fragmentation | 100% (isolated silos) | Unified Platform |
-| Pilot Recognition Score Portability | Does not exist | Portable across all sectors |
-| Stakeholders Connected | 0 (no unified system) | 20+ industry bodies |
+| Metric | Current State | Framework Target | Discover How |
+|--------|---------------|------------------|-------------|
+| **HIRING & RECRUITMENT** | | | |
+| Average Time-to-Hire (Commercial Airlines) | 6-12 months | 2-4 weeks | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Candidate Discovery Method | Manual CV screening | Live verified profile pull | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Candidate Washout Rate Post-Hire | 35-45% | <10% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Compliance Check Turnaround | 14-30 days | 24-48 hours | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| **TRAINING & FLIGHT SCHOOLS** | | | |
+| Pilot Training ROI Failure Rate | 65% | <15% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Time from Graduation to Employment | 2-5 years | 6-18 months | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Flight School Placement Visibility | 0% (no tracking) | 100% verified | [→ Pillar 17: Aviation Universities](#pillar-17-aviation-universities-academies) |
+| Student Default Rate on Aviation Loans | 28% | <8% | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| **CHARTER & BUSINESS AVIATION** | | | |
+| On-Demand Pilot Verification Speed | 5-10 days | 2-4 hours | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Qualified Charter Pilot Pool Visibility | Fragmented (broker-dependent) | Unified vetted pool | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| Recency & Currency Tracking | Manual logbook checks | Live telemetry verified | [→ Pillar 12: Flight Data & Navigation](#pillar-12-flight-data-navigation-apps-navigraph-fo) |
+| **eVTOL & EMERGING SECTORS** | | | |
+| Type-Specific Credential Standardization | None (sector is unregulated) | Framework-defined profiles | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| Operator-to-Pilot Matching for New Types | 0% (no infrastructure) | Active pathway matching | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
+| **MILITARY TRANSITION** | | | |
+| Civilian Credential Translation Accuracy | 40% (manual, inconsistent) | 95%+ automated mapping | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
+| Time to First Civilian Operator Offer | 12-24 months | 2-4 months | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
+| **INSURANCE & RISK** | | | |
+| Insurance Underwriting Accuracy | 40% (estimated) | 90%+ | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Premium Pricing Accuracy for Pilots | Blunt rate cards | Dynamic profile-based pricing | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Incident History Verification Speed | 30-90 days | Real-time API | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| **BANKING & FINANCE** | | | |
+| Aviation Loan Default Risk Assessment | Estimated (no live data) | Predictive score-based | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Career Trajectory Data for Lenders | Unavailable | Live pathway progress | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Loan Pricing Adjustment Triggers | None | Automated milestone events | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| **REGULATORS & COMPLIANCE** | | | |
+| Cross-Border License Verification | 7-21 days | 24 hours | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Audit Trail Integrity | Manual submissions | Immutable digital records | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Regulatory Reporting Automation | 0% | 100% | [→ Pillar 13: Aeromedical AMEs](#pillar-13-aeromedical-examiners-ames) |
+| **PLATFORM INFRASTRUCTURE** | | | |
+| Industry Data Fragmentation | 100% (isolated silos) | Unified Platform | [→ Part VII: Infrastructure Architecture](#page-7-10-infrastructure-architecture-overview) |
+| Pilot Recognition Score Portability | Does not exist | Portable across all sectors | [→ Pillar 14: Pilot Contributors](#pillar-14-pilot-contributors-mentors-unions) |
+| Stakeholders Connected | 0 (no unified system) | 20+ industry bodies | [→ Part I: Foundation & Vision](#page-1-executive-summary) |
 
 ### Key Stakeholder Value Propositions
 

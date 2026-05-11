@@ -387,16 +387,39 @@ export default function FullFrameworkPage() {
           const cells = line.split('|').filter(c => c.trim());
           if (cells.length > 0) {
             const isHeader = lines[i + 1]?.replace(/[\|\-\s:]/g, '').length === 0;
+            const colCount = cells.length;
+            const gridClass = colCount === 4 ? 'grid-cols-4' : colCount === 3 ? 'grid-cols-3' : 'grid-cols-2';
+            // Check if it's a section header row (all cols after first are empty)
+            const isSectionRow = !isHeader && cells.length >= 3 && cells[1]?.trim() === '' && cells[2]?.trim() === '';
             return (
-              <div key={i} className={`grid py-2 border-b border-slate-200 ${cells.length === 3 ? 'grid-cols-3' : 'grid-cols-2'} ${isHeader ? 'bg-slate-100 font-semibold' : ''}`}>
+              <div key={i} className={`grid py-2 border-b border-slate-200 ${gridClass} ${isHeader ? 'bg-slate-100' : isSectionRow ? 'bg-slate-50' : ''}`}>
                 {cells.map((cell, j) => {
-                  // Highlight "Current State" column (index 1 in data rows) in red
-                  const isCurrentState = !isHeader && j === 1;
+                  const cellText = cell.trim();
+                  const isCurrentState = !isHeader && !isSectionRow && j === 1;
+                  const isDiscoverCol = !isHeader && !isSectionRow && j === 3;
+
+                  // Parse discover link: [→ Label](#id)
+                  if (isDiscoverCol && cellText) {
+                    const linkMatch = cellText.match(/\[(.+?)\]\(#(.+?)\)/);
+                    if (linkMatch) {
+                      return (
+                        <div key={j} className="px-3 py-1">
+                          <button
+                            onClick={() => scrollToSection(linkMatch[2])}
+                            className="text-xs text-blue-600 hover:text-red-600 hover:underline font-medium transition-colors text-left"
+                          >
+                            {linkMatch[1]}
+                          </button>
+                        </div>
+                      );
+                    }
+                  }
+
                   return (
                     <span
                       key={j}
-                      className={`text-sm px-3 py-1 ${isHeader ? 'text-slate-800 font-semibold' : isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
-                      dangerouslySetInnerHTML={{ __html: cell.trim() }}
+                      className={`text-sm px-3 py-1 ${isHeader ? 'text-slate-800 font-semibold' : isSectionRow ? 'text-slate-700 font-bold' : isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
+                      dangerouslySetInnerHTML={{ __html: cellText }}
                     />
                   );
                 })}
