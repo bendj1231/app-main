@@ -129,6 +129,26 @@ This document provides the exhaustive operational blueprint for that system: wha
 | Cross-Border License Verification | 7-21 days | 24 hours | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
 | Audit Trail Integrity | Manual submissions | Immutable digital records | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
 | Regulatory Reporting Automation | 0% | 100% | [→ Pillar 13: Aeromedical AMEs](#pillar-13-aeromedical-examiners-ames) |
+| **AIRLINE EXPECTATIONS & STANDARDS** | | | |
+| Airline Competency Requirements Visibility | Hidden (undisclosed internally) | Published pathway cards per airline | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Pilot Profile Match Against Airline Standards | Manual, subjective screening | Automated competency gap analysis | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Cadet & Direct Entry Program Transparency | Fragmented, airline-by-airline | Unified pathway cards for all programs | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| EBT (Evidence-Based Training) Alignment | Inconsistent across operators | Standardized EBT scoring & video record | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| **TYPE RATING & SIMULATOR CENTERS** | | | |
+| Type Rating Availability Discovery | Manual search, broker-dependent | Live directory with availability & pricing | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Simulator Hour Verification | Paper logbook, unverified | Digitally verified simulator records | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Type Rating ROI for Pilots | Unknown pre-enrollment | Pathway-linked ROI calculator | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Aircraft Type Endorsement Portability | Locked to one operator | Visible and portable across all operators | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
+| **BACKGROUND CHECKS & VERIFICATION** | | | |
+| Employment History Verification Speed | 14-30 days (manual) | 24-48 hours via API | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| License & Medical Certificate Validation | Manual CAA/FAA lookups | Real-time authority API integration | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Criminal & Background Check Turnaround | 7-21 days | 24-72 hours automated | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Reference & Incident Record Accuracy | Self-reported, unverifiable | Third-party verified, blockchain-backed | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Pilot Identity Fraud Risk | High (paper-based records) | Near-zero (digital credential wallet) | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| **AIRCRAFT MANUFACTURERS & OEMs** | | | |
+| Fleet Demand Signal to Training Pipeline | None (reactive hiring) | Live demand forecasting per aircraft type | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
+| Pilot Transition Data for New Aircraft Types | Unavailable | Pathway-linked transition profiles | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
+| OEM Training Center Discovery | Manual, geography-limited | Global searchable directory | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
 | **PLATFORM INFRASTRUCTURE** | | | |
 | Industry Data Fragmentation | 100% (isolated silos) | Unified Platform | [→ Part VII: Infrastructure Architecture](#page-7-10-infrastructure-architecture-overview) |
 | Pilot Recognition Score Portability | Does not exist | Portable across all sectors | [→ Pillar 14: Pilot Contributors](#pillar-14-pilot-contributors-mentors-unions) |
