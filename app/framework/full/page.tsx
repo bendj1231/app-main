@@ -585,6 +585,9 @@ export default function FullFrameworkPage() {
           }
           if (currentGroup) groups.push(currentGroup);
 
+          console.log('TABLE DEBUG: tableLines count:', tableLines.length, 'groups:', groups.length, 'headerLine:', !!headerLine);
+          groups.forEach((g, gi) => console.log(`  Group ${gi}: "${g.label.substring(0, 50)}" rows:`, g.rows.length));
+
           return (
             <PillarTabTable
               key={i}
