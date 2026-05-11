@@ -188,8 +188,6 @@ export default function FullFrameworkPage() {
       level: 1,
       children: [
         { id: 'pillar-18-aviation-media-publications', label: 'Pillar 18: Aviation Media', level: 2 },
-        { id: 'pillar-19-aviation-events-career-fairs', label: 'Pillar 19: Events & Career Fairs', level: 2 },
-        { id: 'pillar-20-government-aviation-authorities-caap-faa', label: 'Pillar 20: Government Authorities', level: 2 },
       ]
     },
     { 
@@ -197,9 +195,8 @@ export default function FullFrameworkPage() {
       label: 'Part VII: Hub F - Growth & Expansion', 
       level: 1,
       children: [
-        { id: 'pillar-21-international-aviation-organizations-iata-icao-etc', label: 'Pillar 21: International Organizations', level: 2 },
-        { id: 'pillar-22-credit-rating-risk-assessment-agencies', label: 'Pillar 22: Credit Rating', level: 2 },
-        { id: 'pillar-23-telemetry-simulator-data-providers', label: 'Pillar 23: Telemetry & Simulators', level: 2 },
+        { id: 'pillar-19-aviation-events-career-fairs', label: 'Pillar 19: Aviation Events & Career Fairs', level: 2 },
+        { id: 'pillar-20-government-aviation-authorities-caap-faa', label: 'Pillar 20: Government Aviation Authorities', level: 2 },
       ]
     },
     { 
