@@ -20,28 +20,28 @@ function NavSection({ section, scrollToSection }: {
             scrollToSection(section.id);
           }
         }}
-        className={`w-full text-left px-2 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-slate-200 flex items-center justify-between ${
-          section.level === 1 ? 'text-slate-900' : 'text-slate-600 pl-4'
+        className={`w-full text-left px-2 py-1.5 rounded-lg text-sm font-medium transition-colors hover:bg-slate-200 flex items-center justify-between ${
+          section.level === 1 ? 'text-slate-900 bg-slate-100' : 'text-slate-600 pl-4'
         }`}
       >
         <span className="flex items-center">
           {section.children && (
-            <span className={`text-red-600 mr-1.5 transition-transform ${isExpanded ? 'rotate-90' : ''}`}>▸</span>
+            <span className={`text-red-600 mr-1.5 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}>▸</span>
           )}
           {!section.children && <span className="text-slate-400 mr-1.5">•</span>}
-          {section.label}
+          <span className="text-xs leading-tight">{section.label}</span>
         </span>
       </button>
       {section.children && isExpanded && (
-        <div className="ml-2 mt-1 space-y-0.5 border-l-2 border-slate-200 pl-2">
+        <div className="ml-2 mt-0.5 space-y-0.5 border-l-2 border-slate-200 pl-2 overflow-visible">
           {section.children.map((child) => (
             <button
               key={child.id}
               onClick={() => scrollToSection(child.id)}
-              className="w-full text-left px-2 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-center gap-1.5"
+              className="w-full text-left px-2 py-1 rounded-md text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-start gap-1.5"
             >
-              <span className="text-blue-400">→</span>
-              {child.label}
+              <span className="text-blue-500 mt-0.5 flex-shrink-0">→</span>
+              <span className="leading-tight">{child.label}</span>
             </button>
           ))}
         </div>
@@ -433,8 +433,8 @@ export default function FullFrameworkPage() {
       {/* Main Layout with Left Sidebar */}
       <div className="max-w-[1400px] mx-auto flex gap-6 pl-4 pr-6 py-8">
         {/* Left Sidebar Navigation */}
-        <aside className="w-64 flex-shrink-0">
-          <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-8rem)] overflow-y-auto">
+        <aside className="w-64 flex-shrink-0 h-fit">
+          <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto">
             <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl">
               <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
               <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
