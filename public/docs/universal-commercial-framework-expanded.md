@@ -97,62 +97,80 @@ This document provides the exhaustive operational blueprint for that system: wha
 
 | Metric | Current State | Framework Target | Discover How |
 |--------|---------------|------------------|-------------|
-| **HIRING & RECRUITMENT** | | | |
-| Average Time-to-Hire (Commercial Airlines) | 6-12 months | 2-4 weeks | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| **PILLAR 1 — COMMERCIAL AIRLINES** | | | |
+| Average Time-to-Hire | 6-12 months | 2-4 weeks | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
 | Pilot Candidate Discovery Method | Manual CV screening | Live verified profile pull | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
-| Candidate Washout Rate Post-Hire | 35-45% | <10% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
-| Compliance Check Turnaround | 14-30 days | 24-48 hours | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| **TRAINING & FLIGHT SCHOOLS** | | | |
-| Pilot Training ROI Failure Rate | 65% | <15% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
-| Time from Graduation to Employment | 2-5 years | 6-18 months | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
-| Flight School Placement Visibility | 0% (no tracking) | 100% verified | [→ Pillar 17: Aviation Universities](#pillar-17-aviation-universities-academies) |
-| Student Default Rate on Aviation Loans | 28% | <8% | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
-| **CHARTER & BUSINESS AVIATION** | | | |
+| Airline Competency Requirements Visibility | Hidden (undisclosed internally) | Published pathway cards per airline | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Cadet & Direct Entry Program Transparency | Fragmented, airline-by-airline | Unified pathway cards for all programs | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| Candidate Washout Rate Post-Hire | 35-45% | <10% | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
+| **PILLAR 2 — CARGO & FREIGHT** | | | |
+| Cargo Operator Pilot Pool Visibility | Isolated per carrier | Unified verified cargo pilot database | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| Scheduling & Recency Compliance Tracking | Manual records, delayed | Real-time automated compliance feed | [→ Pillar 2: Cargo & Freight](#pillar-2-cargo-freight-operators) |
+| **PILLAR 3 — CHARTER & BUSINESS AVIATION** | | | |
 | On-Demand Pilot Verification Speed | 5-10 days | 2-4 hours | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
 | Qualified Charter Pilot Pool Visibility | Fragmented (broker-dependent) | Unified vetted pool | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
-| Recency & Currency Tracking | Manual logbook checks | Live telemetry verified | [→ Pillar 12: Flight Data & Navigation](#pillar-12-flight-data-navigation-apps-navigraph-fo) |
-| **eVTOL & EMERGING SECTORS** | | | |
+| Recency & Currency Tracking | Manual logbook checks | Live telemetry verified | [→ Pillar 3: Charter & Business Aviation](#pillar-3-charter-business-aviation) |
+| **PILLAR 4 — eVTOL & EMERGING SECTORS** | | | |
 | Type-Specific Credential Standardization | None (sector is unregulated) | Framework-defined profiles | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
 | Operator-to-Pilot Matching for New Types | 0% (no infrastructure) | Active pathway matching | [→ Pillar 4: Emerging Sectors](#pillar-4-emerging-aviation-sectors-evtol-air-taxi-) |
-| **MILITARY TRANSITION** | | | |
-| Civilian Credential Translation Accuracy | 40% (manual, inconsistent) | 95%+ automated mapping | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
-| Time to First Civilian Operator Offer | 12-24 months | 2-4 months | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
-| **INSURANCE & RISK** | | | |
-| Insurance Underwriting Accuracy | 40% (estimated) | 90%+ | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
-| Premium Pricing Accuracy for Pilots | Blunt rate cards | Dynamic profile-based pricing | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
-| Incident History Verification Speed | 30-90 days | Real-time API | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| **BANKING & FINANCE** | | | |
-| Aviation Loan Default Risk Assessment | Estimated (no live data) | Predictive score-based | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
-| Career Trajectory Data for Lenders | Unavailable | Live pathway progress | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
-| Loan Pricing Adjustment Triggers | None | Automated milestone events | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
-| **REGULATORS & COMPLIANCE** | | | |
-| Cross-Border License Verification | 7-21 days | 24 hours | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
-| Audit Trail Integrity | Manual submissions | Immutable digital records | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
-| Regulatory Reporting Automation | 0% | 100% | [→ Pillar 13: Aeromedical AMEs](#pillar-13-aeromedical-examiners-ames) |
-| **AIRLINE EXPECTATIONS & STANDARDS** | | | |
-| Airline Competency Requirements Visibility | Hidden (undisclosed internally) | Published pathway cards per airline | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
-| Pilot Profile Match Against Airline Standards | Manual, subjective screening | Automated competency gap analysis | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
-| Cadet & Direct Entry Program Transparency | Fragmented, airline-by-airline | Unified pathway cards for all programs | [→ Pillar 1: Commercial Airlines](#pillar-1-commercial-airlines-detailed) |
-| EBT (Evidence-Based Training) Alignment | Inconsistent across operators | Standardized EBT scoring & video record | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
-| **TYPE RATING & SIMULATOR CENTERS** | | | |
+| **PILLAR 5 — FLIGHT TRAINING ORGANIZATIONS** | | | |
+| Pilot Training ROI Failure Rate | 65% | <15% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Time from Graduation to Employment | 2-5 years | 6-18 months | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Flight School Placement Visibility | 0% (no tracking) | 100% verified | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| Student Default Rate on Aviation Loans | 28% | <8% | [→ Pillar 5: Flight Training ATOs](#pillar-5-flight-training-organizations-atos) |
+| **PILLAR 6 — TYPE RATING & SIMULATOR CENTERS** | | | |
 | Type Rating Availability Discovery | Manual search, broker-dependent | Live directory with availability & pricing | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
 | Simulator Hour Verification | Paper logbook, unverified | Digitally verified simulator records | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
-| Type Rating ROI for Pilots | Unknown pre-enrollment | Pathway-linked ROI calculator | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
-| Aircraft Type Endorsement Portability | Locked to one operator | Visible and portable across all operators | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
-| **BACKGROUND CHECKS & VERIFICATION** | | | |
+| Type Rating ROI Visibility for Pilots | Unknown pre-enrollment | Pathway-linked ROI calculator | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| EBT (Evidence-Based Training) Alignment | Inconsistent across operators | Standardized EBT scoring & video record | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| Aircraft Type Endorsement Portability | Locked to one operator | Visible and portable across all operators | [→ Pillar 6: Type Rating Centers](#pillar-6-type-rating-simulator-centers) |
+| **PILLAR 7 — MILITARY TRANSITION** | | | |
+| Civilian Credential Translation Accuracy | 40% (manual, inconsistent) | 95%+ automated mapping | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
+| Time to First Civilian Operator Offer | 12-24 months | 2-4 months | [→ Pillar 7: Military & Defense](#pillar-7-military-defense-commands) |
+| **PILLAR 8 — BANKING & FINANCIAL INSTITUTIONS** | | | |
+| Aviation Loan Default Risk Assessment | Estimated (no live data) | Predictive score-based | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Career Trajectory Data for Lenders | Unavailable | Live pathway progress feed | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| Loan Pricing Adjustment Triggers | None | Automated milestone events | [→ Pillar 8: Banking & Financial](#pillar-8-banking-financial-institutions) |
+| **PILLAR 9 — AVIATION INSURANCE** | | | |
+| Insurance Underwriting Accuracy | 40% (estimated) | 90%+ | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Premium Pricing Accuracy for Pilots | Blunt rate cards | Dynamic profile-based pricing | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| Incident History Verification Speed | 30-90 days | Real-time API | [→ Pillar 9: Aviation Insurance](#pillar-9-aviation-insurance-providers) |
+| **PILLAR 10 — LEGAL & REGULATORY BODIES** | | | |
+| Cross-Border License Verification | 7-21 days | 24 hours | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Audit Trail Integrity | Manual submissions | Immutable digital records | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| Regulatory Reporting Automation | 0% | 100% | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
+| **PILLAR 11 — BACKGROUND CHECKS & VERIFICATION** | | | |
 | Employment History Verification Speed | 14-30 days (manual) | 24-48 hours via API | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
 | License & Medical Certificate Validation | Manual CAA/FAA lookups | Real-time authority API integration | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
 | Criminal & Background Check Turnaround | 7-21 days | 24-72 hours automated | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
 | Reference & Incident Record Accuracy | Self-reported, unverifiable | Third-party verified, blockchain-backed | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
 | Pilot Identity Fraud Risk | High (paper-based records) | Near-zero (digital credential wallet) | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| **AIRCRAFT MANUFACTURERS & OEMs** | | | |
+| **PILLAR 12 — FLIGHT DATA & NAVIGATION** | | | |
+| Flight Data Portability Across Operators | Locked per operator | Pilot-owned portable telemetry record | [→ Pillar 12: Flight Data & Navigation](#pillar-12-flight-data-navigation-apps-navigraph-fo) |
+| Recency & Currency Verification | Manual logbook checks | Live telemetry-verified records | [→ Pillar 12: Flight Data & Navigation](#pillar-12-flight-data-navigation-apps-navigraph-fo) |
+| **PILLAR 13 — AEROMEDICAL EXAMINERS** | | | |
+| Medical Certificate Status Visibility | Offline, delayed updates | Real-time AME-linked status | [→ Pillar 13: Aeromedical AMEs](#pillar-13-aeromedical-examiners-ames) |
+| Medical Renewal Reminder & Compliance | Self-managed, frequently missed | Automated alerts & tracking | [→ Pillar 13: Aeromedical AMEs](#pillar-13-aeromedical-examiners-ames) |
+| **PILLAR 14 — PILOT CONTRIBUTORS & RECOGNITION** | | | |
+| Pilot Recognition Score Portability | Does not exist | Portable across all operators & sectors | [→ Pillar 14: Pilot Contributors](#pillar-14-pilot-contributors-mentors-unions) |
+| Mentor & Contributor Visibility | No formal system | Recognised and tracked within platform | [→ Pillar 14: Pilot Contributors](#pillar-14-pilot-contributors-mentors-unions) |
+| **PILLAR 15 — AIRCRAFT MANUFACTURERS & OEMs** | | | |
 | Fleet Demand Signal to Training Pipeline | None (reactive hiring) | Live demand forecasting per aircraft type | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
 | Pilot Transition Data for New Aircraft Types | Unavailable | Pathway-linked transition profiles | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
-| OEM Training Center Discovery | Manual, geography-limited | Global searchable directory | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
-| **PLATFORM INFRASTRUCTURE** | | | |
-| Industry Data Fragmentation | 100% (isolated silos) | Unified Platform | [→ Part VII: Infrastructure Architecture](#page-7-10-infrastructure-architecture-overview) |
-| Pilot Recognition Score Portability | Does not exist | Portable across all sectors | [→ Pillar 14: Pilot Contributors](#pillar-14-pilot-contributors-mentors-unions) |
-| Stakeholders Connected | 0 (no unified system) | 20+ industry bodies | [→ Part I: Foundation & Vision](#page-1-executive-summary) |
+| OEM Training Center Global Discovery | Manual, geography-limited | Global searchable directory | [→ Pillar 15: Manufacturers & OEMs](#pillar-15-aircraft-manufacturers-oems-airbus-boein) |
+| **PILLAR 16 — RECRUITMENT AGENCIES** | | | |
+| Pilot Placement Accuracy | Estimate-based matching | Verified profile-to-pathway matching | [→ Pillar 16: Recruitment Agencies](#pillar-16-aviation-recruitment-agencies) |
+| Agency Access to Verified Pilot Pool | Relationship-dependent | Open API access to verified database | [→ Pillar 16: Recruitment Agencies](#pillar-16-aviation-recruitment-agencies) |
+| **PILLAR 17 — AVIATION UNIVERSITIES & ACADEMIES** | | | |
+| Graduate Employment Outcome Tracking | 0% visibility post-graduation | Live placement & career progression data | [→ Pillar 17: Aviation Universities](#pillar-17-aviation-universities-academies) |
+| Campus-to-Airline Pipeline Transparency | None | Direct pathway cards from institution | [→ Pillar 17: Aviation Universities](#pillar-17-aviation-universities-academies) |
+| **PILLAR 18 — AVIATION MEDIA & PUBLICATIONS** | | | |
+| Industry Trend Data for Pilots | Scattered, no aggregation | Centralised insights via platform data | [→ Pillar 18: Aviation Media](#pillar-18-aviation-media-publications) |
+| **PILLAR 19 — AVIATION EVENTS & CAREER FAIRS** | | | |
+| Event-to-Opportunity Conversion | Informal, untracked | Profile-linked event attendance & outcomes | [→ Pillar 19: Aviation Events](#pillar-19-aviation-events-career-fairs) |
+| **PILLAR 20 — GOVERNMENT AVIATION AUTHORITIES** | | | |
+| Authority-to-Platform Data Sync | Manual bulk exports | Live regulatory data integration | [→ Pillar 20: Government Authorities](#pillar-20-government-aviation-authorities-caap-faa) |
+| Stakeholders Connected | 0 (no unified system) | 20+ industry bodies on one platform | [→ Part I: Foundation & Vision](#page-1-executive-summary) |
 
 ### Key Stakeholder Value Propositions
 
