@@ -84,7 +84,7 @@ const SECTORS: Sector[] = [
         ],
         pilots: [
             'Find ATOs aligned with their target airline\'s OEM (Airbus / Boeing)',
-            'Compare type rating providers by cost, location, recognition outcomes'
+            'Compare type rating providers by cost, location, recognition outcomes',
             'Discover scholarships and funded pathways before paying out of pocket',
         ],
         cta: 'Free to join. $20/referral. Optional analytics tier $200/month.',
@@ -599,6 +599,16 @@ const EnterpriseAccessPage = () => {
                         <button onClick={() => scrollTo('contact')} className="bg-white hover:bg-slate-50 border border-slate-300 text-slate-900 font-semibold px-6 py-3 rounded-lg transition-colors">
                             Talk to Partnerships
                         </button>
+                        <a 
+                            href="/docs/universal-commercial-framework.tex" 
+                            download
+                            className="bg-slate-900 text-white hover:bg-slate-800 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Download Framework (LaTeX)
+                        </a>
                     </div>
 
                     {/* Stat strip */}
@@ -618,6 +628,88 @@ const EnterpriseAccessPage = () => {
                         <div>
                             <p className="text-3xl font-bold text-slate-900 mb-1">API</p>
                             <p className="text-sm text-slate-500">Enterprise integrations</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── UNIVERSAL FRAMEWORK BANNER ─── */}
+            <section id="framework" className="py-16 px-6 border-b border-slate-200 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-4">20-Pillar Master Blueprint</p>
+                            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
+                                Universal Commercial<br />
+                                <span className="text-red-400">Framework</span>
+                            </h2>
+                            <p className="text-slate-300 text-lg mb-6 leading-relaxed">
+                                The definitive reference for all aviation stakeholders. Detailed requirements, contributions, and ROI analysis for 20 industry pillars—from airlines to regulators, banks to manufacturers.
+                            </p>
+                            <div className="flex flex-wrap gap-4">
+                                <a 
+                                    href="/docs/universal-commercial-framework.tex" 
+                                    download
+                                    className="bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    Download LaTeX Document
+                                </a>
+                                <a 
+                                    href="/docs/universal-commercial-framework-expanded.md"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    View Markdown
+                                </a>
+                            </div>
+                        </div>
+                        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                            <h3 className="text-white font-semibold mb-6">Framework Highlights</h3>
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-red-400 text-xs font-bold">20</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-white font-medium">Stakeholder Pillars</p>
+                                        <p className="text-slate-400 text-sm">From airlines to government authorities</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-red-400 text-xs font-bold">12</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-white font-medium">Industry Failures</p>
+                                        <p className="text-slate-400 text-sm">The Swiss Cheese Model of pipeline blockage</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-red-400 text-xs font-bold">90+</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-white font-medium">Pages of Analysis</p>
+                                        <p className="text-slate-400 text-sm">Technical integration, pricing, ROI</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-green-400 text-xs font-bold">✓</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-white font-medium">Ready for Partnerships</p>
+                                        <p className="text-slate-400 text-sm">LaTeX format for professional distribution</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
