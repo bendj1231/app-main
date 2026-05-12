@@ -1790,11 +1790,11 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 | PilotRecognition Provides | Verification Partner Provides |
 |:---|:---|
-| Qualified pilot pipeline (pre-motivated, actively seeking verification) | Technical infrastructure (APIs, global coverage, compliance) |
-| Aviation domain knowledge (requirements, data fields, stakeholder coordination) | Scalable check execution (speed, accuracy, multi-country) |
-| Airline/operator customer introductions | Credibility signals (established provider, existing compliance certifications) |
-| Platform integration (wallet, pathways, profile matching) | Revenue (check fees, tiered pricing, volume commitments) |
-| Marketing and user acquisition | Industry vertical expertise development |
+| <span style="color:red">**Qualified pilot pipeline**</span> (pre-motivated, actively seeking verification) | Technical infrastructure (APIs, global coverage, compliance) |
+| <span style="color:red">**Aviation domain knowledge**</span> (requirements, data fields, stakeholder coordination) | Scalable check execution (speed, accuracy, multi-country) |
+| <span style="color:red">**Airline/operator customer introductions**</span> | Credibility signals (established provider, existing compliance certifications) |
+| <span style="color:red">**Platform integration**</span> (wallet, pathways, profile matching) | Revenue (check fees, tiered pricing, volume commitments) |
+| <span style="color:red">**Marketing and user acquisition**</span> | Industry vertical expertise development |
 
 **Market Positioning Win:**
 
