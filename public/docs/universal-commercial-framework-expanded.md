@@ -1984,11 +1984,11 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **Pilot Risk Profiles:**
 
-**Low Risk:** Clean verification wallet — no incidents, current medical, stable employment history, no insurance claims. Preferred rates available.
+**<span style="color:red">Low Risk:</span>** Clean verification wallet — no incidents, current medical, stable employment history, no insurance claims. Preferred rates available.
 
-**Moderate Risk:** Minor incidents (training accidents, single claim), employment gaps with valid explanation, older pilots requiring enhanced medical monitoring. Standard rates with conditions.
+**<span style="color:red">Moderate Risk:</span>** Minor incidents (training accidents, single claim), employment gaps with valid explanation, older pilots requiring enhanced medical monitoring. Standard rates with conditions.
 
-**High Risk:** Multiple incidents, license suspensions, medical Special Issuances, frequent job changes, hull loss involvement. Premium rates or coverage exclusions.
+**<span style="color:red">High Risk:</span>** Multiple incidents, license suspensions, medical Special Issuances, frequent job changes, hull loss involvement. Premium rates or coverage exclusions.
 
 **Risk Scoring Data Points:**
 
