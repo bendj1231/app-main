@@ -1822,38 +1822,38 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ### Platform Requirements for Verification Partners
 
-1. API Infrastructure: REST API with webhook support, HMAC signature authentication.
-2. Global Coverage: 150+ countries, with transparency on per-country turnaround times.
-3. Philippines Capability: PRC license, NBI clearance, physical address verification.
-4. ATS Integration: API keys for major platforms (Greenhouse, Workday, etc.).
-5. Data Standards: Standardized JSON schema for all check types.
-6. SLA Commitments: 99.9% API uptime, 99.5% webhook delivery success.
-7. Turnaround Times: Standard <72 hours, expedited <24 hours where possible.
-8. Compliance: GDPR, PDPA, aviation authority data handling standards.
+- **API Infrastructure:** REST API with webhook support, HMAC signature authentication
+- **Global Coverage:** 150+ countries, with transparency on per-country turnaround times
+- **Philippines Capability:** PRC license, NBI clearance, physical address verification
+- **ATS Integration:** API keys for major platforms (Greenhouse, Workday, etc.)
+- **Data Standards:** Standardized JSON schema for all check types
+- **SLA Commitments:** 99.9% API uptime, 99.5% webhook delivery success
+- **Turnaround Times:** Standard <72 hours, expedited <24 hours where possible
+- **Compliance:** GDPR, PDPA, aviation authority data handling standards
 
 ### Commercial Model
 
 **Pricing Tiers:**
 
-1. Launch (0-1,000 checks): Co-investment / waived — Market development phase.
-2. Growth (1,001-5,000 checks): $25 per check — Standard checks, API access.
-3. Scale (5,001-10,000 checks): $15 per check — Volume pricing, expedited options.
-4. Enterprise (10,000+ checks): $12 per check — Unlimited, custom check development, dedicated support.
+- **Launch** (0-1,000 checks): Co-investment / waived — Market development phase
+- **Growth** (1,001-5,000 checks): $25 per check — Standard checks, API access
+- **Scale** (5,001-10,000 checks): $15 per check — Volume pricing, expedited options
+- **Enterprise** (10,000+ checks): $12 per check — Unlimited, custom check development, dedicated support
 
 **Revenue Model:**
 
-1. Year 1: Co-investment period, 5,000 pilots verified — Break-even — market development focus.
-2. Year 2: 13,500 checks at tiered pricing — $255K revenue potential.
-3. Year 3: 36,000 checks at volume pricing — $474K revenue potential.
+- **Year 1:** Co-investment period, 5,000 pilots verified — Break-even — market development focus
+- **Year 2:** 13,500 checks at tiered pricing — $255K revenue potential
+- **Year 3:** 36,000 checks at volume pricing — $474K revenue potential
 
 ### Operational Outcomes
 
-1. Verification turnaround: Before: 14-30 days → After: 24-72 hours (standard), 4-24 hours (expedited).
-2. Duplicate check costs: Before: 5x per multi-application pilot → After: 1x per pilot (portable wallet).
-3. Fraud detection: Before: Manual, reactive → After: Automated, proactive.
-4. ATS integration: Before: Manual PDF upload → After: Direct API flow.
-5. Pilot surprise rejections: Before: Common → After: Eliminated via pre-verification.
-6. HR screening time: Before: 8-12 hours per candidate → After: 1-2 hours per candidate.
+- **Verification turnaround:** Before: 14-30 days → After: 24-72 hours (standard), 4-24 hours (expedited)
+- **Duplicate check costs:** Before: 5x per multi-application pilot → After: 1x per pilot (portable wallet)
+- **Fraud detection:** Before: Manual, reactive → After: Automated, proactive
+- **ATS integration:** Before: Manual PDF upload → After: Direct API flow
+- **Pilot surprise rejections:** Before: Common → After: Eliminated via pre-verification
+- **HR screening time:** Before: 8-12 hours per candidate → After: 1-2 hours per candidate
 
 ---
 
