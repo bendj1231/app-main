@@ -1602,6 +1602,20 @@ Aviation background screening operates on outdated manual processes that create 
 
 <span style="color:red">**6. Cost uncertainty**</span> — Check costs borne by either pilot or airline, inconsistently. No predictable pricing model.
 
+**For Verification Providers (Domain Knowledge Gaps):**
+
+<span style="color:red">**1. No aviation credential taxonomy**</span> — Generic providers treat pilots as standard employees. They don't understand: license classes (PPL/CPL/ATPL), type ratings (A320 vs B737), medical certificate classes (Class 1/2/3), or recency requirements (90-day rule, 3 takeoffs/landings). Verification forms don't capture aviation-specific data fields.
+
+<span style="color:red">**2. Unaware of aviation security vetting**</span> — Standard background checks miss aviation-specific clearances: CTC (Counter Terrorist Check), airside passes, airport ID badges,Known Crewmember status. These are distinct from criminal checks and require aviation authority coordination.
+
+<span style="color:red">**3. Insurance verification blind spot**</span> — Many operators require pilots to carry life/accident insurance with specific aviation coverage. Generic providers have "never heard of this requirement" — it's standard in aviation but foreign to employment screening.
+
+<span style="color:red">**4. Career stage blindness**</span> — Cadet, First Officer, and Captain have different verification needs. Cadets need ATO certificates and student loans. Captains need command upgrades and PIC hour verification. Generic providers apply one-size-fits-all checks regardless of career stage.
+
+<span style="color:red">**5. Medical certification complexity**</span> — Pilots require ongoing medical validity. A Class 1 medical expires every 12 months (6 months for over-40s). Generic providers don't track expiration windows, renewal status, or Special Issuance conditions. They verify "current employment" but miss "current medical validity."
+
+<span style="color:red">**6. Multi-authority licensing**</span> — Pilots often hold licenses from multiple authorities (FAA + EASA + CAAP). Generic providers check one country. They don't understand license conversion, validation, or foreign license acceptance rules per operator.
+
 ---
 
 ### The Platform Solution: Unified Verification Layer
