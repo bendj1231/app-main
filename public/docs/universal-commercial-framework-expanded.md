@@ -1620,6 +1620,10 @@ Aviation background screening operates on outdated manual processes that create 
 
 Generic background check companies operate in isolation. To properly verify pilots, they must collaborate with an ecosystem of aviation stakeholders — this coordination does not exist today:
 
+- Platform integration: [pilotrecognition.com](https://pilotrecognition.com)
+- Framework documentation: [pilotrecognition.com/framework](https://pilotrecognition.com/framework/full)
+- Partner verification portal: [pilotrecognition.com/verify](https://pilotrecognition.com)
+
 <span style="color:red">**1. No integration with aviation insurance underwriters**</span> — Verification providers don't talk to Global Aerospace, AIG, or Allianz Aviation. They can't verify pilot insurance coverage, policy validity, or aviation-specific exclusions. The data sits in separate silos.
 
 <span style="color:red">**2. No coordination with airline HR departments**</span> — Each airline has unique requirements: some accept foreign licenses, some don't; some require specific medical conditions, others waive them. Verification providers don't access airline-specific requirement matrices. They apply generic templates.
