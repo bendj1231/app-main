@@ -1107,31 +1107,31 @@ Commercial airlines face a consistent set of operational challenges in pilot rec
 
 **Pain Points for Airlines:**
 
-<span style="color:red">**1. Volume without quality**</span> — 500+ applications per opening, majority unqualified. Sorting consumes HR resources.
+**1. Volume without quality** — 500+ applications per opening, majority unqualified. Sorting consumes HR resources.
 
-<span style="color:red">**2. Static, outdated data**</span> — CVs submitted are months or years old; hours, ratings, medical status unknown.
+**2. Static, outdated data** — CVs submitted are months or years old; hours, ratings, medical status unknown.
 
-<span style="color:red">**3. No pre-qualification**</span> — Aptitude and competency alignment unknown until interview stage.
+**3. No pre-qualification** — Aptitude and competency alignment unknown until interview stage.
 
-<span style="color:red">**4. Manual compliance**</span> — Background checks, license verification, and data handling require manual export/import.
+**4. Manual compliance** — Background checks, license verification, and data handling require manual export/import.
 
-<span style="color:red">**5. Unpredictable pipelines**</span> — No visibility into qualified candidate pools until posting goes live.
+**5. Unpredictable pipelines** — No visibility into qualified candidate pools until posting goes live.
 
-<span style="color:red">**6. High washout rates**</span> — 35-45% of hired pilots fail to complete training or leave within 12 months.
+**6. High washout rates** — 35-45% of hired pilots fail to complete training or leave within 12 months.
 
 **Pain Points for Pilots:**
 
-<span style="color:red">**1. No central directory**</span> — Job posts scattered across Facebook, LinkedIn, generic boards. No single source of truth.
+**1. No central directory** — Job posts scattered across Facebook, LinkedIn, generic boards. No single source of truth.
 
-<span style="color:red">**2. Opaque requirements**</span> — Exact hours, ratings, and competency expectations rarely published clearly.
+**2. Opaque requirements** — Exact hours, ratings, and competency expectations rarely published clearly.
 
-<span style="color:red">**3. No self-alignment tool**</span> — Pilots cannot compare their profile against requirements before applying.
+**3. No self-alignment tool** — Pilots cannot compare their profile against requirements before applying.
 
-<span style="color:red">**4. Outdated information**</span> — Requirements change; pilots align to old job posts without knowing.
+**4. Outdated information** — Requirements change; pilots align to old job posts without knowing.
 
-<span style="color:red">**5. No demand signals**</span> — Fleet expansion and type rating demand invisible. Pilots invest blindly.
+**5. No demand signals** — Fleet expansion and type rating demand invisible. Pilots invest blindly.
 
-<span style="color:red">**6. Unverified status**</span> — No differentiation between verified, current profiles and stale CVs.
+**6. Unverified status** — No differentiation between verified, current profiles and stale CVs.
 
 ### The Platform Solution
 
@@ -1576,45 +1576,45 @@ Aviation background screening operates on outdated manual processes that create 
 
 **For Airlines & Operators:**
 
-<span style="color:red">**1. Manual verification workflows**</span> — Employment history, license validation, and criminal checks require manual document chasing across multiple authorities (CAA, FAA, local police). Average turnaround: 14-30 days per candidate.
+**1. Manual verification workflows** — Employment history, license validation, and criminal checks require manual document chasing across multiple authorities (CAA, FAA, local police). Average turnaround: 14-30 days per candidate.
 
-<span style="color:red">**2. Duplicate screening costs**</span> — Each airline runs identical checks on the same pilot. A pilot applying to 5 airlines undergoes 5 separate background checks at industry-wide cost duplication.
+**2. Duplicate screening costs** — Each airline runs identical checks on the same pilot. A pilot applying to 5 airlines undergoes 5 separate background checks at industry-wide cost duplication.
 
-<span style="color:red">**3. No real-time status visibility**</span> — HR cannot track check progress. Pilots disappear into black holes with no timeline communication.
+**3. No real-time status visibility** — HR cannot track check progress. Pilots disappear into black holes with no timeline communication.
 
-<span style="color:red">**4. Static, forgeable records**</span> — Paper-based certificates and self-reported employment histories are easily falsified. Fraud risk is high, detection is manual.
+**4. Static, forgeable records** — Paper-based certificates and self-reported employment histories are easily falsified. Fraud risk is high, detection is manual.
 
-<span style="color:red">**5. Inconsistent global coverage**</span> — Check availability and turnaround varies wildly by country. UK employment verification: minutes. Germany criminal check: 3 weeks. No transparency on timelines.
+**5. Inconsistent global coverage** — Check availability and turnaround varies wildly by country. UK employment verification: minutes. Germany criminal check: 3 weeks. No transparency on timelines.
 
-<span style="color:red">**6. Limited integration capability**</span> — Most verification providers lack API infrastructure. Airlines manually download PDFs and re-upload to ATS systems.
+**6. Limited integration capability** — Most verification providers lack API infrastructure. Airlines manually download PDFs and re-upload to ATS systems.
 
 **For Pilots:**
 
-<span style="color:red">**1. Opaque requirements**</span> — Each airline has different check scopes. Pilots discover requirements only after applying, often triggering surprise rejections.
+**1. Opaque requirements** — Each airline has different check scopes. Pilots discover requirements only after applying, often triggering surprise rejections.
 
-<span style="color:red">**2. No pre-verification option**</span> — Cannot complete checks proactively. Must wait for airline to initiate, extending time-to-hire.
+**2. No pre-verification option** — Cannot complete checks proactively. Must wait for airline to initiate, extending time-to-hire.
 
-<span style="color:red">**3. Repeat check burden**</span> — Each new application requires starting verification from zero. No portable credential wallet exists.
+**3. Repeat check burden** — Each new application requires starting verification from zero. No portable credential wallet exists.
 
-<span style="color:red">**4. Gap explanation ambiguity**</span> — Employment gaps require different documentation per airline. No standardized guidance on what satisfies scrutiny.
+**4. Gap explanation ambiguity** — Employment gaps require different documentation per airline. No standardized guidance on what satisfies scrutiny.
 
-<span style="color:red">**5. Insurance verification gap**</span> — Many operators require proof of life/accident insurance coverage. No standard mechanism exists to verify this.
+**5. Insurance verification gap** — Many operators require proof of life/accident insurance coverage. No standard mechanism exists to verify this.
 
-<span style="color:red">**6. Cost uncertainty**</span> — Check costs borne by either pilot or airline, inconsistently. No predictable pricing model.
+**6. Cost uncertainty** — Check costs borne by either pilot or airline, inconsistently. No predictable pricing model.
 
 **For Verification Providers (Domain Knowledge Gaps):**
 
-<span style="color:red">**1. No aviation credential taxonomy**</span> — Generic providers treat pilots as standard employees. They don't understand: license classes (PPL/CPL/ATPL), type ratings (A320 vs B737), medical certificate classes (Class 1/2/3), or recency requirements (90-day rule, 3 takeoffs/landings). Verification forms don't capture aviation-specific data fields.
+**1. No aviation credential taxonomy** — Generic providers treat pilots as standard employees. They don't understand: license classes (PPL/CPL/ATPL), type ratings (A320 vs B737), medical certificate classes (Class 1/2/3), or recency requirements (90-day rule, 3 takeoffs/landings). Verification forms don't capture aviation-specific data fields.
 
-<span style="color:red">**2. Unaware of aviation security vetting**</span> — Standard background checks miss aviation-specific clearances: CTC (Counter Terrorist Check), airside passes, airport ID badges,Known Crewmember status. These are distinct from criminal checks and require aviation authority coordination.
+**2. Unaware of aviation security vetting** — Standard background checks miss aviation-specific clearances: CTC (Counter Terrorist Check), airside passes, airport ID badges,Known Crewmember status. These are distinct from criminal checks and require aviation authority coordination.
 
-<span style="color:red">**3. Insurance verification blind spot**</span> — Many operators require pilots to carry life/accident insurance with specific aviation coverage. Generic providers have "never heard of this requirement" — it's standard in aviation but foreign to employment screening.
+**3. Insurance verification blind spot** — Many operators require pilots to carry life/accident insurance with specific aviation coverage. Generic providers have "never heard of this requirement" — it's standard in aviation but foreign to employment screening.
 
-<span style="color:red">**4. Career stage blindness**</span> — Cadet, First Officer, and Captain have different verification needs. Cadets need ATO certificates and student loans. Captains need command upgrades and PIC hour verification. Generic providers apply one-size-fits-all checks regardless of career stage.
+**4. Career stage blindness** — Cadet, First Officer, and Captain have different verification needs. Cadets need ATO certificates and student loans. Captains need command upgrades and PIC hour verification. Generic providers apply one-size-fits-all checks regardless of career stage.
 
-<span style="color:red">**5. Medical certification complexity**</span> — Pilots require ongoing medical validity. A Class 1 medical expires every 12 months (6 months for over-40s). Generic providers don't track expiration windows, renewal status, or Special Issuance conditions. They verify "current employment" but miss "current medical validity."
+**5. Medical certification complexity** — Pilots require ongoing medical validity. A Class 1 medical expires every 12 months (6 months for over-40s). Generic providers don't track expiration windows, renewal status, or Special Issuance conditions. They verify "current employment" but miss "current medical validity."
 
-<span style="color:red">**6. Multi-authority licensing**</span> — Pilots often hold licenses from multiple authorities (FAA + EASA + CAAP). Generic providers check one country. They don't understand license conversion, validation, or foreign license acceptance rules per operator.
+**6. Multi-authority licensing** — Pilots often hold licenses from multiple authorities (FAA + EASA + CAAP). Generic providers check one country. They don't understand license conversion, validation, or foreign license acceptance rules per operator.
 
 **Ecosystem Collaboration Requirements (Currently Non-Existent):**
 
@@ -1626,21 +1626,21 @@ Generic background check companies operate in isolation. To properly verify pilo
 | **Framework Documentation** | <a href="https://pilotrecognition.com/framework/full" target="_blank" style="color:#0066cc;text-decoration:underline;">pilotrecognition.com/framework</a> |
 | **Partner Verification Portal** | <a href="https://pilotrecognition.com" target="_blank" style="color:#0066cc;text-decoration:underline;">pilotrecognition.com/verify</a> |
 
-<span style="color:red">**1. No integration with aviation insurance underwriters**</span> — Verification providers don't talk to Global Aerospace, AIG, or Allianz Aviation. They can't verify pilot insurance coverage, policy validity, or aviation-specific exclusions. The data sits in separate silos.
+**1. No integration with aviation insurance underwriters** — Verification providers don't talk to Global Aerospace, AIG, or Allianz Aviation. They can't verify pilot insurance coverage, policy validity, or aviation-specific exclusions. The data sits in separate silos.
 
-<span style="color:red">**2. No coordination with airline HR departments**</span> — Each airline has unique requirements: some accept foreign licenses, some don't; some require specific medical conditions, others waive them. Verification providers don't access airline-specific requirement matrices. They apply generic templates.
+**2. No coordination with airline HR departments** — Each airline has unique requirements: some accept foreign licenses, some don't; some require specific medical conditions, others waive them. Verification providers don't access airline-specific requirement matrices. They apply generic templates.
 
-<span style="color:red">**3. No connection to aviation medical examiners (AMEs)**</span> — Medical verification requires direct AME integration for real-time Class 1/2/3 status, Special Issuance tracking, and renewal windows. Background check companies don't interface with the aviation medical ecosystem.
+**3. No connection to aviation medical examiners (AMEs)** — Medical verification requires direct AME integration for real-time Class 1/2/3 status, Special Issuance tracking, and renewal windows. Background check companies don't interface with the aviation medical ecosystem.
 
-<span style="color:red">**4. No access to aviation authority databases**</span> — CAA, FAA, EASA, CAAP all have separate license validation systems. Verification providers check employment history but skip license authority lookups. They don't integrate with authority APIs for real-time credential validation.
+**4. No access to aviation authority databases** — CAA, FAA, EASA, CAAP all have separate license validation systems. Verification providers check employment history but skip license authority lookups. They don't integrate with authority APIs for real-time credential validation.
 
-<span style="color:red">**5. No partnership with flight training organizations (ATOs)**</span> — Cadet program verification requires ATO transcript access, simulator hour validation, and training completion records. Generic providers verify "employer" but miss "training provider" — a critical gap for low-time pilots.
+**5. No partnership with flight training organizations (ATOs)** — Cadet program verification requires ATO transcript access, simulator hour validation, and training completion records. Generic providers verify "employer" but miss "training provider" — a critical gap for low-time pilots.
 
-<span style="color:red">**6. No alignment with airport security authorities**</span> — Airside passes, CTC checks, and Known Crewmember status require direct coordination with airport security and national aviation authorities. Background check companies treat these as "criminal checks" — they're distinct and require separate channels.
+**6. No alignment with airport security authorities** — Airside passes, CTC checks, and Known Crewmember status require direct coordination with airport security and national aviation authorities. Background check companies treat these as "criminal checks" — they're distinct and require separate channels.
 
-<span style="color:red">**7. No understanding of operator-specific policies**</span> — Cargo operators have different requirements than charter; low-cost carriers differ from legacy airlines. Verification providers don't access operator policy databases. One pilot, five applications, five different verification scopes — no standardization.
+**7. No understanding of operator-specific policies** — Cargo operators have different requirements than charter; low-cost carriers differ from legacy airlines. Verification providers don't access operator policy databases. One pilot, five applications, five different verification scopes — no standardization.
 
-<span style="color:red">**8. Fragmented data = fragmented recognition**</span> — Because verification providers don't collaborate with the full ecosystem, pilots cannot build unified Recognition Profiles. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems.
+**8. Fragmented data = fragmented recognition** — Because verification providers don't collaborate with the full ecosystem, pilots cannot build unified Recognition Profiles. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems.
 
 **How PilotRecognition Facilitates Ecosystem Integration:**
 
@@ -1669,71 +1669,71 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 | Feature | Description |
 |:---|:---|
-| <span style="color:red">**One-time completion**</span> | Pilots complete background checks once, store results in digital wallet |
-| <span style="color:red">**Blockchain-backed storage**</span> | Tamper-proof credential storage with immutable audit trail |
-| <span style="color:red">**Instant sharing**</span> | Share verified status with any operator instantly via API |
-| <span style="color:red">**No repetition**</span> | No repeated checks for multiple applications — verify once, apply anywhere |
+| **One-time completion** | Pilots complete background checks once, store results in digital wallet |
+| **Blockchain-backed storage** | Tamper-proof credential storage with immutable audit trail |
+| **Instant sharing** | Share verified status with any operator instantly via API |
+| **No repetition** | No repeated checks for multiple applications — verify once, apply anywhere |
 
 **Check Types Available:**
 
 | Check Type | Description |
 |:---|:---|
-| <span style="color:red">**Identity verification**</span> | Government ID, biometric link |
-| <span style="color:red">**Employment history**</span> | Previous airlines, flight schools, tenure verification |
-| <span style="color:red">**License validation**</span> | Real-time CAA/FAA/EASA authority lookup |
-| <span style="color:red">**Medical certificate status**</span> | Live feed from aviation medical examiners (Class 1/2/3) |
-| <span style="color:red">**Criminal background**</span> | Country-specific: NBI, DBS, FBI, etc. |
-| <span style="color:red">**Right-to-work**</span> | Visa, citizenship, work permits validation |
-| <span style="color:red">**Education/credentials**</span> | ATO certificates, university degrees |
-| <span style="color:red">**Reference checks**</span> | Structured, standardized format |
-| <span style="color:red">**Insurance background check**</span> | *(pilot-consent required)* — Aircraft incident history: training accidents, gear-up landings, runway excursions, hull loss, insurance claims, NTSB/AAIB/TSB reports |
+| **Identity verification** | Government ID, biometric link |
+| **Employment history** | Previous airlines, flight schools, tenure verification |
+| **License validation** | Real-time CAA/FAA/EASA authority lookup |
+| **Medical certificate status** | Live feed from aviation medical examiners (Class 1/2/3) |
+| **Criminal background** | Country-specific: NBI, DBS, FBI, etc. |
+| **Right-to-work** | Visa, citizenship, work permits validation |
+| **Education/credentials** | ATO certificates, university degrees |
+| **Reference checks** | Structured, standardized format |
+| **Insurance background check** | *(pilot-consent required)* — Aircraft incident history: training accidents, gear-up landings, runway excursions, hull loss, insurance claims, NTSB/AAIB/TSB reports |
 
 **Service Tiers:**
 
 | Tier | Details |
 |:---|:---|
-| <span style="color:red">**Standard**</span> | 24-72 hour turnaround, standard depth |
-| <span style="color:red">**Expedited**</span> | 4-24 hour turnaround for Recognition Plus members |
-| <span style="color:red">**Geographic transparency**</span> | Platform displays estimated turnaround per country before purchase |
+| **Standard** | 24-72 hour turnaround, standard depth |
+| **Expedited** | 4-24 hour turnaround for Recognition Plus members |
+| **Geographic transparency** | Platform displays estimated turnaround per country before purchase |
 
 **Pre-Cleared Advantage:**
 
 | Benefit | Description |
 |:---|:---|
-| <span style="color:red">**"Verification Preferred" badge**</span> | Airlines can toggle on pathway cards — pre-verified pilots stand out |
-| <span style="color:red">**Priority listings**</span> | Pre-verified pilots appear at top of candidate lists |
-| <span style="color:red">**80% faster screening**</span> | Reduces airline screening time by 80% — faster time-to-hire |
-| <span style="color:red">**Zero surprise rejections**</span> | Eliminates rejection at final stage due to verification issues |
+| **"Verification Preferred" badge** | Airlines can toggle on pathway cards — pre-verified pilots stand out |
+| **Priority listings** | Pre-verified pilots appear at top of candidate lists |
+| **80% faster screening** | Reduces airline screening time by 80% — faster time-to-hire |
+| **Zero surprise rejections** | Eliminates rejection at final stage due to verification issues |
 
 #### FOR INSURANCE UNDERWRITERS: RISK EVALUATION & PRICING
 
 **Pilot Risk Profiles:**
 
-<span style="color:red">**Low Risk:**</span> Clean verification wallet — no incidents, current medical, stable employment history, no insurance claims. Preferred rates available.
+**Low Risk:** Clean verification wallet — no incidents, current medical, stable employment history, no insurance claims. Preferred rates available.
 
-<span style="color:red">**Moderate Risk:**</span> Minor incidents (training accidents, single claim), employment gaps with valid explanation, older pilots requiring enhanced medical monitoring. Standard rates with conditions.
+**Moderate Risk:** Minor incidents (training accidents, single claim), employment gaps with valid explanation, older pilots requiring enhanced medical monitoring. Standard rates with conditions.
 
-<span style="color:red">**High Risk:**</span> Multiple incidents, license suspensions, medical Special Issuances, frequent job changes, hull loss involvement. Premium rates or coverage exclusions.
+**High Risk:** Multiple incidents, license suspensions, medical Special Issuances, frequent job changes, hull loss involvement. Premium rates or coverage exclusions.
 
 **Risk Scoring Data Points:**
 
 | Data Point | Purpose |
 |:---|:---|
-| <span style="color:red">**Flight hours vs. incident ratio**</span> | Measures safety record over career span |
-| <span style="color:red">**Type rating complexity**</span> | Complex aircraft (A380, B747) vs. single-aisle risk profiles |
-| <span style="color:red">**Medical certificate history**</span> | Class 1/2/3 status, renewals, Special Issuances |
-| <span style="color:red">**Employment stability**</span> | Average tenure per employer — frequent moves = higher risk |
-| <span style="color:red">**Geographic risk exposure**</span> | High-risk route assignments (mountainous, weather-challenged) |
-| <span style="color:red">**Aircraft types operated**</span> | Turboprop vs. jet vs. widebody complexity tiers |
+| **Flight hours vs. incident ratio** | Measures safety record over career span |
+| **Type rating complexity** | Complex aircraft (A380, B747) vs. single-aisle risk profiles |
+| **Medical certificate history** | Class 1/2/3 status, renewals, Special Issuances |
+| **Employment stability** | Average tenure per employer — frequent moves = higher risk |
+| **Geographic risk exposure** | High-risk route assignments (mountainous, weather-challenged) |
+| **Aircraft types operated** | Turboprop vs. jet vs. widebody complexity tiers |
 
 **Consent-Based Access:**
 
 | Feature | Description |
 |:---|:---|
-| <span style="color:red">**Pilot opt-in**</span> | Pilots choose to share verification wallet with insurance partners |
-| <span style="color:red">**Pre-verified profiles**</span> | Underwriters receive tamper-proof risk profiles — no manual verification needed |
-| <span style="color:red">**Real-time updates**</span> | Medical status, license changes, new incidents pushed live |
-| <span style="color:red">**Weeks to minutes**</span> | Reduces underwriting time from weeks to minutes |
+| **Pilot opt-in** | Pilots choose to share verification wallet with insurance partners |
+| **Pre-verified profiles** | Underwriters receive tamper-proof risk profiles — no manual verification needed |
+| **Real-time updates** | Medical status, license changes, new incidents pushed live |
+| **Weeks to minutes** | Reduces underwriting time from weeks to minutes |
 
 ---
 
@@ -1743,57 +1743,57 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 | Feature | Description |
 |:---|:---|
-| <span style="color:red">**Real-time verification triggers**</span> | Via REST API — instant check initiation when pilot submits interest |
-| <span style="color:red">**Webhook notifications**</span> | Live updates on check completion pushed to airline systems |
-| <span style="color:red">**99.9% uptime SLA**</span> | Enterprise-grade reliability commitment |
-| <span style="color:red">**Direct ATS integration**</span> | Major platforms supported: Greenhouse, Workday, Lever, etc. |
+| **Real-time verification triggers** | Via REST API — instant check initiation when pilot submits interest |
+| **Webhook notifications** | Live updates on check completion pushed to airline systems |
+| **99.9% uptime SLA** | Enterprise-grade reliability commitment |
+| **Direct ATS integration** | Major platforms supported: Greenhouse, Workday, Lever, etc. |
 
 **Automated Workflows:**
 
 | Feature | Description |
 |:---|:---|
-| <span style="color:red">**Auto-initiation**</span> | Pilot submits interest → verification check auto-starts (if not pre-cleared) |
-| <span style="color:red">**Live dashboard updates**</span> | Status updates pushed real-time to airline dashboard |
-| <span style="color:red">**Profile integration**</span> | Completed checks flow directly into pilot profile |
-| <span style="color:red">**GDPR/PDPA compliance**</span> | Compliant data handling across all jurisdictions |
+| **Auto-initiation** | Pilot submits interest → verification check auto-starts (if not pre-cleared) |
+| **Live dashboard updates** | Status updates pushed real-time to airline dashboard |
+| **Profile integration** | Completed checks flow directly into pilot profile |
+| **GDPR/PDPA compliance** | Compliant data handling across all jurisdictions |
 
 **Configurable Check Depth:**
 
 | Tier | Scope |
 |:---|:---|
-| <span style="color:red">**Standard**</span> | ID, employment, license, criminal (basic) |
-| <span style="color:red">**Enhanced**</span> | Add financial checks, reference validation, social media screening |
-| <span style="color:red">**Full**</span> | Add insurance verification, medical deep-dive, simulator record checks |
-| <span style="color:red">**Per-role configuration**</span> | Captains get full checks, Cadets get standard, First Officers get enhanced |
+| **Standard** | ID, employment, license, criminal (basic) |
+| **Enhanced** | Add financial checks, reference validation, social media screening |
+| **Full** | Add insurance verification, medical deep-dive, simulator record checks |
+| **Per-role configuration** | Captains get full checks, Cadets get standard, First Officers get enhanced |
 
 **Airline Insurance Underwriter Requirements (Backend Configuration):**
 
 | Requirement | Description |
 |:---|:---|
-| <span style="color:red">**Backend publishing**</span> | Airlines publish insurance risk profile requirements on pathway backend |
-| <span style="color:red">**Low Risk Profile Required**</span> | Clean record, no incidents, current medical — preferred by insurers for lower premiums |
-| <span style="color:red">**Moderate Risk Acceptable**</span> | Single minor incident allowed, stable employment history |
-| <span style="color:red">**Risk Tolerance by Role**</span> | Captains require cleaner profiles than First Officers due to higher liability exposure |
-| <span style="color:red">**Visible profiles**</span> | Insurance underwriter-designated profiles visible to pilots before application |
-| <span style="color:red">**Pilot notification**</span> | "This pathway requires Low Risk insurance profile — check your verification wallet" |
-| <span style="color:red">**Reduced rejections**</span> | Eliminates insurance-related rejections at final offer stage |
+| **Backend publishing** | Airlines publish insurance risk profile requirements on pathway backend |
+| **Low Risk Profile Required** | Clean record, no incidents, current medical — preferred by insurers for lower premiums |
+| **Moderate Risk Acceptable** | Single minor incident allowed, stable employment history |
+| **Risk Tolerance by Role** | Captains require cleaner profiles than First Officers due to higher liability exposure |
+| **Visible profiles** | Insurance underwriter-designated profiles visible to pilots before application |
+| **Pilot notification** | "This pathway requires Low Risk insurance profile — check your verification wallet" |
+| **Reduced rejections** | Eliminates insurance-related rejections at final offer stage |
 
 **Cost Efficiency:**
 
 | Model | Details |
 |:---|:---|
-| <span style="color:red">**Pilot-paid model**</span> | Airlines pay nothing, access pre-verified candidates |
-| <span style="color:red">**Volume-based tiers**</span> | 0-1,000 / 1,001-5,000 / 5,001-10,000 / 10,000+ checks |
-| <span style="color:red">**Co-investment periods**</span> | Possible for market launch phases to accelerate adoption |
+| **Pilot-paid model** | Airlines pay nothing, access pre-verified candidates |
+| **Volume-based tiers** | 0-1,000 / 1,001-5,000 / 5,001-10,000 / 10,000+ checks |
+| **Co-investment periods** | Possible for market launch phases to accelerate adoption |
 
 **Fraud Prevention:**
 
 | Feature | Description |
 |:---|:---|
-| <span style="color:red">**Near-zero identity fraud**</span> | Via biometric-linked verification |
-| <span style="color:red">**Tamper-proof records**</span> | Digital records eliminate forged documents |
-| <span style="color:red">**Cross-referenced lookups**</span> | Authority lookups catch license discrepancies |
-| <span style="color:red">**Blockchain audit trails**</span> | Immutable verification history |
+| **Near-zero identity fraud** | Via biometric-linked verification |
+| **Tamper-proof records** | Digital records eliminate forged documents |
+| **Cross-referenced lookups** | Authority lookups catch license discrepancies |
+| **Blockchain audit trails** | Immutable verification history |
 
 ---
 
@@ -1803,42 +1803,42 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 | Benefit | Description |
 |:---|:---|
-| <span style="color:red">**Instant market credibility**</span> | Partnership with established verification provider signals legitimacy to airlines, regulators, and pilots |
-| <span style="color:red">**Zero infrastructure build**</span> | Leverage partner's existing API infrastructure, global coverage, and compliance frameworks instead of building from scratch |
-| <span style="color:red">**Revenue share opportunity**</span> | 10-15% commission on verification fees creates passive income stream without operational overhead |
-| <span style="color:red">**Sticky ecosystem lock-in**</span> | Once pilots verify through platform, they remain engaged users; verification becomes the hook for broader Recognition services |
-| <span style="color:red">**Airline sales leverage**</span> | "We have integrated background checking" is a powerful differentiator when approaching airline HR departments |
-| <span style="color:red">**Data moat construction**</span> | Verification records add immutable data layer to pilot profiles, increasing platform value and defensibility |
+| **Instant market credibility** | Partnership with established verification provider signals legitimacy to airlines, regulators, and pilots |
+| **Zero infrastructure build** | Leverage partner's existing API infrastructure, global coverage, and compliance frameworks instead of building from scratch |
+| **Revenue share opportunity** | 10-15% commission on verification fees creates passive income stream without operational overhead |
+| **Sticky ecosystem lock-in** | Once pilots verify through platform, they remain engaged users; verification becomes the hook for broader Recognition services |
+| **Airline sales leverage** | "We have integrated background checking" is a powerful differentiator when approaching airline HR departments |
+| **Data moat construction** | Verification records add immutable data layer to pilot profiles, increasing platform value and defensibility |
 
 **What's In It For Verification Partners (e.g., Veremark):**
 
 | Benefit | Description |
 |:---|:---|
-| <span style="color:red">**New vertical expansion**</span> | Aviation is a $800B+ industry with 500,000+ professional pilots globally; verification partners gain entry to underserved market |
-| <span style="color:red">**Qualified customer pipeline**</span> | PilotRecognition pre-screens and funnels pilots actively seeking verification (warm leads vs. cold outreach) |
-| <span style="color:red">**Platform-native integration**</span> | Become the default verification layer for an entire industry ecosystem, not just another vendor |
-| <span style="color:red">**Aviation domain expertise**</span> | Partnership provides real-world data and feedback to develop aviation-specific check types (license validation, medical verification, incident history) |
-| <span style="color:red">**Competitive differentiation**</span> | "Preferred verification partner of PilotRecognition" positions vendor ahead of generic background check competitors |
-| <span style="color:red">**Volume growth engine**</span> | Multiplier effect: one verified pilot applies to 5+ airlines = 5x check volume per user |
-| <span style="color:red">**Blockchain credential innovation**</span> | Pilot-owned digital wallet (Verepass-style) creates pilot-controlled verification model — pilots pay for portability, airlines pay for access |
+| **New vertical expansion** | Aviation is a $800B+ industry with 500,000+ professional pilots globally; verification partners gain entry to underserved market |
+| **Qualified customer pipeline** | PilotRecognition pre-screens and funnels pilots actively seeking verification (warm leads vs. cold outreach) |
+| **Platform-native integration** | Become the default verification layer for an entire industry ecosystem, not just another vendor |
+| **Aviation domain expertise** | Partnership provides real-world data and feedback to develop aviation-specific check types (license validation, medical verification, incident history) |
+| **Competitive differentiation** | "Preferred verification partner of PilotRecognition" positions vendor ahead of generic background check competitors |
+| **Volume growth engine** | Multiplier effect: one verified pilot applies to 5+ airlines = 5x check volume per user |
+| **Blockchain credential innovation** | Pilot-owned digital wallet (Verepass-style) creates pilot-controlled verification model — pilots pay for portability, airlines pay for access |
 
 **Strategic Synergy:**
 
 | PilotRecognition Provides | Verification Partner Provides |
 |:---|:---|
-| <span style="color:red">**Qualified pilot pipeline**</span> (pre-motivated, actively seeking verification) | Technical infrastructure (APIs, global coverage, compliance) |
-| <span style="color:red">**Aviation domain knowledge**</span> (requirements, data fields, stakeholder coordination) | Scalable check execution (speed, accuracy, multi-country) |
-| <span style="color:red">**Airline/operator customer introductions**</span> | Credibility signals (established provider, existing compliance certifications) |
-| <span style="color:red">**Platform integration**</span> (wallet, pathways, profile matching) | Revenue (check fees, tiered pricing, volume commitments) |
-| <span style="color:red">**Marketing and user acquisition**</span> | Industry vertical expertise development |
+| **Qualified pilot pipeline** (pre-motivated, actively seeking verification) | Technical infrastructure (APIs, global coverage, compliance) |
+| **Aviation domain knowledge** (requirements, data fields, stakeholder coordination) | Scalable check execution (speed, accuracy, multi-country) |
+| **Airline/operator customer introductions** | Credibility signals (established provider, existing compliance certifications) |
+| **Platform integration** (wallet, pathways, profile matching) | Revenue (check fees, tiered pricing, volume commitments) |
+| **Marketing and user acquisition** | Industry vertical expertise development |
 
 **Market Positioning Win:**
 
 | Role | Positioning |
 |:---|:---|
-| <span style="color:red">**PilotRecognition**</span> | Becomes the "immigration gateway" for pilots — the first stop where credentials are verified before any airline application |
-| <span style="color:red">**Verification Partner**</span> | Becomes the "digital passport bureau" for aviation — the trusted provider that stamps pilots as cleared for hire |
-| <span style="color:red">**Together**</span> | Build the **Global Clearinghouse for Verified Pilots** — the standard infrastructure layer the aviation industry has never had |
+| **PilotRecognition** | Becomes the "immigration gateway" for pilots — the first stop where credentials are verified before any airline application |
+| **Verification Partner** | Becomes the "digital passport bureau" for aviation — the trusted provider that stamps pilots as cleared for hire |
+| **Together** | Build the **Global Clearinghouse for Verified Pilots** — the standard infrastructure layer the aviation industry has never had |
 
 ---
 
@@ -1868,20 +1868,20 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 | Year | Milestone | Revenue |
 |:---|:---|:---|
-| <span style="color:red">**Year 1**</span> | Co-investment period, 5,000 pilots verified | Break-even — market development focus |
-| <span style="color:red">**Year 2**</span> | 13,500 checks at tiered pricing | $255K revenue potential |
-| <span style="color:red">**Year 3**</span> | 36,000 checks at volume pricing | $474K revenue potential |
+| **Year 1** | Co-investment period, 5,000 pilots verified | Break-even — market development focus |
+| **Year 2** | 13,500 checks at tiered pricing | $255K revenue potential |
+| **Year 3** | 36,000 checks at volume pricing | $474K revenue potential |
 
 ### Operational Outcomes
 
 | Metric | Before | After |
 |:---|:---|:---|
-| <span style="color:red">**Verification turnaround**</span> | 14-30 days | 24-72 hours (standard), 4-24 hours (expedited) |
-| <span style="color:red">**Duplicate check costs**</span> | 5x per multi-application pilot | 1x per pilot (portable wallet) |
-| <span style="color:red">**Fraud detection**</span> | Manual, reactive | Automated, proactive |
-| <span style="color:red">**ATS integration**</span> | Manual PDF upload | Direct API flow |
-| <span style="color:red">**Pilot surprise rejections**</span> | Common | Eliminated via pre-verification |
-| <span style="color:red">**HR screening time**</span> | 8-12 hours per candidate | 1-2 hours per candidate |
+| **Verification turnaround** | 14-30 days | 24-72 hours (standard), 4-24 hours (expedited) |
+| **Duplicate check costs** | 5x per multi-application pilot | 1x per pilot (portable wallet) |
+| **Fraud detection** | Manual, reactive | Automated, proactive |
+| **ATS integration** | Manual PDF upload | Direct API flow |
+| **Pilot surprise rejections** | Common | Eliminated via pre-verification |
+| **HR screening time** | 8-12 hours per candidate | 1-2 hours per candidate |
 
 ---
 
