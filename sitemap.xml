@@ -1,74 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Airline Expectations Page -->
+  <url>
+    <loc>https://pilotrecognition.com/</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
   <url>
     <loc>https://pilotrecognition.com/airline-expectations</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/discover-pathways</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/what-is-the-pilot-gap</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/programs</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/foundational-program</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/transition-program</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/airbus-aligned-ebt-cbta-programs</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/pilot-recognition</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/recognition-career-matches</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/become-member</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/benefits</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/news-updates</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pilotrecognition.com/framework/full</loc>
+    <lastmod>2025-01-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-  </url>
-  
-  <!-- Type Rating Search Page -->
-  <url>
-    <loc>https://www.pilotrecognition.com/type-rating-search</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Job Listings Page -->
-  <url>
-    <loc>https://pilotrecognition.com/job-listings</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Main Pathways Page -->
-  <url>
-    <loc>https://pilotrecognition.com/pathways</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Cadet Programs Page -->
-  <url>
-    <loc>https://pilotrecognition.com/pathways/cadet-programs</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Air Taxi & eVTOL Page -->
-  <url>
-    <loc>https://pilotrecognition.com/pathways/air-taxi</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Private Charter Page -->
-  <url>
-    <loc>https://pilotrecognition.com/pathways/private-charter</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Cargo Transportation Page -->
-  <url>
-    <loc>https://pilotrecognition.com/pathways/cargo</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Unmanned Systems Page -->
-  <url>
-    <loc>https://pilotrecognition.com/pathways/drones</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>
 </urlset>
