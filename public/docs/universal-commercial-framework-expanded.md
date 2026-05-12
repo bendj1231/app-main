@@ -1671,17 +1671,17 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Verification providers cannot access pilot insurance coverage data, policy validity, or aviation-specific exclusions. Risk evaluation relies on self-reported data and manual checks. Turnaround: weeks.</span>
 
-**<span style="color:#0066cc">Their Contribution:</span>**
+**Their Contribution:**
 - **API endpoint for policy verification:** Real-time validation of pilot insurance coverage, exclusions, and claims history
 - **Risk scoring framework:** Structured risk profiles (Low/Moderate/High) that airlines can reference on pathway backend
 - **Pilot-consent data access:** Underwriters receive tamper-proof risk profiles with verified incident history
 
-**<span style="color:#0066cc">What They Receive:</span>**
-- **<span style="color:#0066cc">Pre-verified risk profiles:</span>** <span style="color:#0066cc">Weeks of manual verification reduced to minutes via blockchain-backed wallet data</span>
-- **<span style="color:#0066cc">Real-time risk updates:</span>** <span style="color:#0066cc">Medical status changes, new incidents, license suspensions pushed live</span>
-- **<span style="color:#0066cc">Reduced underwriting costs:</span>** <span style="color:#0066cc">Automated verification eliminates manual document chasing across 150+ countries</span>
+**What They Receive:**
+- **Pre-verified risk profiles:** Weeks of manual verification reduced to minutes via blockchain-backed wallet data
+- **Real-time risk updates:** Medical status changes, new incidents, license suspensions pushed live
+- **Reduced underwriting costs:** Automated verification eliminates manual document chasing across 150+ countries
 
-**<span style="color:#0066cc">Integration:</span>** Direct API connections enable real-time policy verification. Airlines publish insurance risk requirements on pathway backend; pilots check verification wallet before applying. Zero surprise rejections at final offer stage.
+**Integration:** Direct API connections enable real-time policy verification. Airlines publish insurance risk requirements on pathway backend; pilots check verification wallet before applying. Zero surprise rejections at final offer stage.
 
 ---
 
@@ -1689,18 +1689,18 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Each airline maintains unique requirements in siloed systems. Verification providers apply generic templates, missing operator-specific policies. HR manually chases documents across CAA/FAA/local authorities. Turnaround: 14-30 days per candidate.</span>
 
-**<span style="color:#0066cc">Their Contribution:</span>**
+**Their Contribution:**
 - **Requirement matrix publication:** Airlines publish per-role verification requirements on platform backend (Captains = full checks, Cadets = standard, First Officers = enhanced)
 - **API integration:** Webhook notifications feed verification status directly into airline ATS (Greenhouse, Workday, Lever)
 - **Backend configuration:** Insurance underwriter risk profile requirements published for pilot visibility before application
 
-**<span style="color:#0066cc">What They Receive:</span>**
-- **<span style="color:#0066cc">Pre-cleared candidate pipeline:</span>** <span style="color:#0066cc">80% faster screening time; pilots arrive pre-verified with digital wallet</span>
-- **<span style="color:#0066cc">Real-time status tracking:</span>** <span style="color:#0066cc">Live dashboard updates as checks complete; no "black hole" communication</span>
-- **<span style="color:#0066cc">Configurable verification depth:</span>** <span style="color:#0066cc">Standard/Enhanced/Full check packages selectable per role</span>
-- **<span style="color:#0066cc">Zero-cost model:</span>** <span style="color:#0066cc">Pilots pay for verification; airlines access pre-verified candidates at no cost</span>
+**What They Receive:**
+- **Pre-cleared candidate pipeline:** 80% faster screening time; pilots arrive pre-verified with digital wallet
+- **Real-time status tracking:** Live dashboard updates as checks complete; no "black hole" communication
+- **Configurable verification depth:** Standard/Enhanced/Full check packages selectable per role
+- **Zero-cost model:** Pilots pay for verification; airlines access pre-verified candidates at no cost
 
-**<span style="color:#0066cc">Integration:</span>** Pilot submits interest → verification auto-initiates (if not pre-cleared) → completed checks flow directly into pilot profile → HR receives via API webhook. GDPR/PDPA compliant data handling.
+**Integration:** Pilot submits interest → verification auto-initiates (if not pre-cleared) → completed checks flow directly into pilot profile → HR receives via API webhook. GDPR/PDPA compliant data handling.
 
 ---
 
@@ -1708,18 +1708,18 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Medical status verification requires manual contact with individual AMEs. Background check companies cannot access Class 1/2/3 status, Special Issuance conditions, or renewal windows. Medical validity is often expired by the time verification completes.</span>
 
-**<span style="color:#0066cc">Their Contribution:</span>**
+**Their Contribution:**
 - **Real-time medical status feed:** AMEs provide live Class 1/2/3 validation, Special Issuance tracking, and renewal window data
 - **Blockchain wallet integration:** Medical certificates flow directly into pilot-controlled digital wallets with immutable audit trail
 - **Aviation-specific data schema:** Standardized medical data fields (certificate class, issuance date, limitations, validity period)
 
-**<span style="color:#0066cc">What They Receive:</span>**
-- **<span style="color:#0066cc">Streamlined verification requests:</span>** <span style="color:#0066cc">Airlines and insurers pull medical data via API rather than calling individual AME offices</span>
-- **<span style="color:#0066cc">Reduced administrative burden:</span>** <span style="color:#0066cc">Automated status updates eliminate repetitive verification requests for the same pilot</span>
-- **<span style="color:#0066cc">Enhanced pilot compliance:</span>** <span style="color:#0066cc">Renewal window monitoring enables proactive pilot notifications before expiration</span>
-- **<span style="color:#0066cc">Revenue opportunity:</span>** <span style="color:#0066cc">AMEs on platform become preferred verification sources for airlines and underwriters</span>
+**What They Receive:**
+- **Streamlined verification requests:** Airlines and insurers pull medical data via API rather than calling individual AME offices
+- **Reduced administrative burden:** Automated status updates eliminate repetitive verification requests for the same pilot
+- **Enhanced pilot compliance:** Renewal window monitoring enables proactive pilot notifications before expiration
+- **Revenue opportunity:** AMEs on platform become preferred verification sources for airlines and underwriters
 
-**<span style="color:#0066cc">Integration:</span>** AME network API feeds live medical data → stored in pilot verification wallet → instantly shareable with any operator via API. Underwriters receive real-time medical status for risk evaluation.
+**Integration:** AME network API feeds live medical data → stored in pilot verification wallet → instantly shareable with any operator via API. Underwriters receive real-time medical status for risk evaluation.
 
 ---
 
@@ -1727,18 +1727,18 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Each authority (CAA, FAA, EASA, CAAP) maintains separate license databases. Verification providers cannot access real-time credential validation, relying on pilot-submitted documents that may be falsified. Multi-authority licensing (FAA + EASA + CAAP) creates verification complexity.</span>
 
-**<span style="color:#0066cc">Their Contribution:</span>**
+**Their Contribution:**
 - **API infrastructure access:** Authorities provide real-time license validation endpoints for instant credential verification
 - **Standardized data format:** Unified license data schema across authorities (license number, type ratings, validity, limitations, recency)
 - **Cross-border validation:** API access for license conversion, validation, and foreign license acceptance rules per operator
 
-**<span style="color:#0066cc">What They Receive:</span>**
-- **<span style="color:#0066cc">Fraud prevention:</span>** <span style="color:#0066cc">Biometric-linked verification with blockchain audit trails eliminates forged license submissions</span>
-- **<span style="color:#0066cc">Regulatory compliance:</span>** <span style="color:#0066cc">Automated verification ensures operators only hire pilots with valid, current licenses</span>
-- **<span style="color:#0066cc">Data accuracy:</span>** <span style="color:#0066cc">Real-time lookups eliminate stale data; authority databases remain source of truth</span>
-- **<span style="color:#0066cc">Reduced verification burden:</span>** <span style="color:#0066cc">Airlines and insurers query authority APIs directly rather than requesting manual validations</span>
+**What They Receive:**
+- **Fraud prevention:** Biometric-linked verification with blockchain audit trails eliminates forged license submissions
+- **Regulatory compliance:** Automated verification ensures operators only hire pilots with valid, current licenses
+- **Data accuracy:** Real-time lookups eliminate stale data; authority databases remain source of truth
+- **Reduced verification burden:** Airlines and insurers query authority APIs directly rather than requesting manual validations
 
-**<span style="color:#0066cc">Integration:</span>** Pre-established API connections to CAA, FAA, EASA, CAAP → real-time license lookups during verification process → tamper-proof credential storage in pilot wallet. Authority data feeds directly into insurance risk profiles and airline hiring decisions.
+**Integration:** Pre-established API connections to CAA, FAA, EASA, CAAP → real-time license lookups during verification process → tamper-proof credential storage in pilot wallet. Authority data feeds directly into insurance risk profiles and airline hiring decisions.
 
 ---
 
@@ -1746,18 +1746,18 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Cadet program verification cannot access ATO transcripts, simulator hour logs, or training completion records. Generic background checks verify "employer" but miss "training provider" — leaving a critical gap for low-time pilots entering the industry.</span>
 
-**<span style="color:#0066cc">Their Contribution:</span>**
+**Their Contribution:**
 - **Transcript and record access:** ATOs provide cadet program completion records, simulator hour validation, and training transcript data
 - **Certificate verification:** Direct validation of ATO-issued certificates, type ratings, and endorsements
 - **University degree integration:** Partnerships with aviation universities for degree verification alongside flight training records
 
-**<span style="color:#0066cc">What They Receive:</span>**
-- **<span style="color:#0066cc">Cadet placement pipeline:</span>** <span style="color:#0066cc">Pre-verified low-time pilots flow directly to airline pathway cards; ATO graduates gain visibility</span>
-- **<span style="color:#0066cc">Enhanced credibility:</span>** <span style="color:#0066cc">ATOs on platform become trusted verification sources, attracting more student enrollments</span>
-- **<span style="color:#0066cc">Reduced document fraud:</span>** <span style="color:#0066cc">Blockchain-backed training records eliminate forged certificates and inflated hour claims</span>
-- **<span style="color:#0066cc">Industry connectivity:</span>** <span style="color:#0066cc">Direct data sharing with airlines enables " Cadet to Cockpit" pathway programs</span>
+**What They Receive:**
+- **Cadet placement pipeline:** Pre-verified low-time pilots flow directly to airline pathway cards; ATO graduates gain visibility
+- **Enhanced credibility:** ATOs on platform become trusted verification sources, attracting more student enrollments
+- **Reduced document fraud:** Blockchain-backed training records eliminate forged certificates and inflated hour claims
+- **Industry connectivity:** Direct data sharing with airlines enables " Cadet to Cockpit" pathway programs
 
-**<span style="color:#0066cc">Integration:</span>** ATO data sharing agreements enable direct transcript access → simulator hours and training completion records flow into pilot verification wallet → airlines view verified cadet credentials on pathway cards. Insurance underwriters access training records for risk evaluation of low-time pilots.
+**Integration:** ATO data sharing agreements enable direct transcript access → simulator hours and training completion records flow into pilot verification wallet → airlines view verified cadet credentials on pathway cards. Insurance underwriters access training records for risk evaluation of low-time pilots.
 
 ---
 
@@ -1765,18 +1765,18 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Airside passes, Counter Terrorist Check (CTC), and Known Crewmember status require direct aviation authority coordination. Background check companies treat these as standard "criminal checks" — missing the aviation-specific security vetting required for airside access.</span>
 
-**<span style="color:#0066cc">Their Contribution:</span>**
+**Their Contribution:**
 - **CTC and airside pass verification:** Airport security authorities provide verification channels for Counter Terrorist Check, airside passes, airport ID badges, and Known Crewmember status
 - **Security clearance data:** Real-time validation of pilot security credentials required for airport access
 - **Multi-airport coordination:** Standardized security verification across different airport authorities and countries
 
-**<span style="color:#0066cc">What They Receive:</span>**
-- **<span style="color:#0066cc">Streamlined pilot onboarding:</span>** <span style="color:#0066cc">Airlines receive pre-verified security credentials; no redundant CTC checks per application</span>
-- **<span style="color:#0066cc">Enhanced aviation security:</span>** <span style="color:#0066cc">Known Crewmember status and airside passes verified against authoritative sources</span>
-- **<span style="color:#0066cc">Reduced administrative overhead:</span>** <span style="color:#0066cc">Centralized platform eliminates pilots submitting same security documents to multiple airlines</span>
-- **<span style="color:#0066cc">Compliance assurance:</span>** <span style="color:#0066cc">Verification providers access proper channels rather than treating aviation security as generic criminal checks</span>
+**What They Receive:**
+- **Streamlined pilot onboarding:** Airlines receive pre-verified security credentials; no redundant CTC checks per application
+- **Enhanced aviation security:** Known Crewmember status and airside passes verified against authoritative sources
+- **Reduced administrative overhead:** Centralized platform eliminates pilots submitting same security documents to multiple airlines
+- **Compliance assurance:** Verification providers access proper channels rather than treating aviation security as generic criminal checks
 
-**<span style="color:#0066cc">Integration:</span>** Coordinated verification channels with airport security authorities → CTC/airside pass data flows into pilot verification wallet → airlines view security status alongside other credentials. Pilots with current security clearances appear as "pre-cleared" on pathway cards.
+**Integration:** Coordinated verification channels with airport security authorities → CTC/airside pass data flows into pilot verification wallet → airlines view security status alongside other credentials. Pilots with current security clearances appear as "pre-cleared" on pathway cards.
 
 ---
 
@@ -1784,21 +1784,21 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Verification providers operate in isolation with no ecosystem coordination. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems. Fragmented data = fragmented recognition.</span>
 
-**<span style="color:#0066cc">Their Contribution:</span>**
+**Their Contribution:**
 - **Technical infrastructure:** APIs, global coverage networks, compliance frameworks (GDPR, PDPA), and scalable check execution
 - **Aviation domain capabilities:** Specialized verification for license validation, medical status, employment history, criminal background across 150+ countries
 - **Blockchain credential storage:** Digital wallet infrastructure for tamper-proof, portable verification records (Verepass-style model)
 - **Real-time verification triggers:** Instant check initiation via REST API with webhook notifications to airline ATS systems
 
-**<span style="color:#0066cc">What They Receive:</span>**
-- **<span style="color:#0066cc">Qualified pilot pipeline:</span>** <span style="color:#0066cc">Pre-motivated pilots actively seeking verification (warm leads vs. cold outreach)</span>
-- **<span style="color:#0066cc">Platform-native integration:</span>** <span style="color:#0066cc">Become the default verification layer for aviation industry ecosystem, not just another vendor</span>
-- **<span style="color:#0066cc">Aviation vertical expansion:</span>** <span style="color:#0066cc">Entry into $800B+ aviation industry with 500,000+ professional pilots globally</span>
-- **<span style="color:#0066cc">Volume multiplier effect:</span>** <span style="color:#0066cc">One verified pilot applies to 5+ airlines = 5x check volume per user</span>
-- **<span style="color:#0066cc">Revenue share:</span>** <span style="color:#0066cc">10-15% commission structure creates passive income without operational overhead</span>
-- **<span style="color:#0066cc">Competitive differentiation:</span>** <span style="color:#0066cc">"Preferred verification partner of PilotRecognition" positions ahead of generic competitors</span>
+**What They Receive:**
+- **Qualified pilot pipeline:** Pre-motivated pilots actively seeking verification (warm leads vs. cold outreach)
+- **Platform-native integration:** Become the default verification layer for aviation industry ecosystem, not just another vendor
+- **Aviation vertical expansion:** Entry into $800B+ aviation industry with 500,000+ professional pilots globally
+- **Volume multiplier effect:** One verified pilot applies to 5+ airlines = 5x check volume per user
+- **Revenue share:** 10-15% commission structure creates passive income without operational overhead
+- **Competitive differentiation:** "Preferred verification partner of PilotRecognition" positions ahead of generic competitors
 
-**<span style="color:#0066cc">Integration:</span>** Verification partner API integrates with platform → becomes default verification layer for all pilot pathways → airlines initiate checks via platform API → verification results flow into pilot wallet → partner receives revenue share per check. Platform provides pilot funnel, airline connections, and technical infrastructure coordination.
+**Integration:** Verification partner API integrates with platform → becomes default verification layer for all pilot pathways → airlines initiate checks via platform API → verification results flow into pilot wallet → partner receives revenue share per check. Platform provides pilot funnel, airline connections, and technical infrastructure coordination.
 
 ---
 
