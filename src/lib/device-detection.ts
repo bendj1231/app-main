@@ -482,13 +482,18 @@ export function getHomepageGraphicsConfig(): HomepageGraphicsConfig {
 
   const tierReasons: Record<PerformanceTier, string> = {
     low:    `Low-end hardware detected (score ${score}/14) — shader disabled for smooth performance`,
-    medium: `Mid-range hardware detected (score ${score}/14) — reduced shader speed for balance`,
+    medium: `Mid-range hardware detected (score ${score}/14) — shader disabled on Intel Macs for smooth performance`,
     high:   `High-end hardware detected (score ${score}/14) — full visual quality enabled`,
   };
 
+  // Disable MeshGradient for Intel Macs in medium tier (2019 MBA class hardware)
+  // Intel Iris Plus/UHD graphics struggle with continuous WebGL fragment shaders
+  const isIntelMac = ua.includes('mac') && !gpuLower.includes('apple') && !gpuLower.includes('metal');
+  const enableMeshGradient = tier === 'high' || (tier === 'medium' && !isIntelMac);
+
   return {
     tier,
-    enableMeshGradient: tier !== 'low',
+    enableMeshGradient,
     meshGradientSpeed: tier === 'high' ? 0.22 : tier === 'medium' ? 0.08 : 0,
     enableBackdropBlur: tier !== 'low',
     enableHoverScale: true,
