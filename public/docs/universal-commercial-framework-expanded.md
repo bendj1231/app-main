@@ -1576,45 +1576,45 @@ Aviation background screening operates on outdated manual processes that create 
 
 **For Airlines & Operators:**
 
-**1. Manual verification workflows** — Employment history, license validation, and criminal checks require manual document chasing across multiple authorities (CAA, FAA, local police). Average turnaround: 14-30 days per candidate.
+**<span style="color:red">1. Manual verification workflows</span>** — Employment history, license validation, and criminal checks require manual document chasing across multiple authorities (CAA, FAA, local police). Average turnaround: 14-30 days per candidate.
 
-**2. Duplicate screening costs** — Each airline runs identical checks on the same pilot. A pilot applying to 5 airlines undergoes 5 separate background checks at industry-wide cost duplication.
+**<span style="color:red">2. Duplicate screening costs</span>** — Each airline runs identical checks on the same pilot. A pilot applying to 5 airlines undergoes 5 separate background checks at industry-wide cost duplication.
 
-**3. No real-time status visibility** — HR cannot track check progress. Pilots disappear into black holes with no timeline communication.
+**<span style="color:red">3. No real-time status visibility</span>** — HR cannot track check progress. Pilots disappear into black holes with no timeline communication.
 
-**4. Static, forgeable records** — Paper-based certificates and self-reported employment histories are easily falsified. Fraud risk is high, detection is manual.
+**<span style="color:red">4. Static, forgeable records</span>** — Paper-based certificates and self-reported employment histories are easily falsified. Fraud risk is high, detection is manual.
 
-**5. Inconsistent global coverage** — Check availability and turnaround varies wildly by country. UK employment verification: minutes. Germany criminal check: 3 weeks. No transparency on timelines.
+**<span style="color:red">5. Inconsistent global coverage</span>** — Check availability and turnaround varies wildly by country. UK employment verification: minutes. Germany criminal check: 3 weeks. No transparency on timelines.
 
-**6. Limited integration capability** — Most verification providers lack API infrastructure. Airlines manually download PDFs and re-upload to ATS systems.
+**<span style="color:red">6. Limited integration capability</span>** — Most verification providers lack API infrastructure. Airlines manually download PDFs and re-upload to ATS systems.
 
 **For Pilots:**
 
-**1. Opaque requirements** — Each airline has different check scopes. Pilots discover requirements only after applying, often triggering surprise rejections.
+**<span style="color:red">1. Opaque requirements</span>** — Each airline has different check scopes. Pilots discover requirements only after applying, often triggering surprise rejections.
 
-**2. No pre-verification option** — Cannot complete checks proactively. Must wait for airline to initiate, extending time-to-hire.
+**<span style="color:red">2. No pre-verification option</span>** — Cannot complete checks proactively. Must wait for airline to initiate, extending time-to-hire.
 
-**3. Repeat check burden** — Each new application requires starting verification from zero. No portable credential wallet exists.
+**<span style="color:red">3. Repeat check burden</span>** — Each new application requires starting verification from zero. No portable credential wallet exists.
 
-**4. Gap explanation ambiguity** — Employment gaps require different documentation per airline. No standardized guidance on what satisfies scrutiny.
+**<span style="color:red">4. Gap explanation ambiguity</span>** — Employment gaps require different documentation per airline. No standardized guidance on what satisfies scrutiny.
 
-**5. Insurance verification gap** — Many operators require proof of life/accident insurance coverage. No standard mechanism exists to verify this.
+**<span style="color:red">5. Insurance verification gap</span>** — Many operators require proof of life/accident insurance coverage. No standard mechanism exists to verify this.
 
-**6. Cost uncertainty** — Check costs borne by either pilot or airline, inconsistently. No predictable pricing model.
+**<span style="color:red">6. Cost uncertainty</span>** — Check costs borne by either pilot or airline, inconsistently. No predictable pricing model.
 
 **For Verification Providers (Domain Knowledge Gaps):**
 
-**1. No aviation credential taxonomy** — Generic providers treat pilots as standard employees. They don't understand: license classes (PPL/CPL/ATPL), type ratings (A320 vs B737), medical certificate classes (Class 1/2/3), or recency requirements (90-day rule, 3 takeoffs/landings). Verification forms don't capture aviation-specific data fields.
+**<span style="color:red">1. No aviation credential taxonomy</span>** — Generic providers treat pilots as standard employees. They don't understand: license classes (PPL/CPL/ATPL), type ratings (A320 vs B737), medical certificate classes (Class 1/2/3), or recency requirements (90-day rule, 3 takeoffs/landings). Verification forms don't capture aviation-specific data fields.
 
-**2. Unaware of aviation security vetting** — Standard background checks miss aviation-specific clearances: CTC (Counter Terrorist Check), airside passes, airport ID badges,Known Crewmember status. These are distinct from criminal checks and require aviation authority coordination.
+**<span style="color:red">2. Unaware of aviation security vetting</span>** — Standard background checks miss aviation-specific clearances: CTC (Counter Terrorist Check), airside passes, airport ID badges,Known Crewmember status. These are distinct from criminal checks and require aviation authority coordination.
 
-**3. Insurance verification blind spot** — Many operators require pilots to carry life/accident insurance with specific aviation coverage. Generic providers have "never heard of this requirement" — it's standard in aviation but foreign to employment screening.
+**<span style="color:red">3. Insurance verification blind spot</span>** — Many operators require pilots to carry life/accident insurance with specific aviation coverage. Generic providers have "never heard of this requirement" — it's standard in aviation but foreign to employment screening.
 
-**4. Career stage blindness** — Cadet, First Officer, and Captain have different verification needs. Cadets need ATO certificates and student loans. Captains need command upgrades and PIC hour verification. Generic providers apply one-size-fits-all checks regardless of career stage.
+**<span style="color:red">4. Career stage blindness</span>** — Cadet, First Officer, and Captain have different verification needs. Cadets need ATO certificates and student loans. Captains need command upgrades and PIC hour verification. Generic providers apply one-size-fits-all checks regardless of career stage.
 
-**5. Medical certification complexity** — Pilots require ongoing medical validity. A Class 1 medical expires every 12 months (6 months for over-40s). Generic providers don't track expiration windows, renewal status, or Special Issuance conditions. They verify "current employment" but miss "current medical validity."
+**<span style="color:red">5. Medical certification complexity</span>** — Pilots require ongoing medical validity. A Class 1 medical expires every 12 months (6 months for over-40s). Generic providers don't track expiration windows, renewal status, or Special Issuance conditions. They verify "current employment" but miss "current medical validity."
 
-**6. Multi-authority licensing** — Pilots often hold licenses from multiple authorities (FAA + EASA + CAAP). Generic providers check one country. They don't understand license conversion, validation, or foreign license acceptance rules per operator.
+**<span style="color:red">6. Multi-authority licensing</span>** — Pilots often hold licenses from multiple authorities (FAA + EASA + CAAP). Generic providers check one country. They don't understand license conversion, validation, or foreign license acceptance rules per operator.
 
 **Ecosystem Collaboration Requirements (Currently Non-Existent):**
 
@@ -1626,21 +1626,21 @@ Generic background check companies operate in isolation. To properly verify pilo
 | **Framework Documentation** | <a href="https://pilotrecognition.com/framework/full" target="_blank" style="color:#0066cc;text-decoration:underline;">pilotrecognition.com/framework</a> |
 | **Partner Verification Portal** | <a href="https://pilotrecognition.com" target="_blank" style="color:#0066cc;text-decoration:underline;">pilotrecognition.com/verify</a> |
 
-**1. No integration with aviation insurance underwriters** — Verification providers don't talk to Global Aerospace, AIG, or Allianz Aviation. They can't verify pilot insurance coverage, policy validity, or aviation-specific exclusions. The data sits in separate silos.
+**<span style="color:red">1. No integration with aviation insurance underwriters</span>** — Verification providers don't talk to Global Aerospace, AIG, or Allianz Aviation. They can't verify pilot insurance coverage, policy validity, or aviation-specific exclusions. The data sits in separate silos.
 
-**2. No coordination with airline HR departments** — Each airline has unique requirements: some accept foreign licenses, some don't; some require specific medical conditions, others waive them. Verification providers don't access airline-specific requirement matrices. They apply generic templates.
+**<span style="color:red">2. No coordination with airline HR departments</span>** — Each airline has unique requirements: some accept foreign licenses, some don't; some require specific medical conditions, others waive them. Verification providers don't access airline-specific requirement matrices. They apply generic templates.
 
-**3. No connection to aviation medical examiners (AMEs)** — Medical verification requires direct AME integration for real-time Class 1/2/3 status, Special Issuance tracking, and renewal windows. Background check companies don't interface with the aviation medical ecosystem.
+**<span style="color:red">3. No connection to aviation medical examiners (AMEs)</span>** — Medical verification requires direct AME integration for real-time Class 1/2/3 status, Special Issuance tracking, and renewal windows. Background check companies don't interface with the aviation medical ecosystem.
 
-**4. No access to aviation authority databases** — CAA, FAA, EASA, CAAP all have separate license validation systems. Verification providers check employment history but skip license authority lookups. They don't integrate with authority APIs for real-time credential validation.
+**<span style="color:red">4. No access to aviation authority databases</span>** — CAA, FAA, EASA, CAAP all have separate license validation systems. Verification providers check employment history but skip license authority lookups. They don't integrate with authority APIs for real-time credential validation.
 
-**5. No partnership with flight training organizations (ATOs)** — Cadet program verification requires ATO transcript access, simulator hour validation, and training completion records. Generic providers verify "employer" but miss "training provider" — a critical gap for low-time pilots.
+**<span style="color:red">5. No partnership with flight training organizations (ATOs)</span>** — Cadet program verification requires ATO transcript access, simulator hour validation, and training completion records. Generic providers verify "employer" but miss "training provider" — a critical gap for low-time pilots.
 
-**6. No alignment with airport security authorities** — Airside passes, CTC checks, and Known Crewmember status require direct coordination with airport security and national aviation authorities. Background check companies treat these as "criminal checks" — they're distinct and require separate channels.
+**<span style="color:red">6. No alignment with airport security authorities</span>** — Airside passes, CTC checks, and Known Crewmember status require direct coordination with airport security and national aviation authorities. Background check companies treat these as "criminal checks" — they're distinct and require separate channels.
 
-**7. No understanding of operator-specific policies** — Cargo operators have different requirements than charter; low-cost carriers differ from legacy airlines. Verification providers don't access operator policy databases. One pilot, five applications, five different verification scopes — no standardization.
+**<span style="color:red">7. No understanding of operator-specific policies</span>** — Cargo operators have different requirements than charter; low-cost carriers differ from legacy airlines. Verification providers don't access operator policy databases. One pilot, five applications, five different verification scopes — no standardization.
 
-**8. Fragmented data = fragmented recognition** — Because verification providers don't collaborate with the full ecosystem, pilots cannot build unified Recognition Profiles. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems.
+**<span style="color:red">8. Fragmented data = fragmented recognition</span>** — Because verification providers don't collaborate with the full ecosystem, pilots cannot build unified Recognition Profiles. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems.
 
 **How PilotRecognition Facilitates Ecosystem Integration:**
 
