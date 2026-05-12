@@ -1944,6 +1944,8 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Verification providers operate in isolation with no ecosystem coordination. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems. Fragmented data = fragmented recognition.</span>
 
+**<span style="color:red">Critical ATO Access Gap:</span>** <span style="color:red">Background check companies cannot access verified Flight Training Organizations (ATOs). They lack direct API connections to training academies, simulator centers, and flight schools. Cadet program verification is impossible without ATO transcript access, simulator hour validation, and training completion records. For low-time pilots entering the industry, this creates a critical blind spot — verification providers cannot validate the most important credential: where and how the pilot was trained.</span>
+
 **Their Contribution:**
 
 - **Technical infrastructure:** APIs, global coverage networks, compliance frameworks (GDPR, PDPA), and scalable check execution
