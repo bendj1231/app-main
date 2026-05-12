@@ -1736,6 +1736,15 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 - **Full:** Add insurance verification, medical deep-dive, simulator record checks
 - Per-role configuration: Captains get full checks, Cadets get standard
 
+**Airline Insurance Underwriter Requirements (Backend Configuration):**
+- Airlines publish insurance risk profile requirements on pathway backend
+- **Low Risk Profile Required:** Clean record, no incidents, current medical — preferred by insurers for lower premiums
+- **Moderate Risk Acceptable:** Single minor incident allowed, stable employment history
+- **Risk Tolerance Varies by Role:** Captains require cleaner profiles than First Officers due to higher liability exposure
+- Insurance underwriter-designated profiles visible to pilots before application
+- Pilots see: "This pathway requires Low Risk insurance profile — check your verification wallet"
+- Reduces insurance-related rejections at final offer stage
+
 **Cost Efficiency:**
 - Pilot-paid model: Airlines pay nothing, access pre-verified candidates
 - Volume-based pricing tiers: 0-1,000 / 1,001-5,000 / 5,001-10,000 / 10,000+
