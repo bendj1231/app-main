@@ -1101,126 +1101,133 @@ When the bored captain gets recognized and moves to cargo/BizAv:
 
 ## PILLAR 1: COMMERCIAL AIRLINES (Detailed)
 
-> **Without pilots, what are you?**
->
-> Airports are built for them. Runways are built for them. Air traffic control exists to guide them. Terminals are designed around their schedules. Every aircraft — from a single-engine Cessna to an Airbus A380 — is engineered to be operated by one person at the center of it all: the pilot.
->
-> Aviation is not built around airlines. It is not built around manufacturers. It is not built around regulators or banks or insurance companies. Every single piece of infrastructure in this industry — every billion dollars of capital investment, every international agreement, every safety standard — ultimately exists to support the moment a qualified pilot takes command of an aircraft and moves people and cargo from one place to another.
->
-> **Pilots are not a resource in the aviation system. They are the system.**
->
-> And yet — this same professional, the most operationally critical individual in the entire industry, is the least recognised, the least informed, and the most underserved by the very industry they hold together. They invest tens of thousands of dollars in training with no guarantee of where it leads. They align themselves to requirements that no one publishes clearly. They apply to airlines through Facebook posts and generic job boards. They build careers of extraordinary skill and discipline that are invisible on paper.
->
-> That ends here. Pillar 1 is the framework that gives pilots the information, recognition, and infrastructure they have always deserved — and gives airlines the quality, transparency, and efficiency they have never been able to access.
+### The Problem: Recruitment Friction and Information Asymmetry
 
-### Platform Architecture for Commercial Airlines: Two Distinct Pages
+Commercial airlines face a consistent set of operational challenges in pilot recruitment:
 
-Pillar 1 operates across two separate but connected platform pages. Each serves a distinct purpose for pilots and airlines.
+**For Airlines:**
+- **Volume without quality:** 500+ applications per opening, majority unqualified — sorting consumes HR resources
+- **Static, outdated data:** CVs submitted are months or years old; hours, ratings, medical status unknown
+- **No pre-qualification:** Aptitude and competency alignment unknown until interview stage
+- **Manual compliance:** Background checks, license verification, and data handling require manual export/import
+- **Unpredictable pipelines:** No visibility into qualified candidate pools until posting goes live
+- **High washout rates:** 35-45% of hired pilots fail to complete training or leave within 12 months
+
+**For Pilots:**
+- **No central directory:** Job posts scattered across Facebook, LinkedIn, generic boards — no single source of truth
+- **Opaque requirements:** Exact hours, ratings, and competency expectations rarely published clearly
+- **No self-alignment tool:** Pilots cannot compare their profile against requirements before applying
+- **Outdated information:** Requirements change; pilots align to old job posts without knowing
+- **No demand signals:** Fleet expansion and type rating demand invisible — pilots invest blindly
+- **Unverified status:** No differentiation between verified, current profiles and stale CVs
+
+### The Platform Solution
+
+Pillar 1 addresses both sides through two connected interfaces:
 
 ---
 
-#### PAGE 1: PILOT CAREER PATHWAYS
+#### FOR PILOTS: CAREER PATHWAYS PAGE
 
-This page is for **pilots** — a browsable directory of career routes across all aviation sectors. Commercial airlines are one category within a broader ecosystem of pathways.
+A browsable directory of verified airline pathways with structured, timestamped requirement data.
 
-**Pathway Categories Available to Pilots:**
-- Commercial Airline Pathways (First Officer, Captain, Direct Entry, Cadet)
-- Cargo & Freight Pathways
-- Charter & Business Aviation Pathways
-- Military Transition Pathways
-- eVTOL & Emerging Sector Pathways
-- Flight Instructor Pathways
-- Type Rating & Conversion Pathways
-- Cadet Program Entry Pathways
-
-**What a Pilot Sees on Each Pathway Card:**
-- Minimum flight hours required (total, PIC, multi-engine, instrument)
-- Aircraft type ratings required or preferred
+**Pathway Card Contents:**
+- Minimum flight hours (total, PIC, multi-engine, instrument)
+- Required/preferred type ratings
 - Medical certificate class required
-- Minimum age and nationality/residency eligibility
-- Language proficiency requirements (ICAO level, preferred language)
-- Recognition Score minimum threshold to submit interest
-- Whether the pathway accepts low-timers, high-timers, or both
-- Whether type rating is sponsored or self-funded
-- Current intake status: Open / Closed / Upcoming (with cycle dates)
-- Last updated timestamp — pilots always know if requirements are current
+- Age and nationality/residency eligibility
+- ICAO language proficiency level (4/5/6)
+- Recognition Score minimum threshold
+- Experience level accepted (low-timer/mid-timer/high-timer)
+- Type rating sponsorship status
+- Current intake status: Open / Closed / Paused / Future Demand
+- Last updated timestamp
 
-**Pilot Alignment Tool:**
-- Pilots compare their live profile directly against any pathway card
-- Platform shows exact gaps: what they have, what they are missing
-- Pilots receive alerts when a saved pathway updates its requirements
-- Pilots investing in a type rating can check fleet demand before committing
+**Alignment Tools:**
+- Live profile comparison against any pathway — exact gaps displayed
+- Alerts when saved pathways update requirements
+- Fleet demand visibility before type rating investment
+- Aptitude pre-check before interest submission
 
 ---
 
-#### PAGE 2: AIRLINE EXPECTATION PAGE
+#### FOR AIRLINES: EXPECTATION PAGE
 
-This page is the **airline's verified presence on the platform** — a structured, living profile that replaces uncoordinated job postings on Facebook, LinkedIn, or generic recruitment boards. Every field is maintained by the airline and timestamped.
+A structured, maintained profile replacing uncoordinated job posts. All fields timestamped and current.
 
-**Airline Profile Fields (Required):**
+**Profile Fields:**
 
 **Identity & Operations:**
-- Airline name, ICAO/IATA code, country of domicile
-- Operating bases and hub locations
-- Operational type: full-service, low-cost, regional, wet lease
+- Airline name, ICAO/IATA code, domicile
+- Operating bases and hubs
+- Operational type (full-service, low-cost, regional, wet lease)
 
-**Current Fleet Information:**
-- Active aircraft types in operation
-- Fleet size per type
-- Planned fleet additions or phase-outs (12-month outlook)
-- New type rating demand: if an Airbus A321 is being phased in, pilots see this before committing to a rating
+**Fleet Information:**
+- Active aircraft types and fleet size
+- 12-month fleet outlook (additions, phase-outs)
+- Type rating demand signals
 
-**Pilot Intake Preferences — What They Are Actually Looking For:**
-- Position type: Second Officer, First Officer, Captain, Direct Entry Captain
-- Preferred experience level: low-timer (below 500 hours), mid-timer, high-timer (1,500+)
-- Type rating preference: with rating, without rating (training provided), specific type required
-- Background preference: ATO graduate, military transition, ex-commercial, cadet program graduate
-- Foreign pilot policy: open to all nationalities / regional pilots only / specific nationalities
-- Language requirement: English proficiency (ICAO Level 4/5/6), additional language preferred
-- Preferred Recognition Score range on the platform
+**Intake Preferences:**
+- Position types (SO, FO, Captain, Direct Entry)
+- Experience levels sought
+- Type rating requirements
+- Background preferences (ATO, military, commercial, cadet)
+- Foreign pilot policy
+- Language requirements
+- Recognition Score range
 
-**Background Check Configuration:**
-- Required verification depth per role (standard, enhanced, full)
-- Whether verified Recognition+ users receive expedited processing
-- Third-party verification provider preference (e.g., Veremark, HireRight)
+**Configuration:**
+- Background check depth per role
+- Recognition+ expedited processing options
+- Verification provider preference
 
-**Cadet Program Details (if applicable):**
-- Cadet program name and structure
-- Entry requirements: minimum hours, academic qualifications, age range
-- Bond or service obligation period
-- Intake cycle: intakes per year, next intake date
-- Sponsorship model: full-sponsor, partial, self-fund with employment guarantee
+**Cadet Programs (if applicable):**
+- Program structure and entry requirements
+- Bond/service obligations
+- Intake cycle dates
+- Sponsorship model
 
-**Hiring Signal (Public, Live):**
-- Open / Closed / Paused hiring status — visible to all pilots on the platform
-- Estimated next opening window
-- Future demand forecast: planned headcount for next 12-24 months by role
+**Hiring Signal:**
+- Live Open/Closed/Paused status
+- Next window estimates
+- 12-24 month headcount forecast by role
 
-**ATS & Compliance Integration:**
-- Airline connects their ATS system via API
-- Pilot interest data flows directly in GDPR/PDPA-compliant format
-- No manual exports, no data re-entry
+**Integration:**
+- ATS API connection
+- GDPR/PDPA-compliant data flow
+- No manual export/re-entry
 
 ---
 
-### What We Require from Airlines:
-- Publish and maintain their Airline Expectation Page within 30 days of onboarding
-- Update all requirements fields within 7 days of any internal change
-- Define minimum Recognition Score thresholds per role
-- Connect ATS integration within 60 days
-- Respond to verified pilot interests within a defined SLA window
+### Platform Requirements for Airlines
 
-### Commercial Tiers:
-- **Basic:** $500/month — pathway card listing, 10 profile pulls/month
-- **Professional:** $1,000/month — 50 profile pulls, aptitude test access, ATS integration
-- **Enterprise:** $2,500/month — unlimited pulls, custom EBT development, dedicated support
-- **Success Fee:** $500 per confirmed hire (waived for first 10 hires)
+| Requirement | Timeline |
+|-------------|----------|
+| Publish Airline Expectation Page | 30 days from onboarding |
+| Update requirement fields on change | Within 7 days |
+| Define Recognition Score thresholds per role | At onboarding |
+| Connect ATS integration | 60 days |
+| Respond to verified pilot interests | Per SLA window |
 
-### Benefits:
-- Time-to-hire: 70% reduction (6 months → 6-8 weeks)
-- Washout rate: 57% reduction (35% → 15%)
-- Annual ROI: $1.2-2.4M for a 100-pilot hiring target
-- Pre-cleared verified pipeline, compliance automation, no more random CVs
+### Commercial Tiers
+
+| Tier | Monthly Fee | Features |
+|------|-------------|----------|
+| Basic | $500 | Pathway listing, 10 profile pulls/month |
+| Professional | $1,000 | 50 profile pulls, aptitude access, ATS integration |
+| Enterprise | $2,500 | Unlimited pulls, custom EBT development, dedicated support |
+
+**Success Fee:** $500 per confirmed hire (waived for first 10 hires)
+
+### Operational Outcomes
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Time-to-hire | 6-12 months | 2-4 weeks (75% reduction) |
+| Candidate washout rate | 35-45% | <10% |
+| Applications per opening | 500+ random CVs | Pre-filtered, verified only |
+| Profile data freshness | Months/years old | Live real-time updates |
+| Annual ROI (100-pilot target) | — | $1.2-2.4M |
 
 ---
 
