@@ -1685,7 +1685,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 **Service Tiers:**
 
 1. Standard: 24-72 hour turnaround, standard depth.
-2. Expedited: 4-24 hour turnaround for Recognition Plus members.
+2. Expedited: 4-24 hour turnaround for members.
 3. Geographic transparency: Platform displays estimated turnaround per country before purchase.
 
 **Pre-Cleared Advantage:**
