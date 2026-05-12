@@ -1691,6 +1691,27 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 - Reduces airline screening time by 80%
 - Eliminates surprise rejections
 
+#### FOR INSURANCE UNDERWRITERS: RISK EVALUATION & PRICING
+
+**Pilot Risk Profiles:**
+- **Low Risk:** Clean verification wallet — no incidents, current medical, stable employment history, no insurance claims. Preferred rates available.
+- **Moderate Risk:** Minor incidents (training accidents, single claim), employment gaps with valid explanation, older pilots requiring enhanced medical monitoring. Standard rates with conditions.
+- **High Risk:** Multiple incidents, license suspensions, medical Special Issuances, frequent job changes, hull loss involvement. Premium rates or coverage exclusions.
+
+**Risk Scoring Data Points:**
+- Total flight hours vs. incident ratio
+- Type rating complexity and recency
+- Medical certificate class and renewal history
+- Employment stability (average tenure per employer)
+- Geographic risk exposure (high-risk route assignments)
+- Aircraft types operated (turboprop vs. jet vs. widebody)
+
+**Consent-Based Access:**
+- Pilots opt-in to share verification wallet with insurance partners
+- Underwriters receive pre-verified, tamper-proof risk profiles
+- Real-time updates on medical status, license changes, new incidents
+- Reduces underwriting time from weeks to minutes
+
 ---
 
 #### FOR AIRLINES: INTEGRATED VERIFICATION INFRASTRUCTURE
