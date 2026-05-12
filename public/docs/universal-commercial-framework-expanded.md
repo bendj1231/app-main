@@ -1576,31 +1576,31 @@ Aviation background screening operates on outdated manual processes that create 
 
 **For Airlines & Operators:**
 
-**1. Manual verification workflows** — Employment history, license validation, and criminal checks require manual document chasing across multiple authorities (CAA, FAA, local police). Average turnaround: 14-30 days per candidate.
+<span style="color:red">**1. Manual verification workflows**</span> — Employment history, license validation, and criminal checks require manual document chasing across multiple authorities (CAA, FAA, local police). Average turnaround: 14-30 days per candidate.
 
-**2. Duplicate screening costs** — Each airline runs identical checks on the same pilot. A pilot applying to 5 airlines undergoes 5 separate background checks at industry-wide cost duplication.
+<span style="color:red">**2. Duplicate screening costs**</span> — Each airline runs identical checks on the same pilot. A pilot applying to 5 airlines undergoes 5 separate background checks at industry-wide cost duplication.
 
-**3. No real-time status visibility** — HR cannot track check progress. Pilots disappear into black holes with no timeline communication.
+<span style="color:red">**3. No real-time status visibility**</span> — HR cannot track check progress. Pilots disappear into black holes with no timeline communication.
 
-**4. Static, forgeable records** — Paper-based certificates and self-reported employment histories are easily falsified. Fraud risk is high, detection is manual.
+<span style="color:red">**4. Static, forgeable records**</span> — Paper-based certificates and self-reported employment histories are easily falsified. Fraud risk is high, detection is manual.
 
-**5. Inconsistent global coverage** — Check availability and turnaround varies wildly by country. UK employment verification: minutes. Germany criminal check: 3 weeks. No transparency on timelines.
+<span style="color:red">**5. Inconsistent global coverage**</span> — Check availability and turnaround varies wildly by country. UK employment verification: minutes. Germany criminal check: 3 weeks. No transparency on timelines.
 
-**6. Limited integration capability** — Most verification providers lack API infrastructure. Airlines manually download PDFs and re-upload to ATS systems.
+<span style="color:red">**6. Limited integration capability**</span> — Most verification providers lack API infrastructure. Airlines manually download PDFs and re-upload to ATS systems.
 
 **For Pilots:**
 
-**1. Opaque requirements** — Each airline has different check scopes. Pilots discover requirements only after applying, often triggering surprise rejections.
+<span style="color:red">**1. Opaque requirements**</span> — Each airline has different check scopes. Pilots discover requirements only after applying, often triggering surprise rejections.
 
-**2. No pre-verification option** — Cannot complete checks proactively. Must wait for airline to initiate, extending time-to-hire.
+<span style="color:red">**2. No pre-verification option**</span> — Cannot complete checks proactively. Must wait for airline to initiate, extending time-to-hire.
 
-**3. Repeat check burden** — Each new application requires starting verification from zero. No portable credential wallet exists.
+<span style="color:red">**3. Repeat check burden**</span> — Each new application requires starting verification from zero. No portable credential wallet exists.
 
-**4. Gap explanation ambiguity** — Employment gaps require different documentation per airline. No standardized guidance on what satisfies scrutiny.
+<span style="color:red">**4. Gap explanation ambiguity**</span> — Employment gaps require different documentation per airline. No standardized guidance on what satisfies scrutiny.
 
-**5. Insurance verification gap** — Many operators require proof of life/accident insurance coverage. No standard mechanism exists to verify this.
+<span style="color:red">**5. Insurance verification gap**</span> — Many operators require proof of life/accident insurance coverage. No standard mechanism exists to verify this.
 
-**6. Cost uncertainty** — Check costs borne by either pilot or airline, inconsistently. No predictable pricing model.
+<span style="color:red">**6. Cost uncertainty**</span> — Check costs borne by either pilot or airline, inconsistently. No predictable pricing model.
 
 ---
 
