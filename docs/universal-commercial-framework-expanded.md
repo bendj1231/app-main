@@ -1765,22 +1765,26 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **What's In It For PilotRecognition:**
 
-- **Instant market credibility** — Partnership with established verification provider signals legitimacy to airlines, regulators, and pilots
-- **Zero infrastructure build** — Leverage partner's existing API infrastructure, global coverage, and compliance frameworks instead of building from scratch
-- **Revenue share opportunity** — 10-15% commission on verification fees creates passive income stream without operational overhead
-- **Sticky ecosystem lock-in** — Once pilots verify through platform, they remain engaged users; verification becomes the hook for broader Recognition services
-- **Airline sales leverage** — "We have integrated background checking" is a powerful differentiator when approaching airline HR departments
-- **Data moat construction** — Verification records add immutable data layer to pilot profiles, increasing platform value and defensibility
+| Benefit | Description |
+|:---|:---|
+| <span style="color:red">**Instant market credibility**</span> | Partnership with established verification provider signals legitimacy to airlines, regulators, and pilots |
+| <span style="color:red">**Zero infrastructure build**</span> | Leverage partner's existing API infrastructure, global coverage, and compliance frameworks instead of building from scratch |
+| <span style="color:red">**Revenue share opportunity**</span> | 10-15% commission on verification fees creates passive income stream without operational overhead |
+| <span style="color:red">**Sticky ecosystem lock-in**</span> | Once pilots verify through platform, they remain engaged users; verification becomes the hook for broader Recognition services |
+| <span style="color:red">**Airline sales leverage**</span> | "We have integrated background checking" is a powerful differentiator when approaching airline HR departments |
+| <span style="color:red">**Data moat construction**</span> | Verification records add immutable data layer to pilot profiles, increasing platform value and defensibility |
 
 **What's In It For Verification Partners (e.g., Veremark):**
 
-- **New vertical expansion** — Aviation is a $800B+ industry with 500,000+ professional pilots globally; verification partners gain entry to underserved market
-- **Qualified customer pipeline** — PilotRecognition pre-screens and funnels pilots actively seeking verification (warm leads vs. cold outreach)
-- **Platform-native integration** — Become the default verification layer for an entire industry ecosystem, not just another vendor
-- **Aviation domain expertise** — Partnership provides real-world data and feedback to develop aviation-specific check types (license validation, medical verification, incident history)
-- **Competitive differentiation** — "Preferred verification partner of PilotRecognition" positions vendor ahead of generic background check competitors
-- **Volume growth engine** — Multiplier effect: one verified pilot applies to 5+ airlines = 5x check volume per user
-- **Blockchain credential innovation** — Pilot-owned digital wallet (Verepass-style) creates pilot-controlled verification model — pilots pay for portability, airlines pay for access
+| Benefit | Description |
+|:---|:---|
+| <span style="color:red">**New vertical expansion**</span> | Aviation is a $800B+ industry with 500,000+ professional pilots globally; verification partners gain entry to underserved market |
+| <span style="color:red">**Qualified customer pipeline**</span> | PilotRecognition pre-screens and funnels pilots actively seeking verification (warm leads vs. cold outreach) |
+| <span style="color:red">**Platform-native integration**</span> | Become the default verification layer for an entire industry ecosystem, not just another vendor |
+| <span style="color:red">**Aviation domain expertise**</span> | Partnership provides real-world data and feedback to develop aviation-specific check types (license validation, medical verification, incident history) |
+| <span style="color:red">**Competitive differentiation**</span> | "Preferred verification partner of PilotRecognition" positions vendor ahead of generic background check competitors |
+| <span style="color:red">**Volume growth engine**</span> | Multiplier effect: one verified pilot applies to 5+ airlines = 5x check volume per user |
+| <span style="color:red">**Blockchain credential innovation**</span> | Pilot-owned digital wallet (Verepass-style) creates pilot-controlled verification model — pilots pay for portability, airlines pay for access |
 
 **Strategic Synergy:**
 
@@ -1794,9 +1798,11 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **Market Positioning Win:**
 
-- **PilotRecognition** becomes the "immigration gateway" for pilots — the first stop where credentials are verified before any airline application
-- **Verification Partner** becomes the "digital passport bureau" for aviation — the trusted provider that stamps pilots as cleared for hire
-- Together: Build the **Global Clearinghouse for Verified Pilots** — the standard infrastructure layer the aviation industry has never had
+| Role | Positioning |
+|:---|:---|
+| <span style="color:red">**PilotRecognition**</span> | Becomes the "immigration gateway" for pilots — the first stop where credentials are verified before any airline application |
+| <span style="color:red">**Verification Partner**</span> | Becomes the "digital passport bureau" for aviation — the trusted provider that stamps pilots as cleared for hire |
+| <span style="color:red">**Together**</span> | Build the **Global Clearinghouse for Verified Pilots** — the standard infrastructure layer the aviation industry has never had |
 
 ---
 
