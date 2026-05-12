@@ -1729,10 +1729,10 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **API Integration:**
 
-- **Real-time verification triggers** — Via REST API — instant check initiation when pilot submits interest
-- **Webhook notifications** — Live updates on check completion pushed to airline systems
-- **99.9% uptime SLA** — Enterprise-grade reliability commitment
-- **Direct ATS integration** — Major platforms supported: Greenhouse, Workday, Lever, etc.
+- **Real-time verification triggers:** Via REST API, instant check initiation when pilot submits interest
+- **Webhook notifications:** Live updates on check completion pushed to airline systems
+- **99.9% uptime SLA:** Enterprise-grade reliability commitment
+- **Direct ATS integration:** Major platforms supported (Greenhouse, Workday, Lever, etc.)
 
 **Automated Workflows:**
 
