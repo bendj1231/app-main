@@ -308,23 +308,23 @@ This document is the complete operational blueprint for that system. It defines 
 | Industry Compliance Monitoring | Snapshot-based, delayed | Live compliance dashboard — regulators see current license, medical, recency status across pilot base | [→ Pillar 10: Legal & Regulatory](#pillar-10-legal-regulatory-bodies-caap-faa-easa) |
 | **PILLAR 11 — BACKGROUND CHECKS & VERIFICATION** | | | |
 | **— WHAT PILOTS NEED TO KNOW ABOUT BACKGROUND CHECKS** | | | |
-| What Do Airlines Check Before Hiring You | Unknown to most pilots | Published: each airline's background check scope — employment history, criminal, license, medical, references | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| How Long Does a Background Check Take | Opaque — pilots wait in silence | Platform shows per airline: average check turnaround — 24hrs to 3 weeks depending on depth | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| What Can Fail a Background Check | Not communicated until rejected | Published: common failure triggers — gap explanations, license discrepancies, criminal records policy | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Pre-Verification — Clear Before You Apply | No option exists | Pilots complete verified background check upfront — arrive at any airline pre-cleared | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Employment Gap Explanation Policy | Each airline has different rules | Platform shows per operator: gap tolerance, required documentation, acceptable explanations | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| License Verification — Is Your License Valid Globally | Pilots assume yes | Platform runs real-time authority lookup — flags issues before airline sees them | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Medical Certificate Status Communicated to Airlines | Manual, delayed | Medical status linked live — airlines see valid/expired/renewed status without asking | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Criminal Record — What Disqualifies You Per Country | Unknown — varies widely | Per country and operator: what offences are disqualifying vs declarable vs irrelevant | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Reference Checks — Who Will Be Called | Surprise at end of process | Airlines publish reference requirements upfront — pilots prepare correctly from the start | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Pilot-Owned Verification Wallet | No portable credential exists | Verepass-backed digital wallet — pilot owns their verified data, shares with any operator instantly | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| What Do Airlines Check Before Hiring You | Unknown to most pilots | Published: each airline's background check scope — employment history, criminal, license, medical, references | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| How Long Does a Background Check Take | Opaque — pilots wait in silence | Platform shows per airline: average check turnaround — 24hrs to 3 weeks depending on depth | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| What Can Fail a Background Check | Not communicated until rejected | Published: common failure triggers — gap explanations, license discrepancies, criminal records policy | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Pre-Verification — Clear Before You Apply | No option exists | Pilots complete verified background check upfront — arrive at any airline pre-cleared | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Employment Gap Explanation Policy | Each airline has different rules | Platform shows per operator: gap tolerance, required documentation, acceptable explanations | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| License Verification — Is Your License Valid Globally | Pilots assume yes | Platform runs real-time authority lookup — flags issues before airline sees them | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Medical Certificate Status Communicated to Airlines | Manual, delayed | Medical status linked live — airlines see valid/expired/renewed status without asking | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Criminal Record — What Disqualifies You Per Country | Unknown — varies widely | Per country and operator: what offences are disqualifying vs declarable vs irrelevant | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Reference Checks — Who Will Be Called | Surprise at end of process | Airlines publish reference requirements upfront — pilots prepare correctly from the start | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Pilot-Owned Verification Wallet | No portable credential exists | Verepass-backed digital wallet — pilot owns their verified data, shares with any operator instantly | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
 | **— WHAT AIRLINES & OPERATORS GAIN** | | | |
-| Employment History Verification Speed | 14–30 days manual | 24–48 hours via API — Veremark integration pulls verified employment records automatically | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| License & Medical Certificate Validation | Manual CAA/FAA lookups | Real-time authority API integration — no manual document chase | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Criminal & Background Check Turnaround | 7–21 days | 24–72 hours automated — NBI, DBS, FBI checks via regional API partners | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Reference & Incident Record Accuracy | Self-reported, unverifiable | Third-party verified, blockchain-backed — tamper-proof record of service | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Pilot Identity Fraud Risk | High — paper-based records easily forged | Near-zero — digital credential wallet with biometric-linked verification | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
-| Multi-Airline Check Duplication | Each airline runs the same check | Pilot pre-verified once — all airlines access the same verified record, no duplication | [→ Pillar 11: Verification APIs](#pillar-11-verification-apis-veremark-background-ch) |
+| Employment History Verification Speed | 14–30 days manual | 24–48 hours via API — automated employment verification pulls records from previous employers | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| License & Medical Certificate Validation | Manual CAA/FAA lookups | Real-time authority API integration — no manual document chase | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Criminal & Background Check Turnaround | 7–21 days | 24–72 hours automated — NBI, DBS, FBI checks via regional API partners | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Reference & Incident Record Accuracy | Self-reported, unverifiable | Third-party verified, blockchain-backed — tamper-proof record of service | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Pilot Identity Fraud Risk | High — paper-based records easily forged | Near-zero — digital credential wallet with biometric-linked verification | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
+| Multi-Airline Check Duplication | Each airline runs the same check | Pilot pre-verified once — all airlines access the same verified record, no duplication | [→ Pillar 11: Background Checks](#pillar-11-background-checks--verification-providers-detailed) |
 | **PILLAR 12 — FLIGHT DATA & NAVIGATION** | | | |
 | **— WHAT PILOTS NEED TO KNOW ABOUT FLIGHT DATA & NAVIGATION TOOLS** | | | |
 | Are Your Flight Hours Provably Accurate | Logbook is self-reported, unverified | Platform links to EFB and telemetry data — hours verified by flight data, not just pilot entry | [→ Pillar 12: Flight Data & Navigation](#pillar-12-flight-data-navigation-apps-navigraph-fo) |
@@ -1568,95 +1568,147 @@ A structured, maintained profile replacing uncoordinated job posts. All fields t
 
 ---
 
-## PILLAR 11: VERIFICATION APIs (VEREMARK & BACKGROUND CHECK PROVIDERS)
+## PILLAR 11: BACKGROUND CHECKS & VERIFICATION PROVIDERS (Detailed)
 
-### What We Require:
-**CRITICAL PARTNERSHIP - This is a strategic alliance, not a vendor relationship**
+### The Problem: Fragmented Verification and Information Asymmetry
 
-**Technical Requirements:**
-- **API Integration:** Verelink API for real-time verification triggers
-- **Webhook Infrastructure:** POST /webhooks/verification with HMAC signature
-- **Data Schema:** Standardized JSON for PRC, NBI, Medical, Employment verification
-- **SLA Commitments:**
-  - Standard checks: <24 hours completion
-  - Expedited checks: <4 hours (Recognition Plus members)
-  - API Uptime: 99.9% monthly availability
-  - Webhook delivery: 99.5% success rate
+Aviation background screening operates on outdated manual processes that create friction for both pilots and operators:
 
-**Philippines-Specific Data Pulls:**
-- PRC License Verification (Professional Regulation Commission)
-- NBI Clearance (National Bureau of Investigation)
-- Physical Address Verification
-- Employment History Verification
-- Education/Credential Verification
+**For Airlines & Operators:**
 
-**Commercial Requirements:**
-- **Co-Investment Model:** Waived fees for first 1,000 pilots (marketing investment)
-- **Wholesale Pricing Tiers:**
-  - Phase 1 (0-1,000 pilots): $0/check (co-investment)
-  - Phase 2 (1,001-5,000): $25/check wholesale
-  - Phase 3 (5,001-10,000): $15/check wholesale
-  - Phase 4 (10,000+): $12/check wholesale
+**1. Manual verification workflows** — Employment history, license validation, and criminal checks require manual document chasing across multiple authorities (CAA, FAA, local police). Average turnaround: 14-30 days per candidate.
 
-### Preferred Contributions:
-**Essential:**
-- Provide sandbox API access for development (Month 1)
-- Share Philippines data source specifications (PRC, NBI APIs)
-- Assign dedicated technical integration support
-- Participate in "Founding Pilots" program (first 1,000 free checks)
+**2. Duplicate screening costs** — Each airline runs identical checks on the same pilot. A pilot applying to 5 airlines undergoes 5 separate background checks at industry-wide cost duplication.
 
-**Preferred:**
-- Co-develop "Airside Professional" preset verification bundle
-- Joint marketing: "Verified by Veremark" co-branded badges
-- Share anonymized verification analytics (fraud patterns, processing trends)
-- Beta test "Career Passport" blockchain-backed credential wallet
+**3. No real-time status visibility** — HR cannot track check progress. Pilots disappear into black holes with no timeline communication.
 
-**Strategic:**
-- **Philippines Aviation Exclusivity:** Veremark as sole background check provider
-- APAC expansion partnership beyond Philippines
-- Joint research on aviation-specific verification patterns
-- Advisory board participation for product roadmap
-- Co-investment in Philippines market development (70+ specialist team)
+**4. Static, forgeable records** — Paper-based certificates and self-reported employment histories are easily falsified. Fraud risk is high, detection is manual.
 
-### Benefits:
-- **Captive High-Volume Market:** 5,000+ verified pilots Year 1, 20,000+ Year 3
-- **Organic Demand Generation:** Airlines toggle "Verification Preferred" → pilots buy checks automatically
-- **Revenue Model:** $0 → $255K (Year 2 moderate scenario) → $474K (Year 3 optimistic)
-- **Market Leadership:** First-mover in aviation verification vertical
-- **Data Insights:** Unique aviation credential verification dataset
-- **APAC Expansion:** Philippines as launchpad for regional growth
+**5. Inconsistent global coverage** — Check availability and turnaround varies wildly by country. UK employment verification: minutes. Germany criminal check: 3 weeks. No transparency on timelines.
 
-**ROI Analysis (3-Year Partnership):**
-- Year 1 Investment: $30,000 (waived fees for 1,000 pilots)
-- Year 2 Revenue: $255,000 (13,500 checks @ tiered pricing)
-- Year 3 Revenue: $474,000 (36,000 checks @ volume pricing)
-- **Total 3-Year Return: $699,000 on $30,000 investment = 2,230% ROI**
+**6. Limited integration capability** — Most verification providers lack API infrastructure. Airlines manually download PDFs and re-upload to ATS systems.
 
-### Implementation Timeline:
-**Month 1:** API sandbox integration, technical kickoff
-**Month 2:** Alpha testing with 50 Founding Pilots
-**Month 3:** Production launch, first 500 verifications
-**Month 4:** Philippines team coordination (70+ specialists)
-**Month 6:** Full scale, 2,000+ pilots verified
-**Year 1:** 5,000 pilots, break-even achieved
-**Year 2-3:** Scale to 20,000+ pilots, market dominance
+**For Pilots:**
 
-### Veremark Partnership Summary:
-**This is not a vendor relationship. This is a strategic partnership to build aviation's first comprehensive verification layer.**
+**1. Opaque requirements** — Each airline has different check scopes. Pilots discover requirements only after applying, often triggering surprise rejections.
 
-**Veremark Brings:**
-- Verification infrastructure (API, data sources, Philippines team)
-- Background checking expertise and automation
-- Regional data access (PRC, NBI, Singapore hub)
-- 70+ specialists in Philippines for ground operations
+**2. No pre-verification option** — Cannot complete checks proactively. Must wait for airline to initiate, extending time-to-hire.
 
-**Platform Brings:**
-- Pilot network access (college partnerships, organic growth)
-- Recognition Score algorithm and distribution
-- Airline/operator enterprise relationships
-- The "pull" that drives organic verification demand
+**3. Repeat check burden** — Each new application requires starting verification from zero. No portable credential wallet exists.
 
-**Shared Goal:** Create the standard for pilot verification in APAC aviation. Philippines as proof-of-concept, then scale globally.
+**4. Gap explanation ambiguity** — Employment gaps require different documentation per airline. No standardized guidance on what satisfies scrutiny.
+
+**5. Insurance verification gap** — Many operators require proof of life/accident insurance coverage. No standard mechanism exists to verify this.
+
+**6. Cost uncertainty** — Check costs borne by either pilot or airline, inconsistently. No predictable pricing model.
+
+---
+
+### The Platform Solution: Unified Verification Layer
+
+Pillar 11 integrates background checking into the platform as a service layer, not an external chore.
+
+#### FOR PILOTS: PRE-VERIFICATION & PORTABLE CREDENTIALS
+
+**Verification Wallet:**
+- Pilots complete background checks once, store results in digital wallet
+- Blockchain-backed tamper-proof credential storage
+- Share verified status with any operator instantly via API
+- No repeated checks for multiple applications
+
+**Check Types Available:**
+- Identity verification (government ID, biometric link)
+- Employment history verification (previous airlines, flight schools)
+- License validation (real-time CAA/FAA/EASA authority lookup)
+- Medical certificate status (live feed from aviation medical examiners)
+- Criminal background checks (country-specific: NBI, DBS, FBI, etc.)
+- Right-to-work validation (visa, citizenship, work permits)
+- Education/credential verification (ATO certificates, university degrees)
+- Reference checks (structured, standardized format)
+
+**Service Tiers:**
+- **Standard:** 24-72 hour turnaround, standard depth
+- **Expedited:** 4-24 hour turnaround for Recognition Plus members
+- **Geographic transparency:** Platform displays estimated turnaround per country before purchase
+
+**Pre-Cleared Advantage:**
+- Airlines can toggle "Verification Preferred" on pathway cards
+- Pre-verified pilots appear in priority listings
+- Reduces airline screening time by 80%
+- Eliminates surprise rejections
+
+---
+
+#### FOR AIRLINES: INTEGRATED VERIFICATION INFRASTRUCTURE
+
+**API Integration:**
+- Real-time verification triggers via REST API
+- Webhook notifications on check completion
+- 99.9% uptime SLA commitment
+- Direct ATS integration (major platforms supported)
+
+**Automated Workflows:**
+- Pilot submits interest → verification check auto-initiates (if not pre-cleared)
+- Status updates pushed live to airline dashboard
+- Completed checks flow directly into pilot profile
+- GDPR/PDPA compliant data handling
+
+**Configurable Check Depth:**
+- **Standard:** ID, employment, license, criminal (basic)
+- **Enhanced:** Add financial checks, reference validation, social media screening
+- **Full:** Add insurance verification, medical deep-dive, simulator record checks
+- Per-role configuration: Captains get full checks, Cadets get standard
+
+**Cost Efficiency:**
+- Pilot-paid model: Airlines pay nothing, access pre-verified candidates
+- Volume-based pricing tiers: 0-1,000 / 1,001-5,000 / 5,001-10,000 / 10,000+
+- Co-investment periods possible for market launch phases
+
+**Fraud Prevention:**
+- Near-zero identity fraud via biometric-linked verification
+- Tamper-proof digital records eliminate forged documents
+- Cross-referenced authority lookups catch license discrepancies
+- Blockchain-backed audit trails
+
+---
+
+### Platform Requirements for Verification Partners
+
+| Requirement | Specification |
+|-------------|---------------|
+| API Infrastructure | REST API with webhook support, HMAC signature authentication |
+| Global Coverage | 150+ countries, with transparency on per-country turnaround times |
+| Philippines Capability | PRC license, NBI clearance, physical address verification |
+| ATS Integration | API keys for major platforms (Greenhouse, Workday, etc.) |
+| Data Standards | Standardized JSON schema for all check types |
+| SLA Commitments | 99.9% API uptime, 99.5% webhook delivery success |
+| Turnaround Times | Standard <72 hours, expedited <24 hours where possible |
+| Compliance | GDPR, PDPA, aviation authority data handling standards |
+
+### Commercial Model
+
+| Tier | Volume | Price per Check | Features |
+|------|--------|-----------------|----------|
+| Launch | 0-1,000 | Co-investment / waived | Market development phase |
+| Growth | 1,001-5,000 | $25 | Standard checks, API access |
+| Scale | 5,001-10,000 | $15 | Volume pricing, expedited options |
+| Enterprise | 10,000+ | $12 | Unlimited, custom check development, dedicated support |
+
+**Revenue Model:**
+- **Year 1:** Co-investment period, 5,000 pilots verified, break-even
+- **Year 2:** 13,500 checks at tiered pricing, $255K revenue potential
+- **Year 3:** 36,000 checks at volume pricing, $474K revenue potential
+
+### Operational Outcomes
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Verification turnaround | 14-30 days | 24-72 hours (standard), 4-24 hours (expedited) |
+| Duplicate check costs | 5x per multi-application pilot | 1x per pilot (portable wallet) |
+| Fraud detection | Manual, reactive | Automated, proactive |
+| ATS integration | Manual PDF upload | Direct API flow |
+| Pilot surprise rejections | Common | Eliminated via pre-verification |
+| HR screening time | 8-12 hours per candidate | 1-2 hours per candidate |
 
 ---
 
