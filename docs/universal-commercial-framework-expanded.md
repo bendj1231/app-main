@@ -1782,6 +1782,8 @@ Generic background check companies operate in isolation. To properly verify pilo
 
 **<span style="color:red">4. No access to aviation authority databases</span>** — CAA, FAA, EASA, CAAP all have separate license validation systems. Verification providers check employment history but skip license authority lookups. They don't integrate with authority APIs for real-time credential validation.
 
+**<span style="color:red">5. Pilot data controlled by intermediaries</span>** — Recruitment agencies currently hold the keys to pilot employment history, training records, and verification data. This information should be pilot-owned and pilot-controlled, accessible via blockchain wallet with selective permission sharing. Third-party gatekeepers create data silos that prevent true credential portability.
+
 **<span style="color:red">5. No partnership with flight training organizations (ATOs)</span>** — Cadet program verification requires ATO transcript access, simulator hour validation, and training completion records. Generic providers verify "employer" but miss "training provider" — a critical gap for low-time pilots.
 
 **<span style="color:red">6. No alignment with airport security authorities</span>** — Airside passes, CTC checks, and Known Crewmember status require direct coordination with airport security and national aviation authorities. Background check companies treat these as "criminal checks" — they're distinct and require separate channels.
