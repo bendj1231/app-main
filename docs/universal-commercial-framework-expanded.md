@@ -1678,6 +1678,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 - Right-to-work validation (visa, citizenship, work permits)
 - Education/credential verification (ATO certificates, university degrees)
 - Reference checks (structured, standardized format)
+- **Insurance background check** *(pilot-consent required)* — Aircraft incident history verification including: training flight accidents, gear-up landings, runway excursions, hull loss events, insurance claims filed, and accident investigation reports (NTSB/AAIB/TSB). Essential for insurance underwriters assessing risk profiles and premium calculations.
 
 **Service Tiers:**
 - **Standard:** 24-72 hour turnaround, standard depth
