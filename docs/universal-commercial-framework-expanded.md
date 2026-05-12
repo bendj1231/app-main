@@ -1106,20 +1106,20 @@ When the bored captain gets recognized and moves to cargo/BizAv:
 Commercial airlines face a consistent set of operational challenges in pilot recruitment:
 
 **For Airlines:**
-- <span style="color: #dc2626;">**Volume without quality:**</span> 500+ applications per opening, majority unqualified — sorting consumes HR resources
-- <span style="color: #dc2626;">**Static, outdated data:**</span> CVs submitted are months or years old; hours, ratings, medical status unknown
-- <span style="color: #dc2626;">**No pre-qualification:**</span> Aptitude and competency alignment unknown until interview stage
-- <span style="color: #dc2626;">**Manual compliance:**</span> Background checks, license verification, and data handling require manual export/import
-- <span style="color: #dc2626;">**Unpredictable pipelines:**</span> No visibility into qualified candidate pools until posting goes live
-- <span style="color: #dc2626;">**High washout rates:**</span> 35-45% of hired pilots fail to complete training or leave within 12 months
+- **<font color="#dc2626">Volume without quality:</font>** 500+ applications per opening, majority unqualified — sorting consumes HR resources
+- **<font color="#dc2626">Static, outdated data:</font>** CVs submitted are months or years old; hours, ratings, medical status unknown
+- **<font color="#dc2626">No pre-qualification:</font>** Aptitude and competency alignment unknown until interview stage
+- **<font color="#dc2626">Manual compliance:</font>** Background checks, license verification, and data handling require manual export/import
+- **<font color="#dc2626">Unpredictable pipelines:</font>** No visibility into qualified candidate pools until posting goes live
+- **<font color="#dc2626">High washout rates:</font>** 35-45% of hired pilots fail to complete training or leave within 12 months
 
 **For Pilots:**
-- <span style="color: #dc2626;">**No central directory:**</span> Job posts scattered across Facebook, LinkedIn, generic boards — no single source of truth
-- <span style="color: #dc2626;">**Opaque requirements:**</span> Exact hours, ratings, and competency expectations rarely published clearly
-- <span style="color: #dc2626;">**No self-alignment tool:**</span> Pilots cannot compare their profile against requirements before applying
-- <span style="color: #dc2626;">**Outdated information:**</span> Requirements change; pilots align to old job posts without knowing
-- <span style="color: #dc2626;">**No demand signals:**</span> Fleet expansion and type rating demand invisible — pilots invest blindly
-- <span style="color: #dc2626;">**Unverified status:**</span> No differentiation between verified, current profiles and stale CVs
+- **<font color="#dc2626">No central directory:</font>** Job posts scattered across Facebook, LinkedIn, generic boards — no single source of truth
+- **<font color="#dc2626">Opaque requirements:</font>** Exact hours, ratings, and competency expectations rarely published clearly
+- **<font color="#dc2626">No self-alignment tool:</font>** Pilots cannot compare their profile against requirements before applying
+- **<font color="#dc2626">Outdated information:</font>** Requirements change; pilots align to old job posts without knowing
+- **<font color="#dc2626">No demand signals:</font>** Fleet expansion and type rating demand invisible — pilots invest blindly
+- **<font color="#dc2626">Unverified status:</font>** No differentiation between verified, current profiles and stale CVs
 
 ### The Platform Solution
 
