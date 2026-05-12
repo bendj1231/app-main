@@ -1667,7 +1667,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ---
 
-##### FOR AVIATION INSURANCE UNDERWRITERS
+##### **FOR AVIATION INSURANCE UNDERWRITERS**
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Verification providers cannot access pilot insurance coverage data, policy validity, or aviation-specific exclusions. Risk evaluation relies on self-reported data and manual checks. Turnaround: weeks.</span>
 
@@ -1685,7 +1685,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ---
 
-##### FOR AIRLINE HR DEPARTMENTS
+##### **FOR AIRLINE HR DEPARTMENTS**
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Each airline maintains unique requirements in siloed systems. Verification providers apply generic templates, missing operator-specific policies. HR manually chases documents across CAA/FAA/local authorities. Turnaround: 14-30 days per candidate.</span>
 
@@ -1704,7 +1704,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ---
 
-##### FOR AVIATION MEDICAL EXAMINERS (AMEs)
+##### **FOR AVIATION MEDICAL EXAMINERS (AMEs)**
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Medical status verification requires manual contact with individual AMEs. Background check companies cannot access Class 1/2/3 status, Special Issuance conditions, or renewal windows. Medical validity is often expired by the time verification completes.</span>
 
@@ -1723,7 +1723,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ---
 
-##### FOR AVIATION AUTHORITIES
+##### **FOR AVIATION AUTHORITIES**
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Each authority (CAA, FAA, EASA, CAAP) maintains separate license databases. Verification providers cannot access real-time credential validation, relying on pilot-submitted documents that may be falsified. Multi-authority licensing (FAA + EASA + CAAP) creates verification complexity.</span>
 
@@ -1742,7 +1742,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ---
 
-##### FOR FLIGHT TRAINING ORGANIZATIONS (ATOs)
+##### **FOR FLIGHT TRAINING ORGANIZATIONS (ATOs)**
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Cadet program verification cannot access ATO transcripts, simulator hour logs, or training completion records. Generic background checks verify "employer" but miss "training provider" — leaving a critical gap for low-time pilots entering the industry.</span>
 
@@ -1761,7 +1761,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ---
 
-##### FOR AIRPORT SECURITY AUTHORITIES
+##### **FOR AIRPORT SECURITY AUTHORITIES**
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Airside passes, Counter Terrorist Check (CTC), and Known Crewmember status require direct aviation authority coordination. Background check companies treat these as standard "criminal checks" — missing the aviation-specific security vetting required for airside access.</span>
 
@@ -1780,7 +1780,7 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ---
 
-##### FOR VERIFICATION PROVIDERS
+##### **FOR VERIFICATION PROVIDERS**
 
 **<span style="color:red">The Current Gap:</span>** <span style="color:red">Verification providers operate in isolation with no ecosystem coordination. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems. Fragmented data = fragmented recognition.</span>
 
