@@ -1722,42 +1722,60 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 #### FOR AIRLINES: INTEGRATED VERIFICATION INFRASTRUCTURE
 
 **API Integration:**
-- Real-time verification triggers via REST API
-- Webhook notifications on check completion
-- 99.9% uptime SLA commitment
-- Direct ATS integration (major platforms supported)
+
+| Feature | Description |
+|:---|:---|
+| <span style="color:red">**Real-time verification triggers**</span> | Via REST API — instant check initiation when pilot submits interest |
+| <span style="color:red">**Webhook notifications**</span> | Live updates on check completion pushed to airline systems |
+| <span style="color:red">**99.9% uptime SLA**</span> | Enterprise-grade reliability commitment |
+| <span style="color:red">**Direct ATS integration**</span> | Major platforms supported: Greenhouse, Workday, Lever, etc. |
 
 **Automated Workflows:**
-- Pilot submits interest → verification check auto-initiates (if not pre-cleared)
-- Status updates pushed live to airline dashboard
-- Completed checks flow directly into pilot profile
-- GDPR/PDPA compliant data handling
+
+| Feature | Description |
+|:---|:---|
+| <span style="color:red">**Auto-initiation**</span> | Pilot submits interest → verification check auto-starts (if not pre-cleared) |
+| <span style="color:red">**Live dashboard updates**</span> | Status updates pushed real-time to airline dashboard |
+| <span style="color:red">**Profile integration**</span> | Completed checks flow directly into pilot profile |
+| <span style="color:red">**GDPR/PDPA compliance**</span> | Compliant data handling across all jurisdictions |
 
 **Configurable Check Depth:**
-- **Standard:** ID, employment, license, criminal (basic)
-- **Enhanced:** Add financial checks, reference validation, social media screening
-- **Full:** Add insurance verification, medical deep-dive, simulator record checks
-- Per-role configuration: Captains get full checks, Cadets get standard
+
+| Tier | Scope |
+|:---|:---|
+| <span style="color:red">**Standard**</span> | ID, employment, license, criminal (basic) |
+| <span style="color:red">**Enhanced**</span> | Add financial checks, reference validation, social media screening |
+| <span style="color:red">**Full**</span> | Add insurance verification, medical deep-dive, simulator record checks |
+| <span style="color:red">**Per-role configuration**</span> | Captains get full checks, Cadets get standard, First Officers get enhanced |
 
 **Airline Insurance Underwriter Requirements (Backend Configuration):**
-- Airlines publish insurance risk profile requirements on pathway backend
-- **Low Risk Profile Required:** Clean record, no incidents, current medical — preferred by insurers for lower premiums
-- **Moderate Risk Acceptable:** Single minor incident allowed, stable employment history
-- **Risk Tolerance Varies by Role:** Captains require cleaner profiles than First Officers due to higher liability exposure
-- Insurance underwriter-designated profiles visible to pilots before application
-- Pilots see: "This pathway requires Low Risk insurance profile — check your verification wallet"
-- Reduces insurance-related rejections at final offer stage
+
+| Requirement | Description |
+|:---|:---|
+| <span style="color:red">**Backend publishing**</span> | Airlines publish insurance risk profile requirements on pathway backend |
+| <span style="color:red">**Low Risk Profile Required**</span> | Clean record, no incidents, current medical — preferred by insurers for lower premiums |
+| <span style="color:red">**Moderate Risk Acceptable**</span> | Single minor incident allowed, stable employment history |
+| <span style="color:red">**Risk Tolerance by Role**</span> | Captains require cleaner profiles than First Officers due to higher liability exposure |
+| <span style="color:red">**Visible profiles**</span> | Insurance underwriter-designated profiles visible to pilots before application |
+| <span style="color:red">**Pilot notification**</span> | "This pathway requires Low Risk insurance profile — check your verification wallet" |
+| <span style="color:red">**Reduced rejections**</span> | Eliminates insurance-related rejections at final offer stage |
 
 **Cost Efficiency:**
-- Pilot-paid model: Airlines pay nothing, access pre-verified candidates
-- Volume-based pricing tiers: 0-1,000 / 1,001-5,000 / 5,001-10,000 / 10,000+
-- Co-investment periods possible for market launch phases
+
+| Model | Details |
+|:---|:---|
+| <span style="color:red">**Pilot-paid model**</span> | Airlines pay nothing, access pre-verified candidates |
+| <span style="color:red">**Volume-based tiers**</span> | 0-1,000 / 1,001-5,000 / 5,001-10,000 / 10,000+ checks |
+| <span style="color:red">**Co-investment periods**</span> | Possible for market launch phases to accelerate adoption |
 
 **Fraud Prevention:**
-- Near-zero identity fraud via biometric-linked verification
-- Tamper-proof digital records eliminate forged documents
-- Cross-referenced authority lookups catch license discrepancies
-- Blockchain-backed audit trails
+
+| Feature | Description |
+|:---|:---|
+| <span style="color:red">**Near-zero identity fraud**</span> | Via biometric-linked verification |
+| <span style="color:red">**Tamper-proof records**</span> | Digital records eliminate forged documents |
+| <span style="color:red">**Cross-referenced lookups**</span> | Authority lookups catch license discrepancies |
+| <span style="color:red">**Blockchain audit trails**</span> | Immutable verification history |
 
 ---
 
