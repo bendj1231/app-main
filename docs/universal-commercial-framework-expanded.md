@@ -1865,20 +1865,23 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 | Enterprise | 10,000+ | $12 | Unlimited, custom check development, dedicated support |
 
 **Revenue Model:**
-- **Year 1:** Co-investment period, 5,000 pilots verified, break-even
-- **Year 2:** 13,500 checks at tiered pricing, $255K revenue potential
-- **Year 3:** 36,000 checks at volume pricing, $474K revenue potential
+
+| Year | Milestone | Revenue |
+|:---|:---|:---|
+| <span style="color:red">**Year 1**</span> | Co-investment period, 5,000 pilots verified | Break-even — market development focus |
+| <span style="color:red">**Year 2**</span> | 13,500 checks at tiered pricing | $255K revenue potential |
+| <span style="color:red">**Year 3**</span> | 36,000 checks at volume pricing | $474K revenue potential |
 
 ### Operational Outcomes
 
 | Metric | Before | After |
-|--------|--------|-------|
-| Verification turnaround | 14-30 days | 24-72 hours (standard), 4-24 hours (expedited) |
-| Duplicate check costs | 5x per multi-application pilot | 1x per pilot (portable wallet) |
-| Fraud detection | Manual, reactive | Automated, proactive |
-| ATS integration | Manual PDF upload | Direct API flow |
-| Pilot surprise rejections | Common | Eliminated via pre-verification |
-| HR screening time | 8-12 hours per candidate | 1-2 hours per candidate |
+|:---|:---|:---|
+| <span style="color:red">**Verification turnaround**</span> | 14-30 days | 24-72 hours (standard), 4-24 hours (expedited) |
+| <span style="color:red">**Duplicate check costs**</span> | 5x per multi-application pilot | 1x per pilot (portable wallet) |
+| <span style="color:red">**Fraud detection**</span> | Manual, reactive | Automated, proactive |
+| <span style="color:red">**ATS integration**</span> | Manual PDF upload | Direct API flow |
+| <span style="color:red">**Pilot surprise rejections**</span> | Common | Eliminated via pre-verification |
+| <span style="color:red">**HR screening time**</span> | 8-12 hours per candidate | 1-2 hours per candidate |
 
 ---
 
