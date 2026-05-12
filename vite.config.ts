@@ -17,16 +17,25 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
-          manualChunks: {
-            'vendor-react': ['react', 'react-dom'],
-            'vendor-lucide': ['lucide-react'],
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react-dom') || id.includes('react-router')) return 'vendor-react';
+              if (id.includes('framer-motion')) return 'vendor-framer';
+              if (id.includes('three') || id.includes('@react-three')) return 'vendor-three';
+              if (id.includes('lucide-react')) return 'vendor-lucide';
+              if (id.includes('@supabase')) return 'vendor-supabase';
+              if (id.includes('recharts') || id.includes('d3-')) return 'vendor-charts';
+              if (id.includes('firebase')) return 'vendor-firebase';
+              if (id.includes('@paper-design') || id.includes('@fontsource')) return 'vendor-ui';
+              return 'vendor-misc';
+            }
           },
           entryFileNames: 'assets/[name]-[hash].js',
           chunkFileNames: 'assets/[name]-[hash].js',
           assetFileNames: 'assets/[name]-[hash].[ext]'
         }
       },
-      chunkSizeWarningLimit: 3000
+      chunkSizeWarningLimit: 1000
     },
     resolve: {
       alias: {
