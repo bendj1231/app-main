@@ -1666,32 +1666,44 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 #### FOR PILOTS: PRE-VERIFICATION & PORTABLE CREDENTIALS
 
 **Verification Wallet:**
-- Pilots complete background checks once, store results in digital wallet
-- Blockchain-backed tamper-proof credential storage
-- Share verified status with any operator instantly via API
-- No repeated checks for multiple applications
+
+| Feature | Description |
+|:---|:---|
+| <span style="color:red">**One-time completion**</span> | Pilots complete background checks once, store results in digital wallet |
+| <span style="color:red">**Blockchain-backed storage**</span> | Tamper-proof credential storage with immutable audit trail |
+| <span style="color:red">**Instant sharing**</span> | Share verified status with any operator instantly via API |
+| <span style="color:red">**No repetition**</span> | No repeated checks for multiple applications — verify once, apply anywhere |
 
 **Check Types Available:**
-- Identity verification (government ID, biometric link)
-- Employment history verification (previous airlines, flight schools)
-- License validation (real-time CAA/FAA/EASA authority lookup)
-- Medical certificate status (live feed from aviation medical examiners)
-- Criminal background checks (country-specific: NBI, DBS, FBI, etc.)
-- Right-to-work validation (visa, citizenship, work permits)
-- Education/credential verification (ATO certificates, university degrees)
-- Reference checks (structured, standardized format)
-- **Insurance background check** *(pilot-consent required)* — Aircraft incident history verification including: training flight accidents, gear-up landings, runway excursions, hull loss events, insurance claims filed, and accident investigation reports (NTSB/AAIB/TSB). Essential for insurance underwriters assessing risk profiles and premium calculations.
+
+| Check Type | Description |
+|:---|:---|
+| <span style="color:red">**Identity verification**</span> | Government ID, biometric link |
+| <span style="color:red">**Employment history**</span> | Previous airlines, flight schools, tenure verification |
+| <span style="color:red">**License validation**</span> | Real-time CAA/FAA/EASA authority lookup |
+| <span style="color:red">**Medical certificate status**</span> | Live feed from aviation medical examiners (Class 1/2/3) |
+| <span style="color:red">**Criminal background**</span> | Country-specific: NBI, DBS, FBI, etc. |
+| <span style="color:red">**Right-to-work**</span> | Visa, citizenship, work permits validation |
+| <span style="color:red">**Education/credentials**</span> | ATO certificates, university degrees |
+| <span style="color:red">**Reference checks**</span> | Structured, standardized format |
+| <span style="color:red">**Insurance background check**</span> | *(pilot-consent required)* — Aircraft incident history: training accidents, gear-up landings, runway excursions, hull loss, insurance claims, NTSB/AAIB/TSB reports |
 
 **Service Tiers:**
-- **Standard:** 24-72 hour turnaround, standard depth
-- **Expedited:** 4-24 hour turnaround for Recognition Plus members
-- **Geographic transparency:** Platform displays estimated turnaround per country before purchase
+
+| Tier | Details |
+|:---|:---|
+| <span style="color:red">**Standard**</span> | 24-72 hour turnaround, standard depth |
+| <span style="color:red">**Expedited**</span> | 4-24 hour turnaround for Recognition Plus members |
+| <span style="color:red">**Geographic transparency**</span> | Platform displays estimated turnaround per country before purchase |
 
 **Pre-Cleared Advantage:**
-- Airlines can toggle "Verification Preferred" on pathway cards
-- Pre-verified pilots appear in priority listings
-- Reduces airline screening time by 80%
-- Eliminates surprise rejections
+
+| Benefit | Description |
+|:---|:---|
+| <span style="color:red">**"Verification Preferred" badge**</span> | Airlines can toggle on pathway cards — pre-verified pilots stand out |
+| <span style="color:red">**Priority listings**</span> | Pre-verified pilots appear at top of candidate lists |
+| <span style="color:red">**80% faster screening**</span> | Reduces airline screening time by 80% — faster time-to-hire |
+| <span style="color:red">**Zero surprise rejections**</span> | Eliminates rejection at final stage due to verification issues |
 
 #### FOR INSURANCE UNDERWRITERS: RISK EVALUATION & PRICING
 
@@ -1704,18 +1716,24 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 <span style="color:red">**High Risk:**</span> Multiple incidents, license suspensions, medical Special Issuances, frequent job changes, hull loss involvement. Premium rates or coverage exclusions.
 
 **Risk Scoring Data Points:**
-- Total flight hours vs. incident ratio
-- Type rating complexity and recency
-- Medical certificate class and renewal history
-- Employment stability (average tenure per employer)
-- Geographic risk exposure (high-risk route assignments)
-- Aircraft types operated (turboprop vs. jet vs. widebody)
+
+| Data Point | Purpose |
+|:---|:---|
+| <span style="color:red">**Flight hours vs. incident ratio**</span> | Measures safety record over career span |
+| <span style="color:red">**Type rating complexity**</span> | Complex aircraft (A380, B747) vs. single-aisle risk profiles |
+| <span style="color:red">**Medical certificate history**</span> | Class 1/2/3 status, renewals, Special Issuances |
+| <span style="color:red">**Employment stability**</span> | Average tenure per employer — frequent moves = higher risk |
+| <span style="color:red">**Geographic risk exposure**</span> | High-risk route assignments (mountainous, weather-challenged) |
+| <span style="color:red">**Aircraft types operated**</span> | Turboprop vs. jet vs. widebody complexity tiers |
 
 **Consent-Based Access:**
-- Pilots opt-in to share verification wallet with insurance partners
-- Underwriters receive pre-verified, tamper-proof risk profiles
-- Real-time updates on medical status, license changes, new incidents
-- Reduces underwriting time from weeks to minutes
+
+| Feature | Description |
+|:---|:---|
+| <span style="color:red">**Pilot opt-in**</span> | Pilots choose to share verification wallet with insurance partners |
+| <span style="color:red">**Pre-verified profiles**</span> | Underwriters receive tamper-proof risk profiles — no manual verification needed |
+| <span style="color:red">**Real-time updates**</span> | Medical status, license changes, new incidents pushed live |
+| <span style="color:red">**Weeks to minutes**</span> | Reduces underwriting time from weeks to minutes |
 
 ---
 
