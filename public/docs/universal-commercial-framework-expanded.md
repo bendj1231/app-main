@@ -1107,25 +1107,25 @@ Commercial airlines face a consistent set of operational challenges in pilot rec
 
 **Pain Points for Airlines:**
 
-| Issue | Current State |
-|-------|---------------|
-| <span style="color:red">**Volume without quality**</span> | 500+ applications per opening, majority unqualified — sorting consumes HR resources |
-| <span style="color:red">**Static, outdated data**</span> | CVs submitted are months or years old; hours, ratings, medical status unknown |
-| <span style="color:red">**No pre-qualification**</span> | Aptitude and competency alignment unknown until interview stage |
-| <span style="color:red">**Manual compliance**</span> | Background checks, license verification, and data handling require manual export/import |
-| <span style="color:red">**Unpredictable pipelines**</span> | No visibility into qualified candidate pools until posting goes live |
-| <span style="color:red">**High washout rates**</span> | 35-45% of hired pilots fail to complete training or leave within 12 months |
+| **Pain Point** | **Current State** |
+|----------------|-------------------|
+| Volume without quality | 500+ applications per opening, majority unqualified — sorting consumes HR resources |
+| Static, outdated data | CVs submitted are months or years old; hours, ratings, medical status unknown |
+| No pre-qualification | Aptitude and competency alignment unknown until interview stage |
+| Manual compliance | Background checks, license verification, and data handling require manual export/import |
+| Unpredictable pipelines | No visibility into qualified candidate pools until posting goes live |
+| High washout rates | 35-45% of hired pilots fail to complete training or leave within 12 months |
 
 **Pain Points for Pilots:**
 
-| Issue | Current State |
-|-------|---------------|
-| <span style="color:red">**No central directory**</span> | Job posts scattered across Facebook, LinkedIn, generic boards — no single source of truth |
-| <span style="color:red">**Opaque requirements**</span> | Exact hours, ratings, and competency expectations rarely published clearly |
-| <span style="color:red">**No self-alignment tool**</span> | Pilots cannot compare their profile against requirements before applying |
-| <span style="color:red">**Outdated information**</span> | Requirements change; pilots align to old job posts without knowing |
-| <span style="color:red">**No demand signals**</span> | Fleet expansion and type rating demand invisible — pilots invest blindly |
-| <span style="color:red">**Unverified status**</span> | No differentiation between verified, current profiles and stale CVs |
+| **Pain Point** | **Current State** |
+|----------------|-------------------|
+| No central directory | Job posts scattered across Facebook, LinkedIn, generic boards — no single source of truth |
+| Opaque requirements | Exact hours, ratings, and competency expectations rarely published clearly |
+| No self-alignment tool | Pilots cannot compare their profile against requirements before applying |
+| Outdated information | Requirements change; pilots align to old job posts without knowing |
+| No demand signals | Fleet expansion and type rating demand invisible — pilots invest blindly |
+| Unverified status | No differentiation between verified, current profiles and stale CVs |
 
 ### The Platform Solution
 
