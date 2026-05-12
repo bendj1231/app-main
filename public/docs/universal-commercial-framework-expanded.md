@@ -1665,21 +1665,61 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **How the Platform Solves Fragmented Verification:**
 
-1. **Aviation Insurance Underwriter Integration:** Direct API connections to Global Aerospace, AIG, Allianz Aviation for real-time policy verification, coverage validation, and aviation-specific exclusion checks.
+---
 
-2. **Airline HR Department Coordination:** Platform publishes airline-specific requirement matrices; verification providers access operator policy databases for standardized verification scopes.
+##### FOR AVIATION INSURANCE UNDERWRITERS
 
-3. **Aviation Medical Examiner (AME) Connection:** Direct AME integration for real-time Class 1/2/3 status, Special Issuance tracking, and renewal window monitoring.
+**The Problem:** Verification providers don't talk to Global Aerospace, AIG, or Allianz Aviation. They can't verify pilot insurance coverage, policy validity, or aviation-specific exclusions. The data sits in separate silos.
 
-4. **Aviation Authority Database Access:** Pre-established API infrastructure to CAA, FAA, EASA, CAAP for instant credential validation and real-time license lookups.
+**Platform Solution:** Direct API connections to aviation insurers for real-time policy verification, coverage validation, and aviation-specific exclusion checks. Insurance background checks (pilot-consent required) capture aircraft incident history including training accidents, gear-up landings, runway excursions, hull loss, and insurance claims.
 
-5. **Flight Training Organization (ATO) Partnership:** Direct data sharing agreements with ATOs for cadet program verification, transcript access, simulator hour validation, and training completion records.
+---
 
-6. **Airport Security Authority Alignment:** Coordinated channels for Counter Terrorist Check (CTC), airside passes, airport ID badges, and Known Crewmember status verification.
+##### FOR AIRLINE HR DEPARTMENTS
 
-7. **Operator-Specific Policy Understanding:** Platform standardizes verification requirements across cargo, charter, low-cost, and legacy carriers; one pilot, one verification profile, applicable to all applications.
+**The Problem:** Each airline has unique requirements: some accept foreign licenses, some don't; some require specific medical conditions, others waive them. Verification providers don't access airline-specific requirement matrices. They apply generic templates.
 
-8. **Unified Recognition Profile:** Pilots build complete credential pictures — license, medical, insurance, security, training — all stored in a single, portable verification wallet.
+**Platform Solution:** Platform publishes airline-specific requirement matrices; verification providers access operator policy databases for standardized verification scopes. Airlines configure per-role verification depth: Captains get full checks, Cadets get standard, First Officers get enhanced.
+
+---
+
+##### FOR AVIATION MEDICAL EXAMINERS (AMEs)
+
+**The Problem:** Medical verification requires direct AME integration for real-time Class 1/2/3 status, Special Issuance tracking, and renewal windows. Background check companies don't interface with the aviation medical ecosystem.
+
+**Platform Solution:** Integration with AME networks for real-time Class 1/2/3 medical validation, Special Issuance tracking, and renewal window monitoring. Live feed from aviation medical examiners flows directly into pilot verification wallets.
+
+---
+
+##### FOR AVIATION AUTHORITIES
+
+**The Problem:** CAA, FAA, EASA, CAAP all have separate license validation systems. Verification providers check employment history but skip license authority lookups. They don't integrate with authority APIs for real-time credential validation.
+
+**Platform Solution:** Pre-established API infrastructure to CAA, FAA, EASA, CAAP for instant credential validation and real-time license lookups. License validation provides real-time authority verification for all pilot licenses held.
+
+---
+
+##### FOR FLIGHT TRAINING ORGANIZATIONS (ATOs)
+
+**The Problem:** Cadet program verification requires ATO transcript access, simulator hour validation, and training completion records. Generic providers verify "employer" but miss "training provider" — a critical gap for low-time pilots.
+
+**Platform Solution:** Direct data sharing agreements with ATOs for cadet program verification, transcript access, simulator hour validation, and training completion records. Education/credentials verification includes ATO certificates and university degrees.
+
+---
+
+##### FOR AIRPORT SECURITY AUTHORITIES
+
+**The Problem:** Airside passes, CTC checks, and Known Crewmember status require direct coordination with airport security and national aviation authorities. Background check companies treat these as "criminal checks" — they're distinct and require separate channels.
+
+**Platform Solution:** Coordinated channels for Counter Terrorist Check (CTC), airside passes, airport ID badges, and Known Crewmember status verification. Platform enables direct communication between verification providers and airport security authorities.
+
+---
+
+##### FOR VERIFICATION PROVIDERS
+
+**The Problem:** Verification providers operate in isolation with no ecosystem coordination. Fragmented data = fragmented recognition. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems.
+
+**Platform Solution:** The platform acts as the **central coordination hub** — verification providers no longer operate in isolation. They join a collaborative ecosystem where data flows between all stakeholders, creating unified pilot recognition rather than fragmented snapshots. Pilots build complete credential pictures — license, medical, insurance, security, training — all stored in a single, portable verification wallet.
 
 ---
 
