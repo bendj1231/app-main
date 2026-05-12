@@ -1667,51 +1667,35 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **Verification Wallet:**
 
-**One-time completion:** Pilots complete background checks once, store results in digital wallet.
-
-**Blockchain-backed storage:** Tamper-proof credential storage with immutable audit trail.
-
-**Instant sharing:** Share verified status with any operator instantly via API.
-
-**No repetition:** No repeated checks for multiple applications; verify once, apply anywhere.
+1. One-time completion: Pilots complete background checks once, store results in digital wallet.
+2. Blockchain-backed storage: Tamper-proof credential storage with immutable audit trail.
+3. Instant sharing: Share verified status with any operator instantly via API.
+4. No repetition: No repeated checks for multiple applications; verify once, apply anywhere.
 
 **Check Types Available:**
 
-**Identity verification:** Government ID, biometric link.
-
-**Employment history:** Previous airlines, flight schools, tenure verification.
-
-**License validation:** Real-time CAA/FAA/EASA authority lookup.
-
-**Medical certificate status:** Live feed from aviation medical examiners (Class 1/2/3).
-
-**Criminal background:** Country-specific: NBI, DBS, FBI, etc.
-
-**Right-to-work:** Visa, citizenship, work permits validation.
-
-**Education/credentials:** ATO certificates, university degrees.
-
-**Reference checks:** Structured, standardized format.
-
-**Insurance background check** *(pilot-consent required)*: Aircraft incident history including training accidents, gear-up landings, runway excursions, hull loss, insurance claims, NTSB/AAIB/TSB reports.
+1. Identity verification: Government ID, biometric link.
+2. Employment history: Previous airlines, flight schools, tenure verification.
+3. License validation: Real-time CAA/FAA/EASA authority lookup.
+4. Medical certificate status: Live feed from aviation medical examiners (Class 1/2/3).
+5. Criminal background: Country-specific: NBI, DBS, FBI, etc.
+6. Right-to-work: Visa, citizenship, work permits validation.
+7. Education/credentials: ATO certificates, university degrees.
+8. Reference checks: Structured, standardized format.
+9. Insurance background check (pilot-consent required): Aircraft incident history including training accidents, gear-up landings, runway excursions, hull loss, insurance claims, NTSB/AAIB/TSB reports.
 
 **Service Tiers:**
 
-**Standard:** 24-72 hour turnaround, standard depth.
-
-**Expedited:** 4-24 hour turnaround for Recognition Plus members.
-
-**Geographic transparency:** Platform displays estimated turnaround per country before purchase.
+1. Standard: 24-72 hour turnaround, standard depth.
+2. Expedited: 4-24 hour turnaround for Recognition Plus members.
+3. Geographic transparency: Platform displays estimated turnaround per country before purchase.
 
 **Pre-Cleared Advantage:**
 
-**"Verification Preferred" badge:** Airlines can toggle on pathway cards; pre-verified pilots stand out.
-
-**Priority listings:** Pre-verified pilots appear at top of candidate lists.
-
-**80% faster screening:** Reduces airline screening time by 80%; faster time-to-hire.
-
-**Zero surprise rejections:** Eliminates rejection at final stage due to verification issues.
+1. "Verification Preferred" badge: Airlines can toggle on pathway cards; pre-verified pilots stand out.
+2. Priority listings: Pre-verified pilots appear at top of candidate lists.
+3. 80% faster screening: Reduces airline screening time by 80%; faster time-to-hire.
+4. Zero surprise rejections: Eliminates rejection at final stage due to verification issues.
 
 #### FOR INSURANCE UNDERWRITERS: RISK EVALUATION & PRICING
 
@@ -1725,27 +1709,19 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **Risk Scoring Data Points:**
 
-**Flight hours vs. incident ratio:** Measures safety record over career span.
-
-**Type rating complexity:** Complex aircraft (A380, B747) vs. single-aisle risk profiles.
-
-**Medical certificate history:** Class 1/2/3 status, renewals, Special Issuances.
-
-**Employment stability:** Average tenure per employer; frequent moves = higher risk.
-
-**Geographic risk exposure:** High-risk route assignments (mountainous, weather-challenged).
-
-**Aircraft types operated:** Turboprop vs. jet vs. widebody complexity tiers.
+1. Flight hours vs. incident ratio: Measures safety record over career span.
+2. Type rating complexity: Complex aircraft (A380, B747) vs. single-aisle risk profiles.
+3. Medical certificate history: Class 1/2/3 status, renewals, Special Issuances.
+4. Employment stability: Average tenure per employer; frequent moves = higher risk.
+5. Geographic risk exposure: High-risk route assignments (mountainous, weather-challenged).
+6. Aircraft types operated: Turboprop vs. jet vs. widebody complexity tiers.
 
 **Consent-Based Access:**
 
-**Pilot opt-in:** Pilots choose to share verification wallet with insurance partners.
-
-**Pre-verified profiles:** Underwriters receive tamper-proof risk profiles; no manual verification needed.
-
-**Real-time updates:** Medical status, license changes, new incidents pushed live.
-
-**Weeks to minutes:** Reduces underwriting time from weeks to minutes.
+1. Pilot opt-in: Pilots choose to share verification wallet with insurance partners.
+2. Pre-verified profiles: Underwriters receive tamper-proof risk profiles; no manual verification needed.
+3. Real-time updates: Medical status, license changes, new incidents pushed live.
+4. Weeks to minutes: Reduces underwriting time from weeks to minutes.
 
 ---
 
@@ -1753,67 +1729,47 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **API Integration:**
 
-**Real-time verification triggers:** Via REST API, instant check initiation when pilot submits interest.
-
-**Webhook notifications:** Live updates on check completion pushed to airline systems.
-
-**99.9% uptime SLA:** Enterprise-grade reliability commitment.
-
-**Direct ATS integration:** Major platforms supported (Greenhouse, Workday, Lever, etc.).
+1. Real-time verification triggers: Via REST API, instant check initiation when pilot submits interest.
+2. Webhook notifications: Live updates on check completion pushed to airline systems.
+3. 99.9% uptime SLA: Enterprise-grade reliability commitment.
+4. Direct ATS integration: Major platforms supported (Greenhouse, Workday, Lever, etc.).
 
 **Automated Workflows:**
 
-**Auto-initiation:** Pilot submits interest; verification check auto-starts (if not pre-cleared).
-
-**Live dashboard updates:** Status updates pushed real-time to airline dashboard.
-
-**Profile integration:** Completed checks flow directly into pilot profile.
-
-**GDPR/PDPA compliance:** Compliant data handling across all jurisdictions.
+1. Auto-initiation: Pilot submits interest; verification check auto-starts (if not pre-cleared).
+2. Live dashboard updates: Status updates pushed real-time to airline dashboard.
+3. Profile integration: Completed checks flow directly into pilot profile.
+4. GDPR/PDPA compliance: Compliant data handling across all jurisdictions.
 
 **Configurable Check Depth:**
 
-**Standard:** ID, employment, license, criminal (basic).
-
-**Enhanced:** Add financial checks, reference validation, social media screening.
-
-**Full:** Add insurance verification, medical deep-dive, simulator record checks.
-
-**Per-role configuration:** Captains get full checks, Cadets get standard, First Officers get enhanced.
+1. Standard: ID, employment, license, criminal (basic).
+2. Enhanced: Add financial checks, reference validation, social media screening.
+3. Full: Add insurance verification, medical deep-dive, simulator record checks.
+4. Per-role configuration: Captains get full checks, Cadets get standard, First Officers get enhanced.
 
 **Airline Insurance Underwriter Requirements (Backend Configuration):**
 
-**Backend publishing:** Airlines publish insurance risk profile requirements on pathway backend.
-
-**Low Risk Profile Required:** Clean record, no incidents, current medical; preferred by insurers for lower premiums.
-
-**Moderate Risk Acceptable:** Single minor incident allowed, stable employment history.
-
-**Risk Tolerance by Role:** Captains require cleaner profiles than First Officers due to higher liability exposure.
-
-**Visible profiles:** Insurance underwriter-designated profiles visible to pilots before application.
-
-**Pilot notification:** "This pathway requires Low Risk insurance profile; check your verification wallet."
-
-**Reduced rejections:** Eliminates insurance-related rejections at final offer stage.
+1. Backend publishing: Airlines publish insurance risk profile requirements on pathway backend.
+2. Low Risk Profile Required: Clean record, no incidents, current medical; preferred by insurers for lower premiums.
+3. Moderate Risk Acceptable: Single minor incident allowed, stable employment history.
+4. Risk Tolerance by Role: Captains require cleaner profiles than First Officers due to higher liability exposure.
+5. Visible profiles: Insurance underwriter-designated profiles visible to pilots before application.
+6. Pilot notification: "This pathway requires Low Risk insurance profile; check your verification wallet."
+7. Reduced rejections: Eliminates insurance-related rejections at final offer stage.
 
 **Cost Efficiency:**
 
-**Pilot-paid model:** Airlines pay nothing, access pre-verified candidates.
-
-**Volume-based tiers:** 0-1,000 / 1,001-5,000 / 5,001-10,000 / 10,000+ checks.
-
-**Co-investment periods:** Possible for market launch phases to accelerate adoption.
+1. Pilot-paid model: Airlines pay nothing, access pre-verified candidates.
+2. Volume-based tiers: 0-1,000 / 1,001-5,000 / 5,001-10,000 / 10,000+ checks.
+3. Co-investment periods: Possible for market launch phases to accelerate adoption.
 
 **Fraud Prevention:**
 
-**Near-zero identity fraud:** Via biometric-linked verification.
-
-**Tamper-proof records:** Digital records eliminate forged documents.
-
-**Cross-referenced lookups:** Authority lookups catch license discrepancies.
-
-**Blockchain audit trails:** Immutable verification history.
+1. Near-zero identity fraud: Via biometric-linked verification.
+2. Tamper-proof records: Digital records eliminate forged documents.
+3. Cross-referenced lookups: Authority lookups catch license discrepancies.
+4. Blockchain audit trails: Immutable verification history.
 
 ---
 
@@ -1821,121 +1777,83 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 **What's In It For PilotRecognition:**
 
-**Instant market credibility:** Partnership with established verification provider signals legitimacy to airlines, regulators, and pilots.
-
-**Zero infrastructure build:** Leverage partner's existing API infrastructure, global coverage, and compliance frameworks instead of building from scratch.
-
-**Revenue share opportunity:** 10-15% commission on verification fees creates passive income stream without operational overhead.
-
-**Sticky ecosystem lock-in:** Once pilots verify through platform, they remain engaged users; verification becomes the hook for broader Recognition services.
-
-**Airline sales leverage:** "We have integrated background checking" is a powerful differentiator when approaching airline HR departments.
-
-**Data moat construction:** Verification records add immutable data layer to pilot profiles, increasing platform value and defensibility.
+1. Instant market credibility: Partnership with established verification provider signals legitimacy to airlines, regulators, and pilots.
+2. Zero infrastructure build: Leverage partner's existing API infrastructure, global coverage, and compliance frameworks instead of building from scratch.
+3. Revenue share opportunity: 10-15% commission on verification fees creates passive income stream without operational overhead.
+4. Sticky ecosystem lock-in: Once pilots verify through platform, they remain engaged users; verification becomes the hook for broader Recognition services.
+5. Airline sales leverage: "We have integrated background checking" is a powerful differentiator when approaching airline HR departments.
+6. Data moat construction: Verification records add immutable data layer to pilot profiles, increasing platform value and defensibility.
 
 **What's In It For Verification Partners (e.g., Veremark):**
 
-**New vertical expansion:** Aviation is a $800B+ industry with 500,000+ professional pilots globally; verification partners gain entry to underserved market.
-
-**Qualified customer pipeline:** PilotRecognition pre-screens and funnels pilots actively seeking verification (warm leads vs. cold outreach).
-
-**Platform-native integration:** Become the default verification layer for an entire industry ecosystem, not just another vendor.
-
-**Aviation domain expertise:** Partnership provides real-world data and feedback to develop aviation-specific check types (license validation, medical verification, incident history).
-
-**Competitive differentiation:** "Preferred verification partner of PilotRecognition" positions vendor ahead of generic background check competitors.
-
-**Volume growth engine:** Multiplier effect: one verified pilot applies to 5+ airlines = 5x check volume per user.
-
-**Blockchain credential innovation:** Pilot-owned digital wallet (Verepass-style) creates pilot-controlled verification model; pilots pay for portability, airlines pay for access.
+1. New vertical expansion: Aviation is a $800B+ industry with 500,000+ professional pilots globally; verification partners gain entry to underserved market.
+2. Qualified customer pipeline: PilotRecognition pre-screens and funnels pilots actively seeking verification (warm leads vs. cold outreach).
+3. Platform-native integration: Become the default verification layer for an entire industry ecosystem, not just another vendor.
+4. Aviation domain expertise: Partnership provides real-world data and feedback to develop aviation-specific check types (license validation, medical verification, incident history).
+5. Competitive differentiation: "Preferred verification partner of PilotRecognition" positions vendor ahead of generic background check competitors.
+6. Volume growth engine: Multiplier effect: one verified pilot applies to 5+ airlines = 5x check volume per user.
+7. Blockchain credential innovation: Pilot-owned digital wallet (Verepass-style) creates pilot-controlled verification model; pilots pay for portability, airlines pay for access.
 
 **Strategic Synergy:**
 
 **PilotRecognition Provides:**
 
-**Qualified pilot pipeline:** Pre-motivated pilots actively seeking verification.
-
-**Aviation domain knowledge:** Requirements, data fields, stakeholder coordination.
-
-**Airline/operator customer introductions:** Direct access to airlines using platform.
-
-**Platform integration:** Wallet, pathways, profile matching infrastructure.
-
-**Marketing and user acquisition:** Pilot funnel and engagement.
+1. Qualified pilot pipeline: Pre-motivated pilots actively seeking verification.
+2. Aviation domain knowledge: Requirements, data fields, stakeholder coordination.
+3. Airline/operator customer introductions: Direct access to airlines using platform.
+4. Platform integration: Wallet, pathways, profile matching infrastructure.
+5. Marketing and user acquisition: Pilot funnel and engagement.
 
 **Verification Partner Provides:**
 
-**Technical infrastructure:** APIs, global coverage, compliance frameworks.
-
-**Scalable check execution:** Speed, accuracy, multi-country operations.
-
-**Credibility signals:** Established provider with compliance certifications.
-
-**Revenue:** Check fees, tiered pricing, volume commitments.
-
-**Industry vertical expertise development:** Aviation-specific verification capabilities.
+1. Technical infrastructure: APIs, global coverage, compliance frameworks.
+2. Scalable check execution: Speed, accuracy, multi-country operations.
+3. Credibility signals: Established provider with compliance certifications.
+4. Revenue: Check fees, tiered pricing, volume commitments.
+5. Industry vertical expertise development: Aviation-specific verification capabilities.
 
 **Market Positioning Win:**
 
-**PilotRecognition:** Becomes the "immigration gateway" for pilots — the first stop where credentials are verified before any airline application.
-
-**Verification Partner:** Becomes the "digital passport bureau" for aviation — the trusted provider that stamps pilots as cleared for hire.
-
-**Together:** Build the **Global Clearinghouse for Verified Pilots** — the standard infrastructure layer the aviation industry has never had.
+1. PilotRecognition: Becomes the "immigration gateway" for pilots — the first stop where credentials are verified before any airline application.
+2. Verification Partner: Becomes the "digital passport bureau" for aviation — the trusted provider that stamps pilots as cleared for hire.
+3. Together: Build the **Global Clearinghouse for Verified Pilots** — the standard infrastructure layer the aviation industry has never had.
 
 ---
 
 ### Platform Requirements for Verification Partners
 
-**API Infrastructure:** REST API with webhook support, HMAC signature authentication.
-
-**Global Coverage:** 150+ countries, with transparency on per-country turnaround times.
-
-**Philippines Capability:** PRC license, NBI clearance, physical address verification.
-
-**ATS Integration:** API keys for major platforms (Greenhouse, Workday, etc.).
-
-**Data Standards:** Standardized JSON schema for all check types.
-
-**SLA Commitments:** 99.9% API uptime, 99.5% webhook delivery success.
-
-**Turnaround Times:** Standard <72 hours, expedited <24 hours where possible.
-
-**Compliance:** GDPR, PDPA, aviation authority data handling standards.
+1. API Infrastructure: REST API with webhook support, HMAC signature authentication.
+2. Global Coverage: 150+ countries, with transparency on per-country turnaround times.
+3. Philippines Capability: PRC license, NBI clearance, physical address verification.
+4. ATS Integration: API keys for major platforms (Greenhouse, Workday, etc.).
+5. Data Standards: Standardized JSON schema for all check types.
+6. SLA Commitments: 99.9% API uptime, 99.5% webhook delivery success.
+7. Turnaround Times: Standard <72 hours, expedited <24 hours where possible.
+8. Compliance: GDPR, PDPA, aviation authority data handling standards.
 
 ### Commercial Model
 
 **Pricing Tiers:**
 
-**Launch** (0-1,000 checks): Co-investment / waived — Market development phase.
-
-**Growth** (1,001-5,000 checks): $25 per check — Standard checks, API access.
-
-**Scale** (5,001-10,000 checks): $15 per check — Volume pricing, expedited options.
-
-**Enterprise** (10,000+ checks): $12 per check — Unlimited, custom check development, dedicated support.
+1. Launch (0-1,000 checks): Co-investment / waived — Market development phase.
+2. Growth (1,001-5,000 checks): $25 per check — Standard checks, API access.
+3. Scale (5,001-10,000 checks): $15 per check — Volume pricing, expedited options.
+4. Enterprise (10,000+ checks): $12 per check — Unlimited, custom check development, dedicated support.
 
 **Revenue Model:**
 
-**Year 1:** Co-investment period, 5,000 pilots verified — Break-even — market development focus.
-
-**Year 2:** 13,500 checks at tiered pricing — $255K revenue potential.
-
-**Year 3:** 36,000 checks at volume pricing — $474K revenue potential.
+1. Year 1: Co-investment period, 5,000 pilots verified — Break-even — market development focus.
+2. Year 2: 13,500 checks at tiered pricing — $255K revenue potential.
+3. Year 3: 36,000 checks at volume pricing — $474K revenue potential.
 
 ### Operational Outcomes
 
-**Verification turnaround:** Before: 14-30 days → After: 24-72 hours (standard), 4-24 hours (expedited).
-
-**Duplicate check costs:** Before: 5x per multi-application pilot → After: 1x per pilot (portable wallet).
-
-**Fraud detection:** Before: Manual, reactive → After: Automated, proactive.
-
-**ATS integration:** Before: Manual PDF upload → After: Direct API flow.
-
-**Pilot surprise rejections:** Before: Common → After: Eliminated via pre-verification.
-
-**HR screening time:** Before: 8-12 hours per candidate → After: 1-2 hours per candidate.
+1. Verification turnaround: Before: 14-30 days → After: 24-72 hours (standard), 4-24 hours (expedited).
+2. Duplicate check costs: Before: 5x per multi-application pilot → After: 1x per pilot (portable wallet).
+3. Fraud detection: Before: Manual, reactive → After: Automated, proactive.
+4. ATS integration: Before: Manual PDF upload → After: Direct API flow.
+5. Pilot surprise rejections: Before: Common → After: Eliminated via pre-verification.
+6. HR screening time: Before: 8-12 hours per candidate → After: 1-2 hours per candidate.
 
 ---
 
