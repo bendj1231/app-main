@@ -1107,31 +1107,31 @@ Commercial airlines face a consistent set of operational challenges in pilot rec
 
 **Pain Points for Airlines:**
 
-**1. Volume without quality** — 500+ applications per opening, majority unqualified. Sorting consumes HR resources.
+<span style="color:red">**1. Volume without quality**</span> — 500+ applications per opening, majority unqualified. Sorting consumes HR resources.
 
-**2. Static, outdated data** — CVs submitted are months or years old; hours, ratings, medical status unknown.
+<span style="color:red">**2. Static, outdated data**</span> — CVs submitted are months or years old; hours, ratings, medical status unknown.
 
-**3. No pre-qualification** — Aptitude and competency alignment unknown until interview stage.
+<span style="color:red">**3. No pre-qualification**</span> — Aptitude and competency alignment unknown until interview stage.
 
-**4. Manual compliance** — Background checks, license verification, and data handling require manual export/import.
+<span style="color:red">**4. Manual compliance**</span> — Background checks, license verification, and data handling require manual export/import.
 
-**5. Unpredictable pipelines** — No visibility into qualified candidate pools until posting goes live.
+<span style="color:red">**5. Unpredictable pipelines**</span> — No visibility into qualified candidate pools until posting goes live.
 
-**6. High washout rates** — 35-45% of hired pilots fail to complete training or leave within 12 months.
+<span style="color:red">**6. High washout rates**</span> — 35-45% of hired pilots fail to complete training or leave within 12 months.
 
 **Pain Points for Pilots:**
 
-**1. No central directory** — Job posts scattered across Facebook, LinkedIn, generic boards. No single source of truth.
+<span style="color:red">**1. No central directory**</span> — Job posts scattered across Facebook, LinkedIn, generic boards. No single source of truth.
 
-**2. Opaque requirements** — Exact hours, ratings, and competency expectations rarely published clearly.
+<span style="color:red">**2. Opaque requirements**</span> — Exact hours, ratings, and competency expectations rarely published clearly.
 
-**3. No self-alignment tool** — Pilots cannot compare their profile against requirements before applying.
+<span style="color:red">**3. No self-alignment tool**</span> — Pilots cannot compare their profile against requirements before applying.
 
-**4. Outdated information** — Requirements change; pilots align to old job posts without knowing.
+<span style="color:red">**4. Outdated information**</span> — Requirements change; pilots align to old job posts without knowing.
 
-**5. No demand signals** — Fleet expansion and type rating demand invisible. Pilots invest blindly.
+<span style="color:red">**5. No demand signals**</span> — Fleet expansion and type rating demand invisible. Pilots invest blindly.
 
-**6. Unverified status** — No differentiation between verified, current profiles and stale CVs.
+<span style="color:red">**6. Unverified status**</span> — No differentiation between verified, current profiles and stale CVs.
 
 ### The Platform Solution
 
