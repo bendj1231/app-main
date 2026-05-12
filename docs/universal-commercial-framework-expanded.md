@@ -1001,7 +1001,7 @@ When the bored captain gets recognized and moves to cargo/BizAv:
 **Data Layer:**
 - Pilot Profiles: 100+ data fields including behavioral scores
 - Operator Pathways: Structured requirements with gap analysis
-- Verification Records: Immutable audit trail from Veremark APIs
+- Verification Records: Immutable audit trail from integrated verification provider APIs
 - Engagement Metrics: Real-time pathway interest tracking
 
 **Integration Layer:**
@@ -1016,8 +1016,8 @@ When the bored captain gets recognized and moves to cargo/BizAv:
 ┌──────────────────────────────────────────────────────────────┐
 │                     DATA SOURCES                              │
 ├─────────────┬─────────────┬─────────────┬──────────────────┤
-│   Pilots    │  Veremark   │ Simulators  │  Flight Data Apps │
-│  (Input)    │ (Verification)│ (EBT/CBTA)│  (Living Data)   │
+│   Pilots    │ Verification│ Simulators  │  Flight Data Apps │
+│  (Input)    │  Providers  │ (EBT/CBTA)│  (Living Data)   │
 └──────┬──────┴──────┬──────┴──────┬──────┴────────┬─────────┘
        │             │             │               │
        └─────────────┴─────────────┴───────────────┘
