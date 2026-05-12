@@ -1669,57 +1669,136 @@ Pillar 11 integrates background checking into the platform as a service layer, n
 
 ##### FOR AVIATION INSURANCE UNDERWRITERS
 
-**The Problem:** Verification providers don't talk to Global Aerospace, AIG, or Allianz Aviation. They can't verify pilot insurance coverage, policy validity, or aviation-specific exclusions. The data sits in separate silos.
+**The Current Gap:** Verification providers cannot access pilot insurance coverage data, policy validity, or aviation-specific exclusions. Risk evaluation relies on self-reported data and manual checks. Turnaround: weeks.
 
-**Platform Solution:** Direct API connections to aviation insurers for real-time policy verification, coverage validation, and aviation-specific exclusion checks. Insurance background checks (pilot-consent required) capture aircraft incident history including training accidents, gear-up landings, runway excursions, hull loss, and insurance claims.
+**Their Contribution:**
+- **API endpoint for policy verification:** Real-time validation of pilot insurance coverage, exclusions, and claims history
+- **Risk scoring framework:** Structured risk profiles (Low/Moderate/High) that airlines can reference on pathway backend
+- **Pilot-consent data access:** Underwriters receive tamper-proof risk profiles with verified incident history
+
+**What They Receive:**
+- **Pre-verified risk profiles:** Weeks of manual verification reduced to minutes via blockchain-backed wallet data
+- **Real-time risk updates:** Medical status changes, new incidents, license suspensions pushed live
+- **Reduced underwriting costs:** Automated verification eliminates manual document chasing across 150+ countries
+
+**Integration:** Direct API connections enable real-time policy verification. Airlines publish insurance risk requirements on pathway backend; pilots check verification wallet before applying. Zero surprise rejections at final offer stage.
 
 ---
 
 ##### FOR AIRLINE HR DEPARTMENTS
 
-**The Problem:** Each airline has unique requirements: some accept foreign licenses, some don't; some require specific medical conditions, others waive them. Verification providers don't access airline-specific requirement matrices. They apply generic templates.
+**The Current Gap:** Each airline maintains unique requirements in siloed systems. Verification providers apply generic templates, missing operator-specific policies. HR manually chases documents across CAA/FAA/local authorities. Turnaround: 14-30 days per candidate.
 
-**Platform Solution:** Platform publishes airline-specific requirement matrices; verification providers access operator policy databases for standardized verification scopes. Airlines configure per-role verification depth: Captains get full checks, Cadets get standard, First Officers get enhanced.
+**Their Contribution:**
+- **Requirement matrix publication:** Airlines publish per-role verification requirements on platform backend (Captains = full checks, Cadets = standard, First Officers = enhanced)
+- **API integration:** Webhook notifications feed verification status directly into airline ATS (Greenhouse, Workday, Lever)
+- **Backend configuration:** Insurance underwriter risk profile requirements published for pilot visibility before application
+
+**What They Receive:**
+- **Pre-cleared candidate pipeline:** 80% faster screening time; pilots arrive pre-verified with digital wallet
+- **Real-time status tracking:** Live dashboard updates as checks complete; no "black hole" communication
+- **Configurable verification depth:** Standard/Enhanced/Full check packages selectable per role
+- **Zero-cost model:** Pilots pay for verification; airlines access pre-verified candidates at no cost
+
+**Integration:** Pilot submits interest → verification auto-initiates (if not pre-cleared) → completed checks flow directly into pilot profile → HR receives via API webhook. GDPR/PDPA compliant data handling.
 
 ---
 
 ##### FOR AVIATION MEDICAL EXAMINERS (AMEs)
 
-**The Problem:** Medical verification requires direct AME integration for real-time Class 1/2/3 status, Special Issuance tracking, and renewal windows. Background check companies don't interface with the aviation medical ecosystem.
+**The Current Gap:** Medical status verification requires manual contact with individual AMEs. Background check companies cannot access Class 1/2/3 status, Special Issuance conditions, or renewal windows. Medical validity is often expired by the time verification completes.
 
-**Platform Solution:** Integration with AME networks for real-time Class 1/2/3 medical validation, Special Issuance tracking, and renewal window monitoring. Live feed from aviation medical examiners flows directly into pilot verification wallets.
+**Their Contribution:**
+- **Real-time medical status feed:** AMEs provide live Class 1/2/3 validation, Special Issuance tracking, and renewal window data
+- **Blockchain wallet integration:** Medical certificates flow directly into pilot-controlled digital wallets with immutable audit trail
+- **Aviation-specific data schema:** Standardized medical data fields (certificate class, issuance date, limitations, validity period)
+
+**What They Receive:**
+- **Streamlined verification requests:** Airlines and insurers pull medical data via API rather than calling individual AME offices
+- **Reduced administrative burden:** Automated status updates eliminate repetitive verification requests for the same pilot
+- **Enhanced pilot compliance:** Renewal window monitoring enables proactive pilot notifications before expiration
+- **Revenue opportunity:** AMEs on platform become preferred verification sources for airlines and underwriters
+
+**Integration:** AME network API feeds live medical data → stored in pilot verification wallet → instantly shareable with any operator via API. Underwriters receive real-time medical status for risk evaluation.
 
 ---
 
 ##### FOR AVIATION AUTHORITIES
 
-**The Problem:** CAA, FAA, EASA, CAAP all have separate license validation systems. Verification providers check employment history but skip license authority lookups. They don't integrate with authority APIs for real-time credential validation.
+**The Current Gap:** Each authority (CAA, FAA, EASA, CAAP) maintains separate license databases. Verification providers cannot access real-time credential validation, relying on pilot-submitted documents that may be falsified. Multi-authority licensing (FAA + EASA + CAAP) creates verification complexity.
 
-**Platform Solution:** Pre-established API infrastructure to CAA, FAA, EASA, CAAP for instant credential validation and real-time license lookups. License validation provides real-time authority verification for all pilot licenses held.
+**Their Contribution:**
+- **API infrastructure access:** Authorities provide real-time license validation endpoints for instant credential verification
+- **Standardized data format:** Unified license data schema across authorities (license number, type ratings, validity, limitations, recency)
+- **Cross-border validation:** API access for license conversion, validation, and foreign license acceptance rules per operator
+
+**What They Receive:**
+- **Fraud prevention:** Biometric-linked verification with blockchain audit trails eliminates forged license submissions
+- **Regulatory compliance:** Automated verification ensures operators only hire pilots with valid, current licenses
+- **Data accuracy:** Real-time lookups eliminate stale data; authority databases remain source of truth
+- **Reduced verification burden:** Airlines and insurers query authority APIs directly rather than requesting manual validations
+
+**Integration:** Pre-established API connections to CAA, FAA, EASA, CAAP → real-time license lookups during verification process → tamper-proof credential storage in pilot wallet. Authority data feeds directly into insurance risk profiles and airline hiring decisions.
 
 ---
 
 ##### FOR FLIGHT TRAINING ORGANIZATIONS (ATOs)
 
-**The Problem:** Cadet program verification requires ATO transcript access, simulator hour validation, and training completion records. Generic providers verify "employer" but miss "training provider" — a critical gap for low-time pilots.
+**The Current Gap:** Cadet program verification cannot access ATO transcripts, simulator hour logs, or training completion records. Generic background checks verify "employer" but miss "training provider" — leaving a critical gap for low-time pilots entering the industry.
 
-**Platform Solution:** Direct data sharing agreements with ATOs for cadet program verification, transcript access, simulator hour validation, and training completion records. Education/credentials verification includes ATO certificates and university degrees.
+**Their Contribution:**
+- **Transcript and record access:** ATOs provide cadet program completion records, simulator hour validation, and training transcript data
+- **Certificate verification:** Direct validation of ATO-issued certificates, type ratings, and endorsements
+- **University degree integration:** Partnerships with aviation universities for degree verification alongside flight training records
+
+**What They Receive:**
+- **Cadet placement pipeline:** Pre-verified low-time pilots flow directly to airline pathway cards; ATO graduates gain visibility
+- **Enhanced credibility:** ATOs on platform become trusted verification sources, attracting more student enrollments
+- **Reduced document fraud:** Blockchain-backed training records eliminate forged certificates and inflated hour claims
+- **Industry connectivity:** Direct data sharing with airlines enables " Cadet to Cockpit" pathway programs
+
+**Integration:** ATO data sharing agreements enable direct transcript access → simulator hours and training completion records flow into pilot verification wallet → airlines view verified cadet credentials on pathway cards. Insurance underwriters access training records for risk evaluation of low-time pilots.
 
 ---
 
 ##### FOR AIRPORT SECURITY AUTHORITIES
 
-**The Problem:** Airside passes, CTC checks, and Known Crewmember status require direct coordination with airport security and national aviation authorities. Background check companies treat these as "criminal checks" — they're distinct and require separate channels.
+**The Current Gap:** Airside passes, Counter Terrorist Check (CTC), and Known Crewmember status require direct aviation authority coordination. Background check companies treat these as standard "criminal checks" — missing the aviation-specific security vetting required for airside access.
 
-**Platform Solution:** Coordinated channels for Counter Terrorist Check (CTC), airside passes, airport ID badges, and Known Crewmember status verification. Platform enables direct communication between verification providers and airport security authorities.
+**Their Contribution:**
+- **CTC and airside pass verification:** Airport security authorities provide verification channels for Counter Terrorist Check, airside passes, airport ID badges, and Known Crewmember status
+- **Security clearance data:** Real-time validation of pilot security credentials required for airport access
+- **Multi-airport coordination:** Standardized security verification across different airport authorities and countries
+
+**What They Receive:**
+- **Streamlined pilot onboarding:** Airlines receive pre-verified security credentials; no redundant CTC checks per application
+- **Enhanced aviation security:** Known Crewmember status and airside passes verified against authoritative sources
+- **Reduced administrative overhead:** Centralized platform eliminates pilots submitting same security documents to multiple airlines
+- **Compliance assurance:** Verification providers access proper channels rather than treating aviation security as generic criminal checks
+
+**Integration:** Coordinated verification channels with airport security authorities → CTC/airside pass data flows into pilot verification wallet → airlines view security status alongside other credentials. Pilots with current security clearances appear as "pre-cleared" on pathway cards.
 
 ---
 
 ##### FOR VERIFICATION PROVIDERS
 
-**The Problem:** Verification providers operate in isolation with no ecosystem coordination. Fragmented data = fragmented recognition. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems.
+**The Current Gap:** Verification providers operate in isolation with no ecosystem coordination. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems. Fragmented data = fragmented recognition.
 
-**Platform Solution:** The platform acts as the **central coordination hub** — verification providers no longer operate in isolation. They join a collaborative ecosystem where data flows between all stakeholders, creating unified pilot recognition rather than fragmented snapshots. Pilots build complete credential pictures — license, medical, insurance, security, training — all stored in a single, portable verification wallet.
+**Their Contribution:**
+- **Technical infrastructure:** APIs, global coverage networks, compliance frameworks (GDPR, PDPA), and scalable check execution
+- **Aviation domain capabilities:** Specialized verification for license validation, medical status, employment history, criminal background across 150+ countries
+- **Blockchain credential storage:** Digital wallet infrastructure for tamper-proof, portable verification records (Verepass-style model)
+- **Real-time verification triggers:** Instant check initiation via REST API with webhook notifications to airline ATS systems
+
+**What They Receive:**
+- **Qualified pilot pipeline:** Pre-motivated pilots actively seeking verification (warm leads vs. cold outreach)
+- **Platform-native integration:** Become the default verification layer for aviation industry ecosystem, not just another vendor
+- **Aviation vertical expansion:** Entry into $800B+ aviation industry with 500,000+ professional pilots globally
+- **Volume multiplier effect:** One verified pilot applies to 5+ airlines = 5x check volume per user
+- **Revenue share:** 10-15% commission structure creates passive income without operational overhead
+- **Competitive differentiation:** "Preferred verification partner of PilotRecognition" positions ahead of generic competitors
+
+**Integration:** Verification partner API integrates with platform → becomes default verification layer for all pilot pathways → airlines initiate checks via platform API → verification results flow into pilot wallet → partner receives revenue share per check. Platform provides pilot funnel, airline connections, and technical infrastructure coordination.
 
 ---
 
