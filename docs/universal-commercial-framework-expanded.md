@@ -1616,6 +1616,26 @@ Aviation background screening operates on outdated manual processes that create 
 
 <span style="color:red">**6. Multi-authority licensing**</span> — Pilots often hold licenses from multiple authorities (FAA + EASA + CAAP). Generic providers check one country. They don't understand license conversion, validation, or foreign license acceptance rules per operator.
 
+**Ecosystem Collaboration Requirements (Currently Non-Existent):**
+
+Generic background check companies operate in isolation. To properly verify pilots, they must collaborate with an ecosystem of aviation stakeholders — this coordination does not exist today:
+
+<span style="color:red">**1. No integration with aviation insurance underwriters**</span> — Verification providers don't talk to Global Aerospace, AIG, or Allianz Aviation. They can't verify pilot insurance coverage, policy validity, or aviation-specific exclusions. The data sits in separate silos.
+
+<span style="color:red">**2. No coordination with airline HR departments**</span> — Each airline has unique requirements: some accept foreign licenses, some don't; some require specific medical conditions, others waive them. Verification providers don't access airline-specific requirement matrices. They apply generic templates.
+
+<span style="color:red">**3. No connection to aviation medical examiners (AMEs)**</span> — Medical verification requires direct AME integration for real-time Class 1/2/3 status, Special Issuance tracking, and renewal windows. Background check companies don't interface with the aviation medical ecosystem.
+
+<span style="color:red">**4. No access to aviation authority databases**</span> — CAA, FAA, EASA, CAAP all have separate license validation systems. Verification providers check employment history but skip license authority lookups. They don't integrate with authority APIs for real-time credential validation.
+
+<span style="color:red">**5. No partnership with flight training organizations (ATOs)**</span> — Cadet program verification requires ATO transcript access, simulator hour validation, and training completion records. Generic providers verify "employer" but miss "training provider" — a critical gap for low-time pilots.
+
+<span style="color:red">**6. No alignment with airport security authorities**</span> — Airside passes, CTC checks, and Known Crewmember status require direct coordination with airport security and national aviation authorities. Background check companies treat these as "criminal checks" — they're distinct and require separate channels.
+
+<span style="color:red">**7. No understanding of operator-specific policies**</span> — Cargo operators have different requirements than charter; low-cost carriers differ from legacy airlines. Verification providers don't access operator policy databases. One pilot, five applications, five different verification scopes — no standardization.
+
+<span style="color:red">**8. Fragmented data = fragmented recognition**</span> — Because verification providers don't collaborate with the full ecosystem, pilots cannot build unified Recognition Profiles. Each verification is a disconnected snapshot. The pilot's full credential picture — license, medical, insurance, security, training — remains scattered across non-communicating systems.
+
 ---
 
 ### The Platform Solution: Unified Verification Layer
