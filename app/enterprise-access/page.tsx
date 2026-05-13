@@ -648,146 +648,148 @@ const EnterpriseAccessPage = () => {
             </header>
 
             {/* ─── HERO ─── */}
-            <section id="home" className="relative overflow-hidden border-b border-slate-200 bg-white">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-100/50 blur-3xl rounded-full pointer-events-none" />
-                <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-red-100/30 blur-3xl rounded-full pointer-events-none" />
-                <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-20">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-5">Enterprise · Global Aviation Network</p>
-                    <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] mb-6 text-slate-900">
-                        Connecting Pilots<br />
-                        <span className="text-red-600">to the Industry.</span>
-                    </h1>
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 max-w-3xl">
-                        <p className="text-amber-800 font-semibold text-sm flex items-center gap-2">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            NOT A JOB BOARD — A RECOGNITION & INFORMATION PLATFORM
-                        </p>
-                        <p className="text-amber-700 text-sm mt-1">
-                            We don't post jobs or accept applications. Pilots get verified and discover pathway information. Partners list requirements and access recognition data. No hiring promises. Just verified discovery.
-                        </p>
-                    </div>
-                    <p className="text-slate-600 text-xl max-w-3xl mb-10 leading-relaxed">
-                        Live pilot profiles. Background-verified. Recognition scored. The infrastructure that connects verified pilots with pathway information from airlines, operators, insurers, lenders, ATOs, and manufacturers.
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                        <button onClick={() => scrollTo('solutions')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-6 py-3 rounded-lg transition-colors">
-                            Explore Solutions
-                        </button>
-                        <button onClick={() => scrollTo('contact')} className="bg-white hover:bg-slate-50 border border-slate-300 text-slate-900 font-semibold px-6 py-3 rounded-lg transition-colors">
-                            Talk to Partnerships
-                        </button>
-                        <a 
-                            href="/framework"
-                            className="bg-slate-900 text-white hover:bg-slate-800 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            View Framework Document
-                        </a>
-                    </div>
+            <section id="home" className="relative overflow-hidden bg-white border-b border-slate-100">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-red-50/60 via-white to-white pointer-events-none" />
+                <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-16">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest">
+                                Enterprise · Global Aviation Network
+                            </span>
+                            <h1 className="text-5xl md:text-6xl font-bold leading-[1.05] mb-6 text-slate-900">
+                                Connecting Pilots<br />
+                                <span className="text-red-600">to the Industry.</span>
+                            </h1>
+                            <p className="text-slate-500 text-lg mb-8 leading-relaxed max-w-lg">
+                                Live pilot profiles. Background-verified. Recognition scored. The infrastructure that connects verified pilots with pathway information from airlines, operators, insurers, lenders, ATOs, and manufacturers.
+                            </p>
+                            <div className="flex flex-wrap gap-3 mb-8">
+                                <button onClick={() => scrollTo('pillars')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-6 py-3 rounded-lg transition-colors">
+                                    Explore 25 Pillars
+                                </button>
+                                <button onClick={() => scrollTo('contact')} className="bg-white hover:bg-slate-50 border border-slate-300 text-slate-900 font-semibold px-6 py-3 rounded-lg transition-colors">
+                                    Request Access
+                                </button>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-slate-400">
+                                <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/></svg>
+                                Not a job board — a Recognition & Information Platform. No hiring promises. Just verified discovery.
+                            </div>
+                        </div>
 
-                    {/* Stat strip */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-slate-200">
-                        <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">15+</p>
-                            <p className="text-sm text-slate-500">Aviation sectors</p>
-                        </div>
-                        <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">90<span className="text-lg text-slate-500 font-normal">d</span></p>
-                            <p className="text-sm text-slate-500">Avg. pathway connection time</p>
-                        </div>
-                        <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">Live</p>
-                            <p className="text-sm text-slate-500">Real-time data sync</p>
-                        </div>
-                        <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">API</p>
-                            <p className="text-sm text-slate-500">Enterprise integrations</p>
+                        {/* Stats cards */}
+                        <div className="grid grid-cols-2 gap-4">
+                            {[
+                                { value: '25', label: 'Strategic Pillars', sub: 'Across 7 industry hubs', icon: '🏛️' },
+                                { value: '15+', label: 'Aviation Sectors', sub: 'Airlines to eVTOL', icon: '✈️' },
+                                { value: 'Live', label: 'Real-Time Profiles', sub: 'Not static CVs', icon: '📡' },
+                                { value: 'API', label: 'Enterprise Access', sub: 'Pull verified pilot data', icon: '🔗' },
+                            ].map((stat) => (
+                                <div key={stat.label} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                                    <div className="text-2xl mb-2">{stat.icon}</div>
+                                    <p className="text-3xl font-bold text-slate-900 mb-1">{stat.value}</p>
+                                    <p className="text-sm font-semibold text-slate-700">{stat.label}</p>
+                                    <p className="text-xs text-slate-400 mt-1">{stat.sub}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ─── UNIVERSAL FRAMEWORK BANNER ─── */}
-            <section id="framework" className="py-16 px-6 border-b border-slate-200 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-4">25-Pillar Master Blueprint</p>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
+            {/* ─── UCF BANNER ─── */}
+            <section id="framework" className="relative py-20 px-6 bg-slate-950 overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-red-950/50 via-slate-950 to-slate-950 pointer-events-none" />
+                <div className="relative max-w-7xl mx-auto">
+                    <div className="grid lg:grid-cols-5 gap-12 items-center">
+                        <div className="lg:col-span-3">
+                            <span className="inline-block px-3 py-1 bg-red-900/40 border border-red-800/50 text-red-400 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest">
+                                Version 10.0-Expanded · 25 Pillars · 7 Hubs · 90+ Pages
+                            </span>
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
                                 Universal Commercial<br />
                                 <span className="text-red-400">Framework</span>
                             </h2>
-                            <p className="text-slate-300 text-lg mb-6 leading-relaxed">
-                                The definitive reference for all aviation stakeholders. Detailed requirements, contributions, and value analysis for 25 industry pillars—from airlines to search platforms, ATOs to verification APIs.
+                            <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-xl">
+                                The master blueprint for the aviation industry operating system. Detailed requirements, contributions, and commercial value analysis for every stakeholder — from commercial airlines to search platforms.
                             </p>
                             <div className="flex flex-wrap gap-4">
-                                <a 
-                                    href="/framework"
-                                    className="bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
-                                >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    View Framework
+                                <a href="/ucf" className="bg-red-600 hover:bg-red-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors inline-flex items-center gap-2 text-sm">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                    Open UCF Page
                                 </a>
-                                <a 
-                                    href="https://enterprise.pilotrecognition.com/framework/full"
-                                    className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
-                                >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    View Full Framework
+                                <a href="https://enterprise.pilotrecognition.com/framework/full" className="bg-white/5 hover:bg-white/10 text-white border border-white/20 font-semibold px-8 py-3.5 rounded-xl transition-colors inline-flex items-center gap-2 text-sm">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                    Full Framework Document
                                 </a>
                             </div>
                         </div>
-                        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                            <h3 className="text-white font-semibold mb-6">Framework Highlights</h3>
-                            <div className="space-y-4">
-                                <div className="flex items-start gap-3">
-                                    <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-red-400 text-xs font-bold">20</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-white font-medium">Stakeholder Pillars</p>
-                                        <p className="text-slate-400 text-sm">From airlines to government authorities</p>
-                                    </div>
+                        <div className="lg:col-span-2 grid grid-cols-2 gap-3">
+                            {[
+                                { n: '25', label: 'Pillars' },
+                                { n: '7', label: 'Hubs' },
+                                { n: '90+', label: 'Pages' },
+                                { n: 'v10', label: 'Version' },
+                            ].map((item) => (
+                                <div key={item.label} className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+                                    <p className="text-3xl font-bold text-red-400 mb-1">{item.n}</p>
+                                    <p className="text-xs text-slate-400 uppercase tracking-widest">{item.label}</p>
                                 </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-red-400 text-xs font-bold">12</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-white font-medium">Industry Failures</p>
-                                        <p className="text-slate-400 text-sm">The Swiss Cheese Model of pipeline blockage</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-red-400 text-xs font-bold">90+</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-white font-medium">Pages of Analysis</p>
-                                        <p className="text-slate-400 text-sm">Technical integration, pricing, ROI</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-green-400 text-xs font-bold">✓</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-white font-medium">Ready for Partnerships</p>
-                                        <p className="text-slate-400 text-sm">LaTeX format for professional distribution</p>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── 25 PILLARS GRID ─── */}
+            <section id="pillars" className="py-20 px-6 bg-white border-b border-slate-200">
+                <div className="max-w-7xl mx-auto">
+                    <div className="mb-12">
+                        <span className="text-xs uppercase tracking-widest text-red-600 font-semibold">25 Strategic Pillars · 7 Stakeholder Hubs</span>
+                        <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-3">Every Aviation Stakeholder. One Platform.</h2>
+                        <p className="text-slate-500 max-w-2xl">The framework covers every sector of aviation — from major commercial airlines to emerging eVTOL operators, military transition programs to digital discovery platforms.</p>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                        {[
+                            { n: 1, icon: '✈️', name: 'Commercial Airlines', hub: 'Hub A' },
+                            { n: 2, icon: '📦', name: 'Cargo & Freight', hub: 'Hub A' },
+                            { n: 3, icon: '🛩️', name: 'Charter & Business', hub: 'Hub A' },
+                            { n: 4, icon: '🚁', name: 'eVTOL & Air Taxi', hub: 'Hub A' },
+                            { n: 5, icon: '🏫', name: 'Flight Training ATOs', hub: 'Hub B' },
+                            { n: 6, icon: '🖥️', name: 'Type Rating Centers', hub: 'Hub B' },
+                            { n: 7, icon: '🎖️', name: 'Military & Defence', hub: 'Hub B' },
+                            { n: 8, icon: '🏦', name: 'Banking & Finance', hub: 'Hub C' },
+                            { n: 9, icon: '🛡️', name: 'Aviation Insurance', hub: 'Hub C' },
+                            { n: 10, icon: '📋', name: 'Regulatory Bodies', hub: 'Hub C' },
+                            { n: 11, icon: '🔍', name: 'Verification APIs', hub: 'Hub C' },
+                            { n: 12, icon: '📊', name: 'Flight Data Providers', hub: 'Hub C' },
+                            { n: 13, icon: '🩺', name: 'Aeromedical Examiners', hub: 'Hub C' },
+                            { n: 14, icon: '🤝', name: 'Pilot Mentors & Unions', hub: 'Hub D' },
+                            { n: 15, icon: '🏭', name: 'Aircraft Manufacturers', hub: 'Hub D' },
+                            { n: 16, icon: '💼', name: 'Recruitment Agencies', hub: 'Hub D' },
+                            { n: 17, icon: '🎓', name: 'Aviation Universities', hub: 'Hub D' },
+                            { n: 18, icon: '📰', name: 'Aviation Media', hub: 'Hub D' },
+                            { n: 19, icon: '🎪', name: 'Career Fairs & Events', hub: 'Hub D' },
+                            { n: 20, icon: '🏛️', name: 'Government Authorities', hub: 'Hub E' },
+                            { n: 21, icon: '⛪', name: 'Humanitarian Missions', hub: 'Hub E-A' },
+                            { n: 22, icon: '🌐', name: 'International Orgs', hub: 'Hub E' },
+                            { n: 23, icon: '🔎', name: 'Search & Discovery', hub: 'Hub G' },
+                            { n: 24, icon: '📅', name: 'Aviation Events', hub: 'Hub G' },
+                            { n: 25, icon: '💻', name: 'Digital Platforms', hub: 'Hub G' },
+                        ].map((pillar) => (
+                            <button
+                                key={pillar.n}
+                                onClick={() => scrollTo('solutions')}
+                                className="group text-left p-4 rounded-xl border border-slate-200 hover:border-red-300 hover:bg-red-50 transition-all"
+                            >
+                                <div className="flex items-center justify-between mb-2">
+                                    <span className="text-xl">{pillar.icon}</span>
+                                    <span className="text-[10px] text-slate-400 font-mono bg-slate-100 px-1.5 py-0.5 rounded">{pillar.hub}</span>
+                                </div>
+                                <p className="text-xs font-semibold text-slate-700 group-hover:text-red-700 leading-tight">{pillar.name}</p>
+                                <p className="text-[10px] text-slate-400 mt-1">Pillar {pillar.n}</p>
+                            </button>
+                        ))}
                     </div>
                 </div>
             </section>
