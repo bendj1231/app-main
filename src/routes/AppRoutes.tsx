@@ -4,6 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
 
+// External redirect component for full URLs
+const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
+  useEffect(() => {
+    window.location.href = to;
+  }, [to]);
+  return null;
+};
+
 const LoginModal = lazy(() => import('@/components/website/components/LoginModal').then(m => ({ default: m.LoginModal })));
 const HomePage = lazy(() => import('@/components/website/components/home/HomePage').then(m => ({ default: m.HomePage })));
 const AboutPage = lazy(() => import('@/components/website/components/AboutPage').then(m => ({ default: m.AboutPage })));
@@ -104,22 +112,12 @@ const GlobalAviationAuthoritiesPage = lazy(() => import('@/pages/GlobalAviationA
 const BlogPage = lazy(() => import('@/app/blog/page'));
 const StorePage = lazy(() => import('@/app/store/page'));
 const FrameworkPage = lazy(() => import('@/app/framework/page'));
-const EnterpriseFrameworkPage = lazy(() => import('@/app/enterprise/framework/page'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
     Loading...
   </div>
 );
-
-// ExternalRedirect: performs a hard browser redirect for cross-origin URLs.
-// React Router's <Navigate> treats "https://..." as a relative path, so we use window.location.href directly.
-const ExternalRedirect: React.FC<{ url: string }> = ({ url }) => {
-  useEffect(() => {
-    window.location.href = url;
-  }, [url]);
-  return <LoadingFallback />;
-};
 
 export const AppRoutes = () => {
   const navigate = useNavigate();
@@ -131,23 +129,9 @@ export const AppRoutes = () => {
 
   // Subdomain routing for enterprise.pilotrecognition.com
   if (window.location.hostname === 'enterprise.pilotrecognition.com') {
-    let path = window.location.pathname;
-    // Normalize: strip trailing /index.html from static file serving
-    path = path.replace(/\/index\.html$/, '');
-    // Handle empty path after stripping
-    if (path === '') path = '/';
-    console.log('[DEBUG AppRoutes] Enterprise subdomain detected, normalized path:', path);
-
-    // Framework pages - served from enterprise subdomain
-    if (path === '/framework') {
-      console.log('[DEBUG AppRoutes] Rendering FrameworkPage on enterprise subdomain');
-      return <FrameworkPage />;
-    }
-    if (path === '/framework/full' || path === '/framework/full/index.html') {
-      console.log('[DEBUG AppRoutes] Rendering EnterpriseFrameworkPage (full 80+ page) on enterprise subdomain');
-      return <EnterpriseFrameworkPage />;
-    }
-
+    const path = window.location.pathname;
+    console.log('[DEBUG AppRoutes] Enterprise subdomain detected, path:', path);
+    
     if (path === '/enterprise-access/airlines') {
       console.log('[DEBUG AppRoutes] Rendering AirlinesOperatorsPage');
       return <AirlinesOperatorsPage />;
@@ -345,9 +329,9 @@ export const AppRoutes = () => {
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/store" element={<StorePage />} />
 
-      {/* Framework routes */}
+      {/* Framework routes - /framework/full moved to enterprise.pilotrecognition.com */}
       <Route path="/framework" element={<FrameworkPage />} />
-      <Route path="/framework/full" element={<EnterpriseFrameworkPage />} />
+      <Route path="/framework/full" element={<ExternalRedirect to="https://enterprise.pilotrecognition.com/framework/full" />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
