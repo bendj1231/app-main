@@ -124,8 +124,8 @@ export const AppRoutes = () => {
     const path = window.location.pathname;
     console.log('[DEBUG AppRoutes] Enterprise subdomain detected, path:', path);
     
-    // Framework full page - served from enterprise subdomain
-    if (path === '/framework/full') {
+    // Framework pages - served from enterprise subdomain
+    if (path === '/framework' || path === '/framework/full') {
       console.log('[DEBUG AppRoutes] Rendering FrameworkPage on enterprise subdomain');
       return <FrameworkPage />;
     }
