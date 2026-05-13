@@ -78,7 +78,7 @@ Current flight training is transactional: hours logged, exams passed, certificat
 
 | Program | Price | What They Get |
 |---------|-------|---------------|
-| **Foundation Program** | $49 | 50-hour mentorship with certification, 5 EBT modules, W1000 access, Recognition Score boost |
+| **Foundation Program** | $49 | 50-hour mentorship with certification, 5 EBT modules, W1000 access, initial recognition presence + accumulated score |
 | **Transition Program** | $299 | 9 competencies assessment, ATLAS CV, interview prep, EBT scoring |
 | **EBT Video Scoring** | Bundled | Recorded behavioral assessment airlines can view |
 
