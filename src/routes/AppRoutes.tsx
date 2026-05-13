@@ -130,30 +130,6 @@ export const AppRoutes = () => {
   console.log('[DEBUG AppRoutes] hostname:', window.location.hostname);
   console.log('[DEBUG AppRoutes] pathname:', window.location.pathname);
 
-  // Subdomain routing for enterprise.pilotrecognition.com
-  if (window.location.hostname === 'enterprise.pilotrecognition.com') {
-    const path = window.location.pathname;
-    console.log('[DEBUG AppRoutes] Enterprise subdomain detected, path:', path);
-    
-    if (path === '/enterprise-access/airlines') {
-      console.log('[DEBUG AppRoutes] Rendering AirlinesOperatorsPage');
-      return <AirlinesOperatorsPage />;
-    }
-    if (path === '/enterprise-access/learn-more') {
-      console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessLearnMorePage');
-      return <EnterpriseAccessLearnMorePage />;
-    }
-    if (path === '/' || path === '/enterprise-access') {
-      console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessPage');
-      return <EnterpriseAccessPage />;
-    }
-    if (path === '/framework/full' || path === '/framework/full/index.html') {
-      console.log('[DEBUG AppRoutes] Rendering FrameworkFullPage on enterprise');
-      return <FrameworkFullPage />;
-    }
-    console.log('[DEBUG AppRoutes] Unknown path on enterprise subdomain, falling through to Routes');
-  }
-
   // Listen for custom login modal events
   useEffect(() => {
     const handleOpenLoginModal = () => {
@@ -175,6 +151,31 @@ export const AppRoutes = () => {
   const handleBack = (fallback: string = '/') => {
     navigate(fallback);
   };
+
+  // Subdomain routing for enterprise.pilotrecognition.com
+  // NOTE: must be AFTER all hooks to avoid React error #310
+  if (window.location.hostname === 'enterprise.pilotrecognition.com') {
+    const path = window.location.pathname;
+    console.log('[DEBUG AppRoutes] Enterprise subdomain detected, path:', path);
+
+    if (path === '/enterprise-access/airlines') {
+      console.log('[DEBUG AppRoutes] Rendering AirlinesOperatorsPage');
+      return <AirlinesOperatorsPage />;
+    }
+    if (path === '/enterprise-access/learn-more') {
+      console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessLearnMorePage');
+      return <EnterpriseAccessLearnMorePage />;
+    }
+    if (path === '/' || path === '/enterprise-access') {
+      console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessPage');
+      return <EnterpriseAccessPage />;
+    }
+    if (path === '/framework/full' || path === '/framework/full/index.html') {
+      console.log('[DEBUG AppRoutes] Rendering FrameworkFullPage on enterprise');
+      return <FrameworkFullPage />;
+    }
+    console.log('[DEBUG AppRoutes] Unknown path on enterprise subdomain, falling through to Routes');
+  }
 
   return (
     <Suspense fallback={<LoadingFallback />}>
