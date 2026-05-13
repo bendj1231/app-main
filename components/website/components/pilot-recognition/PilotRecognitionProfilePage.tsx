@@ -347,13 +347,13 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     }, [recommendedPathways]);
 
     const checkRequirements = (pathway: any) => {
-        if (!pathway.requirements || !profileData) return pathway.requirements.map(req => ({ ...req, met: false, reason: 'Profile data not available' }));
+        if (!pathway.requirements || !profileData) return pathway.requirements.map((req: any) => ({ ...req, met: false, reason: 'Profile data not available' }));
 
         const userHours = profileData.total_hours || 0;
         const userLicense = profileData.license_type || '';
         const userMedical = profileData.medical_status || '';
 
-        return pathway.requirements.map(req => {
+        return pathway.requirements.map((req: any) => {
             let met = false;
             let reason = '';
 
@@ -649,11 +649,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     breakdown: pathwaysData.recognitionProfile.breakdown
                 });
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('[ERROR] Error in fetchProfileData:', error);
-            console.error('[ERROR] Error name:', error.name);
-            console.error('[ERROR] Error message:', error.message);
-            console.error('[ERROR] Error stack:', error.stack);
+            console.error('[ERROR] Error name:', error?.name);
+            console.error('[ERROR] Error message:', error?.message);
+            console.error('[ERROR] Error stack:', error?.stack);
             // Fallback to empty pathways if Edge Function fails
             setRecommendedPathways([]);
         } finally {
@@ -1531,22 +1531,22 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         selectedInterests={profileData?.pathway_interests || []}
                                         currentHours={profileData?.total_hours || 0}
                                         currentRatings={profileData?.ratings || []}
-                                        onInterestChange={(interests) => {
+                                        onInterestChange={(interests: string[]) => {
                                             // Update profile with new interests
                                             console.log('Pathway interests updated:', interests);
                                         }}
-                                        onViewProgram={(program) => onNavigate(`program/${program}`)}
-                                        onViewTraining={(trainingId) => onNavigate(`training/${trainingId}`)}
+                                        onViewProgram={(program: string) => onNavigate(`program/${program}`)}
+                                        onViewTraining={(trainingId: string) => onNavigate(`training/${trainingId}`)}
                                     />
                                 </div>
                             )}
                         </div>
 
-                        <CategorySection title="Career & Interests" description="Professional information and pathway preferences">
+                        <CategorySection title="Professional Interests" description="Professional information and pathway preferences">
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
                                 <div style={{ ...baseCardStyle }}>
                                     <div style={{ marginBottom: '0.75rem' }}>
-                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Career Information</p>
+                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Professional Information</p>
                                         <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Professional Details</h3>
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
