@@ -1879,28 +1879,33 @@ const ProbabilityBadge: React.FC<{ probability: number; size?: 'sm' | 'md' | 'lg
   );
 };
 
-// Hiring Status Badge
-const HiringBadge: React.FC<{ status: string; positions: number }> = ({ status, positions }) => {
+// Interest Level Badge (NOT a hiring status - pathway activity indicator)
+const InterestBadge: React.FC<{ status: string; positions: number }> = ({ status, positions }) => {
   const configs: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
-    actively_hiring: { 
+    high_interest: { 
       color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
       icon: <Zap className="w-3.5 h-3.5" />,
-      label: `${positions} positions`
+      label: 'High Interest'
+    },
+    active: { 
+      color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+      icon: <Zap className="w-3.5 h-3.5" />,
+      label: 'Active'
     },
     moderate: { 
       color: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
       icon: <Users className="w-3.5 h-3.5" />,
-      label: 'Selective hiring'
+      label: 'Moderate Interest'
     },
     limited: { 
       color: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
       icon: <Clock className="w-3.5 h-3.5" />,
-      label: 'Limited slots'
+      label: 'Limited'
     },
-    frozen: { 
+    paused: { 
       color: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
       icon: <AlertCircle className="w-3.5 h-3.5" />,
-      label: 'Hiring frozen'
+      label: 'Paused'
     },
   };
 
@@ -2152,7 +2157,7 @@ const PathwayCard: React.FC<{
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <HiringBadge status={pathway.interestLevel} positions={pathway.positions} />
+              <InterestBadge status={pathway.interestLevel} positions={pathway.positions} />
               <div className={`flex items-center gap-1 ${textColorLight} text-sm`}>
                 <MapPin className="w-3 h-3" />
                 {formattedLocation}

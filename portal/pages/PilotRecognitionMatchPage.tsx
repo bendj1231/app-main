@@ -610,7 +610,7 @@ export const PilotRecognitionMatchPage: React.FC<PilotRecognitionMatchPageProps>
                   }
                 }}
               >
-                Apply Now
+                Submit Interest
               </button>
             </div>
           </div>

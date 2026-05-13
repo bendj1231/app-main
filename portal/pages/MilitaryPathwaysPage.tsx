@@ -432,7 +432,7 @@ const MilitaryPathwaysPage: React.FC<MilitaryPathwaysPageProps> = ({ pathwayId, 
                       <button
                         className="px-6 py-3 rounded-lg font-medium transition-all bg-blue-600 hover:bg-blue-700 text-white"
                       >
-                        Apply Now
+                        Submit Interest
                       </button>
                       <button
                         className="px-6 py-3 rounded-lg font-medium transition-all bg-slate-200 hover:bg-slate-300 text-slate-700"
