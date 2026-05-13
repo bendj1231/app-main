@@ -3258,6 +3258,97 @@ Every aviation career question — from a 16-year-old dreaming of becoming a pil
 
 ---
 
+## KEY DISTINCTION: NOT A JOB BOARD — A RECOGNITION & INFORMATION PLATFORM
+
+### The Critical Difference: Old Model vs. Universal Commercial Framework
+
+| **Dimension** | **Traditional Job Board Model** | **Universal Commercial Framework (New Approach)** |
+|---------------|-----------------------------------|-----------------------------------------------------|
+| **Core Purpose** | Match employers to job seekers | Connect verified pilots to pathway information |
+| **Pilot Action** | Apply for jobs (push resume) | Submit interest (become discoverable) |
+| **Airline Action** | Review applicants (sift through CVs) | Pull from verified interest list (pre-cleared pilots) |
+| **Data Type** | Static resumes, self-declared | Live Recognition Profiles, verified credentials |
+| **Outcome Promise** | "Apply and hope" | "Get recognized and discovered" |
+| **Success Metric** | Applications submitted | Pathway connections made |
+| **Revenue Model** | Per-posting fees, ad revenue | Recognition verification fees, data access subscriptions |
+| **Stakeholder Position** | Airlines are customers | Airlines are partners (one of 25 pillars) |
+| **Pilot Data Ownership** | Job board owns the data | Pilot owns data, grants selective access |
+| **Verification** | None or manual | Automated via Veremark (Pillar 11) |
+| **Long-term Value** | Transactional (one job) | Relational (career-long recognition) |
+
+**What This Means:** Pilots don't apply for jobs. They build verified Recognition Profiles, explore pathway information, and indicate interest. Airlines don't post jobs. They publish pathway requirements and pull from a list of interested, pre-cleared pilots. No job promises. Just verified discovery.
+
+---
+
+### For Pathways Specifically: What's Available vs. Our Approach
+
+| **Element** | **Publicly Available (Old Way)** | **Universal Commercial Framework (New Approach)** |
+|-------------|----------------------------------|---------------------------------------------------|
+| **Pathway Information** | Scattered across job boards, forums, social media | Centralized, structured, verified on platform |
+| **Requirements** | Vague or outdated | Live, versioned, timestamped with alerts |
+| **Comparison Tool** | Manual research across multiple sites | One-click profile vs. pathway gap analysis |
+| **Interest Expression** | Send resume into void | Submit interest → added to verified list |
+| **Visibility to Airlines** | Zero (unless applying) | Yes — airline sees interest + recognition score |
+| **Priority Status** | None | Recognition Plus = background-verified = preferred |
+| **Update Frequency** | When airline remembers to post | Real-time live status (Open/Closed/Paused/Future) |
+| **Fleet Demand Signal** | Not available | 12-24 month type rating demand forecast |
+| **Type Rating ROI** | Unknown before investing | Gap analysis shows demand before you pay |
+| **Background Check** | Repeated for every application | Once via Veremark, travels with profile |
+
+---
+
+### For Manufacturers: Public Data vs. Framework Integration
+
+| **Capability** | **Publicly Available (Current State)** | **Universal Commercial Framework (New Approach)** |
+|----------------|----------------------------------------|---------------------------------------------------|
+| **Aircraft Information** | Website specs, marketing materials | Live fleet data, demand signals, training pipeline visibility |
+| **Pilot Access** | Indirect via operators | Direct: recognized pilots exploring specific types |
+| **Type Rating Demand** | Guess based on sales | Real data: pilots searching, expressing interest, getting verified |
+| **Training Center Network** | Listed on website, no integration | Connected pathway: pilot → training center → operator (all tracked) |
+| **Pilot Competency Data** | None — operators keep this | OEM-aligned recognition scores showing type-readiness |
+| **Fleet Expansion Signals** | Press releases, industry rumors | Live pathway creation when new aircraft ordered |
+| **Pre-Launch Pipeline** | None | Pre-certified pilot interest lists before type certification |
+| **Product Development Input** | Customer surveys, operator feedback | Real pilot recognition data: who flies what, competency gaps |
+| **EBT/CBTA Alignment** | Generic competency frameworks | OEM-specific competency mapping to Recognition Score |
+| **Direct Pilot Relationship** | None — through operators only | Yes: pilots discover OEM requirements before choosing type rating |
+
+**Manufacturer Value:** Close the gap between aircraft production and pilot readiness. Signal fleet demand directly to training pipeline. Understand which pilots are recognition-ready for your aircraft types. Build pre-certified interest pools before new types hit the market.
+
+---
+
+### For Airline Expectations: Key Distinction Table
+
+| **Expectation Element** | **Traditional Approach (Job Board)** | **Universal Commercial Framework** |
+|-------------------------|--------------------------------------|-----------------------------------|
+| **Where Posted** | Job board, LinkedIn, Facebook groups | Platform pathway card (verified, structured) |
+| **Format** | Text description, often vague | Structured data: requirements, competencies, gaps |
+| **Verification** | None — anyone can post | Operator-verified enterprise account required |
+| **Requirements Detail** | Minimal or misleading | Complete: hours, ratings, medical, behavioral, EBT |
+| **Fleet Information** | Not included | Live fleet, planned additions, type rating demand |
+| **Culture/Values** | Unknown until interview | Published: work environment, growth trajectory |
+| **Recognition Score Required** | No standard | Published minimum/preferred range per role |
+| **Foreign License Policy** | Discovered after rejection | Clearly stated: accepted licenses, conversion path |
+| **Language Requirements** | Buried or missing | Explicit: ICAO level + additional languages |
+| **Hiring Status** | Unknown — apply and hope | Live: Open / Closed / Paused / Future Demand |
+| **Candidate Quality** | 500 random CVs, mostly unqualified | Pre-filtered: aptitude-passed, verified, matched |
+| **Submission Type** | Application (competitive, push) | Interest submission (discovery, pull) |
+| **Profile Freshness** | Static CV (months old) | Live real-time: hours, medical, recency updating |
+| **Background Check** | Same process for all | Configurable per role; Recognition+ = expedited |
+| **Time-to-Hire** | 6-12 months | 2-4 weeks (75% reduction) |
+| **Washout Rate** | 35-45% post-hire | <10% — pre-aligned, verified candidates |
+| **Cost Structure** | Per-posting fees | Monthly tiers: Basic/Professional/Enterprise |
+| **Data Integration** | Manual exports, re-entry | API feed direct to ATS — seamless, compliant |
+| **Cadet Program Info** | Inconsistent, outdated | Complete: structure, bond, sponsorship, live intake dates |
+| **Pilot Comparison Tool** | None | Side-by-side gap analysis: profile vs. requirements |
+
+**The Critical Difference:**
+- **Job Board:** Pilot pushes application → airline reviews pile of CVs → hires based on self-declared data
+- **Framework:** Pilot builds verified profile → compares to pathway → submits interest → airline pulls from pre-cleared list → hires based on verified recognition data
+
+**Result:** No more "apply and hope." No more "sift through 500 CVs." Just verified pilots discovering pathway information, and airlines pulling pre-cleared candidates from an interested, recognition-scored list.
+
+---
+
 ### Appendix A: Technical Integration
 
 - API architecture, webhook specifications, authentication protocols
