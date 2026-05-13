@@ -240,6 +240,71 @@ Current flight training is transactional: hours logged, exams passed, certificat
 - **$50K investment unused:** Their own training investment sits dormant while they teach
 - **The Transition Program:** Breaks this cycle by giving instructors recognition and alternative pathways
 
+**Benefits for Flight Schools: Replace Stuck Instructors, Unclog the Pipeline**
+
+> **A 15-year instructor teaching students to become successful pilots is a bad image.** It shows the instructor's own failure to advance in the industry.
+
+**The Hidden Problem Flight Schools Face:**
+
+- **Instructor says:** "I love teaching" 
+- **Root cause:** Lack of recognition, no pathway forward
+- **Deep down:** They want to be private jet pilots, cargo captains, eVTOL pioneers — not just instructors
+- **Result:** Stagnant teachers who can't show students "this is where you'll end up"
+
+**Bad Image for Flight Schools:**
+
+| What Students See | What They Think |
+|-------------------|-----------------|
+| Instructor with 15 years experience still teaching | "Is this where I'll be in 15 years?" |
+| Instructor with no industry advancement | "The industry doesn't value experience" |
+| Instructor trapped in flight school bubble | "There's no path forward after graduation" |
+| Batch of 2015 still waiting for instructor slots | "The pipeline is broken" |
+
+**The Transition Program Solution for Flight Schools:**
+
+1. **Instructors Get Recognition & Move On:**
+   - Transition Program gives them Recognition Profile and industry connections
+   - They can finally move to private jet, cargo, eVTOL — their dream sectors
+   - Flight school gets to celebrate their "graduation" to industry
+
+2. **Flight School Replaces with Fresh Talent:**
+   - New instructors bring current industry knowledge
+   - Recent graduates (batch of 2015, 2016, 2017) finally get instructor positions
+   - Unclogs the pipeline that was backed up for 10+ years
+
+3. **Students See a Future:**
+   - "Instructor John just got hired by NetJets!"
+   - "Instructor Sarah moved to cargo operations!"
+   - Students see the pathway works — their training leads somewhere
+
+4. **Pipeline Unconstructs & Flows:**
+   ```
+   BEFORE:                    AFTER:
+   
+   Floor 0: Batch 2015      Floor 0: Batch 2015
+   (still waiting)          ✅ Now instructors!
+   
+   Floor 1: Stuck           Floor 1: Fresh
+   instructors (15 yrs)     instructors (recent grads)
+   
+   Floor 2: Recognition     Floor 2: Recognition
+   Gap                      Bridge (via Transition Program)
+   
+   Floor 3: Senior pilots   Floor 3: Senior pilots
+   (not leaving)            (now have junior instructors
+                            to replace them)
+   ```
+
+**Why Flight Schools Should Mandate Transition Program:**
+
+- **Keeps instructors motivated:** They see a future, not a dead end
+- **Attracts better talent:** New hires know they won't be stuck forever
+- **Improves student outcomes:** Instructors with industry connections (not just flight school bubble)
+- **Solves the 2015 problem:** Finally clears the backlog of graduates waiting for instructor positions
+- **Industry recognition:** "Our instructors become private jet pilots, not just career teachers"
+
+> **For flight schools, the Transition Program is a pipeline unclogger.** It turns stuck instructors into success stories, making room for fresh graduates, and showing new students that their training actually leads somewhere.
+
 ---
 
 **Why Pilots MUST Complete This (Future Alignment):**
