@@ -624,7 +624,7 @@ const EnterpriseAccessPage = () => {
                             View Framework
                         </a>
                         <a 
-                            href="/docs/universal-commercial-framework-expanded.md"
+                            href="https://enterprise.pilotrecognition.com/docs/universal-commercial-framework-expanded.md"
                             className="bg-amber-100 hover:bg-amber-200 border border-amber-300 text-amber-900 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -683,7 +683,7 @@ const EnterpriseAccessPage = () => {
                                     View Framework
                                 </a>
                                 <a 
-                                    href="/docs/universal-commercial-framework-expanded.md"
+                                    href="https://enterprise.pilotrecognition.com/docs/universal-commercial-framework-expanded.md"
                                     className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -691,7 +691,7 @@ const EnterpriseAccessPage = () => {
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
-                                    View Full Framework (MD)
+                                    View Full Framework (90+ pages)
                                 </a>
                             </div>
                         </div>
@@ -1062,7 +1062,7 @@ const EnterpriseAccessPage = () => {
                             View Full Framework Document →
                         </a>
                         <a 
-                            href="/docs/universal-commercial-framework-expanded.md" 
+                            href="https://enterprise.pilotrecognition.com/docs/universal-commercial-framework-expanded.md" 
                             className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold px-6 py-3 rounded-lg transition-colors"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -1070,7 +1070,7 @@ const EnterpriseAccessPage = () => {
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
-                            Download Full Framework (MD)
+                            View Full Framework (90+ pages)
                         </a>
                     </div>
                 </div>
