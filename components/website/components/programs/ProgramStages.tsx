@@ -23,7 +23,7 @@ export const ProgramStages: React.FC = () => {
                 Understanding Your Journey
             </h2>
             <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.7, margin: '0 auto', maxWidth: '42rem', marginBottom: '3rem' }}>
-                The Foundational Program consists of 10 comprehensive stages designed to build your skills progressively. Each stage builds upon the previous, leading to industry recognition and career placement.
+                The Foundational Program consists of 10 comprehensive stages designed to build your skills progressively. Each stage builds upon the previous, leading to industry recognition and pathway discovery.
             </p>
 
             {/* Single Condensed Component */}

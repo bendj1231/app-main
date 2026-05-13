@@ -21,7 +21,7 @@ export const PilotGapModuleChapter2: React.FC<PilotGapModuleChapter2Props> = ({ 
                     The "Solution"
                 </h2>
                 <p style={{ color: '#64748b', fontSize: '1.05rem', maxWidth: '42rem', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
-                    The PilotRecognition approach to bridging the recognition gap—a structured, industry-endorsed framework to transform low-time pilots into verified, placement-ready professionals.
+                    The PilotRecognition approach to bridging the recognition gap—a structured, industry-endorsed framework to transform low-time pilots into verified, recognition-ready professionals.
                 </p>
                 <div style={{ height: '1px', width: '100%', background: 'linear-gradient(to right, transparent, #e2e8f0, transparent)', maxWidth: '56rem', margin: '0 auto' }} />
             </div>

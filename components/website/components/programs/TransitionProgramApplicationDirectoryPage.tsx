@@ -27,7 +27,7 @@ export const TransitionProgramApplicationPage: React.FC<TransitionProgramApplica
             title: "Broker & Operator Links",
             desc: "Direct referrals to private jet brokers and corporate flight departments looking for transition-ready pilots.",
             icon: Users,
-            bullets: ["Network Access", "Direct Messaging", "Career Placement"]
+            bullets: ["Network Access", "Direct Messaging", "Pathway Access"]
         },
         {
             title: "Verified Excellence",
@@ -41,7 +41,7 @@ export const TransitionProgramApplicationPage: React.FC<TransitionProgramApplica
         { title: "Experience Audit", value: "A comprehensive review of your flight hours and training history by our expert panel.", icon: BarChart3 },
         { title: "Skill Analytics", value: "Direct mapping of your competencies against airline-specific entry requirements.", icon: Zap },
         { title: "Profile Optimization", value: "Conversion of your career history into the premium ATLAS CV recognition format.", icon: Globe },
-        { title: "Placement Strategy", value: "Deployment of your profile to our network of partner airlines and jet operators.", icon: Briefcase }
+        { title: "Recognition Strategy", value: "Deployment of your verified profile to our network of partner airlines and jet operators for discovery.", icon: Briefcase }
     ];
 
     return (

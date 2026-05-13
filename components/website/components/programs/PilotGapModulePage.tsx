@@ -472,7 +472,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 </p>
                                 <ul style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, marginTop: 0, marginRight: 0, marginBottom: 0, marginLeft: 0, paddingLeft: '1.5rem', listStyleType: 'disc' }}>
                                     <li style={{ marginBottom: '1rem' }}>
-                                        <strong>The Shortage (High-Timers) —</strong> Experienced pilots are aggressively pursued. They receive sign-on bonuses, immediate placements, and VIP treatment. The highly publicized "global pilot shortage" is localized almost entirely within this specific group.
+                                        <strong>The Shortage (High-Timers) —</strong> Experienced pilots are aggressively pursued. They receive sign-on bonuses, immediate opportunities, and VIP treatment. The highly publicized "global pilot shortage" is localized almost entirely within this specific group.
                                     </li>
                                     <li style={{ marginBottom: '1rem' }}>
                                         <strong>The Purgatory (Low-Timers) —</strong> Despite holding the exact same commercial license, newly graduated pilots are diverted into a "250-hour purgatory." They are met with automated, standardized rejection, told to scan a QR code, and instructed to wait 8-12 months before even being considered.
@@ -1930,7 +1930,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 }}>
                                     <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE EXIT STRATEGY</h4>
                                     <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
-                                        Before you invest a single dollar in flight training, you must have an exit strategy. What happens if you don't get hired? What happens if the industry crashes again? What happens if you discover you don't actually enjoy the lifestyle? Without answers to these questions, you are not investing—you are gambling with your future.
+                                        Before you invest a single dollar in flight training, you must have an exit strategy. What happens if you don't get recognized? What happens if the industry crashes again? What happens if you discover you don't actually enjoy the lifestyle? Without answers to these questions, you are not investing—you are gambling with your future.
                                     </p>
                                 </div>
                             </div>
@@ -2119,7 +2119,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                 }}>
                                     <h4 style={{ color: '#2563eb', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>THE EXIT STRATEGY</h4>
                                     <p style={{ margin: 0, color: '#475569', fontSize: '1.05rem', lineHeight: 1.8 }}>
-                                        Before you invest a single dollar in flight training, you must have an exit strategy. What happens if you don't get hired? What happens if the industry crashes again? What happens if you discover you don't actually enjoy the lifestyle? Without answers to these questions, you are not investing—you are gambling with your future.
+                                        Before you invest a single dollar in flight training, you must have an exit strategy. What happens if you don't get recognized? What happens if the industry crashes again? What happens if you discover you don't actually enjoy the lifestyle? Without answers to these questions, you are not investing—you are gambling with your future.
                                     </p>
                                 </div>
                             </div>
@@ -2818,7 +2818,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     The Endless Hold
                                 </h3>
                                 <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, marginBottom: '3rem' }}>
-                                    The system operates as a closed loop. Pilots graduate into a saturated market and become instructors, relying on teaching new students to build their own required flight hours. This structural paradox forces pilots into a prolonged career holding pattern, dependent on new entrants just to survive the wait for an airline placement.
+                                    The system operates as a closed loop. Pilots graduate into a saturated market and become instructors, relying on teaching new students to build their own required flight hours. This structural paradox forces pilots into a prolonged career holding pattern, dependent on new entrants just to survive the wait for an airline pathway.
                                 </p>
 
                                 <div style={{ textAlign: 'left', marginBottom: '3rem' }}>
@@ -2859,7 +2859,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     The <strong>Pilot Dream Paradox</strong> illustrates the harsh reality of the current training ecosystem. Most flight instructors never set out to teach; they became instructors simply because it was the only readily available way to build the flight hours required by airlines. They entered the system with the exact same dream of flying jets that their new students currently hold.
                                 </p>
                                 <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: 1.8, margin: 0, textAlign: 'left', marginBottom: '3rem' }}>
-                                    To keep the flight schools running and to continue building their own necessary hours, these instructors must sell the same "airline pilot dream" to the next wave of incoming students. This creates a self-sustaining cycle where students become instructors to teach new students, while the queue for actual airline placements grows longer and wait times continually extend. The paradox is that the very system designed to train airline pilots often ends up just training more flight instructors.
+                                    To keep the flight schools running and to continue building their own necessary hours, these instructors must sell the same "airline pilot dream" to the next wave of incoming students. This creates a self-sustaining cycle where students become instructors to teach new students, while the queue for actual airline pathways grows longer and wait times continually extend. The paradox is that the very system designed to train airline pilots often ends up just training more flight instructors.
                                 </p>
                             </div>
 
@@ -3412,7 +3412,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', color: '#475569', fontSize: '17px', lineHeight: 1.75, marginBottom: '2.5rem' }}>
                             <p style={{ margin: 0 }}>
-                                Once you complete the Wingmentor Foundation Program, your journey doesn't end at a certificate — it begins at a credential. Every piece of data collected across your program is systematically captured by the <strong>Pilot Recognition System</strong>, then translated into the globally standardised <strong>ATLAS CV Format</strong>: the aviation industry's recognised portfolio structure for low-timer pilots seeking airline placement.
+                                Once you complete the Wingmentor Foundation Program, your journey doesn't end at a certificate — it begins at a credential. Every piece of data collected across your program is systematically captured by the <strong>Pilot Recognition System</strong>, then translated into the globally standardised <strong>ATLAS CV Format</strong>: the aviation industry's recognised portfolio structure for low-timer pilots seeking airline pathway.
                             </p>
                             <div style={{ padding: '1.5rem', backgroundColor: '#eff6ff', borderRadius: '12px', borderLeft: '4px solid #3b82f6' }}>
                                 <p style={{ margin: 0, fontSize: '0.95rem', color: '#1e3a8a', fontWeight: 500 }}>
@@ -4898,7 +4898,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                             {
                                 stage: 7,
                                 title: 'The Foundation Capstone (50-Hour Milestone) & AIRBUS Interview',
-                                description: 'The final integration phase involves extending your professional logging to the 50-hour milestone, demonstrating sustained leadership and consistency. The program culminates in the formal AIRBUS Recognition Interview. This comprehensive evaluation verifies your leadership qualities, technical command, and total readiness for airline placement.',
+                                description: 'The final integration phase involves extending your professional logging to the 50-hour milestone, demonstrating sustained leadership and consistency. The program culminates in the formal AIRBUS Recognition Interview. This comprehensive evaluation verifies your leadership qualities, technical command, and total readiness for airline pathway.',
                                 objectives: [
                                     'Document 50 verifiable hours of active, high-impact peer mentorship.',
                                     'Demonstrate sustained situational leadership and problem-solving.',
