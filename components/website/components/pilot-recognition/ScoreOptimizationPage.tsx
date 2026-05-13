@@ -141,7 +141,7 @@ export const ScoreOptimizationPage: React.FC<ScoreOptimizationPageProps> = ({
                             maxWidth: '700px'
                         }}>
                             Personalized recommendations to improve your pilot recognition score. 
-                            Follow these actionable tips to increase your score and enhance your career prospects.
+                            Follow these actionable tips to increase your score and enhance your recognition prospects.
                         </p>
                     </div>
                 </header>

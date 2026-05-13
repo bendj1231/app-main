@@ -295,7 +295,7 @@ export const VeremarkVerifiedBadge: React.FC<VeremarkVerifiedBadgeProps> = ({
               </div>
               <p className="text-xs text-slate-400">
                 {isVerified
-                  ? `Verified on ${verificationDate?.toLocaleDateString() || 'N/A'}${isPreCleared ? ' — Fast-track hiring enabled' : ''}`
+                  ? `Verified on ${verificationDate?.toLocaleDateString() || 'N/A'}${isPreCleared ? ' — Fast-track recognition enabled' : ''}`
                   : 'Complete verification to unlock priority listing and pre-cleared status'
                 }
               </p>

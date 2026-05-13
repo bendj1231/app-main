@@ -1,7 +1,7 @@
 /**
- * CareerPathwayPriority Component
+ * PathwayPriority Component
  * 
- * Premium Career Pathway Features for Recognition+ members:
+ * Premium Pathway Features for Recognition+ members:
  * - Interest-based pathway matching
  * - Priority listings for airline cadet programs
  * - Customized training stack recommendations
@@ -59,7 +59,7 @@ interface PathwayOption {
   color: string;
 }
 
-interface CareerPathwayPriorityProps {
+interface PathwayPriorityProps {
   selectedInterests?: PathwayType[];
   currentHours?: number;
   currentRatings?: string[];
@@ -68,7 +68,7 @@ interface CareerPathwayPriorityProps {
   onViewTraining?: (trainingId: string) => void;
 }
 
-export const CareerPathwayPriority: React.FC<CareerPathwayPriorityProps> = ({
+export const PathwayPriority: React.FC<PathwayPriorityProps> = ({
   selectedInterests = [],
   currentHours = 0,
   currentRatings = [],
@@ -107,7 +107,7 @@ export const CareerPathwayPriority: React.FC<CareerPathwayPriorityProps> = ({
     {
       id: 'flight_instruction',
       label: 'Flight Instruction',
-      description: 'CFI, CFII, MEI career path',
+      description: 'CFI, CFII, MEI pathway',
       icon: <GraduationCap className="w-5 h-5" />,
       programs: ['ATP Flight School', 'FlightSafety International'],
       color: 'from-emerald-500 to-emerald-700',
@@ -134,7 +134,7 @@ export const CareerPathwayPriority: React.FC<CareerPathwayPriorityProps> = ({
     {
       id: 'ppl',
       title: 'Private Pilot License (PPL)',
-      description: 'Foundation of your aviation career',
+      description: 'Foundation of your aviation recognition',
       status: currentHours >= 40 ? 'completed' : currentHours > 0 ? 'in_progress' : 'pending',
       requiredHours: 40,
     },
@@ -278,7 +278,7 @@ export const CareerPathwayPriority: React.FC<CareerPathwayPriorityProps> = ({
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-bold text-white">Career Pathway Priority</h3>
+              <h3 className="font-bold text-white">Pathway Priority</h3>
               <p className="text-xs text-slate-400">
                 {localInterests.length > 0 
                   ? `${localInterests.length} pathway${localInterests.length > 1 ? 's' : ''} selected`
@@ -321,7 +321,7 @@ export const CareerPathwayPriority: React.FC<CareerPathwayPriorityProps> = ({
         {activeTab === 'interests' && (
           <div className="space-y-3">
             <p className="text-xs text-slate-500 mb-3">
-              Select your career interests to receive priority listings for specific programs:
+              Select your pathway interests to receive priority listings for specific programs:
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -460,7 +460,7 @@ export const CareerPathwayPriority: React.FC<CareerPathwayPriorityProps> = ({
         {activeTab === 'training' && (
           <div className="space-y-3">
             <p className="text-xs text-slate-500 mb-3">
-              Recommended training resources based on your career pathway:
+              Recommended training resources based on your pathway:
             </p>
 
             <div className="space-y-2">
@@ -524,4 +524,4 @@ export const CareerPathwayPriority: React.FC<CareerPathwayPriorityProps> = ({
   );
 };
 
-export default CareerPathwayPriority;
+export default PathwayPriority;

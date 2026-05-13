@@ -9,7 +9,7 @@ import { RecognitionScoreDisplay } from '../../../RecognitionScoreDisplay';
 import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
 import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
 import { VeremarkVerifiedBadge } from './VeremarkVerifiedBadge';
-import { CareerPathwayPriority } from './CareerPathwayPriority';
+import { PathwayPriority } from './CareerPathwayPriority';
 import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
 import { MeshGradient } from '@paper-design/shaders-react';
@@ -1526,8 +1526,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         }}
                                     />
 
-                                    {/* Career Pathway Priority */}
-                                    <CareerPathwayPriority
+                                    {/* Pathway Priority */}
+                                    <PathwayPriority
                                         selectedInterests={profileData?.pathway_interests || []}
                                         currentHours={profileData?.total_hours || 0}
                                         currentRatings={profileData?.ratings || []}
