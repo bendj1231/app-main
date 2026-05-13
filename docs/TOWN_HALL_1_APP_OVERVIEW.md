@@ -137,6 +137,64 @@ Current flight training is transactional: hours logged, exams passed, certificat
 - **Peer cohort:** Learning alongside other pilots on the same journey
 - **Mentor network access:** Industry connections that persist after program completion
 
+**What Makes an Industry: Bringing Everyone Together**
+
+> **Our goal is to bring everyone together to work and improve the aviation industry.**
+
+**The Transition Program isn't just training — it's industry unification:**
+
+- **Pilots** learn what they actually face (not theoretical, but real operator expectations)
+- **Flight Schools** understand what operators need (closing the training-to-employment gap)
+- **Operators** communicate requirements clearly (no more "competitive" or vague postings)
+- **Manufacturers** (Airbus, Boeing) align training with their frameworks
+- **eVTOL & Future Aviation** prepare the next generation of pilots
+- **Cargo, Private Jet, Military** all contribute to a unified competency standard
+
+**The Transition Program: Know What You Face**
+
+> **The Transition Program prepares pilots to know what they actually face in the aviation industry.**
+
+**Reality vs. Theory:**
+
+| Flight School Teaches | Industry Actually Wants | Transition Program Bridges |
+|-----------------------|------------------------|---------------------------|
+| Stick-and-rudder skills | 9 core competencies | EBT-aligned assessment |
+| Hours logged | Behavioral patterns | Video scoring & analysis |
+| Checkrides passed | Simulator performance | Assessment preparation |
+| "Get 1500 hours" | Specific operator pathways | Gap analysis & targeting |
+| Generic resume advice | ATS-optimized CVs | ATLAS formatting |
+| Hope and luck | Verified Recognition Profile | Industry-ready portfolio |
+
+**Industry Collaboration Model:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│           AVIATION INDUSTRY UNIFICATION                 │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│   Flight Schools ───────┐                               │
+│   (input pilots)       │                               │
+│                        ▼                               │
+│   ┌─────────────────────────────────────┐              │
+│   │   TRANSITION PROGRAM                │              │
+│   │   • Real operator requirements        │              │
+│   │   • EBT/CBTA alignment              │              │
+│   │   • Cross-sector readiness          │              │
+│   └─────────────────────────────────────┘              │
+│                        │                               │
+│   Manufacturers ───────┼──────── Operators ────────┐    │
+│   (Airbus, Boeing)     │       (all sectors)      │    │
+│                        ▼                          ▼    │
+│              ┌──────────────────┐              ┌──────┐  │
+│              │ Industry-Ready │──────────────► Hired │  │
+│              │ Pilots           │              │ Pilots│  │
+│              └──────────────────┘              └──────┘  │
+│                                                         │
+│   Result: Everyone works together → Industry improves   │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
 **Why Pilots MUST Complete This (Future Alignment):**
 
 > **The industry is shifting from CBTA to new EBT standards. Pilots who don't complete this program will be left behind as the industry standard evolves.**
