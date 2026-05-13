@@ -1453,6 +1453,69 @@ A structured, maintained profile replacing uncoordinated job posts. All fields t
 - Beta test "Day One Recognition" enrollment (automatic platform onboarding)
 - Industry conference co-presentation on training innovation
 
+### Programs: Extra-Curricular Pilot Development
+
+**The Missing Emotional Recognition:**
+
+> *"If a pilot graduates with a degree and shakes the hand of the person giving him the degree without any pride, empathy, or simply recognition in his efforts — that's a problem we need to address towards flight schools as well."*
+
+Current flight school graduation is transactional: hours logged, exams passed, certificate handed over. There's no emotional validation of the journey, no recognition of the personal transformation, no pride in the accomplishment beyond the paper credential.
+
+**Programs as Extra-Curricular Activities:**
+
+PilotRecognition Programs are designed for **both individual pilots AND flight school campuses** as value-added extra-curricular offerings:
+
+| Program | For Individual Pilots | For Flight School Campuses |
+|---------|----------------------|---------------------------|
+| **Foundation Program** | $49 self-enrollment | Bulk campus licenses for graduating classes |
+| **Transition Program** | $299 self-enrollment | Integrated into final semester curriculum |
+| **EBT Video Scoring** | Bundled with Transition | Campus assessment center partnership |
+
+**Flight School Campus Integration:**
+
+- **Extra-Curricular Enrollment:** Programs offered alongside standard flight training (not replacing it)
+- **Campus Partnership Pricing:** Volume discounts for bulk student enrollment
+- **Graduation Requirement Option:** Schools can mandate Foundation Program completion before graduation
+- **Recognition Ceremony Integration:** EBT video assessment can replace or supplement traditional checkrides
+
+**What Programs Add to Flight School Education:**
+
+1. **Professional Identity Development:**
+   - How pilots portray themselves to employers
+   - Communication skills and professional presence
+   - "Pilot mindset" beyond stick-and-rudder skills
+
+2. **Emotional Intelligence & Recognition:**
+   - Validation of the 200+ hour journey
+   - Peer mentorship from program graduates
+   - Sense of accomplishment beyond the license
+
+3. **Industry Alignment:**
+   - EBT/CBTA competency frameworks (what airlines actually use)
+   - ATLAS Aviation CV formatting (what ATS systems parse)
+   - Interview preparation specific to operator types
+
+4. **Verified Competency Portfolio:**
+   - 50-hour mentorship tracking (logged and attested)
+   - Behavioral assessment scores (cognitive/constructivism)
+   - Digital credentials that travel with the pilot
+
+**The "Day One Recognition" Vision:**
+
+Imagine graduation day where the handshake comes with:
+- A verified Recognition Profile (not just a license)
+- A Recognition Score showing readiness (not just hours)
+- A portfolio of competencies airlines can see (not just a resume)
+- Connection to pathways and operators (not just "good luck finding a job")
+
+**Campus Partnership Benefits:**
+
+- **Differentiation:** "We don't just train pilots — we prepare professionals"
+- **Placement Rates:** Programs align with airline requirements = better outcomes
+- **Revenue Stream:** Campus licenses + referral fees for platform sign-ups
+- **Student Retention:** Extra-curricular engagement keeps students connected
+- **Industry Recognition:** Partner schools listed as "Recognition-Ready Training Providers"
+
 ### Benefits:
 
 - **Market Differentiation:** Definitive proof of ROI vs. predatory competitors

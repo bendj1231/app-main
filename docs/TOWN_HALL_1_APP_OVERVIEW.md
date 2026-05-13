@@ -68,29 +68,43 @@ Enterprise Access → Post Pathway Requirements → Pull Verified Profiles
 
 ### 3. Programs (Education Layer)
 
-Pilots build competency through structured programs that feed into their Recognition Score.
+**Programs serve BOTH individual pilots AND flight school campuses** as extra-curricular professional development activities.
 
-**Foundation Program ($49)**
-- 20 hours guided mentorship
-- 5 EBT CBTA-aligned modules
-- W1000 application access
-- Pilot Profile building
-- 50 verifiable mentorship hours milestone
-- Recognition Score boost on completion
+> *"If a pilot graduates with a degree and shakes the hand of the person giving him the degree without any pride, empathy, or simply recognition in his efforts — that's a problem we address through flight school campus partnerships."*
 
-**Transition Program ($299)**
-- 9 core competencies assessment
-- ATLAS CV optimization
-- Airline interview preparation
-- Type rating preparation
-- EBT video scoring (bundled)
-- 50% discount for Foundation graduates ($149 effective)
+Current flight training is transactional: hours logged, exams passed, certificate handed over. Programs add the **emotional validation** and **professional identity development** that's missing.
 
-**EBT Video Scoring**
-- Recorded interview after 50-hour mentorship
-- Behavioral assessment (cognitive/constructivism)
-- Airlines can view verified interview
-- Proprietary IP for platform differentiation
+**For Individual Pilots:**
+
+| Program | Price | What They Get |
+|---------|-------|---------------|
+| **Foundation Program** | $49 | 20-hour mentorship, 5 EBT modules, W1000 access, Recognition Score boost |
+| **Transition Program** | $299 | 9 competencies assessment, ATLAS CV, interview prep, EBT scoring |
+| **EBT Video Scoring** | Bundled | Recorded behavioral assessment airlines can view |
+
+**For Flight School Campuses:**
+
+| Integration Model | Description |
+|-------------------|-------------|
+| **Extra-Curricular Offering** | Programs offered alongside standard flight training (not replacing it) |
+| **Campus Partnership Pricing** | Volume discounts for bulk student enrollment |
+| **Graduation Requirement** | Schools can mandate Foundation Program completion |
+| **Recognition Ceremony** | EBT assessment replaces/supplements traditional checkrides |
+
+**What Programs Add Beyond Flight Training:**
+
+1. **Professional Identity** — How pilots portray themselves to employers
+2. **Emotional Intelligence** — Validation of the journey, peer mentorship
+3. **Industry Alignment** — EBT/CBTA frameworks, ATLAS CV formatting
+4. **Verified Portfolio** — 50-hour mentorship tracking, behavioral scores
+
+**The "Day One Recognition" Vision:**
+
+Graduation day where the handshake comes with:
+- Verified Recognition Profile (not just a license)
+- Recognition Score showing readiness (not just hours)
+- Competency portfolio airlines can see (not just a resume)
+- Direct pathway connections (not just "good luck")
 
 ---
 
