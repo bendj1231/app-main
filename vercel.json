@@ -14,6 +14,10 @@
       "destination": "/sitemap.xml"
     },
     {
+      "source": "/sitemap-style.xsl",
+      "destination": "/sitemap-style.xsl"
+    },
+    {
       "source": "/robots.txt",
       "destination": "/robots.txt"
     },
