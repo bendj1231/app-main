@@ -407,7 +407,7 @@ const HeroCarousel = () => {
 
     const item = CAROUSEL_ITEMS[activeIdx];
     return (
-        <div className="mb-8 max-w-[420px]">
+        <div className="mb-8 max-w-[520px]">
             {/* Step pills */}
             <div className="flex gap-2 mb-3">
                 {CAROUSEL_ITEMS.map((c, i) => (
@@ -429,7 +429,7 @@ const HeroCarousel = () => {
             <div className="flex items-center gap-3">
                 <div className="flex-1 bg-white border-2 border-slate-900 rounded-2xl px-5 py-4 shadow-sm">
                     <p className="text-[10px] uppercase tracking-widest text-red-600 font-bold mb-1.5">{`Feature ${String(activeIdx + 1).padStart(2, '0')}`}</p>
-                    <p className="text-base font-bold text-slate-900 mb-1">{item.label}</p>
+                    <p className="text-xl font-bold text-slate-900 mb-2">{item.label}</p>
                     <p className="text-sm text-slate-500 leading-snug mb-4">{item.desc}</p>
                     <button
                         onClick={() => { const el = document.getElementById('contact'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 100; window.scrollTo({ top, behavior: 'smooth' }); } }}
@@ -736,9 +736,6 @@ const EnterpriseAccessPage = () => {
                         </h1>
                         {/* Carousel descriptor */}
                         <HeroCarousel />
-                        <p className="text-slate-400 text-xs mt-2">
-                            Not a job board — a Recognition & Information Platform. No hiring promises. Just verified discovery.
-                        </p>
                     </div>
 
                     {/* RIGHT — image flush right, fades into white on left */}
