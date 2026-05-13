@@ -200,9 +200,20 @@ const generateId = (text: string) => {
 export default function FullFrameworkPage() {
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [tocItems, setTocItems] = useState<Array<{level: number; text: string; id: string}>>([]);
   const contentRef = useRef<HTMLDivElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Error boundary for render errors
+  useEffect(() => {
+    const handleError = (e: ErrorEvent) => {
+      console.error('Framework Full Page Error:', e.error);
+      setError(e.error?.message || 'Unknown error');
+    };
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
 
   useEffect(() => {
     fetch('/docs/universal-commercial-framework-expanded.md')
@@ -232,8 +243,10 @@ export default function FullFrameworkPage() {
         setTocItems(items);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error('Failed to load framework document:', err);
         setContent('# Error loading document');
+        setError(err.message || 'Failed to load document');
         setLoading(false);
       });
   }, []);
@@ -607,6 +620,26 @@ export default function FullFrameworkPage() {
       })
       .filter(Boolean);
   };
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center p-8">
+        <div className="text-center max-w-md">
+          <div className="text-red-600 text-5xl mb-4">⚠️</div>
+          <h1 className="text-xl font-bold text-slate-900 mb-4">Error Loading Framework</h1>
+          <p className="text-red-600 font-mono text-sm mb-4 bg-red-50 p-3 rounded">{error}</p>
+          <p className="text-slate-600 mb-6">Check browser console for details</p>
+          <a 
+            href="/framework" 
+            className="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            Back to Framework Summary
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
