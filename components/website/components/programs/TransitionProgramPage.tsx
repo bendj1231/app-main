@@ -115,7 +115,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                             What Airlines Look For (It's Not Just Hours)
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Yes, you need 1,500 hours to apply to most airlines. But what are they <em>really</em> evaluating when they review your application and assess you during training? Industry data shows a clear pattern: <strong>it's about competency, not just time logged</strong>.
+                            Yes, you need 1,500 hours to be considered by most airlines. But what are they <em>really</em> evaluating when they review your profile and assess competencies? Industry data shows a clear pattern: <strong>it's about competency, not just time logged</strong>.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
                             Airlines want pilots who demonstrate mastery of the <strong>9 core competencies</strong> defined by ICAO and adopted by EBT/CBTA frameworks worldwide. These competencies are what separate a pilot with 1,500 hours of pattern work from one with 1,500 hours of meaningful, competency-building experience.

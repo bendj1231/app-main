@@ -294,7 +294,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             <div className="text-slate-700 space-y-1">
                                 <p>Operator requirements verified by our pilot community and operator-submitted data.</p>
                                 <p>Requirements updated as operators publish changes. No more stale information.</p>
-                                <p>Apply to the right requirements. Get feedback on why you match or don't.</p>
+                                <p>Align with the right requirements. Get feedback on why you match or don't.</p>
                             </div>
                         </div>
 
