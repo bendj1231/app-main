@@ -82,6 +82,61 @@ Current flight training is transactional: hours logged, exams passed, certificat
 | **Transition Program** | $299 | **🚧 WIP — Collaboration with all 25 pillars** — 9 competencies assessment, ATLAS CV, interview prep, EBT scoring — *Coming soon once all partners established* |
 | **EBT Video Scoring** | Bundled | Recorded behavioral assessment all operators can view (airlines, cargo, private jet, eVTOL, etc.) |
 
+**What Pilots Actually Learn (The Curriculum):**
+
+**1. Airbus HINFACT & EBT/CBTA Integration** 🎯
+- **Exclusive insight** into Airbus HINFACT competency framework applications
+- Learn the **9 core competencies** airlines actually assess (not just theoretical)
+- **Mandatory preparation** for the industry shift from CBTA to new EBT standards
+- **Future-proofing:** As airlines transition to Evidence-Based Training, pilots who complete this program will be ahead of the curve
+- **Crowd driver:** Airbus partnership creates immediate credibility and draws pilots seeking manufacturer-aligned training
+
+**2. Boeing Partnership & Multi-Manufacturer Readiness** ✈️
+- Boeing-specific competency frameworks (not just Airbus)
+- Cross-manufacturer adaptability — pilots learn to operate across different OEM philosophies
+- **Dual-certification value:** Understanding both major manufacturers' assessment criteria
+- Industry recognition from both Airbus AND Boeing alignment
+
+**3. eVTOL & Future Aviation Discovery Segment** 🚁
+- **The Future of Aviation module:** Urban air mobility, electric aircraft, autonomous flight
+- Where pilots fit in the **eVTOL revolution** — skills transfer, new opportunities, timeline predictions
+- **Air Taxi sector preparation:** Understanding the emerging market and operator requirements
+- **Career diversification:** How to pivot from traditional aviation to future sectors
+- **Market intelligence:** Which eVTOL operators are hiring, what they want, when they'll scale
+
+**4. W1000 Application & ATLAS CV** 📄
+- Wizz Air W1000 cadet program application preparation
+- **ATLAS Aviation CV formatting** — what ATS systems at major airlines actually parse
+- Resume optimization for automated screening (95% of airlines use ATS)
+- **Cover letter frameworks** that get past filters
+
+**5. Interview Mastery & Assessment Preparation** 🎤
+- **Competency-based interview training** (the 9 core competencies in practice)
+- Group exercise preparation (how airlines assess teamwork)
+- Simulator assessment briefings (what to expect, how to perform)
+- **Psychometric test preparation** — practice assessments and strategies
+
+**6. Type Rating Strategy & Pathway Optimization** 🛫
+- Which type ratings open which doors
+- **Cost-benefit analysis:** A320 vs B737 vs regional jets
+- **Operator demand mapping:** Who's hiring what, where, when
+- Self-funded type rating ROI calculations
+
+**7. 50-Hour Mentorship Program** 👨‍✈️
+- **Guided mentorship** from industry professionals (not just instructors)
+- 50 hours of structured guidance with certification
+- **Peer cohort:** Learning alongside other pilots on the same journey
+- **Mentor network access:** Industry connections that persist after program completion
+
+**Why Pilots MUST Complete This (Future Alignment):**
+
+> **The industry is shifting from CBTA to new EBT standards. Pilots who don't complete this program will be left behind as the industry standard evolves.**
+
+- **EBT is becoming mandatory** across EASA, FAA, and CAAP jurisdictions
+- **Airlines will expect EBT-aligned competency profiles** by 2027
+- **Early adopters gain advantage:** First-mover benefit in recognition scoring
+- **Manufacturers are pushing this:** Airbus and Boeing want pilots pre-trained in their frameworks
+
 **For Flight School Campuses:**
 
 | Integration Model | Description |
