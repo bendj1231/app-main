@@ -747,15 +747,15 @@ const EnterpriseAccessPage = () => {
             <section id="pillars" className="py-20 px-6 bg-slate-50 border-b border-slate-200">
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-12">
-                        <span className="text-xs uppercase tracking-widest text-red-600 font-semibold">25 Strategic Pillars · 7 Stakeholder Hubs</span>
+                        <span className="text-xs uppercase tracking-widest text-red-600 font-semibold">25 Strategic Pillars · 7 Stakeholder Sectors</span>
                         <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-3">Every Aviation Stakeholder. One Platform.</h2>
-                        <p className="text-slate-500 max-w-2xl">Grouped by stakeholder hub — click any pillar to explore its requirements, contributions, and commercial value.</p>
+                        <p className="text-slate-500 max-w-2xl">Grouped by stakeholder sector — click any pillar to explore its requirements, contributions, and commercial value.</p>
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {[
                             {
-                                hub: 'Hub A', label: 'Operations & Recruitment',
+                                hub: 'Sector A', label: 'Operations & Recruitment',
                                 pillars: [
                                     { n: 1, name: 'Commercial Airlines' },
                                     { n: 2, name: 'Cargo & Freight Operators' },
@@ -764,7 +764,7 @@ const EnterpriseAccessPage = () => {
                                 ]
                             },
                             {
-                                hub: 'Hub B', label: 'Training & Transition',
+                                hub: 'Sector B', label: 'Training & Transition',
                                 pillars: [
                                     { n: 5, name: 'Flight Training ATOs' },
                                     { n: 6, name: 'Type Rating Centers' },
@@ -772,7 +772,7 @@ const EnterpriseAccessPage = () => {
                                 ]
                             },
                             {
-                                hub: 'Hub C', label: 'Capital, Risk & Compliance',
+                                hub: 'Sector C', label: 'Capital, Risk & Compliance',
                                 pillars: [
                                     { n: 8, name: 'Banking & Finance' },
                                     { n: 9, name: 'Aviation Insurance' },
@@ -783,7 +783,7 @@ const EnterpriseAccessPage = () => {
                                 ]
                             },
                             {
-                                hub: 'Hub D', label: 'Connection & Media',
+                                hub: 'Sector D', label: 'Connection & Media',
                                 pillars: [
                                     { n: 14, name: 'Pilot Mentors & Unions' },
                                     { n: 15, name: 'Aircraft Manufacturers' },
@@ -794,20 +794,20 @@ const EnterpriseAccessPage = () => {
                                 ]
                             },
                             {
-                                hub: 'Hub E', label: 'Governance & Policy',
+                                hub: 'Sector E', label: 'Governance & Policy',
                                 pillars: [
                                     { n: 20, name: 'Government Authorities' },
                                     { n: 22, name: 'International Organisations' },
                                 ]
                             },
                             {
-                                hub: 'Hub E-A', label: 'Humanitarian & Mission',
+                                hub: 'Sector E-A', label: 'Humanitarian & Mission',
                                 pillars: [
                                     { n: 21, name: 'Humanitarian Missions' },
                                 ]
                             },
                             {
-                                hub: 'Hub G', label: 'Digital Discovery',
+                                hub: 'Sector G', label: 'Digital Discovery',
                                 pillars: [
                                     { n: 23, name: 'Search & Discovery Platforms' },
                                     { n: 24, name: 'Aviation Events' },
