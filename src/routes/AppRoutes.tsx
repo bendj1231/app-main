@@ -114,6 +114,7 @@ const StorePage = lazy(() => import('@/app/store/page'));
 const FrameworkPage = lazy(() => import('@/app/framework/page'));
 const FrameworkFullPage = lazy(() => import('@/app/framework/full/page'));
 const UCFPage = lazy(() => import('@/app/ucf/page'));
+const UCFOfficialReleasePage = lazy(() => import('@/app/ucf/official-release/page'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -340,6 +341,7 @@ export const AppRoutes = () => {
       <Route path="/framework/full" element={<ExternalRedirect to="https://enterprise.pilotrecognition.com/framework/full" />} />
       <Route path="/framework/full-local" element={<FrameworkFullPage />} />
       <Route path="/ucf" element={<UCFPage />} />
+      <Route path="/ucf/official-release" element={<UCFOfficialReleasePage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
