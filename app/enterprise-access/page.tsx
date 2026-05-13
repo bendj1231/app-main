@@ -648,60 +648,59 @@ const EnterpriseAccessPage = () => {
             </header>
 
             {/* ─── HERO ─── */}
-            <section id="home" className="relative bg-slate-950 overflow-hidden border-b border-slate-800">
-                {/* Split layout: text left half, image right half */}
-                <div className="flex min-h-[520px]">
+            <section id="home" className="relative bg-white overflow-hidden border-b border-slate-200">
+                {/* Split layout */}
+                <div className="flex min-h-[540px]">
 
-                    {/* LEFT — text, flush to screen edge */}
+                    {/* LEFT — text flush to screen edge */}
                     <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-center pl-6 md:pl-12 lg:pl-16 pr-8 py-20">
-                        <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-900/30 border border-red-800/50 text-red-400 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest w-fit">
+                        <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest w-fit">
                             Enterprise · Global Aviation Network
                         </span>
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.0] mb-6 text-white">
+                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.0] mb-6 text-slate-900">
                             Connecting Pilots<br />
-                            <span className="text-red-500">to the Industry.</span>
+                            <span className="text-red-600">to the Industry.</span>
                         </h1>
-                        <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-md">
+                        <p className="text-slate-500 text-lg mb-8 leading-relaxed max-w-md">
                             Live pilot profiles. Background-verified. Recognition scored. The infrastructure that connects verified pilots with pathway information from airlines, operators, insurers, lenders, ATOs, and manufacturers.
                         </p>
                         <div className="flex flex-wrap gap-3 mb-6">
                             <button onClick={() => scrollTo('pillars')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-7 py-3.5 rounded-xl transition-colors">
                                 Explore 25 Pillars
                             </button>
-                            <button onClick={() => scrollTo('contact')} className="text-white border border-white/20 hover:bg-white/10 font-semibold px-7 py-3.5 rounded-xl transition-colors">
+                            <button onClick={() => scrollTo('contact')} className="text-slate-900 border border-slate-300 hover:bg-slate-50 font-semibold px-7 py-3.5 rounded-xl transition-colors">
                                 Request Access
                             </button>
                         </div>
-                        <p className="text-slate-600 text-xs">
+                        <p className="text-slate-400 text-xs">
                             Not a job board — a Recognition & Information Platform. No hiring promises. Just verified discovery.
                         </p>
                     </div>
 
-                    {/* RIGHT — image, no blue tint, just a clean left-edge fade to dark */}
-                    <div className="hidden lg:block relative w-1/2 flex-shrink-0">
+                    {/* RIGHT — image flush right, fades into white on left */}
+                    <div className="hidden lg:flex relative w-1/2 flex-shrink-0 overflow-hidden">
                         <img
                             src="/recognition-unlock.png"
-                            alt=""
+                            alt="Pilot Recognition Platform"
                             className="w-full h-full object-cover object-left"
-                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                         />
-                        {/* Only a subtle left fade to blend with text side — no colour tint */}
-                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #020617 0%, rgba(2,6,23,0.5) 20%, transparent 50%)' }} />
+                        {/* Fade left edge to white */}
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0.6) 20%, transparent 55%)' }} />
                     </div>
                 </div>
 
                 {/* Feature strip */}
-                <div className="grid grid-cols-2 md:grid-cols-4 border-t border-slate-800">
+                <div className="grid grid-cols-2 md:grid-cols-4 border-t border-slate-200">
                     {[
                         { label: 'Background Verification', sub: 'Pilots are screened before listing' },
                         { label: 'Live Profile API', sub: 'Pull real-time pilot data' },
                         { label: 'Airline Pathway Cards', sub: 'Requirements, not job ads' },
                         { label: 'Recognition Score', sub: 'Ranked readiness currency' },
                     ].map((f, i) => (
-                        <div key={f.label} className={`pl-6 md:pl-12 lg:pl-16 pr-6 py-5 border-slate-800 ${i < 3 ? 'border-r' : ''}`}>
+                        <div key={f.label} className={`pl-6 md:pl-12 lg:pl-16 pr-6 py-5 border-slate-200 ${i < 3 ? 'border-r' : ''}`}>
                             <div className="w-1.5 h-1.5 bg-red-500 rounded-full mb-3" />
-                            <p className="text-sm font-semibold text-white mb-1">{f.label}</p>
-                            <p className="text-xs text-slate-500">{f.sub}</p>
+                            <p className="text-sm font-semibold text-slate-800 mb-1">{f.label}</p>
+                            <p className="text-xs text-slate-400">{f.sub}</p>
                         </div>
                     ))}
                 </div>
