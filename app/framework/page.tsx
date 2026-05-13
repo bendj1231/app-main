@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 // 25 Pillars with neutral stakeholder mapping
@@ -33,19 +33,6 @@ const pillars = [
 ];
 
 export default function FrameworkPage() {
-  // Handle scroll-to-anchor on page load
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      const element = document.querySelector(hash);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-      }
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -58,9 +45,7 @@ export default function FrameworkPage() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-6 py-12 flex gap-8">
-        {/* Main Content */}
-        <article className="flex-1 max-w-4xl">
+      <article className="max-w-4xl mx-auto px-6 py-12">
         {/* Header */}
         <header className="text-center mb-12 pb-8 border-b-2 border-slate-900">
           <p className="text-sm text-slate-500 font-semibold mb-2 tracking-wider">FOR ENTERPRISE & PARTNERS</p>
@@ -86,7 +71,7 @@ export default function FrameworkPage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             {pillars.map((pillar) => (
-              <div key={pillar.num} id={`pillar-${pillar.num}`} className="bg-white p-5 rounded-xl border border-slate-200 hover:border-red-300 hover:shadow-md transition-all scroll-mt-24">
+              <div key={pillar.num} className="bg-white p-5 rounded-xl border border-slate-200 hover:border-red-300 hover:shadow-md transition-all">
                 <div className="flex items-start gap-3">
                   <span className="w-10 h-10 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">
                     {pillar.num}
@@ -238,55 +223,6 @@ export default function FrameworkPage() {
           </a>
         </div>
       </article>
-
-        {/* Sidebar Navigation */}
-        <aside className="hidden lg:block w-64 flex-shrink-0">
-          <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto">
-            <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-              <h3 className="font-semibold text-slate-900 mb-3 text-sm">Jump to Pillar</h3>
-              <nav className="space-y-1">
-                {pillars.slice(0, 12).map((pillar) => (
-                  <a
-                    key={pillar.num}
-                    href={`#pillar-${pillar.num}`}
-                    className="flex items-center gap-2 px-2 py-1.5 text-xs text-slate-600 hover:text-red-600 hover:bg-white rounded transition-colors"
-                  >
-                    <span className="w-5 h-5 bg-slate-200 text-slate-700 rounded flex items-center justify-center font-bold text-[10px]">
-                      {pillar.num}
-                    </span>
-                    <span className="truncate">{pillar.name}</span>
-                  </a>
-                ))}
-              </nav>
-              <div className="border-t border-slate-200 my-2"></div>
-              <nav className="space-y-1">
-                {pillars.slice(12, 25).map((pillar) => (
-                  <a
-                    key={pillar.num}
-                    href={`#pillar-${pillar.num}`}
-                    className="flex items-center gap-2 px-2 py-1.5 text-xs text-slate-600 hover:text-red-600 hover:bg-white rounded transition-colors"
-                  >
-                    <span className="w-5 h-5 bg-slate-200 text-slate-700 rounded flex items-center justify-center font-bold text-[10px]">
-                      {pillar.num}
-                    </span>
-                    <span className="truncate">{pillar.name}</span>
-                  </a>
-                ))}
-              </nav>
-            </div>
-            
-            <div className="mt-4 bg-red-50 rounded-xl p-4 border border-red-200">
-              <p className="text-xs text-red-700 font-medium mb-2">Enterprise Partner?</p>
-              <a
-                href="/enterprise-access"
-                className="text-xs text-red-600 hover:text-red-800 font-semibold inline-flex items-center gap-1"
-              >
-                View Solutions →
-              </a>
-            </div>
-          </div>
-        </aside>
-      </div>
     </div>
   );
 }

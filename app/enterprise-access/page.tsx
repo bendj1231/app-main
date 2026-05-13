@@ -13,14 +13,12 @@ const NAV_GROUPS = [
     {
         label: 'Solutions',
         items: [
-            { id: 'airlines', label: 'Airlines & Operators' },
+            { id: 'airlines', label: 'Airlines & Operators', href: '/enterprise-access/airlines' },
             { id: 'flightschools', label: 'Flight Schools & ATOs' },
             { id: 'privatejet', label: 'Private Jet & Charter' },
             { id: 'evtol', label: 'Air Taxi & eVTOL' },
             { id: 'military', label: 'Military & Defence' },
             { id: 'manufacturers', label: 'Manufacturers & OEMs' },
-            { id: 'cargo', label: 'Cargo & Freight Operators' },
-            { id: 'recruitment', label: 'Recruitment Agencies' },
         ],
     },
     {
@@ -42,8 +40,6 @@ const NAV_GROUPS = [
     {
         label: 'About',
         items: [
-            { id: 'pillars', label: '25 Pillars Directory' },
-            { id: 'framework', label: 'Universal Framework', href: '/framework' },
             { id: 'why', label: 'Why PilotRecognition' },
             { id: 'metric', label: 'The 90-Day Metric' },
             { id: 'contact', label: 'Request Access' },
@@ -621,18 +617,7 @@ const EnterpriseAccessPage = () => {
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
-                            View Framework
-                        </a>
-                        <a 
-                            href="https://enterprise.pilotrecognition.com/docs/universal-commercial-framework-expanded.txt"
-                            className="bg-amber-100 hover:bg-amber-200 border border-amber-300 text-amber-900 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            Download Full Framework (.txt)
+                            View Framework Document
                         </a>
                     </div>
 
@@ -683,15 +668,14 @@ const EnterpriseAccessPage = () => {
                                     View Framework
                                 </a>
                                 <a 
-                                    href="https://enterprise.pilotrecognition.com/docs/universal-commercial-framework-expanded.txt"
+                                    href="https://enterprise.pilotrecognition.com/framework/full"
                                     className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
-                                    Download Full Framework
+                                    View Full Framework
                                 </a>
                             </div>
                         </div>
@@ -735,13 +719,6 @@ const EnterpriseAccessPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <button 
-                                onClick={() => scrollTo('pillars')}
-                                className="mt-6 w-full bg-white/10 hover:bg-white/20 text-white border border-white/20 py-3 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2"
-                            >
-                                <span>View 25 Pillars Directory</span>
-                                <span>↓</span>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -767,311 +744,6 @@ const EnterpriseAccessPage = () => {
                                 <p className="mt-4 text-red-600 text-xs font-semibold flex items-center gap-1">Learn more <span className="group-hover:translate-x-1 transition-transform">→</span></p>
                             </button>
                         ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ─── 25 PILLARS DIRECTORY ─── */}
-            <section id="pillars" className="py-20 px-6 border-b border-slate-200 bg-slate-900">
-                <div className="max-w-7xl mx-auto">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-3">Universal Commercial Framework</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">25 Pillars. One Ecosystem.</h2>
-                    <p className="text-slate-300 text-lg max-w-2xl mb-8">
-                        Every stakeholder in aviation, mapped. Click any pillar to see how PilotRecognition connects your sector to the framework.
-                    </p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                        {/* Pillar 1: Commercial Airlines */}
-                        <a href="/framework#pillar-1" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-red-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-red-500/20 text-red-400 rounded-lg flex items-center justify-center font-bold text-sm">1</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-red-400 transition-colors">Commercial Airlines</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 2: Cargo & Freight */}
-                        <button onClick={() => scrollTo('cargo')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-orange-500/20 text-orange-400 rounded-lg flex items-center justify-center font-bold text-sm">2</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-orange-400 transition-colors">Cargo & Freight</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Cargo Solutions ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 3: Charter & Business Aviation */}
-                        <button onClick={() => scrollTo('privatejet')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-violet-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-violet-500/20 text-violet-400 rounded-lg flex items-center justify-center font-bold text-sm">3</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-violet-400 transition-colors">Charter & Business Aviation</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Private Jet ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 4: Emerging Aviation (eVTOL) */}
-                        <button onClick={() => scrollTo('evtol')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-cyan-500/20 text-cyan-400 rounded-lg flex items-center justify-center font-bold text-sm">4</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-cyan-400 transition-colors">Emerging Aviation (eVTOL)</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Air Taxi ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 5: Flight Training Organizations */}
-                        <button onClick={() => scrollTo('flightschools')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center font-bold text-sm">5</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-emerald-400 transition-colors">Flight Training Organizations</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Flight Schools ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 6: Type Rating Centers */}
-                        <a href="/framework#pillar-6" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-teal-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-teal-500/20 text-teal-400 rounded-lg flex items-center justify-center font-bold text-sm">6</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-teal-400 transition-colors">Type Rating Centers</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 7: Military & Defense */}
-                        <button onClick={() => scrollTo('military')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-rose-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-rose-500/20 text-rose-400 rounded-lg flex items-center justify-center font-bold text-sm">7</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-rose-400 transition-colors">Military & Defense</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Military ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 8: Banking & Finance */}
-                        <button onClick={() => scrollTo('finance')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-green-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-green-500/20 text-green-400 rounded-lg flex items-center justify-center font-bold text-sm">8</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-green-400 transition-colors">Banking & Finance</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Finance ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 9: Aviation Insurance */}
-                        <button onClick={() => scrollTo('insurance')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-amber-500/20 text-amber-400 rounded-lg flex items-center justify-center font-bold text-sm">9</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-amber-400 transition-colors">Aviation Insurance</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Insurance ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 10: Regulatory Bodies */}
-                        <a href="/framework#pillar-10" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center font-bold text-sm">10</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-blue-400 transition-colors">Regulatory Bodies</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 11: Verification Providers */}
-                        <button onClick={() => scrollTo('integrations')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-fuchsia-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-fuchsia-500/20 text-fuchsia-400 rounded-lg flex items-center justify-center font-bold text-sm">11</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-fuchsia-400 transition-colors">Verification Providers</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Integrations ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 12: Flight Data Providers */}
-                        <button onClick={() => scrollTo('integrations')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-sky-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-sky-500/20 text-sky-400 rounded-lg flex items-center justify-center font-bold text-sm">12</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-sky-400 transition-colors">Flight Data Providers</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See API Integrations ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 13: Aeromedical Examiners */}
-                        <a href="/framework#pillar-13" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-red-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-red-500/20 text-red-400 rounded-lg flex items-center justify-center font-bold text-sm">13</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-red-400 transition-colors">Aeromedical Examiners</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 14: Pilot Mentors & Unions */}
-                        <a href="/framework#pillar-14" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-indigo-500/20 text-indigo-400 rounded-lg flex items-center justify-center font-bold text-sm">14</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-indigo-400 transition-colors">Pilot Mentors & Unions</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 15: Aircraft Manufacturers */}
-                        <button onClick={() => scrollTo('manufacturers')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-sky-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-sky-500/20 text-sky-400 rounded-lg flex items-center justify-center font-bold text-sm">15</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-sky-400 transition-colors">Aircraft Manufacturers</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See OEMs ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 16: Recruitment Agencies */}
-                        <button onClick={() => scrollTo('recruitment')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-green-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-green-500/20 text-green-400 rounded-lg flex items-center justify-center font-bold text-sm">16</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-green-400 transition-colors">Recruitment Agencies</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Recruitment ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 17: Aviation Universities */}
-                        <a href="/framework#pillar-17" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-purple-500/20 text-purple-400 rounded-lg flex items-center justify-center font-bold text-sm">17</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-purple-400 transition-colors">Aviation Universities</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 18: Aviation Media */}
-                        <a href="/framework#pillar-18" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-yellow-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-yellow-500/20 text-yellow-400 rounded-lg flex items-center justify-center font-bold text-sm">18</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-yellow-400 transition-colors">Aviation Media</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 19: Career Fairs & Events */}
-                        <a href="/framework#pillar-19" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-pink-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-pink-500/20 text-pink-400 rounded-lg flex items-center justify-center font-bold text-sm">19</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-pink-400 transition-colors">Career Fairs & Events</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 20: Government Authorities */}
-                        <a href="/framework#pillar-20" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-slate-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-slate-500/20 text-slate-300 rounded-lg flex items-center justify-center font-bold text-sm">20</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-slate-300 transition-colors">Government Authorities</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 21: International Organizations */}
-                        <a href="/framework#pillar-21" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center font-bold text-sm">21</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-blue-400 transition-colors">International Organizations</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 22: Humanitarian & Mission Aviation */}
-                        <a href="/framework#pillar-22" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-green-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-green-500/20 text-green-400 rounded-lg flex items-center justify-center font-bold text-sm">22</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-green-400 transition-colors">Humanitarian Aviation</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 23: Airport Authorities */}
-                        <a href="/framework#pillar-23" className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-500/50 rounded-xl p-4 transition-all">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-orange-500/20 text-orange-400 rounded-lg flex items-center justify-center font-bold text-sm">23</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-orange-400 transition-colors">Airport Authorities</h3>
-                                    <p className="text-slate-400 text-xs mt-1">View in Framework →</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Pillar 24: Simulator Data Providers */}
-                        <button onClick={() => scrollTo('integrations')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-cyan-500/20 text-cyan-400 rounded-lg flex items-center justify-center font-bold text-sm">24</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-cyan-400 transition-colors">Simulator Data Providers</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See Integrations ↓</p>
-                                </div>
-                            </div>
-                        </button>
-
-                        {/* Pillar 25: Digital Discovery Platforms */}
-                        <button onClick={() => scrollTo('integrations')} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-fuchsia-500/50 rounded-xl p-4 transition-all text-left">
-                            <div className="flex items-start gap-3">
-                                <span className="w-8 h-8 bg-fuchsia-500/20 text-fuchsia-400 rounded-lg flex items-center justify-center font-bold text-sm">25</span>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm group-hover:text-fuchsia-400 transition-colors">Digital Discovery Platforms</h3>
-                                    <p className="text-slate-400 text-xs mt-1">See API ↓</p>
-                                </div>
-                            </div>
-                        </button>
-                    </div>
-
-                    <div className="mt-12 pt-8 border-t border-white/10 flex flex-wrap gap-4">
-                        <a href="/framework" className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
-                            View Full Framework Document →
-                        </a>
-                        <a 
-                            href="https://enterprise.pilotrecognition.com/docs/universal-commercial-framework-expanded.txt" 
-                            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold px-6 py-3 rounded-lg transition-colors"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            Download Full Framework
-                        </a>
                     </div>
                 </div>
             </section>
