@@ -214,6 +214,28 @@ export function PathwayCard({ pathway, pilotScore, pilotProfile, onApply }: Path
 // Pre-defined pathways for MVP
 export const MVP_PATHWAYS: Pathway[] = [
   {
+    id: 'dubai-credential-philippines',
+    airline: 'Dubai Training Partnership',
+    type: 'Cadet',
+    title: 'PRC → UAE Credential Upgrade (Philippines Cohort)',
+    location: 'Remote + Fujairah, UAE',
+    requirements: {
+      minHours: 200,
+      licenseType: 'CPL',
+      ratings: [],
+      minRecognitionScore: 25,
+      backgroundCheck: false
+    },
+    benefits: [
+      'Save ₱122,000 (44% discount through bulk deal)',
+      'UAE-recognized certification (global acceptance)',
+      'Remote learning + Fujairah exam (visa included)',
+      'Priority access to Etihad, Emirates, Qatar Airways'
+    ],
+    deadline: 'July 15, 2026',
+    spotsAvailable: 12
+  },
+  {
     id: 'etihad-cadet-2026',
     airline: 'Etihad Airways',
     type: 'Cadet',
