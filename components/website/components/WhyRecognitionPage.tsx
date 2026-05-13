@@ -28,7 +28,7 @@ export const WhyRecognitionPage: React.FC<WhyRecognitionPageProps> = ({ onBack, 
 
                     <div className="max-w-3xl mx-auto text-base text-slate-700 leading-relaxed text-left space-y-6">
                         <p>
-                            In aviation, your reputation and your logbook are everything. Pilot Recognition digitizes and validates both. This isn't a job board—it's the <strong>global infrastructure for your career</strong>. If you aren't recognized, vetted, and scored, you aren't just behind. You're off the radar.
+                            In aviation, your reputation and your logbook are everything. Pilot Recognition digitizes and validates both. This isn't a job board—it's the <strong>global infrastructure for your professional recognition</strong>. If you aren't recognized, vetted, and scored, you aren't just behind. You're off the radar.
                         </p>
 
                         {/* For Students */}

@@ -28,7 +28,7 @@ export const PilotShortagePage: React.FC<PilotShortagePageProps> = ({ onBack, on
 
                     <div className="max-w-3xl mx-auto text-base text-slate-700 leading-relaxed text-left space-y-6">
                         <p>
-                            Everyone talks about a pilot shortage, but the truth is different. Airlines receive thousands of applications that sit unread because they can't risk hiring the wrong person. Without a PR Score, you are just a number in a stack. Pilot Recognition is the only way to break through the noise and prove you are the solution they are desperate for.
+                            Everyone talks about a pilot shortage, but the truth is different. Airlines receive thousands of applications that sit unread because they can't risk selecting the wrong person. Without a PR Score, you are just a number in a stack. Pilot Recognition is the only way to break through the noise and prove you are the solution they are desperate for.
                         </p>
 
                         {/* For Students */}
