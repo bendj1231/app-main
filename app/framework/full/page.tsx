@@ -137,8 +137,22 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
 }
 
 // Navigation Section Component (separate to avoid hooks in map)
+interface NavChild {
+  id: string;
+  label: string;
+  level: number;
+  onClick?: () => void;
+}
+
+interface NavSectionProps {
+  id: string;
+  label: string;
+  level: number;
+  children?: NavChild[];
+}
+
 function NavSection({ section, scrollToSection }: { 
-  section: { id: string; label: string; level: number; children?: Array<{id: string; label: string; level: number}> },
+  section: NavSectionProps,
   scrollToSection: (id: string) => void 
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -175,8 +189,9 @@ function NavSection({ section, scrollToSection }: {
           {section.children.map((child) => (
             <button
               key={child.id}
-              onClick={() => {
-                console.log('Child CLICK:', child.label, 'id:', child.id);
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log('Child CLICK:', child.label, 'id:', child.id, 'has onClick:', !!child.onClick);
                 // Support both onClick handler and scrollToSection
                 if (child.onClick) {
                   child.onClick();
@@ -185,7 +200,7 @@ function NavSection({ section, scrollToSection }: {
                 }
               }}
               className={`w-full text-left px-2 py-1 rounded-md text-xs transition-colors flex items-start gap-1.5 ${
-                child.onClick ? 'text-red-600 hover:text-red-700 hover:bg-red-50 font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                child.onClick ? 'text-red-600 hover:text-red-700 hover:bg-red-50 font-medium cursor-pointer' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
               }`}
             >
               <span className={`mt-0.5 flex-shrink-0 ${child.onClick ? 'text-red-500' : 'text-blue-500'}`}>→</span>
