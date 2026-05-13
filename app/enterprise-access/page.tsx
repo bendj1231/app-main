@@ -743,53 +743,98 @@ const EnterpriseAccessPage = () => {
                 </div>
             </section>
 
-            {/* ─── 25 PILLARS GRID ─── */}
-            <section id="pillars" className="py-20 px-6 bg-white border-b border-slate-200">
+            {/* ─── 25 PILLARS ─── */}
+            <section id="pillars" className="py-20 px-6 bg-slate-50 border-b border-slate-200">
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-12">
                         <span className="text-xs uppercase tracking-widest text-red-600 font-semibold">25 Strategic Pillars · 7 Stakeholder Hubs</span>
                         <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-3">Every Aviation Stakeholder. One Platform.</h2>
-                        <p className="text-slate-500 max-w-2xl">The framework covers every sector of aviation — from major commercial airlines to emerging eVTOL operators, military transition programs to digital discovery platforms.</p>
+                        <p className="text-slate-500 max-w-2xl">Categorised by hub — each pillar represents a distinct stakeholder group with defined requirements, contributions, and commercial value.</p>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {[
-                            { n: 1, name: 'Commercial Airlines', hub: 'Hub A' },
-                            { n: 2, name: 'Cargo & Freight', hub: 'Hub A' },
-                            { n: 3, name: 'Charter & Business', hub: 'Hub A' },
-                            { n: 4, name: 'eVTOL & Air Taxi', hub: 'Hub A' },
-                            { n: 5, name: 'Flight Training ATOs', hub: 'Hub B' },
-                            { n: 6, name: 'Type Rating Centers', hub: 'Hub B' },
-                            { n: 7, name: 'Military & Defence', hub: 'Hub B' },
-                            { n: 8, name: 'Banking & Finance', hub: 'Hub C' },
-                            { n: 9, name: 'Aviation Insurance', hub: 'Hub C' },
-                            { n: 10, name: 'Regulatory Bodies', hub: 'Hub C' },
-                            { n: 11, name: 'Verification APIs', hub: 'Hub C' },
-                            { n: 12, name: 'Flight Data Providers', hub: 'Hub C' },
-                            { n: 13, name: 'Aeromedical Examiners', hub: 'Hub C' },
-                            { n: 14, name: 'Pilot Mentors & Unions', hub: 'Hub D' },
-                            { n: 15, name: 'Aircraft Manufacturers', hub: 'Hub D' },
-                            { n: 16, name: 'Recruitment Agencies', hub: 'Hub D' },
-                            { n: 17, name: 'Aviation Universities', hub: 'Hub D' },
-                            { n: 18, name: 'Aviation Media', hub: 'Hub D' },
-                            { n: 19, name: 'Career Fairs & Events', hub: 'Hub D' },
-                            { n: 20, name: 'Government Authorities', hub: 'Hub E' },
-                            { n: 21, name: 'Humanitarian Missions', hub: 'Hub E-A' },
-                            { n: 22, name: 'International Orgs', hub: 'Hub E' },
-                            { n: 23, name: 'Search & Discovery', hub: 'Hub G' },
-                            { n: 24, name: 'Aviation Events', hub: 'Hub G' },
-                            { n: 25, name: 'Digital Platforms', hub: 'Hub G' },
-                        ].map((pillar) => (
-                            <button
-                                key={pillar.n}
-                                onClick={() => scrollTo('solutions')}
-                                className="group text-left p-4 rounded-xl border border-slate-200 hover:border-red-300 hover:bg-red-50 transition-all"
-                            >
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="text-[10px] text-slate-400 font-mono bg-slate-100 px-1.5 py-0.5 rounded">{pillar.hub}</span>
-                                    <span className="text-[10px] text-slate-300">#{pillar.n}</span>
+                            {
+                                hub: 'Hub A', label: 'Operations & Recruitment',
+                                pillars: [
+                                    { n: 1, name: 'Commercial Airlines' },
+                                    { n: 2, name: 'Cargo & Freight Operators' },
+                                    { n: 3, name: 'Charter & Business Aviation' },
+                                    { n: 4, name: 'eVTOL & Air Taxi' },
+                                ]
+                            },
+                            {
+                                hub: 'Hub B', label: 'Training & Transition',
+                                pillars: [
+                                    { n: 5, name: 'Flight Training ATOs' },
+                                    { n: 6, name: 'Type Rating Centers' },
+                                    { n: 7, name: 'Military & Defence' },
+                                ]
+                            },
+                            {
+                                hub: 'Hub C', label: 'Capital, Risk & Compliance',
+                                pillars: [
+                                    { n: 8, name: 'Banking & Finance' },
+                                    { n: 9, name: 'Aviation Insurance' },
+                                    { n: 10, name: 'Regulatory Bodies' },
+                                    { n: 11, name: 'Verification APIs' },
+                                    { n: 12, name: 'Flight Data Providers' },
+                                    { n: 13, name: 'Aeromedical Examiners' },
+                                ]
+                            },
+                            {
+                                hub: 'Hub D', label: 'Connection & Media',
+                                pillars: [
+                                    { n: 14, name: 'Pilot Mentors & Unions' },
+                                    { n: 15, name: 'Aircraft Manufacturers' },
+                                    { n: 16, name: 'Recruitment Agencies' },
+                                    { n: 17, name: 'Aviation Universities' },
+                                    { n: 18, name: 'Aviation Media' },
+                                    { n: 19, name: 'Career Fairs & Events' },
+                                ]
+                            },
+                            {
+                                hub: 'Hub E', label: 'Governance & Policy',
+                                pillars: [
+                                    { n: 20, name: 'Government Authorities' },
+                                    { n: 22, name: 'International Organisations' },
+                                ]
+                            },
+                            {
+                                hub: 'Hub E-A', label: 'Humanitarian & Mission',
+                                pillars: [
+                                    { n: 21, name: 'Church & Charity Missions' },
+                                ]
+                            },
+                            {
+                                hub: 'Hub G', label: 'Digital Discovery',
+                                pillars: [
+                                    { n: 23, name: 'Search & Discovery Platforms' },
+                                    { n: 24, name: 'Aviation Events & Career Fairs' },
+                                    { n: 25, name: 'Digital Discovery Platforms' },
+                                ]
+                            },
+                        ].map((group) => (
+                            <div key={group.hub} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                                {/* Hub header */}
+                                <div className="bg-red-600 px-4 py-3">
+                                    <p className="text-white text-[10px] font-bold uppercase tracking-widest">{group.hub}</p>
+                                    <p className="text-red-100 text-xs font-medium mt-0.5">{group.label}</p>
                                 </div>
-                                <p className="text-xs font-semibold text-slate-700 group-hover:text-red-700 leading-tight">{pillar.name}</p>
-                            </button>
+                                {/* Pillars stacked */}
+                                <div className="divide-y divide-slate-100">
+                                    {group.pillars.map((pillar) => (
+                                        <button
+                                            key={pillar.n}
+                                            onClick={() => scrollTo('solutions')}
+                                            className="w-full text-left px-4 py-3 flex items-center justify-between hover:bg-red-50 transition-colors group"
+                                        >
+                                            <span className="text-sm text-slate-700 group-hover:text-red-700 font-medium">{pillar.name}</span>
+                                            <span className="text-[10px] text-slate-300 font-mono ml-2 flex-shrink-0">{pillar.n}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>
