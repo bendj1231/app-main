@@ -386,54 +386,111 @@ functions/
 │     ↓                                                               │
 │     Submit Enterprise Access Form                                   │
 │     ↓                                                               │
-│     Review partnership terms (Free tier vs Enterprise)                │
+│     Review partnership terms (Free / Pay-Per-Pathway / Enterprise)    │
 │                                                                     │
 │  2️⃣ PUBLISH                                                         │
 │     [Free] Post public pathway requirements                         │
 │     ↓                                                               │
-│     [Enterprise $1K/mo] Access pull API                             │
+│     See "12 pilots interested" (proves demand)                      │
 │     ↓                                                               │
-│     Define requirements (hours, ratings, competencies)            │
+│     See blurred preview of top 3 Recognition+ members                 │
+│     • P**** S**** (Score: 8*)                                       │
+│     • A**** K**** (Score: 7*)                                       │
+│     • M**** H**** (Score: 9*)                                       │
 │                                                                     │
-│  3️⃣ DISCOVER                                                        │
-│     Pull verified pilot profiles (not sift through 500 CVs)        │
-│     ↓                                                               │
-│     Filter by Recognition Score (0-100)                             │
-│     ↓                                                               │
-│     Filter by competencies, hours, verification status              │
-│     ↓                                                               │
-│     [Enterprise] View EBT Video Assessments                         │
-│     ↓                                                               │
-│     Contact pilots directly (pre-verified, scored candidates)     │
-│     ↓                                                               │
-│     $500 success fee per placement                                  │
+│  3️⃣ UNLOCK (Choose Your Tier)                                       │
+│     Option A: Pay-Per-Pathway ($49)                                 │
+│       ↓                                                             │
+│       Unlock full list for THIS pathway only                        │
+│       See all names, scores, contact info                           │
+│       ↓                                                             │
+│       Contact pilots directly                                       │
+│                                                                     │
+│     Option B: Enterprise ($1,000/month)                             │
+│       ↓                                                             │
+│       Unlock ALL pathways unlimited                                 │
+│       Access Pull API + advanced filters                            │
+│       View EBT Video Assessments                                    │
+│       ↓                                                             │
+│       Contact pilots directly                                       │
+│                                                                     │
+│  💰 SUCCESS FEE: $500 per pilot placed through pathway              │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
 ### What Partners Get:
 
-| Feature | Free | Enterprise ($1,000/month) |
-|---------|------|---------------------------|
-| Post Public Pathways | ✅ | ✅ |
-| View Pilot Profiles | ✅ | ✅ |
-| Basic Filtering | ✅ | ✅ |
-| Pull API Access | ❌ | ✅ Unlimited |
-| Advanced Filtering (Score, Competencies) | ❌ | ✅ |
-| EBT Video Access | ❌ | ✅ |
-| Verified Candidate Shortlists | ❌ | ✅ |
-| Recognition Score Analytics | ❌ | ✅ |
-| Priority Support | ❌ | ✅ |
+| Feature | Free | Pay-Per-Pathway | Enterprise ($1K/mo) |
+|---------|------|-----------------|---------------------|
+| Post Public Pathways | ✅ | ✅ | ✅ |
+| View Pilot Profiles (public) | ✅ | ✅ | ✅ |
+| **Teaser: First 3 Recognition+ Members** | ✅ (names blurred) | ✅ (full details) | ✅ (unlimited) |
+| **See Interest Count** | ✅ ("12 pilots interested") | ✅ + unlock list | ✅ unlimited |
+| **Unlock Full Interest List** | ❌ | $49/pathway | Included |
+| Pull API Access | ❌ | ❌ | ✅ Unlimited |
+| Advanced Filtering (Score, Competencies) | ❌ | ❌ | ✅ |
+| EBT Video Access | ❌ | ❌ | ✅ |
+| Recognition Score Analytics | ❌ | ❌ | ✅ |
+| Priority Support | ❌ | ❌ | ✅ |
+
+### How It Works (LinkedIn-Style Model):
+
+```
+Free Partner View:
+┌─────────────────────────────────────────┐
+│  Emirates Cadet Program                 │
+│  📍 Dubai                               │
+│                                         │
+│  Interest Teaser:                       │
+│  "12 pilots have submitted interest"     │
+│                                         │
+│  🔒 First 3 Recognition+ Members:        │
+│     • P**** S**** (Score: 8*)           │
+│     • A**** K**** (Score: 7*)           │
+│     • M**** H**** (Score: 9*)           │
+│     • Names blurred, scores masked      │
+│                                         │
+│  [Unlock Full List - $49]              │
+│  [Upgrade to Enterprise - $1K/mo]       │
+└─────────────────────────────────────────┘
+```
+
+**Pay-Per-Pathway Model ($49 per pathway unlock):**
+- See full names of all interested pilots
+- View complete Recognition Scores
+- Access contact information
+- One-time fee per pathway (not recurring)
+- Perfect for airlines testing the platform
+
+**Enterprise Model ($1,000/month):**
+- Unlimited pathway unlocks
+- Pull API access
+- Advanced filtering
+- EBT video access
+- Bulk profile exports
 
 ### Partner Value Proposition:
-> **"Stop sifting through 500 CVs. Pull pre-verified, scored candidates."**
+> **"See demand before you pay. Only unlock the pathways you need."**
 
-- See Recognition Scores (0-100) before contact
-- Filter by verified competencies (not self-reported)
-- Pre-cleared candidates reduce hiring risk
-- ATS-compatible ATLAS CV format
-- EBT video assessments show actual behavior
-- Pre-verified by Veremark (background checks)
+**Free Tier Benefits:**
+- Post pathways at no cost
+- See interest count (proves platform works)
+- Preview top 3 candidates (shows quality)
+- No risk, no commitment
+
+**Pay-Per-Pathway Benefits:**
+- $49 to unlock full candidate list
+- Cheaper than one job board posting
+- Access to pre-verified, interested pilots
+- No monthly commitment
+
+**Enterprise Benefits:**
+- Unlimited access for high-volume recruiters
+- API integration for ATS systems
+- EBT video assessments before interview
+- Verified candidate shortlists
+- Recognition Score Analytics dashboard
 
 ### Partner Types:
 
