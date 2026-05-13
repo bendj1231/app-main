@@ -219,28 +219,47 @@ export default function FullFrameworkPage() {
 
   // Load framework data from Supabase
   useEffect(() => {
-    loadFrameworkData();
-  }, []);
-
-  async function loadFrameworkData() {
-    try {
-      setLoading(true);
-      const data = await getCompleteFrameworkData();
-      setPillars(data.pillars);
-      
-      // Load first pillar details by default
-      if (data.pillars.length > 0) {
-        await loadPillarDetail(data.pillars[0].pillar_number);
+    let isMounted = true;
+    
+    async function loadFrameworkData() {
+      try {
+        setLoading(true);
+        const data = await getCompleteFrameworkData();
+        
+        if (!isMounted) return;
+        
+        setPillars(data.pillars);
+        setError(null);
+        
+        // Load first pillar details by default
+        if (data.pillars.length > 0) {
+          const firstPillar = data.pillars[0];
+          setSelectedPillar(firstPillar);
+          
+          const detail = await getPillarDetail(firstPillar.pillar_number);
+          if (isMounted && detail) {
+            setPillarSections(detail.content_sections);
+            setPillarTables(detail.tables);
+          }
+        }
+      } catch (err) {
+        console.error('Error loading framework:', err);
+        if (isMounted) {
+          setError('Failed to load framework data from Supabase');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
-      
-      setError(null);
-    } catch (err) {
-      console.error('Error loading framework:', err);
-      setError('Failed to load framework data from Supabase');
-    } finally {
-      setLoading(false);
     }
-  }
+    
+    loadFrameworkData();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   async function loadPillarDetail(pillarNumber: number) {
     try {
@@ -441,210 +460,6 @@ export default function FullFrameworkPage() {
       </div>
     );
   }
-          let id = generateId(headingText);
-          let counter = 1;
-          const baseId = id;
-          while (seenIds.has(id)) {
-            id = `${baseId}-${counter}`;
-            counter++;
-          }
-          seenIds.add(id);
-          return <h1 key={i} id={id} className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">{headingText}</h1>;
-        }
-        if (line.startsWith('## ')) {
-          const headingText = line.replace('## ', '');
-          let id = generateId(headingText);
-          let counter = 1;
-          const baseId = id;
-          while (seenIds.has(id)) {
-            id = `${baseId}-${counter}`;
-            counter++;
-          }
-          seenIds.add(id);
-          console.log(`✓ H2 ID generated: "${id}" from "${headingText.substring(0, 50)}"`);
-          return <h2 key={i} id={id} className="text-2xl font-bold text-slate-800 mt-8 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">{headingText}</h2>;
-        }
-        if (line.startsWith('### ')) {
-          const headingText = line.replace('### ', '');
-          let id = generateId(headingText);
-          let counter = 1;
-          const baseId = id;
-          while (seenIds.has(id)) {
-            id = `${baseId}-${counter}`;
-            counter++;
-          }
-          seenIds.add(id);
-          return <h3 key={i} id={id} className="text-xl font-bold text-slate-800 mt-6 mb-3 scroll-mt-24">{headingText}</h3>;
-        }
-        if (line.startsWith('#### ')) {
-          const headingText = line.replace('#### ', '');
-          let id = generateId(headingText);
-          let counter = 1;
-          const baseId = id;
-          while (seenIds.has(id)) {
-            id = `${baseId}-${counter}`;
-            counter++;
-          }
-          seenIds.add(id);
-          return <h4 key={i} id={id} className="text-lg font-bold text-slate-800 mt-4 mb-2 scroll-mt-24">{headingText}</h4>;
-        }
-        
-        // Empty line
-        if (line.trim() === '') {
-          return <div key={i} className="h-4" />;
-        }
-        
-        // Horizontal rule
-        if (line.startsWith('---')) {
-          return <hr key={i} className="my-8 border-slate-300" />;
-        }
-        
-        // Bullet points
-        if (line.startsWith('- ') || line.startsWith('• ')) {
-          const bulletText = line.replace(/^- /, '').replace(/^• /, '');
-          
-          // In TOC section - try to find matching header
-          if (inTocSection && tocItems.length > 0) {
-            const matchingItem = tocItems.find(item => {
-              const itemLower = item.text.toLowerCase();
-              const bulletLower = bulletText.toLowerCase();
-              return bulletLower.includes(itemLower) || 
-                     itemLower.includes(bulletLower) ||
-                     (bulletLower.substring(0, 30).trim() === itemLower.substring(0, 30).trim()) ||
-                     bulletLower.replace(/[^a-z0-9]/g, '').includes(itemLower.replace(/[^a-z0-9]/g, '').substring(0, 20));
-            });
-            
-            if (matchingItem) {
-              return (
-                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
-                  <span className="text-blue-500 mt-1">→</span>
-                  <button 
-                    onClick={() => scrollToSection(matchingItem.id)}
-                    className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
-                  >
-                    {bulletText}
-                  </button>
-                </li>
-              );
-            }
-          }
-          
-          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{bulletText}</li>;
-        }
-        
-        // Numbered lists - make clickable if in TOC section
-        if (/^\d+\.\s/.test(line)) {
-          const itemText = line.replace(/^\d+\.\s/, '');
-          
-          // In TOC section - try to find matching header
-          if (inTocSection && tocItems.length > 0) {
-            const matchingItem = tocItems.find(item => {
-              const itemLower = item.text.toLowerCase();
-              const textLower = itemText.toLowerCase();
-              return textLower.includes(itemLower) || 
-                     itemLower.includes(textLower) ||
-                     (textLower.substring(0, 30).trim() === itemLower.substring(0, 30).trim()) ||
-                     textLower.replace(/[^a-z0-9]/g, '').includes(itemLower.replace(/[^a-z0-9]/g, '').substring(0, 20));
-            });
-            
-            if (matchingItem) {
-              return (
-                <li key={i} className="ml-6 leading-relaxed flex items-start gap-2">
-                  <span className="text-blue-500 mt-1">→</span>
-                  <button 
-                    onClick={() => scrollToSection(matchingItem.id)}
-                    className="text-slate-700 hover:text-red-600 hover:underline transition-colors text-left cursor-pointer"
-                  >
-                    {itemText}
-                  </button>
-                </li>
-              );
-            }
-          }
-          
-          return <li key={i} className="ml-6 text-slate-700 leading-relaxed">{itemText}</li>;
-        }
-        
-        // Bold text
-        let processedLine = line;
-        processedLine = processedLine.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        processedLine = processedLine.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        
-        // Table rows — pre-grouped into collapsible pillar sections
-        if (line.startsWith('|')) {
-          // Skip lines that are inside a table block (not the start)
-          if (tableConsumedIndices.has(i)) return null;
-          // Only render if this is the START of a table block
-          if (!tableStartIndices.has(i)) return null;
-
-          // Collect all consecutive table lines starting from i
-          const tableLines: string[] = [];
-          let j2 = i;
-          while (j2 < lines.length && lines[j2].startsWith('|')) {
-            tableLines.push(lines[j2]);
-            j2++;
-          }
-
-          // Parse table into: header row, then pillar groups
-          // Use raw split (keep empty cells) to detect section rows properly
-          const rawCells = (tLine: string) => tLine.split('|').slice(1, -1); // remove first/last empty from leading/trailing |
-          const isSeparator = (tLine: string) => tLine.replace(/[\|\-\s:]/g, '').length === 0;
-          const isHeaderRow = (tLine: string, nextLine?: string) => nextLine ? isSeparator(nextLine) : false;
-          // A section row: first cell has content, all others are empty
-          const isSectionRow = (tLine: string) => {
-            const rc = rawCells(tLine);
-            if (rc.length < 2) return false;
-            return rc[0].trim() !== '' && rc.slice(1).every(c => c.trim() === '');
-          };
-          // A pillar header: section row but NOT a sub-section (no leading — or *)
-          const isPillarHeader = (tLine: string) => {
-            if (!isSectionRow(tLine)) return false;
-            const raw = rawCells(tLine)[0]?.trim() || '';
-            return !raw.includes('KEYNOTE') && !raw.startsWith('—') && !raw.startsWith('**—') && !raw.startsWith('* ');
-          };
-
-          // Group lines into sections
-          interface PillarGroup { label: string; rows: string[] }
-          const groups: PillarGroup[] = [];
-          let headerLine: string | null = null;
-          let colCount = 4;
-          let currentGroup: PillarGroup | null = null;
-          for (let k = 0; k < tableLines.length; k++) {
-            const tl = tableLines[k];
-            if (isSeparator(tl)) continue;
-            if (isHeaderRow(tl, tableLines[k + 1])) {
-              headerLine = tl;
-              colCount = rawCells(tl).length;
-              continue;
-            }
-            if (isPillarHeader(tl)) {
-              if (currentGroup) groups.push(currentGroup);
-              currentGroup = { label: rawCells(tl)[0]?.trim() || '', rows: [] };
-            } else if (currentGroup) {
-              currentGroup.rows.push(tl);
-            }
-          }
-          if (currentGroup) groups.push(currentGroup);
-
-          console.log('TABLE DEBUG: tableLines count:', tableLines.length, 'groups:', groups.length, 'headerLine:', !!headerLine);
-          groups.forEach((g, gi) => console.log(`  Group ${gi}: "${g.label.substring(0, 50)}" rows:`, g.rows.length));
-
-          return (
-            <PillarTabTable
-              key={i}
-              headerLine={headerLine}
-              groups={groups}
-              colCount={colCount}
-              scrollToSection={scrollToSection}
-            />
-          );
-        }
-        
-        // Regular paragraph
-        return <p key={i} className="text-slate-700 leading-relaxed mb-2" dangerouslySetInnerHTML={{ __html: processedLine }} />;
-      })
-      .filter(Boolean);
-  };
 
   // Show error state
   if (error) {
