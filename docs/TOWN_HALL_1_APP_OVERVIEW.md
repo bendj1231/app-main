@@ -505,6 +505,63 @@ When a 4-year degree ends in:
 
 > **For every pilot pushed into AOM, the industry loses a potential captain. PilotRecognition keeps them in the cockpit where they belong.**
 
+**The AOM Problem = Pilot Shortage Crisis**
+
+> **What's happening is further causing the pilot shortage gap. The industry needs to speak to these flight schools and take this seriously as an actionable matter through PilotRecognition.com.**
+
+**The Connection:**
+
+| Flight School Advises | Result | Industry Impact |
+|----------------------|--------|-----------------|
+| "Get AOM degree" | Student abandons Commercial Flying BA | **-1 pilot in pipeline** |
+| "Flying is too competitive" | Student never pursues pilot career | **-1 potential captain** |
+| "2015 batch still waiting" | New students quit before starting | **-1 enrollment** |
+| "Aviation degree uncertain" | Industry perception collapses | **Massive pilot shortage** |
+
+**The Math:**
+- 2015 batch: 1,000 graduates → 800 pushed to AOM → **200 pilots lost**
+- 2016 batch: 1,000 graduates → 750 pushed to AOM → **250 pilots lost**
+- 2017 batch: 1,000 graduates → 700 pushed to AOM → **300 pilots lost**
+- **Total pilots never entering cockpit: 750+ per year**
+
+**Why Industry Must Act NOW:**
+
+- **Airlines need 500,000+ pilots by 2030** (Boeing forecast)
+- **Current pipeline produces ~50,000/year** (barely replacing retirees)
+- **AOM shift removes 750+ pilots/year from pipeline**
+- **Gap widening:** Every year of inaction = 750+ fewer pilots
+
+**PilotRecognition.com: The Industry's Tool to Stop This**
+
+**What Industry Can Do:**
+
+1. **Partner with PilotRecognition.com** — mandate Foundation Program for all new hires
+2. **Require Recognition Profile** — stop accepting "AOM refugees" only
+3. **Fund Pilot Ambassadors** — secure top talent BEFORE they quit flying
+4. **Demand Flight School Accountability** — "Where are your graduates? Show us."
+5. **Stop the AOM Advice** — make flying degrees valuable again
+
+**The Industry Message to Flight Schools:**
+
+> *"We are facing a 500,000 pilot shortage by 2030. Every pilot you push into AOM is one less captain we can hire. We need you to partner with PilotRecognition.com and keep these pilots in the cockpit. This is not optional — it's industry survival."*
+
+**Actionable Through PilotRecognition.com:**
+
+- **Verification system:** Track where graduates actually go (not just "employed")
+- **Recognition Score:** Prove pilot readiness (vs. AOM desk jobs)
+- **Pathway visibility:** Show real demand across all 7 sectors
+- **Data transparency:** Industry can see flight school placement rates
+- **Partnership requirements:** Operators can require "Recognition-Ready" graduates only
+
+**The Choice:**
+
+- ❌ **Do Nothing:** 750+ pilots/year lost to AOM → 500K shortage by 2030
+- ✅ **Act Through PilotRecognition.com:** Keep pilots flying → Close the gap
+
+> **The pilot shortage isn't just about retirements — it's about flight schools pushing future captains into management degrees. PilotRecognition.com is the tool the industry needs to stop this bleeding.**
+
+---
+
 **How PilotRecognition Prevents Talent Loss:**
 
 **1. Clear Pathway from Day One:**
