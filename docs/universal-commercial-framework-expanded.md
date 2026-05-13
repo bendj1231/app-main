@@ -1500,6 +1500,17 @@ PilotRecognition Programs are designed for **both individual pilots AND flight s
    - Behavioral assessment scores (cognitive/constructivism)
    - Digital credentials that travel with the pilot
 
+**Reality vs. Theory: What Flight Schools Teach vs. What Industry Wants**
+
+| Flight School Teaches | Industry Actually Wants | Transition Program Bridges |
+|-----------------------|------------------------|---------------------------|
+| Stick-and-rudder skills | 9 core competencies | EBT-aligned assessment |
+| Hours logged | Behavioral patterns | Video scoring & analysis |
+| Checkrides passed | Simulator performance | Assessment preparation |
+| "Get 1500 hours" | Specific operator pathways | Gap analysis & targeting |
+| Generic resume advice | ATS-optimized CVs | ATLAS formatting |
+| Hope and luck | Verified Recognition Profile | Industry-ready portfolio |
+
 **The "Day One Recognition" Vision:**
 
 Imagine graduation day where the handshake comes with:
@@ -2209,6 +2220,42 @@ Flight schools are the **source** of pilots entering the industry. They produce 
 - "Pre-cleared graduates" marketing advantage
 - Reduced liability — no hidden surprises
 - Operator confidence in placement candidates
+
+**Three-Tier Partner Model (For Operators)**
+
+| Feature | Free | Pay-Per-Pathway ($49) | Enterprise ($1K/mo) |
+|---------|------|----------------------|---------------------|
+| Post Pathways | ✅ | ✅ | ✅ |
+| See Interest Count | ✅ ("12 interested") | ✅ | ✅ |
+| Preview Top 3 | ✅ (blurred) | ✅ (full) | ✅ (unlimited) |
+| Unlock Full List | ❌ | ✅ (this pathway) | ✅ (all) |
+| Pull API | ❌ | ❌ | ✅ |
+| EBT Video Access | ❌ | ❌ | ✅ |
+
+**Success Fee:** $500 per pilot placed through pathway
+
+**Job Board vs. PilotRecognition: Key Differences**
+
+| Traditional Job Board | PilotRecognition |
+|----------------------|------------------|
+| Push (apply) | Pull (interest) |
+| Static CVs | Live profiles |
+| 500 applications | Pre-verified shortlist |
+| Spray and pray | Targeted alignment |
+| Uncertainty | Competency scoring |
+| One-time job | Career-long recognition |
+
+**Terminology Mapping: Old vs. New**
+
+| ❌ Old | ✅ New |
+|--------|--------|
+| Apply Now | Submit Interest |
+| Job | Pathway |
+| Hiring | Active/High Interest |
+| Career | Professional |
+| Job Board | Recognition Platform |
+| Placement | Discovery |
+| Get Hired | Get Recognized |
 
 ---
 
