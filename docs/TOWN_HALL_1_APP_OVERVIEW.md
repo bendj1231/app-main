@@ -8,7 +8,7 @@
 
 **NOT a job board. A recognition and information platform.**
 
-PilotRecognition digitizes and validates pilot reputations and logbooks. Instead of pilots "applying" for jobs and hoping, they build verified Recognition Profiles that airlines can discover and pull from.
+PilotRecognition digitizes and validates pilot reputations and logbooks. Instead of pilots "applying" for jobs and hoping, they build verified Recognition Profiles that operators across all aviation sectors can discover and pull from.
 
 ### The Core Promise:
 > "Get recognized, not just listed. Submit interest, not applications."
@@ -30,9 +30,9 @@ PilotRecognition digitizes and validates pilot reputations and logbooks. Instead
 Pilot Journey:
 Visit Site → See "NOT A JOB BOARD" banner → Browse Pathways 
 → Compare Profile to Requirements → Submit Interest 
-→ Get Verified → Airlines Pull From Database
+→ Get Verified → Operators Pull From Database
 
-Airline Journey:
+Partner Journey:
 Enterprise Access → Post Pathway Requirements → Pull Verified Profiles
 → View Recognition Scores → Contact Pilots Directly
 ```
@@ -80,7 +80,7 @@ Current flight training is transactional: hours logged, exams passed, certificat
 |---------|-------|---------------|
 | **Foundation Program** | $49 | 50-hour mentorship with certification, 5 EBT modules, W1000 access, initial recognition presence + accumulated score |
 | **Transition Program** | $299 | **🚧 WIP — Collaboration with all 25 pillars** — 9 competencies assessment, ATLAS CV, interview prep, EBT scoring — *Coming soon once all partners established* |
-| **EBT Video Scoring** | Bundled | Recorded behavioral assessment airlines can view |
+| **EBT Video Scoring** | Bundled | Recorded behavioral assessment all operators can view (airlines, cargo, private jet, eVTOL, etc.) |
 
 **For Flight School Campuses:**
 
@@ -94,7 +94,17 @@ Current flight training is transactional: hours logged, exams passed, certificat
 **Program Status:**
 
 - **Foundation Program:** ✅ Live — Individual enrollment open, campus partnerships accepting
-- **Transition Program:** 🚧 WIP — Requires collaboration with all 25 Universal Commercial Framework pillars (airlines, ATOs, simulator centers, etc.) — *Coming soon once all partners established and onboard*
+- **Transition Program:** 🚧 WIP — Requires collaboration with all 25 Universal Commercial Framework pillars (operators, ATOs, simulator centers, manufacturers, etc.) — *Coming soon once all partners established and onboard*
+
+**Creating Our Own Aviation University**
+
+> **PilotRecognition is creating its own university** — where pilots explore, discover, and prepare for the entire aviation industry through structured programs addressing real industry needs.
+
+Unlike traditional flight schools that focus only on stick-and-rudder skills, PilotRecognition programs address:
+- **Professional identity** — how pilots portray themselves to employers
+- **Industry intelligence** — what operators actually want (not just rumors)
+- **Cross-sector readiness** — preparation for airlines, cargo, private jet, eVTOL, military, and more
+- **Verified competencies** — EBT/CBTA-aligned assessments that travel across all sectors
 
 **The Transition Program: Aviation Industry First**
 
@@ -134,8 +144,8 @@ Current flight training is transactional: hours logged, exams passed, certificat
 Graduation day where the handshake comes with:
 - Verified Recognition Profile (not just a license)
 - Recognition Score showing readiness (not just hours)
-- Competency portfolio airlines can see (not just a resume)
-- Direct pathway connections (not just "good luck")
+- Competency portfolio all operators can see (airlines, cargo, private jet, eVTOL — not just a resume)
+- Direct pathway connections to ALL aviation sectors (not just "good luck")
 
 ---
 
@@ -240,7 +250,7 @@ Pilots use pathways to understand requirements and submit interest.
 
 **Key Distinction from Job Boards:**
 - ❌ Traditional: "Apply Now" → Wait → Hope
-- ✅ PilotRecognition: "Submit Interest" → Get Verified → Airlines Pull
+- ✅ PilotRecognition: "Submit Interest" → Get Verified → Operators Pull (all sectors)
 
 ---
 
@@ -469,7 +479,7 @@ function calculateRecognitionScore(profile) {
 | Database Profiles | 18 |
 | Flight Schools | 50 |
 | Pathway Types | 7 categories |
-| Airlines in Carousel | 25+ |
+| Operators in Carousel | 25+ (airlines, cargo, charter, etc.) |
 | Pages with "NOT A JOB BOARD" | 30+ |
 | Files Updated for TH1 | 35+ |
 | TypeScript Errors (TH1) | 0 |
@@ -552,7 +562,7 @@ function calculateRecognitionScore(profile) {
 
 **Key Deliverable:** Veremark integration with Pre-Cleared badge
 
-**Success Metric:** 100 verified pilots ready for airline pulling
+**Success Metric:** 100 verified pilots ready for operator pulling (all sectors)
 
 ---
 
