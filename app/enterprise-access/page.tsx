@@ -677,20 +677,71 @@ const EnterpriseAccessPage = () => {
                             </div>
                         </div>
 
-                        {/* Stats cards */}
-                        <div className="grid grid-cols-2 gap-4">
-                            {[
-                                { value: '25', label: 'Strategic Pillars', sub: 'Across 7 industry hubs' },
-                                { value: '15+', label: 'Aviation Sectors', sub: 'Airlines to eVTOL' },
-                                { value: 'Live', label: 'Real-Time Profiles', sub: 'Not static CVs' },
-                                { value: 'API', label: 'Enterprise Access', sub: 'Pull verified pilot data' },
-                            ].map((stat) => (
-                                <div key={stat.label} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                                    <p className="text-3xl font-bold text-slate-900 mb-1">{stat.value}</p>
-                                    <p className="text-sm font-semibold text-slate-700">{stat.label}</p>
-                                    <p className="text-xs text-slate-400 mt-1">{stat.sub}</p>
+                        {/* Mock Pilot Profile Card */}
+                        <div className="relative">
+                            {/* Glow behind card */}
+                            <div className="absolute -inset-4 bg-red-100/40 blur-2xl rounded-3xl pointer-events-none" />
+                            <div className="relative bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
+                                {/* Card header */}
+                                <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                        <span className="text-xs font-semibold text-slate-600">Live Pilot Profile</span>
+                                    </div>
+                                    <span className="text-[10px] bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full font-semibold">Verified</span>
                                 </div>
-                            ))}
+
+                                {/* Pilot info */}
+                                <div className="px-5 py-5">
+                                    <div className="flex items-center gap-4 mb-5">
+                                        <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center flex-shrink-0">
+                                            <span className="text-white font-bold text-sm">JR</span>
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-slate-900 text-sm">Capt. James R.</p>
+                                            <p className="text-xs text-slate-500">ATPL · 8,400 hrs TT</p>
+                                        </div>
+                                        <div className="ml-auto text-right">
+                                            <p className="text-xs font-bold text-red-600">Score</p>
+                                            <p className="text-2xl font-black text-slate-900">91</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Stats row */}
+                                    <div className="grid grid-cols-3 gap-3 mb-5">
+                                        {[
+                                            { label: 'Type Ratings', value: '3' },
+                                            { label: 'Background', value: 'Clear' },
+                                            { label: 'Availability', value: '30d' },
+                                        ].map(s => (
+                                            <div key={s.label} className="bg-slate-50 rounded-lg p-2.5 text-center">
+                                                <p className="text-sm font-bold text-slate-900">{s.value}</p>
+                                                <p className="text-[10px] text-slate-400 mt-0.5">{s.label}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* Pathway match */}
+                                    <div className="bg-red-50 border border-red-100 rounded-xl p-3 mb-4">
+                                        <p className="text-[10px] uppercase tracking-widest text-red-600 font-semibold mb-1">Pathway Match</p>
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-sm font-semibold text-slate-800">Emirates — First Officer</p>
+                                            <span className="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full font-bold">94%</span>
+                                        </div>
+                                        <p className="text-xs text-slate-500 mt-1">2 gaps remaining · A380 type rating required</p>
+                                    </div>
+
+                                    {/* Pull button */}
+                                    <button onClick={() => scrollTo('contact')} className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">
+                                        Pull Profile via API →
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Floating badge */}
+                            <div className="absolute -bottom-3 -right-3 bg-slate-900 text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg">
+                                25 Pillars · 15+ Sectors
+                            </div>
                         </div>
                     </div>
                 </div>
