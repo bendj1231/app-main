@@ -78,8 +78,8 @@ Current flight training is transactional: hours logged, exams passed, certificat
 
 | Program | Price | What They Get |
 |---------|-------|---------------|
-| **Foundation Program** | $49 | 50-hour mentorship with certification, 5 EBT modules, W1000 access, initial recognition presence + accumulated score |
-| **Transition Program** | $299 | **🚧 WIP — Collaboration with all 25 pillars** — 9 competencies assessment, ATLAS CV, interview prep, EBT scoring — *Coming soon once all partners established* |
+| **Foundation Program** | $49 | 50-hour mentorship with certification, 5 EBT modules, **W1000 application prep**, initial recognition presence + accumulated score |
+| **Transition Program** | $299 | **🚧 WIP — Totally new partner set** — 9 competencies assessment, ATLAS CV, interview prep, EBT scoring — *Coming soon with exclusive Transition-level partnerships* |
 | **EBT Video Scoring** | Bundled | Recorded behavioral assessment all operators can view (airlines, cargo, private jet, eVTOL, etc.) |
 
 **What Pilots Actually Learn (The Curriculum):**
@@ -104,11 +104,20 @@ Current flight training is transactional: hours logged, exams passed, certificat
 - **Career diversification:** How to pivot from traditional aviation to future sectors
 - **Market intelligence:** Which eVTOL operators are hiring, what they want, when they'll scale
 
-**4. W1000 Application & ATLAS CV** 📄
-- Wizz Air W1000 cadet program application preparation
+**4. Foundation Program: W1000 Application & ATLAS CV** 📄 *(Foundation-specific)*
+- **Wizz Air W1000 cadet program application preparation** — exclusive to Foundation Program
 - **ATLAS Aviation CV formatting** — what ATS systems at major airlines actually parse
 - Resume optimization for automated screening (95% of airlines use ATS)
 - **Cover letter frameworks** that get past filters
+- *Note: W1000 partnership is Foundation Program exclusive. Transition Program will have its own totally new set of partnerships.*
+
+**4b. Transition Program: Advanced Applications** 🚀 *(Coming Soon — Totally New Set)*
+- **Exclusive Transition-level partnerships** — different from Foundation Program
+- **Advanced operator applications** — major airlines, cargo operators, private jet companies
+- **Direct pathway applications** — skip the line with verified Recognition Profile
+- **Executive aviation access** — corporate flight departments, VIP charter operators
+- **eVTOL pioneer programs** — early access to urban air mobility operators
+- *Note: Transition Program partners will be announced separately — totally new set from Foundation Program*
 
 **5. Interview Mastery & Assessment Preparation** 🎤
 - **Competency-based interview training** (the 9 core competencies in practice)
