@@ -724,9 +724,6 @@ const EnterpriseAccessPage = () => {
 
                     {/* LEFT — text flush to screen edge */}
                     <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-center pl-6 md:pl-12 lg:pl-16 pr-8 py-20">
-                        <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest w-fit">
-                            Enterprise · Global Aviation Network
-                        </span>
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.0] mb-6 text-slate-900">
                             Connecting Pilots<br />
                             <span className="text-red-600">to the Industry.</span>
