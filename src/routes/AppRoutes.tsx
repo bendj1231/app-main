@@ -96,6 +96,7 @@ const ExaminationPortal = lazy(() => import('@/components/website/components/exa
 const EnterpriseAccessPage = lazy(() => import('@/app/enterprise-access/page'));
 const EnterpriseAccessLearnMorePage = lazy(() => import('@/app/enterprise-access/learn-more/page'));
 const AirlinesOperatorsPage = lazy(() => import('@/app/enterprise-access/airlines/page'));
+const FlightSchoolsPage = lazy(() => import('@/app/partners/flight-schools/page'));
 const PilotShortagePage = lazy(() => import('@/components/website/components/PilotShortagePage').then(m => ({ default: m.PilotShortagePage })));
 const WhyRecognitionPage = lazy(() => import('@/components/website/components/WhyRecognitionPage').then(m => ({ default: m.WhyRecognitionPage })));
 const GlobalAviationAuthoritiesPage = lazy(() => import('@/pages/GlobalAviationAuthoritiesPage'));
@@ -299,6 +300,9 @@ export const AppRoutes = () => {
       <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
       <Route path="/enterprise-access/learn-more" element={<EnterpriseAccessLearnMorePage />} />
       <Route path="/enterprise-access/airlines" element={<AirlinesOperatorsPage />} />
+
+      {/* Partner pages */}
+      <Route path="/partners/flight-schools" element={<FlightSchoolsPage />} />
 
       {/* New category pages */}
       <Route path="/learn-about" element={<LearnAboutPage />} />
